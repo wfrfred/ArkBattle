@@ -17,11 +17,16 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 | --- | --- |
 | 身份、身体位置、生命周期 | Unit |
 | 登记格、方向与 Support 配对 | Occupancy |
-| DP、自然回复进度、usedSlots、待归还部署位与部署历史 | Deployment |
-| 库存、费用阶段、时钟和私有 state | Card |
+| 部署历史和部署通知 | Deployment |
+| Card 集合、排序、费用截断上限 | Deck |
+| DP 余额、上下限和自然回复 | DP |
+| 全局部署位上限、占用和待归还份额 | Slot |
+| 单卡库存、费用阶段、时钟和私有 state | Card |
 | 本次 Card／COST／额度／退款与撤退限制 | Deployable |
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
+
+`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史和通知。初始化配置由三个子域的 Definition 组合，子域初始化各自读取配置并建立运行状态。`deck.costCeiling` 是 Card 费用计算的截断上限，`dp.max` 是账户余额上限。
 
 ## 静态内容与 Card
 
@@ -55,7 +60,7 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 
 ## 普通部署流程
 
-合并并判定资格 → 采样 COST／退款依据 → 提交 DP、库存、usedSlots 及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
+合并并判定资格 → 采样 COST／退款依据 → 提交 DP、部署位、库存及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
 
 付款先处理 DP 时基，不能在消费后补发满额期间回复。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
@@ -89,7 +94,7 @@ DEATH 的非零占位登记为 `PendingSlotRelease`，在本次 `removed` 的 Ti
 
 removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
-`usedSlots` 在 `removing`、依赖结束和死亡延迟期间仍计入本次份额。预置份额为零。部署历史用于来源反查，`deployedCount` 用于当前在场统计。
+`slot.used` 在 `removing`、依赖结束和死亡延迟期间仍计入本次份额。预置份额为零。部署历史用于来源反查，`deployedCount` 用于当前在场统计。
 
 ## 部署观察
 

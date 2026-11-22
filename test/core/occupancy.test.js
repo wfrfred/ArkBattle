@@ -83,7 +83,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
                 id: "replace-on-leave",
 
                 invoke: (current) => {
-                    assert.equal(current.deployment.usedSlots, 0);
+                    assert.equal(current.deployment.slot.used, 0);
                     const result = deployment.deploy(
                         current,
                         deployment.createRequest(current, unitCard, [1, 2]),
@@ -109,7 +109,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     const pair = get(state, placedSupport.value.unitId).occupancy.pair;
     assert.equal(pair.occupant.id, replacement);
     assert.equal(get(state, replacement).occupancy.pair, pair);
-    assert.equal(state.deployment.usedSlots, 1);
+    assert.equal(state.deployment.slot.used, 1);
 
     state = deployment.retreat(state, units.ref(get(state, placedSupport.value.unitId)));
     assert.equal(get(state, replacement).occupancy.pair, null);

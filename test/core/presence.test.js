@@ -98,7 +98,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     assert.deepEqual(get(state, owner.id).position, [2, 1]);
     assert.equal(get(state, owner.id).occupancy.pair, pair);
     assert.equal(get(state, 0).occupancy.pair, pair);
-    assert.equal(state.deployment.usedSlots, 1);
+    assert.equal(state.deployment.slot.used, 1);
     assert.equal(entries, 1);
     assert.deepEqual(departures, []);
     assert.equal(actions.getExecution(state, started.value), undefined);

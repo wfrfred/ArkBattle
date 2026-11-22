@@ -30,7 +30,7 @@ export { advance, deploy, resolveDeploymentCommands } from "./operations.js";
 
 export { retreat, canRetreat } from "../../unit/capability/deployable/operations.js";
 
-export * as dp from "./dp/operations.js";
+export * as dp from "./dp/index.js";
 
 export type { Ordering } from "./deck/order.js";
 

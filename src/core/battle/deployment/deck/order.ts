@@ -2,12 +2,12 @@ import type { Ref } from "../../../common/ref.js";
 import { create, type Query } from "../../../common/query.js";
 import type { State as BattleState } from "../../state.js";
 import type { Card } from "./card/card.js";
-import { get } from "./card/query.js";
+import { get } from "./deck.js";
 
 export type Ordering = (battle: BattleState, cards: readonly Ref<Card>[]) => readonly Ref<Card>[];
 
 export function ordered(battle: BattleState): Query<Card> {
-    return create(() => battle.deployment.order.values()).map((reference) =>
+    return create(() => battle.deployment.deck.order.values()).map((reference) =>
         get(battle, reference)!,
     );
 }
@@ -15,14 +15,14 @@ export function ordered(battle: BattleState): Query<Card> {
 export function setOrdering(battle: BattleState, ordering: Ordering | null): BattleState {
     battle = {
         ...battle,
-        deployment: { ...battle.deployment, ordering },
+        deployment: { ...battle.deployment, deck: { ...battle.deployment.deck, ordering } },
     };
 
     return refreshOrder(battle);
 }
 
 export function refreshOrder(battle: BattleState): BattleState {
-    const { ordering, order: previous } = battle.deployment;
+    const { ordering, order: previous } = battle.deployment.deck;
     if (ordering === null) {
         return battle;
     }
@@ -32,5 +32,8 @@ export function refreshOrder(battle: BattleState): BattleState {
     return order.length === previous.length &&
         order.every((ref, index) => ref.id === previous[index]!.id)
         ? battle
-        : { ...battle, deployment: { ...battle.deployment, order } };
+        : {
+              ...battle,
+              deployment: { ...battle.deployment, deck: { ...battle.deployment.deck, order } },
+          };
 }

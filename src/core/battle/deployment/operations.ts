@@ -10,12 +10,13 @@ import { initialize as initializeUnit } from "../../unit/initialize.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
 import { dispatch as notifyDeployed } from "./hook.js";
-import { all, get } from "./deck/card/query.js";
-import { ref, type Card } from "./deck/card/card.js";
-import * as card from "./deck/card/state.js";
-import * as cards from "./deck/card/operations.js";
+import type { Card } from "./deck/card/card.js";
+import { resolveBaseCost } from "./deck/card/state.js";
+import { consumeForDeployment } from "./deck/card/operations.js";
+import { get } from "./deck/deck.js";
+import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
-import { advanceSlotReleases } from "./slot/operations.js";
+import * as slot from "./slot/operations.js";
 import { advanceResources, evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
 import { refreshOrder } from "./deck/order.js";
 import { validateRequest, type DeployRequest, type DeployOutcome } from "./request.js";
@@ -56,35 +57,22 @@ export function deploy<T extends Card<any>>(
 
     self = get(battle, request.card)!;
     const definition = self.definition;
-    const cost = card.resolveCost(self, battle.deployment.definition.costCeiling ?? 99);
+    const cost = deck.resolveCost(battle, self);
     const refund =
         definition.refund === null
             ? null
             : {
                   rate: definition.refund.rate,
                   limit:
-                      definition.refund.limit === "DEPLOYMENT_COST"
-                          ? cost
-                          : card.resolveBaseCost(self),
+                      definition.refund.limit === "DEPLOYMENT_COST" ? cost : resolveBaseCost(self),
               };
     const amount = request.quote.dp;
     if (amount !== null) {
         battle = dp.pay(battle, amount).state;
     }
 
-    battle = {
-        ...battle,
-        deployment: {
-            ...battle.deployment,
-            usedSlots: battle.deployment.usedSlots + request.quote.slots,
-        },
-    };
-    let consumed = card.consume(self, request.quote.stock);
-    if (definition.cooldownOnDeploy) {
-        consumed = card.advance(card.startCooldown(consumed, battle.tick), battle.tick);
-    }
-
-    battle = cards.replace(battle, consumed);
+    battle = slot.occupy(battle, request.quote.slots);
+    battle = consumeForDeployment(battle, self, request.quote.stock);
     const initialized = initializeUnit(battle, {
         definition: self.unitDefinition,
         position: Tile.center(request.tilePosition),
@@ -155,18 +143,9 @@ export function resolveDeploymentCommands(
 }
 
 export function advance(state: BattleState): BattleState {
-    state = advanceSlotReleases(state);
     const tick = state.tick;
-    const candidates = all(state);
+    state = slot.advance(state);
+    state = deck.advance(state);
 
-    for (const candidate of candidates) {
-        const reference = ref(candidate);
-        const self = card.advance(get(state, reference)!, tick);
-        state = cards.replace(state, self);
-        state = self.definition.onTick?.(state, self) ?? state;
-    }
-
-    const deployment = dp.advance(state.deployment, tick);
-
-    return deployment === state.deployment ? state : { ...state, deployment };
+    return dp.advanceBattle(state, tick);
 }

@@ -8,12 +8,15 @@ export { ref } from "./card.js";
 
 export { initialize, type Input } from "./initialize.js";
 
-export { get, all, allows } from "./query.js";
+export { all, get } from "../deck.js";
+
+export { add } from "../operations.js";
+
+export { allows } from "./query.js";
 
 export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./state.js";
 
 export {
-    add,
     setState,
     recharge,
     consume,

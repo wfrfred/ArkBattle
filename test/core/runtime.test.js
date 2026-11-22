@@ -34,7 +34,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
             id: "observe-birth",
             invoke(current, self) {
                 assert.equal(get(current, self.id).definition.id, "scheduled");
-                assert.equal(current.deployment.dp, 22);
+                assert.equal(current.deployment.dp.value, 22);
                 entered.push(self.definition.id);
                 return { state: dp.modify(current, 3), value: undefined };
             },
@@ -46,7 +46,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
             id: "observe-initialization",
             invoke(current, self) {
                 assert.equal(current.schedule.definition.waves.length, 1);
-                assert.equal(current.deployment.dp, 20);
+                assert.equal(current.deployment.dp.value, 20);
                 assert.equal(get(current, self.id).definition, initial);
                 const mechanism = mechanisms.all(current).find(({ definition }) => definition === controller);
                 assert.equal(mechanism?.lifecycle, "ACTIVE");
@@ -60,7 +60,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
         hooks: Hooks.empty().set(units.entered, {
             id: "observe-previous-initial-unit",
             invoke(current, self) {
-                assert.equal(current.deployment.dp, 22);
+                assert.equal(current.deployment.dp.value, 22);
                 assert.equal(get(current, 0).definition, initial);
                 entered.push(self.definition.id);
                 return { state: current, value: undefined };
@@ -81,10 +81,10 @@ test("initial and scheduled entry see registered battle facts and preserve their
             }] }],
         }], branches: {} },
     });
-    assert.equal(state.deployment.dp, 22);
+    assert.equal(state.deployment.dp.value, 22);
     state = step(state, []);
     assert.deepEqual(entered, ["initial", "following", "scheduled"]);
-    assert.equal(state.deployment.dp, 25);
+    assert.equal(state.deployment.dp.value, 25);
 });
 
 test("a Unit can create its replacement during removal before the next birth", () => {
@@ -162,18 +162,18 @@ test("Tick phases publish their resource operations and failures preserve the in
     assert.deepEqual(units.all(completed).map(({ definition, position }) => [definition.id, position]).toArray(), [
         ["operator", [1, 0]],
     ]);
-    assert.equal(completed.deployment.dp, 17);
+    assert.equal(completed.deployment.dp.value, 17);
     assert.equal(cards.get(completed, card).stock, 0);
     const finished = step(completed, []);
     assert.equal(finished.tick, 2);
-    assert.equal(finished.deployment.dp, 19);
+    assert.equal(finished.deployment.dp.value, 19);
 
     fail = true;
     let branch = before;
     assert.throws(() => { branch = step(branch, commands); }, (error) => error === failure);
-    assert.equal(interrupted.deployment.dp, 17);
+    assert.equal(interrupted.deployment.dp.value, 17);
     assert.equal(branch.tick, 0);
-    assert.equal(branch.deployment.dp, 20);
+    assert.equal(branch.deployment.dp.value, 20);
     assert.equal(cards.get(branch, card).stock, 1);
     assert.deepEqual([...units.all(branch)], []);
 });

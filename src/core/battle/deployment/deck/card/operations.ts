@@ -3,32 +3,13 @@ import { assertNonnegativeSafeInteger } from "../../../../common/assert.js";
 import type { Contribution } from "../../../../common/contribution.js";
 import type { Modifier } from "../../../../common/modifier.js";
 import type { State as BattleState } from "../../../state.js";
-import { refreshOrder } from "../order.js";
-import { ref, type Card, type TimerTarget } from "./card.js";
+import { get } from "../deck.js";
+import { replace } from "../operations.js";
+import type { Card, TimerTarget } from "./card.js";
 import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
-import { get } from "./query.js";
 import * as card from "./state.js";
-
-export function add<S extends object>(battle: BattleState, self: Card<S>): BattleState {
-    return refreshOrder({
-        ...battle,
-        deployment: {
-            ...battle.deployment,
-            cards: battle.deployment.cards.add(self.id, self),
-            order: [...battle.deployment.order, ref(self)],
-        },
-    });
-}
-
-export function replace(battle: BattleState, self: Card<any>): BattleState {
-    const cards = battle.deployment.cards.replace(self.id, self);
-
-    return cards === battle.deployment.cards
-        ? battle
-        : refreshOrder({ ...battle, deployment: { ...battle.deployment, cards } });
-}
 
 export function setState<T extends Card<any>>(
     battle: BattleState,
@@ -59,6 +40,15 @@ export function consume(battle: BattleState, reference: Ref<Card<any>>, count = 
     }
 
     return replace(battle, card.consume(self, count));
+}
+
+export function consumeForDeployment(battle: BattleState, self: Card, stock: number): BattleState {
+    let next = card.consume(self, stock);
+    if (self.definition.cooldownOnDeploy) {
+        next = card.advance(card.startCooldown(next, battle.tick), battle.tick);
+    }
+
+    return replace(battle, next);
 }
 
 export function incrementCostStage(battle: BattleState, reference: Ref<Card<any>>): BattleState {

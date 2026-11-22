@@ -8,9 +8,8 @@ import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Card } from "./deck/card/card.js";
-import { get } from "./deck/card/query.js";
-import { advance as advanceCard, resolveCost } from "./deck/card/state.js";
-import { replace } from "./deck/card/operations.js";
+import { get } from "./deck/deck.js";
+import { advanceCard, resolveCost } from "./deck/operations.js";
 import type { Restriction as CardRestriction } from "./deck/card/restriction.js";
 import type { Restriction } from "./restriction.js";
 import {
@@ -20,8 +19,9 @@ import {
     type Rejected,
     type Rejection,
 } from "./request.js";
-import * as dp from "./dp/operations.js";
-import { advanceSlotReleases } from "./slot/operations.js";
+import { canPay } from "./dp/dp.js";
+import { advanceBattle as advanceDp } from "./dp/operations.js";
+import { advance as advanceSlots, allows as allowsSlots } from "./slot/operations.js";
 import { Hooks } from "../../hook.js";
 
 export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card> | null {
@@ -56,7 +56,7 @@ export function createRequest<T extends Card<any>>(
         tilePosition,
         ...(direction === undefined ? {} : { direction }),
         quote: {
-            dp: resolveCost(self, battle.deployment.definition.costCeiling ?? 99),
+            dp: resolveCost(battle, self),
             stock: 1,
             slots: self.definition.slots,
         },
@@ -94,9 +94,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
             id: "@deployment/slots",
             value: {
                 allows: (battle, { request }) =>
-                    battle.deployment.definition.slotLimit === null ||
-                    battle.deployment.usedSlots + request.quote.slots <=
-                        battle.deployment.definition.slotLimit,
+                    allowsSlots(battle.deployment.slot, request.quote.slots),
             },
         },
     ],
@@ -136,11 +134,10 @@ export function resolveRestrictions(
 }
 
 export function advanceResources(battle: BattleState, self: Card<any>): BattleState {
-    battle = advanceSlotReleases(battle);
-    battle = replace(battle, advanceCard(self, battle.tick));
-    const deployment = dp.advance(battle.deployment, battle.tick);
+    battle = advanceSlots(battle);
+    battle = advanceCard(battle, self);
 
-    return deployment === battle.deployment ? battle : { ...battle, deployment };
+    return advanceDp(battle, battle.tick);
 }
 
 export function evaluateCurrent(
@@ -152,10 +149,7 @@ export function evaluateCurrent(
     if (self.stock < request.quote.stock) {
         return { type: "REJECTED", reason: "NO_STOCK" };
     }
-    if (
-        request.quote.dp !== null &&
-        battle.deployment.dp - request.quote.dp < battle.deployment.minDp
-    ) {
+    if (request.quote.dp !== null && !canPay(battle.deployment.dp, request.quote.dp)) {
         return { type: "REJECTED", reason: "INSUFFICIENT_DP" };
     }
 
@@ -226,10 +220,7 @@ export function preview<T extends Card<any>>(
 
     return {
         type: "ALLOWED",
-        cost: resolveCost(
-            get(battle, request.card)!,
-            battle.deployment.definition.costCeiling ?? 99,
-        ),
+        cost: resolveCost(battle, get(battle, request.card)!),
         quote: request.quote,
     };
 }

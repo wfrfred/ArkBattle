@@ -118,8 +118,8 @@ test("different Card definitions can deploy the same Unit Definition used by an 
         assert.equal(unit.deployable.slots, card.definition.slots);
         assert.deepEqual(deployment.cardForUnit(state, units.ref(unit)), reference);
     }
-    assert.equal(state.deployment.dp, 33);
-    assert.equal(state.deployment.usedSlots, 1);
+    assert.equal(state.deployment.dp.value, 33);
+    assert.equal(state.deployment.slot.used, 1);
     assert.equal(deployment.cardForUnit(state, units.ref(initial)), null);
     assert.deepEqual(state.deployment.history.map(({ card }) => card), [
         cards.ref(discounted),
@@ -142,9 +142,9 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
                 period: { type: "FIXED", ticks: 1 },
                 initialize(current) {
                     constructions.push({
-                        dp: current.deployment.dp,
+                        dp: current.deployment.dp.value,
                         stock: cards.get(current, card).stock,
-                        slots: current.deployment.usedSlots,
+                        slots: current.deployment.slot.used,
                     });
                     return { state: current, value: {} };
                 },
@@ -187,9 +187,9 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
         state,
         value: { type: "REJECTED", reason: "RULE" },
     });
-    assert.equal(state.deployment.dp, 50);
+    assert.equal(state.deployment.dp.value, 50);
     assert.equal(cards.get(state, card).stock, 1);
-    assert.equal(state.deployment.usedSlots, 0);
+    assert.equal(state.deployment.slot.used, 0);
     assert.deepEqual(constructions, []);
     assert.deepEqual(deployments, []);
 
@@ -202,9 +202,9 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
 
                 invoke: (current, self) => {
                     entered = true;
-                    assert.equal(current.deployment.dp, 40);
+                    assert.equal(current.deployment.dp.value, 40);
                     assert.equal(cards.get(current, card).stock, 0);
-                    assert.equal(current.deployment.usedSlots, 1);
+                    assert.equal(current.deployment.slot.used, 1);
                     assert.equal(get(current, self.id).deployable.card.id, card.id);
                     assert.deepEqual(deployment.cardForUnit(current, units.ref(self)), card);
                     return { state: current, value: undefined };
@@ -270,8 +270,8 @@ test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prer
     state = second.state;
     assert.equal(second.value.type, "DEPLOYED");
     assert.equal(cards.get(state, card).stock, 1);
-    assert.equal(state.deployment.dp, 0);
-    assert.equal(state.deployment.usedSlots, 0);
+    assert.equal(state.deployment.dp.value, 0);
+    assert.equal(state.deployment.slot.used, 0);
     assert.equal(get(state, first.value.unitId).deployable.cost, 10);
     assert.equal(get(state, second.value.unitId).deployable.slots, 0);
 });
@@ -355,7 +355,7 @@ test("retreat refunds before removal, and death delays global slot release indep
                                 invoke: (current, { unit }) => {
                                     const card = cards.get(current, unit.deployable.card);
                                     retreats.push({
-                                        dp: current.deployment.dp,
+                                        dp: current.deployment.dp.value,
                                         stage: card.costStage,
                                         recovery: card.recovery,
                                     });
@@ -368,10 +368,10 @@ test("retreat refunds before removal, and death delays global slot release indep
                                     const card = cards.get(current, unit.deployable.card);
                                     departures.push({
                                         reason,
-                                        dp: current.deployment.dp,
+                                        dp: current.deployment.dp.value,
                                         stage: card.costStage,
                                         pending: card.recovery.pending,
-                                        slots: current.deployment.usedSlots,
+                                        slots: current.deployment.slot.used,
                                     });
                                     return { state: current, value: undefined };
                                 },
@@ -389,7 +389,7 @@ test("retreat refunds before removal, and death delays global slot release indep
     assert.equal(get(state, first.value.unitId), undefined);
     assert.deepEqual(deployment.cardForUnit(state, firstUnit), card);
     assert.equal(deployment.deployedCount(state, card), 0);
-    assert.equal(state.deployment.usedSlots, 0);
+    assert.equal(state.deployment.slot.used, 0);
     assert.deepEqual(retreats, [{ dp: 45, stage: 0, recovery: null }]);
     assert.deepEqual(departures, [{ reason: "RETREAT", dp: 45, stage: 1, pending: 1, slots: 0 }]);
 
@@ -402,7 +402,7 @@ test("retreat refunds before removal, and death delays global slot release indep
     const secondUnit = units.ref(get(state, second.value.unitId));
     assert.deepEqual(deployment.cardForUnit(state, firstUnit), card);
     assert.equal(deployment.deployedCount(state, card), 1);
-    assert.equal(state.deployment.dp, 30);
+    assert.equal(state.deployment.dp.value, 30);
     const request = {
         source: null,
         target: units.ref(get(state, second.value.unitId)),
@@ -413,7 +413,7 @@ test("retreat refunds before removal, and death delays global slot release indep
     assert.equal(at(state.battlefield, tilePosition)?.occupant ?? null, null);
     assert.deepEqual(deployment.cardForUnit(state, secondUnit), card);
     assert.equal(deployment.deployedCount(state, card), 0);
-    assert.equal(state.deployment.usedSlots, 1);
+    assert.equal(state.deployment.slot.used, 1);
     assert.deepEqual(departures[1], { reason: "DEATH", dp: 30, stage: 2, pending: 1, slots: 1 });
 
     const releasedAt = state.tick + TICKS_PER_SECOND;
@@ -429,12 +429,12 @@ test("retreat refunds before removal, and death delays global slot release indep
     assert.equal(deployment.evaluate(atRelease, next), null);
     const replaced = deployment.deploy(atRelease, next);
     assert.equal(replaced.value.type, "DEPLOYED");
-    assert.equal(replaced.state.deployment.usedSlots, 1);
-    assert.equal(deployment.advance({ ...replaced.state, tick: releasedAt + 1 }).deployment.usedSlots, 1);
+    assert.equal(replaced.state.deployment.slot.used, 1);
+    assert.equal(deployment.advance({ ...replaced.state, tick: releasedAt + 1 }).deployment.slot.used, 1);
 
     const advanced = deployment.advance(atRelease);
-    assert.equal(advanced.deployment.usedSlots, 0);
-    assert.equal(deployment.advance({ ...advanced, tick: releasedAt + 1 }).deployment.usedSlots, 0);
+    assert.equal(advanced.deployment.slot.used, 0);
+    assert.equal(deployment.advance({ ...advanced, tick: releasedAt + 1 }).deployment.slot.used, 0);
 });
 
 test("external movement recycles on departure and self movement keeps the card in use", () => {
@@ -451,7 +451,7 @@ test("external movement recycles on departure and self movement keeps the card i
         const observed = unitObservers.setHook(placed.state, unitObservers.removed, {
             id: "observe-card-recycle",
             invoke(state) {
-                assert.equal(state.deployment.usedSlots, 0);
+                assert.equal(state.deployment.slot.used, 0);
                 const current = cards.get(state, card);
                 assert.equal(current.costStage, recycled ? 1 : 0);
                 assert.equal(current.recovery?.pending, recycled ? 1 : undefined);
@@ -462,7 +462,7 @@ test("external movement recycles on departure and self movement keeps the card i
         const removed = units.remove(observed, unit, { reason });
 
         assert.equal(units.get(removed, unit), undefined);
-        assert.equal(removed.deployment.dp, 40);
+        assert.equal(removed.deployment.dp.value, 40);
     }
 });
 
@@ -512,17 +512,17 @@ test("negative DP halves only natural recovery, preserves progress across zero, 
         },
     });
     state = deployment.advance({ ...state, tick: 10 });
-    assert.equal(state.deployment.dp, -1);
+    assert.equal(state.deployment.dp.value, -1);
     state = deployment.dp.recover(state, 2);
-    assert.equal(state.deployment.dp, 1);
+    assert.equal(state.deployment.dp.value, 1);
     state = deployment.advance({ ...state, tick: 15 });
-    assert.equal(state.deployment.dp, 2);
+    assert.equal(state.deployment.dp.value, 2);
     state = deployment.dp.recover(state, 8);
     state = deployment.advance({ ...state, tick: 100 });
     const paid = deployment.dp.pay(state, 5);
     assert.equal(paid.value, true);
     state = deployment.advance({ ...paid.state, tick: 109 });
-    assert.equal(state.deployment.dp, 5);
+    assert.equal(state.deployment.dp.value, 5);
     state = deployment.advance({ ...state, tick: 110 });
-    assert.equal(state.deployment.dp, 6);
+    assert.equal(state.deployment.dp.value, 6);
 });

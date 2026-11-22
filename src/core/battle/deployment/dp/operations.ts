@@ -1,61 +1,27 @@
 import { assertFiniteNumber, assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Result, State as BattleState } from "../../state.js";
-import type { State } from "../deployment.js";
+import { advance, canPay, changeDp, type State } from "./dp.js";
 
-export function advance(state: State, tick: number): State {
-    const interval = state.definition.dpRecoveryTicks;
-    if (
-        interval === null ||
-        state.dp >= state.definition.maxDp ||
-        tick === state.lastDpRecoveryTick
-    ) {
-        return state;
-    }
-
-    const elapsed = (tick - state.lastDpRecoveryTick) * (state.dp < 0 ? 0.5 : 1);
-    const progress = state.dpRecoveryProgress + elapsed;
-    const count = Math.floor(progress / interval);
-    const dp = Math.min(state.definition.maxDp, state.dp + count);
-
-    return {
-        ...state,
-        dp,
-        dpRecoveryProgress: dp === state.definition.maxDp ? 0 : progress - count * interval,
-        lastDpRecoveryTick: tick,
-    };
-}
-
-export function changeDp(state: State, amount: number, tick: number): State {
-    state = advance(state, tick);
-    const dp = Math.max(state.minDp, Math.min(state.definition.maxDp, state.dp + amount));
-    if (dp === state.dp) {
-        return state;
-    }
-
-    return {
-        ...state,
-        dp,
-        dpRecoveryProgress: dp === state.definition.maxDp ? 0 : state.dpRecoveryProgress,
-        lastDpRecoveryTick: tick,
-    };
+export function advanceBattle(battle: BattleState, tick: number): BattleState {
+    return replace(battle, advance(battle.deployment.dp, tick));
 }
 
 export function modify(battle: BattleState, amount: number): BattleState {
     assertFiniteNumber(amount, "deployment point modification");
 
-    return replace(battle, changeDp(battle.deployment, amount, battle.tick));
+    return replace(battle, changeDp(battle.deployment.dp, amount, battle.tick));
 }
 
 export function recover(battle: BattleState, amount: number): BattleState {
     assertNonnegativeNumber(amount, "deployment point recovery");
 
-    return replace(battle, changeDp(battle.deployment, amount, battle.tick));
+    return replace(battle, changeDp(battle.deployment.dp, amount, battle.tick));
 }
 
 export function pay(battle: BattleState, amount: number): Result<boolean> {
     assertNonnegativeNumber(amount, "deployment point payment");
-    const current = advance(battle.deployment, battle.tick);
-    if (current.dp - amount < current.minDp) {
+    const current = advance(battle.deployment.dp, battle.tick);
+    if (!canPay(current, amount)) {
         return { state: battle, value: false };
     }
 
@@ -65,16 +31,18 @@ export function pay(battle: BattleState, amount: number): Result<boolean> {
 export function setMinimum(battle: BattleState, minimum: number): BattleState {
     assertFiniteNumber(minimum, "deployment point minimum");
 
-    if (minimum > battle.deployment.definition.maxDp) {
+    if (minimum > battle.deployment.dp.max) {
         throw new RangeError("deployment point minimum exceeds the limit");
     }
 
-    const current = advance(battle.deployment, battle.tick);
-    const next = minimum === current.minDp ? current : { ...current, minDp: minimum };
+    const current = advance(battle.deployment.dp, battle.tick);
+    const next = minimum === current.min ? current : { ...current, min: minimum };
 
     return replace(battle, changeDp(next, 0, battle.tick));
 }
 
-function replace(battle: BattleState, deployment: State): BattleState {
-    return deployment === battle.deployment ? battle : { ...battle, deployment };
+function replace(battle: BattleState, dp: State): BattleState {
+    return dp === battle.deployment.dp
+        ? battle
+        : { ...battle, deployment: { ...battle.deployment, dp } };
 }
