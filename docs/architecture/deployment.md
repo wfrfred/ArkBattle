@@ -102,6 +102,8 @@ DP 自然回复受周期和上限约束，满额期间不积累补发；付款�
 
 ## 支持范围
 
-完整特殊重部署及失败／继承／资源交接、手牌重排竞争、隐藏／锁定和特殊回收仍未完整实现；卫戍倒地、自动部署与经济政策由外部机制／Meta 组合。费用和再部署时间的全部多来源公式也尚未闭合，不能以现有 Attribute 形式推定原生一致。
+乌尔比安 S3、Mon3tr S3 与凯尔希·思衡托 S3 尚未接入 Content。普通特殊移动的组合验证覆盖了沿用原 Card 免费部署新 Unit，并恢复 HP 比例与技能状态。思衡托的待投放可以通过本次 Request 豁免部署冷却，Card 的实际计时继续推进。技能接续的通知、待投放解除和失败返回的细则仍见原生记录。已验证的路径沿用现有操作。 [原生特殊移动](../research/cases/24-deployment-cost-and-supply.md#特殊移动的结束原因) · [组合验证 U028](https://github.com/wfrfred/ArkBattle/blob/b2327f6d5105230fd6b96464b8fdc7c18bcb6a40/docs/architecture/research-necessity-20261122.md)
+
+手牌重排竞争、隐藏／锁定和特殊回收仍未完整实现。卫戍倒地、自动部署与经济政策由外部机制／Meta 组合。费用和再部署时间的多来源公式仍待核对。
 
 机制依据见[部署与供给研究](../research/cases/24-deployment-cost-and-supply.md)，必要验收和未闭合范围分别集中于 [Verification](verification.md)与 [Tactical 语义](tactical-semantics.md)。

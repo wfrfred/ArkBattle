@@ -2,6 +2,8 @@
 
 当前范围为卫戍协议、集成战略关卡、主线和支线常规作战。编号沿用[全库初次盘点](research-audit-20261122.md)。此前查证、项目定稿和 Core 组合验证的明细见[逐项复核记录](https://github.com/wfrfred/ArkBattle/blob/b2327f6d5105230fd6b96464b8fdc7c18bcb6a40/docs/architecture/research-necessity-20261122.md)。有限样本中的未命中仍按各自研究记录的覆盖范围理解。
 
+本页跟踪 Core 的表达能力。真实需求能由现有操作组合表达时，沿用这些操作，实际技能的接入进度由对应领域记录。特殊移动的组合验证与接入状态见 [Deployment](deployment.md#支持范围)。
+
 ## 待查证
 
 | 领域 | 编号 | 待查证的行为 | 影响的结果 |
