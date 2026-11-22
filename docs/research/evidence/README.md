@@ -44,6 +44,9 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | --- | --- |
 | [nearl-deployment-combo-20261122](nearl-deployment-combo-20261122/README.md) | 耀骑士临光与耀阳的牌组接力状态、出牌过滤与出生采样 |
 | [stronghold-opening-deploy-20261122](stronghold-opening-deploy-20261122/README.md) | 卫戍开场与战中补位的原生实参、接力判定的证据边界 |
+| [stronghold-opening-nearl-slot-20261122](stronghold-opening-nearl-slot-20261122/README.md) | 逐夜烁光的免占位卡牌修正与开战实际部署计数 |
+| [stronghold-opening-summoner-slots-20261122](stronghold-opening-summoner-slots-20261122/README.md) | 召唤师 X／Y 模、首个召唤物免位及当前配置范围 |
+| [stronghold-opening-tile-20261122](stronghold-opening-tile-20261122/README.md) | 教官高台追加资格与卫戍实际开场的地块校验 |
 | [stronghold-opening-born-dispatch-20261122](stronghold-opening-born-dispatch-20261122/README.md) | 开场免费落地的出生派发和效果自身的程序资格检查 |
 | [stronghold-opening-operator-effects-20261122](stronghold-opening-operator-effects-20261122/README.md) | 本期宴和砾的落地、出生技能及斥罪的初始屏障 |
 | [stronghold-opening-summon-effects-20261122](stronghold-opening-summon-effects-20261122/README.md) | 本期罗比菈塔造型仪的开场生成、出生和护盾光环 |
