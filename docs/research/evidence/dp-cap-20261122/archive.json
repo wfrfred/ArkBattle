@@ -29,6 +29,7 @@
       }
     },
     "sourceRecords": [
+      "assets.json",
       "config.json",
       "native.json"
     ],
@@ -45,16 +46,22 @@
   "result": {
     "artifacts": [
       {
+        "path": "assets.json",
+        "kind": "record",
+        "bytes": 3129,
+        "sha256": "7f74652afb8d34a1ca15cbdc3cd01f028e379d2af2fdc9d395917fadb0553133"
+      },
+      {
         "path": "config.json",
         "kind": "record",
-        "bytes": 8424,
-        "sha256": "362fd0eab152fbd6415585f67b4cfb6c68acec55663b17f0b6bcf620cf7d4220"
+        "bytes": 21450,
+        "sha256": "3c8816305004f807c0346fe852a524a1b44b805432143f07621ef44f34a62c23"
       },
       {
         "path": "extract.py",
         "kind": "historical-script",
-        "bytes": 6327,
-        "sha256": "90fbdd89a1476f79c85acd5cb6108b4f72dafb103a7db18526040e880ae4a3ac"
+        "bytes": 13113,
+        "sha256": "d440c8377e4754a905924fbae7bb7a60f4bf51a32c75a93120984bf1e69bef87"
       },
       {
         "path": "extract.py.lock",
@@ -65,12 +72,21 @@
       {
         "path": "native.json",
         "kind": "record",
-        "bytes": 225204,
-        "sha256": "00e77821af271020cff05886dd681171847413d3d7bbb6589c23340d8b4f1293"
+        "bytes": 253880,
+        "sha256": "87123a6d41c079f9c5f7161de08cf9b3aab6344386cf703b102fd400dd4222a1"
       }
     ],
     "replay": {
       "methods": [
+        {
+          "index": 63902,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/runtimeBranches/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleOptions.LoadOptions",
+          "address": "0x180607560"
+        },
         {
           "index": 63903,
           "mode": "disasm",
@@ -116,6 +132,24 @@
           "address": "0x1806587e0"
         },
         {
+          "index": 65794,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/runtimeBranches/3/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController._DoApplyGlobalModifier",
+          "address": "0x180665230"
+        },
+        {
+          "index": 65795,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/runtimeBranches/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController._ApplyGlobalModifier",
+          "address": "0x180663d30"
+        },
+        {
           "index": 65878,
           "mode": "disasm",
           "records": [
@@ -125,6 +159,15 @@
           ],
           "fullname": "Torappu.Battle.BattleCostManager.SetMaxCost",
           "address": "0x1806848b0"
+        },
+        {
+          "index": 84129,
+          "mode": "metadata",
+          "records": [
+            "native.json#/result/runtimeBranches/2/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/DefaultGameMode.OnApplyingGlobalModifier",
+          "address": "0x180c9da40"
         },
         {
           "index": 87070,
@@ -152,7 +195,38 @@
       "blocks": [],
       "types": [],
       "constants": [],
-      "bundles": []
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+          "sha256": "0563b3209d154cf3f8a08d5efcb267a71b291668f1a44a9f56664cb3f5866c5a",
+          "records": [
+            "assets.json#/provenance/assets/0"
+          ],
+          "bytes": 337702
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "assets.json#/provenance/assets/1"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+          "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01",
+          "records": [
+            "assets.json#/provenance/assets/2"
+          ],
+          "bytes": 2197532
+        }
+      ]
     },
     "limits": [
       "Original extracts and reports retain their original payload and evidence strength.",

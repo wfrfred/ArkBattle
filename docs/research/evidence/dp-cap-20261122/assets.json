@@ -1,0 +1,97 @@
+{
+  "provenance": {
+    "assets": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+        "bytes": 337702,
+        "sha256": "0563b3209d154cf3f8a08d5efcb267a71b291668f1a44a9f56664cb3f5866c5a"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+        "bytes": 2197532,
+        "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01"
+      }
+    ],
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    }
+  },
+  "result": {
+    "component": {
+      "file": "CAB-418be99595adfa1a3c8b4012fe22cb83",
+      "pathId": "-7741289169105458064",
+      "objectSha256": "342bc44164e4d5dd16873129b1b349339c8907dc58290a003f2087d24ba40123",
+      "hierarchy": [
+        {
+          "pathId": "9081468921998142576",
+          "name": "enemy_1341_bthtms",
+          "active": true
+        },
+        {
+          "pathId": "-3748453894246110096",
+          "name": "Talents",
+          "active": true
+        },
+        {
+          "pathId": "-1313614526910239632",
+          "name": "ReduceCost",
+          "active": true
+        }
+      ],
+      "enabled": true,
+      "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+      "script": {
+        "id": "3800760148018415462",
+        "name": "PassiveBuffAbility",
+        "cl": "PassiveBuffAbility",
+        "ns": "Torappu.Battle.Abilities",
+        "asm": "Assembly-CSharp.dll"
+      },
+      "buff": {
+        "buffKey": "bthtms_t_1[max_cost]",
+        "templateKey": "bthtms_t_1[max_cost]",
+        "blackboard": {
+          "Array": []
+        }
+      }
+    },
+    "holder": {
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "5a92aafc1bde0f63366d2682477d92260f85263c6e65770ae12007110ad85cd0",
+      "index": 2792,
+      "key": "bthtms_t_1[max_cost]",
+      "events": [
+        {
+          "event": 0,
+          "actions": [
+            {
+              "_sourceType": "SOURCE",
+              "_isMinus": true,
+              "_ensureCurCostNotExceedMax": true,
+              "$type": "Torappu.Battle.Action.Nodes+ModifyMaxCost"
+            }
+          ]
+        },
+        {
+          "event": 1,
+          "actions": [
+            {
+              "_sourceType": "SOURCE",
+              "_isMinus": false,
+              "_ensureCurCostNotExceedMax": false,
+              "$type": "Torappu.Battle.Action.Nodes+ModifyMaxCost"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "result.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "result.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "result.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 8927,
+        "sha256": "acd847289ee9e58c5e952039ddc10ed28372c6437f3a348c2a2647f9c00649cf"
+      },
+      {
+        "path": "result.json",
+        "kind": "record",
+        "bytes": 80181,
+        "sha256": "2e5d1a2c3b1348e74aa2f452eeb71b5bdf108ec608d71c8880be153cdbe479eb"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 44076,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/bodies/0",
+            "result.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Config.DynamicConfig.get_useRecycleToFinishScheduler",
+          "address": "0x183e52640"
+        },
+        {
+          "index": 44091,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/bodies/1",
+            "result.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Config.DynamicConfig.Load",
+          "address": "0x183e510a0"
+        },
+        {
+          "index": 44093,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/bodies/2",
+            "result.json#/result/bodies/2/method"
+          ],
+          "fullname": "Torappu.Config.DynamicConfig/InternalConfig..ctor",
+          "address": "0x183e57360"
+        },
+        {
+          "index": 73332,
+          "mode": "metadata",
+          "records": [
+            "result.json#/result/finalWaitCallback/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._CheckFinalNotFinish",
+          "address": "0x180984690"
+        },
+        {
+          "index": 73393,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/bodies/4",
+            "result.json#/result/bodies/4/method",
+            "result.json#/result/bodies/5",
+            "result.json#/result/bodies/5/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<_DoSchedule>d__119.MoveNext",
+          "address": "0x18098dbc0"
+        },
+        {
+          "index": 73564,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/bodies/6",
+            "result.json#/result/bodies/6/method"
+          ],
+          "fullname": "Torappu.Battle.SchedulerDriver.OnSchedulerFinish",
+          "address": "0x18097c130"
+        },
+        {
+          "index": 77689,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/bodies/3",
+            "result.json#/result/bodies/3/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_delayToRecycle",
+          "address": "0x180acb0f0"
+        },
+        {
+          "index": 77784,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/bodies/7",
+            "result.json#/result/bodies/7/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.OnReset",
+          "address": "0x180abff40"
+        },
+        {
+          "index": 77876,
+          "mode": "disasm",
+          "records": [
+            "result.json#/result/bodies/8",
+            "result.json#/result/bodies/8/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy..ctor",
+          "address": "0x180ac9870"
+        },
+        {
+          "index": 225908,
+          "mode": "metadata",
+          "records": [
+            "result.json#/result/loadBindings/0/method"
+          ],
+          "fullname": "Torappu.SingletonScriptableObject`1.get_instance"
+        },
+        {
+          "index": 228561,
+          "mode": "metadata",
+          "records": [
+            "result.json#/result/loadBindings/1/method"
+          ],
+          "fullname": "Torappu.Resource.ResourceManager.TryLoadAsset"
+        },
+        {
+          "index": 294154,
+          "mode": "metadata",
+          "records": [
+            "result.json#/result/loadBindings/2/method"
+          ],
+          "fullname": "Newtonsoft.Json.JsonConvert.DeserializeObject"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/6b47e416a75e403ef16a6730a1c790f0.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/6b47e416a75e403ef16a6730a1c790f0.bin",
+          "sha256": "5590243591aed038c7d2efb8943c3afb4d3a8cea44b06e09b1e938875b3b9f7b",
+          "records": [
+            "result.json#/result/configuration/textAsset/bundle"
+          ],
+          "bytes": 2887
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+          "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df",
+          "records": [
+            "result.json#/result/ordinaryEnemy/prefab/sources/0"
+          ],
+          "bytes": 147859
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "result.json#/result/ordinaryEnemy/prefab/sources/1"
+          ],
+          "bytes": 477255
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

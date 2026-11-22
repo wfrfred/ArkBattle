@@ -50,7 +50,9 @@ cost = clamp(floor(rawCost × rawCostScale) + costDelta, 0, MAX_COST_CEIL)
 - 公式的 `0x18065877f` 乘算，`0x1806587a1` 向下取整，`0x180658808` 加 delta；随后分别处理负值与超过上限的值。
 - `0x1806587a6` 的类型引用解析为 `Torappu.Battle.BattleOptions`（type 9843），`0x1806587cb` 读取静态字段偏移 `0x44`，对应 `MAX_COST_CEIL`。同类型另有 `MAX_COST`（`0x30`）与 `SYNC_MAXCOST_CEIL_WITH_MAXCOST`（`0xc1`）。绑定原始编码、类型索引及字段记录保存在 `cap-field-binding.json`。
 
-费用截断上限与账户上限具有独立身份。2026-11-22 补查 `BattleOptions..cctor`，两个上限默认 99，同步位默认为 true。普通 `LMaxCostSet.PreprocessLevelOptions` 从黑板读取 `max_cost` 与 `max_cost_ceil`，分别写入关卡 Options 与 `BattleOptions.MAX_COST_CEIL`，随后将同步位设为 false。主线 12-13 的实际 `cbuff_max_cost` 给出 20 与 99，关中又有上限奖励的诺伯特平民。账户运行期写入的一条普通路径 `BattleCostManager.SetMaxCost` 读取独立的 `MAX_COST_CEIL` 并写入对应侧的账户记录。默认同步位为 true 时的全部后续写入和模式覆盖仍待验证。 [配置与原生证据](../evidence/dp-cap-20261122/README.md)
+费用截断上限与账户上限具有独立身份。2026-11-22 补查 `BattleOptions..cctor`，两个上限默认 99，同步位默认为 true。关卡加载时，`LoadOptions` 在同步位为 true 时将 `MAX_COST` 复制到 `MAX_COST_CEIL`，为 false 时跳过复制并恢复同步位。普通 `LMaxCostSet.PreprocessLevelOptions` 从黑板读取 `max_cost` 与 `max_cost_ceil`，分别写入关卡 Options 与 `MAX_COST_CEIL`，随后将同步位设为 false。主线 12-13 的实际 `cbuff_max_cost` 给出 20 与 99，关中还有上限奖励的诺伯特平民。[配置与原生证据](../evidence/dp-cap-20261122/README.md)
+
+HE-7「以爱相连」刷出的赏金猎人扰乱者通过已启用的 `PassiveBuffAbility` 施加 `bthtms_t_1[max_cost]`，以 10 为幅度对账户上限执行减与还。该普通运行期路径从 `ModifyMaxCost` 走到 `BattleCostManager.SetMaxCost`，读取关卡已设置的 `MAX_COST_CEIL` 后写入阵营账户。卡牌费用公式仍读取 `MAX_COST_CEIL`，因此这次账户上限变化没有同步改变卡牌费用截断。证据覆盖该样本的普通分支。[关卡、Prefab、Buff 模板与原生调用](../evidence/dp-cap-20261122/README.md) [同版本卡牌费用公式](../evidence/deployment-recovery-20261101/cost-version/runtime-cost.json)
 
 ### PRTS 对照
 
@@ -115,6 +117,8 @@ cost = clamp(floor(rawCost × rawCostScale) + costDelta, 0, MAX_COST_CEIL)
 2026-11-22 的[中继器 Prefab／模板与离场调用链](../evidence/repeater-recovery-20261122/README.md)确认了普通回收的实际入参。离场时若回收 Buff 仍在，`Character.OnFinish` 经 `Unit.OnFinish`、`Entity.OnFinish` 同步结束这个 Buff，执行 `RechargeToken(1, ON_FINISH, false)`，之后才通知原 Card 的 `OnRecycle`。Buff 自然结束也执行同一补充动作。在持有上限稳定且有份数可归还时，总份数和排队份数同时加一，可用份数不变。第一份回收启动计时。第一段尚在进行时，第二份普通回收维持原来的 QUEUING 或 RESPAWNING，保留第一份已经经过的时间。若此间部署了最后一份可用库存，Draw 已切到 RESPAWNING 并保留原计时。
 
 `OnRecycle` 的状态切换 Reset 分支仍存在。`_UpdateCardBuff` 可以显式修改当前剩余时间。谬因三技能的 `aphris_sk3[token-withdraw]` 在起始和宿主结束事件中都经 `ResetTokenRespawnTime(waitFirstPeriod=false)` 将当前计时器置为零，库存仍由 Card 的队列推进。这个显式指令有独立入口。技能额外补货、强制撤回的其它条件，以及运行时 XLua，未纳入本段普通回收的推导。[节点参数与时钟写入](../evidence/repeater-recovery-20261122/README.md#调用锚点)
+
+**N／I：谬因 S3 同时变更两种上限。** 实际技能组件与 Holder 表明，开始时先增加 2 份，再强制撤回在场中继器并清当前恢复计时，技能正常结束反向扣减 2 份后再撤回及清时钟。`TokenCard.ForceRecharge` 用同一个有符号增量更新持有上限、同卡在场上限与总份数。`ON_FINISH` 还按变更后的总份数同时修正排队数量。总数、排队和可用份数须分开理解。[技能绑定与容量写入](../evidence/redeploy-state-and-repeater-20261122/README.md#谬因-s3-的中继器)
 
 ## 四、手牌顺序与目标选择
 
@@ -182,7 +186,9 @@ cost = clamp(floor(rawCost × rawCostScale) + costDelta, 0, MAX_COST_CEIL)
 
 [案例 23 的旧版本调用链](23-blocker-and-blockable-roles.md#原生调用链与关系维护)另已确认特殊移动先调用 `FinishMe(reason)`，再走新实例创建；保留指令中 Self／External 路径传入不同的结束原因常量。两批客户端指纹不同，本轮不把旧常量直接映射为新版枚举值，也没有重新提取新版的完整移动正文。
 
-因此，特殊移动的退出原因、新实例创建和具体部署奖励资格是不同的机制事实；不能把移动等同无区别的普通结束加免费创建。现有证据仍不足以统一规定各技能的 HP／技能状态继承、返费、库存、冷却和全部通知规则。项目如何携带这次业务原因、如何组织重部署操作，属于后续接口设计，本节不作决定。
+2026-11-22 沿当前客户端补查乌尔比安与 Mon3tr S3。**N／I：两者的实际 Self 移动通过原 Card 生成新实例，并由专属 Buff 保存、恢复 HP 比例。** 乌尔比安仅在 `MOVE_LIKE_RESPAWN_SELF` 结束时保存比例，新实例出生读取；Mon3tr 的重生模式在 Buff 安装时读取比例。`FetchHpToBlackboard` 以新实例最大 HP 计算从当前比例到目标比例的有符号差量，设置 `SKIP_MODIFIER_EVENT` 后提交。两份技能各有专属进度键和返回条件，乌尔比安移动、返回模式分别绑定清 SP；通用 `RespawnCharacter` 另有 External 的 HP／SP 比例传递，Mon3tr S3 的实际调用关闭它。 [组件、Holder 与原生调用](../evidence/redeploy-state-and-repeater-20261122/README.md#特殊移动)
+
+思衡托 S3 的待投放路径先设置对应 Card 的许可与报价，并撤退原单位。它允许留在待部署区，有自身的恢复模板。失败时的继承、回滚和具体消费者仍按该技能核对。 [实际绑定](../evidence/redeploy-state-and-repeater-20261122/README.md#特殊移动)
 
 ### 在场单位的手动撤退资格
 
@@ -227,7 +233,9 @@ cost = clamp(floor(rawCost × rawCostScale) + costDelta, 0, MAX_COST_CEIL)
 
 2026-11-01 补核同名干员的计时归属：帮助页明确允许同时持有／部署多个同名干员；各干员退场后留下对应倒地对象，可分别查看待部署属性、下次部署费用、当前再部署限制及进度环，满足条件后在对应位置重新部署。上述规则支持每份干员具有独立待部署记录及再部署计时的推断，不能因内容同名就套用一条串行库存恢复队列。**证据等级为社区规则链推断**：页面没有直接描述两个同名干员同时倒地时计时器如何推进，本轮未反汇编该模式的双实例计时链。
 
-同一宿主的同名召唤物堆叠、不同宿主不合并，是另一项直接记载的规则；帮助页没有给出所有堆叠召唤物统一采用并行或串行 CD 的结论。第三节普通 QUEUED 分支的客户端证据不能自动推广到卫戍协议的每份干员。
+同一宿主的同名召唤物堆叠、不同宿主不合并，是另一项直接记载的规则。恢复时间取决于战斗 Card 的归属与回收政策。
+
+2026-11-22 补核默认卫戍的 Card 分配与自动部署。**N：默认加载为每个宿主生成一份 Token Card 数据，同侧、同宿主的召唤物棋子共用该 Card UID。** `AutoChessBattleTrigger` 跳过已在战斗的棋子，按该 UID 读取 `readyToSpawn`，沿同一位置尝试 `SpawnCharacterOrToken`，成功才写回新实例及清理倒地对象。独立 Card 分别推进，共用 Card 的棋子读取同一份库存和资格。谬因中继器的实际配置采用 `QUEUED`，同一宿主的中继器在该政策下共享串行恢复。 [Card 分配](../evidence/same-character-source-20261111/native/bodies/_LoadBattlePlayerData-81754.asm)、[自动部署与中继器证据](../evidence/redeploy-state-and-repeater-20261122/README.md#卫戍自动再部署)
 
 ### 其它模式与活动
 
@@ -448,7 +456,7 @@ CD 策略、份数消耗／归还和回收惩罚有不同原生维度；当前�
 
 ## 未决项
 
-1. **费用上限与多来源计算。** 已定位 `Card._UpdateCardBuff` 的费用汇总写回、凛御银灰 X3 的涨费倍率上限修正及关卡符文分别配置两个上限的入口。费用上限同步位为 true 时的全部写入路径，以及其他来源进入汇总的资格和竞争仍待核对。再部署时间属性修正、一次缩短与多阶段取整仍需按实际路径核对。
+1. **费用上限与多来源计算。** 已定位 `Card._UpdateCardBuff` 的费用汇总写回、凛御银灰 X3 的涨费倍率上限修正、关卡加载时的上限同步及普通战中账户写入。其它作用来源进入卡费汇总的资格、竞争与模式特化仍待核对。再部署时间属性修正、一次缩短与多阶段取整仍需按实际路径核对。
 2. **退出阶段的剩余问题。** 普通退出返费、同卡上限、全局部署位和回收的时点已核对。贾维等具体减免的采样条件，以及特殊或模式替换的退出分支，按各自入口核对。见[普通退出结算](#普通撤退与死亡的结算顺序)。
 3. **暂停与叠加。** 黑棺／莲座的暂停与显式减时、归零、临时豁免如何交互，多个锁定／封印如何组合尚未形成完整证据。莲座的特例不决定通用解除规则；银灰临时效果结束是否回滚已有计时也未知。
 4. **顺序与目标资格。** [多来源重排调查](../evidence/card-ordering-20261031/README.md)尚未定位凛御银灰实际比较器的安装／撤销连接，退场恢复与多个来源的竞争规则仍未知；各策士技能是否纳入隐藏、冷却中、被封印或库存为零的 Card，也尚未逐技能闭合。只在已有明确条件的具体机制中作判断。

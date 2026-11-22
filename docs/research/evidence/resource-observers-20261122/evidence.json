@@ -1,0 +1,2988 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/resource-observers-20261122/extract.py",
+        "bytes": 10289,
+        "sha256": "d482cfa31829ca22e82f84bde981887cf3e3eb23cc59abe08665917a5e994cf8"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      }
+    ],
+    "assets": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_25.ab",
+        "bytes": 495075,
+        "sha256": "6dc4d397912a6f2ced6c642c87fe87aa63bf42eb1e1398d2cc57096d3fc65c80"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]equips.ab",
+        "bytes": 749424,
+        "sha256": "1698bc4166582fc953e54367e31cf46de2585fa94bdbeda8ab93256eb6cf5b4b"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]projectiles.ab",
+        "bytes": 1905483,
+        "sha256": "cc3f21b73b10fbc619a1ff8b099f31e678c883ddacb7bb6775fea960ffecb0e1"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_2.ab",
+        "bytes": 4890432,
+        "sha256": "9781d097ccdddb0835cee6a2dd988a0963c63a4e7cd6e2ed9a4d25d77418b726"
+      }
+    ],
+    "config": {
+      "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "files": [
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+          "bytes": 28623543,
+          "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/battle_equip_table.json",
+          "bytes": 5763741,
+          "sha256": "991ce1a8cd76682704b7e95fb71de8c726fd9ff62038a2da31b8a3870dc48055"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/skill_table.json",
+          "bytes": 11557971,
+          "sha256": "b6559b845efea6042e23f1d976185f12e13de3d749464543f5c2c17a7d2fa280"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/stage_table.json",
+          "bytes": 19794267,
+          "sha256": "59b5946f9a3491828fc021424340564a396574dabd15df8dabbd246705f04392"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/roguelike_topic_table.json",
+          "bytes": 17958101,
+          "sha256": "36d8189e1e466fa07226effbf2cf224a69fb41a942ae83827934052e7a01cc69"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/levels/activities/act43side/level_act43side_08.json",
+          "bytes": 84792,
+          "sha256": "d88d711dbd133757c2c3356aa5bb9d89cd1a008acf92617106a5006db28c6603"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/levels/activities/act43side/level_act43side_ex08.json",
+          "bytes": 113960,
+          "sha256": "b6523c8aea50f0b6527b0f4205d4c207b58a331f8454e5ff1f188e5bb614a4d4"
+        },
+        {
+          "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/levels/activities/act1multi/level_act1multi_tr03.json",
+          "bytes": 176479,
+          "sha256": "a367f24d18eaeaed19edb99c58cf00449d97101a5217d1a306dd7102b211acd4"
+        }
+      ]
+    }
+  },
+  "result": {
+    "prefabs": [
+      {
+        "bundle": "battle/enm_pfb_25.ab",
+        "file": "CAB-eef20e46e9f0e9e38e18bc35388f76fa",
+        "pathId": "-5046442390387465871",
+        "label": "dirctr default aura",
+        "script": {
+          "id": "-5793748974791823428",
+          "name": "GlobalAuraAbility",
+          "cl": "GlobalAuraAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_targetValidator": {
+            "m_FileID": 0,
+            "m_PathID": 1430553112263025009
+          },
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_dirctr_t[aura]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_dirctr_t[aura]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_25.ab",
+        "file": "CAB-eef20e46e9f0e9e38e18bc35388f76fa",
+        "pathId": "-4027245157280030351",
+        "label": "dirctr second mode aura",
+        "script": {
+          "id": "-5793748974791823428",
+          "name": "GlobalAuraAbility",
+          "cl": "GlobalAuraAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_targetValidator": {
+            "m_FileID": 0,
+            "m_PathID": -6423490092511305359
+          },
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_dirctr_t[aura2]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_dirctr_t[aura2]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/enm_pfb_25.ab",
+        "file": "CAB-eef20e46e9f0e9e38e18bc35388f76fa",
+        "pathId": "-500895993683811983",
+        "label": "dirctr third mode aura",
+        "script": {
+          "id": "-5793748974791823428",
+          "name": "GlobalAuraAbility",
+          "cl": "GlobalAuraAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_targetValidator": {
+            "m_FileID": 0,
+            "m_PathID": -1044065957826043535
+          },
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "enemy_dirctr_t[aura3]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "enemy_dirctr_t[aura3]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]equips.ab",
+        "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+        "pathId": "-4259617978525433877",
+        "label": "hoshiguma Y3 talent",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "hsguma_e_002_t",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "hsguma_e_002_t",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]equips.ab",
+        "file": "CAB-7e3af38637f0d056d61e3e709179a7d1",
+        "pathId": "7011898347435499456",
+        "label": "hoshiguma Y2 talent",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "hsguma_e_002_t",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "hsguma_e_002_t",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "-8640056801199653612",
+        "label": "dirctr p1 motion",
+        "script": {
+          "id": "740622368551806873",
+          "name": "AttachToTarget",
+          "cl": "AttachToTarget",
+          "ns": "Torappu.Battle.Projectiles",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_delayAfterReached": true,
+          "_delayTime": 2.0,
+          "_followTarget": false
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "132995003735276820",
+        "label": "dirctr p1 projectile",
+        "script": {
+          "id": "-8797129986015012478",
+          "name": "SimpleProjectile",
+          "cl": "SimpleProjectile",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_canHitSameTargetMultipleTimes": false
+        }
+      },
+      {
+        "bundle": "battle/prefabs/[uc]projectiles.ab",
+        "file": "CAB-34af01ecb5d2ad63aca01b6e0d71279d",
+        "pathId": "1761316698136694351",
+        "label": "dirctr p2 motion",
+        "script": {
+          "id": "740622368551806873",
+          "name": "AttachToTarget",
+          "cl": "AttachToTarget",
+          "ns": "Torappu.Battle.Projectiles",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_delayAfterReached": true,
+          "_delayTime": 2.0,
+          "_followTarget": false
+        }
+      },
+      {
+        "bundle": "pkgrps/btl_pfb_tokens_2.ab",
+        "file": "CAB-3d61805b2486576a81f236427ebd9963",
+        "pathId": "2825486651041938679",
+        "label": "construction workshop mode talent",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "enabled": true,
+        "fields": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "multi_fortress_p[mesh]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "multi_fortress_p[mesh]",
+                "disableOverride": true,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "map_035_level_01",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "multi_fortress_mufrfm[gain]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "multi_fortress_mufrfm[gain]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "multi_fortress_s[work]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "empty",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "multi_fortress_s[workg]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "empty",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              },
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "multi_fortress_s[sp]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "multi_fortress_s[sp]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "config": {
+      "templates": {
+        "enemy_dirctr_t[aura]": {
+          "ON_BEFORE_EP_BREAK_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FilterEPBreakRecoveryType, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_recoveryType": "SANITY",
+              "_skipInEPBreakRecoveryCheck": true,
+              "_readTypeFromBb": false,
+              "_bbKey": null
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+EmitProjectile, Assembly-CSharp",
+              "_mountPoint": "MUZZLE",
+              "_emitOnRootTile": false,
+              "_ev": "ON_HIT_OBJECT",
+              "_actions": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+AdvancedApplyDamage, Assembly-CSharp",
+                  "_sourceType": "SOURCE",
+                  "_targetType": "TARGET",
+                  "_damageType": "MAGICAL",
+                  "_atkScaleVar": "atk_scale_aura",
+                  "_defaultAtkScale": 1.0,
+                  "_applyWay": "NONE",
+                  "_baseOnHostAtk": false,
+                  "_emitSourceOnCalculateDamage": false,
+                  "_attackType": "NORMAL",
+                  "_forceUseProjectileCachedAtk": false,
+                  "_ignoreForSp": false,
+                  "_ignoreMissFlag": "NONE",
+                  "_ignoreCancelReasonMask": "NONE",
+                  "_modifierKey": "",
+                  "_assignRealDamageToBB": false,
+                  "_assignFinalDamageToBB": false,
+                  "_skipModifierEvent": false,
+                  "_noSource": false,
+                  "_onlyUseSourceOnCalculateDamage": false,
+                  "_getCachedAtkFromBlackboard": false,
+                  "_cachedAtkKey": "atk",
+                  "_useSourceWhenUseCachedAtk": false,
+                  "_setSharedFlag": false,
+                  "_sharedFlagIndex": "IS_CONTINUOUS"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+ApplyElementDamage, Assembly-CSharp",
+                  "_elementDamageType": "SANITY",
+                  "_sourceType": "SOURCE",
+                  "_isFixedEpDamage": false,
+                  "_baseOnHostAtk": false,
+                  "_baseOnEnemyHostAtk": true,
+                  "_fixedEpDamageKey": null,
+                  "_fixedEpDamage": 0.0,
+                  "_noSource": false,
+                  "_forceUseProjectileCachedAtk": false,
+                  "_multiplyWithBuffValidStackCnt": false,
+                  "_buffKey": null,
+                  "_buffSourceType": "BUFF_OWNER",
+                  "_targetType": "TARGET",
+                  "_isEnvElementDamage": false,
+                  "_loadElementTypeFromBb": false,
+                  "_fixedEpDamageScale": "",
+                  "_epDamageScale": "ep_damage_ratio"
+                }
+              ],
+              "_overwriteActions": false,
+              "_buffDataList": [],
+              "_overwriteBuffs": false,
+              "_sourceType": "BUFF_SOURCE",
+              "_targetType": "BUFF_OWNER",
+              "_targetPosFromBB": false,
+              "_projectileKey": "projectile_enemy_dirctr_tr_1[p1]",
+              "_useSourceAsProjectileSource": false,
+              "_useProjectileAsTarget": false,
+              "_useTargetAsStartPoint": false,
+              "_useSourceProjectileAsStartPoint": false,
+              "_extraBlackboard": true,
+              "_overwriteBlackboard": false,
+              "_useTileAsTarget": true,
+              "_cacheAtkToActions": false,
+              "_useSnapshotAbilityWhenFromBuff": false,
+              "_useTargetRootTile": true,
+              "_useAbilityTileSelector": false,
+              "_abilityName": "",
+              "_useAbilityFromOther": false,
+              "_abilityOwner": "SOURCE",
+              "_dealHitTargetAfterCreate": false,
+              "_forceDealHitTarget": true
+            }
+          ]
+        },
+        "enemy_dirctr_t[aura2]": {
+          "ON_BEFORE_EP_BREAK_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FilterEPBreakRecoveryType, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_recoveryType": "SANITY",
+              "_skipInEPBreakRecoveryCheck": true,
+              "_readTypeFromBb": false,
+              "_bbKey": null
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+EmitProjectile, Assembly-CSharp",
+              "_mountPoint": "MUZZLE",
+              "_emitOnRootTile": false,
+              "_ev": "ON_HIT_OBJECT",
+              "_actions": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+AdvancedApplyDamage, Assembly-CSharp",
+                  "_sourceType": "SOURCE",
+                  "_targetType": "TARGET",
+                  "_damageType": "MAGICAL",
+                  "_atkScaleVar": "atk_scale_aura",
+                  "_defaultAtkScale": 1.0,
+                  "_applyWay": "NONE",
+                  "_baseOnHostAtk": false,
+                  "_emitSourceOnCalculateDamage": false,
+                  "_attackType": "NORMAL",
+                  "_forceUseProjectileCachedAtk": false,
+                  "_ignoreForSp": false,
+                  "_ignoreMissFlag": "NONE",
+                  "_ignoreCancelReasonMask": "NONE",
+                  "_modifierKey": "",
+                  "_assignRealDamageToBB": false,
+                  "_assignFinalDamageToBB": false,
+                  "_skipModifierEvent": false,
+                  "_noSource": false,
+                  "_onlyUseSourceOnCalculateDamage": false,
+                  "_getCachedAtkFromBlackboard": false,
+                  "_cachedAtkKey": "atk",
+                  "_useSourceWhenUseCachedAtk": false,
+                  "_setSharedFlag": false,
+                  "_sharedFlagIndex": "IS_CONTINUOUS"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+ApplyElementDamage, Assembly-CSharp",
+                  "_elementDamageType": "SANITY",
+                  "_sourceType": "SOURCE",
+                  "_isFixedEpDamage": false,
+                  "_baseOnHostAtk": false,
+                  "_baseOnEnemyHostAtk": true,
+                  "_fixedEpDamageKey": null,
+                  "_fixedEpDamage": 0.0,
+                  "_noSource": false,
+                  "_forceUseProjectileCachedAtk": false,
+                  "_multiplyWithBuffValidStackCnt": false,
+                  "_buffKey": null,
+                  "_buffSourceType": "BUFF_OWNER",
+                  "_targetType": "TARGET",
+                  "_isEnvElementDamage": false,
+                  "_loadElementTypeFromBb": false,
+                  "_fixedEpDamageScale": "",
+                  "_epDamageScale": "ep_damage_ratio"
+                }
+              ],
+              "_overwriteActions": false,
+              "_buffDataList": [],
+              "_overwriteBuffs": false,
+              "_sourceType": "BUFF_SOURCE",
+              "_targetType": "BUFF_OWNER",
+              "_targetPosFromBB": false,
+              "_projectileKey": "projectile_enemy_dirctr_tr_1[p2]",
+              "_useSourceAsProjectileSource": false,
+              "_useProjectileAsTarget": false,
+              "_useTargetAsStartPoint": false,
+              "_useSourceProjectileAsStartPoint": false,
+              "_extraBlackboard": true,
+              "_overwriteBlackboard": false,
+              "_useTileAsTarget": true,
+              "_cacheAtkToActions": false,
+              "_useSnapshotAbilityWhenFromBuff": false,
+              "_useTargetRootTile": true,
+              "_useAbilityTileSelector": false,
+              "_abilityName": "",
+              "_useAbilityFromOther": false,
+              "_abilityOwner": "SOURCE",
+              "_dealHitTargetAfterCreate": false,
+              "_forceDealHitTarget": true
+            }
+          ],
+          "ON_BUFF_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FinishBuffsById, Assembly-CSharp",
+              "_buffKey": "enemy_dirctr_s3[lock]",
+              "_loadFromBlackboard": false,
+              "_decCntIfStack": false,
+              "_updateOverrideMap": true,
+              "_targetType": "BUFF_OWNER",
+              "_checkBuffSource": false,
+              "_sourceType": "BUFF_SOURCE",
+              "_alsoClearNullSource": false,
+              "_finishHostBuff": false,
+              "_excludeThisBuff": false,
+              "_decCntKey": null,
+              "_decCnt": 1
+            }
+          ]
+        },
+        "enemy_dirctr_t[aura3]": {
+          "ON_BEFORE_EP_BREAK_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FilterEPBreakRecoveryType, Assembly-CSharp",
+              "_target": "BUFF_OWNER",
+              "_recoveryType": "SANITY",
+              "_skipInEPBreakRecoveryCheck": true,
+              "_readTypeFromBb": false,
+              "_bbKey": null
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+EmitProjectile, Assembly-CSharp",
+              "_mountPoint": "MUZZLE",
+              "_emitOnRootTile": false,
+              "_ev": "ON_HIT_OBJECT",
+              "_actions": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+AdvancedApplyDamage, Assembly-CSharp",
+                  "_sourceType": "SOURCE",
+                  "_targetType": "TARGET",
+                  "_damageType": "MAGICAL",
+                  "_atkScaleVar": "atk_scale_aura",
+                  "_defaultAtkScale": 1.0,
+                  "_applyWay": "NONE",
+                  "_baseOnHostAtk": false,
+                  "_emitSourceOnCalculateDamage": false,
+                  "_attackType": "NORMAL",
+                  "_forceUseProjectileCachedAtk": false,
+                  "_ignoreForSp": false,
+                  "_ignoreMissFlag": "NONE",
+                  "_ignoreCancelReasonMask": "NONE",
+                  "_modifierKey": "",
+                  "_assignRealDamageToBB": false,
+                  "_assignFinalDamageToBB": false,
+                  "_skipModifierEvent": false,
+                  "_noSource": false,
+                  "_onlyUseSourceOnCalculateDamage": false,
+                  "_getCachedAtkFromBlackboard": false,
+                  "_cachedAtkKey": "atk",
+                  "_useSourceWhenUseCachedAtk": false,
+                  "_setSharedFlag": false,
+                  "_sharedFlagIndex": "IS_CONTINUOUS"
+                },
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+ApplyElementDamage, Assembly-CSharp",
+                  "_elementDamageType": "SANITY",
+                  "_sourceType": "SOURCE",
+                  "_isFixedEpDamage": false,
+                  "_baseOnHostAtk": false,
+                  "_baseOnEnemyHostAtk": true,
+                  "_fixedEpDamageKey": null,
+                  "_fixedEpDamage": 0.0,
+                  "_noSource": false,
+                  "_forceUseProjectileCachedAtk": false,
+                  "_multiplyWithBuffValidStackCnt": false,
+                  "_buffKey": null,
+                  "_buffSourceType": "BUFF_OWNER",
+                  "_targetType": "TARGET",
+                  "_isEnvElementDamage": false,
+                  "_loadElementTypeFromBb": false,
+                  "_fixedEpDamageScale": "",
+                  "_epDamageScale": "ep_damage_ratio"
+                }
+              ],
+              "_overwriteActions": false,
+              "_buffDataList": [],
+              "_overwriteBuffs": false,
+              "_sourceType": "BUFF_SOURCE",
+              "_targetType": "BUFF_OWNER",
+              "_targetPosFromBB": false,
+              "_projectileKey": "projectile_enemy_dirctr_tr_1[p2]",
+              "_useSourceAsProjectileSource": false,
+              "_useProjectileAsTarget": false,
+              "_useTargetAsStartPoint": false,
+              "_useSourceProjectileAsStartPoint": false,
+              "_extraBlackboard": true,
+              "_overwriteBlackboard": false,
+              "_useTileAsTarget": true,
+              "_cacheAtkToActions": false,
+              "_useSnapshotAbilityWhenFromBuff": false,
+              "_useTargetRootTile": true,
+              "_useAbilityTileSelector": false,
+              "_abilityName": "",
+              "_useAbilityFromOther": false,
+              "_abilityOwner": "SOURCE",
+              "_dealHitTargetAfterCreate": false,
+              "_forceDealHitTarget": true
+            }
+          ]
+        },
+        "hsguma_e_002_t": {
+          "ON_TAKE_DAMAGE": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+Dice, Assembly-CSharp",
+              "_probKey": "prob"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+BlockDamage, Assembly-CSharp",
+              "_filterDamageType": false,
+              "_damageMask": "NONE",
+              "_useDynamicVar": false,
+              "_allowNegativeDynamicVar": false,
+              "_useFixedValue": false,
+              "_showDamageNumber": false,
+              "_specifyBlockEffect": null,
+              "_useSource": false,
+              "_sourceType": "SOURCE",
+              "_filterApplyWay": false,
+              "_applyWayFilter": "NONE",
+              "_showShieldUI": false
+            }
+          ],
+          "ON_BLOCK_DAMAGE": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CreateBuff, Assembly-CSharp",
+              "_buff": {
+                "attributes": {
+                  "abnormalFlags": [],
+                  "abnormalImmunes": [],
+                  "abnormalAntis": [],
+                  "abnormalCombos": [],
+                  "abnormalComboImmunes": [],
+                  "attributeModifiers": [
+                    {
+                      "attributeType": "ATK",
+                      "formulaItem": "MULTIPLIER",
+                      "value": 0.0,
+                      "loadFromBlackboard": true,
+                      "fetchBaseValueFromSourceEntity": false
+                    }
+                  ]
+                },
+                "buffKey": "hsguma_e_002_t[atk]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": "AUTOMATIC",
+                "templateKey": "empty",
+                "disableOverride": false,
+                "overrideKey": null,
+                "overrideType": "DEFAULT",
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": null,
+                "overrideOnEventPriority": false,
+                "onEventPriority": "DEFAULT",
+                "audioSignal": null,
+                "lifeTimeType": "LIMITED",
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": null,
+                "lifeTime": 0.0,
+                "triggerLifeType": "IMMEDIATELY",
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": [],
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": [],
+                "enableInitDirectionFromSource": false
+              },
+              "_buffOwner": "BUFF_OWNER",
+              "_useSpecialBuffSource": false,
+              "_specialBuffSource": "BUFF_SOURCE",
+              "_isDerivedBuff": false,
+              "_finishDerivedBuffIfParentFinish": false,
+              "_inherateSourceProjectileFromParentBuff": false,
+              "_hookEffectKeyFromSourceProjectile": false
+            }
+          ]
+        },
+        "huang_t_1[lock]": {
+          "ON_TAKE_DAMAGE": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+HpNoLessThanCertainPercentModifier, Assembly-CSharp"
+            }
+          ]
+        },
+        "multi_fortress_p[mesh]": {
+          "ON_BUFF_START": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+ChangeAnimatorMeshRenderer, Assembly-CSharp",
+              "_ownerType": "BUFF_OWNER",
+              "_rendererIndex": 0,
+              "_enable": true,
+              "_exclusive": true,
+              "_rendererCurModeIndex": true
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+RefreshextraTileGraphic, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+ModifySpData, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER",
+              "_spCostString": "cost",
+              "_onlyUpdateSpCost": false,
+              "_updateSkillSpCostMin": false,
+              "_assignOldValueKey": null,
+              "_updateSpCostViaMaxRatioKey": null
+            }
+          ],
+          "ON_BUFF_FINISH": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+ChangeAnimatorMeshRenderer, Assembly-CSharp",
+              "_ownerType": "BUFF_OWNER",
+              "_rendererIndex": 0,
+              "_enable": true,
+              "_exclusive": true,
+              "_rendererCurModeIndex": false
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+RefreshextraTileGraphic, Assembly-CSharp",
+              "_targetType": "BUFF_OWNER"
+            }
+          ]
+        },
+        "enemy_wdsdw[loss_hp]": {
+          "ON_BUFF_TRIGGER": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FixedValueDamage, Assembly-CSharp",
+              "_damageType": "PURE",
+              "_damageKey": "value",
+              "_atkScaleKey": "atk_scale",
+              "_ignoreForSp": false,
+              "_attackType": "NORMAL",
+              "_skipModifierEvent": false,
+              "_considerUnhurtable": false,
+              "_noSourceDamage": false,
+              "_targetType": "TARGET",
+              "_assignRealDamageToBB": false,
+              "_assignFinalDamageToBB": false,
+              "_multiplierByKey": false,
+              "_multiplierKey": "cnt",
+              "_damageSourceType": "SOURCE",
+              "_damageTargetType": "TARGET",
+              "_triggerOnCalculateDamage": false,
+              "_isEnvDamage": false,
+              "_ignoreCancelReasonMask": "NONE",
+              "_forceDisplayDamageNum": false,
+              "_undeadable": false,
+              "_modifierKey": "",
+              "_devideDamageFromAbilityCnt": false
+            }
+          ],
+          "ON_BEFORE_APPLYING_MODIFIER": [
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfTargetSide, Assembly-CSharp",
+              "_sideMask": "ENEMY",
+              "_targetType": "MODIFIER_SOURCE"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+FilterModifierTargetType, Assembly-CSharp",
+              "_modifierTargetType": "EP"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+CancelModifier, Assembly-CSharp",
+              "_reason": "INTERRUPT"
+            }
+          ]
+        }
+      },
+      "templateCount": 8662,
+      "observations": [
+        {
+          "template": "enemy_mntjsd_miss_check",
+          "event": "ON_TAKE_DAMAGE",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+FilterModifierCancelReason, Assembly-CSharp",
+            "_reason": "HIT_FAILED"
+          }
+        },
+        {
+          "template": "vigil_wolf_t_1[listener]",
+          "event": "ON_TAKE_DAMAGE",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+FilterModifierCancelReason, Assembly-CSharp",
+            "_reason": "UNHURTABLE"
+          }
+        },
+        {
+          "template": "vigil_wolf_t_1[listener]",
+          "event": "ON_TAKE_DAMAGE",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+FilterModifierCancelReason, Assembly-CSharp",
+            "_reason": "MISS"
+          }
+        },
+        {
+          "template": "vigil_wolf_t_1[listener]",
+          "event": "ON_TAKE_DAMAGE",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+FilterModifierCancelReason, Assembly-CSharp",
+            "_reason": "BLOCKED"
+          }
+        },
+        {
+          "template": "vigil_wolf_t_1[listener]",
+          "event": "ON_TAKE_DAMAGE",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+FilterModifierCancelReason, Assembly-CSharp",
+            "_reason": "BLOCKED_WITH_DAMAGE_NUMBER"
+          }
+        },
+        {
+          "template": "vigil_wolf_t_1[listener]",
+          "event": "ON_TAKE_DAMAGE",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+FilterModifierCancelReason, Assembly-CSharp",
+            "_reason": "INTERRUPT"
+          }
+        },
+        {
+          "template": "vigil_wolf_t_1[listener]",
+          "event": "ON_TAKE_DAMAGE",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+FilterModifierCancelReason, Assembly-CSharp",
+            "_reason": "HIT_FAILED"
+          }
+        },
+        {
+          "template": "entlec_a[damage]",
+          "event": "ON_BUFF_START",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+NoSourceDamage, Assembly-CSharp",
+            "_damageType": "PURE",
+            "_damageKey": "value",
+            "_ignoreForSp": true,
+            "_damageWithoutModify": false,
+            "_attackType": "NORMAL",
+            "_isEnvDamage": false,
+            "_isUndeadable": false,
+            "_ignoreCancelReasonMask": "MISS, BLOCKED, BLOCKED_WITH_DAMAGE_NUMBER",
+            "_instantKillLikeDamage": false,
+            "_isNotChangeableValue": true,
+            "_multiplierByKey": false,
+            "_multiplierKey": "cnt",
+            "_modifierKey": ""
+          }
+        },
+        {
+          "template": "ascln_s_3[self]",
+          "event": "ON_TAKE_DAMAGE",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+FilterModifierCancelReason, Assembly-CSharp",
+            "_reason": "HIT_FAILED"
+          }
+        },
+        {
+          "template": "multi_fortress_p[mesh]",
+          "event": "ON_BUFF_START",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+ModifySpData, Assembly-CSharp",
+            "_targetType": "BUFF_OWNER",
+            "_spCostString": "cost",
+            "_onlyUpdateSpCost": false,
+            "_updateSkillSpCostMin": false,
+            "_assignOldValueKey": null,
+            "_updateSpCostViaMaxRatioKey": null
+          }
+        },
+        {
+          "template": "rogue_6_char_loss_hp[max]",
+          "event": "ON_OWNER_POST_BORN",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+NoSourceDamage, Assembly-CSharp",
+            "_damageType": "PURE",
+            "_damageKey": "cur_hp",
+            "_ignoreForSp": false,
+            "_damageWithoutModify": false,
+            "_attackType": "NORMAL",
+            "_isEnvDamage": false,
+            "_isUndeadable": false,
+            "_ignoreCancelReasonMask": "NONE",
+            "_instantKillLikeDamage": false,
+            "_isNotChangeableValue": true,
+            "_multiplierByKey": false,
+            "_multiplierKey": "cnt",
+            "_modifierKey": ""
+          }
+        },
+        {
+          "template": "rogue_6_char_loss_hp",
+          "event": "ON_OWNER_POST_BORN",
+          "node": {
+            "$type": "Torappu.Battle.Action.Nodes+NoSourceDamage, Assembly-CSharp",
+            "_damageType": "PURE",
+            "_damageKey": "cur_hp",
+            "_ignoreForSp": false,
+            "_damageWithoutModify": false,
+            "_attackType": "NORMAL",
+            "_isEnvDamage": false,
+            "_isUndeadable": false,
+            "_ignoreCancelReasonMask": "NONE",
+            "_instantKillLikeDamage": false,
+            "_isNotChangeableValue": true,
+            "_multiplierByKey": false,
+            "_multiplierKey": "cnt",
+            "_modifierKey": ""
+          }
+        }
+      ],
+      "hoshigumaY2Y3": [
+        {
+          "resKey": "hsguma_equip_1_2_p1",
+          "target": "TALENT",
+          "isToken": false,
+          "validInGameTag": null,
+          "validInMapTag": null,
+          "addOrOverrideTalentDataBundle": {
+            "candidates": [
+              {
+                "displayRangeId": false,
+                "upgradeDescription": "获得30%的伤害抵挡，成功抵挡伤害后3秒内攻击力+20%（不叠加）",
+                "talentIndex": 0,
+                "validModeIndices": null,
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 60
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "战术装甲",
+                "description": null,
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "prob",
+                    "value": 0.3,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration",
+                    "value": 3.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "displayRangeId": false,
+                "upgradeDescription": "获得33%<@ba.talpu>（+3%）</>的伤害抵挡，成功抵挡伤害后3秒内攻击力+20%（不叠加）",
+                "talentIndex": 0,
+                "validModeIndices": null,
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 60
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "战术装甲",
+                "description": null,
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "prob",
+                    "value": 0.33,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.2,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration",
+                    "value": 3.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          "overrideTraitDataBundle": {
+            "candidates": null
+          }
+        },
+        {
+          "resKey": "hsguma_equip_1_3_p1",
+          "target": "TALENT",
+          "isToken": false,
+          "validInGameTag": null,
+          "validInMapTag": null,
+          "addOrOverrideTalentDataBundle": {
+            "candidates": [
+              {
+                "displayRangeId": false,
+                "upgradeDescription": "获得32%的伤害抵挡，成功抵挡伤害后5秒内攻击力+35%（不叠加）",
+                "talentIndex": 0,
+                "validModeIndices": null,
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 60
+                },
+                "requiredPotentialRank": 0,
+                "prefabKey": "1",
+                "name": "战术装甲",
+                "description": null,
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "prob",
+                    "value": 0.32,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.35,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration",
+                    "value": 5.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              },
+              {
+                "displayRangeId": false,
+                "upgradeDescription": "获得35%<@ba.talpu>（+3%）</>的伤害抵挡，成功抵挡伤害后5秒内攻击力+35%（不叠加）",
+                "talentIndex": 0,
+                "validModeIndices": null,
+                "unlockCondition": {
+                  "phase": "PHASE_2",
+                  "level": 60
+                },
+                "requiredPotentialRank": 2,
+                "prefabKey": "1",
+                "name": "战术装甲",
+                "description": null,
+                "rangeId": null,
+                "blackboard": [
+                  {
+                    "key": "prob",
+                    "value": 0.35,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "atk",
+                    "value": 0.35,
+                    "valueStr": null
+                  },
+                  {
+                    "key": "duration",
+                    "value": 5.0,
+                    "valueStr": null
+                  }
+                ],
+                "tokenKey": null,
+                "isHideTalent": false
+              }
+            ]
+          },
+          "overrideTraitDataBundle": {
+            "candidates": null
+          }
+        }
+      ],
+      "constructionWorkshopSp": {
+        "spType": 8,
+        "levelUpCost": null,
+        "maxChargeTime": 1,
+        "spCost": 100,
+        "initSp": 0,
+        "increment": 0.0
+      },
+      "placements": [
+        [
+          "level_act43side_08.json",
+          "/waves/0/fragments/1/actions/0",
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1568_dirctr",
+            "count": 1,
+            "preDelay": 3.0,
+            "interval": 1.0,
+            "routeIndex": 4,
+            "blockFragment": false,
+            "autoPreviewRoute": true,
+            "autoDisplayEnemyInfo": true,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        ],
+        [
+          "level_act43side_ex08.json",
+          "/waves/0/fragments/2/actions/0",
+          {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1568_dirctr",
+            "count": 1,
+            "preDelay": 3.0,
+            "interval": 1.0,
+            "routeIndex": 6,
+            "blockFragment": false,
+            "autoPreviewRoute": true,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        ],
+        [
+          "level_act1multi_tr03.json",
+          "/predefines/tokenInsts/2",
+          {
+            "position": {
+              "row": 3,
+              "col": 3
+            },
+            "direction": "UP",
+            "hidden": false,
+            "alias": "trap_205_mufrfm#1",
+            "uniEquipIds": null,
+            "showSpIllust": false,
+            "inst": {
+              "characterKey": "trap_205_mufrfm",
+              "level": 1,
+              "phase": "PHASE_0",
+              "favorPoint": 0,
+              "potentialRank": 0
+            },
+            "skillIndex": 0,
+            "mainSkillLvl": 1,
+            "skinId": "",
+            "tmplId": null,
+            "overrideSkillBlackboard": null
+          }
+        ]
+      ],
+      "deploymentRelic": {
+        "/details/rogue_6/relics/rogue_6_relic_fight_11": {
+          "id": "rogue_6_relic_fight_11",
+          "buffs": [
+            {
+              "key": "char_attribute_mul",
+              "blackboard": [
+                {
+                  "key": "cost",
+                  "value": -0.5,
+                  "valueStr": null
+                },
+                {
+                  "key": "selector.profession",
+                  "value": 0.0,
+                  "valueStr": "WARRIOR|SNIPER|TANK|MEDIC|SUPPORT|CASTER|SPECIAL|PIONEER"
+                }
+              ]
+            },
+            {
+              "key": "global_buff_normal",
+              "blackboard": [
+                {
+                  "key": "key",
+                  "value": 0.0,
+                  "valueStr": "rogue_6_char_loss_hp"
+                },
+                {
+                  "key": "hp_ratio",
+                  "value": 0.7,
+                  "valueStr": null
+                },
+                {
+                  "key": "selector.profession",
+                  "value": 0.0,
+                  "valueStr": "WARRIOR|SNIPER|TANK|MEDIC|SUPPORT|CASTER|SPECIAL|PIONEER"
+                }
+              ]
+            }
+          ]
+        },
+        "/details/rogue_6/items/rogue_6_relic_fight_11": {
+          "id": "rogue_6_relic_fight_11",
+          "name": "他缚",
+          "description": "你从泥土中挖出了它，它却在为这片土地复仇。",
+          "usage": "所有干员部署费用-50%，部署后损失70%的当前生命（退场前仅生效一次）",
+          "obtainApproach": "在集成战略模式中获得",
+          "iconId": "rogue_6_relic_fight_11",
+          "itemIconGroupId": null,
+          "type": "RELIC",
+          "subType": "NONE",
+          "rarity": "SUPER_RARE",
+          "sortId": 999,
+          "canSacrifice": true,
+          "tinyIconColor": null,
+          "unlockCondDesc": null,
+          "shortUsage": null
+        }
+      },
+      "stageCodes": {
+        "act43side_08": "AD-8",
+        "act43side_ex08": "AD-EX-8",
+        "act1multi_tr03": "IG-TR-3"
+      }
+    },
+    "native": {
+      "methods": [
+        {
+          "method": {
+            "nameIndex": 2506149,
+            "declaringType": 10207,
+            "returnType": 84484,
+            "parameterStart": 66939,
+            "genericContainerIndex": -1,
+            "token": 100729455,
+            "flags": 132,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 1,
+            "index": 66158,
+            "image": "Assembly-CSharp.dll",
+            "address": 6449600864,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Buff.OnBlockDamage",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 512949,
+                "token": 134284673,
+                "typeIndex": 31991,
+                "index": 66939,
+                "name": "modifier",
+                "typeName": "Torappu.Battle.Modifier&"
+              }
+            ]
+          },
+          "instructions": [
+            "0x1806d1960: mov qword ptr [rsp + 8], rbx",
+            "0x1806d1965: push rdi",
+            "0x1806d1966: sub rsp, 0x230",
+            "0x1806d196d: cmp byte ptr [rip + 0x88c99a1], 0",
+            "0x1806d1974: mov rbx, rdx",
+            "0x1806d1977: mov rdi, rcx",
+            "0x1806d197a: jne 0x1806d198f",
+            "0x1806d197c: lea rcx, [rip + 0x84730d5]",
+            "0x1806d1983: call 0x18049c210",
+            "0x1806d1988: mov byte ptr [rip + 0x88c9986], 1",
+            "0x1806d198f: mov rax, qword ptr [rip + 0x84730c2]",
+            "0x1806d1996: cmp dword ptr [rax + 0xe0], 0",
+            "0x1806d199d: jne 0x1806d19ae",
+            "0x1806d199f: mov rcx, rax",
+            "0x1806d19a2: call 0x18049c450",
+            "0x1806d19a7: mov rax, qword ptr [rip + 0x84730aa]",
+            "0x1806d19ae: mov rax, qword ptr [rax + 0xb8]",
+            "0x1806d19b5: mov rcx, qword ptr [rax + 0x428]",
+            "0x1806d19bc: test rcx, rcx",
+            "0x1806d19bf: jne 0x1806d1af1",
+            "0x1806d19c5: xor r8d, r8d",
+            "0x1806d19c8: mov edx, 0x36",
+            "0x1806d19cd: mov rcx, rdi",
+            "0x1806d19d0: call 0x1806da330",
+            "0x1806d19d5: test al, al",
+            "0x1806d19d7: je 0x1806d1aff",
+            "0x1806d19dd: mov r9b, 1",
+            "0x1806d19e0: mov qword ptr [rsp + 0x20], 0",
+            "0x1806d19e9: mov r8d, 0x36",
+            "0x1806d19ef: lea rcx, [rsp + 0x130]",
+            "0x1806d19f7: mov rdx, rdi",
+            "0x1806d19fa: call 0x1806dc050",
+            "0x1806d19ff: lea rcx, [rsp + 0x30]",
+            "0x1806d1a04: mov edx, 2",
+            "0x1806d1a09: nop dword ptr [rax]",
+            "0x1806d1a10: lea rcx, [rcx + 0x80]",
+            "0x1806d1a17: movups xmm0, xmmword ptr [rax]",
+            "0x1806d1a1a: movups xmm1, xmmword ptr [rax + 0x10]",
+            "0x1806d1a1e: lea rax, [rax + 0x80]",
+            "0x1806d1a25: movups xmmword ptr [rcx - 0x80], xmm0",
+            "0x1806d1a29: movups xmm0, xmmword ptr [rax - 0x60]",
+            "0x1806d1a2d: movups xmmword ptr [rcx - 0x70], xmm1",
+            "0x1806d1a31: movups xmm1, xmmword ptr [rax - 0x50]",
+            "0x1806d1a35: movups xmmword ptr [rcx - 0x60], xmm0",
+            "0x1806d1a39: movups xmm0, xmmword ptr [rax - 0x40]",
+            "0x1806d1a3d: movups xmmword ptr [rcx - 0x50], xmm1",
+            "0x1806d1a41: movups xmm1, xmmword ptr [rax - 0x30]",
+            "0x1806d1a45: movups xmmword ptr [rcx - 0x40], xmm0",
+            "0x1806d1a49: movups xmm0, xmmword ptr [rax - 0x20]",
+            "0x1806d1a4d: movups xmmword ptr [rcx - 0x30], xmm1",
+            "0x1806d1a51: movups xmm1, xmmword ptr [rax - 0x10]",
+            "0x1806d1a55: movups xmmword ptr [rcx - 0x20], xmm0",
+            "0x1806d1a59: movups xmmword ptr [rcx - 0x10], xmm1",
+            "0x1806d1a5d: sub rdx, 1",
+            "0x1806d1a61: jne 0x1806d1a10",
+            "0x1806d1a63: movaps xmm0, xmmword ptr [rsp + 0x50]",
+            "0x1806d1a68: mov rcx, rbx",
+            "0x1806d1a6b: movaps xmm1, xmmword ptr [rsp + 0x60]",
+            "0x1806d1a70: movups xmmword ptr [rbx], xmm0",
+            "0x1806d1a73: movaps xmm0, xmmword ptr [rsp + 0x70]",
+            "0x1806d1a78: movups xmmword ptr [rbx + 0x10], xmm1",
+            "0x1806d1a7c: movaps xmm1, xmmword ptr [rsp + 0x80]",
+            "0x1806d1a84: movups xmmword ptr [rbx + 0x20], xmm0",
+            "0x1806d1a88: movaps xmm0, xmmword ptr [rsp + 0x90]",
+            "0x1806d1a90: movups xmmword ptr [rbx + 0x30], xmm1",
+            "0x1806d1a94: movaps xmm1, xmmword ptr [rsp + 0xa0]",
+            "0x1806d1a9c: movups xmmword ptr [rbx + 0x40], xmm0",
+            "0x1806d1aa0: movaps xmm0, xmmword ptr [rsp + 0xb0]",
+            "0x1806d1aa8: movups xmmword ptr [rbx + 0x50], xmm1",
+            "0x1806d1aac: movaps xmm1, xmmword ptr [rsp + 0xc0]",
+            "0x1806d1ab4: movups xmmword ptr [rbx + 0x60], xmm0",
+            "0x1806d1ab8: movaps xmm0, xmmword ptr [rsp + 0xd0]",
+            "0x1806d1ac0: movups xmmword ptr [rbx + 0x70], xmm1",
+            "0x1806d1ac4: movsd xmm1, qword ptr [rsp + 0xe0]",
+            "0x1806d1acd: movups xmmword ptr [rbx + 0x80], xmm0",
+            "0x1806d1ad4: movsd qword ptr [rbx + 0x90], xmm1",
+            "0x1806d1adc: mov rbx, qword ptr [rsp + 0x240]",
+            "0x1806d1ae4: add rsp, 0x230",
+            "0x1806d1aeb: pop rdi",
+            "0x1806d1aec: jmp 0x18049bcf0",
+            "0x1806d1af1: xor r9d, r9d",
+            "0x1806d1af4: mov r8, rbx",
+            "0x1806d1af7: mov rdx, rdi",
+            "0x1806d1afa: call 0x1833c1280",
+            "0x1806d1aff: mov rbx, qword ptr [rsp + 0x240]"
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 2506149,
+            "declaringType": 10205,
+            "returnType": 84484,
+            "parameterStart": 67118,
+            "genericContainerIndex": -1,
+            "token": 100729679,
+            "flags": 134,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 1,
+            "index": 66382,
+            "image": "Assembly-CSharp.dll",
+            "address": 6449516416,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Buff/BuffContainer.OnBlockDamage",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 512949,
+                "token": 134284852,
+                "typeIndex": 31991,
+                "index": 67118,
+                "name": "modifier",
+                "typeName": "Torappu.Battle.Modifier&"
+              }
+            ]
+          },
+          "instructions": [
+            "0x1806bd200: movups xmm0, xmmword ptr [r12 + 0x80]",
+            "0x1806bd209: movaps xmmword ptr [rsp + 0xf0], xmm0",
+            "0x1806bd211: movsd xmm1, qword ptr [r12 + 0x90]",
+            "0x1806bd21b: movsd qword ptr [rsp + 0x100], xmm1",
+            "0x1806bd224: xor r8d, r8d",
+            "0x1806bd227: lea rdx, [rsp + 0x70]",
+            "0x1806bd22c: lea rcx, [rsp + 0x20]",
+            "0x1806bd231: call 0x1806f4bd0",
+            "0x1806bd236: xor r8d, r8d",
+            "0x1806bd239: mov rdx, r12",
+            "0x1806bd23c: mov rcx, rsi",
+            "0x1806bd23f: call 0x1806d1960",
+            "0x1806bd244: jmp 0x1806bd0b0",
+            "0x1806bd249: movzx ecx, ax",
+            "0x1806bd24c: add rcx, rcx",
+            "0x1806bd24f: movsxd r8, dword ptr [r8 + rcx*8 + 8]",
+            "0x1806bd254: add r8, 0x14"
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 2506149,
+            "declaringType": 10318,
+            "returnType": 84484,
+            "parameterStart": 68216,
+            "genericContainerIndex": -1,
+            "token": 100730977,
+            "flags": 134,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 1,
+            "index": 67680,
+            "image": "Assembly-CSharp.dll",
+            "address": 6449959248,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Entity.OnBlockDamage",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 512949,
+                "token": 134285950,
+                "typeIndex": 31991,
+                "index": 68216,
+                "name": "modifier",
+                "typeName": "Torappu.Battle.Modifier&"
+              }
+            ]
+          },
+          "instructions": [
+            "0x18072918f: call 0x18049c450",
+            "0x180729194: mov rax, qword ptr [rip + 0x8483925]",
+            "0x18072919b: mov rax, qword ptr [rax + 0xb8]",
+            "0x1807291a2: mov rcx, qword ptr [rax + 0x9e8]",
+            "0x1807291a9: test rcx, rcx",
+            "0x1807291ac: jne 0x1807291d5",
+            "0x1807291ae: xor edx, edx",
+            "0x1807291b0: mov rcx, rdi",
+            "0x1807291b3: call 0x1807338a0",
+            "0x1807291b8: test rax, rax",
+            "0x1807291bb: je 0x1807291ed",
+            "0x1807291bd: xor r8d, r8d",
+            "0x1807291c0: mov rdx, rbx",
+            "0x1807291c3: mov rcx, rax",
+            "0x1807291c6: mov rbx, qword ptr [rsp + 0x30]",
+            "0x1807291cb: add rsp, 0x20",
+            "0x1807291cf: pop rdi",
+            "0x1807291d0: jmp 0x1806bcf80",
+            "0x1807291d5: xor r9d, r9d",
+            "0x1807291d8: mov r8, rbx",
+            "0x1807291db: mov rdx, rdi",
+            "0x1807291de: mov rbx, qword ptr [rsp + 0x30]",
+            "0x1807291e3: add rsp, 0x20",
+            "0x1807291e7: pop rdi",
+            "0x1807291e8: jmp 0x1833c1280"
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 2558638,
+            "declaringType": 10303,
+            "returnType": 84484,
+            "parameterStart": 68284,
+            "genericContainerIndex": -1,
+            "token": 100731044,
+            "flags": 134,
+            "iflags": 0,
+            "slot": 65535,
+            "parameterCount": 2,
+            "index": 67747,
+            "image": "Assembly-CSharp.dll",
+            "address": 6450035856,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Entity/SpController.UpdateSpData",
+            "returnTypeName": "void",
+            "parameters": [
+              {
+                "nameIndex": 1749,
+                "token": 134286018,
+                "typeIndex": 77182,
+                "index": 68284,
+                "name": "data",
+                "typeName": "Torappu.SpData"
+              },
+              {
+                "nameIndex": 2558621,
+                "token": 134286019,
+                "typeIndex": 46024,
+                "index": 68285,
+                "name": "onlyUpdateSpCost",
+                "typeName": "bool"
+              }
+            ]
+          },
+          "instructions": [
+            "0x18073bcec: test rbx, rbx",
+            "0x18073bcef: je 0x18073be03",
+            "0x18073bcf5: mov eax, dword ptr [rbx + 0x44]",
+            "0x18073bcf8: movups xmm0, xmmword ptr [rbx + 0x34]",
+            "0x18073bcfc: movups xmmword ptr [rdi + 0x20], xmm0",
+            "0x18073bd00: mov dword ptr [rdi + 0x30], eax",
+            "0x18073bd03: test sil, sil",
+            "0x18073bd06: jne 0x18073bdf3",
+            "0x18073bd0c: mov eax, dword ptr [rbx + 0x10]",
+            "0x18073bd0f: xor edx, edx",
+            "0x18073bd11: mov rcx, rbx",
+            "0x18073bd14: mov dword ptr [rdi + 0x10], eax",
+            "0x18073bd17: call 0x18257b460",
+            "0x18073bd1c: mov r8, qword ptr [rdi + 0x38]",
+            "0x18073bd20: test r8, r8",
+            "0x18073bd23: je 0x18073be03",
+            "0x18073bd29: mov r8d, dword ptr [r8 + 0x18]",
+            "0x18073bd2d: xor r9d, r9d",
+            "0x18073bd30: mov rdx, qword ptr [rdi + 0x38]",
+            "0x18073bd34: mov rcx, rax",
+            "0x18073bd37: call 0x18614a400",
+            "0x18073bd3c: mov rcx, qword ptr [rdi + 0x18]",
+            "0x18073bd40: test rcx, rcx",
+            "0x18073bd43: je 0x18073be03",
+            "0x18073bd49: xor edx, edx",
+            "0x18073bd4b: call 0x180733c30",
+            "0x18073bd50: test al, al",
+            "0x18073bd52: jne 0x18073bd6d",
+            "0x18073bd54: xor edx, edx",
+            "0x18073bd56: mov rcx, rdi",
+            "0x18073bd59: mov rbx, qword ptr [rsp + 0x40]",
+            "0x18073bd5e: mov rsi, qword ptr [rsp + 0x48]",
+            "0x18073bd63: add rsp, 0x30",
+            "0x18073bd67: pop rdi",
+            "0x18073bd68: jmp 0x18073b6c0",
+            "0x18073bd6d: mov rbx, qword ptr [rip + 0x848af3c]",
+            "0x18073bd74: mov rsi, qword ptr [rdi + 0x40]",
+            "0x18073bd78: cmp dword ptr [rbx + 0xe0], 0",
+            "0x18073bd7f: jne 0x18073bd90",
+            "0x18073bd81: mov rcx, rbx",
+            "0x18073bd84: call 0x18049c450",
+            "0x18073bd89: mov rbx, qword ptr [rip + 0x848af20]",
+            "0x18073bd90: mov rbx, qword ptr [rbx + 0xb8]",
+            "0x18073bd97: mov rcx, qword ptr [rdi + 0x18]",
+            "0x18073bd9b: mov rbx, qword ptr [rbx + 0x20]",
+            "0x18073bd9f: test rcx, rcx",
+            "0x18073bda2: je 0x18073be03",
+            "0x18073bda4: xor edx, edx",
+            "0x18073bda6: call 0x180739ef0",
+            "0x18073bdab: xor r8d, r8d",
+            "0x18073bdae: mov rdx, rax",
+            "0x18073bdb1: mov rcx, rbx",
+            "0x18073bdb4: call 0x18695dde0",
+            "0x18073bdb9: test rsi, rsi",
+            "0x18073bdbc: je 0x18073be03",
+            "0x18073bdbe: xor r8d, r8d",
+            "0x18073bdc1: mov rdx, rax",
+            "0x18073bdc4: mov rcx, rsi",
+            "0x18073bdc7: mov rbx, qword ptr [rsp + 0x40]",
+            "0x18073bdcc: mov rsi, qword ptr [rsp + 0x48]",
+            "0x18073bdd1: add rsp, 0x30",
+            "0x18073bdd5: pop rdi",
+            "0x18073bdd6: jmp 0x181e4ad50"
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 397673,
+            "declaringType": 14256,
+            "returnType": 46024,
+            "parameterStart": 94009,
+            "genericContainerIndex": -1,
+            "token": 100762146,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 6,
+            "parameterCount": 3,
+            "index": 98849,
+            "image": "Assembly-CSharp.dll",
+            "address": 6460199312,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Action.Nodes/ModifySpData.Execute",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 3124,
+                "token": 134311754,
+                "typeIndex": 45909,
+                "index": 94009,
+                "name": "blackboard",
+                "typeName": "Torappu.Blackboard"
+              },
+              {
+                "nameIndex": 440673,
+                "token": 134311755,
+                "typeIndex": 90650,
+                "index": 94010,
+                "name": "sourceType",
+                "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+              },
+              {
+                "nameIndex": 440684,
+                "token": 134311756,
+                "typeIndex": 32502,
+                "index": 94011,
+                "name": "snapshot",
+                "typeName": "Torappu.Battle.Context/Snapshot&"
+              }
+            ]
+          },
+          "instructions": [
+            "0x1810ed190: mov qword ptr [rsp + 0x20], rbx",
+            "0x1810ed195: push rbp",
+            "0x1810ed196: push rsi",
+            "0x1810ed197: push rdi",
+            "0x1810ed198: sub rsp, 0x60",
+            "0x1810ed19c: cmp byte ptr [rip + 0x7eb474e], 0",
+            "0x1810ed1a3: mov rbx, r9",
+            "0x1810ed1a6: mov esi, r8d",
+            "0x1810ed1a9: mov rbp, rdx",
+            "0x1810ed1ac: mov rdi, rcx",
+            "0x1810ed1af: jne 0x1810ed1e8",
+            "0x1810ed1b1: lea rcx, [rip + 0x7aea468]",
+            "0x1810ed1b8: call 0x18049c210",
+            "0x1810ed1bd: lea rcx, [rip + 0x7b52f24]",
+            "0x1810ed1c4: call 0x18049c210",
+            "0x1810ed1c9: lea rcx, [rip + 0x7a32e80]",
+            "0x1810ed1d0: call 0x18049c210",
+            "0x1810ed1d5: lea rcx, [rip + 0x7a37e4c]",
+            "0x1810ed1dc: call 0x18049c210",
+            "0x1810ed1e1: mov byte ptr [rip + 0x7eb4709], 1",
+            "0x1810ed1e8: mov rax, qword ptr [rip + 0x7b52ef9]",
+            "0x1810ed1ef: mov rcx, qword ptr [rax + 0xb8]",
+            "0x1810ed1f6: mov rcx, qword ptr [rcx + 8]",
+            "0x1810ed1fa: test rcx, rcx",
+            "0x1810ed1fd: jne 0x1810ed588",
+            "0x1810ed203: mov edx, dword ptr [rdi + 0x10]",
+            "0x1810ed206: xor r8d, r8d",
+            "0x1810ed209: mov rcx, rbx",
+            "0x1810ed20c: call 0x18107acb0",
+            "0x1810ed211: mov rdx, qword ptr [rip + 0x7aea408]",
+            "0x1810ed218: mov rsi, rax",
+            "0x1810ed21b: test rax, rax",
+            "0x1810ed21e: jne 0x1810ed224",
+            "0x1810ed220: xor ebx, ebx",
+            "0x1810ed222: jmp 0x1810ed270",
+            "0x1810ed224: cmp byte ptr [rip + 0x7eeb845], 0",
+            "0x1810ed22b: mov r8, qword ptr [rax]",
+            "0x1810ed22e: jbe 0x1810ed23e",
+            "0x1810ed230: mov rcx, r8",
+            "0x1810ed233: call 0x1804566f0",
+            "0x1810ed238: xor ebx, ebx",
+            "0x1810ed23a: test al, al",
+            "0x1810ed23c: jmp 0x1810ed26c",
+            "0x1810ed23e: movzx eax, byte ptr [rdx + 0x130]",
+            "0x1810ed245: cmp byte ptr [r8 + 0x130], al",
+            "0x1810ed24c: jb 0x1810ed266",
+            "0x1810ed24e: movzx ecx, al",
+            "0x1810ed251: mov rax, qword ptr [r8 + 0xc8]",
+            "0x1810ed258: cmp qword ptr [rax + rcx*8 - 8], rdx",
+            "0x1810ed25d: jne 0x1810ed266",
+            "0x1810ed25f: mov eax, 1",
+            "0x1810ed264: jmp 0x1810ed268",
+            "0x1810ed266: xor eax, eax",
+            "0x1810ed268: xor ebx, ebx",
+            "0x1810ed26a: test eax, eax",
+            "0x1810ed26c: cmovne rbx, rsi",
+            "0x1810ed270: mov rcx, qword ptr [rip + 0x7a32dd9]",
+            "0x1810ed277: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1810ed27e: jne 0x1810ed285",
+            "0x1810ed280: call 0x18049c450",
+            "0x1810ed285: mov qword ptr [rsp + 0x80], r12",
+            "0x1810ed28d: xor r8d, r8d",
+            "0x1810ed290: mov qword ptr [rsp + 0x88], r14",
+            "0x1810ed298: xor edx, edx",
+            "0x1810ed29a: mov qword ptr [rsp + 0x90], r15",
+            "0x1810ed2a2: mov rcx, rbx",
+            "0x1810ed2a5: movaps xmmword ptr [rsp + 0x50], xmm6",
+            "0x1810ed2aa: call 0x186dcf290",
+            "0x1810ed2af: test al, al",
+            "0x1810ed2b1: jne 0x1810ed584",
+            "0x1810ed2b7: test rbx, rbx",
+            "0x1810ed2ba: je 0x1810ed5b4",
+            "0x1810ed2c0: xor edx, edx",
+            "0x1810ed2c2: mov rcx, rbx",
+            "0x1810ed2c5: call 0x180aaf970",
+            "0x1810ed2ca: test rax, rax",
+            "0x1810ed2cd: je 0x1810ed5b4",
+            "0x1810ed2d3: mov rsi, qword ptr [rax + 0x110]",
+            "0x1810ed2da: test rsi, rsi",
+            "0x1810ed2dd: je 0x1810ed584",
+            "0x1810ed2e3: mov rcx, qword ptr [rdi + 0x28]",
+            "0x1810ed2e7: xor edx, edx",
+            "0x1810ed2e9: call 0x18601a180",
+            "0x1810ed2ee: test al, al",
+            "0x1810ed2f0: jne 0x1810ed354",
+            "0x1810ed2f2: mov rax, qword ptr [rsi + 0x48]",
+            "0x1810ed2f6: mov r14, qword ptr [rdi + 0x28]",
+            "0x1810ed2fa: test rax, rax",
+            "0x1810ed2fd: je 0x1810ed5b4",
+            "0x1810ed303: mov rcx, qword ptr [rip + 0x7a37d1e]",
+            "0x1810ed30a: movups xmm6, xmmword ptr [rax + 0x34]",
+            "0x1810ed30e: mov r15d, dword ptr [rax + 0x44]",
+            "0x1810ed312: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1810ed319: jne 0x1810ed320",
+            "0x1810ed31b: call 0x18049c450",
+            "0x1810ed320: xor edx, edx",
+            "0x1810ed322: movaps xmmword ptr [rsp + 0x30], xmm6",
+            "0x1810ed327: lea rcx, [rsp + 0x30]",
+            "0x1810ed32c: mov dword ptr [rsp + 0x40], r15d",
+            "0x1810ed331: call 0x18686bef0",
+            "0x1810ed336: test rbp, rbp",
+            "0x1810ed339: je 0x1810ed5b4",
+            "0x1810ed33f: movd xmm2, eax",
+            "0x1810ed343: xor r9d, r9d",
+            "0x1810ed346: cvtdq2ps xmm2, xmm2",
+            "0x1810ed349: mov rdx, r14",
+            "0x1810ed34c: mov rcx, rbp",
+            "0x1810ed34f: call 0x182377ce0",
+            "0x1810ed354: mov rcx, qword ptr [rdi + 0x30]",
+            "0x1810ed358: xor edx, edx",
+            "0x1810ed35a: call 0x18601a180",
+            "0x1810ed35f: mov r15, qword ptr [rsi + 0x48]",
+            "0x1810ed363: test al, al",
+            "0x1810ed365: je 0x1810ed3d2",
+            "0x1810ed367: mov r12, qword ptr [rdi + 0x18]",
+            "0x1810ed36b: test r15, r15",
+            "0x1810ed36e: je 0x1810ed5b4",
+            "0x1810ed374: mov rcx, qword ptr [rip + 0x7a37cad]",
+            "0x1810ed37b: movups xmm6, xmmword ptr [r15 + 0x34]",
+            "0x1810ed380: mov r14d, dword ptr [r15 + 0x44]",
+            "0x1810ed384: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1810ed38b: jne 0x1810ed392",
+            "0x1810ed38d: call 0x18049c450",
+            "0x1810ed392: xor edx, edx",
+            "0x1810ed394: movaps xmmword ptr [rsp + 0x30], xmm6",
+            "0x1810ed399: lea rcx, [rsp + 0x30]",
+            "0x1810ed39e: mov dword ptr [rsp + 0x40], r14d",
+            "0x1810ed3a3: call 0x18686bef0",
+            "0x1810ed3a8: test rbp, rbp",
+            "0x1810ed3ab: je 0x1810ed5b4",
+            "0x1810ed3b1: mov r9b, 1",
+            "0x1810ed3b4: mov qword ptr [rsp + 0x20], 0",
+            "0x1810ed3bd: mov r8d, eax",
+            "0x1810ed3c0: mov rdx, r12",
+            "0x1810ed3c3: mov rcx, rbp",
+            "0x1810ed3c6: call 0x182378c90",
+            "0x1810ed3cb: mov edx, eax",
+            "0x1810ed3cd: jmp 0x1810ed48b",
+            "0x1810ed3d2: test r15, r15",
+            "0x1810ed3d5: je 0x1810ed5b4",
+            "0x1810ed3db: mov rcx, qword ptr [rip + 0x7a37c46]",
+            "0x1810ed3e2: movups xmm6, xmmword ptr [r15 + 0x34]",
+            "0x1810ed3e7: mov r14d, dword ptr [r15 + 0x44]",
+            "0x1810ed3eb: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1810ed3f2: jne 0x1810ed3f9",
+            "0x1810ed3f4: call 0x18049c450",
+            "0x1810ed3f9: xor edx, edx",
+            "0x1810ed3fb: movaps xmmword ptr [rsp + 0x30], xmm6",
+            "0x1810ed400: lea rcx, [rsp + 0x30]",
+            "0x1810ed405: mov dword ptr [rsp + 0x40], r14d",
+            "0x1810ed40a: call 0x18686bef0",
+            "0x1810ed40f: mov r14d, eax",
+            "0x1810ed412: test rbp, rbp",
+            "0x1810ed415: je 0x1810ed5b4",
+            "0x1810ed41b: movss xmm2, dword ptr [rip + 0x5fc07bd]",
+            "0x1810ed423: mov r9b, 1",
+            "0x1810ed426: mov rdx, qword ptr [rdi + 0x30]",
+            "0x1810ed42a: mov rcx, rbp",
+            "0x1810ed42d: mov qword ptr [rsp + 0x20], 0",
+            "0x1810ed436: call 0x182378940",
+            "0x1810ed43b: cmp byte ptr [rip + 0x7eaf3d4], 0",
+            "0x1810ed442: movaps xmm6, xmm0",
+            "0x1810ed445: movd xmm1, r14d",
+            "0x1810ed44a: cvtdq2ps xmm1, xmm1",
+            "0x1810ed44d: mulss xmm6, xmm1",
+            "0x1810ed451: jne 0x1810ed466",
+            "0x1810ed453: lea rcx, [rip + 0x7b489be]",
+            "0x1810ed45a: call 0x18049c210",
+            "0x1810ed45f: mov byte ptr [rip + 0x7eaf3b0], 1",
+            "0x1810ed466: mov rcx, qword ptr [rip + 0x7b489ab]",
+            "0x1810ed46d: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1810ed474: jne 0x1810ed47b",
+            "0x1810ed476: call 0x18049c450",
+            "0x1810ed47b: xorps xmm0, xmm0",
+            "0x1810ed47e: cvtss2sd xmm0, xmm6",
+            "0x1810ed482: call 0x1804e2a70",
+            "0x1810ed487: cvttsd2si edx, xmm0",
+            "0x1810ed48b: xor r8d, r8d",
+            "0x1810ed48e: lea rcx, [rsp + 0x30]",
+            "0x1810ed493: call 0x18686be00",
+            "0x1810ed498: movups xmm0, xmmword ptr [rax]",
+            "0x1810ed49b: mov ecx, dword ptr [rax + 0x10]",
+            "0x1810ed49e: movups xmmword ptr [r15 + 0x34], xmm0",
+            "0x1810ed4a3: mov dword ptr [r15 + 0x44], ecx",
+            "0x1810ed4a7: movzx r8d, byte ptr [rdi + 0x20]",
+            "0x1810ed4ac: xor r9d, r9d",
+            "0x1810ed4af: mov rdx, qword ptr [rsi + 0x48]",
+            "0x1810ed4b3: mov rcx, rbx",
+            "0x1810ed4b6: call 0x180730740",
+            "0x1810ed4bb: cmp byte ptr [rdi + 0x21], 0",
+            "0x1810ed4bf: je 0x1810ed555",
+            "0x1810ed4c5: xor edx, edx",
+            "0x1810ed4c7: mov rcx, rbx",
+            "0x1810ed4ca: call 0x180ab2210",
+            "0x1810ed4cf: mov rcx, qword ptr [rip + 0x7a32b7a]",
+            "0x1810ed4d6: mov rdi, rax",
+            "0x1810ed4d9: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1810ed4e0: jne 0x1810ed4e7",
+            "0x1810ed4e2: call 0x18049c450",
+            "0x1810ed4e7: xor r8d, r8d",
+            "0x1810ed4ea: xor edx, edx",
+            "0x1810ed4ec: mov rcx, rdi",
+            "0x1810ed4ef: call 0x186dcf430",
+            "0x1810ed4f4: test al, al",
+            "0x1810ed4f6: je 0x1810ed555",
+            "0x1810ed4f8: xor edx, edx",
+            "0x1810ed4fa: mov rcx, rbx",
+            "0x1810ed4fd: call 0x180ab2210",
+            "0x1810ed502: mov rcx, qword ptr [rsi + 0x48]",
+            "0x1810ed506: mov rbx, rax",
+            "0x1810ed509: test rcx, rcx",
+            "0x1810ed50c: je 0x1810ed5b4",
+            "0x1810ed512: movups xmm6, xmmword ptr [rcx + 0x34]",
+            "0x1810ed516: mov edi, dword ptr [rcx + 0x44]",
+            "0x1810ed519: mov rcx, qword ptr [rip + 0x7a37b08]",
+            "0x1810ed520: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1810ed527: jne 0x1810ed52e",
+            "0x1810ed529: call 0x18049c450",
+            "0x1810ed52e: xor edx, edx",
+            "0x1810ed530: movaps xmmword ptr [rsp + 0x30], xmm6",
+            "0x1810ed535: lea rcx, [rsp + 0x30]",
+            "0x1810ed53a: mov dword ptr [rsp + 0x40], edi",
+            "0x1810ed53e: call 0x18686bef0",
+            "0x1810ed543: test rbx, rbx",
+            "0x1810ed546: je 0x1810ed5b4",
+            "0x1810ed548: xor r8d, r8d",
+            "0x1810ed54b: mov edx, eax",
+            "0x1810ed54d: mov rcx, rbx",
+            "0x1810ed550: call 0x180995250",
+            "0x1810ed555: mov al, 1",
+            "0x1810ed557: mov r15, qword ptr [rsp + 0x90]",
+            "0x1810ed55f: mov r14, qword ptr [rsp + 0x88]",
+            "0x1810ed567: mov r12, qword ptr [rsp + 0x80]",
+            "0x1810ed56f: movaps xmm6, xmmword ptr [rsp + 0x50]",
+            "0x1810ed574: mov rbx, qword ptr [rsp + 0x98]",
+            "0x1810ed57c: add rsp, 0x60",
+            "0x1810ed580: pop rdi",
+            "0x1810ed581: pop rsi",
+            "0x1810ed582: pop rbp",
+            "0x1810ed583: ret",
+            "0x1810ed584: xor al, al",
+            "0x1810ed586: jmp 0x1810ed557",
+            "0x1810ed588: mov qword ptr [rsp + 0x28], 0",
+            "0x1810ed591: mov r9d, esi",
+            "0x1810ed594: mov r8, rbp",
+            "0x1810ed597: mov qword ptr [rsp + 0x20], rbx",
+            "0x1810ed59c: mov rdx, rdi",
+            "0x1810ed59f: call 0x1831be380",
+            "0x1810ed5a4: mov rbx, qword ptr [rsp + 0x98]",
+            "0x1810ed5ac: add rsp, 0x60",
+            "0x1810ed5b0: pop rdi",
+            "0x1810ed5b1: pop rsi",
+            "0x1810ed5b2: pop rbp",
+            "0x1810ed5b3: ret",
+            "0x1810ed5b4: call 0x18049c3c0"
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 397673,
+            "declaringType": 14343,
+            "returnType": 46024,
+            "parameterStart": 94333,
+            "genericContainerIndex": -1,
+            "token": 100762448,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 6,
+            "parameterCount": 3,
+            "index": 99151,
+            "image": "Assembly-CSharp.dll",
+            "address": 6460292576,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Action.Nodes/NoSourceDamage.Execute",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 3124,
+                "token": 134312078,
+                "typeIndex": 45909,
+                "index": 94333,
+                "name": "blackboard",
+                "typeName": "Torappu.Blackboard"
+              },
+              {
+                "nameIndex": 440673,
+                "token": 134312079,
+                "typeIndex": 90650,
+                "index": 94334,
+                "name": "sourceType",
+                "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+              },
+              {
+                "nameIndex": 440684,
+                "token": 134312080,
+                "typeIndex": 32502,
+                "index": 94335,
+                "name": "snapshot",
+                "typeName": "Torappu.Battle.Context/Snapshot&"
+              }
+            ]
+          },
+          "instructions": [
+            "0x181104175: mov edx, 0xd",
+            "0x18110417a: lea rcx, [rsp + 0x50]",
+            "0x18110417f: xor r8d, r8d",
+            "0x181104182: call 0x18090c010",
+            "0x181104187: cmp byte ptr [rdi + 0x31], sil",
+            "0x18110418b: je 0x1811041b3",
+            "0x18110418d: mov rcx, qword ptr [rip + 0x7b5c1cc]",
+            "0x181104194: cmp dword ptr [rcx + 0xe0], esi",
+            "0x18110419a: jne 0x1811041a1",
+            "0x18110419c: call 0x18049c450",
+            "0x1811041a1: mov edx, 0x10",
+            "0x1811041a6: lea rcx, [rsp + 0x50]",
+            "0x1811041ab: xor r8d, r8d",
+            "0x1811041ae: call 0x18090c010"
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 397673,
+            "declaringType": 14361,
+            "returnType": 46024,
+            "parameterStart": 94397,
+            "genericContainerIndex": -1,
+            "token": 100762527,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 6,
+            "parameterCount": 3,
+            "index": 99230,
+            "image": "Assembly-CSharp.dll",
+            "address": 6460251696,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Action.Nodes/BlockDamage.Execute",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 3124,
+                "token": 134312142,
+                "typeIndex": 45909,
+                "index": 94397,
+                "name": "blackboard",
+                "typeName": "Torappu.Blackboard"
+              },
+              {
+                "nameIndex": 440673,
+                "token": 134312143,
+                "typeIndex": 90650,
+                "index": 94398,
+                "name": "sourceType",
+                "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+              },
+              {
+                "nameIndex": 440684,
+                "token": 134312144,
+                "typeIndex": 32502,
+                "index": 94399,
+                "name": "snapshot",
+                "typeName": "Torappu.Battle.Context/Snapshot&"
+              }
+            ]
+          },
+          "instructions": [
+            "0x1810fa3bd: xor r8d, r8d",
+            "0x1810fa3c0: lea rcx, [rsp + 0x30]",
+            "0x1810fa3c5: mov edx, 3",
+            "0x1810fa3ca: call 0x1809099f0",
+            "0x1810fa3cf: test al, al",
+            "0x1810fa3d1: je 0x1810fa412",
+            "0x1810fa3d3: mov rcx, qword ptr [rip + 0x7a25c76]",
+            "0x1810fa3da: cmp dword ptr [rcx + 0xe0], r15d",
+            "0x1810fa3e1: jne 0x1810fa3e8",
+            "0x1810fa3e3: call 0x18049c450",
+            "0x1810fa3e8: xor r8d, r8d",
+            "0x1810fa3eb: xor edx, edx",
+            "0x1810fa3ed: mov rcx, rbx",
+            "0x1810fa3f0: call 0x186dcf430",
+            "0x1810fa3f5: test al, al",
+            "0x1810fa3f7: je 0x1810fa412",
+            "0x1810fa3f9: test rbx, rbx",
+            "0x1810fa3fc: je 0x1810fa6d6",
+            "0x1810fa402: xor r8d, r8d",
+            "0x1810fa405: lea rdx, [rsp + 0x30]",
+            "0x1810fa40a: mov rcx, rbx",
+            "0x1810fa40d: call 0x180729150",
+            "0x1810fa468: xor r8d, r8d",
+            "0x1810fa46b: lea rcx, [rsp + 0x30]",
+            "0x1810fa470: mov edx, 4",
+            "0x1810fa475: call 0x1809099f0",
+            "0x1810fa47a: test al, al",
+            "0x1810fa47c: je 0x1810fa4bd",
+            "0x1810fa47e: mov rcx, qword ptr [rip + 0x7a25bcb]",
+            "0x1810fa485: cmp dword ptr [rcx + 0xe0], r15d",
+            "0x1810fa48c: jne 0x1810fa493",
+            "0x1810fa48e: call 0x18049c450",
+            "0x1810fa493: xor r8d, r8d",
+            "0x1810fa496: xor edx, edx",
+            "0x1810fa498: mov rcx, rbx",
+            "0x1810fa49b: call 0x186dcf430",
+            "0x1810fa4a0: test al, al",
+            "0x1810fa4a2: je 0x1810fa4bd",
+            "0x1810fa4a4: test rbx, rbx",
+            "0x1810fa4a7: je 0x1810fa6d6",
+            "0x1810fa4ad: xor r8d, r8d",
+            "0x1810fa4b0: lea rdx, [rsp + 0x30]",
+            "0x1810fa4b5: mov rcx, rbx",
+            "0x1810fa4b8: call 0x180729150"
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 397673,
+            "declaringType": 14654,
+            "returnType": 46024,
+            "parameterStart": 95438,
+            "genericContainerIndex": -1,
+            "token": 100763552,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 6,
+            "parameterCount": 3,
+            "index": 100255,
+            "image": "Assembly-CSharp.dll",
+            "address": 6460764320,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Action.Nodes/HpNoLessThanCertainPercentModifier.Execute",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 3124,
+                "token": 134313183,
+                "typeIndex": 45909,
+                "index": 95438,
+                "name": "blackboard",
+                "typeName": "Torappu.Blackboard"
+              },
+              {
+                "nameIndex": 440673,
+                "token": 134313184,
+                "typeIndex": 90650,
+                "index": 95439,
+                "name": "sourceType",
+                "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+              },
+              {
+                "nameIndex": 440684,
+                "token": 134313185,
+                "typeIndex": 32502,
+                "index": 95440,
+                "name": "snapshot",
+                "typeName": "Torappu.Battle.Context/Snapshot&"
+              }
+            ]
+          },
+          "instructions": [
+            "0x1811771ef: call 0x18090e0a0",
+            "0x1811771f4: xor r8d, r8d",
+            "0x1811771f7: mov rdx, rax",
+            "0x1811771fa: mov rcx, rbx",
+            "0x1811771fd: call 0x18695c0c0",
+            "0x181177202: xor r8d, r8d",
+            "0x181177205: mov rdx, rdi",
+            "0x181177208: mov rcx, rax",
+            "0x18117720b: call 0x186139660",
+            "0x181177210: test al, al",
+            "0x181177212: je 0x181177368",
+            "0x181177218: mov rcx, qword ptr [rip + 0x7ae9141]",
+            "0x18117721f: cmp dword ptr [rcx + 0xe0], 0",
+            "0x181177226: jne 0x18117722d",
+            "0x181177228: call 0x18049c450",
+            "0x18117722d: mov edx, 0x10",
+            "0x181177232: lea rcx, [rsi + 0x20]",
+            "0x181177236: xor r8d, r8d",
+            "0x181177239: call 0x180909e20",
+            "0x18117723e: test al, al",
+            "0x181177240: jne 0x1811772c9",
+            "0x181177246: mov rcx, qword ptr [rip + 0x7a4fa63]",
+            "0x18117724d: cmp dword ptr [rcx + 0xe0], 0",
+            "0x181177254: jne 0x18117725b",
+            "0x181177256: call 0x18049c450",
+            "0x18117725b: xor r8d, r8d",
+            "0x18117725e: mov rdx, rdi",
+            "0x181177261: mov rcx, rbx",
+            "0x181177264: call 0x18695c0c0",
+            "0x181177269: xor edx, edx",
+            "0x18117726b: xor ecx, ecx",
+            "0x18117726d: mov rbx, rax",
+            "0x181177270: call 0x18695e170",
+            "0x181177275: mov rcx, qword ptr [rip + 0x7a8e65c]",
+            "0x18117727c: mov rdi, rax",
+            "0x18117727f: cmp dword ptr [rcx + 0xe0], 0",
+            "0x181177286: jne 0x18117728d",
+            "0x181177288: call 0x18049c450",
+            "0x18117728d: xor r8d, r8d",
+            "0x181177290: mov rdx, rdi",
+            "0x181177293: mov rcx, rbx",
+            "0x181177296: call 0x18695fe00",
+            "0x18117729b: mov rcx, qword ptr [rip + 0x7ae90be]",
+            "0x1811772a2: mov rbx, rax",
+            "0x1811772a5: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1811772ac: jne 0x1811772b3",
+            "0x1811772ae: call 0x18049c450",
+            "0x1811772b3: xor r8d, r8d",
+            "0x1811772b6: lea rcx, [rsi + 0x20]",
+            "0x1811772ba: mov rdx, rbx",
+            "0x1811772bd: call 0x18090ec30",
+            "0x1811772c2: mov al, 1",
+            "0x1811772c4: jmp 0x181177388",
+            "0x1811772c9: mov rcx, qword ptr [rip + 0x7ae9090]",
+            "0x1811772d0: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1811772d7: jne 0x1811772de",
+            "0x1811772d9: call 0x18049c450",
+            "0x1811772de: mov edx, 0x10",
+            "0x1811772e3: lea rcx, [rsi + 0x20]",
+            "0x1811772e7: xor r8d, r8d",
+            "0x1811772ea: call 0x18090bba0",
+            "0x1811772ef: mov rcx, qword ptr [rip + 0x7a4f9ba]",
+            "0x1811772f6: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1811772fd: jne 0x181177304",
+            "0x1811772ff: call 0x18049c450",
+            "0x181177304: xor r8d, r8d",
+            "0x181177307: mov rdx, rdi",
+            "0x18117730a: mov rcx, rbx",
+            "0x18117730d: call 0x18695c0c0",
+            "0x181177312: xor edx, edx",
+            "0x181177314: xor ecx, ecx",
+            "0x181177316: mov rbx, rax",
+            "0x181177319: call 0x18695e170",
+            "0x18117731e: mov rcx, qword ptr [rip + 0x7a8e5b3]",
+            "0x181177325: mov rdi, rax",
+            "0x181177328: cmp dword ptr [rcx + 0xe0], 0",
+            "0x18117732f: jne 0x181177336",
+            "0x181177331: call 0x18049c450",
+            "0x181177336: xor r8d, r8d",
+            "0x181177339: mov rdx, rdi",
+            "0x18117733c: mov rcx, rbx",
+            "0x18117733f: call 0x18695fe00",
+            "0x181177344: lea rcx, [rsi + 0x20]",
+            "0x181177348: xor r8d, r8d",
+            "0x18117734b: mov rdx, rax",
+            "0x18117734e: call 0x18090ec30",
+            "0x181177353: mov edx, 0x10",
+            "0x181177358: lea rcx, [rsi + 0x20]",
+            "0x18117735c: xor r8d, r8d",
+            "0x18117735f: call 0x18090c010",
+            "0x181177364: mov al, 1",
+            "0x181177366: jmp 0x181177388"
+          ]
+        },
+        {
+          "method": {
+            "nameIndex": 397673,
+            "declaringType": 14678,
+            "returnType": 46024,
+            "parameterStart": 95512,
+            "genericContainerIndex": -1,
+            "token": 100763625,
+            "flags": 198,
+            "iflags": 0,
+            "slot": 6,
+            "parameterCount": 3,
+            "index": 100328,
+            "image": "Assembly-CSharp.dll",
+            "address": 6460755216,
+            "addressStatus": "file-backed",
+            "fullname": "Torappu.Battle.Action.Nodes/EmitProjectile.Execute",
+            "returnTypeName": "bool",
+            "parameters": [
+              {
+                "nameIndex": 3124,
+                "token": 134313257,
+                "typeIndex": 45909,
+                "index": 95512,
+                "name": "blackboard",
+                "typeName": "Torappu.Blackboard"
+              },
+              {
+                "nameIndex": 440673,
+                "token": 134313258,
+                "typeIndex": 90650,
+                "index": 95513,
+                "name": "sourceType",
+                "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+              },
+              {
+                "nameIndex": 440684,
+                "token": 134313259,
+                "typeIndex": 32502,
+                "index": 95514,
+                "name": "snapshot",
+                "typeName": "Torappu.Battle.Context/Snapshot&"
+              }
+            ]
+          },
+          "instructions": [
+            "0x181175075: mov edx, dword ptr [rbx + 0x18]",
+            "0x181175078: mov qword ptr [rsp + 0x28], rbp",
+            "0x18117507d: mov byte ptr [rsp + 0x20], al",
+            "0x181175081: call 0x180918b10",
+            "0x181175086: cmp byte ptr [rbx + 0x38], 0",
+            "0x18117508a: mov rcx, rdi",
+            "0x18117508d: mov rdx, qword ptr [rbx + 0x30]",
+            "0x181175091: sete r8b",
+            "0x181175095: xor r9d, r9d",
+            "0x181175098: call 0x180918d20",
+            "0x18117509d: cmp byte ptr [rbx + 0x69], 0",
+            "0x1811750a1: je 0x1811750b9",
+            "0x1811750a3: cmp byte ptr [rbx + 0x6a], 0",
+            "0x1811750a7: mov rdx, rsi",
+            "0x1811750aa: mov rcx, rdi",
+            "0x1811750ad: sete r8b",
+            "0x1811750b1: xor r9d, r9d",
+            "0x1811750b4: call 0x180918f20",
+            "0x1811750b9: cmp byte ptr [rbx + 0x80], 0",
+            "0x1811750c0: je 0x1811750fe",
+            "0x1811750c2: mov rcx, qword ptr [rip + 0x79aaf87]",
+            "0x1811750c9: cmp dword ptr [rcx + 0xe0], 0",
+            "0x1811750d0: jne 0x1811750d7",
+            "0x1811750d2: call 0x18049c450",
+            "0x1811750d7: xor r8d, r8d",
+            "0x1811750da: xor edx, edx",
+            "0x1811750dc: mov rcx, r15",
+            "0x1811750df: call 0x186dcf430",
+            "0x1811750e4: test al, al",
+            "0x1811750e6: je 0x1811750fe",
+            "0x1811750e8: movzx r8d, byte ptr [rbx + 0x81]",
+            "0x1811750f0: xor r9d, r9d",
+            "0x1811750f3: mov rdx, r15",
+            "0x1811750f6: mov rcx, rdi",
+            "0x1811750f9: call 0x180915680",
+            "0x1811750fe: mov al, 1"
+          ]
+        }
+      ],
+      "fields": {
+        "Torappu.SpData": [
+          {
+            "nameIndex": 1227699,
+            "typeIndex": 77194,
+            "token": 67141394,
+            "index": 32529,
+            "name": "spType",
+            "typeName": "Torappu.SpType",
+            "static": false,
+            "offset": 16,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 1227684,
+            "typeIndex": 64442,
+            "token": 67141397,
+            "index": 32532,
+            "name": "spCost",
+            "typeName": "CodeStage.AntiCheat.ObscuredTypes.ObscuredInt",
+            "static": false,
+            "offset": 52,
+            "unboxedOffset": null
+          }
+        ],
+        "Torappu.Battle.Action.Nodes/ModifySpData": [
+          {
+            "nameIndex": 3433682,
+            "typeIndex": 78547,
+            "token": 67224366,
+            "index": 115501,
+            "name": "_spCostString",
+            "typeName": "string",
+            "static": false,
+            "offset": 24,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3433696,
+            "typeIndex": 46025,
+            "token": 67224367,
+            "index": 115502,
+            "name": "_onlyUpdateSpCost",
+            "typeName": "bool",
+            "static": false,
+            "offset": 32,
+            "unboxedOffset": null
+          }
+        ],
+        "Torappu.Battle.Action.Nodes/NoSourceDamage": [
+          {
+            "nameIndex": 3438871,
+            "typeIndex": 46025,
+            "token": 67224935,
+            "index": 116070,
+            "name": "_isNotChangeableValue",
+            "typeName": "bool",
+            "static": false,
+            "offset": 49,
+            "unboxedOffset": null
+          }
+        ],
+        "Torappu.Battle.Action.Nodes/EmitProjectile": [
+          {
+            "nameIndex": 3456953,
+            "typeIndex": 46025,
+            "token": 67227283,
+            "index": 118418,
+            "name": "_dealHitTargetAfterCreate",
+            "typeName": "bool",
+            "static": false,
+            "offset": 128,
+            "unboxedOffset": null
+          },
+          {
+            "nameIndex": 3456979,
+            "typeIndex": 46025,
+            "token": 67227284,
+            "index": 118419,
+            "name": "_forceDealHitTarget",
+            "typeName": "bool",
+            "static": false,
+            "offset": 129,
+            "unboxedOffset": null
+          }
+        ]
+      },
+      "blockDamageXrefs": {
+        "target": "0x180729150",
+        "scope": "Direct E8/E9 candidates only; excludes indirect/virtual calls; instruction boundaries require confirmation.",
+        "candidates": [
+          {
+            "address": "0x1810fa40d",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              99230
+            ]
+          },
+          {
+            "address": "0x1810fa4b8",
+            "opcode": "e8",
+            "section": "il2cpp",
+            "precedingMethodCandidates": [
+              99230
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

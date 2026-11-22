@@ -44,7 +44,7 @@ MaxHP 变更也不能直接推成债务永远不变。[属性变更原体](../ev
 
 上述实际组件、同一 GameObject 身份与 PPtr→MonoScript 绑定保存在 [content.json](../evidence/resource-mechanisms-20261114/life/content.json)；完整模板保存在 [templates.json](../evidence/resource-mechanisms-20261114/life/templates.json)。HP setter 的取消续接、force 与不死分支保存在 [native.json](../evidence/resource-mechanisms-20261114/life/native.json)。
 
-锁血另有修改权限语义。`HpNoLessThanCertainPercentModifier.Execute` #100255 调整数值时还管理共享标记 16；`Modifier.set_value` #72157 在该标记有效时拒绝普通写值。煌 `huang_t_1` 是实际使用例，不能从“仍派发后续伤判”推导“后续一定能够改写该值”。数值改写权限及标记精确分支由本批 damage 专项继续记录。
+锁血节点会尊重既有数值权限。`Modifier.set_value` #72157 在共享标记 16 有效时拒绝普通写值。`HpNoLessThanCertainPercentModifier.Execute` #100255 可暂时解除该标记，调整后恢复请求原来的权限。煌 `huang_t_1[lock]` 的该节点在普通请求上只调整工作数值，后续仍可改写。 [两路原生分支](../evidence/resource-observers-20261122/README.md#锁血只保留原有数值权限)
 
 ## 3. 替身切换与普通免死不是同一种执行程序
 

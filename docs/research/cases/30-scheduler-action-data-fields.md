@@ -136,7 +136,7 @@ dontCountAsFinished = (B && !M) || N
 - **销毁／回收**：销毁解除 wave 阻塞。动态配置 useRecycleToFinishScheduler=false 时也解除 final；为 true 时 final 留到回收入口解除。不能固定认为死亡或回收的任意一项总是最后等待点。
 - **结束判断**：wave 集合、final 集合、模式条件及显式结束 blocker 分别参与；remaining=total−finished，completeProgress 使用 killed／total，都不是管理集合数量或完整结束条件的同义接口。
 
-2026-11-22 重查 `get_useRecycleToFinishScheduler`。普通 getter 直接读取运行时配置对象，调度销毁与显式记账入口均有实际调用。固定 gamedata JSON 未找到同名字面项，实际运行取值及此等待差在支持玩法中的消费者仍未取得。 [调用原件](../evidence/talent-schedule-callers-20261122/README.md)
+2026-11-22 补查安装版客户端实际加载的 `Config/config`。资源包中的 `dyn/config/config.json` 未覆盖 `useRecycleToFinishScheduler`，`InternalConfig` 构造和读取失败回退均将该字段设为 true。普通路径会在死亡销毁时解除本波等待，在实例回收时解除最终等待。主线 0-1 最后一项 Spawn 使用回收预算默认为 1.0 秒的普通 `Enemy`。`_DoSchedule` 等待最终集合清空后通知 `SchedulerDriver`，正常完成分支可调用 `BattleController.FinishGame`。该结论来自实际配置、普通敌人组件和静态调用链。 [配置、普通敌人和完成消费者](../evidence/scheduler-recycle-config-20261122/README.md)
 
 外部 MarkEnemyKilled 可提前完成账务并使实例不再重复完成计数；ReleaseEnemyFromCurrentWave 只释放本波／缓存关系，不增加完成计数或移除 final。动作完成回调在普通创建成功或失败路径都执行，也不等待敌人死亡。
 
@@ -196,7 +196,7 @@ Enemy.SetExtraMeta 写的是同一 Options.actionExtraMeta，但这是出生后�
 1. randomType／refreshType 的具体周期策略消费者及其产生外部有效项／刷新结果的完整链。已追踪的通用预处理和最小额外字段处理没有闭合这点；不得按枚举名称补出规则。
 2. forceBlockWaveInBranch=true 与 ActionData.notCountInTotal=true 的实际非默认内容来源；已有原生分支与 EnemyData 见证不能代替这两项自身的配置／生成见证。
 3. 个别 Branch、隐藏组、其他 Wave 标签及其余外部重载的实际内容调用者、参数和激活条件；本波加最终等待、仅最终等待已有第 7 节的实际召唤见证，其余入口按各自内容取证。
-4. XLua 实际覆盖、运行时动态配置开关当前取值和跨协程精确唤醒顺序。记录静态条件及分支，不宣称所有线上版本逐帧一致。
+4. XLua 实际覆盖、安装配置之外的运行时覆盖和跨协程精确唤醒顺序。已核对当前安装资料的回收等待默认值与正常关卡完成路径。
 5. 非空 key 的 EMPTY 项如何避免进入未注册对应执行器的普通队列；空 key 清理、类型存在和外部路线模板可读取 EMPTY，均不能代替这条实际流转证据。
 
 这些缺口分别属于策略消费、内容见证和运行时绑定，不能笼统写成“整个 Schedule 不能设计”，也不能宣布字段研究全部闭环。本轮建立通用语义及证据矩阵，不压缩 Core 类型，不从当前样本默认值推出固定政策。

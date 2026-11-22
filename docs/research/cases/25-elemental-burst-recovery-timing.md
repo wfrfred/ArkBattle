@@ -199,6 +199,8 @@ EP不只有ATK附带：固定量、按HP伤害量、AOE及是否经过公式各�
 
 `OnElementBreak` #67763在`0x18074e141..154`检查`m_isInBreakRecovery`；已经恢复时直接返回。强制直接写零不会因此在已恢复状态下再建第二轮或重置控制器。本批未找到普通实际Content要求并存多轮爆发；开始程序／BeforeStart早于恢复状态建立的静态重入窗口仍保留，不把未找到实例写成原生绝不可能重入，也不据该假设推翻项目已有单Burst选择。
 
+2026-11-22 补核红丝绒 AD-8、AD-EX-8 实际出场的“酒神”。三种模式的 `GlobalAuraAbility` 分别装配 `enemy_dirctr_t[aura]`、`[aura2]`、`[aura3]`。它们在神经爆发的 `ON_BEFORE_EP_BREAK_START` 发射后续造成法术伤害与神经损伤的弹道。节点将 `_dealHitTargetAfterCreate` 设为 false，原生在登记完弹道程序后直接返回成功。另一个 true 的 `_forceDealHitTarget` 参数只有立即命中分支才会使用。两个实际弹道的延迟参数均为 2 秒。 [配置、资源与指令](../evidence/resource-observers-20261122/README.md#爆发前置实际发射的是延迟弹道)
+
 ## 8. 自然EP回复的实际非零配置
 
 完整安装输入扫描覆盖1180包／33411个相关MonoBehaviour，0失败，见[rare-inputs.json](../evidence/resource-mechanisms-20261114/recovery-elemental/rare-inputs.json)。扫描包含数字属性29、字符串属性名和内联节点；只看attributeModifiers数组会漏掉模板程序更新的真实属性。

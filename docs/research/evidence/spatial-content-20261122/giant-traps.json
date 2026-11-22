@@ -1,0 +1,1531 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "versionId": "26-11-13-06-34-18-84612175",
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    "assets": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/hot_update_list.json",
+        "bytes": 3348046,
+        "sha256": "f5d0009a16adadf90d27e6a211af5716ae34c7eea982ce6dfc23dbaf9cc6103d"
+      }
+    ],
+    "inputGlobs": [
+      "battle/enm_pfb_*.ab",
+      "pkgrps/btl_pfb_tokens_*.ab",
+      "battle/prefabs/levelprefabs/**/*.ab"
+    ],
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "config": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json",
+        "bytes": 15069101,
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/sandbox_perm_table.json",
+        "bytes": 5407973,
+        "sha256": "5b8669462487d2ee4af6d8e1613dd72f3a13e5b2105ff2faf8b56a3282f8e632"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/activity_table.json",
+        "bytes": 14126572,
+        "sha256": "10f9b70a5e69a86dfa845e761ee49232c7d17755f469202b080c59bef5feb304"
+      }
+    ]
+  },
+  "result": {
+    "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+    "script": {
+      "id": "-1844904289438783296",
+      "name": "GiantTrap",
+      "cl": "GiantTrap",
+      "ns": "Torappu.Battle",
+      "asm": "Assembly-CSharp.dll"
+    },
+    "scans": [
+      {
+        "source": "StreamingAssets/AB/Windows",
+        "scanned": 123,
+        "bundles": [
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_0.ab",
+            "bytes": 357205,
+            "sha256": "315c22a5cc58cd56522dd50266002383df0fd7efad606c5bac618c2e0db31785",
+            "relativePath": "battle/enm_pfb_0.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_1.ab",
+            "bytes": 351237,
+            "sha256": "0a054a1f686b2f324168e5a4ffaa95b0e86d9701a0ce5c8a4366652fe181388b",
+            "relativePath": "battle/enm_pfb_1.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_10.ab",
+            "bytes": 270254,
+            "sha256": "7d88a8815d0947b2836c8770c0ff3c2b92645696ec5e2c9d715d6d0b18148fbb",
+            "relativePath": "battle/enm_pfb_10.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_11.ab",
+            "bytes": 287477,
+            "sha256": "80744dfb157e052387e5e1e6bd4fef4fc339e332f8a3e17218e8f5949fa7a45e",
+            "relativePath": "battle/enm_pfb_11.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_12.ab",
+            "bytes": 309580,
+            "sha256": "2e9056a509d746f71fb22261f8f2daf8d41fbaebc7787f6d6a15d447576a2f2f",
+            "relativePath": "battle/enm_pfb_12.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_13.ab",
+            "bytes": 342400,
+            "sha256": "0b3c936babb315fa9771a7e78e4cd2b1dfdee9ce80e043fdac65122d8b424a59",
+            "relativePath": "battle/enm_pfb_13.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_14.ab",
+            "bytes": 337702,
+            "sha256": "0563b3209d154cf3f8a08d5efcb267a71b291668f1a44a9f56664cb3f5866c5a",
+            "relativePath": "battle/enm_pfb_14.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_15.ab",
+            "bytes": 327148,
+            "sha256": "2c30b08ce50e3734f945ac8efcff4f9081bc168835bd779e959a477719cf77c6",
+            "relativePath": "battle/enm_pfb_15.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_16.ab",
+            "bytes": 317426,
+            "sha256": "398041ca47947b74843a24bac1404175513ed25c75c7ddce915dfc0dd6946266",
+            "relativePath": "battle/enm_pfb_16.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_17.ab",
+            "bytes": 370630,
+            "sha256": "5cab229230f1ad686df4048a44c7d0bfb719b0993ba38e25e66bce15c1e22e7a",
+            "relativePath": "battle/enm_pfb_17.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_18.ab",
+            "bytes": 895456,
+            "sha256": "7bc74aef8fbb3cbc7ce86d7e4b789e2c0daaadf076d47b0e9989e83e7ff4eb69",
+            "relativePath": "battle/enm_pfb_18.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_19.ab",
+            "bytes": 517235,
+            "sha256": "84fdb631abc524475d7d739652267c2f8af3282c0ed5675dc2c26eceaf50b2c5",
+            "relativePath": "battle/enm_pfb_19.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_2.ab",
+            "bytes": 282532,
+            "sha256": "0337022537c8ea59e44173cb7bcdee8b0da8f8a4fbb30386171eb2b2c9b3d302",
+            "relativePath": "battle/enm_pfb_2.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_20.ab",
+            "bytes": 470562,
+            "sha256": "a8691210052bd5668850ab7b08d0926f835f17abce02503efea0556e418017ee",
+            "relativePath": "battle/enm_pfb_20.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_21.ab",
+            "bytes": 350685,
+            "sha256": "5366bf2b9a9c00c514c5dced0fc3780c9ebc499214aa46c66d00cd93e72338af",
+            "relativePath": "battle/enm_pfb_21.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_22.ab",
+            "bytes": 331034,
+            "sha256": "32f9fdfa30d2ea0b6483365b0e6c0fd2916822a7d8c478ed84877707633b23c3",
+            "relativePath": "battle/enm_pfb_22.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_23.ab",
+            "bytes": 424134,
+            "sha256": "b9c6f72eb80f3892aba3088697cc983345d665a75ee5b47dcc79848e69296bd2",
+            "relativePath": "battle/enm_pfb_23.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_24.ab",
+            "bytes": 433814,
+            "sha256": "32afebc6f67d2524fd17199003722e5a4a4d9c88d24f0f76ca1cf142cde9fa39",
+            "relativePath": "battle/enm_pfb_24.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_25.ab",
+            "bytes": 495075,
+            "sha256": "6dc4d397912a6f2ced6c642c87fe87aa63bf42eb1e1398d2cc57096d3fc65c80",
+            "relativePath": "battle/enm_pfb_25.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_26.ab",
+            "bytes": 456609,
+            "sha256": "382fad807781a318561cc1677cc883401c00f6bbd56b2bca6c58c2dbf86d62eb",
+            "relativePath": "battle/enm_pfb_26.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_27.ab",
+            "bytes": 494044,
+            "sha256": "71ca2e2ea0b108a93414d1141f55901d4df325295d02b00f41357e4c8715db6a",
+            "relativePath": "battle/enm_pfb_27.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_28.ab",
+            "bytes": 450799,
+            "sha256": "559485d435af0ebe0f4c5e3c02719db797cf691d736fd82cdaa382ec0718a0d9",
+            "relativePath": "battle/enm_pfb_28.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_29.ab",
+            "bytes": 412923,
+            "sha256": "a45b8db9ce6c888fbb144000a8da3fdc0b142ca8e8152da352d0ddc22f997913",
+            "relativePath": "battle/enm_pfb_29.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_3.ab",
+            "bytes": 148945,
+            "sha256": "c5ad2c22393decd0f59fb7bb7542cb342471ab8530e5b8de86a462ea9259e603",
+            "relativePath": "battle/enm_pfb_3.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_30.ab",
+            "bytes": 398250,
+            "sha256": "aebb60e02a2cac41c6a240bcaa678130c8a529c81ca1834421fe531a5a146e36",
+            "relativePath": "battle/enm_pfb_30.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_31.ab",
+            "bytes": 465984,
+            "sha256": "aa759aac50e6193311d7fac2a84e36109310e3711b7c8f9374bf4c6e03bb2bbf",
+            "relativePath": "battle/enm_pfb_31.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_32.ab",
+            "bytes": 248658,
+            "sha256": "f3dec6b9a26e6fb65a91900faece32fae4d24a195acd78ccbcc719c41ea48c27",
+            "relativePath": "battle/enm_pfb_32.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_33.ab",
+            "bytes": 449718,
+            "sha256": "64df05bb2d0a083aedbe724d23c1ede43a86ee1b8387f244965b056497000739",
+            "relativePath": "battle/enm_pfb_33.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_34.ab",
+            "bytes": 413007,
+            "sha256": "f6bae238962bc330c6cc72734f788fe09be81dd6eae8eda1305312495899bafb",
+            "relativePath": "battle/enm_pfb_34.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_35.ab",
+            "bytes": 382837,
+            "sha256": "144a51c4419a8d0bef7cb61b0a0452a5775051aedbd8fac5a89b3c5db5e84592",
+            "relativePath": "battle/enm_pfb_35.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_36.ab",
+            "bytes": 431502,
+            "sha256": "2dd8bfa465ad4c957276fbb2107a09565f9191348f2bb9aa06c9e731a344b316",
+            "relativePath": "battle/enm_pfb_36.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_4.ab",
+            "bytes": 212148,
+            "sha256": "eee56a7fcabb99b9464626aec0a8308e9a60fc7d3c888931ebfddfe0fcd8b66b",
+            "relativePath": "battle/enm_pfb_4.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_5.ab",
+            "bytes": 259915,
+            "sha256": "1fe30c2cbcc54b4548ed23bea7ebad230e53eefb29ea7d8bdb64281fea92c88f",
+            "relativePath": "battle/enm_pfb_5.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_6.ab",
+            "bytes": 287806,
+            "sha256": "ed001d5acdc94539ac062a3e8148a3e6ed52303442d60eae6ef4247537c4820f",
+            "relativePath": "battle/enm_pfb_6.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_7.ab",
+            "bytes": 298849,
+            "sha256": "8ee31c5867a7da03f7b379f486a3f2253b1d40487b728587855619d93d9cca74",
+            "relativePath": "battle/enm_pfb_7.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_8.ab",
+            "bytes": 294968,
+            "sha256": "df97a7de9e1da1404e46e99487e4a3a200a13d746df18cc5b5b356e1d875720e",
+            "relativePath": "battle/enm_pfb_8.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_9.ab",
+            "bytes": 233619,
+            "sha256": "31f435cffff8870afc44c046504ebae472851ac0c5ff818e1565ee7e39c7aef8",
+            "relativePath": "battle/enm_pfb_9.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/enm_pfb_base_0.ab",
+            "bytes": 147859,
+            "sha256": "8ad3f66ba83f9bd1b5b256009ff262eead54ac4d07bc921d1f5b7337226cf7df",
+            "relativePath": "battle/enm_pfb_base_0.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_06/level_sandbox2_06.ab",
+            "bytes": 637068,
+            "sha256": "4186c4e37c704babc1686248d93b53c5cafd21f027ef0d59388a2274ca3657eb",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_06/level_sandbox2_06.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_07/level_sandbox2_07.ab",
+            "bytes": 686173,
+            "sha256": "5fd86a772e1d11e0477f8635efb1c773ef12e30516a739a023b8740922f68210",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_07/level_sandbox2_07.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_08/level_sandbox2_08.ab",
+            "bytes": 1176510,
+            "sha256": "d3c82ae5d4541be78f3732440f69e20d10441ec0c6c6896d5fe3c611c2e3e138",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_08/level_sandbox2_08.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_09/level_sandbox2_09.ab",
+            "bytes": 731933,
+            "sha256": "d94491ca8a54bfbb7c7cc067b5557b305bd65ccf3c82d9e3cb99cf3a7e0985a2",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_09/level_sandbox2_09.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_10/level_sandbox2_10.ab",
+            "bytes": 800681,
+            "sha256": "ae51ea502a6eca681261f4c629844b5d8dc1141ea22843dccf0d78535977be4b",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_10/level_sandbox2_10.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_11/level_sandbox2_11.ab",
+            "bytes": 610338,
+            "sha256": "f41f60f6ea453398d046679d3e2b181c3fe4daab694f71efd87581fffe67a1ce",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_11/level_sandbox2_11.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_12/level_sandbox2_12.ab",
+            "bytes": 869745,
+            "sha256": "a8eb889c4e5a26ff8429a3d307911ca5cd6f040ea26d064bfcef124eac63980b",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_12/level_sandbox2_12.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_13/level_sandbox2_13.ab",
+            "bytes": 492593,
+            "sha256": "b84823bf9bdddcf22d3a0e6ee502a7fce8bd756449c27220c074daf3d8fa1ab5",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_13/level_sandbox2_13.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_14/level_sandbox2_14.ab",
+            "bytes": 998806,
+            "sha256": "1cd9d4e640c6c1b18ecd1b102f3d70bfa259e94bcfd648b7c93ed703ba0b9e8c",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_14/level_sandbox2_14.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_15/level_sandbox2_15.ab",
+            "bytes": 566471,
+            "sha256": "16179b671769054bc73afc22714b99c5e017b98a7d35b1968b39c0f892be7222",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_15/level_sandbox2_15.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_16/level_sandbox2_16.ab",
+            "bytes": 1171298,
+            "sha256": "c1d6210056b13af509dd897e640acd3f9769a9d6a25d2c3145a54c6e27d6c9c5",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_16/level_sandbox2_16.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_17/level_sandbox2_17.ab",
+            "bytes": 1142628,
+            "sha256": "aa70ec9dbd01fe36509a37baf2c131f923db7b83377f8f87144ae7519e4b9d59",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_17/level_sandbox2_17.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_18/level_sandbox2_18.ab",
+            "bytes": 718390,
+            "sha256": "ffc4ba1d8a083159160e98b45a1c3fc139c887481f92306179bb558274b1d98d",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_18/level_sandbox2_18.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_19/level_sandbox2_19.ab",
+            "bytes": 443085,
+            "sha256": "141a1962bac2d23f703e1cb533b8cf943ae4ef26b0d3a60e52efb31a5488ac38",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_19/level_sandbox2_19.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_20/level_sandbox2_20.ab",
+            "bytes": 886238,
+            "sha256": "0279c1bc51a80c91b9c3fb6a20aabb0771068a78d2e849a9ca77361cb36da766",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_20/level_sandbox2_20.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_21/level_sandbox2_21.ab",
+            "bytes": 854766,
+            "sha256": "3cc3f5f4b5a4e0e8112f47a9d3f9f7f004c7fe2ebe6cca048ce95754f7596e15",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_21/level_sandbox2_21.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_22/level_sandbox2_22.ab",
+            "bytes": 824258,
+            "sha256": "cba2aeba296cc272d845cdd01f787a7a997384597e20e428e397da43b1e58fae",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_22/level_sandbox2_22.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_23/level_sandbox2_23.ab",
+            "bytes": 1054660,
+            "sha256": "9ceee88e035fe5fdae9afde851acbcf73c4e03572b52f9bcb8a310643a477e73",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_23/level_sandbox2_23.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_24/level_sandbox2_24.ab",
+            "bytes": 737522,
+            "sha256": "e372f9b6b3c4104a8fa5c799d67cb815072001775c1075ddf48e4027596e6b33",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_24/level_sandbox2_24.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_24_02/level_sandbox2_24_02.ab",
+            "bytes": 358042,
+            "sha256": "99eac45d9c779cc26d07d87e857716fdf87d79a05fe18153f3e0fe236ae41ce8",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_24_02/level_sandbox2_24_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_25/level_sandbox2_25.ab",
+            "bytes": 1166744,
+            "sha256": "d0bfd4740c05832de943415939b8bcef411cf899b326486c288e5b80089aa7c7",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_25/level_sandbox2_25.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26/level_sandbox2_26.ab",
+            "bytes": 1118344,
+            "sha256": "10f61c8c2dbf8c39683972873e636797e0ce7eac17323056f23b9a15ad4f12eb",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26/level_sandbox2_26.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_01/level_sandbox2_26_01.ab",
+            "bytes": 739242,
+            "sha256": "578d6996f8abd1d16c744df34daa353cc89a2a2b1c2128a30acb3579fd794795",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_01/level_sandbox2_26_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_02/level_sandbox2_26_02.ab",
+            "bytes": 524123,
+            "sha256": "6ef7660d409c55bbdd06e0c433f9e164feabd2bc815dfd51c64bc4c1b81dbc10",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_02/level_sandbox2_26_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_03/level_sandbox2_26_03.ab",
+            "bytes": 441765,
+            "sha256": "c50871a4be9f44565ab39778208959c76c79240e5c1f8da76d291dc0fbd5e2fe",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_03/level_sandbox2_26_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_04/level_sandbox2_26_04.ab",
+            "bytes": 587908,
+            "sha256": "0f8f30b1adeb09d5da27c32797f43ce6d63ed3e20f25ceeff1547f64685009b3",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_04/level_sandbox2_26_04.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_27/level_sandbox2_27.ab",
+            "bytes": 1771915,
+            "sha256": "3d2a57427240615ef2b7e3b1d53a6ee9084c0be9e2eb0d49b049d8790006626a",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_27/level_sandbox2_27.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28/level_sandbox2_28.ab",
+            "bytes": 1020679,
+            "sha256": "259c1e1986766b8ba5dd2752e2ad0da15418eb95d67f8978ca95541334238d84",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28/level_sandbox2_28.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_01/level_sandbox2_28_01.ab",
+            "bytes": 394183,
+            "sha256": "fd791776112d98ba6a06ca27f9baebdb4d0b8c5c21f6461cc0147c0fb891346a",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_01/level_sandbox2_28_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_02/level_sandbox2_28_02.ab",
+            "bytes": 518724,
+            "sha256": "66e253a2e884f6d69ba94fc92f41d6905f80afd728a5feae13d58cd7dcf173b2",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_02/level_sandbox2_28_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_03/level_sandbox2_28_03.ab",
+            "bytes": 512032,
+            "sha256": "d95ad868a5a430e12cf4019323c57cc895e278dc3064156456749933c619d677",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_03/level_sandbox2_28_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_29/level_sandbox2_29.ab",
+            "bytes": 349807,
+            "sha256": "b4081391cf720d6f175ea8275232a10ed2dd0803842d530971fc798c7a43a169",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_29/level_sandbox2_29.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_30/level_sandbox2_30.ab",
+            "bytes": 370872,
+            "sha256": "45d48e44481a9227a616a7287204f8df5592986072edd319a8a514db0f70c99c",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_30/level_sandbox2_30.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_31/level_sandbox2_31.ab",
+            "bytes": 443803,
+            "sha256": "5f558aba3c9ac114ff8a8b50aea7d3eec1f8a1e3b9451be0b8bbc240affa34ec",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_31/level_sandbox2_31.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_32/level_sandbox2_32.ab",
+            "bytes": 514327,
+            "sha256": "914abcff99280717114fbbeabee0521894099224757d60a8686eb5790a616520",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_32/level_sandbox2_32.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_33/level_sandbox2_33.ab",
+            "bytes": 322444,
+            "sha256": "325e5f9ff8664de6acf513a4a0b3eb68fd86c8b60769b18a1984de8253836423",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_33/level_sandbox2_33.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_34/level_sandbox2_34.ab",
+            "bytes": 638685,
+            "sha256": "e67f842fc56f458ef9dc00043d58874517035d648dda52506797ab0e7378a975",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_34/level_sandbox2_34.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_35/level_sandbox2_35.ab",
+            "bytes": 319803,
+            "sha256": "3e82df20e6fe2926527068d11b2df319fbbdce22811a3c2407930f8c81dc2e40",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_35/level_sandbox2_35.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_36/level_sandbox2_36.ab",
+            "bytes": 679115,
+            "sha256": "b8ca250e713e1e2d91fbbd54dde5a7922ff157e144f38d3c94a6a88535e3852e",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_36/level_sandbox2_36.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_37/level_sandbox2_37.ab",
+            "bytes": 616569,
+            "sha256": "69a0fc379f8f31bf24bd20a16f4a149f6a3f800c4fcd8f15819efb3e9a6b16a4",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_37/level_sandbox2_37.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_38/level_sandbox2_38.ab",
+            "bytes": 838217,
+            "sha256": "a98867f5f5aa033746984fe76e5fea04bdd9824c6b33f9cdea38781d79edec6f",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_38/level_sandbox2_38.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_39/level_sandbox2_39.ab",
+            "bytes": 261785,
+            "sha256": "5fdf0bbf27b8c76c9460360f9493e15889af6fd93b7dc76e896616cf356be2d8",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_39/level_sandbox2_39.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_40/level_sandbox2_40.ab",
+            "bytes": 828003,
+            "sha256": "0335a75b9cdd7eb78b942172d7f1a78a0292ad0bd945493b21ec9c206192e45f",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_40/level_sandbox2_40.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_41/level_sandbox2_41.ab",
+            "bytes": 959972,
+            "sha256": "104e698767e172cac5f438f4687aeadafa1474b3353580e102580f8d723a05fc",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_41/level_sandbox2_41.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_42/level_sandbox2_42.ab",
+            "bytes": 676160,
+            "sha256": "9a4e81a33857f44803aa8909769151ae00185025da427cb452872039d6dca438",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_42/level_sandbox2_42.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_43/level_sandbox2_43.ab",
+            "bytes": 476543,
+            "sha256": "021944e3d4e571ecc6824d9fea32840b8959f995e0bf23456d81bf693130e584",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_43/level_sandbox2_43.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_44/level_sandbox2_44.ab",
+            "bytes": 316477,
+            "sha256": "d504a1d1f24059b2807fea5ced5f008bd5251bbd943dc8d2c9e2a1dd06117c83",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_44/level_sandbox2_44.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_45/level_sandbox2_45.ab",
+            "bytes": 480336,
+            "sha256": "db9303a06c22205a9e379fe2789e52781f426463c08a5731bfce906639930c5e",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_45/level_sandbox2_45.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_46/level_sandbox2_46.ab",
+            "bytes": 432756,
+            "sha256": "113256ac4371f08a2184c46049f98dbfca612def7377e7eabe1e275417ab15ef",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_46/level_sandbox2_46.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_47/level_sandbox2_47.ab",
+            "bytes": 779915,
+            "sha256": "ab34477cde1ef33c570454ded9290eba0f091ce2a6217592e2783893c5895986",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_47/level_sandbox2_47.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_48/level_sandbox2_48.ab",
+            "bytes": 233928,
+            "sha256": "8a729561c9f66d57a114d0fa2e768565a8b1673f6b509234b156fa8eb71a071f",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_48/level_sandbox2_48.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_49/level_sandbox2_49.ab",
+            "bytes": 366156,
+            "sha256": "d34f657c2934e7e5361b7e2f443479e96b7540f87f41e93ca610cbda2da09183",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_49/level_sandbox2_49.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_50/level_sandbox2_50.ab",
+            "bytes": 578372,
+            "sha256": "1458ced432124f9106d68ad0ceffbfd7e2609815caf6e4653d0b69780af64348",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_50/level_sandbox2_50.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_51/level_sandbox2_51.ab",
+            "bytes": 708375,
+            "sha256": "283240f03ea0973e11df407a268c721bb8fa6768e69654c7fc35e7d5fbb3797b",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_51/level_sandbox2_51.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_52/level_sandbox2_52.ab",
+            "bytes": 730975,
+            "sha256": "e9d4ee94a42ee218fb044ab8dfce0b9297f98fe019cf4e415cf8a040cbb33506",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_52/level_sandbox2_52.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_53/level_sandbox2_53.ab",
+            "bytes": 700292,
+            "sha256": "6cd5d0424cb0df14e7e2c375725a59f3da976a2c2eab67904b3bbb939e302184",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_53/level_sandbox2_53.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_54/level_sandbox2_54.ab",
+            "bytes": 545117,
+            "sha256": "b4caf8cc038d5d561d3378ee9bc49b7b9a042f8389d7166e83569e049d83b743",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_54/level_sandbox2_54.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_55/level_sandbox2_55.ab",
+            "bytes": 486521,
+            "sha256": "0fe27b1c41c1a0adb492dd50b2776842637f982a908f5e26fe0915fab92c7c49",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_55/level_sandbox2_55.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_56/level_sandbox2_56.ab",
+            "bytes": 608609,
+            "sha256": "2e81be072239b64a56594076923fecc9771592811d575967610e153c997a05ce",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_56/level_sandbox2_56.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_57/level_sandbox2_57.ab",
+            "bytes": 654445,
+            "sha256": "02314431f8afd4355c4e45f024f98ffc2800edf0a35d07f8350790f1f57c98fe",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_57/level_sandbox2_57.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_58/level_sandbox2_58.ab",
+            "bytes": 620795,
+            "sha256": "9e6f4a6121542e7bcecdd31bceb0df89039c954950947cd7f8513066667f51e1",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_58/level_sandbox2_58.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_59/level_sandbox2_59.ab",
+            "bytes": 322914,
+            "sha256": "7205ccaf4cbcd8dd3f391b9da84e461995edcd715067876d128cdfda5ad3fdc3",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_59/level_sandbox2_59.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_60/level_sandbox2_60.ab",
+            "bytes": 266094,
+            "sha256": "b8d702b6f4d683f2dc6f92b4afea7f96117bef3192ab9a29cae932f2905397f2",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_60/level_sandbox2_60.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_61/level_sandbox2_61.ab",
+            "bytes": 439181,
+            "sha256": "4abde4a4dc2c5f67c092409117dd8171b5ac72202114531e0469771f8287a729",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_61/level_sandbox2_61.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_62/level_sandbox2_62.ab",
+            "bytes": 333727,
+            "sha256": "522159a162cb94b30b097c8553ddcc69cc308ae89a4e84afa25415652c5a1aad",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_62/level_sandbox2_62.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_63/level_sandbox2_63.ab",
+            "bytes": 356425,
+            "sha256": "280e7b50ccee165ce9d4f960d66135337c7d0ee66c682095407f5d899c336e6f",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_63/level_sandbox2_63.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_64/level_sandbox2_64.ab",
+            "bytes": 232480,
+            "sha256": "300f81f652ff4ac34ed45daa7c615da1a75401b8037747f644d2f14458fb26b7",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_64/level_sandbox2_64.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_65/level_sandbox2_65.ab",
+            "bytes": 337392,
+            "sha256": "6c74efe39a24b01d92bc6813873ec61f1169c9bd02b8d612bff67a892f2da947",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_65/level_sandbox2_65.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_66/level_sandbox2_66.ab",
+            "bytes": 364614,
+            "sha256": "fb187d677fdc94f3873f2ba54c13069686271549258f1a339355beeea73b99f4",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_66/level_sandbox2_66.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_67/level_sandbox2_67.ab",
+            "bytes": 268901,
+            "sha256": "b93c6d26e163915b44bc072a4043a9919aa4b9700a84e5f75b7a5788ef8553ca",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_67/level_sandbox2_67.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_68/level_sandbox2_68.ab",
+            "bytes": 405061,
+            "sha256": "7fa0d785c31acbb16fcef69cb9ac598cd7221f19624324076881ca2247964efa",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_68/level_sandbox2_68.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_69/level_sandbox2_69.ab",
+            "bytes": 472958,
+            "sha256": "59099d7fff374b43d6cf51ef0b5211b50ee0b22b29591d23980e6dbb0cebba68",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_69/level_sandbox2_69.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_70/level_sandbox2_70.ab",
+            "bytes": 354758,
+            "sha256": "7a316652910c25f69dd6881e0a4d912c34c6582f1209dbe10d7ceab76288ae8d",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_70/level_sandbox2_70.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_71/level_sandbox2_71.ab",
+            "bytes": 387439,
+            "sha256": "5b67b9350e2c1c15cb3e78150c31f0d7bbed63701bbe39a06297b41b781ac9af",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_71/level_sandbox2_71.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_72/level_sandbox2_72.ab",
+            "bytes": 337306,
+            "sha256": "14d2adc474191bbd0004ac069d389a6b35a465ec5eb662fbe14e3958c5c388ce",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_72/level_sandbox2_72.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_73/level_sandbox2_73.ab",
+            "bytes": 458084,
+            "sha256": "eb7319e612abab3a16b76621cc6e8f96c533b3a4d7d9c8884f1f1a34830e9055",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_73/level_sandbox2_73.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_74/level_sandbox2_74.ab",
+            "bytes": 339915,
+            "sha256": "301f05126e962fbe369dcb81c3bd85d911fab76f6a77eafeafafbb67797e80ea",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_74/level_sandbox2_74.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_75/level_sandbox2_75.ab",
+            "bytes": 554158,
+            "sha256": "4fe60c34585bb3b8f77c6ce0d5473c35dd886b23e91b102284f633dff872c4c7",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_75/level_sandbox2_75.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+            "bytes": 5089969,
+            "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d",
+            "relativePath": "pkgrps/btl_pfb_tokens_0.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_1.ab",
+            "bytes": 1955267,
+            "sha256": "e399b7335ba58134d81d6a7b42079a0284d447f39da9fdcc08ef3909e3b89604",
+            "relativePath": "pkgrps/btl_pfb_tokens_1.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_2.ab",
+            "bytes": 4890432,
+            "sha256": "9781d097ccdddb0835cee6a2dd988a0963c63a4e7cd6e2ed9a4d25d77418b726",
+            "relativePath": "pkgrps/btl_pfb_tokens_2.ab",
+            "components": [
+              {
+                "prefab": "trap_444_xbexbi",
+                "file": "CAB-3d61805b2486576a81f236427ebd9963",
+                "componentPathId": "-8933697871689006213",
+                "gameObjectPathId": "-134047151336111237",
+                "objectSha256": "27a4491ac475ee54cd25c86b2c4e3d6cc911f151d0bf58c338609b3f31bdee0c",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": false,
+                  "_minBlockDistToTarget": 1.0
+                }
+              },
+              {
+                "prefab": "trap_446_xbfdtion",
+                "file": "CAB-3d61805b2486576a81f236427ebd9963",
+                "componentPathId": "2506054624910544493",
+                "gameObjectPathId": "-104854401872785811",
+                "objectSha256": "177f926752843ebd2c9248072f285ed89369f112c8e6964956d9fd00edc4a2e6",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": false,
+                  "_minBlockDistToTarget": 0.5
+                }
+              }
+            ]
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_3.ab",
+            "bytes": 2040978,
+            "sha256": "b4489956c3b5be0c53bc6fc0dcdf31ecbe0babb6e8099da1ecafca084f99e64c",
+            "relativePath": "pkgrps/btl_pfb_tokens_3.ab",
+            "components": [
+              {
+                "prefab": "trap_1505_lhfrst",
+                "file": "CAB-0ecc1eb83a4d7ad0b36d9ce5c9fb77d0",
+                "componentPathId": "-7714325547497944014",
+                "gameObjectPathId": "2844672714904308786",
+                "objectSha256": "a4789a6719d04242a7f548155d9be0d4c946d64ac151580b520631409e91b5bf",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": true,
+                  "_minBlockDistToTarget": 1.0
+                }
+              },
+              {
+                "prefab": "trap_487_xblfen",
+                "file": "CAB-0ecc1eb83a4d7ad0b36d9ce5c9fb77d0",
+                "componentPathId": "-4749419782073728231",
+                "gameObjectPathId": "5216593470206001945",
+                "objectSha256": "b1c9bdbc011cc6ad9e09b7642cb6bf79cd73378c4d7439f6aa2e4bb2ed2ed4b4",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": false,
+                  "_minBlockDistToTarget": 1.0
+                }
+              },
+              {
+                "prefab": "trap_1523_lhtown",
+                "file": "CAB-0ecc1eb83a4d7ad0b36d9ce5c9fb77d0",
+                "componentPathId": "-1463927982103713039",
+                "gameObjectPathId": "-5667215717495067919",
+                "objectSha256": "3808fba3470daf75565ac44f46da52d6e8078f04f0a738cee506b03e973b0ead",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": true,
+                  "_minBlockDistToTarget": 0.5
+                }
+              },
+              {
+                "prefab": "trap_1503_lhshan",
+                "file": "CAB-0ecc1eb83a4d7ad0b36d9ce5c9fb77d0",
+                "componentPathId": "3186497980422781016",
+                "gameObjectPathId": "-7954360863536023464",
+                "objectSha256": "49d36ea7263428a8741779e02b36a3d5a0ff6b8b90eaef30a5a930628fdbb306",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": true,
+                  "_minBlockDistToTarget": 0.5
+                }
+              }
+            ]
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_4.ab",
+            "bytes": 3211755,
+            "sha256": "09ef43e4a181cda91c01c5dc9658451fac30de1e87b462e5b60f71ae546ed618",
+            "relativePath": "pkgrps/btl_pfb_tokens_4.ab",
+            "components": [
+              {
+                "prefab": "trap_1540_lhpad2",
+                "file": "CAB-425a845ff37dbe17e203e6b341c4f664",
+                "componentPathId": "4692709937932153961",
+                "gameObjectPathId": "-1052207799462710167",
+                "objectSha256": "77640ad79f002ead7ec9269f2d43ae1f997ec527492cac318419ce5abb66ecec",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": true,
+                  "_minBlockDistToTarget": 1.0
+                }
+              }
+            ]
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_5.ab",
+            "bytes": 2812726,
+            "sha256": "4a49fe9d4535474d896e64331657773790c891f14dd99616b6774dfe5a1d7a96",
+            "relativePath": "pkgrps/btl_pfb_tokens_5.ab",
+            "components": [
+              {
+                "prefab": "trap_594_xb2ostn",
+                "file": "CAB-d45134594599a24ae95f928a8f1b3420",
+                "componentPathId": "-3813388134977820350",
+                "gameObjectPathId": "-1500843065459267262",
+                "objectSha256": "87a8c0355a1abd97076f560d28510b18560298194d19eb5bcfd34eedd9981aa4",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": true,
+                  "_minBlockDistToTarget": 0.5
+                }
+              },
+              {
+                "prefab": "trap_552_xb2fnc2",
+                "file": "CAB-d45134594599a24ae95f928a8f1b3420",
+                "componentPathId": "-2246948394904869064",
+                "gameObjectPathId": "-1070010838882867400",
+                "objectSha256": "39ace370e6dbe8538253e6bbb5922d293dbc1ddc64843cd7b10deba7026abafa",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": false,
+                  "_minBlockDistToTarget": 0.5
+                }
+              },
+              {
+                "prefab": "trap_603_xb2ofnc2",
+                "file": "CAB-d45134594599a24ae95f928a8f1b3420",
+                "componentPathId": "2718319655892504345",
+                "gameObjectPathId": "8565285658255773465",
+                "objectSha256": "a1c290f1ad5a9c38690d8a76a8077e0bc2989efebfd54e78197d42127877c8b6",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": true,
+                  "_minBlockDistToTarget": 0.5
+                }
+              },
+              {
+                "prefab": "trap_638_xb2oafkp",
+                "file": "CAB-d45134594599a24ae95f928a8f1b3420",
+                "componentPathId": "6522799250131768728",
+                "gameObjectPathId": "92146223009027480",
+                "objectSha256": "bffe3bb5b9b17038d8cda584fb54823eade95c15ff465e07b1160e5622e34047",
+                "enabled": true,
+                "scriptPointer": {
+                  "file": "CAB-658d74aab777086fc32b93f385be999a",
+                  "pathId": "-1844904289438783296"
+                },
+                "fields": {
+                  "_blockMode": 0,
+                  "_alwaysBlockFreeOptimize": false,
+                  "_minBlockDistToTarget": 0.5
+                }
+              }
+            ]
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_6.ab",
+            "bytes": 994726,
+            "sha256": "f632f2d5722e63965a3e3c30445a677275c58bdf9d6d7f8a2e7aee01ce118177",
+            "relativePath": "pkgrps/btl_pfb_tokens_6.ab",
+            "components": []
+          }
+        ]
+      },
+      {
+        "source": "PersistentData/Bundles",
+        "scanned": 44,
+        "bundles": [
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_0.ab",
+            "bytes": 357075,
+            "sha256": "76a93bea29400a8eaf9c94699996b281ae7955a87ff4e32885a73a52b01642dd",
+            "relativePath": "battle/enm_pfb_0.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_26.ab",
+            "bytes": 456611,
+            "sha256": "4ce9db70858f2e42389ab2ee3a2778ddcf388731ebcf0df3185df40f629f2efa",
+            "relativePath": "battle/enm_pfb_26.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_36.ab",
+            "bytes": 526596,
+            "sha256": "44802be002675da847cdaccc6086e0a3a19242a095fedeb56cd4559d234f8c8c",
+            "relativePath": "battle/enm_pfb_36.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_37.ab",
+            "bytes": 89699,
+            "sha256": "782c45b5dd64164347915bc730bb4d29efb3e28318fe0ced099ad606c700b251",
+            "relativePath": "battle/enm_pfb_37.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_01/level_act3autochess_m01_sub_01.ab",
+            "bytes": 1451220,
+            "sha256": "f2455fa70f8809bbe26ad07908f528581014e4b5af63c58b82e1da4b9794432b",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_01/level_act3autochess_m01_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_02/level_act3autochess_m01_sub_02.ab",
+            "bytes": 1672841,
+            "sha256": "547f1f84d68414cd44b097f7e36d5cf8a9f75a983eb6c57ea6370be862f1460a",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_02/level_act3autochess_m01_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_03/level_act3autochess_m01_sub_03.ab",
+            "bytes": 1676412,
+            "sha256": "6511d19d9738fb182697edb9adf6befb749364ac85b1ca84365d174acbdb0c8f",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_03/level_act3autochess_m01_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_01/level_act3autochess_m02_sub_01.ab",
+            "bytes": 1506051,
+            "sha256": "2d3c21b1ebd3915ac219725673db365788f6b15a93b8ed6a9ad637710ddbdfe6",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_01/level_act3autochess_m02_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_02/level_act3autochess_m02_sub_02.ab",
+            "bytes": 1495236,
+            "sha256": "937303578b89b6091f142d2a3668a12482d75cb647ee10971a807535edcb34ad",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_02/level_act3autochess_m02_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_03/level_act3autochess_m02_sub_03.ab",
+            "bytes": 1795213,
+            "sha256": "d1a7ac06e161a7650da5492a1c541595a6c4942cd2922258abfeefb18d3809ea",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_03/level_act3autochess_m02_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_01/level_act3autochess_m03_sub_01.ab",
+            "bytes": 1410507,
+            "sha256": "a1cfa60c65bd6e0bbbe1e51b8a03b3e7dc6adb4273dd9b73a40feb670a3f4fc3",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_01/level_act3autochess_m03_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_02/level_act3autochess_m03_sub_02.ab",
+            "bytes": 1637589,
+            "sha256": "392d9db523d3231efd7458aee42a88cb28048bd75545520fc19fcc14ee06ba36",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_02/level_act3autochess_m03_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_03/level_act3autochess_m03_sub_03.ab",
+            "bytes": 1712022,
+            "sha256": "c2ed0a2b94ee2971b17771dea236eb5207496bf7fd7b9736ba6fcc690938d14f",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_03/level_act3autochess_m03_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_01/level_act3autochess_m04_sub_01.ab",
+            "bytes": 1415031,
+            "sha256": "5c079890f84982ab189a998f0b4cfe846e295239a1482afb22ce96ff3e6fa708",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_01/level_act3autochess_m04_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_02/level_act3autochess_m04_sub_02.ab",
+            "bytes": 1395123,
+            "sha256": "0f4665e5493eded49c74765b9fe148bd3b33a9cc3345668420676b4d4f17b942",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_02/level_act3autochess_m04_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_03/level_act3autochess_m04_sub_03.ab",
+            "bytes": 1885545,
+            "sha256": "569ce8ade40d039453b93ab40215950702c558426be13c6c52261bb4d67aa4ed",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_03/level_act3autochess_m04_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_01/level_act3autochess_m05_sub_01.ab",
+            "bytes": 3451838,
+            "sha256": "53393ddc5bfe449ef1816ce16d25842fadfb9bbf65d763bc3ae5a19564d18e7c",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_01/level_act3autochess_m05_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_02/level_act3autochess_m05_sub_02.ab",
+            "bytes": 3529244,
+            "sha256": "3f7602c6b701e08be6e4e1de61a074d53e2b1c97e9ae892737967432d9599e3f",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_02/level_act3autochess_m05_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_03/level_act3autochess_m05_sub_03.ab",
+            "bytes": 4543604,
+            "sha256": "0233b20373187e3ff981518f93a8fbdadb58836ecbd58e29fdcb4002fbae56c7",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_03/level_act3autochess_m05_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_01/level_act3autochess_m06_sub_01.ab",
+            "bytes": 1278761,
+            "sha256": "c6e2450ed05a8b3fe9270ed8fcd54bd408741c44f25f35c3bb23493aaa46f8ad",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_01/level_act3autochess_m06_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_02/level_act3autochess_m06_sub_02.ab",
+            "bytes": 1517404,
+            "sha256": "ec8e3d7e362891bf9bb360425f725e848ffd5db772f21260326ec656810acaa3",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_02/level_act3autochess_m06_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_03/level_act3autochess_m06_sub_03.ab",
+            "bytes": 1935007,
+            "sha256": "1c8fbc1c5ba9940ff419dfba9c13111e821dbd5d1351764d89f6ea83fa00d56a",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_03/level_act3autochess_m06_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_01/level_act3autochess_m09_sub_01.ab",
+            "bytes": 1677012,
+            "sha256": "24447147340181caf5c3d4936149fc51a3df150f94c010900560bfc6a7a6c27b",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_01/level_act3autochess_m09_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_02/level_act3autochess_m09_sub_02.ab",
+            "bytes": 1532118,
+            "sha256": "dd36a84fef5be608de125caeb3acf21c3ad64ccf709329ddc7d721f0e776e99e",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_02/level_act3autochess_m09_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_03/level_act3autochess_m09_sub_03.ab",
+            "bytes": 1944988,
+            "sha256": "3b461dbf19eceeb036c3b097819b8835b835e7c372d6cbdf90ec6fe39bddbc8d",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_03/level_act3autochess_m09_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_01/level_act3autochess_m10_sub_01.ab",
+            "bytes": 5198647,
+            "sha256": "62a3abfec515152742fa60ad72111567d4464bb8bf3e6ef853b2aadb6d54f05b",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_01/level_act3autochess_m10_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_02/level_act3autochess_m10_sub_02.ab",
+            "bytes": 5050969,
+            "sha256": "08f7db30da042d38937664ee7aeb3b2ac99addba08f047c356f51e656c8822bb",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_02/level_act3autochess_m10_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_03/level_act3autochess_m10_sub_03.ab",
+            "bytes": 5079103,
+            "sha256": "35973886f2a11c8365926432af2ccb04a4fc9a1594838426589798eafd6686c7",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_03/level_act3autochess_m10_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_01/level_act3autochess_m11_sub_01.ab",
+            "bytes": 1739144,
+            "sha256": "25414c0ec6da4f24ccbc5e55c192374c510cfbc23b527fe9296d7ff094c0bfaf",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_01/level_act3autochess_m11_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_02/level_act3autochess_m11_sub_02.ab",
+            "bytes": 1586957,
+            "sha256": "dcf3451869a14a446eeea156439f9d80bb6ec811d7d2611db1902b4f462a5373",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_02/level_act3autochess_m11_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_03/level_act3autochess_m11_sub_03.ab",
+            "bytes": 1968070,
+            "sha256": "b09e7828ba6ab657f41d2e5b018c2805494ca51ea215e9c55589146256d4dae5",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_03/level_act3autochess_m11_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_01/level_act3autochess_m12_sub_01.ab",
+            "bytes": 5008983,
+            "sha256": "6ce8e4ef52f59ab5f24ec54f1a0e7fa855fb3213f877af5678e55b8735e6f154",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_01/level_act3autochess_m12_sub_01.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_02/level_act3autochess_m12_sub_02.ab",
+            "bytes": 5177180,
+            "sha256": "a902a30e87774e16560bdb845899654e7ca62ac57879e31d28ccf2ac3e592051",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_02/level_act3autochess_m12_sub_02.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_03/level_act3autochess_m12_sub_03.ab",
+            "bytes": 5053684,
+            "sha256": "f13b1d5ef3692381df53986c6d762ddc83a1715edef2fd317d731834521a0694",
+            "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_03/level_act3autochess_m12_sub_03.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_06/level_sandbox2_06.ab",
+            "bytes": 637068,
+            "sha256": "f7c5161446954fabaddaa748473c8caed5a314d229fc53d793098cc1065fd1c0",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_06/level_sandbox2_06.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_09/level_sandbox2_09.ab",
+            "bytes": 731933,
+            "sha256": "bef6629adebc7ca9e53296277139f08d432f1fe56fd690eca3b8fada03319433",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_09/level_sandbox2_09.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_11/level_sandbox2_11.ab",
+            "bytes": 610332,
+            "sha256": "a39fe1586f0105a284c549a9500a0231a67071e09d2b9c111c17bf1e195bed16",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_11/level_sandbox2_11.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_13/level_sandbox2_13.ab",
+            "bytes": 492593,
+            "sha256": "143d1c4c8e752c406c008f6ec96fccbdbb7ea6a1444432c188b2824b742cbb6e",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_13/level_sandbox2_13.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_32/level_sandbox2_32.ab",
+            "bytes": 514327,
+            "sha256": "8043a73ea018f255cb1bfdbbbc8c89b8c7ee5e43d5d7cdf8020271de9c2db592",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_32/level_sandbox2_32.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_43/level_sandbox2_43.ab",
+            "bytes": 476538,
+            "sha256": "732026e76762d8f9a204ebf51c228b454114f896faa370cc8e846812db4c8ed7",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_43/level_sandbox2_43.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_45/level_sandbox2_45.ab",
+            "bytes": 480336,
+            "sha256": "f8120f7aff315eaafdfe905fc5d716b3c4aae36483d056c3704fec1b6dee6b5b",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_45/level_sandbox2_45.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_46/level_sandbox2_46.ab",
+            "bytes": 432756,
+            "sha256": "e926b2fc55e156e24a4ec805be8b4fdace9545929b06a585bfe8cd1deb06b36f",
+            "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_46/level_sandbox2_46.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/pkgrps/btl_pfb_tokens_1.ab",
+            "bytes": 1955270,
+            "sha256": "1db6c3726c33a15dfa897300bdeb9b8236df0983a571084502368091c37660a4",
+            "relativePath": "pkgrps/btl_pfb_tokens_1.ab",
+            "components": []
+          },
+          {
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/pkgrps/btl_pfb_tokens_6.ab",
+            "bytes": 3322915,
+            "sha256": "9427f1e25f19208b7cbc9ad5be40c7ba38b0a0ef146534b577b2e5cd9a97fca7",
+            "relativePath": "pkgrps/btl_pfb_tokens_6.ab",
+            "components": []
+          }
+        ]
+      }
+    ],
+    "config": [
+      {
+        "prefab": "trap_1503_lhshan",
+        "name": "山脉",
+        "blockCnt": [
+          0
+        ],
+        "sandboxPointer": null,
+        "halfIdlePointer": "/activity/HALFIDLE_VERIFY1/act1vhalfidle/trapMetaDict/trap_1503_lhshan"
+      },
+      {
+        "prefab": "trap_1505_lhfrst",
+        "name": "密林",
+        "blockCnt": [
+          0
+        ],
+        "sandboxPointer": null,
+        "halfIdlePointer": "/activity/HALFIDLE_VERIFY1/act1vhalfidle/trapMetaDict/trap_1505_lhfrst"
+      },
+      {
+        "prefab": "trap_1523_lhtown",
+        "name": "侦测中心",
+        "blockCnt": [
+          0
+        ],
+        "sandboxPointer": null,
+        "halfIdlePointer": "/activity/HALFIDLE_VERIFY1/act1vhalfidle/trapMetaDict/trap_1523_lhtown"
+      },
+      {
+        "prefab": "trap_1540_lhpad2",
+        "name": "温室拱棚",
+        "blockCnt": [
+          0
+        ],
+        "sandboxPointer": null,
+        "halfIdlePointer": "/activity/HALFIDLE_VERIFY1/act1vhalfidle/trapMetaDict/trap_1540_lhpad2"
+      },
+      {
+        "prefab": "trap_444_xbexbi",
+        "name": "“纪念”",
+        "blockCnt": [
+          50
+        ],
+        "sandboxPointer": "/detail/SANDBOX_V2/sandbox_1/itemTrapData/sandbox_1_building_32/trapId",
+        "halfIdlePointer": null
+      },
+      {
+        "prefab": "trap_446_xbfdtion",
+        "name": "风沙营垒",
+        "blockCnt": [
+          999
+        ],
+        "sandboxPointer": "/detail/SANDBOX_V2/sandbox_1/gameConst/baseTrapId",
+        "halfIdlePointer": null
+      },
+      {
+        "prefab": "trap_487_xblfen",
+        "name": "大型兽栏",
+        "blockCnt": [
+          20
+        ],
+        "sandboxPointer": "/detail/SANDBOX_V2/sandbox_1/itemTrapData/sandbox_1_building_41/trapId",
+        "halfIdlePointer": null
+      },
+      {
+        "prefab": "trap_552_xb2fnc2",
+        "name": "大型兽栏",
+        "blockCnt": [
+          1
+        ],
+        "sandboxPointer": "/detail/SANDBOX_V3/sandbox_2/itemExtraData/sandbox_2_building_producer_12/trapCfgId",
+        "halfIdlePointer": null
+      },
+      {
+        "prefab": "trap_594_xb2ostn",
+        "name": "待清理地块",
+        "blockCnt": [
+          0
+        ],
+        "sandboxPointer": "/detail/SANDBOX_V3/sandbox_2/buildScoreData/trap_594_xb2ostn",
+        "halfIdlePointer": null
+      },
+      {
+        "prefab": "trap_603_xb2ofnc2",
+        "name": "大型兽栏",
+        "blockCnt": [
+          0
+        ],
+        "sandboxPointer": "/detail/SANDBOX_V3/sandbox_2/baseTrapItemListMap/trap_603_xb2ofnc2",
+        "halfIdlePointer": null
+      },
+      {
+        "prefab": "trap_638_xb2oafkp",
+        "name": "核心能源基站",
+        "blockCnt": [
+          0
+        ],
+        "sandboxPointer": "/detail/SANDBOX_V3/sandbox_2/baseTrapItemListMap/trap_638_xb2oafkp",
+        "halfIdlePointer": null
+      }
+    ]
+  }
+}

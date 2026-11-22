@@ -42,6 +42,10 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [scheduler-recycle-config-20261122](scheduler-recycle-config-20261122/README.md) | 安装版最终回收等待的配置来源、普通末敌和关卡完成消费者 |
+| [redeploy-state-and-repeater-20261122](redeploy-state-and-repeater-20261122/README.md) | 特殊移动的 HP／SP 接续、中继器容量变化与卫戍自动部署重试 |
+| [resource-observers-20261122](resource-observers-20261122/README.md) | 实际爆发前置、成功抵挡观察者、锁血权限、取消原因与技力配置 |
+| [spatial-content-20261122](spatial-content-20261122/README.md) | GiantTrap 的配置范围、假想敌：械的召唤与头插路线、热更新 Enemy 阻挡掩码 |
 | [cage-block-position-20261122](cage-block-position-20261122/README.md) | 迷狂牢笼的特殊阻挡站位、阈值和取随机半径分支 |
 | [deployment-exit-limits-20261122](deployment-exit-limits-20261122/README.md) | 普通撤退／死亡的回收入口、全局部署额度和同卡在场名额分别释放的位置，以及资格查询 |
 | [managed-summons-20261122](managed-summons-20261122/README.md) | 寻路者甜品商与变形者集群的真实召唤绑定，以及本波、最终等待的不同登记 |

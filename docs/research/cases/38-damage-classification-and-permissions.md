@@ -118,7 +118,9 @@
 
 `CheckIgnoreCancel` 先检查 `_CheckIgnoreMiss #72162`：仅 MISS 原因会按当前 DamageType 与 ignoreMissFlag 过滤，然后再检查 reason mask。类型改变后按最终 DamageType 判断，物理豁免不是法术豁免。
 
-`Modifier.set_value #72157` 在 `0x18090eca7` 检查 flag16（mask0x10000）。存在则直接返回，不执行数值写入。`HpNoLessThanCertainPercentModifier #100255` 在 `0x181177239` 检查同一标志；需要调整时先解除、改值、再设置。故“后续 Hook 天然总能修改工作数值”不符合此原生路径。这里不是取消后的恢复限制，而是独立写权限。
+`Modifier.set_value #72157` 在 `0x18090eca7` 检查 flag16（mask0x10000）。存在则直接返回，不执行数值写入。`HpNoLessThanCertainPercentModifier #100255` 在 `0x181177239` 检查同一标志。2026-11-22 补核了两条完整分支：标志已存在才暂时解除并在改值后复原；未设标志的普通请求在 `0x1811772bd` 写值后直接返回，随后仍可以改值。煌的 `huang_t_1[lock]` 对应事件只执行该节点。 [标志分支与实际模板](../evidence/resource-observers-20261122/README.md#锁血只保留原有数值权限)
+
+集成战略收藏品“他缚”实际部署后施加 70% 当前生命的无来源真实伤害。`rogue_6_char_loss_hp` 设置 `_isNotChangeableValue=true`，保留普通接收，取消原因未设限制。该请求进入后续接收之前就持有标志 16。它补足了实际固定输入的正例，尚未证明煌正处于锁血期间收到这笔伤害，或锁血临时解锁后的数值被另外一项实际伤判消费。 [主题表、模板与设置指令](../evidence/resource-observers-20261122/README.md#锁血只保留原有数值权限)
 
 非致命 flag3 在普通 Entity HP 提交分支生效，但小说卷轴 `PropLikeEnemy.DoApplyModifier #78593` 会按 `hp-1` 提交一次命中，不走该普通分支。具体提交者的特殊路径见同批 `life` 证据；不能把一项 flag 的普通消费者当成所有目标的统一保证。
 
@@ -143,6 +145,8 @@
 泥岩的实际 Talent → PassiveBuffAbility `4005481957556965552` 安装 `mudrok_t_1[init]`／`[recharge]`，二者创建 `[shield_a]`／`[shield_b]`／`[shield_c]`。实际盾模板事件10执行 BlockDamage，随后治疗、特效、结束或减层。`BlockDamage` 的成功返回决定后继是否继续，取消权限、计次消耗和回复不能随意拆开重排。
 
 砾S2的实际 ActiveBuffAbility `-8092369471119681444` 安装 Buff key `gravel_s_1`、template `shield_atten`（原始命名如此，不因S2便擅自改成s_2）。模板事件10的 BlockDamage 启用 `_useDynamicVar=true`／`_allowNegativeDynamicVar=false`／`_showShieldUI=true`，然后按 dynamic 是否耗尽结束；事件2另有动态额度衰减。这闭合了数值屏障的当前资源正例，不只依赖一个通用节点字段存在。
+
+2026-11-22 补核星熊 Y 模组。实际二级、三级资源配置使用 `hsguma_e_002_t`，其中 `ON_BLOCK_DAMAGE` 负责附加攻击增益。原生 `BlockDamage.Execute` 中原因 3、原因 4 两个成功分支在返回前调用同一个 `Entity.OnBlockDamage`。该模板不按取消原因或抵挡提供者过滤，所以两种成功抵挡触发相同的增益。维吉尔狼群分别识别两个原因，但两者均跳过失去狼的后续。 [模组绑定、派发与原因过滤](../evidence/resource-observers-20261122/README.md#星熊-y2y3-消费独立的成功抵挡)
 
 ### 分担和反伤
 
@@ -246,7 +250,7 @@ MINUS_HEALTH(7) 出现在枚举和狼影未排除的剩余空间中，但本次�
 ### 资源边界
 
 - HP Damage：上述具体内容的 MISS、HIT_FAILED、抵挡、无指定原因取消，以及不可伤与中断均有对应证据。
-- EP Damage：`OnTakeEPDamage #67711` 对 EPFreeAll 取消为 NONE、对不可伤取消为 UNHURTABLE；另有上面的事件5中断正例。未定位 EP 专属按具体取消原因分支的实际内容，不把 HP 的 MISS／HIT_FAILED／抵挡直接移入 EP。
+- EP Damage：`OnTakeEPDamage #67711` 对 EPFreeAll 取消为 NONE、对不可伤取消为 UNHURTABLE；另有上面的事件5中断正例。2026-11-22 在固定镜像的 8662 条模板递归查到八个 `FilterModifierCancelReason` 节点，均在 HP 专属的 `ON_TAKE_DAMAGE`。在本表中没有找到 EP 对具体原因的消费者。 [检索范围](../evidence/resource-observers-20261122/README.md#取消原因与-sp-方式的固定表检索)
 - HP Healing：`OnTakeHeal #67710` 的 HEAL_FREE 路径取消为 NONE。项目接收政策见 [Resource](../../architecture/resource.md)，不由本证据直接生成治疗的全部原因集合。
 
 ## 11. 接收前置、普通 HIT 与伤判
@@ -297,7 +301,7 @@ EP恢复资格的组合依据复用[当前控制器原件](../evidence/resource-
 
 [PRTS蒂比](https://prts.wiki/w/蒂比)记载S2闪避后不再执行伤判，包括第一天赋计时；[社区讨论](https://prts.wiki/w/话题:Ytavkwvywob1ug8x)也区分它与普通闪避。但当前完整fallback在事件6后没有统一取消早退，`get_isDamage`只看目标与数学类型，Unit及其接收虚覆盖也没有能撤销先前事件10的前置门。实际 `tippi_t` 的事件10本身没有取消过滤。该具体计时表现尚未由当前静态链复现，不能把社区概括直接补成当前fallback中未见的统一早退；有效XLua及实机结果保留为明确证据边界，不以此否定其已绑定的早期技能程序。
 
-2026-11-22 补核 `enemy_wdsdw[loss_hp]` 的实际出场。主线 12-18 出生的变形者集群在第二形态启用 `syncAttackWithSummon`；实际弹道 `projectile_enemy_wdslm_p2s2` 通过 `SummonEnemiesOnTargetTile` 召唤 `enemy_1323_wdbshd`。子 Prefab 的实际天赋引用该模板，前置 EP 中断已取得普通玩法的配置绑定。仍未找到实际被该中断省略的来源 EP 输出后继，或读取中断原因的独立玩法程序。 [配置与复查](../evidence/wdslm-ep-interrupt-20261122/README.md)
+2026-11-22 补核 `enemy_wdsdw[loss_hp]` 的实际出场。关卡文件 `main_12-18` 出生的变形者集群在第二形态启用 `syncAttackWithSummon`；实际弹道 `projectile_enemy_wdslm_p2s2` 通过 `SummonEnemiesOnTargetTile` 召唤 `enemy_1323_wdbshd`。子 Prefab 的实际天赋引用该模板。前置程序先按 `MODIFIER_SOURCE` 的 `ENEMY` 阵营过滤，再对 EP 取消为 INTERRUPT。玩家干员的普通 EP 请求因阵营门控不会进入这一取消分支。仍未找到实际被该中断省略的来源 EP 输出后继。 [出场与天赋](../evidence/wdslm-ep-interrupt-20261122/README.md) · [阵营条件原件](../evidence/resource-observers-20261122/evidence.json)
 
 `enemy_wlrage_t_check` 尚未闭合直接出场。`immune_env_damage` 绑定巨翼兽，既有 sandbox 也有玩法归属未核实的 act1arkhub 记录。完整索引与未闭合项保留于配置记录。
 

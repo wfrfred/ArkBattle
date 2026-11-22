@@ -18,6 +18,94 @@
               "textFormat": "NORMAL"
             }
           ]
+        },
+        {
+          "pointer": "/enemyData/enemy_1341_bthtms/name",
+          "value": "赏金猎人扰乱者"
+        },
+        {
+          "pointer": "/enemyData/enemy_1341_bthtms/abilityList",
+          "value": [
+            {
+              "text": " 能够从战场中出现",
+              "textFormat": "NORMAL"
+            },
+            {
+              "text": "攻击造成法术伤害",
+              "textFormat": "NORMAL"
+            },
+            {
+              "text": "每有一个扰乱者在场时我方费用上限降低一定数值",
+              "textFormat": "NORMAL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "zh_CN/gamedata/excel/stage_table.json",
+      "sha256": "59b5946f9a3491828fc021424340564a396574dabd15df8dabbd246705f04392",
+      "selected": [
+        {
+          "pointer": "/stages/act26side_07/levelId",
+          "value": "Activities/act26side/level_act26side_07"
+        },
+        {
+          "pointer": "/stages/act26side_07/code",
+          "value": "HE-7"
+        },
+        {
+          "pointer": "/stages/act26side_07/name",
+          "value": "以爱相连"
+        },
+        {
+          "pointer": "/stages/act26side_07/difficulty",
+          "value": "NORMAL"
+        }
+      ]
+    },
+    {
+      "path": "zh_CN/gamedata/excel/handbook_info_table.json",
+      "sha256": "7c7da9fb0c7e2421887b5b7f9ca62f792b7353b541d225026a9f8c79828e3f4c",
+      "selected": [
+        {
+          "pointer": "/handbookStageData/char_1032_excu2/levelId",
+          "value": "Obt/Memory/level_memory_excu2_1"
+        },
+        {
+          "pointer": "/handbookStageData/char_1032_excu2/stageId",
+          "value": "mem_excu2_1"
+        },
+        {
+          "pointer": "/handbookStageData/char_1032_excu2/name",
+          "value": "安全框架"
+        }
+      ]
+    },
+    {
+      "path": "zh_CN/gamedata/levels/enemydata/enemy_database.json",
+      "sha256": "ba985ec2ca02e61d87188b9c8567e6c129425d8f79c7cc33db7d47c449e82b8a",
+      "selected": [
+        {
+          "pointer": "/enemies/1095/Value/0/level",
+          "value": 0
+        },
+        {
+          "pointer": "/enemies/1095/Value/0/enemyData/prefabKey",
+          "value": {
+            "m_defined": true,
+            "m_value": "enemy_1341_bthtms"
+          }
+        },
+        {
+          "pointer": "/enemies/1095/Value/0/enemyData/talentBlackboard",
+          "value": [
+            {
+              "key": "ReduceCost.max_cost",
+              "value": 10.0,
+              "valueStr": null
+            }
+          ]
         }
       ]
     },
@@ -265,6 +353,332 @@
             "weight": 0,
             "dontBlockWave": false,
             "forceBlockWaveInBranch": false
+          }
+        }
+      ]
+    },
+    {
+      "path": "zh_CN/gamedata/levels/activities/act26side/level_act26side_07.json",
+      "sha256": "3f1382326ea099c101aeae48eca8ab40a216e8c1254d4b5365f294b20b56ed72",
+      "selected": [
+        {
+          "pointer": "/options/maxCost",
+          "value": 99
+        },
+        {
+          "pointer": "/runes",
+          "value": null
+        },
+        {
+          "pointer": "/globalBuffs",
+          "value": null
+        },
+        {
+          "pointer": "/enemyDbRefs/0",
+          "value": {
+            "useDb": true,
+            "id": "enemy_1341_bthtms",
+            "level": 0,
+            "overwrittenData": null
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/0",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 0,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/2",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 2,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/3",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 3,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/4",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 4,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/5",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 5,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/6",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 6,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/7",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 7,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/0/fragments/0/actions/8",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 0.0,
+            "interval": 1.0,
+            "routeIndex": 8,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
+      ]
+    },
+    {
+      "path": "zh_CN/gamedata/levels/obt/memory/level_memory_excu2_1.json",
+      "sha256": "c87586d49fe4148d5e7c5c8251ea8fd423fb2b6b48c50513c7c1f0509833976a",
+      "selected": [
+        {
+          "pointer": "/options/maxCost",
+          "value": 99
+        },
+        {
+          "pointer": "/runes",
+          "value": null
+        },
+        {
+          "pointer": "/globalBuffs",
+          "value": null
+        },
+        {
+          "pointer": "/enemyDbRefs/5",
+          "value": {
+            "useDb": true,
+            "id": "enemy_1341_bthtms",
+            "level": 0,
+            "overwrittenData": null
+          }
+        },
+        {
+          "pointer": "/waves/1/fragments/0/actions/5",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 30.0,
+            "interval": 1.0,
+            "routeIndex": 17,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        },
+        {
+          "pointer": "/waves/1/fragments/1/actions/4",
+          "value": {
+            "actionType": "SPAWN",
+            "managedByScheduler": true,
+            "key": "enemy_1341_bthtms",
+            "count": 1,
+            "preDelay": 20.0,
+            "interval": 1.0,
+            "routeIndex": 28,
+            "blockFragment": false,
+            "autoPreviewRoute": false,
+            "autoDisplayEnemyInfo": false,
+            "isUnharmfulAndAlwaysCountAsKilled": false,
+            "hiddenGroup": null,
+            "randomSpawnGroupKey": null,
+            "randomSpawnGroupPackKey": null,
+            "randomType": "ALWAYS",
+            "refreshType": "ALWAYS",
+            "weight": 0,
+            "dontBlockWave": false,
+            "forceBlockWaveInBranch": false
+          }
+        }
+      ]
+    },
+    {
+      "path": "zh_CN/gamedata/battle/buff_template_data.json",
+      "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c",
+      "selected": [
+        {
+          "pointer": "/bthtms_t_1[max_cost]",
+          "value": {
+            "templateKey": "bthtms_t_1[max_cost]",
+            "effectKey": "",
+            "onEventPriority": "DEFAULT",
+            "eventToActions": {
+              "ON_BUFF_START": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyMaxCost, Assembly-CSharp",
+                  "_sourceType": "SOURCE",
+                  "_isMinus": true,
+                  "_ensureCurCostNotExceedMax": true
+                }
+              ],
+              "ON_BUFF_FINISH": [
+                {
+                  "$type": "Torappu.Battle.Action.Nodes+ModifyMaxCost, Assembly-CSharp",
+                  "_sourceType": "SOURCE",
+                  "_isMinus": false,
+                  "_ensureCurCostNotExceedMax": false
+                }
+              ]
+            }
           }
         }
       ]

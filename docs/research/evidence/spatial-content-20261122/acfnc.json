@@ -1,0 +1,880 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "versionId": "26-11-13-06-34-18-84612175",
+    "assets": [
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/hot_update_list.json",
+        "bytes": 3348046,
+        "sha256": "f5d0009a16adadf90d27e6a211af5716ae34c7eea982ce6dfc23dbaf9cc6103d"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_36.ab",
+        "bytes": 526596,
+        "sha256": "44802be002675da847cdaccc6086e0a3a19242a095fedeb56cd4559d234f8c8c"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/config/buff_template_holder.ab",
+        "bytes": 2197532,
+        "sha256": "f486df86406db62b2773039b87d05a405fb95a31ddc82568c6a6efef14e47f01"
+      },
+      {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      }
+    ],
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    }
+  },
+  "result": {
+    "prefabs": [
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "-7904400336690875307",
+        "objectSha256": "f04067a043741e5b43fa5cb2d18fb74e3d9af93ec50de58e94e66f33950a88c0",
+        "hierarchy": [
+          "enemy_9029_acfnc_2",
+          "Skills",
+          "SommonSquad"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-5087399121287503180",
+          "name": "EnemySkill",
+          "cl": "EnemySkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "-6574366394107316017",
+        "objectSha256": "326d1fd7e0a96484088c2043535d7f06f493ffd831470a3801bb8b08f9a95ccb",
+        "hierarchy": [
+          "enemy_9029_acfnc",
+          "Skills",
+          "SommonSquad"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-7067584745622014886",
+          "name": "BuffToCastTargets",
+          "cl": "BuffToCastTargets",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "acfnc[skill]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "acfnc[skill]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": false,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "-6513235382794062763",
+        "objectSha256": "2f3c3b6183840dff0024a2aa6e337040941737403e4537a82dc9526e049952c4",
+        "hierarchy": [
+          "enemy_9029_acfnc_2"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "5642773773204993709",
+          "name": "EnemyGiantBoss",
+          "cl": "EnemyGiantBoss",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 4655706249580180565
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -6826119066044009387
+              }
+            ]
+          }
+        }
+      },
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "-6345513398052489735",
+        "objectSha256": "01bf2c92c500811aad42a8b6e25156cc84d129fbe3d7a607d76dfdb19020675b",
+        "hierarchy": [
+          "enemy_9028_acfncb"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-6629209555389654693",
+          "name": "Enemy",
+          "cl": "Enemy",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": -8462821927341558279
+              }
+            ]
+          }
+        }
+      },
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "-4710201899321149233",
+        "objectSha256": "9e41ea284ae09e051c8082b5ee19e8e0b7c104041afc9beb70943e8d8087b9c5",
+        "hierarchy": [
+          "enemy_9029_acfnc"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "5642773773204993709",
+          "name": "EnemyGiantBoss",
+          "cl": "EnemyGiantBoss",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_modes": {
+            "Array": [
+              {
+                "m_FileID": 0,
+                "m_PathID": 3361667437718321359
+              },
+              {
+                "m_FileID": 0,
+                "m_PathID": -5741076646781863729
+              }
+            ]
+          }
+        }
+      },
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "-3260352162757625649",
+        "objectSha256": "a08a128ce08c76267f69f79524f2864322a48a5a1ed3abc12a5b4d69236b0cbe",
+        "hierarchy": [
+          "enemy_9029_acfnc",
+          "Talents",
+          "Summon"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "acfnc_t1",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "acfnc_t1",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "-3054321940928007083",
+        "objectSha256": "9d6aa3afcf133496f6709c716d682233ada8fbc012c2db3f1bfda36091d73509",
+        "hierarchy": [
+          "enemy_9029_acfnc_2",
+          "Talents",
+          "Summon"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "3800760148018415462",
+          "name": "PassiveBuffAbility",
+          "cl": "PassiveBuffAbility",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "acfnc_t1",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "acfnc_t1",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": true,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "2918002476129040591",
+        "objectSha256": "9ad5588fb9e5822193a5c094440ec0a2514d847f4cd02822cb0f37293e4797c2",
+        "hierarchy": [
+          "enemy_9029_acfnc",
+          "Skills",
+          "SommonSquad"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-5087399121287503180",
+          "name": "EnemySkill",
+          "cl": "EnemySkill",
+          "ns": "Torappu.Battle",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_trigger": {
+            "m_FileID": 0,
+            "m_PathID": 0
+          }
+        }
+      },
+      {
+        "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+        "pathId": "9011679895843828821",
+        "objectSha256": "ed80c8d0b0b26c885c8c8d95ab5f88c760de9c9b44da6792114254ddce8d6910",
+        "hierarchy": [
+          "enemy_9029_acfnc_2",
+          "Skills",
+          "SommonSquad"
+        ],
+        "enabled": true,
+        "scriptFile": "CAB-658d74aab777086fc32b93f385be999a",
+        "script": {
+          "id": "-7067584745622014886",
+          "name": "BuffToCastTargets",
+          "cl": "BuffToCastTargets",
+          "ns": "Torappu.Battle.Abilities",
+          "asm": "Assembly-CSharp.dll"
+        },
+        "fields": {
+          "_buffs": {
+            "Array": [
+              {
+                "attributes": {
+                  "abnormalFlags": {
+                    "Array": []
+                  },
+                  "abnormalImmunes": {
+                    "Array": []
+                  },
+                  "abnormalAntis": {
+                    "Array": []
+                  },
+                  "abnormalCombos": {
+                    "Array": []
+                  },
+                  "abnormalComboImmunes": {
+                    "Array": []
+                  },
+                  "attributeModifiers": {
+                    "Array": []
+                  }
+                },
+                "buffKey": "acfnc[skill]",
+                "loadFromDB": false,
+                "isDurableBuff": false,
+                "isDamageMissable": false,
+                "isSilenceable": false,
+                "isStunnable": false,
+                "isFreezable": false,
+                "isLevitatable": false,
+                "isGroundBoundable": false,
+                "statusResistable": true,
+                "templateKey": "acfnc[skill]",
+                "disableOverride": false,
+                "overrideKey": "",
+                "overrideType": 0,
+                "maxStackCnt": 1,
+                "refreshRemainingTimeWhenStackMax": false,
+                "clearAllStackCntWhenTimeUp": false,
+                "maxValidStackCnt": -1,
+                "independentCharacterSource": false,
+                "overrideEffectKey": "",
+                "overrideOnEventPriority": false,
+                "onEventPriority": 0,
+                "audioSignal": "",
+                "lifeTimeType": false,
+                "takeSnapshotWhenExtend": false,
+                "durationKey": "duration",
+                "remainingTimeKey": "",
+                "lifeTime": 0.0,
+                "triggerLifeType": false,
+                "triggerCnt": 0,
+                "triggerInterval": -1.0,
+                "waitFirstTriggerInterval": true,
+                "firstTriggerInterval": -1.0,
+                "priority": -1,
+                "priorityBBKeys": {
+                  "Array": []
+                },
+                "stripBlackboardParamsWithBuffKey": false,
+                "blackboard": {
+                  "Array": []
+                },
+                "enableInitDirectionFromSource": false
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "holder": {
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "objectSha256": "5a92aafc1bde0f63366d2682477d92260f85263c6e65770ae12007110ad85cd0",
+      "templates": [
+        {
+          "index": 4303,
+          "key": "acfnc_t1",
+          "events": [
+            {
+              "event": 21,
+              "actions": [
+                {
+                  "_source": "MODIFIER_TARGET",
+                  "_useSnapshotTile": false,
+                  "_enemyKey": "enemy_9028_acfncb",
+                  "_summonCount": 1,
+                  "_motionMode": "WALK",
+                  "_unharmful": false,
+                  "_alwaysCountAsKilled": false,
+                  "_waitTime": 0.0,
+                  "_summonOnNearestPassableTile": true,
+                  "_limitTilesInRange": false,
+                  "_rangeId": "x-4",
+                  "_spawnOffset": 0.0,
+                  "_managedByScheduler": false,
+                  "_ignoreMissEndPoint": true,
+                  "_buffs": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": null,
+                        "abnormalImmunes": null,
+                        "abnormalAntis": null,
+                        "abnormalCombos": null,
+                        "abnormalComboImmunes": null,
+                        "attributeModifiers": null
+                      },
+                      "buffKey": "acfnc[insert-cp]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "acfnc[insert-cp]",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "IMMEDIATELY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    }
+                  ],
+                  "_useSourceAsBuffSource": true,
+                  "_autoMotionMode": false,
+                  "_noCheckPoint": false,
+                  "_avoidObstacleLike": true,
+                  "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesWithRuntimeNearestEndPointRoute"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4310,
+          "key": "acfnc[skill]",
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_source": "BUFF_SOURCE",
+                  "_target": "BUFF_OWNER",
+                  "_spawnOnTarget": true,
+                  "_abilityName": "SkillSelector",
+                  "_summonCnt": 4,
+                  "_enemyKey": "enemy_9028_acfncb",
+                  "_randomOffsetBound": 0.0,
+                  "_motionMode": "WALK",
+                  "_unharmful": false,
+                  "_alwaysCountAsKilled": false,
+                  "_waitTime": 0.0,
+                  "_managedByScheduler": false,
+                  "_clampInTilesCnt": true,
+                  "_buffs": [],
+                  "_buffsUseTargetAsSource": [
+                    {
+                      "attributes": {
+                        "abnormalFlags": null,
+                        "abnormalImmunes": null,
+                        "abnormalAntis": null,
+                        "abnormalCombos": null,
+                        "abnormalComboImmunes": null,
+                        "attributeModifiers": null
+                      },
+                      "buffKey": "acfnc[insert-cp]",
+                      "loadFromDB": false,
+                      "isDurableBuff": false,
+                      "isDamageMissable": false,
+                      "isSilenceable": false,
+                      "isStunnable": false,
+                      "isFreezable": false,
+                      "isLevitatable": false,
+                      "isGroundBoundable": false,
+                      "statusResistable": "AUTOMATIC",
+                      "templateKey": "acfnc[insert-cp]",
+                      "disableOverride": false,
+                      "overrideKey": null,
+                      "overrideType": "DEFAULT",
+                      "maxStackCnt": 1,
+                      "refreshRemainingTimeWhenStackMax": false,
+                      "clearAllStackCntWhenTimeUp": false,
+                      "maxValidStackCnt": -1,
+                      "independentCharacterSource": false,
+                      "overrideEffectKey": null,
+                      "overrideOnEventPriority": false,
+                      "onEventPriority": "DEFAULT",
+                      "audioSignal": null,
+                      "lifeTimeType": "IMMEDIATELY",
+                      "takeSnapshotWhenExtend": false,
+                      "durationKey": null,
+                      "remainingTimeKey": null,
+                      "lifeTime": 0.0,
+                      "triggerLifeType": "IMMEDIATELY",
+                      "triggerCnt": 0,
+                      "triggerInterval": -1.0,
+                      "waitFirstTriggerInterval": true,
+                      "firstTriggerInterval": -1.0,
+                      "priority": -1,
+                      "priorityBBKeys": [],
+                      "stripBlackboardParamsWithBuffKey": false,
+                      "blackboard": [],
+                      "enableInitDirectionFromSource": false
+                    }
+                  ],
+                  "$type": "Torappu.Battle.Action.Nodes+SummonEnemiesAverageOnTilesToNearestEndPoint"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4311,
+          "key": "acfnc[insert-cp]",
+          "events": [
+            {
+              "event": 0,
+              "actions": [
+                {
+                  "_conditionsNode": [
+                    {
+                      "_gameModeType": "AUTOCHESS",
+                      "$type": "Torappu.Battle.Action.Nodes+FilterGameMode"
+                    }
+                  ],
+                  "_succeedNodes": [
+                    {
+                      "_defaultSettings": [
+                        {
+                          "key": "branch_left",
+                          "val": 0.0,
+                          "valStr": "left_acfncb",
+                          "overrideIfExists": true
+                        },
+                        {
+                          "key": "branch_right",
+                          "val": 0.0,
+                          "valStr": "right_acfncb",
+                          "overrideIfExists": true
+                        }
+                      ],
+                      "$type": "Torappu.Battle.Action.Nodes+EnsureBlackboardDefaultValue"
+                    },
+                    {
+                      "_conditionsNode": [
+                        {
+                          "_axisType": "HORIZONTAL",
+                          "_sourceType": "ABILITY_OWNER",
+                          "_targetType": "BUFF_OWNER",
+                          "_blackboardKey": "direction",
+                          "$type": "Torappu.Battle.Action.Nodes+AssignAxisRelativeDirectionToBB"
+                        }
+                      ],
+                      "_succeedNodes": [
+                        {
+                          "_conditionsNode": [
+                            {
+                              "_targetType": "BUFF_OWNER",
+                              "_anotherBuff": false,
+                              "_buffKey": null,
+                              "_blackboardKey": "direction",
+                              "_blackboardKeyFromBb": null,
+                              "_valueToCompare": 3,
+                              "_anotherKeyToCompare": null,
+                              "_condType": "EQUALS",
+                              "$type": "Torappu.Battle.Action.Nodes+FilterByBlackboardValue"
+                            }
+                          ],
+                          "_succeedNodes": [
+                            {
+                              "_target": "BUFF_OWNER",
+                              "_branchKey": "branch_left",
+                              "_indexKey": "action_index",
+                              "_addIntoExtraRuntimeRouteStartPointAsKey": false,
+                              "$type": "Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute"
+                            },
+                            {
+                              "_source": "BUFF_SOURCE",
+                              "_target": "BUFF_OWNER",
+                              "_clearRouteBeforeInsert": false,
+                              "_type": "MOVE",
+                              "_randomizeReachOffset": false,
+                              "_reachOffset": {
+                                "x": 0.0,
+                                "y": 0.0
+                              },
+                              "_time": 0.0,
+                              "_addIntoRuntimeRoute": false,
+                              "_toMapPosition": false,
+                              "_checkReachable": true,
+                              "_manuallySpecifyInsertIndex": true,
+                              "_insertIndex": 0,
+                              "_manuallySpecifyReassignIndex": true,
+                              "_reassignIndex": 0,
+                              "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                            }
+                          ],
+                          "_failNodes": [
+                            {
+                              "_target": "BUFF_OWNER",
+                              "_branchKey": "branch_right",
+                              "_indexKey": "action_index",
+                              "_addIntoExtraRuntimeRouteStartPointAsKey": false,
+                              "$type": "Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute"
+                            },
+                            {
+                              "_source": "BUFF_SOURCE",
+                              "_target": "BUFF_OWNER",
+                              "_clearRouteBeforeInsert": false,
+                              "_type": "MOVE",
+                              "_randomizeReachOffset": false,
+                              "_reachOffset": {
+                                "x": 0.0,
+                                "y": 0.0
+                              },
+                              "_time": 0.0,
+                              "_addIntoRuntimeRoute": false,
+                              "_toMapPosition": false,
+                              "_checkReachable": true,
+                              "_manuallySpecifyInsertIndex": true,
+                              "_insertIndex": 0,
+                              "_manuallySpecifyReassignIndex": true,
+                              "_reassignIndex": 0,
+                              "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                            }
+                          ],
+                          "_isAnd": false,
+                          "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                        }
+                      ],
+                      "_failNodes": [
+                        {
+                          "_target": "BUFF_OWNER",
+                          "_branchKey": "branch_right",
+                          "_indexKey": "action_index",
+                          "_addIntoExtraRuntimeRouteStartPointAsKey": false,
+                          "$type": "Torappu.Battle.Action.Nodes+ModifyRuntimeRouteUseBranchRoute"
+                        },
+                        {
+                          "_source": "BUFF_SOURCE",
+                          "_target": "BUFF_OWNER",
+                          "_clearRouteBeforeInsert": false,
+                          "_type": "MOVE",
+                          "_randomizeReachOffset": false,
+                          "_reachOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                          },
+                          "_time": 0.0,
+                          "_addIntoRuntimeRoute": false,
+                          "_toMapPosition": false,
+                          "_checkReachable": true,
+                          "_manuallySpecifyInsertIndex": true,
+                          "_insertIndex": 0,
+                          "_manuallySpecifyReassignIndex": true,
+                          "_reassignIndex": 0,
+                          "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                        }
+                      ],
+                      "_isAnd": false,
+                      "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                    }
+                  ],
+                  "_failNodes": [
+                    {
+                      "_source": "BUFF_SOURCE",
+                      "_target": "BUFF_OWNER",
+                      "_clearRouteBeforeInsert": true,
+                      "_type": "MOVE",
+                      "_randomizeReachOffset": false,
+                      "_reachOffset": {
+                        "x": 0.0,
+                        "y": 0.0
+                      },
+                      "_time": 0.0,
+                      "_addIntoRuntimeRoute": false,
+                      "_toMapPosition": false,
+                      "_checkReachable": true,
+                      "_manuallySpecifyInsertIndex": false,
+                      "_insertIndex": 0,
+                      "_manuallySpecifyReassignIndex": false,
+                      "_reassignIndex": 0,
+                      "$type": "Torappu.Battle.Action.Nodes+InsertCheckPointInRuntimeRoute"
+                    }
+                  ],
+                  "_isAnd": false,
+                  "$type": "Torappu.Battle.Action.Nodes+IfConditions"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

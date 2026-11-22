@@ -93,6 +93,8 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 
 常量地址、倍率字段、方法和旧证据指纹见 [selected-witnesses.json](../evidence/air-blocking-radius-20261029/selected-witnesses.json)。这证明倍率通道存在，没有调查每项内容是否实际修正它，也不根据可写 schema 虚构某个干员的特殊倍率。
 
+**D：2026-11-22 多原点内容筛查。** 基础 Windows 安装的 123 个所选 Bundle 有 11 个实际绑定 `GiantTrap` 的组件，本机缓存的 44 个更新 Bundle 未增加匹配。四个带非零基础阻挡数的装置均与生息演算表关联。还有三个基础阻挡数为零的组件关联生息演算，四个属于次生预案并设置 `_alwaysBlockFreeOptimize=true`，其基础阻挡数亦为零。本次没有取得普通战斗或卫戍中可实际阻挡的多原点配置。包外资源、动态增容和其它版本的证据范围另列。 [Prefab、容量与模式配置](../evidence/spatial-content-20261122/README.md#gianttrap-的实际配置)
+
 ### 2026-11-22 补核：凯尔希·思衡托的动态半径
 
 **D：** 固定镜像 `17759cc8cdf37388414145d16262a3a06f3ab25e` 中，`char_1052_kalts2` 的第一天赋“遗尘守望”在 `/char_1052_kalts2/talents/0/candidates/*/blackboard/3` 写有 `block_radius_scale=0.23`。同角色 S1 `skchr_kalts2_1` 的各技能等级在 `/skchr_kalts2_1/levels/*/blackboard/1` 写有 `attack@block_radius_scale=0.23`，持续时间均为 35 秒。 [角色表](../../../assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json) · [技能表](../../../assets/arknights-game-data/zh_CN/gamedata/excel/skill_table.json)

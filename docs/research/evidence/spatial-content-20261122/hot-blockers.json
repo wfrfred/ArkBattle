@@ -1,0 +1,148 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-22",
+    "versionId": "26-11-13-06-34-18-84612175",
+    "source": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/hot_update_list.json",
+      "bytes": 3348046,
+      "sha256": "f5d0009a16adadf90d27e6a211af5716ae34c7eea982ce6dfc23dbaf9cc6103d"
+    },
+    "reader": {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/blocker-roles-20261031/extract.py",
+      "bytes": 5391,
+      "sha256": "6fb2b14bd9d1cb06039365378001594f03ecc4cbe3b1bb04ed6ac4ac001391bf"
+    },
+    "inputGlob": "battle/enm_pfb_*.ab"
+  },
+  "result": [
+    {
+      "source": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_0.ab",
+        "bytes": 357075,
+        "sha256": "76a93bea29400a8eaf9c94699996b281ae7955a87ff4e32885a73a52b01642dd"
+      },
+      "controllers": 56,
+      "scriptTypes": [
+        "1933ff7e8a5c8203d6c79671cc9a6791"
+      ],
+      "nonzeroMasks": []
+    },
+    {
+      "source": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_26.ab",
+        "bytes": 456611,
+        "sha256": "4ce9db70858f2e42389ab2ee3a2778ddcf388731ebcf0df3185df40f629f2efa"
+      },
+      "controllers": 60,
+      "scriptTypes": [
+        "1933ff7e8a5c8203d6c79671cc9a6791",
+        "26820eb414e841472a529c5b0e211dad",
+        "9e9f9729c5fdd5bfe14a604c80b8bc80",
+        "afd5eea9d2e224c7ecd755dd04bf1e1c",
+        "bb638e4a3233b9329d7281df100790f6",
+        "d219cc553a50f167f7896349e4e2e4d4"
+      ],
+      "nonzeroMasks": []
+    },
+    {
+      "source": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_36.ab",
+        "bytes": 526596,
+        "sha256": "44802be002675da847cdaccc6086e0a3a19242a095fedeb56cd4559d234f8c8c"
+      },
+      "controllers": 60,
+      "scriptTypes": [
+        "1933ff7e8a5c8203d6c79671cc9a6791",
+        "afd5eea9d2e224c7ecd755dd04bf1e1c",
+        "f104ed9a216626cd2154a46052dc4ddc"
+      ],
+      "nonzeroMasks": [
+        {
+          "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+          "pathId": "-8577273602222306886",
+          "objectSha256": "897eac4f639cc3d8be7c8384fdad13454ac7fabce9568446761ac2cfb72b63c4",
+          "prefab": "enemy_9024_acsgnt",
+          "fields": {
+            "_sideTypeIndex": {
+              "offset": 156,
+              "value": 0
+            },
+            "_blockVolume": {
+              "offset": 268,
+              "value": 1
+            },
+            "_ignoreBlockMode": {
+              "offset": 308,
+              "value": 0
+            },
+            "_specificBlockMask": {
+              "offset": 312,
+              "value": 2
+            }
+          }
+        },
+        {
+          "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+          "pathId": "-881802608265815001",
+          "objectSha256": "670f269a97b23d6732203dd5a047639bbb66833cf65b178a80658d26c5476841",
+          "prefab": "enemy_9026_acltm",
+          "fields": {
+            "_sideTypeIndex": {
+              "offset": 144,
+              "value": 0
+            },
+            "_blockVolume": {
+              "offset": 256,
+              "value": 1
+            },
+            "_ignoreBlockMode": {
+              "offset": 296,
+              "value": 0
+            },
+            "_specificBlockMask": {
+              "offset": 300,
+              "value": 2
+            }
+          }
+        },
+        {
+          "file": "CAB-83405aaa933fd36a5751fc087ae0984f",
+          "pathId": "1348064420560207857",
+          "objectSha256": "7eacf9d2556f0cab22f5f87129581440fa71acd1fed174727c01c5105a6dab3b",
+          "prefab": "enemy_9025_aclts",
+          "fields": {
+            "_sideTypeIndex": {
+              "offset": 144,
+              "value": 0
+            },
+            "_blockVolume": {
+              "offset": 256,
+              "value": 1
+            },
+            "_ignoreBlockMode": {
+              "offset": 296,
+              "value": 0
+            },
+            "_specificBlockMask": {
+              "offset": 300,
+              "value": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/battle/enm_pfb_37.ab",
+        "bytes": 89699,
+        "sha256": "782c45b5dd64164347915bc730bb4d29efb3e28318fe0ced099ad606c700b251"
+      },
+      "controllers": 8,
+      "scriptTypes": [
+        "1933ff7e8a5c8203d6c79671cc9a6791",
+        "afd5eea9d2e224c7ecd755dd04bf1e1c"
+      ],
+      "nonzeroMasks": []
+    }
+  ]
+}
