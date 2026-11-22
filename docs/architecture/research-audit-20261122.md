@@ -29,7 +29,7 @@
 | G08 | 路线到达、退出资格与退出事实 | 普通终点结算用 REACH_EXIT。喀兰圣女等实际 Prefab 禁止退出但仍有路线，主线 6-15 另有不扣蓝门生命但计击杀的配置。 | 到达终点直接移除，内部结束原因通用 SCRIPT，只有表现事件区分出口。改成最后一道 MOVE 会丢失真实终点及剩余路程。 | [原生依据](../research/cases/13-route-and-movement-timing.md#L153) · [Core](../../src/core/unit/capability/route/operations.ts#L378) · [禁止退出配置](../research/evidence/route-operations-20261107/temporary/content.json#L2819) · [退出与击杀](../research/cases/30-scheduler-action-data-fields.md#L155) |
 | G09 | 推进分支与执行分支分开 | 活动关卡实际出生的思旧通过 ModifyRuntimeRouteUseBranchRoute 取路线，消耗下一 Phase，取路线失败也保留已推进索引。 | 公开 triggerBranch 在推进索引后立即启动当前 Phase。Content 要保留同一游标并用于真正触发时，缺少可单独消费 Phase 的操作。 | [原生依据](../research/cases/31-route-operations-and-state.md#L105) · [Core](../../src/core/battle/schedule/runtime.ts#L228) |
 
-部署退出单独核对了普通撤退和死亡。主动返还 DP 在请求结束前，普通撤退与死亡的卡牌回收都在原生 `OnFinish`，对象注销则在 `OnRecycle`。仍需要证据的是在场单位退出后**部署额度何时释放**、**同卡在场上限何时放行**，以及有关条件下对结算期间重入部署的实际影响。 [Case 24 普通退出结算](../research/cases/24-deployment-cost-and-supply.md#L382)
+首次复核确认主动返还 DP 在请求结束前，普通撤退与死亡的卡牌回收都在原生 `OnFinish`，对象注销在 `OnRecycle`。后续取证已定位全局部署额度与同卡在场名额各自的释放时点和部署资格消费者，也复核了本次审计当时留下的中继器回收、动态召唤等待线索。 [后续证据与项目对照](research-necessity-20261122.md#回收部署额度与动态召唤的原生调用链)
 
 标准沉默当前只限制 Skill 发动，已证实的天赋暂停与恢复仍需接入。现有 Effect 身份、启停和作用域能组织这一行为，已证需求暂无额外的 Effect 或 Lifetime 契约。纯烬艾雅法拉 S2 需要先消耗屏障再做 EP 准入，当前 `beforeReceive` 可以同时改本次值和盾池。 [沉默证据](../research/cases/06-talent-lifecycle-and-model.md#L34) · [EP 屏障](../research/cases/38-damage-classification-and-permissions.md#L287) · [EP Apply](../../src/core/battle/resource/ep/damage/apply.ts#L41)
 
@@ -85,8 +85,8 @@
 | U035 | 本次附加、一般初始化、基础 SP 与具体出生程序实际发生冲突时的可观察顺序（含 Case 01） | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L289) |
 | U036 | 岁相资源到 EnemyGiantBoss 的实际绑定，以及大体型出生、朝向和地格清理的单体确证 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L295) |
 | U037 | 预置对象结束时原 Card 返费、回收及身份关联规则 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L439) |
-| U038 | 普通离场何时退还本次部署额度 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L444) |
-| U039 | 同卡在场上限何时放行，是否从 ENDING 或注销分界独立 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L444) |
+| U038 | 普通离场何时退还本次部署额度 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
+| U039 | 同卡在场上限何时放行，是否从 ENDING 或注销分界独立 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
 | U040 | 源石封印是否也限制卫戍自动入口。此处调查具体共享资格，与其他失败接续分开 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L449) |
 | U041 | BeforeStart 起步窗口是否有真实可达的第二轮并行爆发，现仅有静态重入窗口 | [Case 25](../research/cases/25-elemental-burst-recovery-timing.md#L200) |
 | U042 | 妮芙的 EP 后继和其他伤后观察者相对顺序是否改变可达结果 | [Case 27](../research/cases/27-attack-additions-and-damage-events.md#L156) |

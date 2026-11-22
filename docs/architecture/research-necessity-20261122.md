@@ -18,7 +18,23 @@
 | G10 金币与 SP | 琳琅诗怀雅可在同一技能内处理不同付款与金币容量。 | Content 的 Skill 私有状态保存金币，现有 `activate` 传本次付款参数。具体金币累计、清空、上限及支付在自己的程序中处理。普通 SP 动态改变尚缺独立正例，见 U058。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L115) |
 | G11 魔力与 SP | 玛露西尔的魔力需要跨部署，消耗时与普通 SP 修改隔离。 | Card 私有状态持久化，Card.onTick 推进场下回复，单位入场和退场同步到技能私有状态。一般 SP 修改只碰 SP。保留既定方案，普通 SP 的封闭仍需独立的实际消费。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L317) |
 
-这轮有四项有证据的行为差异，应进入三个领域的设计审查。Blocking 有 G04 的跨层资格与 U022 的运行时搜索半径，DP 有 G05 的账户上限，退出有 G08 的资格和业务原因。当前设计审查以既有关系、账户与离场链为起点。接口形式待各自确认。
+首次复核记录了四项有证据的行为差异。Blocking 有 G04 的跨层资格与 U022 的运行时搜索半径，DP 有 G05 的账户上限，退出有 G08 的资格和业务原因。后续定向补查见下节。
+
+## 回收、部署额度与动态召唤的原生调用链
+
+| 编号 | 已查实的可观察结果 | 当前 Core 对照 |
+| --- | --- | --- |
+| U025 中继器回收 | 实际中继器的结束 Buff 先按 ON_FINISH 补货，再进入 Card 回收。持有上限稳定、确实补入一份且无显式刷新时，剩余总份和排队份数同加，可用份数保持不变。正在恢复时再次普通归队只追加恢复份数，不重置当前段时钟。谬因 S3 的显式重置节点将当前时钟归零。 | `enqueueRecovery` 已能保留当前段，下段在启动时采样预算。其余技能库存逻辑可独立处理，运行中单段归零可用 `clearCooldown(..., "RECOVERY")`。 [原生与实际绑定](../research/evidence/repeater-recovery-20261122/README.md) |
+| U038／U039 部署额度和同卡名额 | 普通撤退先返 DP。普通死亡和撤退都在 `Character.OnFinish` 通知原 Card。此时普通 UNIQUE 卡开始冷却，TokenCard 可释放自身在场名额。全局部署额度到 `Unit.OnRecycle → UnitManager.Unregister` 才释放。普通撤退即时回收，普通死亡走延迟回收，Character 默认预算为 1 秒。 | 实际部署资格读取剩余全局额度，已满额时另一张 Card 必须等这个预算结束。当前探针中普通 DEATH 完成时 `usedSlots` 同 Tick 归零，另一张 Card 可立即部署。保留整个 Unit 会延迟 Card 冷却或同卡名额，单卡 DEPLOY Restriction 则无法让全局额度查询保持占用。U039 的同卡名额已随退场结算，明确差异是 U038 的独立全局占用。 [原生与资格](../research/evidence/deployment-exit-limits-20261122/README.md) · [Core 释放](../../src/core/unit/capability/deployable/capability.ts#L62) |
+| U048 动态召唤与调度等待 | 寻路者甜品商按活宿主的当前路线和进度生成糖果车。真实调用在成功出生后将它加入当前波次与最终两处等待。主线 12-20 的变形者集群分身只加入最终等待。卫戍炎佑只借用 `dragon` 路线，其调用参数明确跳过两处。 | 探针中现有 `Unit.initialize → Unit.add` 能创建动态 Unit，两个集合仍为空，Schedule 可以提前完成。现有预编排 `Spawn.wait` 能入两张表，但创建输入是固定 Plan 和偏移。阶段末尾阻塞 Operation 需要另行管理仍可能出生的对象和最终等待，替换不了现有等待关系。实际动态出生需要加入调度的事实已经闭合，操作形式待设计。 [真实出生与等待](../research/evidence/managed-summons-20261122/README.md) · [炎佑反例](../research/evidence/stronghold-yan-summon-20261122/README.md) · [Core 等待登记](../../src/core/battle/schedule/runtime.ts#L13) |
+
+本节闭合所述实际普通路径。其它模式的政策、特例和不同版本仍按原证据适用范围记录。
+
+## 凛御银灰模组的再部署涨费上限
+
+U023 的实际样本是凛御银灰 X 模组 3 级。符合天赋条件的 Card 退场后获得 `-0.25` 的再部署倍率上限修正，普通第二层从 ×2 限为 ×1.75。原生先按这个上限算出 rawCost 并取整，再处理运行时倍率和加值。 [实际模组、天赋绑定和原生算价](../research/evidence/redeploy-cost-cap-20261122/README.md)
+
+当前 `resolveCost` 把 ×2 写在倍率阶段，公开费用贡献可在后段乘 0.875 来模拟单个样本。合成探针用原价 21 的二层 Card 验证，单独修正得到 36，再叠加后段 ×0.9 时得到 33，原生分段公式得到 32。手动按已知基础价提供校正仅覆盖受控 Card，基础价变化后要同步重算。Core 缺少独立表达这一阶段的费用贡献。探针的 ×0.9 用于区分算价顺序，尚无同 X3 在实际内容中叠加的证据。 [当前算价](../../src/core/battle/deployment/card/state.ts#L18)
 
 ## 五十九个待证候选
 
@@ -39,22 +55,22 @@
 | U020 | Projectile 私有 State 可保存来源和采样，HP／EP 请求可以显式指定实际来源。要确认反射是否还必须保留弹道身份、改 Side，需从实际反射内容查清，不从静态来源替换候选推定。 [Case 18](../research/cases/18-projectile-source-and-target-lifecycles.md#L198) |
 | U021 | 多原点有原生代码，仍待支持内容中同一关系所有者从多个原点搜索的实际配置。G04 的同格跨层只证明层资格。 [Case 21](../research/cases/21-tippi-air-blocking.md#L86) |
 | U022 | 凯尔希·思衡托 S1 提高已在场友方干员的空中阻挡半径，配置有明确倍率。现有 `setLayer` 按初始配置重设半径并解除旧关系，Restriction 无法让 `search` 或 `acquire` 接纳固定圆外的目标。预先调大所有潜在受益者的半径再用限制缩回，需要在 Content 重复维护正常半径、有效半径和关系保留政策。应在现有 Blocking 获取规则内核对有效半径及恢复后的关系。同 G04 一并评估。 [实际配置和规则](../research/cases/21-tippi-air-blocking.md#L96) · [现有搜索](../../src/core/battle/blocking/operations.ts#L183) |
-| U023 | 已知凛冬、极境与费用交换可分别用卡牌费用贡献。凛御银灰模组的社区正例涉及再部署涨费上限；还需定位实际写入绑定、分段取整及同其他来源叠加的结果。单来源可在 Card 状态保存条件并写贡献，当前硬编码阶段上限遇到全局聚合规则才仍有边界。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L133) |
+| U023 | 已知凛冬、极境与费用交换可分别用卡牌费用贡献。凛御银灰 X3 已定位实际绑定、倍率上限写入与分段取整。普通费用贡献可以模拟受控单卡结果，无法直接表达独立变化的上限。真实多来源叠加按具体内容取证。 [原生与 Core 对照](#凛御银灰模组的再部署涨费上限) |
 | U024 | 主线 12-13 和训练 22 的同一符文将 DP 上限设为 20、卡牌标价截断设为 99，并关闭同步。静态初值已有 Deployment.definition.maxDp 和 costCeiling，Data 可直接转换。已定位战中账户上限写入口，仍需 sync=true 的实际内容与完整后继证明运行时必须联动。 [原生与实际关卡](../research/evidence/dp-cap-20261122/README.md) · [当前 Definition](../../src/core/battle/deployment/deployment.ts#L14) |
-| U025–U027 | 中继器明确使用 QUEUED。现有 enqueueRecovery 让后段读取当时预算，开始后的普通段可用 reduceCooldown／clearCooldown 调整；仍需回收前后实参和计数证明 Reset 如何发生。银灰和砾分别作用下一次预算与当前段，已有对应贡献和操作。回滚、半值取整和多来源顺序继续按真实组合查证。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L109) |
+| U025–U027 | U025 的普通连续归队按本次定向补查结论保留当前段。银灰和砾分别作用下一次预算与当前段，已有对应贡献和操作。回滚、半值取整和多来源顺序继续按真实组合查证。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L109) |
 | U028 | 现有 Request 可以豁免本次冷却、提供零 DP，同时保留 Card 的真实时钟，随后走同卡 deploy。特殊移动的原实例可 Unit.remove，后续同步识别实际结果。需要先查具体移动继承的 HP／SP、失败后继和退场业务原因，再判断是否要调整已有操作。已有增加 HP 操作不能模拟任意生命迁移。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L171) |
 | U029–U031 | 同屏上限和当前库存已有独立字段，临时在场上限可由 Request 限制表达。谬因 S3 的额外中继器和清 CD 要核实是否还改变持有截断。已知批量回收可选具体 Unit Ref 逐一 remove，随后用 Card.recharge／enqueueRecovery。未用卡可分别控制 DISPLAY／SELECT／DEPLOY；要查实际是否移除身份、何时裁剪、或有业务依赖回收原子顺序。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L189) |
 | U032–U034 | 卫戍开场的已证 G07 可组合。倒地和自动重试可由 Mechanism 的私有进度与正常 evaluate／deploy 推进。现有暂停、缩短和清空可以分别操作当前段与恢复段；需查堆叠时钟是每实例并行还是按同卡串行，以及哪些失败、暂停组合真实适用。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L220) |
 | U035 | G06 的探针保留真实实时 HP，冻结载荷仍是出生旧样本。优先找必须消费早期出生事实的内容，查清基础 SP、MaxHP 与该消费者的时点。若具体消费者可按 Ref 查询，则已有路径。 [Case 24](../research/cases/24-deployment-cost-and-supply.md#L266) |
 | U036–U037 | 岁相的矩形清场、按格布置封印可用 Box 查询、Unit.remove 与独立地块覆盖／单位。多格 Occupancy 需找到消费同一主体跨格占位的业务。普通无卡预置用 Unit.initialize；关联既有 Card 的特殊预置尚需查清退场返费、库存及具体回收对象。 [方向和巨型范围](../research/cases/24-deployment-cost-and-supply.md#L291) · [预置样本](../research/cases/24-deployment-cost-and-supply.md#L418) |
-| U038–U040 | 串行普通离场在当前 removed 后恢复部署额度及同卡名额。若需更早释放，必须找到 removing 或依赖收尾中真实重入部署的消费者，并分别证明对应两个账户边界。源石封印是否约束自动入口需要实际规则。共用同一卡时已有 DEPLOY Restriction 可供明确政策消费。 [普通回收](../research/cases/24-deployment-cost-and-supply.md#L382) · [未决条件](../research/cases/24-deployment-cost-and-supply.md#L441) |
+| U038–U040 | 普通死亡的部署额度与同卡名额已经分别追到各自的写回及资格查询，见定向补查。源石封印是否约束自动入口仍缺实际规则。共用同一卡时已有 DEPLOY Restriction 可供明确政策消费。 [普通回收](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
 | U041 | 已有 Burst 在 onInstall 先建立槽，随后派启动通知，后续准入看到该槽。当前定稿允许独立子 Effect。有静态重入窗口，尚无真实内容依赖同宿主并行第二轮，保留已有选择。 [Case 25](../research/cases/25-elemental-burst-recovery-timing.md#L200) · [Elemental](elemental.md#支持边界) |
 | U042 | 妮芙的 Action／Projectile 先按命中前爆发事实决定附段，HP beforeCommit 可以装延迟程序，sourceApplied 触发 EP。若主 HP 已归零而未救回，后续 EP 不可用。若其他已知伤后程序须与这个观察者排序，先查是否可由同轮 Hook 优先级组织，再找真实相互覆盖。 [Case 27](../research/cases/27-attack-additions-and-damage-events.md#L152) |
 | U043–U044 | 奥术法阵按每笔跳跃目标做来源输出，现有 output 能访问本笔 target，已完成的 HP 报告可读实际变化和取消。零值、免疫、全吸收的原生资格仍待核。泥岩盾先尝试 cancel(BLOCKED) 再减层／治疗，后继可读结果。未见需要另发独立抵挡通知或区分两个 BLOCKED 的业务消费者。 [Case 26](../research/cases/26-arcane-circle-chain-silence.md) · [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L42) |
 | U045 | 原生目标的 reason 5 能跳过来源输出，现有 Calculate.output 已早于 Apply.beforeReceive。已查清主线 12-18 的变形者集群通过实际弹道召唤带 EP INTERRUPT 天赋的解构畸变体。仍缺同一可达请求中会先产生副作用的来源 EP 程序，无法据此要求重排通用流程。 [先后比较](../research/cases/28-damage-hooks-and-event-granularity.md#L50) · [召唤链证据](../research/evidence/wdslm-ep-interrupt-20261122/README.md) |
 | U046 | 已绑定的均摊 HP／EP 是保全派驻战地援护无人机，联合分治候选有生息演算单位绑定。适用范围内若有分多人回复，可先由作用程序固定成员列表，再按比例对各 Ref 发起现有 Healing。只有共享结算资格产生真实差异时再问资源模型。 [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#L164) |
 | U047 | 本版原生 getter 实读运行配置；销毁和显式记账有确认调用。固定 gamedata 没有同名取值。Core 当前在 Unit 注销释放等待，表现回收独立。是否需要让玩法等物理回收，仍缺明确模式的实际结果，现有延迟等待也可由关卡现有 Operation 表达。 [定向取证](../research/evidence/talent-schedule-callers-20261122/README.md) |
-| U048 | 公开 Schedule Spawn 的 `wait` 能在 `Unit.add` 前建立等待，已在场 Unit 还可通过 `releaseFromWave` 独立解除本波。原生确有不经过普通 Spawn 的重载能登记最终集合，仍需实际调用证明某对象要求以动态构造结果登记同一 Scheduler 等待，并且无法转为现有 Spawn 输入。卫戍炎佑的盟约人数和召唤时点有社区佐证，尚需把它与本版 `dragon` 分支和具体重载实参接上。 [Case 30](../research/cases/30-scheduler-action-data-fields.md#L95) · [已有正例](../research/cases/34-prts-mechanism-coverage-audit.md#L17) · [盟约社区记录](https://prts.wiki/w/卫戍协议：盟约_下半/PRTS盟约记录) |
+| U048 | 本次定向补查确认了动态创建后加入调度的实际调用，以及本波加最终、只最终、两处均无的三个真实样本。活 Unit 独立解除本波等待继续由已存在的 `releaseFromWave` 表达。 [Case 30](../research/cases/30-scheduler-action-data-fields.md) · [解除等待的原生正例](../research/cases/34-prts-mechanism-coverage-audit.md#L17) |
 | U049 | 马特奥已证清原路线后重建，现有 reassign 可用。后兽实际插 MOVE，但样本没有旧巡逻交集。显式 MOVE／GOTO 的替换可由内容组装 Plan，若实际还须保留当前 WAIT 私有进度或随机样本才需额外核对。 [Case 31](../research/cases/31-route-operations-and-state.md#L123) |
 | U050–U051 | 莱塔尼亚召唤物正例只建立出向关系。Blocker + Route TRACE + acquired／released 修改 Locomotion 资格就能表达停走和阻挡攻击。未找到同时入向和出向的正例，保留现有互斥。追踪的目标 Ref 与地块可分别保存在内容状态，通过 setTraceTarget 恢复追踪，隐藏条件与重选的实际后继仍待证。 [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md) |
 | U052–U053 | 火龙确有朝向消费者，但没有证据链接到 MultiSpine 的延迟发布。异常恢复自动补发也未见正例。若某内容确实延迟转向，可由其 Effect 在实际时点清限制再调 facing.turn。 [Case 35](../research/cases/35-facing-and-turning-conditions.md#L69) |
