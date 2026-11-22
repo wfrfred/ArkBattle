@@ -42,71 +42,73 @@
 | G10 | 琳琅诗怀雅的金币可以由 Content 私有状态保存，技能可通过本次发动参数决定是否收取 SP。已查案例不足以确认普通 SP 配置需要运行期提交。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L115) · [Skill](skill.md#6-覆盖边界) |
 | G11 | 若玛露西尔的魔力由 Content 私有状态承载，普通 SP 操作自然与魔力隔离。共享 SP 封闭仍取决于资源表示和真正需要它的普通 SP 消费者。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L317) |
 
-## 逐项未决清单
+## 逐项研究记录
 
 ### 初次盘点的 Core 候选（59）
 
-| 编号 | 待核实问题 | 来源 |
-| --- | --- | --- |
-| U001 | 异宿主派生子项在父收尾时可已失效、仍未完成。具体支持内容是否读取这段先后。Core Lifetime 采用依赖完整收尾后再父 Finalize | [Case 01](../research/cases/01-buff-installation-and-parent-scope.md#L165) |
-| U002 | 普通支持范围内 EXTEND 是否重新采样并重载既有输出，以及动态 RefreshPriority 的实际使用。已绑定 EXTEND+快照配置来自排除的生息演算。单独保留支持范围内的正例问题 | [Case 01](../research/cases/01-buff-installation-and-parent-scope.md#L275) |
-| U003 | ReassignTalents 的真实调用者和旧天赋分离／重装时是否保持身份／计数。未见必须改 Unit Definition／能力组成的实证 | [Case 06](../research/cases/06-talent-lifecycle-and-model.md#L60) |
-| U004 | 同一 Ability 重挂并改变周期，因保留已过时间影响下轮资格的实际配置。已有操作只按比例刷新或清空／重置。实际需要保持已过时间的现有技能持续已由 extendTime 表达 | [Case 07](../research/cases/07-action-timing-and-animation.md#L138) |
-| U005 | 直接写当前 HP 的 TakeDamageMoveBackEnemy 等方法是否实际绑定支持玩法（同 Cases 37–39） | [Case 11](../research/cases/11-damage-apply-and-hp-application.md#L265) |
-| U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
-| U007 | 启用 alwaysCheckCurrentPoint 的实际敌人是否主动重建 Main Cursor，从而改变不可达路点政策 | [Case 13](../research/cases/13-route-and-movement-timing.md#L143) |
-| U008 | 是否有支持范围内的首 APPEAR 或 DISAPPEAR 正例需要普通 Unit 登记前的同步标志或回调 | [Case 13](../research/cases/13-route-and-movement-timing.md#L272) |
-| U009 | 是否有实际内容使用 MOVE 的非零 reachDistance，并因此要求逐路点设置到达半径 | [Case 13](../research/cases/13-route-and-movement-timing.md#L318) |
-| U010 | 是否存在会实际切换为不允许对角平滑的路线 | [Case 14](../research/cases/14-route-definition-fields.md#L38) |
-| U011 | 是否存在实际要求每个经过格的中心都必须访问的路线 | [Case 14](../research/cases/14-route-definition-fields.md#L39) |
-| U012 | 是否存在实际要求访问每个寻路后继节点中心的路线 | [Case 14](../research/cases/14-route-definition-fields.md#L40) |
-| U013 | 原始路线 motionMode 为 E_NUM 时，是否允许实际执行以及如何决议运动方式 | [Case 14](../research/cases/14-route-definition-fields.md#L43) |
-| U014 | 原生足部定位点和 Core 身体坐标的差异是否会在实际内容中导致不同的导航或避障决策 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L148) |
-| U015 | 支持范围内是否有实际内容启用 SeparateMoveController 的邻居分离力 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L194) |
-| U016 | 支持玩法中是否有实际推拉接触需要检测非地图实体的动态碰撞体 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L224) |
-| U017 | 是否存在施力者已经失效却仍能创建普通持续牵引的实际内容 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L251) |
-| U018 | 排除阵地足球后，是否存在地形或内容需要组合多个同时有效的加法摩擦修正 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L287) |
-| U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
-| U020 | 弹道反射或实际施法来源替换时，来源、属性采样与归属如何变化 | [Case 18](../research/cases/18-projectile-source-and-target-lifecycles.md#L200) |
-| U021 | 支持范围内是否有实际 GiantTrap 配置，需要一个阻挡者从多个位置搜索目标 | [Case 21](../research/cases/21-tippi-air-blocking.md#L92) |
-| U022 | 是否有实际内容修改 BLOCK_RADIUS_SCALE 并改变飞行阻挡半径 | [Case 21](../research/cases/21-tippi-air-blocking.md#L94) |
-| U023 | 具体 CardBuff／符文来源进入费用汇总的资格、竞争和各段取整顺序 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L42) |
-| U024 | MAX_COST_CEIL 的配置来源及与 MAX_COST 的动态同步条件 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L53) |
-| U025 | 普通 QUEUED 归队实际哪些状态、调用实参和顺序会重置现行恢复时钟 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L113) |
-| U026 | 银灰 X 模组临时再部署修正解除后是否回滚已运行冷却 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L145) |
-| U027 | 再部署属性修正、一次缩短、多来源及半值取整顺序 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L155) |
-| U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L181) |
-| U029 | 实际动态改变召唤物持有上限时的裁剪和恢复规则 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L195) |
-| U030 | 梅尔／麦哲伦／令的批量或条件回收怎样接续库存、冷却、通知与溢出 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L199) |
-| U031 | 夜莺、麦哲伦、多萝西、白铁等宿主离场时未用附属 Card 如何保留同一身份、库存和冷却。淬羽赫默技能窗口结束同类问题 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L202) |
-| U032 | 卫戍自动再部署失败组合及特殊限制下的恢复接续 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L221) |
-| U033 | 卫戍同一宿主堆叠召唤物究竟按并行时钟还是串行恢复 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L226) |
-| U034 | 再部署暂停与显式减时、清零、临时豁免能否在支持范围内组成实际链 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L240) |
-| U035 | 本次附加、一般初始化、基础 SP 与具体出生程序实际发生冲突时的可观察顺序（含 Case 01） | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L289) |
-| U036 | 岁相资源到 EnemyGiantBoss 的实际绑定，以及大体型出生、朝向和地格清理的单体确证 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L295) |
-| U037 | 预置对象结束时原 Card 返费、回收及身份关联规则 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L439) |
-| U038 | 普通离场何时退还本次部署额度 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
-| U039 | 同卡在场上限何时放行，是否从 ENDING 或注销分界独立 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
-| U040 | 源石封印是否也限制卫戍自动入口。此处调查具体共享资格，与其他失败接续分开 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L449) |
-| U041 | BeforeStart 起步窗口是否有真实可达的第二轮并行爆发，现仅有静态重入窗口 | [Case 25](../research/cases/25-elemental-burst-recovery-timing.md#L200) |
-| U042 | 妮芙的 EP 后继和其他伤后观察者相对顺序是否改变可达结果 | [Case 27](../research/cases/27-attack-additions-and-damage-events.md#L156) |
-| U043 | 零伤害、无敌、完全吸收下伤后观察者的资格，含奥术法阵各段跳跃与妮芙附加 EP | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
-| U044 | 是否存在独立抵挡通知或区分两种 BLOCKED 的实际后继（含 Case 38） | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
-| U045 | 实际内容中目标前置（含原因 5 提前中断）与来源输出换位是否会改变结果 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L52) |
-| U046 | 联合分担或均摊治疗能否绑定到支持范围内的实际玩法 | [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#9-剩余证据边界) |
-| U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
-| U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
-| U049 | acfnc 等保留原巡逻再插点的可达链和真实巡逻回边 | [Case 31](../research/cases/31-route-operations-and-state.md#L139) |
-| U050 | 莱塔尼亚召唤物能否同时具有入向与出向阻挡关系（含 Case 23） | [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md#L32) |
-| U051 | Trace 短距预测在消失、隐藏等目标资格变化时的接续与到达后继 | [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md#L83) |
-| U052 | MultiSpine 延后发布有效朝向是否影响一项实际玩法 | [Case 35](../research/cases/35-facing-and-turning-conditions.md#L75) |
-| U053 | 异常解除是否主动重发此前无法发布的面向 | [Case 35](../research/cases/35-facing-and-turning-conditions.md#L82) |
-| U054 | 煌的锁血数值拒写与后续伤判联用时，是否有实际观察者需要看到较早锁定的值 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L121) |
-| U055 | DAMAGE_WITHOUT_MODIFY 越过低血量缩放的实际可达消费者（同 Case 10 flag4） | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L185) |
-| U056 | EP 取消是否存在按具体原因分支的消费内容 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L249) |
-| U057 | 蒂比 S2 成功闪避后普通伤判和天赋时钟的线上行为 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L298) |
-| U058 | 非默认 SP 恢复类型切换的实际使用及计时续接 | [证据批次](../research/evidence/skill-audit-20261117/sp/result.md#L26) |
-| U059 | 埃芒加德共享复活额度的实际扣减、取消及例外资格 | [总览03](../research/03-space-units-and-mechanisms.md#L295) |
+每行保留初次问题，处理状态来自后续取证、现行契约与实现。待接入和待定的项在 [Core 剩余缺口](research-necessity-20261122.md) 中按领域维护。已有表达表示已核实的需求可由现有 Core 承载。具体内容的取证仍随案例更新。
+
+| 编号 | 初次盘点的问题 | 当前状态 | 来源 |
+| --- | --- | --- | --- |
+| U001 | 异宿主派生子项在父收尾时可已失效、仍未完成。具体支持内容是否读取这段先后。Core Lifetime 采用依赖完整收尾后再父 Finalize | 已有表达。父 Effect 请求结束时子项立即失去资格，当前依赖收尾顺序覆盖维什戴尔残影样本。 | [Case 01](../research/cases/01-buff-installation-and-parent-scope.md#L165) |
+| U002 | 普通支持范围内 EXTEND 是否重新采样并重载既有输出，以及动态 RefreshPriority 的实际使用。已绑定 EXTEND+快照配置来自排除的生息演算。单独保留支持范围内的正例问题 | 按内容核对。重延并重新采样的正例来自生息演算，支持范围内动态抢组仍缺实际样本。 | [Case 01](../research/cases/01-buff-installation-and-parent-scope.md#L275) |
+| U003 | ReassignTalents 的真实调用者和旧天赋分离／重装时是否保持身份／计数。未见必须改 Unit Definition／能力组成的实证 | 范围外样本。已查到的直接调用来自次生预案战中升级，普通天赋启停和计数已有表达。 | [Case 06](../research/cases/06-talent-lifecycle-and-model.md#L60) |
+| U004 | 同一 Ability 重挂并改变周期，因保留已过时间影响下轮资格的实际配置。已有操作只按比例刷新或清空／重置。实际需要保持已过时间的现有技能持续已由 extendTime 表达 | 已有表达。哈蒂娅用现有技能延时。Action 重挂后按已过时间结算的普通正例仍缺。 | [Case 07](../research/cases/07-action-timing-and-animation.md#L138) |
+| U005 | 直接写当前 HP 的 TakeDamageMoveBackEnemy 等方法是否实际绑定支持玩法（同 Cases 37–39） | 按内容核对。该原生方法的实际绑定仍未找到。魔王和「岁」的有符号 HP 调整已另列 [Core 缺口](research-necessity-20261122.md#resource--vitality)。 | [Case 11](../research/cases/11-damage-apply-and-hp-application.md#L265) |
+| U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | **待定。** 跨格偏移引起下一移动目标差异已核实。Plan 已保存两项输入，待确定构场使用的格。 | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
+| U007 | 启用 alwaysCheckCurrentPoint 的实际敌人是否主动重建 Main Cursor，从而改变不可达路点政策 | 按内容核对。开关已有真值样本，临时路线可用独立 Context。需要重建 Main 并改变不可达处理的实际组合仍未证。 | [Case 13](../research/cases/13-route-and-movement-timing.md#L143) |
+| U008 | 是否有支持范围内的首 APPEAR 或 DISAPPEAR 正例需要普通 Unit 登记前的同步标志或回调 | 按内容核对。已知出生可用位置初值和入场程序。普通出生必须在登记前处理首条指令的实际消费者仍缺。 | [Case 13](../research/cases/13-route-and-movement-timing.md#L272) |
+| U009 | 是否有实际内容使用 MOVE 的非零 reachDistance，并因此要求逐路点设置到达半径 | 未证实 Core 缺口。已查静态与动态路线均未找到 MOVE 使用非零到达容差的正例。 | [Case 13](../research/cases/13-route-and-movement-timing.md#L318) |
+| U010 | 是否存在会实际切换为不允许对角平滑的路线 | 未证实 Core 缺口。固定路线扫描未见禁用对角平滑的普通路径。 | [Case 14](../research/cases/14-route-definition-fields.md#L38) |
+| U011 | 是否存在实际要求每个经过格的中心都必须访问的路线 | 未证实 Core 缺口。已知明确的中心点序列可用 MOVE 表达。 | [Case 14](../research/cases/14-route-definition-fields.md#L39) |
+| U012 | 是否存在实际要求访问每个寻路后继节点中心的路线 | 未证实 Core 缺口。固定路线未见要求经过每一个寻路后继格中心的样本。 | [Case 14](../research/cases/14-route-definition-fields.md#L40) |
+| U013 | 原始路线 motionMode 为 E_NUM 时，是否允许实际执行以及如何决议运动方式 | Data 待核对。E_NUM 有配置和出生引用，所查普通实例为占位或停用条目，实际行走未证。 | [Case 14](../research/cases/14-route-definition-fields.md#L43) |
+| U014 | 原生足部定位点和 Core 身体坐标的差异是否会在实际内容中导致不同的导航或避障决策 | 已有表达。Route 可用 Context.offset。脚点与身体位置差异产生实际导航或避障结果的样本仍缺。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L148) |
+| U015 | 支持范围内是否有实际内容启用 SeparateMoveController 的邻居分离力 | 未证实 Core 缺口。已见邻居分离绑定来自对战或特殊玩法，支持范围内未取得实例。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L194) |
+| U016 | 支持玩法中是否有实际推拉接触需要检测非地图实体的动态碰撞体 | 已有表达。已核地图碰撞用 Tile collider 和 Shifting。动态单位碰撞仍缺支持范围内正例。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L224) |
+| U017 | 是否存在施力者已经失效却仍能创建普通持续牵引的实际内容 | 已有表达。暗索等牵引用有效来源及弹道 Scope。失效来源仍创建持续牵引的正例未证。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L251) |
+| U018 | 排除阵地足球后，是否存在地形或内容需要组合多个同时有效的加法摩擦修正 | 已有表达。SN-5 和 BI-TR-2 可设定和恢复摩擦。多个同时有效的加法来源只见于足球对照。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L287) |
+| U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **待接入。** 重艇和凶豕兽需要自主运动资格，受力位移或残留速度不能代替。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
+| U020 | 弹道反射或实际施法来源替换时，来源、属性采样与归属如何变化 | 已有表达。已核来源与采样可保存在弹道私有 State。反射时阵营或弹道身份改变继续按实例核对。 | [Case 18](../research/cases/18-projectile-source-and-target-lifecycles.md#L200) |
+| U021 | 支持范围内是否有实际 GiantTrap 配置，需要一个阻挡者从多个位置搜索目标 | 未证实 Core 缺口。已核非零 GiantTrap 阻挡配置来自生息演算，支持范围缺多原点正例。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L92) |
+| U022 | 是否有实际内容修改 BLOCK_RADIUS_SCALE 并改变飞行阻挡半径 | **待接入。** 凯尔希·思衡托 S1 的空中阻挡半径修正已核实，当前搜索仍限于固定半径。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L94) |
+| U023 | 具体 CardBuff／符文来源进入费用汇总的资格、竞争和各段取整顺序 | **待接入。** 涨费上限修正、两次取整和野鬃叠加已查清，Card 缺少独立的倍率上限贡献。 | [实际叠加顺序](../research/cases/24-deployment-cost-and-supply.md#凛御银灰-x3-与野鬃) |
+| U024 | MAX_COST_CEIL 的配置来源及与 MAX_COST 的动态同步条件 | **已完成，归入 G05。** DP 上限可在战中修改，Deck 独立持有卡价截断上限。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L53) |
+| U025 | 普通 QUEUED 归队实际哪些状态、调用实参和顺序会重置现行恢复时钟 | 已有表达。普通中继器追加恢复份数时保留本段，下段重新采样周期。显式归零可操作当前段。已核普通 Card 使用一条计时。 | [队列恢复](../research/cases/24-deployment-cost-and-supply.md#多份队列恢复的预算采样) · [同卡计时](../research/cases/24-deployment-cost-and-supply.md#同一张-card-的计时器) |
+| U026 | 银灰 X 模组临时再部署修正解除后是否回滚已运行冷却 | 已有表达。银灰 X 的修正解除只改变后续周期，已开始的计时段保留。 | [计时证据](../research/evidence/card-rules-20261122/README.md#再部署计时) |
+| U027 | 再部署属性修正、一次缩短、多来源及半值取整顺序 | 已有表达。后续周期修正和砾 X 缩短本段各有对应入口。多来源实际组合和显示取整按具体效果核对。 | [计时证据](../research/evidence/card-rules-20261122/README.md#再部署计时) |
+| U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | **待接入。** 自身与外部的移动部署已核对，缺统一 `deployment.redeploy` 及正常离场后的 Card 账务接续。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L181) |
+| U029 | 实际动态改变召唤物持有上限时的裁剪和恢复规则 | **待接入。** 谬因 S3 的持有上限、在场上限、库存与待恢复份数联动已有实际样本。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L195) |
+| U030 | 梅尔／麦哲伦／令的批量或条件回收怎样接续库存、冷却、通知与溢出 | 按内容核对。梅尔、麦哲伦和令的回收条件、补数和计时分别取证。普通队列与容量调整分别见 U025、U029。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L199) |
+| U031 | 夜莺、麦哲伦、多萝西、白铁等宿主离场时未用附属 Card 如何保留同一身份、库存和冷却。淬羽赫默技能窗口结束同类问题 | 已有表达。淬羽赫默 S2 保留原 Card 和计时，窗口结束清库存。其他附属卡随宿主离场的具体处理仍按样本核对。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L202) |
+| U032 | 卫戍自动再部署失败组合及特殊限制下的恢复接续 | 已有表达。自动重试的已核行为可用原 Card 和部署资格处理，失败保留原倒地对象，实际组合按模式决定。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L221) |
+| U033 | 卫戍同一宿主堆叠召唤物究竟按并行时钟还是串行恢复 | 已有表达。同宿主召唤物可复用同一张 Card，计时按该 Card 的策略处理。中继器使用串行队列。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L226) |
+| U034 | 再部署暂停与显式减时、清零、临时豁免能否在支持范围内组成实际链 | 按内容核对。现有暂停、清零、减时和部署限制各有入口，真实组合条件仍需具体触发链。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L240) |
+| U035 | 本次附加、一般初始化、基础 SP 与具体出生程序实际发生冲突时的可观察顺序（含 Case 01） | **待接入，归入 G06。** 松桐 S2 的修正参与出生 HP 计算，待设计本次 Unit 初始化输入。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L289) |
+| U036 | 岁相资源到 EnemyGiantBoss 的实际绑定，以及大体型出生、朝向和地格清理的单体确证 | 按内容核对。已有范围查询、清场与布置地块的操作，岁相实际资源绑定和需要跨格占位的消费仍待证。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L295) |
+| U037 | 预置对象结束时原 Card 返费、回收及身份关联规则 | 按内容核对。无卡预置直接初始化 Unit；与既有 Card 关联的预置实例须核对实际退场回收和返费。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L439) |
+| U038 | 普通离场何时退还本次部署额度 | **已完成。** Unit 死亡注销后仍占用部署位一战斗秒，到期由 Slot 调度归还，Card 在离场时结算。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
+| U039 | 同卡在场上限何时放行，是否从 ENDING 或注销分界独立 | 已有表达。同卡在场计数随 Unit 注销释放，和延迟归还的全局部署位独立。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
+| U040 | 源石封印是否也限制卫戍自动入口。此处调查具体共享资格，与其他失败接续分开 | 按内容核对。点选和部署已有各自的限制上下文，源石封印是否作用于自动部署待具体模式证据。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L449) |
+| U041 | BeforeStart 起步窗口是否有真实可达的第二轮并行爆发，现仅有静态重入窗口 | 已有表达。酒神实际发出延迟命中的弹道，用爆发通知创建 Projectile 即可。同宿主同步第二轮仍缺正例。 | [Case 25](../research/cases/25-elemental-burst-recovery-timing.md#L200) |
+| U042 | 妮芙的 EP 后继和其他伤后观察者相对顺序是否改变可达结果 | 已有表达。妮芙可读取提交前的爆发状态，按接收量给仍存活的目标附加 EP。公共结算顺序已定。 | [Case 27](../research/cases/27-attack-additions-and-damage-events.md#L156) |
+| U043 | 零伤害、无敌、完全吸收下伤后观察者的资格，含奥术法阵各段跳跃与妮芙附加 EP | 项目选择已定。奥术法阵按正输出尝试施加沉默，后续抵挡和归零沿用现有 Resource 契约。特殊入口按实例核对。 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
+| U044 | 是否存在独立抵挡通知或区分两种 BLOCKED 的实际后继（含 Case 38） | 已有表达。星熊 Y2／Y3 消费成功抵挡，现有接收 Hook 可区分其结果。 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
+| U045 | 实际内容中目标前置（含原因 5 提前中断）与来源输出换位是否会改变结果 | 项目选择已定。保留 Calculate 的来源输出与 Apply 的目标前置接收。已查提前中断未形成受支持的冲突样本。 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L52) |
+| U046 | 联合分担或均摊治疗能否绑定到支持范围内的实际玩法 | 未证实 Core 缺口。已见均摊治疗节点分别来自保全派驻和生息演算。已证的有符号 HP 调整独立记录。 | [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#9-剩余证据边界) |
+| U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
+| U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **待接入。** 已确认动态出生要登记当前波次、终局或两处等待，缺少普通动态创建后的登记入口。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
+| U049 | acfnc 等保留原巡逻再插点的可达链和真实巡逻回边 | 已有表达。「假想敌：械」的实际 MOVE 插入可用 Route.reassign。需要同时保留旧巡逻或 WAIT 的正例未证。 | [Case 31](../research/cases/31-route-operations-and-state.md#L139) |
+| U050 | 莱塔尼亚召唤物能否同时具有入向与出向阻挡关系（含 Case 23） | 项目选择已定。已查莱塔尼亚召唤物关联为出向，保留 Blocker／Blockable 互斥。 | [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md#L32) |
+| U051 | Trace 短距预测在消失、隐藏等目标资格变化时的接续与到达后继 | 已有表达。Trace 可分别保存地块和目标，离场重选沿用现有入口。隐藏目标后的具体行为仍待内容证据。 | [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md#L83) |
+| U052 | MultiSpine 延后发布有效朝向是否影响一项实际玩法 | 按内容核对。已核延迟发布路径和实际朝向消费者，两者在同一机制的绑定仍未证。 | [Case 35](../research/cases/35-facing-and-turning-conditions.md#L75) |
+| U053 | 异常解除是否主动重发此前无法发布的面向 | 已有表达。需要恢复朝向的内容可在解除限制时转向，普通异常解除自动补发的正例未证。 | [Case 35](../research/cases/35-facing-and-turning-conditions.md#L82) |
+| U054 | 煌的锁血数值拒写与后续伤判联用时，是否有实际观察者需要看到较早锁定的值 | 项目选择已定。煌的限幅、可抵挡的固定损失沿用现有 Resource Hook 和 fix。联用按实际消费者核对。 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L121) |
+| U055 | DAMAGE_WITHOUT_MODIFY 越过低血量缩放的实际可达消费者（同 Case 10 flag4） | 项目选择已定。沿用 FIXED 与现有修改权限，标志 4 和低血缩放的真实交互仍待证。 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L185) |
+| U056 | EP 取消是否存在按具体原因分支的消费内容 | 未证实 Core 缺口。已查按取消原因分支的模板都消费 HP，未见 EP 消费者。 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L249) |
+| U057 | 蒂比 S2 成功闪避后普通伤判和天赋时钟的线上行为 | 已有表达。蒂比 S2 可在前置接收触发技能并尝试闪避，时钟是否重置由接收条件决定，线上选择仍待证。 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L298) |
+| U058 | 非默认 SP 恢复类型切换的实际使用及计时续接 | 未证实 Core 缺口。建筑工具间的已核调用只改技力费用，保留原回复类型。 | [证据批次](../research/evidence/skill-audit-20261117/sp/result.md#L26) |
+| U059 | 埃芒加德共享复活额度的实际扣减、取消及例外资格 | 已有表达。Mechanism 保存共享次数，受伤结算时同步扣减，后来出生者可经全局入场 Hook 装配。具体模式扣减例外仍待证。 | [总览03](../research/03-space-units-and-mechanisms.md#L295) |
 
 ### 已有表达或具体内容（84）
 
