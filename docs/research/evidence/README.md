@@ -45,6 +45,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [deployment-exit-limits-20261122](deployment-exit-limits-20261122/README.md) | 普通撤退／死亡的回收入口、全局部署额度和同卡在场名额分别释放的位置，以及资格查询 |
 | [managed-summons-20261122](managed-summons-20261122/README.md) | 寻路者甜品商与变形者集群的真实召唤绑定，以及本波、最终等待的不同登记 |
 | [repeater-recovery-20261122](repeater-recovery-20261122/README.md) | 中继器普通归队的库存更新、Card 回收与连续恢复时钟 |
+| [redeploy-cost-cap-20261122](redeploy-cost-cap-20261122/README.md) | 凛御银灰 X3 的天赋与卡牌效果绑定、涨费倍率上限汇总和分段取整 |
 | [stronghold-yan-summon-20261122](stronghold-yan-summon-20261122/README.md) | 卫戍盟约的炎佑召唤触发、Holder 节点、路线模板和调度等待标志 |
 | [cjstel-route-selection-20261122](cjstel-route-selection-20261122/README.md) | 思旧吸收后所用路线分支的实际关卡数、条目和参数引用 |
 | [talent-schedule-callers-20261122](talent-schedule-callers-20261122/README.md) | 次生预案的天赋重绑调用和 Scheduler 最终等待配置的实读位置 |
