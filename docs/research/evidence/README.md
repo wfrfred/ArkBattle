@@ -42,6 +42,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [cage-block-position-20261122](cage-block-position-20261122/README.md) | 迷狂牢笼的特殊阻挡站位、阈值和取随机半径分支 |
 | [deployment-exit-limits-20261122](deployment-exit-limits-20261122/README.md) | 普通撤退／死亡的回收入口、全局部署额度和同卡在场名额分别释放的位置，以及资格查询 |
 | [managed-summons-20261122](managed-summons-20261122/README.md) | 寻路者甜品商与变形者集群的真实召唤绑定，以及本波、最终等待的不同登记 |
 | [repeater-recovery-20261122](repeater-recovery-20261122/README.md) | 中继器普通归队的库存更新、Card 回收与连续恢复时钟 |

@@ -1,0 +1,112 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-22"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-22",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "native.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "extract.py",
+        "kind": "historical-script",
+        "bytes": 3033,
+        "sha256": "5365f4a074613f7893838804f590d420ba7147e26de159b2a9c9c97a709799d9"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 30063,
+        "sha256": "cd60ca57c62fce5e9bc26a0bf385be0f22223861b773ee92d845e3425c7f7874"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 77745,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/0",
+            "native.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.RegisterBlocker",
+          "address": "0x180ac2460"
+        },
+        {
+          "index": 78605,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/1",
+            "native.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.PropLikeStaticBlockToken._SearchBlockee",
+          "address": "0x180afdab0"
+        },
+        {
+          "index": 78606,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/2",
+            "native.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.PropLikeStaticBlockToken.BlockeeOffsetPosSet",
+          "address": "0x180afce20"
+        },
+        {
+          "index": 78610,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/3",
+            "native.json#/result/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.PropLikeStaticBlockToken..cctor",
+          "address": "0x180afdf20"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

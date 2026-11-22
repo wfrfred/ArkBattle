@@ -59,6 +59,7 @@ N 为所列客户端指纹的静态方法／资源，W 为 PRTS 社区资料，I
 | 蒂比自动规避与来源输出时回 SP | 所核对的是 S2 `tippi_s_2[trigger]`，位于 Applying6，不是 Before5。原生顺序5→来源11→接收6本就让来源输出先发生，不能用于证明5与11的交换冲突。[PRTS蒂比](https://prts.wiki/w/蒂比#技能)和[绽放](https://prts.wiki/w/绽放)的说明没有改变这个事件位置。 |
 | 羽毛笔 S2 重算与禁闭所的前置清零 | 两个数值动作看似不能交换，但普通输入资格排除了冲突位置。禁闭所本体的 `_hitRangeId` 与前置检查同为 `x-5`；羽毛笔 S2 Selector 没有豁免 hitRange，范围外目标在选取时被拒绝；范围内又不执行清零分支。不能仅凭羽毛笔自身攻击范围覆盖斜前方，就认定该伤害能进入结算。 |
 | 羽毛笔与心烛最低伤害 | [隐德来希S3](https://prts.wiki/w/隐德来希#技能)的心烛只接受其对应攻击，不能把羽毛笔输出重算直接配在这项限定目标上；本次没有寻找强行改变阵营或来源的特殊组合。 |
+| 解构畸变体的 EP 中断与来源输出 | 主线 12-20 的变形者集群第二形态确实会召唤此敌人。固定模板 `enemy_wdsdw[loss_hp]` 先以 `IfTargetSide` 检查 `MODIFIER_SOURCE` 属于 `ENEMY`，再筛 EP 并中断。普通我方 EP 源不会触发此分支。尚未发现可达的敌方 EP 来源在本笔输出中会产生必须阻止的副作用。 [实际召唤](../evidence/wdslm-ep-interrupt-20261122/README.md) · [固定模板](../../../assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json#L254145) |
 
 禁闭所是 `trap_317_ubprison`，敌方默认类装置。其本体 PathID `-8720332516268970448` 的 `_commonAbilities` 引用 `-664377713333506512`，后者实际挂载 `ubprison_p[check_range]`，黑板 `modify_scale_zero=0`。羽毛笔 S2 Attack `2831199944281353299` 引用 Selector `-164417716366349229`，`_ignoreHitRange=0`、`_alwaysIncludeTarget=0`。原生 AdvancedSelector.ValidateTarget75508 进入基类76395，基类在 `0x180a4195f` 调目标 slot135；Trap.IsInHitRange78848 检查相应来源格是否属于 hitRangeGrids，失败即拒绝。因此这是实际索敌链的排除，不是把不存在的伤害请求交给两种顺序试算。
 

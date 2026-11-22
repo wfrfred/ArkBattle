@@ -70,6 +70,10 @@ UnregisterBlocker 76433 在匹配当前 blocker 后清归属，再 EmitEvent 和
 
 `CombatWrapper.NextCombatOrExit` 76878 的退出路径还检查目标与退战等待：无目标且时间已到时，在 `0x180a8a1cb–0x180a8a1d3` 请求切到 MOVE（1）。Enemy 的 `m_combatNextEscapeTime`（+0x508）由构造器 76562 初始化为 FP(0)；`CombatFinishCallback` 76880 在 `0x180a89e82` 取 fixedPlayTime，经 Ability 虚 slot 22 取得 `escapeTime`，相加后在 `0x180a89ef3` 写回该字段。基础 getter 63043 返回 FP(0)，动画 Ability getter 91778 在 `0x180f01324` 读取实例 float 参数 +0x18c。它不是本轮站位 Tween 的约 0.2 秒常量；状态切换和攻击退战等待仍可推迟实际恢复移动。`RegisterBlocker` 中同为 +0x508 的访问属于类型静态字段表的热更槽，不能误认作该实例字段。
 
+### N／D：迷狂牢笼的目标站位（2026-11-22）
+
+酒神召唤物迷狂牢笼的实际 `PropLikeStaticBlockToken` 组件覆盖 `BlockeeOffsetPosSet`。该程序使用敌人实际位置相对牢笼的方向。距离不大于 `DIST_MAX=0.2` 时保留原相对位置，超过时在原方向上把距离缩为随机的 0 至 0.2。`AddBlockee` 传入该覆盖值，`Enemy.RegisterBlocker` 将它加到阻挡者位置作为 `_MoveToBlockPosition` 的目标。这个差异发生在站位终点，与插值步数无关。 [Prefab 绑定、阈值和分支证据](../evidence/cage-block-position-20261122/README.md)
+
 ## 3. 未决项与区分案例
 
 未执行游戏、热更或完整物理模拟；未证明全部模式使用相同 Tween 分支，没有给线性六步与客户端逐帧轨迹作数值等价背书。DOTween 运行态最终默认曲线、特殊传送／位移覆盖、全部特殊状态下的最终轨迹，以及同步重入的具体内容实例仍需按需补证。上文确定性管理器与普通移动分支的结论不等于实战逐帧观测。
