@@ -1,0 +1,181 @@
+{
+  "provenance": {
+    "prefab": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/pkgrps/btl_pfb_tokens_0.ab",
+      "bytes": 5089969,
+      "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d"
+    },
+    "scriptBundle": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+      "bytes": 477255,
+      "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+    },
+    "config": {
+      "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+      "bytes": 28623543,
+      "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c"
+    },
+    "configRevision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "decoder": "special-redeploy-failure-20261122/extract_prefab.py"
+  },
+  "result": {
+    "prefab": {
+      "serializedFile": "CAB-f68700761ef4b9b267b0af89309727d6",
+      "components": {
+        "Token": {
+          "pathId": "9056605678497710654",
+          "script": {
+            "id": "-795855429403065218",
+            "name": "Token",
+            "cl": "Token",
+            "ns": "Torappu.Battle",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "-8517778595250355650",
+            "name": "token_10054_phatm2_encdool",
+            "localComponents": [
+              "6152175186396332606",
+              "9056605678497710654",
+              "-856658054893845954",
+              "-1521501190260899266"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_cardPolicy": 0,
+            "_isInfinity": false,
+            "_rechargeOnlyOnce": false,
+            "_commonAbilities": {
+              "Array": [
+                {
+                  "m_FileID": 0,
+                  "m_PathID": -6541251740818587074
+                }
+              ]
+            }
+          }
+        },
+        "PassiveBuffAbility": {
+          "pathId": "-6541251740818587074",
+          "script": {
+            "id": "3800760148018415462",
+            "name": "PassiveBuffAbility",
+            "cl": "PassiveBuffAbility",
+            "ns": "Torappu.Battle.Abilities",
+            "asm": "Assembly-CSharp.dll"
+          },
+          "gameObject": {
+            "pathId": "2125240593844486718",
+            "name": "Ability0",
+            "localComponents": [
+              "2683445131837588030",
+              "-6541251740818587074"
+            ]
+          },
+          "enabled": true,
+          "fields": {
+            "_buffs": {
+              "Array": [
+                {
+                  "attributes": {
+                    "abnormalFlags": {
+                      "Array": []
+                    },
+                    "abnormalImmunes": {
+                      "Array": []
+                    },
+                    "abnormalAntis": {
+                      "Array": []
+                    },
+                    "abnormalCombos": {
+                      "Array": []
+                    },
+                    "abnormalComboImmunes": {
+                      "Array": []
+                    },
+                    "attributeModifiers": {
+                      "Array": []
+                    }
+                  },
+                  "buffKey": "token_phatm2_passive",
+                  "loadFromDB": false,
+                  "isDurableBuff": false,
+                  "isDamageMissable": false,
+                  "isSilenceable": false,
+                  "isStunnable": false,
+                  "isFreezable": false,
+                  "isLevitatable": false,
+                  "isGroundBoundable": false,
+                  "statusResistable": true,
+                  "templateKey": "charge_token[finish]",
+                  "disableOverride": false,
+                  "overrideKey": "",
+                  "overrideType": 0,
+                  "maxStackCnt": 1,
+                  "refreshRemainingTimeWhenStackMax": false,
+                  "clearAllStackCntWhenTimeUp": false,
+                  "maxValidStackCnt": -1,
+                  "independentCharacterSource": false,
+                  "overrideEffectKey": "",
+                  "overrideOnEventPriority": false,
+                  "onEventPriority": 0,
+                  "audioSignal": "",
+                  "lifeTimeType": true,
+                  "takeSnapshotWhenExtend": false,
+                  "durationKey": "duration",
+                  "remainingTimeKey": "",
+                  "lifeTime": 0.0,
+                  "triggerLifeType": false,
+                  "triggerCnt": 0,
+                  "triggerInterval": -1.0,
+                  "waitFirstTriggerInterval": true,
+                  "firstTriggerInterval": -1.0,
+                  "priority": -1,
+                  "priorityBBKeys": {
+                    "Array": []
+                  },
+                  "stripBlackboardParamsWithBuffKey": false,
+                  "blackboard": {
+                    "Array": []
+                  },
+                  "enableInitDirectionFromSource": false
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "hierarchy": [
+      {
+        "transformPathId": "2683445131837588030",
+        "gameObjectPathId": "2125240593844486718"
+      },
+      {
+        "transformPathId": "-7146034868172209602",
+        "gameObjectPathId": "3487755024130654782"
+      },
+      {
+        "transformPathId": "3878888641035911742",
+        "gameObjectPathId": "-5183520632929369538"
+      },
+      {
+        "transformPathId": "4732169265946575422",
+        "gameObjectPathId": "-6423746600629222850"
+      },
+      {
+        "transformPathId": "6152175186396332606",
+        "gameObjectPathId": "-8517778595250355650"
+      }
+    ],
+    "ownerFinish": [
+      {
+        "$type": "Torappu.Battle.Action.Nodes+RechargeToken, Assembly-CSharp",
+        "_cntKey": "cnt",
+        "_rechargeTiming": "ON_FINISH",
+        "_refreshRemainingCnt": false
+      }
+    ]
+  }
+}

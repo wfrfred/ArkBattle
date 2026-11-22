@@ -426,6 +426,8 @@ QUEUED 对应 `token_10070_aphris_pc`（中继器）；DEFAULT／有限份数中
 
 因此已核的三种普通策略均无独立的部署间隔与库存恢复计时同时运行。中继器在有可用份数时可以边恢复边部署，普通 Draw 保留已在推进的恢复段。特殊的显式重置也在已核路径中改动原计时器。该结论来自固定客户端的普通静态分支和所列实际样本，活跃 XLua 或未检查的模式入口仍需按具体机制取证。[中继器 Draw、回收与计时指令](../evidence/repeater-recovery-20261122/README.md#调用锚点)
 
+本能的召唤是 DEFAULT 且使用有限份数。退场程序立即补回一份可用库存，同时保留已经启动的部署冷却。这个样本的补库直接写库存，没有登记待恢复份数或启动额外计时。[Prefab、Buff 和库存写回证据](../evidence/default-card-stock-return-20261123/README.md)
+
 ### 涨费与回收的关系
 
 **N：** Card.OnRecycle 的 UNIQUE＋当前 INUSE 分支启动再部署，并按 m_addRespawnCostMultCnt 开关增加 m_respawnCostMultCnt。该增量确实附着在回收路径，而不是一项任意部署后回调。DEFAULT／QUEUED 不走这段计数增加分支。
