@@ -244,8 +244,14 @@ test("Main exit is independent of the selected Context and completes Unit lifeti
     state = update(temporary.state, host, units.compose(
         route.selectContext(temporary.value.id), route.setTicking(0, false),
     ));
+    const exitTick = state.tick;
     state = step(state, []);
     assert.equal(get(state, 0), undefined);
+    assert.deepEqual(state.events.filter(event => event.type === "ROUTE_COMPLETED"), [
+        { type: "ROUTE_COMPLETED", unitId: host.id, tick: exitTick },
+    ]);
+    state = step(state, []);
+    assert.equal(state.events.some(event => event.type === "ROUTE_COMPLETED"), false);
     assert.equal(leaves, 1);
     assert.notEqual(get(ticks(battle([creation(plan())]), 3), 0), undefined);
     const waitingAtExit = plan([wait(999)], { endPosition: [0, 0] });

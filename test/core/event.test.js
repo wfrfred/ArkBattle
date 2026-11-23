@@ -9,9 +9,7 @@ import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as hpHealing from "../../dist/core/battle/resource/hp/healing/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 import * as epHealing from "../../dist/core/battle/resource/ep/healing/index.js";
-import * as elementalCapability from "../../dist/core/unit/capability/elemental/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
-import { appendEvents } from "../../dist/core/battle/state.js";
 import { step } from "../../dist/core/battle/index.js";
 
 import { create as createElementalDefinition } from "../../dist/content/elemental.js";
@@ -19,7 +17,7 @@ import { update } from "../../dist/core/unit/operations.js";
 
 const elemental = createElementalDefinition({ receiver: "CHARACTER" });
 
-test("EVENT-01: real HP and EP operations emit display facts including zero changes", () => {
+test("EVENT-01: resource operations emit actual changes and only HP cancellations emit zero", () => {
     let state = battle([{ definition: {
         id: "receiver", hooks: Hooks.empty(), elemental,
         vitality: defineVitality(1000),
@@ -48,14 +46,35 @@ test("EVENT-01: real HP and EP operations emit display facts including zero chan
     }));
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
 
-    assert.deepEqual(state.events, [
+    for (const operation of [hpDamage, hpHealing, epDamage]) {
+        state = update(state, target, units.setHook(operation.beforeReceive, {
+            id: "cancel",
+            invoke: (current, { forbidden }, pending) => ({
+                state: current,
+                value: operation.cancel(pending, "UNSPECIFIED", forbidden),
+            }),
+        }));
+    }
+    const cancelledDamage = hpDamage.applyDamage(hp, hpDamage.calculateDamage(state, hp));
+    const cancelledHealing = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(cancelledDamage.state, recovery));
+    const cancelledInjury = epDamage.applyDamage(injury, epDamage.calculateDamage(cancelledHealing.state, injury));
+    assert.deepEqual(
+        [cancelledDamage.value.type, cancelledHealing.value.type, cancelledInjury.value.type],
+        ["CANCELLED", "CANCELLED", "CANCELLED"],
+    );
+
+    const events = [
         { type: "DAMAGE", targetUnitId: 0, amount: 50, damageType: "ELEMENTAL", tick: 0 },
         { type: "ELEMENTAL_INJURY_HEALED", targetUnitId: 0, amount: 0, tick: 0 },
         { type: "ELEMENTAL_INJURY", targetUnitId: 0, amount: 100, elementType: "NEURAL", tick: 0 },
         { type: "ELEMENTAL_INJURY_HEALED", targetUnitId: 0, amount: 40, tick: 0 },
         { type: "HEAL", targetUnitId: 0, amount: 30, tick: 0 },
         { type: "ELEMENTAL_INJURY", targetUnitId: 0, amount: 0, elementType: "NEURAL", tick: 0 },
-    ]);
+        { type: "DAMAGE", targetUnitId: 0, amount: 0, damageType: "ELEMENTAL", tick: 0 },
+        { type: "HEAL", targetUnitId: 0, amount: 0, tick: 0 },
+    ];
+    assert.deepEqual(step(cancelledInjury.state, []).events, []);
+    assert.deepEqual(cancelledInjury.state.events, events);
 });
 
 test("EVENT-02: a Burst keeps its original position through movement and death in the same Tick", () => {
@@ -83,17 +102,4 @@ test("EVENT-02: a Burst keeps its original position through movement and death i
     const removed = state.events.find(({ type }) => type === "UNIT_REMOVED");
     assert.equal(removed.reason, "DEATH");
     assert.deepEqual(removed.unit.position, [4, 1]);
-});
-
-test("EVENT-03: route output is independent of simulation facts and clears next Tick", () => {
-    const initial = battle([{ definition: {
-        id: "traveller", hooks: Hooks.empty(),
-    }, position: [1, 1] }]);
-    const output = appendEvents(initial, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
-
-    assert.equal(get(output, 0).lifecycle, "ACTIVE");
-    const next = step(output, []);
-    assert.deepEqual(next.events, []);
-    assert.equal(get(next, 0).lifecycle, "ACTIVE");
-    assert.deepEqual(output.events, [{ type: "ROUTE_COMPLETED", unitId: 0, tick: 0 }]);
 });

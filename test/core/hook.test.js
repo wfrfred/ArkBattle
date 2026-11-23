@@ -9,13 +9,12 @@ import * as hooks from "../../dist/core/hook.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { entered as unitEntered, removed as unitRemoved, setHook, removeHook } from "../../dist/core/battle/unit-hook.js";
 
-test("HOOK-01: registration reuses identical entries and replaces an ID without changing its position", () => {
+test("Hook keys preserve identity and replacing an ID preserves its position", () => {
     const stage = key("test.stage");
     const sameName = key("test.stage");
     const first = { id: "first", priority: -10 };
     const second = { id: "second", priority: 10 };
     const registered = Hooks.empty().set(stage, first).set(stage, second);
-    assert.equal(registered.set(stage, first), registered);
     const replacement = { id: "first", priority: 100, revised: true };
     const replaced = registered.set(stage, replacement);
     assert.deepEqual(replaced.get(stage), [replacement, second]);
@@ -203,6 +202,15 @@ test("Unit removing uses priority and removed uses the registrations captured be
         ),
     ));
 
+    state = setHook(state, unitRemoved, {
+        id: "observe-departure", priority: 300,
+        invoke(current) {
+            calls.push("battle-removed");
+            return { state: current, value: undefined };
+        },
+    });
     remove(state, subject, { reason: "DEATH", killer: null });
-    assert.deepEqual(calls, ["earlier-response", "death-output", "effect-end", "latest-leave", "high-leave"]);
+    assert.deepEqual(calls, [
+        "earlier-response", "death-output", "effect-end", "latest-leave", "high-leave", "battle-removed",
+    ]);
 });

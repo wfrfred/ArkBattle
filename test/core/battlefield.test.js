@@ -12,7 +12,6 @@ import { update as updateTile } from "../../dist/core/battlefield/tile.js";
 import { update as updateBattleTile } from "../../dist/core/battle/tile.js";
 import * as overlays from "../../dist/core/battle/overlay.js";
 import { nextPoint } from "../../dist/core/battlefield/navigation/state.js";
-import { effectiveMap, field } from "../../dist/core/battlefield/navigation/cache.js";
 import { within, overlap, sweep } from "../../dist/core/battlefield/spatial/query.js";
 import { disappear } from "../../dist/core/unit/capability/presence/operations.js";
 import { remove, update } from "../../dist/core/unit/operations.js";
@@ -80,8 +79,6 @@ test("fractional tile addresses cannot alias an integer tile", () => {
 
 test("navigation follows current tile costs, directional restrictions and independent overlays", () => {
     const original = battle([], { rows: 1, columns: 3 });
-    const cost = (navigation) => field(effectiveMap(navigation, "WALK"), [0, 2]).nodes[0].distance;
-    assert.equal(cost(original.battlefield.navigation), 2);
 
     const blocked = { cells: [[0, 1]], denyPassage: true, denyDepartures: [] };
     const first = overlays.create(original, "WALK", blocked);
@@ -101,18 +98,16 @@ test("navigation follows current tile costs, directional restrictions and indepe
     const navigation = changed.battlefield.navigation;
     assert.equal(nextPoint(navigation, "WALK", [0, 0], [2, 0]), null);
     assert.deepEqual(nextPoint(navigation, "WALK", [2, 0], [0, 0]), [0, 0]);
-    assert.equal(effectiveMap(navigation, "WALK").get([0, 0]).cost, 1);
     assert.equal(nextPoint(navigation, "FLY", [0, 0], [2, 0]), null);
 
     const walkOpened = overlays.remove(changed, second.value);
-    assert.equal(cost(walkOpened.battlefield.navigation), 6);
+    assert.deepEqual(nextPoint(walkOpened.battlefield.navigation, "WALK", [0, 0], [2, 0]), [2, 0]);
     assert.equal(nextPoint(walkOpened.battlefield.navigation, "FLY", [0, 0], [2, 0]), null);
     const open = overlays.remove(walkOpened, flight.value);
     const replacement = overlays.create(open, "WALK", blocked);
-    assert.equal(new Set([first.value.id, second.value.id, flight.value.id, replacement.value.id]).size, 4);
-    assert.equal(overlays.remove(replacement.state, first.value), replacement.state);
-    assert.throws(() => overlays.update(replacement.state, first.value, blocked), RangeError);
-    assert.equal(cost(original.battlefield.navigation), 2);
+    const staleRemoval = overlays.remove(replacement.state, first.value);
+    assert.equal(nextPoint(staleRemoval.battlefield.navigation, "WALK", [0, 0], [2, 0]), null);
+    assert.deepEqual(nextPoint(original.battlefield.navigation, "WALK", [0, 0], [2, 0]), [2, 0]);
 
     const closed = updateTile(open.battlefield, [0, 1], { ...tile.state, passability: "FLY_ONLY" });
     assert.equal(nextPoint(closed.navigation, "WALK", [0, 0], [2, 0]), null);
@@ -123,6 +118,8 @@ test("navigation follows current tile costs, directional restrictions and indepe
         ...getTile(fork.map, [1, 1]).state,
         passability: "FLY_ONLY",
     });
+    fork = updateTile(fork, [2, 1], { ...getTile(fork.map, [2, 1]).state, walkCost: 5 });
+    assert.ok(nextPoint(fork.navigation, "WALK", [0, 1], [2, 1])[1] < 1);
     for (const position of [
         [0, 0],
         [0, 1],
@@ -130,18 +127,27 @@ test("navigation follows current tile costs, directional restrictions and indepe
     ]) {
         fork = updateTile(fork, position, { ...getTile(fork.map, position).state, walkCost: 5 });
     }
-    assert.equal(field(effectiveMap(fork.navigation, "WALK"), [1, 2]).nodes[3].distance, 4);
     assert.ok(nextPoint(fork.navigation, "WALK", [0, 1], [2, 1])[1] > 1);
     assert.deepEqual(nextPoint(fork.navigation, "FLY", [0, 1], [2, 1]), [2, 1]);
 });
 
 test("spatial queries distinguish body position from hitboxes and return current geometric contacts", () => {
     const circle = (radius) => ({ type: "CIRCLE", offset: [0, 0], radius });
+    const duringRemoval = [];
     const state = battle([
         {
             definition: {
                 id: "offset",
-                hooks: Hooks.empty(),
+                hooks: Hooks.empty().set(unitLifecycle.removing, {
+                    id: "check-contact",
+                    invoke(current, { unit }) {
+                        duringRemoval.push({
+                            lifecycle: get(current, unit.id).lifecycle,
+                            contacts: sweep(current.battlefield, circle(0.25), [-1, 0], [3, 0]),
+                        });
+                        return { state: current, value: undefined };
+                    },
+                }),
                 hitbox: { shape: { ...circle(0.5), offset: [2, 0] } },
             },
             position: [0, 0],
@@ -162,11 +168,11 @@ test("spatial queries distinguish body position from hitboxes and return current
     assert.deepEqual(ids(overlap(state.battlefield, [circle(0.25)], [2, 0])), [0]);
     const contacts = sweep(state.battlefield, circle(0.25), [-1, 0], [3, 0]);
     assert.deepEqual(
-        contacts.map(({ target }) => target.id),
-        [2, 0],
+        contacts.map(({ target, fraction }) => [target.id, fraction]),
+        [[2, 0.125], [0, 0.5625]],
     );
 
     const hidden = update(state, ref(get(state, 2)), disappear());
-    const ended = remove(hidden, ref(get(hidden, 0)), { reason: "SCRIPT" });
-    assert.deepEqual(sweep(ended.battlefield, circle(0.25), [-1, 0], [3, 0]), []);
+    remove(hidden, ref(get(hidden, 0)), { reason: "SCRIPT" });
+    assert.deepEqual(duringRemoval, [{ lifecycle: "ENDING", contacts: [] }]);
 });

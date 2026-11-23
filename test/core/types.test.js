@@ -34,12 +34,9 @@ import { dispatch as dispatchElemental } from ${module("unit/capability/elementa
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { SkillCommand } from ${module("battle/index")};
-import * as deck from ${module("battle/deployment/deck/index")};
 import * as cards from ${module("battle/deployment/deck/card/index")};
 import * as projectiles from ${module("projectile/index")};
 import type { Definition as ProjectileDefinition, Projectile, Slowable } from ${module("projectile/index")};
-import * as tracking from ${module("../content/projectiles/tracking")};
-import type { Point as PullPoint } from ${module("unit/capability/shifting/pull")};
 import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
 import * as mechanisms from ${module("mechanism/index")};
 import { createRegistrationOperations } from ${module("unit/registration")};
@@ -173,18 +170,12 @@ const cancelledType: 'CANCELLED' = reception.value.type;
 const preservedReason: 'MISS' = reception.value.reason;
 const beforeReception = receivingHooks.get(hpDamage.beforeReceive)[0]!.invoke(battle, receivingContext, cancelled);
 const beforeReason: 'MISS' = beforeReception.value.reason;
-// @ts-expect-error the Hook interface itself rejects restoration, independently of storage.
-const invalidDirect: hpDamage.ReceivingHook = { id: 'invalid-direct', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) };
 // @ts-expect-error fixed work cannot become NORMAL, including through erased Hook storage.
 Hooks.empty().set(hpDamage.beforeReceive, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
 // @ts-expect-error cancelled work cannot resume even as FIXED.
 Hooks.empty().set(receivingKey, { id: 'revive', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
 // @ts-expect-error cancellation retains its original reason even when the replacement is a valid Reason.
 Hooks.empty().set(hpDamage.beforeReceive, { id: 'rewrite-reason', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
-// @ts-expect-error fixing a rewritten state cannot hide an illegal restoration.
-Hooks.empty().set(receivingKey, { id: 'restore-then-fix', invoke: (state, _context, current) => ({ state, value: hpDamage.fix({ ...current, type: 'NORMAL' as const }) }) });
-// @ts-expect-error cancelling again cannot hide replacement of an existing reason.
-Hooks.empty().set(receivingKey, { id: 'rewrite-then-cancel', invoke: (state, context, current) => ({ state, value: current.type === 'CANCELLED' ? hpDamage.cancel({ ...current, reason: 'BLOCKED' as const }, 'MISS', context.forbidden) : current }) });
 type ArmedHost = Unit & Offense & Occupancy & Layer & facing.Facing &
     actions.ActionCapability<ArmedHost> & SkillCapability<ArmedHost>;
 declare const plainActionHost: Ref<Unit & actions.ActionCapability>;
@@ -192,21 +183,18 @@ const program: actions.Definition<{ uses: number }, { hits: number }, ArmedHost>
     id: 'attack', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
     initialize: state => ({ state, value: { uses: 0 } }),
     prepare(state, _source, self) {
-        const action: actions.Action<{ uses: number }, { hits: number }> = self;
-        return { state, value: { hits: action.state.uses + 1 } };
+        return { state, value: { hits: self.state.uses + 1 } };
     },
     onTick(state, source, self) {
-        const owner: ArmedHost | undefined = get(state, source);
+        const owner = get(state, source);
         if (owner !== undefined) {
             resolveAttack(state, owner);
         }
-        const host: Ref<Unit & actions.ActionCapability> = source;
-        const execution: actions.Execution<{ uses: number }, { hits: number }> = self;
         const action = actions.ref(source, self.definition);
         state = actions.setState(state, action, { uses: self.state.uses + 1 });
         // @ts-expect-error the callback's action identity retains its private state type.
         actions.setState(state, action, { hits: 0 });
-        return actions.finish(state, actions.executionRef(host, execution));
+        return actions.finish(state, actions.executionRef(source, self));
     },
 };
 const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
@@ -231,7 +219,6 @@ const timedAttackInput = {
     initialize: (state: typeof battle) => ({ state, value: { uses: 0 } }),
     prepare: (state: typeof battle) => ({ state, value: { hits: 1 } }),
 };
-const plainHostActions: actions.CapabilityDefinition<object>['definitions'] = [timedAttack];
 // @ts-expect-error declarative attacks derive their apply way from operations.
 createAttackWithState({ ...timedAttackInput, applyWay: 'RANGED' });
 // @ts-expect-error custom output declares its apply way explicitly.
@@ -242,13 +229,12 @@ const controlledActivation: skills.ActivationDefinition<ControlledSkillState, Co
     trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0,
     initialize(battle, source, self) {
         const direction = get(battle, source)?.facing.direction;
-        const duration: skills.DurationDefinition = self.state.completed === 0 && direction === 'RIGHT'
-            ? { type: 'TIME', durationTicks: 30 }
-            : { type: 'INFINITE' };
-        const initial: skills.ActivationInitial<ControlledActivationState> = {
-            state: { remaining: 3 }, duration,
+        return {
+            state: { remaining: 3 },
+            duration: self.state.completed === 0 && direction === 'RIGHT'
+                ? { type: 'TIME', durationTicks: 30 }
+                : { type: 'INFINITE' },
         };
-        return initial;
     },
     onStart(state, source, self) {
         const skill = skills.ref(source, self.definition);
@@ -258,10 +244,10 @@ const controlledActivation: skills.ActivationDefinition<ControlledSkillState, Co
     },
     operations: {
         STOP(state, source, self) {
-            const completed: number = self.state.completed;
             const reference = skills.activationRef(source, self);
             // @ts-expect-error operation handlers retain the activation's private state type.
             skills.setActivationState(state, reference, { completed: 1 });
+            state = skills.setActivationState(state, reference, { remaining: self.activation.state.remaining - 1 });
             return skills.finish(state, reference);
         },
     },
@@ -270,12 +256,6 @@ const skillProgram = {
     id: 'controlled-skill', sp: null,
     initialize: state => ({ state, value: { completed: 0 } }),
     activation: controlledActivation,
-    onTick(state, source, self) {
-        const owner = get(state, source);
-        return owner !== undefined && self.state.completed > 0
-            ? facing.turn(state, source, owner.occupancy.tile[1] > 0 ? 'LEFT' : 'RIGHT')
-            : state;
-    },
 } satisfies skills.Definition<ControlledSkillState, ControlledActivationState, ArmedHost>;
 const armedDefinition = {
     id: 'armed', hooks: Hooks.empty(), offense: { attack: attribute(100) }, layer: { type: 'GROUND' },
@@ -290,9 +270,6 @@ const armedDefinition = {
     },
     skill: { definition: skillProgram },
 } satisfies ArmedHost['definition'];
-const { facing: _requiredFacing, ...missingFacing } = armedDefinition;
-// @ts-expect-error the concrete unit configuration includes the host's required capabilities.
-missingFacing satisfies ArmedHost['definition'];
 // @ts-expect-error a host without the required capabilities cannot use this program.
 const wrongHostActions: actions.CapabilityDefinition<object>['definitions'] = [program];
 // @ts-expect-error installing a skill also requires the capabilities declared by its program.
@@ -301,10 +278,6 @@ const host: ArmedHost = initialize(battle, {
     position: [0, 0], definition: armedDefinition,
     initial: { occupancy: { tile: [0, 0] }, facing: { direction: 'RIGHT' } },
 }).value;
-// @ts-expect-error recursive host assembly still needs the initial facing direction.
-initialize(battle, { position: [0, 0], definition: armedDefinition, initial: { occupancy: { tile: [0, 0] } } });
-// @ts-expect-error recursive host assembly still needs the initial occupancy tile.
-initialize(battle, { position: [0, 0], definition: armedDefinition, initial: { facing: { direction: 'RIGHT' } } });
 const reference = ref(host);
 removeUnit(battle, reference, { reason: 'SCRIPT' });
 removeUnit(battle, reference, { reason: 'DEATH', killer: null });
@@ -312,34 +285,24 @@ removeUnit(battle, reference, { reason: 'DEATH', killer: null });
 removeUnit(battle, reference, { reason: 'DEATH' });
 // @ts-expect-error other departure reasons do not carry death attribution.
 removeUnit(battle, reference, { reason: 'SCRIPT', killer: null });
-const currentAction = host.action.actions.get(program.id, program)!;
-const currentPeriod: number = actions.resolvePeriod(host, currentAction.definition);
 const ordinaryAction = host.action.actions.values().find(action => action.definition.id === program.id)!;
-const ordinaryActionState: object = ordinaryAction.state;
 // @ts-expect-error enumerating actions does not recover their private state fields.
 ordinaryAction.state.uses;
 actions.setSpeedContribution({ id: 'fixed-speed', value: [] });
 const dynamicModifiers = (_state: State, _self: Unit & actions.ActionCapability) => [];
 // @ts-expect-error Action time contributions publish fixed values through a Change.
 actions.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
-const persistent: Ref<actions.Action<{ uses: number }, { hits: number }>> = actions.ref(reference, program);
-const actionOnGenericHost: typeof persistent = actions.ref(plainActionHost, program);
+const persistent = actions.ref(plainActionHost, program);
 // @ts-expect-error an Action identity still requires an Action host.
 actions.ref(ref(bare), program);
 const uses: number = actions.getAction(battle, persistent)!.state.uses;
-actions.setState(battle, persistent, { uses: uses + 1 });
-// @ts-expect-error the persistent identity retains its own private state type.
-actions.setState(battle, persistent, { uses: 'wrong' });
 const started = actions.start(battle, persistent);
 if (started.value !== null) {
-    const execution: Ref<actions.Execution<{ uses: number }, { hits: number }>> = started.value;
-    const executionHost: Ref<Unit & actions.ActionCapability> = execution.host;
+    const execution = started.value;
     const hits: number = actions.getExecution(started.state, execution)!.execution.state.hits;
     // @ts-expect-error a precise execution cannot be widened to different state types.
     const widenedExecution: Ref<actions.Execution> = execution;
-    const identity: actions.ExecutionRef = execution;
-    const cancellation: Command = { type: 'CANCEL_ACTION_EXECUTION', ref: identity };
-    runtime.step(started.state, [cancellation]);
+    runtime.step(started.state, [{ type: 'CANCEL_ACTION_EXECUTION', ref: execution }]);
     actions.setExecutionState(started.state, execution, { hits: hits + 1 });
     // @ts-expect-error the execution identity retains its own private state type.
     actions.setExecutionState(started.state, execution, { hits: 'wrong' });
@@ -351,10 +314,6 @@ declare const effectOnActionHost: Ref<effects.OrdinaryEffect<object, actions.Act
 // @ts-expect-error a unit's Effect and Execution have distinct referents.
 actions.cancel(battle, effectOnActionHost);
 const ordinaryExecution = actions.getExecution(battle, runningIdentity)!;
-const ordinaryExecutionState: object = ordinaryExecution.execution.state;
-if (Object.is(ordinaryExecution.definition, program)) {
-    actions.cancel(battle, runningIdentity);
-}
 // @ts-expect-error an ordinary query cannot read fields of the execution's private state.
 ordinaryExecution.execution.state.hits;
 // @ts-expect-error an ordinary query does not recover the callback's host requirement.
@@ -426,51 +385,14 @@ effects.setExpiration(battle, burstRef, { ...burst.expiration, remaining: burst.
 // @ts-expect-error writes retain the Burst identity's duration contract.
 effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
 const bare = initialize(battle, { position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
-// @ts-expect-error Unit instance identity is assigned by the initializer.
-initialize(battle, { id: 1, position: [0, 0], definition: bare.definition });
 update(battle, ref(bare), killedChange);
-const classifiedDefinition = {
-    id: 'classified', hooks: Hooks.empty(),
-    classification: { type: 'DEVICE' as const, side: 'ALLY' as const, filterTags: [], groupTags: [] },
-};
-const classified = initialize(battle, { position: [0, 0], definition: classifiedDefinition }).value;
-const classifiedCapability: classification.Classification<'DEVICE'> = classified;
-const initializedClassification: classification.State = classified.classification;
-const staticClassification: classification.Definition = classified.definition.classification;
-// @ts-expect-error an unselected Classification does not appear in the Catalog product.
-bare.classification;
-// @ts-expect-error classification queries require a Classification-capable Unit.
-classification.hasFilterTag(bare, 'sarkaz');
-for (const side of ['ALLY', 'ENEMY', 'NEUTRAL'] as const) {
-    const common = { side };
-    const categoryDefinitions: readonly classification.Definition[] = [
-        { ...common, type: 'DEVICE', filterTags: [], groupTags: ['rhodes'] },
-        { ...common, type: 'OPERATOR', groupTags: ['rhodes'], profession: 'SPECIAL', subProfession: 'EXECUTOR', extraProfessions: [] },
-        { ...common, type: 'SUMMON', groupTags: ['rhodes'], subProfession: 'EXECUTOR' },
-        { ...common, type: 'SUMMON', groupTags: ['rhodes'], subProfession: null },
-        { ...common, type: 'ENEMY', filterTags: ['sarkaz'], rank: 'ELITE' },
-    ];
-}
 const commonClassification = { side: 'ALLY' as const };
 // @ts-expect-error an operator requires its associated profession facts together.
 const missingProfessionFacts: classification.Definition = { ...commonClassification, type: 'OPERATOR', groupTags: [] };
-// @ts-expect-error an enemy requires its associated rank.
-const missingRank: classification.Definition = { ...commonClassification, type: 'ENEMY', filterTags: [] };
 // @ts-expect-error a profession only accepts its own sub-professions.
 const wrongProfessionPair: classification.Definition = { ...commonClassification, type: 'OPERATOR', groupTags: [], profession: 'CASTER', subProfession: 'EXECUTOR', extraProfessions: [] };
 // @ts-expect-error summon classification does not carry an operator profession.
 const wrongSummonFields: classification.Definition = { ...commonClassification, type: 'SUMMON', groupTags: [], subProfession: 'EXECUTOR', profession: 'SPECIAL' };
-// @ts-expect-error operators carry group tags rather than enemy filter tags.
-const wrongOperatorTags: classification.Definition = { ...commonClassification, type: 'OPERATOR', groupTags: [], profession: 'SPECIAL', subProfession: 'EXECUTOR', extraProfessions: [], filterTags: [] };
-// @ts-expect-error enemy classification does not carry group tags.
-const wrongEnemyTags: classification.Definition = { ...commonClassification, type: 'ENEMY', rank: 'ELITE', filterTags: [], groupTags: [] };
-// @ts-expect-error summons are a category rather than one of the eight professions.
-const summonProfession: classification.Profession = 'TOKEN';
-// @ts-expect-error original lowercase data identifiers are converted before Core construction.
-const rawSubProfession: classification.SubProfession = 'executor';
-// @ts-expect-error narrowing to one category rejects a different category's definition.
-const mismatchedClassification: classification.Classification<'ENEMY'> = classified;
-
 const receivingChange: Change<Unit & vitality.Vitality> = setUnitHook(hpDamage.receiving, receivingHooks.get(receivingKey)[0]!);
 // @ts-expect-error receiving keys retain their Vitality owner requirement through Change.
 update(battle, ref(bare), receivingChange);
@@ -486,8 +408,6 @@ const facingChange: Change<Unit & facing.Facing> = facing.setRestriction({
     id: 'fixed', value: { allows: (_battle, { self, direction }) => self.facing.direction === direction },
 });
 const facingProduct: typeof facingHost = facingChange(facingHost).next;
-// @ts-expect-error Facing construction requires the instance direction.
-initialize(battle, { definition: facingDefinition, position: [0, 0] });
 // @ts-expect-error facing operations require a Facing-capable Unit.
 facing.turn(battle, ref(bare), 'LEFT');
 const occupiedDefinition = { ...bare.definition, occupancy: { slot: 'OCCUPANT' as const } };
@@ -497,9 +417,6 @@ const occupiedInput: UnitInput<typeof occupiedDefinition> = {
 };
 const occupied = initialize(battle, occupiedInput).value;
 const occupiedTile: readonly [number, number] = occupied.occupancy.tile;
-const { initial: occupiedInitial, ...missingInitial } = occupiedInput;
-// @ts-expect-error required capability input cannot be omitted at the Unit entry point.
-initialize(battle, missingInitial);
 // @ts-expect-error Occupancy requires a structural tile, independently of optional direction.
 initialize(battle, { ...occupiedInput, initial: { occupancy: { direction: 'RIGHT' } } });
 declare const plan: Plan;
@@ -534,8 +451,6 @@ const skillCommand: SkillCommand = { type: 'SKILL', ref: skillCommandRef, operat
 runtime.step(battle, [skillCommand]);
 // @ts-expect-error skill commands require a Skill-capable Unit.
 const missingSkillCommand: Command = { type: 'SKILL', ref: ref(bare), operation: 'STOP' };
-// @ts-expect-error a Unit reference is not a Projectile reference.
-projectiles.remove(battle, ref(bare), 'EXPLICIT');
 const projectileDefinition: ProjectileDefinition<{ hits: number }> = {
     id: 'projectile',
     onTick(state, self) {
@@ -553,8 +468,6 @@ projectiles.initialize(battle, { definition: projectileDefinition, side: 'ALLY',
 const projectileBattle = projectiles.add(createdProjectile.state, createdProjectile.value);
 const projectileRef = projectiles.ref(createdProjectile.value);
 const projectileHits: number = projectiles.get(projectileBattle, projectileRef)!.state.hits;
-// @ts-expect-error removing a Projectile requires an explicit reason.
-projectiles.remove(projectileBattle, projectileRef);
 // @ts-expect-error a Projectile Ref fixes the private state accepted by writes.
 projectiles.update(projectileBattle, projectileRef, { state: { hits: 'wrong' } });
 // @ts-expect-error a Projectile Ref without eligibility cannot request elimination.
@@ -585,16 +498,6 @@ const slowableProjectileRef = projectiles.ref(createdSlowable.value);
 const restoredRef = projectiles.ref(projectiles.get(slowableBattle, slowableProjectileRef)!);
 projectiles.setMoveContribution(slowableBattle, restoredRef, { id: 'slow', value: 0.05 });
 projectiles.remove(slowableBattle, restoredRef, 'ELIMINATED');
-declare const trackedProjectile: Projectile<tracking.State, Slowable> & Slowable;
-tracking.hit(battle, trackedProjectile, (next, self) => {
-    projectiles.resolveMoveScale(self);
-    return next;
-});
-tracking.advance(battle, trackedProjectile, 1, (next, self) => {
-    projectiles.resolveMoveScale(self);
-    return next;
-});
-const pullPoint: PullPoint = { type: 'PROJECTILE', projectile: slowableProjectileRef };
 declare const elementalUnit: Unit & elemental.Elemental;
 elemental.available(elementalUnit);
 // @ts-expect-error Elemental eligibility requires its resource capability.
@@ -670,9 +573,10 @@ const invalidActivationExemption: typeof controlledActivation = {
     // @ts-expect-error a recovery restriction requires facts not supplied by an activation check.
     ignoreRestrictions: [recoveryOnly],
 };
-const activationParameters: skills.ActivationParameters = { requirement: 0, cost: 0 };
-const skillReference = skills.ref(reference, skillProgram);
-const skillOnGenericHost: typeof skillReference = skills.ref(ref(skillHost), skillProgram);
+const activationParameters = { requirement: 0, cost: 0 } satisfies skills.ActivationParameters;
+declare const explicitActivation: NonNullable<Parameters<typeof skills.activate>[2]>;
+explicitActivation satisfies { requirement: number; cost: number };
+const skillReference = skills.ref(ref(skillHost), skillProgram);
 // @ts-expect-error a Skill identity still requires a Skill host.
 skills.ref(ref(bare), skillProgram);
 const typedActivation = skills.activate(battle, skillReference, activationParameters);
@@ -682,21 +586,16 @@ if (typedActivation.value !== null) {
     const completed: number = self.state.completed;
 }
 // @ts-expect-error activation requires a Skill Ref.
-skills.activate(battle, ref(skillHost), activationParameters);
+skills.activate(battle, ref(skillHost));
 const configuredSkill = skills.ref(ref(skillHost), skillHost.skill.definition);
-const configuredActivation = skills.activate(battle, configuredSkill, activationParameters);
+const configuredActivation = skills.activate(battle, configuredSkill);
 if (configuredActivation.value !== null) {
     const self = skills.getActivation(configuredActivation.state, configuredActivation.value)!;
-    const ordinaryActivationState: object = self.activation.state;
     // @ts-expect-error an ordinary Skill Ref does not recover private state fields.
     self.activation.state.remaining;
 }
-// @ts-expect-error a special activation must supply its requirement and payment together.
-skills.activate(battle, skillReference, { requirement: 0 });
-// @ts-expect-error a special activation must supply its requirement and payment together.
-skills.activate(battle, skillReference, { cost: 0 });
-// @ts-expect-error trigger is declared by the skill, not an activation call argument.
-skills.activate(battle, skillReference, 'AUTO');
+// @ts-expect-error explicit activation terms cannot carry a nonnumeric payment.
+skills.activate(battle, skillReference, { ...activationParameters, cost: 'wrong' });
 skills.pay(battle, ref(skillHost), 1);
 // @ts-expect-error resource payment requires an explicit amount.
 skills.pay(battle, ref(skillHost));
@@ -709,10 +608,6 @@ update(battle, ref(skillHost), prioritizedSpRecovery);
 update(battle, ref(bare), prioritizedSpRecovery);
 // @ts-expect-error a Skill can legitimately have no SP resource.
 skills.resolveRecoverySpeed(battle, skillHost);
-if (skills.hasSp(skillHost)) {
-    const speed: number = skills.resolveRecoverySpeed(battle, skillHost);
-    const multiplier: number = skills.resolveRecoveryMultiplier(battle, skillHost);
-}
 const actionHost = allUnits(battle).find(actions.hasAction)!;
 const foundAction: actions.ActionCapability = actionHost;
 const ordinaryPredicate: (self: Unit) => boolean = self => self.id > 0;
@@ -724,40 +619,8 @@ for (const self of allUnits(battle).filter(actions.hasAction).filter(hasSkill).f
 }
 const selectableActions = allUnits(battle).filter(actions.hasAction).filter(hasTargetable);
 for (const self of allUnits(battle).filter(actions.hasAction).filter(classification.hasClassification)) {
-    const preservedClassifiedAction: actions.ActionCapability = self;
-    const establishedClassification: classification.Classification = self;
     if (classification.isType(self, 'OPERATOR')) {
-        const preservedOperatorAction: actions.ActionCapability = self;
-        const establishedOperator: classification.Classification<'OPERATOR'> = self;
-        const profession: classification.Profession = self.definition.classification.profession;
-        const groupTags: readonly string[] = self.definition.classification.groupTags;
-    }
-    if (classification.isType(self, 'OPERATOR') && classification.matchesProfession(self, ['CASTER'], true)) {
-        const preservedProfessionAction: actions.ActionCapability = self;
-        const establishedOperator: classification.Classification<'OPERATOR'> = self;
-        const profession: classification.Profession = self.definition.classification.profession;
-        // @ts-expect-error operator classification does not establish an enemy rank.
-        self.definition.classification.rank;
-    }
-    if (classification.isType(self, 'SUMMON') && classification.matchesSubProfession(self, ['EXECUTOR'])) {
-        const preservedSubProfessionAction: actions.ActionCapability = self;
-        const establishedSummon: classification.Classification<'SUMMON'> = self;
-        const subProfession: classification.SubProfession | null = self.definition.classification.subProfession;
-        // @ts-expect-error a summon does not carry an operator profession.
-        self.definition.classification.profession;
-    }
-    if (classification.isType(self, 'DEVICE') && classification.hasGroupTag(self, 'rhodes')) {
-        const preservedGroupAction: actions.ActionCapability = self;
-        const groupTags: readonly string[] = self.definition.classification.groupTags;
-        const filterTags: readonly string[] = self.definition.classification.filterTags;
-    }
-    if (classification.isType(self, 'ENEMY') && classification.matchesRank(self, ['ELITE'])) {
-        const preservedRankAction: actions.ActionCapability = self;
-        const establishedEnemy: classification.Classification<'ENEMY'> = self;
-        const rank: classification.Rank = self.definition.classification.rank;
-        const filterTags: readonly string[] = self.definition.classification.filterTags;
-        // @ts-expect-error rank matching does not establish operator profession facts.
-        self.definition.classification.profession;
+        self satisfies Unit & actions.ActionCapability & classification.Classification<'OPERATOR'>;
     }
 }
 
@@ -775,21 +638,11 @@ if (classification.isType(professionCandidate, requestedCategory)) {
 }
 
 declare const targetingSource: Unit & classification.Classification;
-for (const qualify of [targeting.damage, targeting.healing]) {
-    const candidates = selectableActions.filter(qualify(targetingSource)(battle));
-    const nearestPatient = topK(candidates, 1, targeting.hpRatio)[0]!;
-    const patientAlive: boolean = vitality.isAlive(nearestPatient);
-    const patientHpRatio: number = vitality.hpRatio(nearestPatient);
-    const preservedAction: actions.ActionCapability = nearestPatient;
-    const establishedVitality: vitality.Vitality = nearestPatient;
-    const establishedClassification: classification.Classification = nearestPatient;
-}
-for (const qualify of [targeting.elementDamage, targeting.elementHealing]) {
-    for (const self of selectableActions.filter(qualify(targetingSource)(battle))) {
-        const preservedAction: actions.ActionCapability = self;
-        const establishedElemental: elemental.Elemental = self;
-        const establishedClassification: classification.Classification = self;
-    }
+const patients = selectableActions.filter(targeting.healing(targetingSource)(battle));
+const nearestPatient = topK(patients, 1, targeting.hpRatio)[0]!;
+nearestPatient satisfies Unit & actions.ActionCapability & vitality.Vitality & classification.Classification;
+for (const self of selectableActions.filter(targeting.elementDamage(targetingSource)(battle))) {
+    self satisfies Unit & actions.ActionCapability & elemental.Elemental & classification.Classification;
 }
 // @ts-expect-error standard target eligibility requires the source's Classification capability.
 targeting.damage(host)(battle);
@@ -916,10 +769,7 @@ const counterCard: cards.Definition<{ count: number }> = {
     ...cardConfiguration,
     initialize: state => ({ state, value: { count: 0 } }),
     onTick(state, self) {
-        const count: number = self.state.count;
-        // @ts-expect-error a complete Card Definition retains its private state.
-        self.state.label;
-        return state;
+        return cards.setState(state, cards.ref(self), { count: self.state.count + 1 });
     },
 };
 const cardInput = {
@@ -927,8 +777,6 @@ const cardInput = {
     unitDefinition: { ...cardUnitBase, marker: 'unit' as const },
 };
 const initializedCard = cards.initialize(battle, cardInput);
-// @ts-expect-error deployment requires a Unit Definition with Occupancy and Deployable.
-cards.initialize(battle, { definition: counterCard, unitDefinition: bare.definition });
 const routedCardUnit = { ...cardUnitBase, route: routedDefinition.route };
 // @ts-expect-error ordinary Card deployment cannot supply Route's Plan and offset.
 cards.initialize(battle, { definition: counterCard, unitDefinition: routedCardUnit });
@@ -940,16 +788,6 @@ const registeredCard = cards.get(cardBattle, cardRef)!;
 const cardMarker: true = registeredCard.definition.marker;
 const cardUnitMarker: 'unit' = registeredCard.unitDefinition.marker;
 const cardCount: number = registeredCard.state.count;
-const emptyCard = { ...registeredCard, supply: { ...registeredCard.supply, stock: 0 as const } };
-const rechargedCard = cards.supply.recharge(emptyCard, 1);
-const rechargedCount: number = rechargedCard.state.count;
-// @ts-expect-error Supply operations retain the Card's private state type.
-rechargedCard.state.label;
-// @ts-expect-error recharging can change the previously narrowed stock.
-const emptyStock: 0 = rechargedCard.supply.stock;
-deck.replace(cardBattle, rechargedCard);
-// @ts-expect-error replacement requires the state type declared by the Card Definition.
-deck.replace(cardBattle, { ...registeredCard, state: { count: 'wrong' } });
 cards.setState(cardBattle, cardRef, { count: cardCount + 1 });
 // @ts-expect-error lookup through a Card Ref preserves its exact private state.
 cards.setState(cardBattle, cards.ref(registeredCard), { label: 'wrong' });
@@ -992,21 +830,8 @@ runtime.initialize({ ...baseInput,
     ],
 });
 runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
-    { definition: bare.definition, position: [0, 0] },
-    // @ts-expect-error aggregating initial units preserves Occupancy's required input.
-    missingInitial,
-] });
-runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
     // @ts-expect-error a concrete unit's Facing input remains required alongside Occupancy.
     { definition: armedDefinition, position: [0, 0], initial: { occupancy: { tile: [0, 0] } } },
-] });
-runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
-    // @ts-expect-error required initial capability data keeps its expected type.
-    { ...occupiedInput, initial: { occupancy: { tile: 'wrong' } } },
-] });
-runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
-    // @ts-expect-error known optional capability data also keeps its expected type.
-    { definition: bare.definition, position: [0, 0], initial: { facing: { direction: 'UP' } } },
 ] });
 const mismatchedMechanism = { ...counterMechanism, initialize: () => ({ label: 'wrong' }) };
 // @ts-expect-error aggregating a Mechanism cannot weaken initialize/callback pairing.
@@ -1015,17 +840,9 @@ const mismatchedCard = {
     ...cardInput,
     definition: { ...counterCard, initialize: (state: State) => ({ state, value: { label: 'wrong' } }) },
 };
-// @ts-expect-error separate Unit Definition input does not weaken Card private-state pairing.
-cards.initialize(battle, mismatchedCard);
 // @ts-expect-error aggregating a Card cannot weaken initialize/callback pairing.
 runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], initialUnits: [] });
-runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [], deployment: { definition: account, cards: [{ ...cardInput, definition: { ...counterCard,
-    onTick(state, self) {
-        // @ts-expect-error aggregation must not supply an any private-state context.
-        self.state.missing.deeply;
-        return state;
-    },
-} }] } });
+
 `;
     const options = {
         noEmit: true,

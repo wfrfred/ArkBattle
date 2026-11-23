@@ -204,7 +204,10 @@ test("interrupted attack, successful release, and damage output are separate bus
         id: "actor",
         hooks: Hooks.empty(),
         presence: {},
-        action: actionCapability(program),
+        action: {
+            ...actionCapability(program),
+            select: state => ({ state, value: [] }),
+        },
         skill: { definition: resource },
     };
     const target = {
@@ -224,12 +227,12 @@ test("interrupted attack, successful release, and damage output are separate bus
             invoke: (state) => ({ state, value: { type: "INTERRUPT", recoveryTicks: 2 } }),
         }));
     let started = actions.start(state, reference);
-    state = actions.advance(started.state, started.value);
+    state = step(started.state, []);
     assert.equal(get(state, 0).skill.sp.value, 0);
     assert.equal(get(state, 1).vitality.health.hp, 100);
 
-
-    state = update({ ...state, tick: 10 }, source, units.compose(units.removeHook(actions.beforeRelease, "interrupt"), units.setHook(actions.released, {
+    while (state.tick < 10) state = step(state, []);
+    state = update(state, source, units.compose(units.removeHook(actions.beforeRelease, "interrupt"), units.setHook(actions.released, {
             id: "hide-after-release",
             invoke: (state, { execution }) => ({
                 state: update(state, execution.host, presence.disappear()),
@@ -237,18 +240,19 @@ test("interrupted attack, successful release, and damage output are separate bus
             }),
         })));
     started = actions.start(state, reference);
-    state = actions.advance(started.state, started.value);
+    state = step(started.state, []);
     assert.equal(get(state, 0).skill.sp.value, 1);
     assert.equal(get(state, 1).vitality.health.hp, 100);
     assert.equal(actions.getExecution(state, started.value), undefined);
 
-    state = { ...state, tick: 20 };
+    while (state.tick < 20) state = step(state, []);
     state = update(state, source, presence.appear([1, 1]));
     state = update(state, source, units.removeHook(actions.released, "hide-after-release"));
     started = actions.start(state, reference);
-    state = actions.advance(started.state, started.value);
+    state = step(started.state, []);
     assert.equal(get(state, 0).skill.sp.value, 2);
     assert.equal(get(state, 1).vitality.health.hp, 93);
+    assert.deepEqual(state.events.map(event => event.type), ["ATTACK_STARTED", "ACTION_RELEASED", "DAMAGE", "ACTION_FINISHED"]);
 });
 
 test("Combat advances an instantaneous action once per Tick and skips selection while absent", () => {
@@ -280,7 +284,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
             ...actionCapability(program),
             select(state) {
                 selections++;
-                return { state, value: [program.id] };
+                return { state, value: [program.id, program.id] };
             },
         },
         skill: { definition: resource },

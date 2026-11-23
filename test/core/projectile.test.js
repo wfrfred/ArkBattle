@@ -96,9 +96,10 @@ test("Slowable projectiles compose the contributions of each source and remove t
     });
     const added = projectiles.add(initialized.state, initialized.value);
     const ordinary = create(added, { id: "ordinary" });
-    const [reference] = projectiles.all(ordinary.state).filter(projectiles.hasSlowable).map(projectiles.ref).toArray();
-    assert.equal(reference.id, initialized.value.id);
-    assert.equal(projectiles.all(ordinary.state).filter(projectiles.hasSlowable).toArray().length, 1);
+    const references = projectiles.all(ordinary.state)
+        .filter(projectiles.hasSlowable).map(projectiles.ref).toArray();
+    assert.deepEqual(references, [projectiles.ref(initialized.value)]);
+    const [reference] = references;
 
     let state = projectiles.setMoveContribution(ordinary.state, reference, { id: "a", value: 0.5 });
     state = projectiles.setMoveContribution(state, reference, { id: "b", value: 0.25 });

@@ -33,8 +33,7 @@ import { install } from '../../dist/core/unit/effect/index.js';
 import { inRange } from '../../dist/core/battle/targeting/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/capability/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';
-import { advance as advanceProjectiles } from '../../dist/core/projectile/operations.js';
-import * as projectilesQuery from '../../dist/core/projectile/index.js';
+import { step } from '../../dist/core/battle/runtime.js';
 import { advance as advanceSchedule } from '../../dist/core/battle/schedule/index.js';
 import { battle as createBattle } from '../helpers/battle.js';
 
@@ -107,9 +106,9 @@ test('hound content binds configured regeneration and rejects unimplemented stun
   assert.throws(() => createHound({ ...configured, stunImmune: true }), /stun immunity/);
 });
 
-function routeInitial(position) {
+function routeInitial(position, endPosition = null) {
   return { facing: { direction: 'RIGHT' }, route: { plan: {
-    motionMode: 'WALK', startPosition: World.toTile(position), endPosition: null,
+    motionMode: 'WALK', startPosition: World.toTile(position), endPosition,
     checkpoints: [], requireAllCheckpoints: true,
   }, offset: [0, 0] } };
 }
@@ -202,7 +201,7 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   assert.deepEqual(definition.action.select(unblocked, getUnit(unblocked, 1)).value, ['ranged']);
 });
 
-test('crossbow uses its authored release event and arrow speed, then settles damage on contact', () => {
+test('crossbow releases on the authored event, hits on contact, and moves after recovery', () => {
 
   const projectileDefinition = createArrow();
   const definition = createCrossbowman({
@@ -211,11 +210,15 @@ test('crossbow uses its authored release event and arrow speed, then settles dam
   });
   const attack = definition.action.definitions.find(({ id }) => id === 'ranged');
 
-  const bow = initialize({ id: 1, position: [2, 3.5], definition, initial: routeInitial([2, 3.5]) });
+  const position = [2, 3.5];
   const guardUnit = guard(0, [2, 2], 0);
   const target = unitRef(guardUnit);
   const select = attack.attack.targetGroups[0].select;
-  const initial = addUnit(addUnit(emptyBattle(), guardUnit), bow);
+  const initial = createBattle([
+    { definition: guardUnit.definition, position: guardUnit.position },
+    { definition, position, initial: routeInitial(position, [3, 4]) },
+  ], { rows: 5, columns: 5 });
+  const bow = getUnit(initial, 1);
   assert.equal(getApplyWay(getUnit(initial, 1)), "ALL");
   assert.deepEqual(select(initial, unitRef(bow)).value, [target]);
   const device = update(initial, target, setCategory("DEVICE"));
@@ -227,15 +230,18 @@ test('crossbow uses its authored release event and arrow speed, then settles dam
   assert.equal(getApplyWay(getUnit(state, 1)), "ALL");
   assert.equal(state.battlefield.projectiles.size, 0);
   assert.equal(getUnit(state, 0).vitality.health.hp, 1000);
-  state = advanceActionUntil(state, started.value, 15);
+  while (state.tick < 16) state = step(state, []);
   assert.equal(state.battlefield.projectiles.size, 0);
-  state = advanceAction({ ...state, tick: 16 }, started.value);
+  state = step(state, []);
   assert.equal(state.battlefield.projectiles.size, 1);
   assert.equal(getUnit(state, 0).vitality.health.hp, 1000);
-  for (let tick = 17; tick <= 26; tick++) {
-    state = advanceProjectiles({ ...state, tick }, projectilesQuery.all(state).map(projectilesQuery.ref));
-  }
+  while (state.tick <= 26) state = step(state, []);
   assert.equal(getUnit(state, 0).vitality.health.hp, 800);
+
+  while (state.tick < 30) state = step(state, []);
+  assert.deepEqual(getUnit(state, 1).position, position);
+  state = step(state, []);
+  assert.ok(getUnit(state, 1).position[0] > position[0]);
 });
 
 test('crossbow switching between ranged and blocker melee preserves independent cooldowns', () => {

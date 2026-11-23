@@ -1,171 +1,92 @@
-# 已审查范围的语义验收
+# 语义验收
 
-本页只规定关键结果和集中保障位置，详细语义以链接的领域文档为权威。测试从这些契约和真实机制导出，现有用例、文件数和 test() 数量不能反向决定架构。具体套件归属见[测试说明](../../test/README.md#已审查范围)。
+先从各领域架构文档提取会改变业务结果、身份与资源不变量、合法调用范围或可观察顺序的契约，再为每项选择集中代表。已有测试也要按同一标准审查。一项场景可以同时保障多个相关结果，共享协议集中验证，消费者只验证自己的业务后果。
 
-## 范围
+通过公开构造和领域操作建立场景。纯算法直接使用合法输入。修复既有语义时补足原代表。未接入的内容和待决语义见[Tactical 语义](tactical-semantics.md)和[Core 缺口](research-necessity-20261122.md)。套件运行方式见[测试说明](../../test/README.md)。
 
-覆盖 Battlefield、Unit 构造／Change／查询、各 Capability，以及 Action、Skill、Effect、Projectile、Contribution、Deployment、Blocking、Occupancy、Route／Schedule 和 Runtime 协作。公共 Hook／Ref／Lifetime 与 HP／EP 四类结算同样纳入覆盖。完整 Mechanism 的独立业务仍按其领域审查。
+## 公共契约与 Unit
 
-## 保留依据
+| 语义来源 | 需要保障的结果 | 集中代表 |
+| --- | --- | --- |
+| [接口约定](api-conventions.md#统一-typed-ref-与类型恢复)、[Capability 装配](capability.md#初始化与装配)、[Content 类型](content.md#unit-与-capability-的类型约束) | 构造结果保留所选能力及 Definition。必需 Initial 由创建入口提供，额外已知 Initial 不产生能力。异构开场输入逐项保持这些约束。 | [公共类型](../../test/core/types.test.js)的 Unit 直接创建、Route／Spawn、带 Route 的 Card 和异构 Runtime 输入。 |
+| [接口约定](api-conventions.md#统一-typed-ref-与类型恢复)、[Action](action.md#3-definitionaction-与-execution)、[Skill](skill.md#1-单槽聚合definition-与两种身份)、[Projectile](projectile.md#3-异构集合与类型恢复)、[Effect](effect.md#2-definition实例与泛型) | Content 装配检查宿主能力及私有状态与回调的配对。精确 Ref 保留私有类型，普通枚举只提供公共结构。执行、实例及 Effect 的身份不能混用。能力守卫和 Query 保留已知能力，Hook Key 保持载荷及宿主要求，Change 只可用于满足其要求的宿主。 | [公共类型](../../test/core/types.test.js)的 Action／Skill 宿主装配和精确引用、Effect 政策、Projectile Trait 与消除资格、Card／Mechanism 登记，以及 Query／Hook／Change 组合。 |
+| [Unit 构造](capability.md#初始化与装配)、[资格限制](capability.md#资格限制) | 开场和运行时共用身份分配，互斥 Blocking 角色不能同时装配，初始 Effect 经登记后正常安装。各限制列表独立管理登记 ID，同一初始列表拒绝重复登记。 | [Unit](../../test/core/unit.test.js)的构造、Restriction 和身份场景。 |
+| [Classification](capability.md#classification) | 类别和 Side 独立。组织和战斗标签各依所属类别进行查询。额外职业参与指定匹配，召唤物可复用子职业。明确类别的守卫保留输入类型，动态类别及职业匹配的 false 分支不承诺排除类型。 | [Classification](../../test/core/classification.test.js)的敌对、标签、职业结果以及[公共类型](../../test/core/types.test.js)的职业配对和守卫。 |
+| [Change](api-conventions.md#51-unit-完整操作与批量变更) | 同宿主组合保留操作顺序，一次发布最终值，Settlement 按顺序读取最新状态。中间真实变更的后继继续完成，即使字段最终回到原值。optional 根据组合时的当前输入判断能力。 | [Change](../../test/core/change.test.js)的组合和嵌套后继。 |
+| [Hook](hook.md#派发与生命周期) | 固定本次候选及优先级，按最新登记执行，嵌套独立选取。全局 entered 先发布规则，再调用仍 ACTIVE 的宿主程序。removed 使用注销前捕获的登记，先本地通知历史 Departure，再派发全局通知。 | [Hook](../../test/core/hook.test.js)的重入、入场及注销通知。 |
+| [Lifetime](lifetime.md#finalize-与完成边界)、[延后操作](lifetime.md#析构后执行操作) | 首次结束固定载荷，完成依赖收尾后才能注销宿主。ENDING 的作用域拒绝新的依赖。延后操作在结算外立即执行，在结算后依登记顺序接续最新状态，队列中的嵌套析构不抢先执行新增任务。 | [Lifetime](../../test/core/lifetime.test.js)的依赖析构、拒绝装配和 defer 顺序。 |
+| [Contribution](capability.md#属性与贡献)、[Attribute](attribute.md) | 有效来源先竞争再求值，平级稳定，独立来源保留。四项数值修正保留连续值，底值及最终值使用所属边界，整区间覆写可恢复默认，范围与数值贡献独立。 | [贡献选择](../../test/common/contribution.test.js)、[数值公式](../../test/common/modifier.test.js)、[属性](../../test/core/attribute.test.js)。 |
+| [查询与候选](api-conventions.md#查询与候选)、[不可变状态与确定性](functional-core.md)、[坐标与几何](geometry.md) | Store 新版本和 Query 的惰性读保持历史版本与顺序。RNG 同输入可重现，稳定排序保留同优先级顺序。取整、坐标转换、范围、相交和扫掠结果由纯算法保障。 | [Store](../../test/common/store.test.js)、[Query](../../test/common/query.test.js)、[RNG](../../test/common/rng.test.js)、[排序](../../test/common/order.test.js)、[取整](../../test/common/math.test.js)、[几何](../../test/core/geometry/)。 |
 
-- 保障实际玩法结果、身份与资源不变量，以及会改变结果的发布／结算边界。未接入内容和设计示例不作为已实现行为验收。
-- 每个独立重要结果有代表场景，共享协议只集中保障一次，消费者仅增加自己的业务后果；同一输入、种子与程序得到相同重要结果。测试目录、主题命名与本文领域一致，每个套件以 Contract 链接对应契约。
-- 身份、资源与生命周期通过公开领域操作建立；纯算法直接使用合法值。夹具准备事实，不伪造完成状态或另写产品算法。
-- 有冲突先依机制证据与已确认选择统一文档，再修实现和测试；具体语义尺度见[架构约定](README.md)。
+## Action、Skill 与 Effect
 
-## Data 的必要验收
+| 语义来源 | 需要保障的结果 | 集中代表 |
+| --- | --- | --- |
+| [Action 启动与调度](action.md#6-完整启动写回与终止) | 私有初始化依序接续。拒绝启动保留 prepare 已完成的业务，且不创建 Execution。取消后继读取最新持久状态，旧轮身份不能操作后续轮。受理、释放、输出和中断各有独立结果，瞬时执行一 Tick 只推进一次，重复候选也只执行一次。 | [Action](../../test/core/action.test.js)的装配、拒绝与重入、释放及 Combat。 |
+| [Action 冷却](action.md#5-capability-与冷却)、[普通攻击时序](action.md#8-普通攻击释放-hook-与移动) | 同宿主冷却独立，属性提交同步按比例重算攻速周期，固定周期保留。攻击缩放、缓存预算、已进入等待和后续段采样各有确定边界。一次开始只转向一次，释放后的执行占用仍影响移动。 | [Action](../../test/core/action.test.js)的属性变更，[普通攻击](../../test/content/actions/attack.test.js)的预算、采样和开始程序，[弩手](../../test/content/enemies.test.js)的实际释放与移动。 |
+| [攻击选择与输出](action.md#8-普通攻击释放-hook-与移动)、[选敌](targeting.md#调用业务) | 选择组接续 RNG 和状态，拒绝启动保留已消费前缀。已绑定目标按业务复验而无须重选。按当前攻击力逐目标输出与固定数值输出各有对应语义。 | [普通攻击](../../test/content/actions/attack.test.js)的选择与绑定，[攻击输出](../../test/content/actions/output.test.js)的逐目标采样和固定值。 |
+| [Skill SP](skill.md#2-sp)、[发动](skill.md#5-发动与完整结束) | 门槛、支付、触发方式各有职责。拒绝不初始化或支付，本次特殊参数不覆盖后续普通配置。发布 Activation 和扣款后再通知，重入结束保留已支付资源并跳过旧 onStart。空闲、激活及暂停期间的 SP 回复按本身资格推进。 | [Skill](../../test/core/skill.test.js)的发动、显式费用、付款重入和 SP 回复，[Runtime](../../test/core/runtime.test.js)的手动与自动调度。 |
+| [Skill 持续时间与弹药](skill.md#3-duration-与弹药)、[操作资格](skill.md#4-restriction程序与-hook) | 本轮 Duration 使用长期状态及支付前余额，后续弹药规则变更不反推早先采样。普通补弹在提交后通知实际增加量。操作须有处理器且通过当前限制，操作受理与完成独立。结束先清除本轮，保留通知中新建的新轮。 | [Skill](../../test/core/skill.test.js)的 TIME／INFINITE、AMMO、主动操作及结束重入。 |
+| [Effect 分组](effect.md#重复施加与叠层) | 竞争决定参与，兼容重应用按政策拒绝、新建或保留实例和私有状态，不兼容政策报配置错误。实际和有效叠层、满层续期、消耗与衰减各有结果；变层先发布再通知，停用期间仍保存新层数。 | [Effect](../../test/core/effect.test.js)的 DEFAULT、EXTEND／EXTEND_TIME、STACK 及 UNIQUE。 |
+| [Effect 来源与计时](effect.md#来源分组)、[时间推进](effect.md#6-时间推进) | 同 Card 不同 Unit 共享持久来源，区别于其他 Card、独立 Unit 及无来源。自动到期与参与状态独立，ACTIVE 才执行周期。初装即到期、最后一次周期及手动续期接续最新状态。 | [Effect](../../test/core/effect.test.js)的来源分组、安装及计时。 |
+| [标准控制](effect.md#需要区分的基础机制)、[Facing](capability.md#facing) | 独立异常来源按各自期限撤销，强制转向只豁免转向限制，移动与转向可以独立成功。 | [标准控制](../../test/core/effects/control.test.js)、[Facing](../../test/core/facing.test.js)。 |
 
-依据 [Data](data.md)，验证原始资料及本次静态配置到规范化结果：
+## Battlefield、单位空间与时序
 
-| 结果 | 集中代表 |
-| --- | --- |
-| 提取结果保留等级曲线、解锁、模组覆写和范围／资源关联。干员按配置选择后正确计算养成数值，真实非零自然回复保留单位换算。 | [单位配置](../../test/data/unit/)使用实际资料，具体干员的构造和战斗行为由 [Content 测试](../../test/content/operators/)覆盖。 |
-| 组织标签合并、去重且不双计旧字段，标签保留大小写与顺序；装置的实际阵营及筛选标签进入 DEVICE Definition。 | [标签转换](../../test/data/unit/tags.test.js)、[角色配置](../../test/data/unit/operator.test.js)与[预置装置](../../test/data/level/predefined.test.js)保障规范化和内容绑定，不重复 Core 标签查询。 |
-| 作者帧参数正确转换起手、主段与释放位置，保留连续 Tick 与无界缩放标记。 | [动作时序](../../test/data/action/timing.test.js)以玫兰莎起手为代表；运行攻速与帧内调度不在 Data 验收。 |
-| 地图几何、路线时基与控制流、出兵展开、随机组及等待政策保留。 | [Route／Schedule 转换](../../test/data/level/route-schedule.test.js)与[预置配置](../../test/data/level/predefined.test.js)；主线预处理、Branch 运行时抽选及 notCountInTotal 转换。 |
-| 关卡推击倍率保留，包括配置为零的倍率。 | [关卡转换](../../test/data/level/route-schedule.test.js)。 |
-| Effect 重应用、层数／续期和属性修正位置、黑板与来源采样标记完整。 | [Effect 转换](../../test/data/effect.test.js)使用已启用描述，不以静态读取证明运行算法。 |
+| 语义来源 | 需要保障的结果 | 集中代表 |
+| --- | --- | --- |
+| [Battlefield](battlefield.md#关键语义)、[Occupancy](occupancy.md#已通知的业务配对) | 批量发布最终占格，结构写入独立于身体位置和业务通知。双槽独立排他，Pair 先发布再通知，旧配对清理不能影响同格替代实例。 | [Battlefield](../../test/core/battlefield.test.js)的结构批量，[Occupancy](../../test/core/occupancy.test.js)的配对替换。 |
+| [Tile 与导航](terrain.md#地块与类型恢复)、[Navigation](navigation.md#overlay-登记)、[Spatial](spatial.md) | 非整格坐标不命中已有格。地块代价与方向限制影响寻路，Overlay 可独立改变路径。空间查询区分身体和 Hitbox。扫掠按接触比例排序，排除消失和 ENDING 的对象。接收资格由业务判断。 | [Battlefield](../../test/core/battlefield.test.js)的格地址、路径和接触。 |
+| [Blocking](blocking.md#关系资格与-restriction)、[Layer](capability.md#layer-与-hitbox) | 取得和保持使用当前双方资格、阻挡量及层，有占格时按根格判断地面阻挡。缩容按建立顺序从尾释放，每次通知后按当前容量继续裁撤。双端关系在通知前发布，结算使用当前关系。同值切层也清理当前关系，主动空间覆盖取消本方计划，通知中新建关系不被追删。 | [Blocking](../../test/core/blocking.test.js)的关系资格、缩容、双侧通知、切层与主动覆盖。 |
+| [Presence](presence.md#发布与同步结算)、[Targeting](targeting.md#标准资格) | 消失保留身份、占格、部署与 Lifetime，先发布限制再释放阻挡和取消 Action。恢复仅撤销自身限制。普通 HP／EP 损伤拒收，LOSS 可接收，治疗和自然回复遵守各自资格。选敌谓词按传入版本匹配当前限制，HP／EP 资格与实际接收独立，混合治疗和嘲讽使用有效属性。 | [Presence](../../test/core/presence.test.js)的状态与清理，[资格](../../test/core/targeting/eligibility.test.js)的实时判定与混合治疗，[Targetable](../../test/core/targeting/targetable.test.js)的组竞争、共享定义豁免和嘲讽。伤判见资源验收。 |
+| [Route](navigation.md#route-定义与进度) | 进入首指令及每次 MOVE 采样，重入接续当前 Context；即时长链完成，环让出。同一 Context 控制权与计时独立，TRACE 到达保留控制，Main 出口独立于临时路线。不可通起点恢复保留本次 MOVE，距离不含瞬移。 | [Route](../../test/core/navigation/route.test.js)的时钟、进入、退出、阻地恢复及剩余距离。 |
+| [Locomotion](navigation.md#locomotion) | 历史速度与限力／限速、避障反射、最终目标吸附；无 Route 仍可推进受力单位，并读取实际位移结果。 | [Locomotion](../../test/core/navigation/locomotion.test.js)、[避障](../../test/core/navigation/avoidance.test.js)、[速度](../../test/core/navigation/speed.test.js)。 |
+| [Shifting](navigation.md#强制位移) | 推击读当前力度和重量，首次失衡先发布状态再释放阻挡，失衡中不能重新接敌。牵引创建时采样，同源多条仍独立。移动拉点可从零力恢复；只有唯一有效牵引可在位移通知后按策略清速。来源结束保留动量，显式解除后由推进结束失衡。免疫在位移前生效，摩擦读取当前值，旧段收尾保留新段。 | [Unbalance](../../test/core/navigation/unbalance.test.js)的采样、多来源、近停、免疫、摩擦、碰撞及结束重入。 |
+| [Schedule](schedule.md#回归语义)、[Runtime](functional-core.md#同步候选范围) | 出生偏移与位置共享样本，等待在 entered 前发布。Operation 返回等待时暂停该队列，其他队列继续。Wave 超时、活单位主动解除和完整离场分别清理对应等待，解除 Wave 等待不提前推进策略。Branch 抽选发布后允许嵌套触发，每个实例按时推进。开场按 Card、Mechanism、Unit 顺序发布，入场动作接续已提交状态。战斗阶段按序推进，失败保留输入，调度完成后仍可 step。 | [Schedule](../../test/core/schedule.test.js)的时基、等候、Branch 与混排操作，[Runtime](../../test/core/runtime.test.js)的开场和 Tick。 |
 
-Prefab、范围读取和换算由实际业务使用；目录移动、提取工具或未接入原型不产生额外运行验收承诺。
+## Deployment
 
-## 必须保障的结果
+依据 [Deployment](deployment.md)，以下场景集中在[部署套件](../../test/core/deployment.test.js)。Unit 和 Occupancy 的通用通知及结构约束在各自套件验证。
 
-| 领域与权威契约 | 关键结果与集中归属 |
-| --- | --- |
-| [Battlefield](battlefield.md)、[Spatial](spatial.md) | 不可变发布、全批最终占格、Tile／Overlay 导航与空间资格；结构写入不执行业务。位置、Presence、占格和 Hitbox 分开；接触不等于命中。 |
-| [Unit 构造](capability.md#初始化与装配) | 开场与运行时初始化共用实例身份分配。具体 Definition 与所选 State／Initial 配对，拒绝阻挡双角色，登记后能力组成稳定；额外已知 Initial 可忽略。初始 Effect 经登记后的正常 install。 |
-| [Classification](capability.md#classification) | 单位类别与 side 独立，保持三阵营敌对关系；筛选／组织标签按类别限定且不混用，缺少对应字段的查询返回 false；基础／额外职业按本次政策匹配，召唤物复用子职业不获得八职业，错误类别不匹配。[集中代表](../../test/core/classification.test.js)保障查询结果；公共类型契约保障普通干员职业／子职业配对及守卫保留输入。 |
-| [Change](api-conventions.md#51-unit-完整操作与批量变更) | 同目标 compose 结合而不交换，各项 previous、no-op 和有序 Settlement；纯变换一次发布后结算，真实后继不因最终恢复入口引用丢失。optional 读取前序输入；嵌套 update 接续最新状态。 |
-| [Hook](hook.md)、[Lifetime](lifetime.md) | 候选固定、最新登记、独立嵌套、priority 同级稳定；Unit 登记后全局入场规则同步生效，本地 entered 观察到该结果，结束的 Unit 不再执行入场程序；首次有效结束固定载荷，依赖完整结束后宿主才注销。旧执行 Ref 不操作后来实例。 |
-| [Action](action.md)、[Skill](skill.md) | 启动受理与已发生前缀、静态时序修正的同步冷却结算、释放／中断／输出、持久与单轮身份；发动门槛与支付额独立且显式声明，本次完整参数不改配置或后续普通启动，命令与自动调度各守入口条件；拒绝不初始化或支付，支付通知看到已发布的本轮；Duration 按长期状态与扣费前余额构造，弹药本轮基础值先确定再修正，贡献变更只影响后续轮次；显式 SP 支付与回复许可；主动操作须有处理器并通过限制，受理不等于结束，内部结束独立；跨回调不重复消费或恢复旧执行。 |
-| [Effect](effect.md)、[Contribution](capability.md#属性与贡献) | 安装与启停、竞争、重应用、到期和最后业务正确；先选有效贡献再求动态输入，所属公式保留小数与数值范围。 |
-| [Occupancy](occupancy.md)、[Deployment](deployment.md) | 双槽排他、Pair 先发布再通知，旧配对不影响替代实例；Quote 预览与执行一致，资源先消费再入场。主动撤退先返 DP，适用的离场统一回收 Card。死亡注销时清格并启动 Card 恢复，全局部署位一战斗秒后归还，部署资格与执行使用同一额度。库存／DP 预算及 Card 延续正确。 |
-| [Blocking](blocking.md)、[Layer](capability.md#layer-与-hitbox) | 资格、容量尾裁、批量双端发布与旧 Relation；主动空间覆盖取消自身计划、解除当前关系。Layer 同值请求仍清理，Settlement 使用当时当前关系，通知中新建关系不追删。 |
-| [Locomotion](navigation.md#locomotion) | 历史速度、限力／限速、转向、最终目标吸附、地形避障与反射。推进包含无 Route 的受力单位并采样实际位移。由[运动](../../test/core/navigation/locomotion.test.js)和[路线](../../test/core/navigation/route.test.js)集中验证。 |
-| [Shifting](navigation.md#强制位移) | 推击取当前有效力度和重量，牵引创建时采样力值，同一来源的多个实例独立。近停保持零力牵引，位置发布与位移通知先于自动清速。唯一有效牵引才可清速，依赖结束保留剩余速度。手动结束牵引后，失衡由后续推进结算。免疫先于位移，旧段依赖清理不影响新段。积分读取当前摩擦倍率，倍率跨失衡段保留，恢复后使用配置底值。由[失衡](../../test/core/navigation/unbalance.test.js)集中验证。 |
-| [Targeting](targeting.md)、[Presence](presence.md) | 选择、空间存在、锁定命中与实际接收独立；具体重要协作见下节。 |
-| [Resource](resource.md)、[Vitality](vitality.md)、[Elemental](elemental.md) | 输出／接收／实际变化分离，HP／债务与 EP 准确提交，后继报告固定，死亡与 Burst 顺序正确；集中结果见资源清单。 |
-| [Runtime](functional-core.md) | 出生等待先于 entered，开场按既定顺序逐对象接续最新状态，Tick 阶段确定、失败不发布；调度完成后 step 仍可推进。 |
+| 语义来源 | 需要保障的结果 | 代表场景 |
+| --- | --- | --- |
+| [Card 定义与 Unit 蓝图](deployment.md#静态内容与-card)、[部署历史](deployment.md#部署历史) | 多卡可共享蓝图，各有身份和资源。成功部署按发生顺序在 entered 前发布来源，失败或无卡 Unit 不入历史；旧 Unit 注销后仍能反查。 | 共用蓝图的两张卡与一个开场 Unit；撤退、重上及死亡后反查。 |
+| [待部署区顺序](deployment.md#待部署区顺序) | Card 推进产生的新费用参与当 Tick 排序。撤销规则保留已排顺序，显式排序立即发布。 | 卡牌推进改变费用相对高低，检查实际牌序。 |
+| [请求与统一资格](deployment.md#请求与统一资格)、[部署流程](deployment.md#普通部署流程) | 预览与执行共享落点、报价和拒绝理由，拒绝不消耗。固有资源及占格前提保留；免支付、零支付和零占用有各自的账务。先消费再初始化、登记和通知。两输入列表独立校验 ID，覆盖后才竞争并稳定返回首拒。 | 共享请求与入场观察；固有门槛及零报价；真实入口重复 ID；分层覆盖与冲突。 |
+| [离场结算](deployment.md#离场结算) | 主动撤退在 removing 前退款，Card 在注销后按原因回收；SELF 跳过回收，EXTERNAL 回收，两者均无撤退退款。死亡立即清格及回收 Card，部署位一战斗秒后才可再用。 | 撤退与死亡的账务和下次部署，两个特殊离场原因。 |
+| [库存与计时](deployment.md#库存与计时) | DEFAULT 部署开钟且离场不补货，UNIQUE 离场回货再开钟。QUEUED 可用份与待恢复份分开，现有余时保留，暂停无补发，后续时长重新采样。先推进再运行卡牌程序，每 Tick 最多转为可用一份，包括零时长。持有上限按照可用与待恢复的总量裁剪，在场上限只限制下次部署。 | DEFAULT 显式补货、离场后 UNIQUE 恢复、QUEUED 逐份恢复及牌内程序观察、缩容与在场额度。 |
+| [DP](deployment.md#dp) | 当前余额用于查询与支付，按有效下限拒绝支付。负余额半速，跨零和变速保留进度，满额清进度。有效上限能保留超额或显式截断，提高下限同步补齐；自然 DP 可用于同 Tick 部署。 | 同 Tick 收支、自然回复时钟和上下限政策。 |
+| [Slot](deployment.md#slot) | 动态限位只影响新部署；零额度仍允许零占用，不限位保持不限。到期归还参与同 Tick 部署资格。 | 上限 Contribution、无限额、死亡延迟与到期部署。 |
 
-## 集中归属与收敛完成条件
+## Projectile 与 Terrain
 
-公共容器、Query、RNG、数值取整及几何算法各自集中验证；坐标旋转、范围并集、圆、方盒和轴对齐胶囊的独立相交和扫掠结果不复制到消费者。Targeting 只补一个实际 Hitbox 范围接入，锁定弹道单独验证身份命中。
-
-[公共类型契约](../../test/core/types.test.js) 集中证明构造与私有状态／回调配对、Typed Ref、具体 Initial 必填与额外已知输入、Query／optional 收窄、Change 能力逆变和 Hook Key 载荷关联。Occupancy 必需 tile、Route 必需 plan／offset、Spawn 所需与禁止能力由构造边界代表覆盖。Card 构造以带 Route 的蓝图为代表，验证部署入口无法提供该能力必需的初值时，蓝图在绑定阶段被拒绝。不按字段、数组长度或每种 Capability 扩矩阵。
-
-普通注册保序、结构共享、Hook 候选与 Lifetime 析构只在公共代表中保障；MaxHP、冷却、Ammo 和 Blocking 等具有真实后继的 Change 留在所属业务。综合场景仅保障新增跨领域结果，Content 位置或涉及未完整审查领域不是保留重复用例的理由。
-
-## 普通攻击时序的回归语义
-
-[Attribute](attribute.md)的集中测试保障默认边界规范底值、四项归并后的最终限幅、整区间后写覆盖／完整恢复，以及数值 Contribution 与范围独立。[Action](../../test/core/action.test.js)保障同宿主独立冷却进度、属性贡献及范围变更同步刷新 ATTACK_SPEED、FIXED 不变，周期公式下限10与属性默认下限20分开；领域测试只补 MaxHP、EP、SP 或移动等必要后继。
-
-依据 [Action](action.md#8-普通攻击释放-hook-与移动)，由[普通攻击](../../test/content/actions/attack.test.js)集中保障普通缩放上下限、开始时缓存动作预算、已进入等待不追改和后续段读取新周期。事件等待受缓存预算的取偶量化期限限制；分段等待至少一个 Tick，不另加首次 yield。冷却与执行占用独立，释放后的恢复只消费预算余量。
-
-[玫兰莎](../../test/content/operators/melantha.test.js)保障首次／续轮释放相位及会话中断后重新起手；[弩手](../../test/content/enemies.test.js)保障释放后仍执行后摇时不恢复自主移动；[泥岩](../../test/content/operators/mudrock.test.js)保障 S2在真实普攻前摇中取消旧执行、清空冷却，后续不补发旧输出。各内容读取真实静态时序，不复制公共公式或把零时序夹具当作原生验收。事件在项目 30 Hz 调度中到期消费，不声称验证了官方实机逐帧结果。
-
-## Effect 分组、重复施加与计时
-
-依据 [Effect](effect.md)，集中在 [Effect 主套件](../../test/core/effect.test.js)保障：
-
-- 来源分组区分共享／空来源独立组、同 Card 多实例、不同 Card、无 Card Unit。来源注销与再部署不改变历史 Card 归属。Deployment 保障不同 Card 的成功部署按实际顺序在 `entered` 前追加，离场后仍可反查。拒绝部署和无 Card 的直接登记不产生记录。
-- 同组重复政策或 STACK 到期政策冲突时报告配置错误。兼容的重应用按政策拒绝、新建或保留身份与私有状态；实际／有效叠层上限、满层续期、END／DECAY 和手动减层产生对应结果。实际变层先发布再通知，即使有效层数未变；满层只续期不通知变层。停用期间仍通知，但不恢复旧输出，重新启用读最新层数。
-- 零时长仍安装后结束；INACTIVE 自动扣时、ACTIVE 才执行 onTick，手动推进、绝对期限和最新时间续期保留最后业务。通用计时不复制到每种 Burst。
-
-类型代表保障具体政策回调与实例配对、DECAY 禁止 DEADLINE，以及 install 新建／合并返回的正确精度。具体角色与效果只验证自己的输出，不重复公共类型或重应用矩阵。
-
-## Targeting 与 Targetable 的回归语义
-
-依据 [Targeting](targeting.md)，由[标准资格](../../test/core/targeting/eligibility.test.js)、[受选限制](../../test/core/targeting/targetable.test.js)与[实际攻击](../../test/content/actions/attack.test.js)分别保障：
-
-| 关键结果 | 集中代表 |
-| --- | --- |
-| HP／EP 候选与实际接收分开，来源能力和集合目标类型保持。 | 标准选择及 [公共类型契约](../../test/core/types.test.js)；不复制四个谓词矩阵。 |
-| 预先绑定来源的标准选敌使用查询时传入的 BattleState 检查受选限制。 | 同一个伤害选敌配置在两个状态版本上筛选。 |
-| Restriction 先竞争再按定义身份豁免，独立机制保留，移除不误删其它来源。 | Targetable 一个竞争与共享定义场景。 |
-| 有效 MaxHP、HP／EP 混合需求、ACTIVE healFree 与嘲讽排序正确。 | 混合治疗、贡献与选择场景；公共取整只测一次。 |
-| 选择组接续 RNG，启动拒绝保留消费；保存目标不自动重选，显式复验不重新竞争。 | 实际攻击接入。 |
-
-来源退场后的样本归 Projectile／Content；复杂选择由 Query 组合，不另建测试专用 Selector 程序。
-
-## Projectile 的回归语义
-
-- `initialize` 分配身份，`add` 登记后调用 `onEnter`。回调可以嵌套创建或移除已登记实例。
-- Runtime 只推进 Tick 入口已有的候选。已结束的候选跳过。
-- 外部变速按来源 ID 替换和撤销，有效倍率相乘。不可变速弹道排除在登记候选外。
-- 消除通过资格筛选和 Ref 类型约束进入 Lifetime，`onEnd` 收到 `ELIMINATED`。代表用例覆盖原目标保底跳过和弹道 Scope 下的 Pull 清理。
-
-## Route 与 Schedule 的回归语义
-
-依据 [Route](navigation.md) 和 [Schedule](schedule.md)，对应[路线](../../test/core/navigation/route.test.js)与[调度](../../test/core/schedule.test.js)套件：
-
-- Route：首指令同步进入、MOVE 进入与重入采样、长无环链完整执行／即时环让出；active 与 ticking 独立，ENTER 可暂停而绝对等待保留出生时基。TRACE 到达后保留指令和最后格，支持同格重启；Main 出口不随临时控制权改变，无终点不离场。空间副作用后使用最新 Context。
-- Schedule：前延迟、出生偏移和位置共用样本、等待先于 entered。主线与 Branch 支持混排 Spawn 和 Operation。操作返回 false 时暂停所在队列，其他队列继续推进。操作重试完成后按顺序处理到期条目。Wave 超时只解除 wave 等待，final 保留；活 Unit 的指定等待释放与完整离场各有正确结果。Branch 每次整组重抽，执行前发布索引／RNG／实例，触发 Tick 推进一次，重入保留各实例。空计划与完成后继续 step 正常。
-
-路线距离只累计导航运动，不计 APPEAR 跳跃；Data 转换与 Core 运行分别集中保障，Hook／RNG 不重复验证。
-
-## Presence 的回归语义
-
-依据 [Presence](presence.md)，[主套件](../../test/core/presence.test.js)保障保留 Unit、位置、占格、部署份额、Effect 与 Lifetime；全部限制先发布，再清理当前 Blocking 和自身计划、取消 Action。appear 只移除自身限制，主动位置覆盖包括同值请求。
-
-跨领域代表只补独立后果：Blocker 不取消原目标的独立偏移；旧 Action 输出停止、已成立 Skill 继续；普通 HP／EP 损伤拒收而 HP LOSS 可结算，明确恢复与自然恢复独立；普通空间／目标／Terrain 排除消失对象，tracking 弹道仍追真实位置。公共 Restriction 与结束协议不重复。
-
-## Restriction 与部署许可的回归语义
-
-依据 [Restriction](capability.md#资格限制) 和 [Deployment](deployment.md)：
-
-| 编号 | 关键结果与集中代表 |
-| --- | --- |
-| RESTRICTION-01 | 有效贡献、组竞争、定义身份和 AND 判断正确；复用 Targetable，不为 resolve 查询建同构矩阵。 |
-| RESTRICTION-02 | 三次接收复检使用同一 ignore、最新有效项，豁免不恢复败项、不绕过固有前提、不传嵌套；资源代表补同步变化。 |
-| RESTRICTION-03 | 领域操作保留各自资格时点和后继，类型不放宽能力／载荷；Skill 按共享定义豁免多来源眩晕，仍受沉默／Presence 限制及 SP 等前提约束，不解除异常或其他领域限制。[公共类型契约](../../test/core/types.test.js)、Blocking／Skill／Presence 各承担自身结果。 |
-| RESTRICTION-04 | 同一初始或请求列表拒绝重复登记 ID，不同列表可使用同一 ID。运行时替换仅作用于所在列表。[Unit 构造](../../test/core/unit.test.js)以 Facing 与 Targetable 为代表，[Deployment](../../test/core/deployment.test.js)覆盖 Card Definition 和 DeployRequest。 |
-| DEPLOY-RESTRICTION-01 | 非法 Quote 在预览与部署一致拒绝；库存、支付、地图、双槽等固定前提不能被规则覆盖，免费与免支付保留不同账务。 |
-| DEPLOY-RESTRICTION-02 | Definition／Card／Request 的覆盖和互斥选择得到稳定拒绝原因；一个分层代表，不枚举所有字段和来源。 |
+| 语义来源 | 需要保障的结果 | 集中代表 |
+| --- | --- | --- |
+| [Projectile 创建与结束](projectile.md#4-创建查询与内容更新)、[推进](projectile.md#5-时间推进) | 先分配身份后登记，onEnter 可观察登记、嵌套创建或结束。Runtime 固定 Tick 入口候选，进入阶段读取当前实例，跳过已结束候选。 | [Projectile](../../test/core/projectile.test.js)的登记、Tick 候选和结束。 |
+| [变速](projectile.md#外部变速与运动)、[消除](projectile.md#移除与消除)、[命中](projectile.md#7-命中与内容状态) | 变速资格按 Trait，来源倍率独立替换、相乘并撤销。普通停止可以按模板完成一次保底命中，消除跳过。锁定身份仍在时跟踪当前位置，命中与伤判分离，目标不存在不会转打附近单位。来源离场时弩箭读取发射样本，重入结束不重复命中。 | [Projectile](../../test/core/projectile.test.js)的变速，[弩箭](../../test/content/projectiles/arrow.test.js)的停止、锁定与采样，[Unbalance](../../test/core/navigation/unbalance.test.js)的弹道 Scope 清理。 |
+| [Mechanism](terrain.md#mechanism-操作) | 开场与运行时共用身份分配，登记后 onEnter 一次；启停在发布新状态后通知实际变化，停用停止推进并保留私有状态，移除调用 onEnd。 | [Mechanism](../../test/core/mechanism.test.js)的开场、登记、启停和结束。 |
+| [地形](terrain.md#地形接触与调度)、[Content 行为](terrain.md#content-行为) | 地形接触读取运动后的身体位置与当前资格。各地形保留自身的入场、周期和离格政策。装置只恢复所拥有的地块属性，射击台只为当前乘员安装限定层的禁挡。 | [地形场景](../../test/content/terrain.test.js)的接触政策，[地块装置](../../test/content/devices/tiles.test.js)和[射击台](../../test/content/devices/shooting-platform.test.js)的实际业务。 |
 
 ## Hook 与伤害／治疗的回归语义
 
-详细契约只在 [Resource](resource.md)、[Vitality](vitality.md)、[Elemental](elemental.md) 与 [Hook](hook.md) 定义。下列结果决定必要场景，不按四管线或所有阶段复制：
-
-| 编号 | 关键结果 | 集中代表 |
+| 语义来源 | 需要保障的结果 | 集中代表 |
 | --- | --- | --- |
-| HOOK-01 | 固定候选及初始 priority、最新登记、同级稳定和独立嵌套；removed 使用注销前程序快照，结束事实不丢仍登记的 ENDING 宿主。 | [Hook](../../test/core/hook.test.js)、[类型](../../test/core/types.test.js)与真实生命周期。 |
-| HOOK-02 | Calculate／Apply 排除独立，键身份和 ID 匹配正确；排除不变成免疫豁免或嵌套政策。 | [资源结算](../../test/core/resource/application.test.js)中的来源／目标及嵌套代表。 |
-| HOOK-03 | Blocking 两方候选和 priority 在任一通知前固定，仍先 Blocker 后 Blockable；关系失效与历史通知按各自契约处理。 | [Blocking](../../test/core/blocking.test.js)关系重入，不复制公共候选矩阵。 |
-| HP-01 | 当前公式类型与防御采样贯穿计算／应用；分类事实保留，不产生计算期受击。 | [Calculate](../../test/core/resource/calculation.test.js)实际公式与采样。 |
-| HP-02 | 独立 Calculate 分支只接续选中的完整 State，随后仅 Apply 一次。 | [Calculate](../../test/core/resource/calculation.test.js)的独立计算分支，不自写未接入的弱点内容。 |
-| APPLY-01 | BeforeReceive 改变准入并接续工作值，取消保留已完成前缀；HIT 与普通伤判同轮，前置取消不授予 HIT，后续取消不回滚已得 SP。 | [Apply](../../test/core/resource/application.test.js)的接收与同步后继。 |
-| APPLY-02 | 最终非负边界、零计算拒绝与零接收／零实际变化成功分开；报告在写点固定。 | [Apply](../../test/core/resource/application.test.js)与[Calculate](../../test/core/resource/calculation.test.js)的零值和报告。 |
-| APPLY-03 | 固定／取消单向接续，取消权限与成功后继分开；禁止抵挡保留护盾且仍有普通减伤，FIXED 不被普通改量恢复。 | [泥岩](../../test/content/operators/mudrock.test.js)真实 Hook 与[接收类型](../../test/core/types.test.js)。 |
-| HP-03 | damageCommitted、两侧 Applied 完成后才确认死亡。零 HP 期间保留 Unit 与 Blocking，可救回，嵌套 Combat 和零量直接恢复均保留原结算的死亡归属。 | [Apply](../../test/core/resource/application.test.js)的致死与恢复。 |
-| KILL-01 | 显式 killer 与 source 独立；targetKilled 先于目标的普通 removing Hook，排除或来源 ENDING 不改变目标结算。 | [Apply](../../test/core/resource/application.test.js)确认与[Unit](../../test/core/unit.test.js)本地通知。 |
-| KILL-02 | 内层取得死亡确认时外层不重复；首次 End 固定归属，重复请求不再次派发 removing，Finalize 延后不丢 killed，Completed 后发业务不改旧结果。 | [Apply](../../test/core/resource/application.test.js)嵌套死亡与真实 Lifetime。 |
-| KILL-03 | InstantKill 调用者先登记 removing Hook，再请求结束；通知看到已发布 ENDING 与固定 Departure，不要求先写 HP0，直接 remove 不自动生成来源通知。 | [Unit](../../test/core/unit.test.js)的直接结束组合，不另建 InstantKill 框架。 |
-| HP-04 | MaxHP 变更同步比例与债务分配，容量耗尽由 Settlement 处理；不伪装治疗或复活。 | [Vitality](../../test/core/vitality.test.js)贡献变化及[治疗排序](../../test/core/targeting/eligibility.test.js)。 |
-| HP-05 | 三种 Nature 共用管线；无敌／Presence 不阻止 LOSS，环境标签不自动跳 Hook。 | [Apply](../../test/core/resource/application.test.js)流失与接收。 |
-| HP-06 | HIT 许可与 Nature 独立，非 LOSS 且许可为真才回复；环境和 Effect 输出不靠全局阻回伪装。 | [Skill](../../test/core/skill.test.js)、[泥岩](../../test/content/operators/mudrock.test.js)及[实际地形](../../test/content/terrain.test.js)；标准 Burst 由其成品套件保障。 |
-| HP-07 | 自然回复读取当前属性、逐 Tick 偿债／回 HP，顺序和零速／存活门控正确，不进入普通治疗。 | [Vitality](../../test/core/vitality.test.js)的自然回复。 |
-| HP-08 | Health 候选干预后读最新宿主，失效保留前缀而不成功写入；成功含零变化均执行 void 后继，原报告不受其更改／离场影响。 | [Vitality](../../test/core/vitality.test.js)提交干预与[类型](../../test/core/types.test.js)。 |
-| HP-09 | 负生命两条累计分支、容量耗尽与配置延后清算正确，设置比例不即时清债或判死。 | [Vitality](../../test/core/vitality.test.js)的受击、债务与动态容量。 |
-| HEAL-01 | 恢复先偿债，真正溢出与 HP 增益分开；容量缩减后的 Healing 写入即使引发 DEATH，仍返回 APPLIED 和固定报告。 | [Vitality](../../test/core/vitality.test.js)债务恢复与容量缩减，核对离场和固定报告。 |
-| EP-01 | EP 与 HP 元素抗性独立；最新 MaxEP 的规范化真实写入 State，与报告写点一致。显式恢复逐型全量；healed 只通知正增益，零增益仍可成功 Applied。 | [资源公式](../../test/core/resource/calculation.test.js)与[Elemental](../../test/core/elemental.test.js)的实际提交。 |
-| EP-02 | 耗尽同步创建 Burst，创建通知先于仍有效的一次性输出，随后 damaged／Applied；启动取消不改旧损失报告。 | [Elemental](../../test/core/elemental.test.js)的耗尽与启动取消。 |
-| EP-03 | 唯一恢复预算、动态上限／速度、暂停、末次周期、零预算输出与产物期限正确；自然 EP 回复不派发 healed 或普通治疗。 | [Elemental](../../test/core/elemental.test.js)与[标准成品](../../test/core/effects/elemental.test.js)，不重写恢复算法或展开标准参数矩阵。 |
-| EP-04 | MANIA 接收与全型回填正确；角色程序按 Execution 首次释放及每次 Skill 激活增加伤害，两种能力分别监听，失败发动不计数，允许 HIT 且取消根后独立保留；敌方周期按实际 ACTIVE Tick 增伤，不被恢复倍率加速，末次输出与攻速清理正确。 | [Data 映射](../../test/data/effect.test.js)与[Elemental](../../test/core/elemental.test.js)保障第五型接入和全型资源；[标准成品](../../test/core/effects/elemental.test.js)保障两套时钟、施放与根结束的差异。 |
-| EP-05 | ENVIRONMENT 仍使用普通 EP 抗性和接收管线；环境免疫 Hook 能取消环境 EP 而不影响普通 EP，单次排除该 Hook 后可正常接收。 | [Apply](../../test/core/resource/application.test.js)的环境免疫场景，不复制公共 Hook 排除矩阵。 |
-| EP-06 | 缩时保留已推进量，按当前 MaxEP 即时回填，不补周期或 healed；耗尽时完整结束并清理根绑定产物，独立眩晕保留原期限，结束回调中的新 Burst 不受旧 Ref 影响。 | [Elemental](../../test/core/elemental.test.js)的即时回填与同步结束两个成品场景。 |
-
-具体过量转屏障、非致命、保护、复活和其它特殊内容接入后，再验证其新增玩法结果；已有资源报告或 Hook 不构成这些内容已实现的证明。EP 具体内容与暂缓例外见 [Elemental 支持边界](elemental.md#支持边界)。
+| [Resource 计算](resource.md#calculate-与-apply-的语义边界)、[公式与分支](resource.md#基础公式与弱点选择) | 计算采样对应抗性与类型，并保留固定请求。各计算分支独立，Apply 只接续被选中的一次结果。零输出拒绝与零实际变化的成功结算不同。 | [Calculate](../../test/core/resource/calculation.test.js)的实际公式、分支与零输出，[Apply](../../test/core/resource/application.test.js)的零变化和通知。 |
+| [Resource 接收](resource.md#接收工作值数值固定与取消)、[单次排除](resource.md#本次-hook-排除取消权限与接收豁免) | Hook 排除限本次操作，接收豁免使用当前有效限制，嵌套不继承。取消和固定不可恢复为普通接收，允许的后继保留已发生业务。HIT 的资格与 Nature 独立，LOSS 仍经普通结算。EP 环境伤害使用同一接收流程。 | [Apply](../../test/core/resource/application.test.js)的 Hook 排除、免疫复检、接收取消、LOSS 与环境 EP；[泥岩护盾](../../test/content/operators/mudrock.test.js)的取消权限。 |
+| [Resource 死亡](resource.md#生命状态通知与离场)、[击杀归属](resource.md#单笔击杀结果与-targetkilled) | 提交与 Applied 先于死亡确认，零 HP 时同步业务可以救回。嵌套确认不重复归属，显式 killer 与 source 独立，先通知来源，再进行目标离场，已发出结果不受 Completed 的新结算影响。直接致死也可固定归属。 | [Apply](../../test/core/resource/application.test.js)的致死、抢占确认及恢复，[Unit](../../test/core/unit.test.js)的直接结束。 |
+| [Vitality](vitality.md#负生命与资源分配)、[报告](vitality.md#提交报告与特殊恢复) | HP 和债务按实时容量分配，恢复先还债，再增加 HP，真正溢出单列。提交前干预使用最新宿主，报告固定在成功写入，后继引发的离场不改报告。自然回复按 Tick 偿债与回 HP，不走治疗流程。 | [Vitality](../../test/core/vitality.test.js)的自然回复、提交干预、债务与 MaxHP 动态变化。 |
+| [Elemental 提交](elemental.md#3-查询结算与资源提交)、[耗尽顺序](elemental.md#4-hook提交事实与同步重入) | HP 元素抗性与 EP 独立，EP 提交使用有效 MaxEP，逐型全量恢复，零增益不派 healed。耗尽先发布 Burst，再执行仍有效的标准输出及损伤通知；启动被取消仍保留原 EP 损失报告。 | [Calculate](../../test/core/resource/calculation.test.js)的抗性，[Elemental](../../test/core/elemental.test.js)的提交、恢复、耗尽与启动取消。 |
+| [Elemental 恢复与结束](elemental.md#5-完整结束与离场)、[狂躁](elemental.md#狂躁的行动与时间累加) | Burst 按自身预算推进，暂停或速度变化不重复累积，零预算仍可有安装输出。缩时保留已推进量，结束按当前 MaxEP 回填并清理根绑定产物，独立异常和新轮保留。狂躁分别消费角色实际释放、激活和敌方 ACTIVE 周期。 | [Elemental](../../test/core/elemental.test.js)的预算及重入，[标准爆发](../../test/core/effects/elemental.test.js)的周期、独立产物与两类狂躁。 |
 
 ## Event 的回归语义
 
-依据 [Event](event.md)：成功的 HP／EP 结算输出实际变化，包含零实际变化；拒绝不产生成功 Event。元素 HP 伤害与 EP 损伤分开；爆发位置与注销历史不会因随后移动／删除丢失；顺序按发生时点，Tick 清空旧输出但旧版本可读，表现不反向改变领域状态。
+依据 [Event](event.md)，[Event](../../test/core/event.test.js)集中验证实际 HP／EP 变化（含成功零变化）、HP 取消输出零及 EP 损伤取消无输出，以及爆发保持发生时的位置、下一 Tick 清空而旧版本仍可读。[Action](../../test/core/action.test.js)观察开始、释放、输出和完成顺序，[Route](../../test/core/navigation/route.test.js)经真实 Main 退出发布一次离场表现。[Vitality](../../test/core/vitality.test.js)验证 HP 提交后调用后继之前已发布 Event，嵌套治疗及治疗引发的离场保持实际发生顺序。
 
-HP 伤害先于 damageCommitted 中的嵌套治疗输出，触发离场的普通治疗先输出 HEAL，见 [Vitality](../../test/core/vitality.test.js)。
+## Data 与具体内容
 
-这些结果集中在 UI 适配与实际结算组合，领域业务通过 State、Outcome／Application 或 Hook 验证，不为 Blocking、Projectile 等复制诊断输出矩阵。
-
-## 不单独保留的内容
-
-不按每个 Getter／Setter、字段、空数组、同引用或缺失对象建立用例；不验证已删 API 的不存在或内部存储／缓存形状；不为不可达数值、非法调度或篡改只读状态增加防御矩阵；不把测试夹具自写的 Aura／Buff／选择算法当作产品实现。
-
-已有语义的回归修正其集中代表，只有独立重要结果才增加场景。覆盖充分以语义和实际结果判断，重复层级或文件数量不增加保证。
+| 语义来源 | 需要保障的结果 | 集中代表 |
+| --- | --- | --- |
+| [干员静态资料](data.md#干员静态资料)、[敌人静态资料](data.md#敌人静态资料) | 按资源关联取得完整原始资料，按选择处理解锁、曲线、模组与单位换算。敌人逐项继承等级基础值，关卡覆写最后生效，保留供 Content 使用的技能事实。 | [干员配置](../../test/data/unit/operator.test.js)、[敌人配置](../../test/data/unit/enemy.test.js)的实际资料。 |
+| [Data 配置转换](data.md#静态配置与数值)、[Route 与 Schedule](schedule.md#静态计划) | 标签保留标识身份，合并去重；装置使用实际阵营、筛选标签和部署格配置。路线时基、随机组、等待和关卡推力系数保留，包括零系数。 | [标签](../../test/data/unit/tags.test.js)、[预置装置及控制器](../../test/data/level/predefined.test.js)、[Route／Schedule 转换](../../test/data/level/route-schedule.test.js)。 |
+| [动作换算](data.md#共享读取与换算)、[Effect 配置](data.md#当前支持边界) | 作者帧转为起手及释放时间，保留小数和无界缩放。Effect 转换保留叠层上限、续期、修正位置与动态输入，并绑定已接入的元素类型。 | [动作配置](../../test/data/action/timing.test.js)、[Effect 配置](../../test/data/effect.test.js)。 |
+| [具体内容](content.md#语义证据与项目政策)、[实际攻击时序](action.md#8-普通攻击释放-hook-与移动) | 角色测试证明其特有结果。玫兰莎在连续攻击中省去起手，间断后重新起手。泥岩 S2 替代旧普攻与回复并重验绑定目标，护盾按当前生命及来源结算。敌人读取实际朝向与阻挡目标，各攻击独立冷却。 | [玫兰莎](../../test/content/operators/melantha.test.js)、[泥岩](../../test/content/operators/mudrock.test.js)、[猎狗与弩手](../../test/content/enemies.test.js)。 |

@@ -14,10 +14,28 @@ const account = {
     dp: { initial: 20, min: 0, max: 99, recoveryInterval: null },
     slot: { limit: 1 },
 };
+const cardDefinition = {
+    dp: { cost: 5, increaseCostOnRetreatOrDeath: false, refund: null },
+    slot: 1,
+    supply: {
+        stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
+        policy: { type: "UNIQUE" },
+    },
+    deploymentRestrictions: [], unitHooks: Hooks.empty(),
+    initialize: (current) => ({ state: current, value: {} }),
+};
 
 test("initial and scheduled entry see registered battle facts and preserve their resource operations", () => {
     const entered = [];
-    const controller = { id: "controller", initialize: () => ({}) };
+    const controller = {
+        id: "controller",
+        initialize: () => ({}),
+        onEnter(current) {
+            assert.ok(cards.all(current).find(card => card.definition === cardDefinition));
+            entered.push("controller");
+            return current;
+        },
+    };
     const plan = {
         motionMode: "WALK",
         startPosition: [0, 5],
@@ -69,7 +87,14 @@ test("initial and scheduled entry see registered battle facts and preserve their
         { definition: initial, position: [0, 0] },
         { definition: following, position: [1, 0] },
     ], {
-        deployment: { definition: account, cards: [] },
+        deployment: { definition: account, cards: [{
+            definition: cardDefinition,
+            unitDefinition: {
+                id: "reserve", hooks: Hooks.empty(),
+                occupancy: { slot: "OCCUPANT" },
+                deployable: { retreatRestrictions: [] },
+            },
+        }] },
         initialMechanisms: [{ definition: controller }],
         schedule: { waves: [{
             preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
@@ -81,7 +106,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
     });
     assert.equal(state.deployment.dp.balance, 22);
     state = step(state, []);
-    assert.deepEqual(entered, ["initial", "following", "scheduled"]);
+    assert.deepEqual(entered, ["controller", "initial", "following", "scheduled"]);
     assert.equal(state.deployment.dp.balance, 25);
 });
 
@@ -137,16 +162,6 @@ test("Tick phases publish their resource operations and failures preserve the in
                 return { state: current, value: undefined };
             },
         }),
-    };
-    const cardDefinition = {
-        dp: { cost: 5, increaseCostOnRetreatOrDeath: false, refund: null },
-        slot: 1,
-        supply: {
-            stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
-            policy: { type: "UNIQUE" },
-        },
-        deploymentRestrictions: [], unitHooks: Hooks.empty(),
-        initialize: (current) => ({ state: current, value: {} }),
     };
     const before = battle([], {
         deployment: {

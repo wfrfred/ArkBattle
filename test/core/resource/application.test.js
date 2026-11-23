@@ -772,7 +772,7 @@ test("EP-05: environmental EP uses ordinary resistance and reception, with immun
     assert.deepEqual(applied, ["ENVIRONMENT", "DAMAGE", "ENVIRONMENT"]);
 });
 
-test("HP-03: lethal HP remains present through nested Combat and both Applied roles before death releases blocking", () => {
+test("HP-03: Applied can recover zero HP and preserve blocking before death confirmation", () => {
     let prepared = false;
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
@@ -858,6 +858,20 @@ test("HP-03: lethal HP remains present through nested Combat and both Applied ro
     assert.equal(prepared, true);
     assert.equal(get(result.state, 1), undefined);
     assert.equal(get(result.state, 2).blockable.relation, null);
+
+    const rescuing = update(state, source, units.setHook(hpDamage.sourceApplied, {
+        id: "rescue-target",
+        invoke(current) {
+            assert.equal(get(current, 1).vitality.health.hp, 0);
+            return { state: vitality.increaseHp(current, target, 20).state, value: undefined };
+        },
+    }));
+    const rescued = hpDamage.applyDamage(request, hpDamage.calculateDamage(rescuing, request));
+    assert.equal(rescued.value.killed, false);
+    const guard = get(rescued.state, 1);
+    assert.equal(guard.lifecycle, "ACTIVE");
+    assert.equal(guard.vitality.health.hp, 20);
+    assert.deepEqual(blocking.blockerOf(rescued.state, enemy), target);
 });
 
 test("KILL-02: nested damage owns its kill even while Lifetime defers the victim's final removal", () => {

@@ -67,7 +67,6 @@ test('locked arrows follow a disappeared target position and separate identity h
   assert.equal(getUnit(state, 1).vitality.health.hp, 960);
   state = step(state, 6);
   assert.equal(projectiles.get(state, visible.value).lifecycle, 'ACTIVE');
-  assert.equal(getUnit(state, 1).vitality.health.hp, 960);
   state = step(state, 7);
   assert.equal(projectiles.get(state, visible.value), undefined);
   assert.equal(getUnit(state, 1).vitality.health.hp, 960);

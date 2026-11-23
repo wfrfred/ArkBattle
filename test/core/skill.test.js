@@ -364,22 +364,22 @@ test("TIME extension stays in its round while persistent state selects a later I
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source, program);
     const first = skills.activate(state, reference);
-    state = skills.extendTime({ ...first.state, tick: 2 }, first.value, 3);
+    state = skills.extendTime(step(step(first.state, []), []), first.value, 3);
     state = update(state, source, presence.disappear());
-    state = skills.advance({ ...state, tick: 5 }, source);
+    while (state.tick <= 5) state = step(state, []);
     assert.equal(skills.getActivation(state, first.value).activation.duration.endsAtTick, 8);
-    assert.equal(skills.getActivation(state, first.value).activation.state.ticks, 1);
-    state = skills.advance({ ...state, tick: 8 }, source);
+    assert.equal(skills.getActivation(state, first.value).activation.state.ticks, 6);
+    while (state.tick <= 8) state = step(state, []);
     assert.equal(get(state, 0).skill.activation, null);
     state = update(state, source, presence.appear([1, 1]));
     const second = skills.activate(state, reference);
-    state = skills.extendTime(second.state, first.value, 10);
+    state = second.state;
+    while (state.tick <= 15) state = step(state, []);
     assert.deepEqual(skills.getActivation(state, second.value).activation.duration, { type: "INFINITE" });
-    state = skills.advance({ ...state, tick: 100 }, source);
-    assert.notEqual(skills.getActivation(state, second.value), undefined);
 });
 
 test("AMMO samples its charged base before payment and applies capacity, consumption, refill and exhaustion policies", () => {
+    const replenishments = [];
     const program = {
         id: "ammo",
         sp: { initial: 2, capacity: 2, recovery: { type: "NONE" }, recoverySpeed: attribute(0), recoveryMultiplier: attribute(1) },
@@ -396,7 +396,14 @@ test("AMMO samples its charged base before payment and applies capacity, consump
     };
     const definition = {
         id: "operator",
-        hooks: Hooks.empty(),
+        hooks: Hooks.empty().set(skills.ammoReplenished, {
+            id: "observe-refill",
+            invoke(state, { event }) {
+                replenishments.push(event);
+                assert.deepEqual(skills.getActivation(state, event.ref).activation.duration, event.current);
+                return { state, value: undefined };
+            },
+        }),
         skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -417,6 +424,11 @@ test("AMMO samples its charged base before payment and applies capacity, consump
     let restored = skills.replenish(state, first.value, 40);
     state = restored.state;
     assert.equal(restored.value.amount, 32);
+    assert.deepEqual(replenishments, [{
+        ref: first.value, requested: 40, amount: 32,
+        previous: { type: "AMMO", initial: 32, remaining: 0, replenished: 0 },
+        current: { type: "AMMO", initial: 32, remaining: 32, replenished: 32 },
+    }]);
     state = skills.consume(state, first.value, 32).state;
     restored = skills.replenish(state, first.value, 1);
     state = restored.state;

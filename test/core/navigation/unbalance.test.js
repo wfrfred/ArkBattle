@@ -4,6 +4,8 @@ import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
 import { attribute } from "../../helpers/attribute.js";
 import { step } from "../../../dist/core/battle/runtime.js";
+import * as blocking from "../../../dist/core/battle/blocking/index.js";
+import { blockableReleased } from "../../../dist/core/unit/capability/blocking/index.js";
 import { update as updateTile } from "../../../dist/core/battle/tile.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";
@@ -57,17 +59,42 @@ function assertPosition(state, [expectedX, expectedY]) {
     assert.ok(Math.abs(y - expectedY) < 1e-12, `${y} ≈ ${expectedY}`);
 }
 
-test("push uses the current source and target grades and the battle push multiplier", () => {
-    const { state, host, source } = setup({
-        ...targetDefinition,
-        shiftable: { ...targetDefinition.shiftable, massLevel: attribute(2.5) },
-    }, { pushMultiplier: 0.25 });
+test("push uses current grades and releases blocking before forced movement begins", () => {
+    const releases = [];
+    const state = battle([{
+        definition: {
+            ...targetDefinition,
+            layer: { type: "GROUND" },
+            blockable: { volume: 1, restrictions: [] },
+            shiftable: { ...targetDefinition.shiftable, massLevel: attribute(2.5) },
+            hooks: Hooks.empty().set(blockableReleased, {
+                id: "observe-unbalance",
+                invoke(current) {
+                    releases.push(shiftable.isUnbalanced(get(current, 0)));
+                    return { state: current, value: undefined };
+                },
+            }),
+        },
+        position: [1, 1],
+    }, {
+        definition: {
+            ...sourceDefinition,
+            blocker: { capacity: 1, layer: "GROUND", restrictions: [] },
+        },
+        position: [0.75, 1],
+    }], { pushMultiplier: 0.25 });
+    const host = units.ref(get(state, 0));
+    const source = units.ref(get(state, 1));
     const strengthened = units.update(state, source, shifter.setBaseForceLevelContribution({
         id: "extra-force", value: [modifier({ addition: 3.5 })],
     }));
-    const shifted = push(strengthened, source, host, { forceLevel: 0, direction: [1, 0] });
+    const held = blocking.acquire(strengthened, source, host);
+    const shifted = push(held, source, host, { forceLevel: 0, direction: [1, 0] });
     assert.ok(shifted.value);
-    assertPosition(step(shifted.state, []), [1 + 530 * 0.25 * 0.02 / 30, 1]);
+    assert.deepEqual(releases, [true]);
+    const moved = step(shifted.state, []);
+    assertPosition(moved, [1 + 530 * 0.25 * 0.02 / 30, 1]);
+    assert.deepEqual(blocking.blocked(moved, source), []);
 });
 
 test("pull creation refuses a zero table result and an ended source", () => {
@@ -163,12 +190,15 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
     assert.equal(shiftable.isUnbalanced(get(current, 0)), false);
 });
 
-test("near braking uses ONCE or WHILE_NEAR with the same retained pull", () => {
+test("near braking defaults to ONCE and WHILE_NEAR brakes again", () => {
     const { state, host, source } = setup();
-    for (const brake of ["ONCE", "WHILE_NEAR"]) {
+    for (const { options, secondVelocity } of [
+        { options: {}, secondVelocity: [0.05, 0] },
+        { options: { brake: "WHILE_NEAR" }, secondVelocity: [0, 0] },
+    ]) {
         const linked = pull.apply(state, source, host, fixedPull(source, [1.01, 1], {
             nearStop: [pull.withinRadius(0.2)],
-            brake,
+            ...options,
         }));
         assert.ok(linked.value);
         const segment = linked.value.unbalance;
@@ -177,8 +207,7 @@ test("near braking uses ONCE or WHILE_NEAR with the same retained pull", () => {
         assert.deepEqual(unbalance.get(first, segment).velocity, [0, 0]);
         const second = step(unbalance.applyImpulse(first, host, [1.5, 0]).state, []);
         assertPosition(second, [1.10, 1]);
-        assert.deepEqual(unbalance.get(second, segment).velocity, brake === "ONCE" ? [0.05, 0] : [0, 0]);
-        assert.equal(lifetime.available(second, lifetime.scope(pull.lifetime, linked.value)), true);
+        assert.deepEqual(unbalance.get(second, segment).velocity, secondVelocity);
     }
 });
 
