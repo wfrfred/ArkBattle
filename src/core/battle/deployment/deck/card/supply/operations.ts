@@ -5,7 +5,7 @@ import type { State as BattleState } from "../../../../state.js";
 import { get } from "../../deck.js";
 import { replace } from "../../operations.js";
 import type { Card } from "../card.js";
-import { resolveCooldown, resolveStockLimit } from "./query.js";
+import { remaining, resolveCooldown } from "./query.js";
 
 export function consume(battle: BattleState, reference: Ref<Card>, count = 1): BattleState {
     assertNonnegativeSafeInteger(count, "card consumption count");
@@ -21,7 +21,7 @@ export function consume(battle: BattleState, reference: Ref<Card>, count = 1): B
 export function recharge(battle: BattleState, reference: Ref<Card>, count: number): BattleState {
     assertNonnegativeSafeInteger(count, "card recharge count");
     const card = get(battle, reference)!;
-    const stock = card.supply.stock + Math.min(count, remainingStockCapacity(card));
+    const stock = card.supply.stock + Math.min(count, remaining(card) ?? Infinity);
 
     return replace(battle, replaceIn(card, ["supply", "stock"], stock));
 }
@@ -35,7 +35,7 @@ export function enqueue(battle: BattleState, reference: Ref<Card>, count = 1): B
         throw new TypeError("card recovery queue requires the QUEUED policy");
     }
 
-    const added = Math.min(count, remainingStockCapacity(card));
+    const added = Math.min(count, remaining(card) ?? Infinity);
     if (added === 0) {
         return battle;
     }
@@ -48,13 +48,6 @@ export function enqueue(battle: BattleState, reference: Ref<Card>, count = 1): B
             cooldown: policy.pending === 0 ? resolveCooldown(card) : supply.cooldown,
         },
     });
-}
-
-function remainingStockCapacity(card: Card): number {
-    const { policy, stock } = card.supply;
-    const pending = policy.type === "QUEUED" ? policy.pending : 0;
-
-    return (resolveStockLimit(card) ?? Infinity) - stock - pending;
 }
 
 export function setCooldown(battle: BattleState, reference: Ref<Card>, ticks: number): BattleState {

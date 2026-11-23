@@ -1,6 +1,13 @@
 export type { Policy } from "./supply.js";
 
-export { isReady, resolveStockLimit, resolveActiveLimit, resolveCooldown } from "./query.js";
+export {
+    total,
+    remaining,
+    isReady,
+    resolveStockLimit,
+    resolveActiveLimit,
+    resolveCooldown,
+} from "./query.js";
 
 export {
     recharge,

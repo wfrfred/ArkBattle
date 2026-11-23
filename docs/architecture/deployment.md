@@ -112,7 +112,7 @@ Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks �
 
 调度器每 Tick 通过 Deck 逐张调用 `card.advance`。Card 先推进库存和冷却，再用已发布的状态执行 `Definition.onTick`。暂停保留余时。QUEUED 中一段到期时，将一份从 `pending` 移到 `stock`，必要时用有效时长开始下一段。每次推进最多恢复一份，包括零时长。`setCooldown`、`reduceCooldown` 只改当前余时，设置为零后由下一次正常推进结算队列。时长 Contribution 作用于未来段。
 
-持有上限和在场上限使用各自的 Contribution。有效上限取非负整数，`null` 表示不限。持有上限降低时同步裁剪总持有量，优先保留待恢复份数。若裁掉最后一份待恢复库存，则清除当前计时与暂停状态。在场上限用于后续部署资格，已部署单位由内容决定是否召回。
+持有上限和在场上限使用各自的 Contribution。有效上限取非负整数，`null` 表示不限。`supply.total(card)` 返回总持有量，`supply.remaining(card)` 返回还能增加的份数，不限量时返回 `null`。持有上限降低时同步裁剪总持有量，优先保留待恢复份数。若裁掉最后一份待恢复库存，则清除当前计时与暂停状态。在场上限用于后续部署资格，已部署单位由内容决定是否召回。
 
 ## DP
 

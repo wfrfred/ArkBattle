@@ -552,7 +552,12 @@ test("default cards start cooldown on deployment and only explicit recharge rest
                 unitDefinition: operator,
                 definition: {
                     ...operatorCard,
-                    supply: { ...operatorCard.supply, policy: { type: "DEFAULT" }, cooldown: 2 },
+                    supply: {
+                        ...operatorCard.supply,
+                        policy: { type: "DEFAULT" },
+                        stockLimit: null,
+                        cooldown: 2,
+                    },
                 },
             }],
         },
@@ -569,6 +574,8 @@ test("default cards start cooldown on deployment and only explicit recharge rest
 
     state = cards.supply.recharge(state, card, 1);
     assert.equal(cards.get(state, card).supply.stock, 1);
+    assert.equal(cards.supply.total(cards.get(state, card)), 1);
+    assert.equal(cards.supply.remaining(cards.get(state, card)), null);
     assert.deepEqual(deployment.evaluate(state, request), { type: "REJECTED", reason: "COOLDOWN" });
     state = step(state, []);
     assert.equal(cards.get(state, card).supply.cooldown, 1);
@@ -664,8 +671,12 @@ test("stock limit includes pending recovery and active limit only gates new depl
     state = first.state;
     const stockBonus = { id: "extra-stock", value: modifier.create({ addition: 2 }) };
     state = cards.supply.setStockLimitContribution(state, card, stockBonus);
+    assert.equal(cards.supply.total(cards.get(state, card)), 1);
+    assert.equal(cards.supply.remaining(cards.get(state, card)), 3);
     state = cards.supply.recharge(state, card, 4);
     assert.equal(cards.get(state, card).supply.stock, 3);
+    assert.equal(cards.supply.total(cards.get(state, card)), 4);
+    assert.equal(cards.supply.remaining(cards.get(state, card)), 0);
 
     state = cards.supply.removeStockLimitContribution(state, card, stockBonus.id);
     const { stock, policy, cooldown } = cards.get(state, card).supply;

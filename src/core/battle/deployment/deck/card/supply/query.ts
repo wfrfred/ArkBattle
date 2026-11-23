@@ -2,6 +2,18 @@ import * as contribution from "../../../../../common/contribution.js";
 import * as modifier from "../../../../../common/modifier.js";
 import type { Card } from "../card.js";
 
+export function total(card: Card): number {
+    const { stock, policy } = card.supply;
+
+    return policy.type === "QUEUED" ? stock + policy.pending : stock;
+}
+
+export function remaining(card: Card): number | null {
+    const limit = resolveStockLimit(card);
+
+    return limit === null ? null : limit - total(card);
+}
+
 export function isReady(card: Card): boolean {
     return card.supply.policy.type === "QUEUED" || card.supply.cooldown === 0;
 }
