@@ -27,41 +27,38 @@ export function incrementCostStage(battle: BattleState, reference: Ref<Card>): B
     return replace(battle, dp.incrementCostStage(get(battle, reference)!));
 }
 
-export function deploy(battle: BattleState, reference: Ref<Card>, count: number): BattleState {
-    const card = get(battle, reference)!;
+export function deploy<T extends Card>(card: T, count: number): T {
     const { supply } = card;
     const stock = supply.stock - count;
     const cooldown = supply.policy.type === "DEFAULT" ? resolveCooldown(card) : supply.cooldown;
 
     return stock === supply.stock && cooldown === supply.cooldown
-        ? battle
-        : replace(battle, { ...card, supply: { ...supply, stock, cooldown } });
+        ? card
+        : { ...card, supply: { ...supply, stock, cooldown } };
 }
 
-export function recycle(battle: BattleState, reference: Ref<Card>): BattleState {
-    let card = get(battle, reference)!;
+export function recycle<T extends Card>(card: T): T {
     if (card.definition.dp.increaseCostOnRetreatOrDeath) {
         card = dp.incrementCostStage(card);
-        battle = replace(battle, card);
     }
 
     const { supply } = card;
 
     switch (supply.policy.type) {
         case "DEFAULT":
-            return battle;
+            return card;
 
         case "UNIQUE": {
             const stock = Math.min(supply.stock + 1, resolveStockLimit(card) ?? Infinity);
             const cooldown = resolveCooldown(card);
 
             return stock === supply.stock && cooldown === supply.cooldown
-                ? battle
-                : replace(battle, { ...card, supply: { ...supply, stock, cooldown } });
+                ? card
+                : { ...card, supply: { ...supply, stock, cooldown } };
         }
 
         case "QUEUED":
-            return enqueue(battle, reference, 1);
+            return enqueue(card);
     }
 }
 

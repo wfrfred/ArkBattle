@@ -15,7 +15,7 @@ export function add<S extends object>(battle: BattleState, self: Card<S>): Battl
     });
 }
 
-export function replace(battle: BattleState, self: Card): BattleState {
+export function replace<S extends object>(battle: BattleState, self: Card<S>): BattleState {
     const { deck } = battle.deployment;
 
     return replaceIn(battle, ["deployment", "deck", "cards"], deck.cards.replace(self.id, self));

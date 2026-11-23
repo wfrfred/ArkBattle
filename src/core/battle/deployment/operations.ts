@@ -68,7 +68,7 @@ export function deploy<T extends Card>(
     }
 
     battle = slot.occupy(battle, request.quote.slots);
-    battle = deployCard(battle, request.card, request.quote.stock);
+    battle = deck.replace(battle, deployCard(self, request.quote.stock));
     const initialized = initializeUnit(battle, {
         definition: self.unitDefinition,
         position: Tile.center(request.tilePosition),

@@ -2,10 +2,6 @@ import { remove, set } from "../../../../../common/collection/entries.js";
 import type { Contribution } from "../../../../../common/contribution.js";
 import type { Modifier } from "../../../../../common/modifier.js";
 import { replaceIn } from "../../../../../common/object.js";
-import type { Ref } from "../../../../../common/ref.js";
-import type { State as BattleState } from "../../../../state.js";
-import { get } from "../../deck.js";
-import { replace } from "../../operations.js";
 import type { Card } from "../card.js";
 import { resolveStockLimit } from "./query.js";
 
@@ -32,47 +28,33 @@ export interface State {
     readonly redeployTime: readonly Contribution<readonly Modifier[]>[];
 }
 
-export function setStockLimitContribution(
-    battle: BattleState,
-    reference: Ref<Card>,
+export function setStockLimitContribution<T extends Card>(
+    card: T,
     entry: Contribution<Modifier>,
-): BattleState {
-    const card = get(battle, reference)!;
-
-    return replaceStockLimit(battle, card, set(card.supply.stockLimit, entry));
+): T {
+    return replaceStockLimit(card, set(card.supply.stockLimit, entry));
 }
 
-export function removeStockLimitContribution(
-    battle: BattleState,
-    reference: Ref<Card>,
-    id: string,
-): BattleState {
-    const card = get(battle, reference)!;
-
-    return replaceStockLimit(battle, card, remove(card.supply.stockLimit, id));
+export function removeStockLimitContribution<T extends Card>(card: T, id: string): T {
+    return replaceStockLimit(card, remove(card.supply.stockLimit, id));
 }
 
-function replaceStockLimit(
-    battle: BattleState,
-    card: Card,
-    stockLimit: State["stockLimit"],
-): BattleState {
-    if (stockLimit === card.supply.stockLimit) {
-        return battle;
+function replaceStockLimit<T extends Card>(card: T, stockLimit: State["stockLimit"]): T {
+    const supply = replaceIn(card.supply, ["stockLimit"], stockLimit);
+    if (supply === card.supply) {
+        return card;
     }
 
-    card = replaceIn(card, ["supply", "stockLimit"], stockLimit);
-    const limit = resolveStockLimit(card) ?? Infinity;
-    const { supply } = card;
+    const limit = resolveStockLimit({ ...card, supply }) ?? Infinity;
     const { policy, stock } = supply;
     if (policy.type !== "QUEUED") {
-        return replace(battle, replaceIn(card, ["supply", "stock"], Math.min(stock, limit)));
+        return { ...card, supply: replaceIn(supply, ["stock"], Math.min(stock, limit)) };
     }
 
     const pending = Math.min(policy.pending, limit);
     const emptied = pending === 0 && policy.pending > 0;
 
-    return replace(battle, {
+    return {
         ...card,
         supply: {
             ...supply,
@@ -81,57 +63,35 @@ function replaceStockLimit(
             cooldown: emptied ? 0 : supply.cooldown,
             paused: emptied ? false : supply.paused,
         },
-    });
+    };
 }
 
-export function setActiveLimitContribution(
-    battle: BattleState,
-    reference: Ref<Card>,
+export function setActiveLimitContribution<T extends Card>(
+    card: T,
     entry: Contribution<Modifier>,
-): BattleState {
-    const card = get(battle, reference)!;
+): T {
+    const supply = replaceIn(card.supply, ["activeLimit"], set(card.supply.activeLimit, entry));
 
-    return replace(
-        battle,
-        replaceIn(card, ["supply", "activeLimit"], set(card.supply.activeLimit, entry)),
-    );
+    return supply === card.supply ? card : { ...card, supply };
 }
 
-export function removeActiveLimitContribution(
-    battle: BattleState,
-    reference: Ref<Card>,
-    id: string,
-): BattleState {
-    const card = get(battle, reference)!;
+export function removeActiveLimitContribution<T extends Card>(card: T, id: string): T {
+    const supply = replaceIn(card.supply, ["activeLimit"], remove(card.supply.activeLimit, id));
 
-    return replace(
-        battle,
-        replaceIn(card, ["supply", "activeLimit"], remove(card.supply.activeLimit, id)),
-    );
+    return supply === card.supply ? card : { ...card, supply };
 }
 
-export function setRedeployTimeContribution(
-    battle: BattleState,
-    reference: Ref<Card>,
+export function setRedeployTimeContribution<T extends Card>(
+    card: T,
     entry: Contribution<readonly Modifier[]>,
-): BattleState {
-    const card = get(battle, reference)!;
+): T {
+    const supply = replaceIn(card.supply, ["redeployTime"], set(card.supply.redeployTime, entry));
 
-    return replace(
-        battle,
-        replaceIn(card, ["supply", "redeployTime"], set(card.supply.redeployTime, entry)),
-    );
+    return supply === card.supply ? card : { ...card, supply };
 }
 
-export function removeRedeployTimeContribution(
-    battle: BattleState,
-    reference: Ref<Card>,
-    id: string,
-): BattleState {
-    const card = get(battle, reference)!;
+export function removeRedeployTimeContribution<T extends Card>(card: T, id: string): T {
+    const supply = replaceIn(card.supply, ["redeployTime"], remove(card.supply.redeployTime, id));
 
-    return replace(
-        battle,
-        replaceIn(card, ["supply", "redeployTime"], remove(card.supply.redeployTime, id)),
-    );
+    return supply === card.supply ? card : { ...card, supply };
 }

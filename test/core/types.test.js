@@ -34,6 +34,7 @@ import { dispatch as dispatchElemental } from ${module("unit/capability/elementa
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput, Command } from ${module("battle/contract")};
 import type { SkillCommand } from ${module("battle/index")};
+import * as deck from ${module("battle/deployment/deck/index")};
 import * as cards from ${module("battle/deployment/deck/card/index")};
 import * as projectiles from ${module("projectile/index")};
 import type { Definition as ProjectileDefinition, Projectile, Slowable } from ${module("projectile/index")};
@@ -939,6 +940,10 @@ const registeredCard = cards.get(cardBattle, cardRef)!;
 const cardMarker: true = registeredCard.definition.marker;
 const cardUnitMarker: 'unit' = registeredCard.unitDefinition.marker;
 const cardCount: number = registeredCard.state.count;
+const rechargedCard: typeof registeredCard = cards.supply.recharge(registeredCard, 1);
+deck.replace(cardBattle, rechargedCard);
+// @ts-expect-error replacement requires the state type declared by the Card Definition.
+deck.replace(cardBattle, { ...registeredCard, state: { count: 'wrong' } });
 cards.setState(cardBattle, cardRef, { count: cardCount + 1 });
 // @ts-expect-error lookup through a Card Ref preserves its exact private state.
 cards.setState(cardBattle, cards.ref(registeredCard), { label: 'wrong' });
