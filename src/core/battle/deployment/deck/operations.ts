@@ -4,27 +4,21 @@ import { ref, type Card } from "./card/card.js";
 import { resolveCost as resolveCardCost } from "./card/dp.js";
 import { advance as advanceCard } from "./card/operations.js";
 import { all } from "./deck.js";
-import { refreshOrder } from "./order.js";
 
 export function add<S extends object>(battle: BattleState, self: Card<S>): BattleState {
     const { deck } = battle.deployment;
 
-    return refreshOrder(
-        replaceIn(battle, ["deployment", "deck"], {
-            ...deck,
-            cards: deck.cards.add(self.id, self),
-            order: [...deck.order, ref(self)],
-        }),
-    );
+    return replaceIn(battle, ["deployment", "deck"], {
+        ...deck,
+        cards: deck.cards.add(self.id, self),
+        order: [...deck.order, ref(self)],
+    });
 }
 
 export function replace(battle: BattleState, self: Card): BattleState {
     const { deck } = battle.deployment;
-    const cards = deck.cards.replace(self.id, self);
 
-    return cards === deck.cards
-        ? battle
-        : refreshOrder(replaceIn(battle, ["deployment", "deck", "cards"], cards));
+    return replaceIn(battle, ["deployment", "deck", "cards"], deck.cards.replace(self.id, self));
 }
 
 export function advance(battle: BattleState): BattleState {
@@ -34,7 +28,21 @@ export function advance(battle: BattleState): BattleState {
         battle = advanceCard(battle, ref(candidate));
     }
 
-    return battle;
+    return sort(battle);
+}
+
+export function sort(battle: BattleState): BattleState {
+    const { ordering, order: previous } = battle.deployment.deck;
+    if (ordering === null) {
+        return battle;
+    }
+
+    const order = ordering(battle, previous);
+
+    return order.length === previous.length &&
+        order.every((ref, index) => ref.id === previous[index]!.id)
+        ? battle
+        : replaceIn(battle, ["deployment", "deck", "order"], order);
 }
 
 export function resolveCost(battle: BattleState, self: Card): number {

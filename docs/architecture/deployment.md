@@ -34,13 +34,19 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Route 需要本次路线的 Plan 和 offset，因此带 Route 的蓝图在 Card 构造时由类型检查拒绝。
 
-`card.initialize(battle, { definition, unitDefinition })` 分配 ID、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收私有状态与 Definition 配对的 `Card<S>`，按 ID 登记进通用 `Store`。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。展示顺序独立保存，Card 登记或写回变更后接续 Deployment 的排序策略。
+`card.initialize(battle, { definition, unitDefinition })` 分配 ID、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收私有状态与 Definition 配对的 `Card<S>`，按 ID 登记进通用 `Store`，并把新卡追加到当前牌序末尾。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。
 
 Card Definition 通过 `dp` 配置基础费用、涨费和退款，通过 `supply` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 保存库存、冷却、恢复队列和再部署时长贡献。部署限制在 Card 外层，参与整次部署的资格判断。
 
 Card 的 `deploy`、`recycle` 和 `advance` 负责按策略执行部署扣库、离场回收和每 Tick 推进。Supply 的库存及计时操作接收 BattleState 与 Card Ref，通过 Deck 写回该卡。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts) · [Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts)
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
+
+## 待部署区顺序
+
+`ordered(battle)` 读取已保存的牌序。开场按传入顺序登记卡牌，卡牌写回和部署结算各自提交业务变化。`setOrdering(battle, rule)` 只设置后续使用的排序规则，传入 `null` 停止重排并保留当前顺序。
+
+Deck 每 Tick 推进所有 Card 后调用一次 `sort(battle)`。有排序规则时，按最新 BattleState 重排并保存结果。需要在同一次操作内按新牌序选目标时，例如凛御银灰 S2 减费后，内容可以显式调用 `sort(battle)` 再读取顺序。[原生排序样本](../research/cases/24-deployment-cost-and-supply.md#四手牌顺序与目标选择)
 
 ## 部署历史
 

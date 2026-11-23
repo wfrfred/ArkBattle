@@ -38,4 +38,6 @@ export * as slot from "./slot/index.js";
 
 export type { Ordering } from "./deck/order.js";
 
-export { ordered, setOrdering, refreshOrder } from "./deck/order.js";
+export { ordered, setOrdering } from "./deck/order.js";
+
+export { sort } from "./deck/operations.js";

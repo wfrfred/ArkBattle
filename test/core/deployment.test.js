@@ -45,19 +45,11 @@ const account = {
     slot: { limit: 3 },
 };
 
-test("Card initialization reserves identity and Card writes refresh deployment order", () => {
-    const definition = (rank) => ({
-        ...operatorCard,
-        initialize: (state) => ({ state, value: { rank } }),
-    });
+test("Card initialization reserves identity before Deck registration", () => {
     let state = battle([], { deployment: { definition: account, cards: [] } });
-    state = deployment.setOrdering(state, (current, references) =>
-        [...references].sort((left, right) =>
-            cards.get(current, left).state.rank - cards.get(current, right).state.rank,
-        ),
-    );
-    const first = cards.initialize(state, { definition: definition(10), unitDefinition: operator });
-    const second = cards.initialize(first.state, { definition: definition(5), unitDefinition: operator });
+    const input = { definition: operatorCard, unitDefinition: operator };
+    const first = cards.initialize(state, input);
+    const second = cards.initialize(first.state, input);
     const firstRef = cards.ref(first.value);
     const secondRef = cards.ref(second.value);
     assert.notEqual(firstRef.id, secondRef.id);
@@ -69,10 +61,49 @@ test("Card initialization reserves identity and Card writes refresh deployment o
     state = cards.add(state, second.value);
     assert.strictEqual(cards.get(state, firstRef), first.value);
     assert.deepEqual([...cards.all(state)].map(cards.ref), [firstRef, secondRef]);
-    assert.deepEqual([...deployment.ordered(state)].map(cards.ref), [secondRef, firstRef]);
-
-    state = cards.setState(state, firstRef, { rank: 1 });
     assert.deepEqual([...deployment.ordered(state)].map(cards.ref), [firstRef, secondRef]);
+});
+
+test("Deck sorts once after all Cards advance and supports explicit sorting", () => {
+    const input = (cost) => ({
+        definition: {
+            ...operatorCard,
+            dp: { ...operatorCard.dp, cost },
+            onTick: (state, self) => cards.incrementCostStage(state, cards.ref(self)),
+        },
+        unitDefinition: operator,
+    });
+    let state = battle([], { deployment: { definition: account, cards: [input(5), input(10)] } });
+    const [first, second] = [...cards.all(state)].map(cards.ref);
+    const ordered = (state) => [...deployment.ordered(state)].map(cards.ref);
+    const samples = [];
+    const ordering = (state, references) => {
+        const cost = (reference) => cards.resolveCost(cards.get(state, reference));
+        samples.push(references.map(cost));
+        return references.toSorted((left, right) => cost(left) - cost(right));
+    };
+    const surcharge = { id: "surcharge", value: [modifier.create({ finalAddition: 20 })] };
+
+    state = deployment.setOrdering(state, ordering);
+    state = cards.setCostContribution(state, first, surcharge);
+    assert.deepEqual(ordered(state), [first, second]);
+    assert.deepEqual(samples, []);
+
+    state = step(state, []);
+    assert.deepEqual(samples, [[27, 15]]);
+    assert.deepEqual(ordered(state), [second, first]);
+    assert.deepEqual([...cards.all(state)].map(cards.ref), [first, second]);
+
+    state = deployment.setOrdering(state, null);
+    state = cards.setCostContribution(state, second, surcharge);
+    state = step(state, []);
+    assert.deepEqual(ordered(state), [second, first]);
+
+    state = deployment.setOrdering(state, ordering);
+    assert.deepEqual(ordered(state), [second, first]);
+    state = deployment.sort(state);
+    assert.deepEqual(samples, [[27, 15], [40, 30]]);
+    assert.deepEqual(ordered(state), [first, second]);
 });
 
 test("different Card definitions can deploy the same Unit Definition used by an initial unit", () => {

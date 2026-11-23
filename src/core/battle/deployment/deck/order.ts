@@ -14,21 +14,5 @@ export function ordered(battle: BattleState): Query<Card> {
 }
 
 export function setOrdering(battle: BattleState, ordering: Ordering | null): BattleState {
-    battle = replaceIn(battle, ["deployment", "deck", "ordering"], ordering);
-
-    return refreshOrder(battle);
-}
-
-export function refreshOrder(battle: BattleState): BattleState {
-    const { ordering, order: previous } = battle.deployment.deck;
-    if (ordering === null) {
-        return battle;
-    }
-
-    const order = ordering(battle, previous);
-
-    return order.length === previous.length &&
-        order.every((ref, index) => ref.id === previous[index]!.id)
-        ? battle
-        : replaceIn(battle, ["deployment", "deck", "order"], order);
+    return replaceIn(battle, ["deployment", "deck", "ordering"], ordering);
 }

@@ -19,7 +19,6 @@ import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
 import * as slot from "./slot/operations.js";
 import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
-import { refreshOrder } from "./deck/order.js";
 import { validateRequest, type DeployRequest, type DeployOutcome } from "./request.js";
 import { Hooks } from "../../hook.js";
 import * as lifecycle from "../../unit/hook.js";
@@ -101,12 +100,10 @@ export function deploy<T extends Card>(
         refund,
     });
     battle = initialized.state;
-    battle = refreshOrder(
-        replaceIn(
-            battle,
-            ["deployment", "history"],
-            [...battle.deployment.history, { card: input.card, unit: unitRef(unit) }],
-        ),
+    battle = replaceIn(
+        battle,
+        ["deployment", "history"],
+        [...battle.deployment.history, { card: input.card, unit: unitRef(unit) }],
     );
     battle = add(battle, unit);
 
