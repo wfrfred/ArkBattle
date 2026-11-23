@@ -9,7 +9,8 @@ import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Card } from "./deck/card/card.js";
 import { get } from "./deck/deck.js";
-import { advanceCard, resolveCost } from "./deck/operations.js";
+import { resolveCost } from "./deck/operations.js";
+import { isReady, resolveActiveLimit } from "./deck/card/supply/query.js";
 import type { Restriction as CardRestriction } from "./deck/card/restriction.js";
 import type { Restriction } from "./restriction.js";
 import {
@@ -70,8 +71,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         {
             id: "@deployment/cooldown",
             value: {
-                allows: (battle, { request }) =>
-                    get(battle, request.card)!.supply.cooldown === null,
+                allows: (battle, { request }) => isReady(get(battle, request.card)!),
             },
         },
     ],
@@ -81,7 +81,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
             id: "@deployment/active-limit",
             value: {
                 allows: (battle, { request }) => {
-                    const limit = get(battle, request.card)!.definition.supply.activeLimit;
+                    const limit = resolveActiveLimit(get(battle, request.card)!);
 
                     return limit === null || deployedCount(battle, request.card) < limit;
                 },
@@ -185,8 +185,6 @@ export function evaluate<T extends Card<any>>(
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
     }
 
-    battle = advanceCard(battle, self);
-
     return evaluateCurrent(battle, input, resolveRestrictions(self, input));
 }
 
@@ -208,7 +206,6 @@ export function preview<T extends Card<any>>(
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
     }
 
-    battle = advanceCard(battle, self);
     const rejected = evaluateCurrent(battle, input, resolveRestrictions(self, input));
     if (rejected !== null) {
         return rejected;
@@ -216,7 +213,7 @@ export function preview<T extends Card<any>>(
 
     return {
         type: "ALLOWED",
-        cost: resolveCost(battle, get(battle, request.card)!),
+        cost: resolveCost(battle, self),
         quote: request.quote,
     };
 }
@@ -234,7 +231,6 @@ export function positions<T extends Card<any>>(
         return result;
     }
 
-    battle = advanceCard(battle, self);
     const restrictions = resolveRestrictions(self, input);
     const { rows, columns } = battle.battlefield.map;
 

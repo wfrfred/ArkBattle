@@ -78,7 +78,7 @@
 | U026 | 银灰 X 模组临时再部署修正解除后是否回滚已运行冷却 | 已有表达。银灰 X 的修正解除只改变后续周期，已开始的计时段保留。 | [计时证据](../research/evidence/card-rules-20261122/README.md#再部署计时) |
 | U027 | 再部署属性修正、一次缩短、多来源及半值取整顺序 | 已有表达。后续周期修正和砾 X 缩短本段各有对应入口。多来源实际组合和显示取整按具体效果核对。 | [计时证据](../research/evidence/card-rules-20261122/README.md#再部署计时) |
 | U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | **待接入。** 自身与外部的移动部署已核对，缺统一 `deployment.redeploy` 及正常离场后的 Card 账务接续。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L181) |
-| U029 | 实际动态改变召唤物持有上限时的裁剪和恢复规则 | **待接入。** 谬因 S3 的持有上限、在场上限、库存与待恢复份数联动已有实际样本。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L195) |
+| U029 | 实际动态改变召唤物持有上限时的裁剪和恢复规则 | **待定。** 已接入上限贡献、缩容裁剪和单时钟队列；主动调整总持有量的入口另议。 | [当前规则](deployment.md#库存与计时) · [Case 24](../research/cases/24-deployment-cost-and-supply.md#已核的两条附属-card-路径) |
 | U030 | 梅尔／麦哲伦／令的批量或条件回收怎样接续库存、冷却、通知与溢出 | 按内容核对。梅尔、麦哲伦和令的回收条件、补数和计时分别取证。普通队列与容量调整分别见 U025、U029。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L199) |
 | U031 | 夜莺、麦哲伦、多萝西、白铁等宿主离场时未用附属 Card 如何保留同一身份、库存和冷却。淬羽赫默技能窗口结束同类问题 | 已有表达。淬羽赫默 S2 保留原 Card 和计时，窗口结束清库存。其他附属卡随宿主离场的具体处理仍按样本核对。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L202) |
 | U032 | 卫戍自动再部署失败组合及特殊限制下的恢复接续 | 已有表达。自动重试的已核行为可用原 Card 和部署资格处理，失败保留原倒地对象，实际组合按模式决定。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L221) |

@@ -7,7 +7,7 @@ import type { Hooks } from "../../../../hook.js";
 import type { Definition } from "./definition.js";
 import type * as dp from "./dp.js";
 import type { Restriction } from "./restriction.js";
-import type * as supply from "./supply.js";
+import type * as supply from "./supply/supply.js";
 
 export type Id = number;
 

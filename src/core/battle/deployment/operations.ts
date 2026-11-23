@@ -13,7 +13,7 @@ import type { Direction } from "../../geometry/direction.js";
 import { dispatch as notifyDeployed } from "./hook.js";
 import type { Card } from "./deck/card/card.js";
 import { resolveBaseCost } from "./deck/card/dp.js";
-import { consumeForDeployment } from "./deck/card/operations.js";
+import * as supply from "./deck/card/supply/operations.js";
 import { get } from "./deck/deck.js";
 import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
@@ -44,19 +44,16 @@ export function deploy<T extends Card<any>>(
     const input = request as object as DeployRequest;
     validateRequest(input);
 
-    const previous = battle;
-    let self = get(battle, request.card);
+    const self = get(battle, request.card);
     if (self === undefined) {
         return { state: battle, value: { type: "REJECTED", reason: "UNKNOWN_CARD" } };
     }
 
-    battle = deck.advanceCard(battle, self);
     const rejected = evaluateCurrent(battle, input, resolveRestrictions(self, input));
     if (rejected !== null) {
-        return { state: previous, value: rejected };
+        return { state: battle, value: rejected };
     }
 
-    self = get(battle, request.card)!;
     const { refund: refundRule } = self.definition.dp;
     const cost = deck.resolveCost(battle, self);
     const refund =
@@ -72,7 +69,7 @@ export function deploy<T extends Card<any>>(
     }
 
     battle = slot.occupy(battle, request.quote.slots);
-    battle = consumeForDeployment(battle, self, request.quote.stock);
+    battle = supply.consumeForDeployment(battle, request.card, request.quote.stock);
     const initialized = initializeUnit(battle, {
         definition: self.unitDefinition,
         position: Tile.center(request.tilePosition),

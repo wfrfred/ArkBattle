@@ -38,7 +38,7 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 Card Definition 通过 `dp` 配置基础费用、涨费和退款，通过 `supply` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 保存库存、冷却、恢复队列和再部署时长贡献。部署限制在 Card 外层，参与整次部署的资格判断。
 
-`supply.cooldownOnDeploy` 控制部署时启动冷却。`supply.recoverOnRetreatOrDeath` 与 `dp.increaseCostOnRetreatOrDeath` 分别控制普通回收时入恢复队列及涨费。两类规则各自在 Card 的 [supply.ts](../../src/core/battle/deployment/deck/card/supply.ts) 和 [dp.ts](../../src/core/battle/deployment/deck/card/dp.ts) 中维护。
+`supply.policy` 决定部署、普通回收及冷却到期时的库存处理。Supply 的操作接收 BattleState 与 Card Ref，通过 Deck 写回该卡。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Card DP](../../src/core/battle/deployment/deck/card/dp.ts)
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
@@ -58,7 +58,7 @@ Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表�
 
 Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一。限制依次合并默认、Card 静态、Card 当前与 Request，不同列表的同 ID 后者覆盖。有效项按贡献政策选择，按 ID 稳定求值；首拒绝映射既有原因，自定义原因是 RULE，不依赖历史插入位置。查询与执行都使用同一规则和资源事实。
 
-求值先接续请求 Card 到当前 Tick 的库存和时钟，部署位与 DP 资格读取已经结算的状态。preview／evaluate 只读这个临时版本，positions 保留完整报价和限制逐落点求值；拒绝不发布资源推进或创建实例。
+部署资格读取传入的 BattleState。`evaluate` 和 `preview` 判断请求的落点，`positions` 保留报价和限制逐格判断。调度器先推进部署领域，再处理本 Tick 的部署命令。
 
 ## 普通部署流程
 
@@ -84,7 +84,7 @@ Deployable 单向依赖 Occupancy。初始来源为空、COST／额度为零、�
 
 `retreat` 要求当前 ACTIVE 且撤退限制允许，先按本次依据返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
-Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 共用 Card 回收政策，依设置推进费用阶段与库存恢复。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。已有恢复队列保留当前段，新段启动时采样时长。
+Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，按 DP 设置推进费用阶段，按 Supply 策略处理库存与冷却。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
 
 DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，同卡在场计数仍按当前登记实例计算。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
 
@@ -106,9 +106,13 @@ Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks �
 
 ## 库存与计时
 
-`card.supply.cooldown` 是部署间隔，`card.supply.recovery` 是串行逐份恢复；间隔到期不凭空加库存。每段开始采样有效时长，RUNNING 保存到期点，PAUSED 保存余量，恢复 pending 包含当前份。
+`stock` 是可用库存。QUEUED 的 `policy.pending` 是待恢复份数，总持有量为 `stock + pending`。`consume` 只扣 `stock`，库存不足时拒绝。`recharge` 直接增加可用库存，`enqueueRecovery` 增加 QUEUED 的待恢复份数。两种补充都受总持有上限约束。
 
-再部署时间贡献影响后续段。减时／清除／暂停／恢复明确选择 COOLDOWN 或 RECOVERY，只改当前段，超额减时不传给后段；直接充值库存不重置时钟，零周期可当前 Tick 完成。
+每张卡保存一个 `cooldown`，记录当前段的剩余 Tick。DEFAULT 部署后开始冷却，普通离场保留库存。UNIQUE 普通离场立即归还一份库存并开始冷却。两种策略都等冷却到零才允许再次部署。QUEUED 普通离场追加一份待恢复库存，已在推进的恢复段保留余时。QUEUED 的可用库存可以在恢复期间部署。
+
+调度器每 Tick 推进一次 Supply。暂停保留余时。QUEUED 中一段到期时，将一份从 `pending` 移到 `stock`，必要时用有效时长开始下一段。每次推进最多恢复一份，包括零时长。`setCooldown`、`reduceCooldown` 只改当前余时，设置为零后由下一次正常推进结算队列。时长 Contribution 作用于未来段。
+
+持有上限和在场上限使用各自的 Contribution。有效上限取非负整数，`null` 表示不限。持有上限降低时同步裁剪总持有量，优先保留待恢复份数。若裁掉最后一份待恢复库存，则清除当前计时与暂停状态。在场上限用于后续部署资格，已部署单位由内容决定是否召回。
 
 ## DP
 

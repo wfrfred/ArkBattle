@@ -18,12 +18,11 @@ export function create({ cost, respawnTime }: Parameters): CardDefinition {
         },
         slot: 1,
         supply: {
+            policy: { type: "UNIQUE" },
             stock: 1,
             stockLimit: 1,
             activeLimit: 1,
             cooldown: secondsToTicks(respawnTime),
-            cooldownOnDeploy: false,
-            recoverOnRetreatOrDeath: true,
         },
         deploymentRestrictions: [
             {

@@ -143,7 +143,7 @@ test("Tick phases publish their resource operations and failures preserve the in
         slot: 1,
         supply: {
             stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
-            cooldownOnDeploy: false, recoverOnRetreatOrDeath: true,
+            policy: { type: "UNIQUE" },
         },
         deploymentRestrictions: [], unitHooks: Hooks.empty(),
         initialize: (current) => ({ state: current, value: {} }),

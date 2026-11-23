@@ -15,7 +15,7 @@ const operator = {
     occupancy: { slot: "OCCUPANT" },
     deployable: { retreatRestrictions: [] },
 };
-const operatorCard = createCardDefinition({ redeployTicks: 10, slots: 1 });
+const operatorCard = createCardDefinition({ policy: { type: "DEFAULT" }, slots: 1 });
 const account = {
     dp: { initial: 50, min: 0, max: 99, recoveryInterval: null },
     slot: { limit: 3 },
@@ -44,7 +44,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         ...operatorCard,
         dp: { ...operatorCard.dp, cost: 0, increaseCostOnRetreatOrDeath: false },
         slot: 0,
-        supply: { ...operatorCard.supply, stock: 2, stockLimit: 2, recoverOnRetreatOrDeath: false },
+        supply: { ...operatorCard.supply, stock: 2, stockLimit: 2 },
     };
     const summonDefinition = {
         ...operatorCard,
@@ -54,7 +54,6 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
             stock: 2,
             stockLimit: 2,
             activeLimit: null,
-            recoverOnRetreatOrDeath: false,
         },
     };
     let state = battle([], {

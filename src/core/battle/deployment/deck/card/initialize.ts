@@ -25,7 +25,7 @@ export function initialize<
 ): Result<Card<S> & { readonly definition: D; readonly unitDefinition: U }> {
     const { dp, slot, supply } = definition;
     const { cost, refund } = dp;
-    const { stock, stockLimit, activeLimit, cooldown } = supply;
+    const { policy, stock, stockLimit, activeLimit, cooldown } = supply;
 
     assertNonnegativeNumber(cost, "card cost");
     assertNonnegativeSafeInteger(cooldown, "card redeployment ticks");
@@ -42,7 +42,11 @@ export function initialize<
     if (activeLimit !== null) {
         assertNonnegativeSafeInteger(activeLimit, "card active limit");
     }
-    if (stockLimit !== null && stock > stockLimit) {
+
+    const pending = policy.type === "QUEUED" ? policy.pending : 0;
+    assertNonnegativeSafeInteger(pending, "card pending recovery count");
+
+    if (stockLimit !== null && stock + pending > stockLimit) {
         throw new RangeError("card stock exceeds the limit");
     }
 
@@ -58,7 +62,15 @@ export function initialize<
             id,
             definition,
             dp: { stage: 0, cost: [] },
-            supply: { stock, cooldown: null, recovery: null, redeployTimeContributions: [] },
+            supply: {
+                policy,
+                stock,
+                cooldown: pending > 0 ? cooldown : 0,
+                paused: false,
+                stockLimit: [],
+                activeLimit: [],
+                redeployTime: [],
+            },
             unitDefinition,
             unitHooks: definition.unitHooks,
             restrictions: [],

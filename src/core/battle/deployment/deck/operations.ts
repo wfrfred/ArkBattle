@@ -2,7 +2,7 @@ import { replaceIn } from "../../../common/object.js";
 import type { State as BattleState } from "../../state.js";
 import { ref, type Card } from "./card/card.js";
 import { resolveCost as resolveCardCost } from "./card/dp.js";
-import * as supply from "./card/supply.js";
+import * as supply from "./card/supply/operations.js";
 import { all, get } from "./deck.js";
 import { refreshOrder } from "./order.js";
 
@@ -27,17 +27,13 @@ export function replace(battle: BattleState, self: Card<any>): BattleState {
         : refreshOrder(replaceIn(battle, ["deployment", "deck", "cards"], cards));
 }
 
-export function advanceCard(battle: BattleState, self: Card<any>): BattleState {
-    return replace(battle, supply.advance(self, battle.tick));
-}
-
 export function advance(battle: BattleState): BattleState {
-    const tick = battle.tick;
     const candidates = all(battle);
 
     for (const candidate of candidates) {
-        const self = supply.advance(get(battle, ref(candidate))!, tick);
-        battle = replace(battle, self);
+        const reference = ref(candidate);
+        battle = supply.advance(battle, reference);
+        const self = get(battle, reference)!;
         battle = self.definition.onTick?.(battle, self) ?? battle;
     }
 

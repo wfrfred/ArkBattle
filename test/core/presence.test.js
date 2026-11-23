@@ -48,7 +48,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         slot: 1,
         supply: {
             stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 10,
-            cooldownOnDeploy: false, recoverOnRetreatOrDeath: true,
+            policy: { type: "UNIQUE" },
         },
         deploymentRestrictions: [], unitHooks: Hooks.empty(),
         initialize: (state) => ({ state, value: {} }),

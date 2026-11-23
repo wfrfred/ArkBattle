@@ -534,7 +534,6 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const lateInstall = effects.install(state, owner, delayed, { source: firstSource });
     state = lateInstall.state;
     assert.notEqual(lateInstall.value, null);
-    state = deployment.advance(state);
     const redeployed = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
     state = redeployed.state;
     assert.equal(redeployed.value.type, "DEPLOYED");

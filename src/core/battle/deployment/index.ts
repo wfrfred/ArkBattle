@@ -6,7 +6,7 @@ export type { Id as CardId, Card } from "./deck/card/card.js";
 
 export { resolveBaseCost, resolveCost } from "./deck/card/dp.js";
 
-export { resolveRedeployTicks, type Clock as CardClock } from "./deck/card/supply.js";
+export { resolveCooldown } from "./deck/card/supply/query.js";
 
 export type { Quote, DeployRequest, DeployOutcome, Rejection, Rejected } from "./request.js";
 

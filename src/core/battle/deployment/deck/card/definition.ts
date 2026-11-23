@@ -4,7 +4,7 @@ import type { Card } from "./card.js";
 import type { Restriction } from "../../restriction.js";
 import type { Hooks } from "../../../../hook.js";
 import type * as dp from "./dp.js";
-import type * as supply from "./supply.js";
+import type * as supply from "./supply/supply.js";
 
 export interface Definition<S extends object = object> {
     readonly dp: dp.Definition;
