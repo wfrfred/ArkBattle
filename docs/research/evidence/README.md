@@ -127,6 +127,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [blocker-roles-20261031](blocker-roles-20261031/README.md) | Blocker／Blockable 角色、阵营与 Enemy 初始阻挡掩码扫描 |
 | [deployment-native-20261031](deployment-native-20261031/README.md) | 部署费用 getter、两次取整与 MAX_COST_CEIL 字段绑定；供给与特殊部署资料见案例 24 |
 | [card-ordering-20261031](card-ordering-20261031/README.md) | Card 排序入口、调用实参与 Aura 边界；凛御银灰实际比较器安装／撤销及多来源竞争尚未闭合 |
+| [card-sort-retention-20261123](card-sort-retention-20261123/README.md) | 凛御银灰单次重排的实际装配、Deck 顺序写入与按费用重排的撤销 |
 | [deployment-entry-20261101](deployment-entry-20261101/README.md) | 卡牌 Buff 转入角色、属性启用、基础 SP／HP 与出生事件；松桐、凛御银灰的具体模板和时点区别 |
 | [deployment-recovery-20261101](deployment-recovery-20261101/README.md) | 新客户端的队列库存恢复预算、负 DP 半速自然回复及费用短链复核 |
 | [dp-cap-20261122](dp-cap-20261122/README.md) | 诺伯特平民的游戏图鉴与真实出生配置、关卡账户上限与价格截断的独立配置及普通客户端写入 |
