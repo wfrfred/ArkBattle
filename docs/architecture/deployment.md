@@ -36,7 +36,9 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 `card.initialize(battle, { definition, unitDefinition })` 分配 ID、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收私有状态与 Definition 配对的 `Card<S>`，按 ID 登记进通用 `Store`。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。展示顺序独立保存，Card 登记或写回变更后接续 Deployment 的排序策略。
 
-Card 配置明确费用、部署间隔、库存／在场上限、额度、退款和供给政策。当前 cooldownOnDeploy 控制部署时启动间隔，recoverOnRetreatOrDeath 与 increaseCostOnRetreatOrDeath 分别控制普通撤退／死亡恢复及费用阶段；这些字段的组织仍待重审，不能把现有布尔组合视为已完成领域收口。
+Card Definition 通过 `dp` 配置基础费用、涨费和退款，通过 `supply` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 保存库存、冷却、恢复队列和再部署时长贡献。部署限制在 Card 外层，参与整次部署的资格判断。
+
+`supply.cooldownOnDeploy` 控制部署时启动冷却。`supply.recoverOnRetreatOrDeath` 与 `dp.increaseCostOnRetreatOrDeath` 分别控制普通回收时入恢复队列及涨费。两类规则各自在 Card 的 [supply.ts](../../src/core/battle/deployment/deck/card/supply.ts) 和 [dp.ts](../../src/core/battle/deployment/deck/card/dp.ts) 中维护。
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
@@ -104,7 +106,7 @@ Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks �
 
 ## 库存与计时
 
-cooldown 是部署间隔，recovery 是串行逐份恢复；间隔到期不凭空加库存。每段开始采样有效时长，RUNNING 保存到期点，PAUSED 保存余量，恢复 pending 包含当前份。
+`card.supply.cooldown` 是部署间隔，`card.supply.recovery` 是串行逐份恢复；间隔到期不凭空加库存。每段开始采样有效时长，RUNNING 保存到期点，PAUSED 保存余量，恢复 pending 包含当前份。
 
 再部署时间贡献影响后续段。减时／清除／暂停／恢复明确选择 COOLDOWN 或 RECOVERY，只改当前段，超额减时不传给后段；直接充值库存不重置时钟，零周期可当前 Tick 完成。
 

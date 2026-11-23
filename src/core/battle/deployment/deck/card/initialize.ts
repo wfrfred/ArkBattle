@@ -23,11 +23,13 @@ export function initialize<
         unitDefinition,
     }: Input<S> & { readonly definition: D; readonly unitDefinition: U },
 ): Result<Card<S> & { readonly definition: D; readonly unitDefinition: U }> {
-    const { stock, stockLimit, activeLimit, cost, redeployTicks, slots, refund } = definition;
+    const { dp, slot, supply } = definition;
+    const { cost, refund } = dp;
+    const { stock, stockLimit, activeLimit, cooldown } = supply;
 
     assertNonnegativeNumber(cost, "card cost");
-    assertNonnegativeSafeInteger(redeployTicks, "card redeployment ticks");
-    assertNonnegativeSafeInteger(slots, "card deployment slots");
+    assertNonnegativeSafeInteger(cooldown, "card redeployment ticks");
+    assertNonnegativeSafeInteger(slot, "card deployment slots");
     assertNonnegativeSafeInteger(stock, "card stock");
 
     if (refund !== null) {
@@ -55,16 +57,12 @@ export function initialize<
         value: {
             id,
             definition,
+            dp: { stage: 0, cost: [] },
+            supply: { stock, cooldown: null, recovery: null, redeployTimeContributions: [] },
             unitDefinition,
             unitHooks: definition.unitHooks,
             restrictions: [],
             state: initialized.value,
-            stock,
-            cooldown: null,
-            recovery: null,
-            costStage: 0,
-            costContributions: [],
-            redeployTimeContributions: [],
         },
     };
 }

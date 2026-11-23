@@ -11,16 +11,20 @@ export interface Parameters {
 
 export function create({ cost, respawnTime }: Parameters): CardDefinition {
     return {
-        cost,
-        redeployTicks: secondsToTicks(respawnTime),
-        slots: 1,
-        stock: 1,
-        stockLimit: 1,
-        activeLimit: 1,
-        cooldownOnDeploy: false,
-        recoverOnRetreatOrDeath: true,
-        increaseCostOnRetreatOrDeath: true,
-        refund: { rate: 0.5, limit: "BASE_COST" },
+        dp: {
+            cost,
+            increaseCostOnRetreatOrDeath: true,
+            refund: { rate: 0.5, limit: "BASE_COST" },
+        },
+        slot: 1,
+        supply: {
+            stock: 1,
+            stockLimit: 1,
+            activeLimit: 1,
+            cooldown: secondsToTicks(respawnTime),
+            cooldownOnDeploy: false,
+            recoverOnRetreatOrDeath: true,
+        },
         deploymentRestrictions: [
             {
                 id: "deployment/site",

@@ -1,6 +1,10 @@
-export type { Id, UnitDefinition, Clock, Recovery, TimerTarget, Card } from "./card.js";
+export type { Id, UnitDefinition, Card } from "./card.js";
 
-export type { Definition, Refund } from "./definition.js";
+export type { Definition } from "./definition.js";
+
+export type { Refund } from "./dp.js";
+
+export type { Clock, Recovery, TimerTarget } from "./supply.js";
 
 export type { RestrictionContext, Purpose, Restriction } from "./restriction.js";
 
@@ -14,7 +18,9 @@ export { add } from "../operations.js";
 
 export { allows } from "./query.js";
 
-export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./state.js";
+export { resolveBaseCost, resolveCost } from "./dp.js";
+
+export { resolveRedeployTicks } from "./supply.js";
 
 export {
     setState,

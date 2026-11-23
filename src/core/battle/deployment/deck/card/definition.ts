@@ -3,23 +3,13 @@ import type { Result, State as BattleState } from "../../../state.js";
 import type { Card } from "./card.js";
 import type { Restriction } from "../../restriction.js";
 import type { Hooks } from "../../../../hook.js";
-
-export interface Refund {
-    readonly rate: number;
-    readonly limit: "BASE_COST" | "DEPLOYMENT_COST";
-}
+import type * as dp from "./dp.js";
+import type * as supply from "./supply.js";
 
 export interface Definition<S extends object = object> {
-    readonly cost: number;
-    readonly redeployTicks: number;
-    readonly slots: number;
-    readonly stock: number;
-    readonly stockLimit: number | null;
-    readonly activeLimit: number | null;
-    readonly cooldownOnDeploy: boolean;
-    readonly recoverOnRetreatOrDeath: boolean;
-    readonly increaseCostOnRetreatOrDeath: boolean;
-    readonly refund: Refund | null;
+    readonly dp: dp.Definition;
+    readonly slot: number;
+    readonly supply: supply.Definition;
     readonly deploymentRestrictions: readonly Contribution<Restriction>[];
     readonly unitHooks: Hooks;
     readonly initialize: (battle: BattleState) => Result<S>;

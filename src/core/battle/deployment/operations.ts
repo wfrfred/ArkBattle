@@ -12,7 +12,7 @@ import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
 import { dispatch as notifyDeployed } from "./hook.js";
 import type { Card } from "./deck/card/card.js";
-import { resolveBaseCost } from "./deck/card/state.js";
+import { resolveBaseCost } from "./deck/card/dp.js";
 import { consumeForDeployment } from "./deck/card/operations.js";
 import { get } from "./deck/deck.js";
 import * as deck from "./deck/operations.js";
@@ -57,15 +57,14 @@ export function deploy<T extends Card<any>>(
     }
 
     self = get(battle, request.card)!;
-    const definition = self.definition;
+    const { refund: refundRule } = self.definition.dp;
     const cost = deck.resolveCost(battle, self);
     const refund =
-        definition.refund === null
+        refundRule === null
             ? null
             : {
-                  rate: definition.refund.rate,
-                  limit:
-                      definition.refund.limit === "DEPLOYMENT_COST" ? cost : resolveBaseCost(self),
+                  rate: refundRule.rate,
+                  limit: refundRule.limit === "DEPLOYMENT_COST" ? cost : resolveBaseCost(self),
               };
     const amount = request.quote.dp;
     if (amount !== null) {

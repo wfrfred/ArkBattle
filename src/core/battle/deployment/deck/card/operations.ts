@@ -5,11 +5,13 @@ import type { Modifier } from "../../../../common/modifier.js";
 import type { State as BattleState } from "../../../state.js";
 import { get } from "../deck.js";
 import { replace } from "../operations.js";
-import type { Card, TimerTarget } from "./card.js";
+import type { Card } from "./card.js";
 import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
-import * as card from "./state.js";
+import * as dp from "./dp.js";
+import * as supply from "./supply.js";
+import type { TimerTarget } from "./supply.js";
 
 export function setState<T extends Card<any>>(
     battle: BattleState,
@@ -29,30 +31,30 @@ export function recharge(
     assertNonnegativeSafeInteger(count, "card recharge count");
     const self = requireCard(battle, reference);
 
-    return replace(battle, card.recharge(self, count));
+    return replace(battle, supply.recharge(self, count));
 }
 
 export function consume(battle: BattleState, reference: Ref<Card<any>>, count = 1): BattleState {
     assertNonnegativeSafeInteger(count, "card consumption count");
-    const self = card.advance(requireCard(battle, reference), battle.tick);
-    if (count > self.stock) {
+    const self = supply.advance(requireCard(battle, reference), battle.tick);
+    if (count > self.supply.stock) {
         throw new RangeError("card stock is insufficient");
     }
 
-    return replace(battle, card.consume(self, count));
+    return replace(battle, supply.consume(self, count));
 }
 
 export function consumeForDeployment(battle: BattleState, self: Card, stock: number): BattleState {
-    let next = card.consume(self, stock);
-    if (self.definition.cooldownOnDeploy) {
-        next = card.advance(card.startCooldown(next, battle.tick), battle.tick);
+    let next = supply.consume(self, stock);
+    if (self.definition.supply.cooldownOnDeploy) {
+        next = supply.advance(supply.startCooldown(next, battle.tick), battle.tick);
     }
 
     return replace(battle, next);
 }
 
 export function incrementCostStage(battle: BattleState, reference: Ref<Card<any>>): BattleState {
-    return replace(battle, card.incrementCostStage(requireCard(battle, reference)));
+    return replace(battle, dp.incrementCostStage(requireCard(battle, reference)));
 }
 
 export function startCooldown(
@@ -68,7 +70,7 @@ export function startCooldown(
 
     return replace(
         battle,
-        card.advance(card.startCooldown(self, battle.tick, durationTicks), battle.tick),
+        supply.advance(supply.startCooldown(self, battle.tick, durationTicks), battle.tick),
     );
 }
 
@@ -78,21 +80,21 @@ export function enqueueRecovery(
     count = 1,
 ): BattleState {
     assertNonnegativeSafeInteger(count, "card recovery count");
-    const self = card.advance(requireCard(battle, reference), battle.tick);
+    const self = supply.advance(requireCard(battle, reference), battle.tick);
 
     return replace(
         battle,
-        card.advance(card.enqueueRecovery(self, battle.tick, count), battle.tick),
+        supply.advance(supply.enqueueRecovery(self, battle.tick, count), battle.tick),
     );
 }
 
 export function recycle(battle: BattleState, reference: Ref<Card>): BattleState {
     const { definition } = requireCard(battle, reference);
-    if (definition.increaseCostOnRetreatOrDeath) {
+    if (definition.dp.increaseCostOnRetreatOrDeath) {
         battle = incrementCostStage(battle, reference);
     }
 
-    return definition.recoverOnRetreatOrDeath ? enqueueRecovery(battle, reference) : battle;
+    return definition.supply.recoverOnRetreatOrDeath ? enqueueRecovery(battle, reference) : battle;
 }
 
 export function reduceCooldown(
@@ -102,11 +104,11 @@ export function reduceCooldown(
     target: TimerTarget,
 ): BattleState {
     assertNonnegativeSafeInteger(ticks, "cooldown reduction ticks");
-    const self = card.advance(requireCard(battle, reference), battle.tick);
+    const self = supply.advance(requireCard(battle, reference), battle.tick);
 
     return replace(
         battle,
-        card.advance(card.reduceCooldown(self, ticks, battle.tick, target), battle.tick),
+        supply.advance(supply.reduceCooldown(self, ticks, battle.tick, target), battle.tick),
     );
 }
 
@@ -115,11 +117,11 @@ export function clearCooldown(
     reference: Ref<Card<any>>,
     target: TimerTarget,
 ): BattleState {
-    const self = card.advance(requireCard(battle, reference), battle.tick);
+    const self = supply.advance(requireCard(battle, reference), battle.tick);
 
     return replace(
         battle,
-        card.advance(card.clearCooldown(self, battle.tick, target), battle.tick),
+        supply.advance(supply.clearCooldown(self, battle.tick, target), battle.tick),
     );
 }
 
@@ -128,9 +130,9 @@ export function pauseCooldown(
     reference: Ref<Card<any>>,
     target: TimerTarget,
 ): BattleState {
-    const self = card.advance(requireCard(battle, reference), battle.tick);
+    const self = supply.advance(requireCard(battle, reference), battle.tick);
 
-    return replace(battle, card.pauseCooldown(self, battle.tick, target));
+    return replace(battle, supply.pauseCooldown(self, battle.tick, target));
 }
 
 export function resumeCooldown(
@@ -142,7 +144,7 @@ export function resumeCooldown(
 
     return replace(
         battle,
-        card.advance(card.resumeCooldown(self, battle.tick, target), battle.tick),
+        supply.advance(supply.resumeCooldown(self, battle.tick, target), battle.tick),
     );
 }
 
@@ -197,7 +199,7 @@ export function setCostContribution(
     reference: Ref<Card<any>>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
-    return replace(battle, card.setCostContribution(requireCard(battle, reference), entry));
+    return replace(battle, dp.setCostContribution(requireCard(battle, reference), entry));
 }
 
 export function removeCostContribution(
@@ -205,7 +207,7 @@ export function removeCostContribution(
     reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
-    return replace(battle, card.removeCostContribution(requireCard(battle, reference), id));
+    return replace(battle, dp.removeCostContribution(requireCard(battle, reference), id));
 }
 
 export function setRedeployTimeContribution(
@@ -213,7 +215,10 @@ export function setRedeployTimeContribution(
     reference: Ref<Card<any>>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
-    return replace(battle, card.setRedeployTimeContribution(requireCard(battle, reference), entry));
+    return replace(
+        battle,
+        supply.setRedeployTimeContribution(requireCard(battle, reference), entry),
+    );
 }
 
 export function removeRedeployTimeContribution(
@@ -221,7 +226,10 @@ export function removeRedeployTimeContribution(
     reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
-    return replace(battle, card.removeRedeployTimeContribution(requireCard(battle, reference), id));
+    return replace(
+        battle,
+        supply.removeRedeployTimeContribution(requireCard(battle, reference), id),
+    );
 }
 
 function requireCard<T extends Card<any>>(battle: BattleState, reference: Ref<T>): T {

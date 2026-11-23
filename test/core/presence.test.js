@@ -44,9 +44,13 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [program, idle] },
     };
     const cardDefinition = {
-        cost: 10, redeployTicks: 10, slots: 1, stock: 1, stockLimit: 1, activeLimit: 1,
-        cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: true,
-        refund: { rate: 0.5, limit: "BASE_COST" }, deploymentRestrictions: [], unitHooks: Hooks.empty(),
+        dp: { cost: 10, increaseCostOnRetreatOrDeath: true, refund: { rate: 0.5, limit: "BASE_COST" } },
+        slot: 1,
+        supply: {
+            stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 10,
+            cooldownOnDeploy: false, recoverOnRetreatOrDeath: true,
+        },
+        deploymentRestrictions: [], unitHooks: Hooks.empty(),
         initialize: (state) => ({ state, value: {} }),
     };
     const enemy = {

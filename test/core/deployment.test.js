@@ -23,16 +23,20 @@ const operator = {
     vitality: defineVitality(100),
 };
 const operatorCard = {
-    cost: 10,
-    redeployTicks: 10,
-    slots: 1,
-    stock: 1,
-    stockLimit: 1,
-    activeLimit: 1,
-    cooldownOnDeploy: false,
-    recoverOnRetreatOrDeath: true,
-    increaseCostOnRetreatOrDeath: true,
-    refund: { rate: 0.5, limit: "BASE_COST" },
+    dp: {
+        cost: 10,
+        increaseCostOnRetreatOrDeath: true,
+        refund: { rate: 0.5, limit: "BASE_COST" },
+    },
+    slot: 1,
+    supply: {
+        stock: 1,
+        stockLimit: 1,
+        activeLimit: 1,
+        cooldown: 10,
+        cooldownOnDeploy: false,
+        recoverOnRetreatOrDeath: true,
+    },
     deploymentRestrictions: [],
     unitHooks: Hooks.empty(),
     initialize: (state) => ({ state, value: {} }),
@@ -73,7 +77,7 @@ test("Card initialization reserves identity and Card writes refresh deployment o
 });
 
 test("different Card definitions can deploy the same Unit Definition used by an initial unit", () => {
-    const discount = { ...operatorCard, cost: 7, slots: 0 };
+    const discount = { ...operatorCard, dp: { ...operatorCard.dp, cost: 7 }, slot: 0 };
     let state = battle([
         { definition: operator, position: [7, 0], initial: { occupancy: { tile: [0, 7] } } },
     ], { deployment: {
@@ -113,8 +117,8 @@ test("different Card definitions can deploy the same Unit Definition used by an 
         state = result.state;
         const unit = get(state, result.value.unitId);
         assert.strictEqual(unit.definition, operator);
-        assert.equal(unit.deployable.cost, card.definition.cost);
-        assert.equal(unit.deployable.slots, card.definition.slots);
+        assert.equal(unit.deployable.cost, card.definition.dp.cost);
+        assert.equal(unit.deployable.slots, card.definition.slot);
         assert.deepEqual(deployment.cardForUnit(state, units.ref(unit)), reference);
     }
     assert.equal(state.deployment.dp.balance, 33);
@@ -142,7 +146,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
                 initialize(current) {
                     constructions.push({
                         dp: current.deployment.dp.balance,
-                        stock: cards.get(current, card).stock,
+                        stock: cards.get(current, card).supply.stock,
                         slots: current.deployment.slot.used,
                     });
                     return { state: current, value: {} };
@@ -187,7 +191,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
         value: { type: "REJECTED", reason: "RULE" },
     });
     assert.equal(state.deployment.dp.balance, 50);
-    assert.equal(cards.get(state, card).stock, 1);
+    assert.equal(cards.get(state, card).supply.stock, 1);
     assert.equal(state.deployment.slot.used, 0);
     assert.deepEqual(constructions, []);
     assert.deepEqual(deployments, []);
@@ -202,7 +206,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
                 invoke: (current, self) => {
                     entered = true;
                     assert.equal(current.deployment.dp.balance, 40);
-                    assert.equal(cards.get(current, card).stock, 0);
+                    assert.equal(cards.get(current, card).supply.stock, 0);
                     assert.equal(current.deployment.slot.used, 1);
                     assert.equal(get(current, self.id).deployable.card.id, card.id);
                     assert.deepEqual(deployment.cardForUnit(current, units.ref(self)), card);
@@ -268,7 +272,7 @@ test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prer
     const second = deployment.deploy(state, zero);
     state = second.state;
     assert.equal(second.value.type, "DEPLOYED");
-    assert.equal(cards.get(state, card).stock, 1);
+    assert.equal(cards.get(state, card).supply.stock, 1);
     assert.equal(state.deployment.dp.balance, 0);
     assert.equal(state.deployment.slot.used, 0);
     assert.equal(get(state, first.value.unitId).deployable.cost, 10);
@@ -306,7 +310,7 @@ test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before gro
     const deny = { allows: () => false };
     let state = battle([], { deployment: {
         definition: { ...account, slot: { limit: 0 } }, cards: [{ unitDefinition: operator, definition: {
-            ...operatorCard, activeLimit: 0,
+            ...operatorCard, supply: { ...operatorCard.supply, activeLimit: 0 },
             deploymentRestrictions: [
                 { id: "@deployment/cooldown", value: deny },
                 { id: "@deployment/active-limit", value: deny, group: { id: "permission", priority: 1 } },
@@ -355,8 +359,8 @@ test("retreat refunds before removal, and death delays global slot release indep
                                     const card = cards.get(current, unit.deployable.card);
                                     retreats.push({
                                         dp: current.deployment.dp.balance,
-                                        stage: card.costStage,
-                                        recovery: card.recovery,
+                                        stage: card.dp.stage,
+                                        recovery: card.supply.recovery,
                                     });
                                     return { state: current, value: undefined };
                                 },
@@ -368,8 +372,8 @@ test("retreat refunds before removal, and death delays global slot release indep
                                     departures.push({
                                         reason,
                                         dp: current.deployment.dp.balance,
-                                        stage: card.costStage,
-                                        pending: card.recovery.pending,
+                                        stage: card.dp.stage,
+                                        pending: card.supply.recovery.pending,
                                         slots: current.deployment.slot.used,
                                     });
                                     return { state: current, value: undefined };
@@ -393,7 +397,7 @@ test("retreat refunds before removal, and death delays global slot release indep
     assert.deepEqual(departures, [{ reason: "RETREAT", dp: 45, stage: 1, pending: 1, slots: 0 }]);
 
     state = deployment.advance({ ...state, tick: 10 });
-    assert.equal(cards.get(state, card).stock, 1);
+    assert.equal(cards.get(state, card).supply.stock, 1);
     const second = deployment.deploy(state, deployment.createRequest(state, card, tilePosition));
     state = second.state;
     assert.notEqual(second.value.unitId, first.value.unitId);
@@ -448,7 +452,7 @@ test("slot limit contributions affect new deployments without changing occupied 
             definition: { ...account, slot: { limit: 1 } },
             cards: [1, 1, 1, 0].map(slots => ({
                 unitDefinition: operator,
-                definition: { ...operatorCard, slots },
+                definition: { ...operatorCard, slot: slots },
             })),
         },
     });
@@ -517,8 +521,8 @@ test("external movement recycles on departure and self movement keeps the card i
             invoke(state) {
                 assert.equal(state.deployment.slot.used, 0);
                 const current = cards.get(state, card);
-                assert.equal(current.costStage, recycled ? 1 : 0);
-                assert.equal(current.recovery?.pending, recycled ? 1 : undefined);
+                assert.equal(current.dp.stage, recycled ? 1 : 0);
+                assert.equal(current.supply.recovery?.pending, recycled ? 1 : undefined);
                 return { state, value: undefined };
             },
         });
@@ -536,7 +540,10 @@ test("stock recovers serially with sampled budgets; pause and reduction affect o
             definition: account,
             cards: [{
                 unitDefinition: operator,
-                definition: { ...operatorCard, stock: 0, stockLimit: 3 },
+                definition: {
+                    ...operatorCard,
+                    supply: { ...operatorCard.supply, stock: 0, stockLimit: 3 },
+                },
             }],
         },
     });
@@ -548,24 +555,24 @@ test("stock recovers serially with sampled budgets; pause and reduction affect o
         value: [modifier.create({ addition: 10 })],
     });
     state = deployment.advance({ ...state, tick: 10 });
-    assert.equal(cards.get(state, card).stock, 1);
+    assert.equal(cards.get(state, card).supply.stock, 1);
     state = cards.pauseCooldown({ ...state, tick: 15 }, card, "RECOVERY");
     state = deployment.advance({ ...state, tick: 100 });
-    assert.equal(cards.get(state, card).stock, 1);
+    assert.equal(cards.get(state, card).supply.stock, 1);
     state = cards.resumeCooldown(state, card, "RECOVERY");
     state = deployment.advance({ ...state, tick: 114 });
-    assert.equal(cards.get(state, card).stock, 1);
+    assert.equal(cards.get(state, card).supply.stock, 1);
     state = cards.reduceCooldown(state, card, 100, "RECOVERY");
-    assert.equal(cards.get(state, card).stock, 2);
+    assert.equal(cards.get(state, card).supply.stock, 2);
     state = deployment.advance({ ...state, tick: 133 });
-    assert.equal(cards.get(state, card).stock, 2);
+    assert.equal(cards.get(state, card).supply.stock, 2);
     state = deployment.advance({ ...state, tick: 134 });
-    assert.equal(cards.get(state, card).stock, 3);
-    assert.equal(cards.get(state, card).recovery, null);
+    assert.equal(cards.get(state, card).supply.stock, 3);
+    assert.equal(cards.get(state, card).supply.recovery, null);
     state = deployment.advance({ ...state, tick: 199 });
-    assert.notEqual(cards.get(state, card).cooldown, null);
+    assert.notEqual(cards.get(state, card).supply.cooldown, null);
     state = deployment.advance({ ...state, tick: 200 });
-    assert.equal(cards.get(state, card).cooldown, null);
+    assert.equal(cards.get(state, card).supply.cooldown, null);
 });
 
 test("only battle steps advance natural DP recovery", () => {
@@ -573,7 +580,10 @@ test("only battle steps advance natural DP recovery", () => {
     const initial = battle([], {
         deployment: {
             definition: { ...account, dp: { initial: 0, min: 0, max: 10, recoveryInterval: 1 } },
-            cards: [{ definition: { ...operatorCard, cost: 1 }, unitDefinition: operator }],
+            cards: [{
+                definition: { ...operatorCard, dp: { ...operatorCard.dp, cost: 1 } },
+                unitDefinition: operator,
+            }],
         },
     });
     const state = { ...initial, tick: 12 };

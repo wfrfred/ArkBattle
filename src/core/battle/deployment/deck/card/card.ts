@@ -3,10 +3,11 @@ import type { Definition as BaseDefinition } from "../../../../unit/unit.js";
 import type { Definition as DeployableDefinition } from "../../../../unit/capability/deployable/capability.js";
 import type { Definition as OccupancyDefinition } from "../../../../unit/capability/occupancy/capability.js";
 import type { Contribution } from "../../../../common/contribution.js";
-import type { Modifier } from "../../../../common/modifier.js";
 import type { Hooks } from "../../../../hook.js";
 import type { Definition } from "./definition.js";
+import type * as dp from "./dp.js";
 import type { Restriction } from "./restriction.js";
+import type * as supply from "./supply.js";
 
 export type Id = number;
 
@@ -16,33 +17,15 @@ export type UnitDefinition = BaseDefinition & {
     readonly route?: never;
 };
 
-export type Clock = {
-    readonly durationTicks: number;
-} & (
-    | { readonly type: "RUNNING"; readonly readyAtTick: number }
-    | { readonly type: "PAUSED"; readonly remainingTicks: number }
-);
-
-export interface Recovery {
-    readonly pending: number;
-    readonly clock: Clock;
-}
-
-export type TimerTarget = "COOLDOWN" | "RECOVERY";
-
 export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
     readonly id: Id;
     readonly definition: Definition<S>;
+    readonly dp: dp.State;
+    readonly supply: supply.State;
     readonly unitDefinition: UnitDefinition;
     readonly unitHooks: Hooks;
     readonly restrictions: readonly Contribution<Restriction>[];
     readonly state: S;
-    readonly stock: number;
-    readonly cooldown: Clock | null;
-    readonly recovery: Recovery | null;
-    readonly costStage: number;
-    readonly costContributions: readonly Contribution<readonly Modifier[]>[];
-    readonly redeployTimeContributions: readonly Contribution<readonly Modifier[]>[];
 }
 
 export function ref<T extends Card<any>>(self: T): Ref<T> {

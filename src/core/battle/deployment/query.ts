@@ -57,7 +57,7 @@ export function createRequest<T extends Card<any>>(
         quote: {
             dp: resolveCost(battle, self),
             stock: 1,
-            slots: self.definition.slots,
+            slots: self.definition.slot,
         },
         restrictions: [],
         hooks: Hooks.empty(),
@@ -70,7 +70,8 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         {
             id: "@deployment/cooldown",
             value: {
-                allows: (battle, { request }) => get(battle, request.card)!.cooldown === null,
+                allows: (battle, { request }) =>
+                    get(battle, request.card)!.supply.cooldown === null,
             },
         },
     ],
@@ -80,7 +81,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
             id: "@deployment/active-limit",
             value: {
                 allows: (battle, { request }) => {
-                    const limit = get(battle, request.card)!.definition.activeLimit;
+                    const limit = get(battle, request.card)!.definition.supply.activeLimit;
 
                     return limit === null || deployedCount(battle, request.card) < limit;
                 },
@@ -141,7 +142,7 @@ export function evaluateCurrent(
     restrictions: readonly Contribution<Restriction | CardRestriction>[],
 ): Rejected | null {
     const self = get(battle, request.card)!;
-    if (self.stock < request.quote.stock) {
+    if (self.supply.stock < request.quote.stock) {
         return { type: "REJECTED", reason: "NO_STOCK" };
     }
     if (request.quote.dp !== null && !canPay(battle.deployment.dp, request.quote.dp)) {

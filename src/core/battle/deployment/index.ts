@@ -2,9 +2,11 @@ export type { Definition, Input, DeploymentRecord, State } from "./deployment.js
 
 export { initialize } from "./deployment.js";
 
-export type { Id as CardId, Clock as CardClock, Card } from "./deck/card/card.js";
+export type { Id as CardId, Card } from "./deck/card/card.js";
 
-export { resolveBaseCost, resolveCost, resolveRedeployTicks } from "./deck/card/state.js";
+export { resolveBaseCost, resolveCost } from "./deck/card/dp.js";
+
+export { resolveRedeployTicks, type Clock as CardClock } from "./deck/card/supply.js";
 
 export type { Quote, DeployRequest, DeployOutcome, Rejection, Rejected } from "./request.js";
 

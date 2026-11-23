@@ -16,8 +16,12 @@ export function createCardDefinition({
     ...rest
 } = {}) {
     return {
-        cost, redeployTicks, slots, stock, stockLimit, activeLimit, refund,
-        cooldownOnDeploy, recoverOnRetreatOrDeath, increaseCostOnRetreatOrDeath,
+        dp: { cost, increaseCostOnRetreatOrDeath, refund },
+        slot: slots,
+        supply: {
+            stock, stockLimit, activeLimit, cooldown: redeployTicks,
+            cooldownOnDeploy, recoverOnRetreatOrDeath,
+        },
         deploymentRestrictions: [{
             id: "deployment/site",
             value: { allows(battle, { request }) {

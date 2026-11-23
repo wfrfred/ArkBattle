@@ -139,10 +139,13 @@ test("Tick phases publish their resource operations and failures preserve the in
         }),
     };
     const cardDefinition = {
-        cost: 5, redeployTicks: 0, slots: 1,
-        stock: 1, stockLimit: 1, activeLimit: 1,
-        cooldownOnDeploy: false, recoverOnRetreatOrDeath: true, increaseCostOnRetreatOrDeath: false,
-        refund: null, deploymentRestrictions: [], unitHooks: Hooks.empty(),
+        dp: { cost: 5, increaseCostOnRetreatOrDeath: false, refund: null },
+        slot: 1,
+        supply: {
+            stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
+            cooldownOnDeploy: false, recoverOnRetreatOrDeath: true,
+        },
+        deploymentRestrictions: [], unitHooks: Hooks.empty(),
         initialize: (current) => ({ state: current, value: {} }),
     };
     const before = battle([], {
@@ -161,7 +164,7 @@ test("Tick phases publish their resource operations and failures preserve the in
         ["operator", [1, 0]],
     ]);
     assert.equal(completed.deployment.dp.balance, 17);
-    assert.equal(cards.get(completed, card).stock, 0);
+    assert.equal(cards.get(completed, card).supply.stock, 0);
     const finished = step(completed, []);
     assert.equal(finished.tick, 2);
     assert.equal(finished.deployment.dp.balance, 19);
@@ -172,7 +175,7 @@ test("Tick phases publish their resource operations and failures preserve the in
     assert.equal(interrupted.deployment.dp.balance, 17);
     assert.equal(branch.tick, 0);
     assert.equal(branch.deployment.dp.balance, 20);
-    assert.equal(cards.get(branch, card).stock, 1);
+    assert.equal(cards.get(branch, card).supply.stock, 1);
     assert.deepEqual([...units.all(branch)], []);
 });
 

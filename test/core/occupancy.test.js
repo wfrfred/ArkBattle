@@ -42,21 +42,20 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     };
     const supportDefinition = {
         ...operatorCard,
-        cost: 0,
-        slots: 0,
-        stock: 2,
-        stockLimit: 2,
-        recoverOnRetreatOrDeath: false,
-        increaseCostOnRetreatOrDeath: false,
+        dp: { ...operatorCard.dp, cost: 0, increaseCostOnRetreatOrDeath: false },
+        slot: 0,
+        supply: { ...operatorCard.supply, stock: 2, stockLimit: 2, recoverOnRetreatOrDeath: false },
     };
     const summonDefinition = {
         ...operatorCard,
-        cost: 0,
-        stock: 2,
-        stockLimit: 2,
-        activeLimit: null,
-        recoverOnRetreatOrDeath: false,
-        increaseCostOnRetreatOrDeath: false,
+        dp: { ...operatorCard.dp, cost: 0, increaseCostOnRetreatOrDeath: false },
+        supply: {
+            ...operatorCard.supply,
+            stock: 2,
+            stockLimit: 2,
+            activeLimit: null,
+            recoverOnRetreatOrDeath: false,
+        },
     };
     let state = battle([], {
         deployment: {
