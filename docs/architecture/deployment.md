@@ -106,7 +106,7 @@ Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks �
 
 ## 库存与计时
 
-`stock` 是可用库存。QUEUED 的 `policy.pending` 是待恢复份数，总持有量为 `stock + pending`。`consume` 只扣 `stock`，库存不足时拒绝。`recharge` 直接增加可用库存，`enqueueRecovery` 增加 QUEUED 的待恢复份数。两种补充都受总持有上限约束。
+`stock` 是可用库存。QUEUED 的 `policy.pending` 是待恢复份数，总持有量为 `stock + pending`。Supply 的公开接口由 Card 的 `supply` 命名空间导出。`consume` 只扣 `stock`，库存不足时拒绝。`recharge` 直接增加可用库存，`enqueue` 增加 QUEUED 的待恢复份数。两种补充都受总持有上限约束。
 
 每张卡保存一个 `cooldown`，记录当前段的剩余 Tick。DEFAULT 部署后开始冷却，普通离场保留库存。UNIQUE 普通离场立即归还一份库存并开始冷却。两种策略都等冷却到零才允许再次部署。QUEUED 普通离场追加一份待恢复库存，已在推进的恢复段保留余时。QUEUED 的可用库存可以在恢复期间部署。
 

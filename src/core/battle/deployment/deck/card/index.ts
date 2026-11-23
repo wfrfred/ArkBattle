@@ -4,8 +4,6 @@ export type { Definition } from "./definition.js";
 
 export type { Refund } from "./dp.js";
 
-export type { Policy } from "./supply/supply.js";
-
 export type { RestrictionContext, Purpose, Restriction } from "./restriction.js";
 
 export { ref } from "./card.js";
@@ -20,8 +18,6 @@ export { allows } from "./query.js";
 
 export { resolveBaseCost, resolveCost } from "./dp.js";
 
-export { isReady, resolveStockLimit, resolveActiveLimit, resolveCooldown } from "./supply/query.js";
-
 export {
     setState,
     incrementCostStage,
@@ -33,20 +29,4 @@ export {
     removeCostContribution,
 } from "./operations.js";
 
-export {
-    recharge,
-    consume,
-    setCooldown,
-    enqueueRecovery,
-    reduceCooldown,
-    setPaused,
-} from "./supply/operations.js";
-
-export {
-    setStockLimitContribution,
-    removeStockLimitContribution,
-    setActiveLimitContribution,
-    removeActiveLimitContribution,
-    setRedeployTimeContribution,
-    removeRedeployTimeContribution,
-} from "./supply/supply.js";
+export * as supply from "./supply/index.js";

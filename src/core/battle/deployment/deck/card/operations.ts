@@ -10,7 +10,7 @@ import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
 import * as dp from "./dp.js";
-import { enqueueRecovery } from "./supply/operations.js";
+import { enqueue } from "./supply/operations.js";
 import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
 
 export function setState<T extends Card>(
@@ -61,7 +61,7 @@ export function recycle(battle: BattleState, reference: Ref<Card>): BattleState 
         }
 
         case "QUEUED":
-            return enqueueRecovery(battle, reference, 1);
+            return enqueue(battle, reference, 1);
     }
 }
 

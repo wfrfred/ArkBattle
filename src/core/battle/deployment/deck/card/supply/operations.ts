@@ -26,7 +26,7 @@ export function recharge(battle: BattleState, reference: Ref<Card>, count: numbe
     return replace(battle, replaceIn(card, ["supply", "stock"], stock));
 }
 
-export function enqueueRecovery(battle: BattleState, reference: Ref<Card>, count = 1): BattleState {
+export function enqueue(battle: BattleState, reference: Ref<Card>, count = 1): BattleState {
     assertNonnegativeSafeInteger(count, "card recovery count");
     const card = get(battle, reference)!;
     const { supply } = card;
