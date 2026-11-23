@@ -34,7 +34,7 @@ export interface State {
 
 export function setStockLimitContribution(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     entry: Contribution<Modifier>,
 ): BattleState {
     const card = requireCard(battle, reference);
@@ -44,7 +44,7 @@ export function setStockLimitContribution(
 
 export function removeStockLimitContribution(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     id: string,
 ): BattleState {
     const card = requireCard(battle, reference);
@@ -54,7 +54,7 @@ export function removeStockLimitContribution(
 
 function replaceStockLimit(
     battle: BattleState,
-    card: Card<any>,
+    card: Card,
     stockLimit: State["stockLimit"],
 ): BattleState {
     if (stockLimit === card.supply.stockLimit) {
@@ -86,7 +86,7 @@ function replaceStockLimit(
 
 export function setActiveLimitContribution(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     entry: Contribution<Modifier>,
 ): BattleState {
     const card = requireCard(battle, reference);
@@ -99,7 +99,7 @@ export function setActiveLimitContribution(
 
 export function removeActiveLimitContribution(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     id: string,
 ): BattleState {
     const card = requireCard(battle, reference);
@@ -112,7 +112,7 @@ export function removeActiveLimitContribution(
 
 export function setRedeployTimeContribution(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
     const card = requireCard(battle, reference);
@@ -125,7 +125,7 @@ export function setRedeployTimeContribution(
 
 export function removeRedeployTimeContribution(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     id: string,
 ): BattleState {
     const card = requireCard(battle, reference);

@@ -1,7 +1,9 @@
 import type { Ref } from "../../../../common/ref.js";
 import type { Contribution } from "../../../../common/contribution.js";
 import type { Modifier } from "../../../../common/modifier.js";
+import { replaceIn } from "../../../../common/object.js";
 import type { State as BattleState } from "../../../state.js";
+import { get } from "../deck.js";
 import { replace } from "../operations.js";
 import type { Card } from "./card.js";
 import type { Key } from "../../../../hook.js";
@@ -9,9 +11,10 @@ import { type Entry, set, remove } from "../../../../common/collection/entries.j
 import type { Restriction } from "./restriction.js";
 import * as dp from "./dp.js";
 import { requireCard } from "./query.js";
-import { recycle as recycleSupply } from "./supply/operations.js";
+import { enqueueRecovery } from "./supply/operations.js";
+import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
 
-export function setState<T extends Card<any>>(
+export function setState<T extends Card>(
     battle: BattleState,
     reference: Ref<T>,
     state: NoInfer<T["state"]>,
@@ -21,22 +24,80 @@ export function setState<T extends Card<any>>(
     return state === self.state ? battle : replace(battle, { ...self, state });
 }
 
-export function incrementCostStage(battle: BattleState, reference: Ref<Card<any>>): BattleState {
+export function incrementCostStage(battle: BattleState, reference: Ref<Card>): BattleState {
     return replace(battle, dp.incrementCostStage(requireCard(battle, reference)));
 }
 
+export function deploy(battle: BattleState, reference: Ref<Card>, count: number): BattleState {
+    const card = get(battle, reference)!;
+    const { supply } = card;
+    const stock = supply.stock - count;
+    const cooldown = supply.policy.type === "DEFAULT" ? resolveCooldown(card) : supply.cooldown;
+
+    return stock === supply.stock && cooldown === supply.cooldown
+        ? battle
+        : replace(battle, { ...card, supply: { ...supply, stock, cooldown } });
+}
+
 export function recycle(battle: BattleState, reference: Ref<Card>): BattleState {
-    const { definition } = requireCard(battle, reference);
-    if (definition.dp.increaseCostOnRetreatOrDeath) {
-        battle = incrementCostStage(battle, reference);
+    let card = get(battle, reference)!;
+    if (card.definition.dp.increaseCostOnRetreatOrDeath) {
+        card = dp.incrementCostStage(card);
+        battle = replace(battle, card);
     }
 
-    return recycleSupply(battle, reference);
+    const { supply } = card;
+
+    switch (supply.policy.type) {
+        case "DEFAULT":
+            return battle;
+
+        case "UNIQUE": {
+            const stock = Math.min(supply.stock + 1, resolveStockLimit(card) ?? Infinity);
+            const cooldown = resolveCooldown(card);
+
+            return stock === supply.stock && cooldown === supply.cooldown
+                ? battle
+                : replace(battle, { ...card, supply: { ...supply, stock, cooldown } });
+        }
+
+        case "QUEUED":
+            return enqueueRecovery(battle, reference, 1);
+    }
+}
+
+export function advance(battle: BattleState, reference: Ref<Card>): BattleState {
+    const card = get(battle, reference)!;
+    const { supply } = card;
+    let next = card;
+
+    if (!supply.paused) {
+        const cooldown = Math.max(0, supply.cooldown - 1);
+        const { policy } = supply;
+        if (cooldown === 0 && policy.type === "QUEUED" && policy.pending > 0) {
+            const pending = policy.pending - 1;
+            next = {
+                ...card,
+                supply: {
+                    ...supply,
+                    stock: supply.stock + 1,
+                    policy: { ...policy, pending },
+                    cooldown: pending === 0 ? 0 : resolveCooldown(card),
+                },
+            };
+        } else {
+            next = replaceIn(card, ["supply", "cooldown"], cooldown);
+        }
+    }
+
+    battle = replace(battle, next);
+
+    return next.definition.onTick?.(battle, next) ?? battle;
 }
 
 export function setUnitHook<H extends Entry, Owner extends object>(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     key: Key<H, Owner>,
     entry: NoInfer<H>,
 ): BattleState {
@@ -48,7 +109,7 @@ export function setUnitHook<H extends Entry, Owner extends object>(
 
 export function removeUnitHook<H extends Entry, Owner extends object>(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     key: Key<H, Owner>,
     id: string,
 ): BattleState {
@@ -60,7 +121,7 @@ export function removeUnitHook<H extends Entry, Owner extends object>(
 
 export function setRestriction(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     entry: Contribution<Restriction>,
 ): BattleState {
     const self = requireCard(battle, reference);
@@ -71,7 +132,7 @@ export function setRestriction(
 
 export function removeRestriction(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     id: string,
 ): BattleState {
     const self = requireCard(battle, reference);
@@ -82,7 +143,7 @@ export function removeRestriction(
 
 export function setCostContribution(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
     return replace(battle, dp.setCostContribution(requireCard(battle, reference), entry));
@@ -90,7 +151,7 @@ export function setCostContribution(
 
 export function removeCostContribution(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     id: string,
 ): BattleState {
     return replace(battle, dp.removeCostContribution(requireCard(battle, reference), id));

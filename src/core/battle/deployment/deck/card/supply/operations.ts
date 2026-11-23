@@ -7,7 +7,7 @@ import type { Card } from "../card.js";
 import { requireCard } from "../query.js";
 import { resolveCooldown, resolveStockLimit } from "./query.js";
 
-export function consume(battle: BattleState, reference: Ref<Card<any>>, count = 1): BattleState {
+export function consume(battle: BattleState, reference: Ref<Card>, count = 1): BattleState {
     assertNonnegativeSafeInteger(count, "card consumption count");
     const card = requireCard(battle, reference);
     const { stock } = card.supply;
@@ -18,48 +18,7 @@ export function consume(battle: BattleState, reference: Ref<Card<any>>, count = 
     return replace(battle, replaceIn(card, ["supply", "stock"], stock - count));
 }
 
-export function consumeForDeployment(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    count: number,
-): BattleState {
-    const card = requireCard(battle, reference);
-    const { supply } = card;
-    const stock = supply.stock - count;
-    const cooldown = supply.policy.type === "DEFAULT" ? resolveCooldown(card) : supply.cooldown;
-
-    return stock === supply.stock && cooldown === supply.cooldown
-        ? battle
-        : replace(battle, { ...card, supply: { ...supply, stock, cooldown } });
-}
-
-export function recycle(battle: BattleState, reference: Ref<Card>): BattleState {
-    const card = requireCard(battle, reference);
-    const { supply } = card;
-
-    switch (supply.policy.type) {
-        case "DEFAULT":
-            return battle;
-
-        case "UNIQUE": {
-            const stock = supply.stock + Math.min(1, remainingStockCapacity(card));
-            const cooldown = resolveCooldown(card);
-
-            return stock === supply.stock && cooldown === supply.cooldown
-                ? battle
-                : replace(battle, { ...card, supply: { ...supply, stock, cooldown } });
-        }
-
-        case "QUEUED":
-            return enqueueRecovery(battle, reference, 1);
-    }
-}
-
-export function recharge(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    count: number,
-): BattleState {
+export function recharge(battle: BattleState, reference: Ref<Card>, count: number): BattleState {
     assertNonnegativeSafeInteger(count, "card recharge count");
     const card = requireCard(battle, reference);
     const stock = card.supply.stock + Math.min(count, remainingStockCapacity(card));
@@ -67,11 +26,7 @@ export function recharge(
     return replace(battle, replaceIn(card, ["supply", "stock"], stock));
 }
 
-export function enqueueRecovery(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    count = 1,
-): BattleState {
+export function enqueueRecovery(battle: BattleState, reference: Ref<Card>, count = 1): BattleState {
     assertNonnegativeSafeInteger(count, "card recovery count");
     const card = requireCard(battle, reference);
     const { supply } = card;
@@ -95,18 +50,14 @@ export function enqueueRecovery(
     });
 }
 
-function remainingStockCapacity(card: Card<any>): number {
+function remainingStockCapacity(card: Card): number {
     const { policy, stock } = card.supply;
     const pending = policy.type === "QUEUED" ? policy.pending : 0;
 
     return (resolveStockLimit(card) ?? Infinity) - stock - pending;
 }
 
-export function setCooldown(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    ticks: number,
-): BattleState {
+export function setCooldown(battle: BattleState, reference: Ref<Card>, ticks: number): BattleState {
     assertNonnegativeSafeInteger(ticks, "cooldown ticks");
     const card = requireCard(battle, reference);
 
@@ -115,7 +66,7 @@ export function setCooldown(
 
 export function reduceCooldown(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     ticks: number,
 ): BattleState {
     assertNonnegativeSafeInteger(ticks, "cooldown reduction ticks");
@@ -125,38 +76,8 @@ export function reduceCooldown(
     return replace(battle, replaceIn(card, ["supply", "cooldown"], cooldown));
 }
 
-export function setPaused(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    paused: boolean,
-): BattleState {
+export function setPaused(battle: BattleState, reference: Ref<Card>, paused: boolean): BattleState {
     const card = requireCard(battle, reference);
 
     return replace(battle, replaceIn(card, ["supply", "paused"], paused));
-}
-
-export function advance(battle: BattleState, reference: Ref<Card>): BattleState {
-    const card = requireCard(battle, reference);
-    const { supply } = card;
-    if (supply.paused) {
-        return battle;
-    }
-
-    const cooldown = Math.max(0, supply.cooldown - 1);
-    const { policy } = supply;
-    if (cooldown > 0 || policy.type !== "QUEUED" || policy.pending === 0) {
-        return replace(battle, replaceIn(card, ["supply", "cooldown"], cooldown));
-    }
-
-    const pending = policy.pending - 1;
-
-    return replace(battle, {
-        ...card,
-        supply: {
-            ...supply,
-            stock: supply.stock + 1,
-            policy: { ...policy, pending },
-            cooldown: pending === 0 ? 0 : resolveCooldown(card),
-        },
-    });
 }

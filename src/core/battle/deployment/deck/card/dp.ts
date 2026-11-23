@@ -19,7 +19,7 @@ export interface State {
     readonly cost: readonly contribution.Contribution<readonly Modifier[]>[];
 }
 
-export function resolveBaseCost(card: Card<any>): number {
+export function resolveBaseCost(card: Card): number {
     const addition = contribution
         .resolve(card.dp.cost)
         .flat()
@@ -28,7 +28,7 @@ export function resolveBaseCost(card: Card<any>): number {
     return Math.max(0, Math.floor(card.definition.dp.cost + addition));
 }
 
-export function resolveCost(card: Card<any>, ceiling = 99): number {
+export function resolveCost(card: Card, ceiling = 99): number {
     const modifiers = contribution.resolve(card.dp.cost).flat();
     const baseCost = Math.max(
         0,
@@ -45,13 +45,13 @@ export function resolveCost(card: Card<any>, ceiling = 99): number {
     return Math.max(0, Math.min(ceiling, Math.floor(rawCost * scale) + addition));
 }
 
-export function incrementCostStage<T extends Card<any>>(card: T): T {
+export function incrementCostStage<T extends Card>(card: T): T {
     const stage = Math.min(2, card.dp.stage + 1);
 
     return stage === card.dp.stage ? card : { ...card, dp: { ...card.dp, stage } };
 }
 
-export function setCostContribution<T extends Card<any>>(
+export function setCostContribution<T extends Card>(
     card: T,
     entry: contribution.Contribution<readonly Modifier[]>,
 ): T {
@@ -60,7 +60,7 @@ export function setCostContribution<T extends Card<any>>(
     return cost === card.dp.cost ? card : { ...card, dp: { ...card.dp, cost } };
 }
 
-export function removeCostContribution<T extends Card<any>>(card: T, id: string): T {
+export function removeCostContribution<T extends Card>(card: T, id: string): T {
     const cost = entries.remove(card.dp.cost, id);
 
     return cost === card.dp.cost ? card : { ...card, dp: { ...card.dp, cost } };

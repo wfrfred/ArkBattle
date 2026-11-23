@@ -2,15 +2,15 @@ import * as contribution from "../../../../../common/contribution.js";
 import * as modifier from "../../../../../common/modifier.js";
 import type { Card } from "../card.js";
 
-export function isReady(card: Card<any>): boolean {
+export function isReady(card: Card): boolean {
     return card.supply.policy.type === "QUEUED" || card.supply.cooldown === 0;
 }
 
-export function resolveStockLimit(card: Card<any>): number | null {
+export function resolveStockLimit(card: Card): number | null {
     return resolveLimit(card.definition.supply.stockLimit, card.supply.stockLimit);
 }
 
-export function resolveActiveLimit(card: Card<any>): number | null {
+export function resolveActiveLimit(card: Card): number | null {
     return resolveLimit(card.definition.supply.activeLimit, card.supply.activeLimit);
 }
 
@@ -23,7 +23,7 @@ function resolveLimit(
         : Math.max(0, Math.floor(modifier.apply(limit, contribution.resolve(contributions))));
 }
 
-export function resolveCooldown(card: Card<any>): number {
+export function resolveCooldown(card: Card): number {
     return Math.max(
         0,
         Math.ceil(

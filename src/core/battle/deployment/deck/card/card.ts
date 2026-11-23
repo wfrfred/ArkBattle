@@ -28,6 +28,6 @@ export interface Card<S extends object = object> extends Identified<{ readonly i
     readonly state: S;
 }
 
-export function ref<T extends Card<any>>(self: T): Ref<T> {
+export function ref<T extends Card>(self: T): Ref<T> {
     return { id: self.id } as Ref<T>;
 }

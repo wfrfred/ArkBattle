@@ -38,7 +38,7 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 Card Definition 通过 `dp` 配置基础费用、涨费和退款，通过 `supply` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 保存库存、冷却、恢复队列和再部署时长贡献。部署限制在 Card 外层，参与整次部署的资格判断。
 
-`supply.policy` 决定部署、普通回收及冷却到期时的库存处理。Supply 的操作接收 BattleState 与 Card Ref，通过 Deck 写回该卡。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Card DP](../../src/core/battle/deployment/deck/card/dp.ts)
+Card 的 `deploy`、`recycle` 和 `advance` 负责按策略执行部署扣库、离场回收和每 Tick 推进。Supply 的库存及计时操作接收 BattleState 与 Card Ref，通过 Deck 写回该卡。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts) · [Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts)
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
@@ -110,7 +110,7 @@ Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks �
 
 每张卡保存一个 `cooldown`，记录当前段的剩余 Tick。DEFAULT 部署后开始冷却，普通离场保留库存。UNIQUE 普通离场立即归还一份库存并开始冷却。两种策略都等冷却到零才允许再次部署。QUEUED 普通离场追加一份待恢复库存，已在推进的恢复段保留余时。QUEUED 的可用库存可以在恢复期间部署。
 
-调度器每 Tick 推进一次 Supply。暂停保留余时。QUEUED 中一段到期时，将一份从 `pending` 移到 `stock`，必要时用有效时长开始下一段。每次推进最多恢复一份，包括零时长。`setCooldown`、`reduceCooldown` 只改当前余时，设置为零后由下一次正常推进结算队列。时长 Contribution 作用于未来段。
+调度器每 Tick 通过 Deck 逐张调用 `card.advance`。Card 先推进库存和冷却，再用已发布的状态执行 `Definition.onTick`。暂停保留余时。QUEUED 中一段到期时，将一份从 `pending` 移到 `stock`，必要时用有效时长开始下一段。每次推进最多恢复一份，包括零时长。`setCooldown`、`reduceCooldown` 只改当前余时，设置为零后由下一次正常推进结算队列。时长 Contribution 作用于未来段。
 
 持有上限和在场上限使用各自的 Contribution。有效上限取非负整数，`null` 表示不限。持有上限降低时同步裁剪总持有量，优先保留待恢复份数。若裁掉最后一份待恢复库存，则清除当前计时与暂停状态。在场上限用于后续部署资格，已部署单位由内容决定是否召回。
 

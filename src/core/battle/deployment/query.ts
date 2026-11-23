@@ -28,7 +28,7 @@ export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card
     return battle.deployment.history.find(({ unit }) => unit.id === reference.id)?.card ?? null;
 }
 
-export function deployedCount(battle: BattleState, reference: Ref<Card<any>>): number {
+export function deployedCount(battle: BattleState, reference: Ref<Card>): number {
     let count = 0;
 
     for (const unit of battle.battlefield.units.values()) {
@@ -40,7 +40,7 @@ export function deployedCount(battle: BattleState, reference: Ref<Card<any>>): n
     return count;
 }
 
-export function createRequest<T extends Card<any>>(
+export function createRequest<T extends Card>(
     battle: BattleState,
     reference: Ref<T>,
     tilePosition: TilePosition,
@@ -119,7 +119,7 @@ export const defaultRestrictions: readonly Contribution<Restriction>[] = default
 );
 
 export function resolveRestrictions(
-    self: Card<any>,
+    self: Card,
     request: DeployRequest,
 ): readonly Contribution<Restriction | CardRestriction>[] {
     const restrictions = new Map<string, Contribution<Restriction | CardRestriction>>();
@@ -173,7 +173,7 @@ export function evaluateCurrent(
     return null;
 }
 
-export function evaluate<T extends Card<any>>(
+export function evaluate<T extends Card>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): Rejected | null {
@@ -188,7 +188,7 @@ export function evaluate<T extends Card<any>>(
     return evaluateCurrent(battle, input, resolveRestrictions(self, input));
 }
 
-export function preview<T extends Card<any>>(
+export function preview<T extends Card>(
     battle: BattleState,
     request: DeployRequest<T>,
 ):
@@ -218,7 +218,7 @@ export function preview<T extends Card<any>>(
     };
 }
 
-export function positions<T extends Card<any>>(
+export function positions<T extends Card>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): readonly TilePosition[] {

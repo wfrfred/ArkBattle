@@ -13,7 +13,7 @@ import type { Direction } from "../../geometry/direction.js";
 import { dispatch as notifyDeployed } from "./hook.js";
 import type { Card } from "./deck/card/card.js";
 import { resolveBaseCost } from "./deck/card/dp.js";
-import * as supply from "./deck/card/supply/operations.js";
+import { deploy as deployCard } from "./deck/card/operations.js";
 import { get } from "./deck/deck.js";
 import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
@@ -28,7 +28,7 @@ export { canRetreat, retreat };
 
 export type { DeployRequest, DeployOutcome, Rejection } from "./request.js";
 
-export type DeploymentCommand<T extends Card<any> = Card> =
+export type DeploymentCommand<T extends Card = Card> =
     | {
           readonly type: "DEPLOY_UNIT";
           readonly ref: Ref<T>;
@@ -37,7 +37,7 @@ export type DeploymentCommand<T extends Card<any> = Card> =
       }
     | { readonly type: "RETREAT_UNIT"; readonly ref: Ref<Unit & Deployable> };
 
-export function deploy<T extends Card<any>>(
+export function deploy<T extends Card>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): Result<DeployOutcome> {
@@ -69,7 +69,7 @@ export function deploy<T extends Card<any>>(
     }
 
     battle = slot.occupy(battle, request.quote.slots);
-    battle = supply.consumeForDeployment(battle, request.card, request.quote.stock);
+    battle = deployCard(battle, request.card, request.quote.stock);
     const initialized = initializeUnit(battle, {
         definition: self.unitDefinition,
         position: Tile.center(request.tilePosition),
@@ -118,7 +118,7 @@ export function deploy<T extends Card<any>>(
 
 export function resolveDeploymentCommands(
     battle: BattleState,
-    commands: readonly Command<Card<any>>[],
+    commands: readonly Command[],
 ): BattleState {
     for (const command of commands) {
         if (command.type === "DEPLOY_UNIT") {
