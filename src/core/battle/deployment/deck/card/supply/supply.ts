@@ -4,9 +4,9 @@ import type { Modifier } from "../../../../../common/modifier.js";
 import { replaceIn } from "../../../../../common/object.js";
 import type { Ref } from "../../../../../common/ref.js";
 import type { State as BattleState } from "../../../../state.js";
+import { get } from "../../deck.js";
 import { replace } from "../../operations.js";
 import type { Card } from "../card.js";
-import { requireCard } from "../query.js";
 import { resolveStockLimit } from "./query.js";
 
 export type Policy =
@@ -37,7 +37,7 @@ export function setStockLimitContribution(
     reference: Ref<Card>,
     entry: Contribution<Modifier>,
 ): BattleState {
-    const card = requireCard(battle, reference);
+    const card = get(battle, reference)!;
 
     return replaceStockLimit(battle, card, set(card.supply.stockLimit, entry));
 }
@@ -47,7 +47,7 @@ export function removeStockLimitContribution(
     reference: Ref<Card>,
     id: string,
 ): BattleState {
-    const card = requireCard(battle, reference);
+    const card = get(battle, reference)!;
 
     return replaceStockLimit(battle, card, remove(card.supply.stockLimit, id));
 }
@@ -89,7 +89,7 @@ export function setActiveLimitContribution(
     reference: Ref<Card>,
     entry: Contribution<Modifier>,
 ): BattleState {
-    const card = requireCard(battle, reference);
+    const card = get(battle, reference)!;
 
     return replace(
         battle,
@@ -102,7 +102,7 @@ export function removeActiveLimitContribution(
     reference: Ref<Card>,
     id: string,
 ): BattleState {
-    const card = requireCard(battle, reference);
+    const card = get(battle, reference)!;
 
     return replace(
         battle,
@@ -115,7 +115,7 @@ export function setRedeployTimeContribution(
     reference: Ref<Card>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
-    const card = requireCard(battle, reference);
+    const card = get(battle, reference)!;
 
     return replace(
         battle,
@@ -128,7 +128,7 @@ export function removeRedeployTimeContribution(
     reference: Ref<Card>,
     id: string,
 ): BattleState {
-    const card = requireCard(battle, reference);
+    const card = get(battle, reference)!;
 
     return replace(
         battle,

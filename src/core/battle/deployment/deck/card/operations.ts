@@ -10,7 +10,6 @@ import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
 import * as dp from "./dp.js";
-import { requireCard } from "./query.js";
 import { enqueueRecovery } from "./supply/operations.js";
 import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
 
@@ -19,13 +18,13 @@ export function setState<T extends Card>(
     reference: Ref<T>,
     state: NoInfer<T["state"]>,
 ): BattleState {
-    const self = requireCard(battle, reference);
+    const self = get(battle, reference)!;
 
     return state === self.state ? battle : replace(battle, { ...self, state });
 }
 
 export function incrementCostStage(battle: BattleState, reference: Ref<Card>): BattleState {
-    return replace(battle, dp.incrementCostStage(requireCard(battle, reference)));
+    return replace(battle, dp.incrementCostStage(get(battle, reference)!));
 }
 
 export function deploy(battle: BattleState, reference: Ref<Card>, count: number): BattleState {
@@ -101,7 +100,7 @@ export function setUnitHook<H extends Entry, Owner extends object>(
     key: Key<H, Owner>,
     entry: NoInfer<H>,
 ): BattleState {
-    const self = requireCard(battle, reference);
+    const self = get(battle, reference)!;
     const unitHooks = self.unitHooks.set(key, entry);
 
     return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
@@ -113,7 +112,7 @@ export function removeUnitHook<H extends Entry, Owner extends object>(
     key: Key<H, Owner>,
     id: string,
 ): BattleState {
-    const self = requireCard(battle, reference);
+    const self = get(battle, reference)!;
     const unitHooks = self.unitHooks.remove(key, id);
 
     return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
@@ -124,7 +123,7 @@ export function setRestriction(
     reference: Ref<Card>,
     entry: Contribution<Restriction>,
 ): BattleState {
-    const self = requireCard(battle, reference);
+    const self = get(battle, reference)!;
     const restrictions = set(self.restrictions, entry);
 
     return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
@@ -135,7 +134,7 @@ export function removeRestriction(
     reference: Ref<Card>,
     id: string,
 ): BattleState {
-    const self = requireCard(battle, reference);
+    const self = get(battle, reference)!;
     const restrictions = remove(self.restrictions, id);
 
     return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
@@ -146,7 +145,7 @@ export function setCostContribution(
     reference: Ref<Card>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
-    return replace(battle, dp.setCostContribution(requireCard(battle, reference), entry));
+    return replace(battle, dp.setCostContribution(get(battle, reference)!, entry));
 }
 
 export function removeCostContribution(
@@ -154,5 +153,5 @@ export function removeCostContribution(
     reference: Ref<Card>,
     id: string,
 ): BattleState {
-    return replace(battle, dp.removeCostContribution(requireCard(battle, reference), id));
+    return replace(battle, dp.removeCostContribution(get(battle, reference)!, id));
 }
