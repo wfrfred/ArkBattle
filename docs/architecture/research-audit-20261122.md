@@ -4,18 +4,23 @@
 
 ## 当前 Core 缺口
 
-下表保留仍待处理的原 Core 候选及其取证记录。完整缺口清单按领域维护。 [Core 剩余缺口](research-necessity-20261122.md)
+各项的设计边界与证据按领域维护。 [Core 剩余缺口](research-necessity-20261122.md)
 
-| 编号 | 初次盘点的问题 | 当前状态 | 来源 |
-| --- | --- | --- | --- |
-| U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | **待定。** 跨格偏移引起下一移动目标差异已核实。Plan 已保存两项输入，待确定构场使用的格。 | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
-| U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **待接入。** 重艇和凶豕兽需要自主运动资格，受力位移或残留速度不能代替。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
-| U022 | 是否有实际内容修改 BLOCK_RADIUS_SCALE 并改变飞行阻挡半径 | **待接入。** 凯尔希·思衡托 S1 的空中阻挡半径修正已核实，当前搜索仍限于固定半径。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L94) |
-| U023 | 具体 CardBuff／符文来源进入费用汇总的资格、竞争和各段取整顺序 | **待接入。** 涨费上限修正、两次取整和野鬃叠加已查清，Card 缺少独立的倍率上限贡献。 | [实际叠加顺序](../research/cases/24-deployment-cost-and-supply.md#凛御银灰-x3-与野鬃) |
-| U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | **待接入。** 自身与外部的移动部署已核对，缺统一 `deployment.redeploy` 及正常离场后的 Card 账务接续。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L181) |
-| U035 | 本次附加、一般初始化、基础 SP 与具体出生程序实际发生冲突时的可观察顺序（含 Case 01） | **待接入，归入 G06。** 松桐 S2 的修正参与出生 HP 计算，待设计本次 Unit 初始化输入。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L289) |
-| U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
-| U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **待接入。** 已确认动态出生要登记当前波次、终局或两处等待，缺少普通动态创建后的登记入口。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
+| 事项 | 当前状态 | 领域与依据 |
+| --- | --- | --- |
+| 特殊移动（U028） | 待接入 | [Deployment / Card / DP](research-necessity-20261122.md#deployment--card--dp) |
+| Card 参与本次 Unit 的初始属性（G06、U035） | 待接入 | [Deployment / Card / DP](research-necessity-20261122.md#deployment--card--dp) |
+| 可修正的再部署涨费上限（U023） | 待接入 | [Deployment / Card / DP](research-necessity-20261122.md#deployment--card--dp) |
+| 跨层阻挡（G04） | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
+| 动态空中阻挡半径（U022） | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
+| 迷狂牢笼的阻挡站位 | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
+| 出口资格与离场原因（G08） | 待接入 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
+| 跨格路点偏移（U006） | 待定 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
+| 自主运动的冲撞资格（U019） | 待接入 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
+| 普通仇恨所用的路线距离 | 待定 | [Targeting / Route](research-necessity-20261122.md#targeting--route) |
+| 生命比例同步的 HP 调整 | 待接入 | [Resource / Vitality](research-necessity-20261122.md#resource--vitality) |
+| 动态出生参与调度等待（U048） | 待接入 | [Schedule](research-necessity-20261122.md#schedule) |
+| 波次和终局等待的释放时点（U047） | 待定 | [Schedule](research-necessity-20261122.md#schedule) |
 
 ## 初次盘点的分类
 
@@ -60,6 +65,19 @@
 | G11 | 若玛露西尔的魔力由 Content 私有状态承载，普通 SP 操作自然与魔力隔离。共享 SP 封闭仍取决于资源表示和真正需要它的普通 SP 消费者。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L317) |
 
 ## 逐项研究记录
+
+### 仍列为缺口的原 Core 候选取证
+
+| 编号 | 初次盘点的问题 | 当前状态 | 来源 |
+| --- | --- | --- | --- |
+| U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | **待定。** 跨格偏移引起下一移动目标差异已核实。Plan 已保存两项输入，待确定构场使用的格。 | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
+| U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **待接入。** 重艇和凶豕兽需要自主运动资格，受力位移或残留速度不能代替。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
+| U022 | 是否有实际内容修改 BLOCK_RADIUS_SCALE 并改变飞行阻挡半径 | **待接入。** 凯尔希·思衡托 S1 的空中阻挡半径修正已核实，当前搜索仍限于固定半径。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L94) |
+| U023 | 具体 CardBuff／符文来源进入费用汇总的资格、竞争和各段取整顺序 | **待接入。** 涨费上限修正、两次取整和野鬃叠加已查清，Card 缺少独立的倍率上限贡献。 | [实际叠加顺序](../research/cases/24-deployment-cost-and-supply.md#凛御银灰-x3-与野鬃) |
+| U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | **待接入。** 自身与外部的移动部署已核对，缺统一 `deployment.redeploy` 及正常离场后的 Card 账务接续。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L181) |
+| U035 | 本次附加、一般初始化、基础 SP 与具体出生程序实际发生冲突时的可观察顺序（含 Case 01） | **待接入，归入 G06。** 松桐 S2 的修正参与出生 HP 计算，待设计本次 Unit 初始化输入。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L289) |
+| U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
+| U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **待接入。** 已确认动态出生要登记当前波次、终局或两处等待，缺少普通动态创建后的登记入口。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
 
 ### 原 Core 候选的其他复核结论
 
