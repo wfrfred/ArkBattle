@@ -3,30 +3,26 @@ import { replaceIn } from "../../../../../common/object.js";
 import type { Card } from "../card.js";
 import { remaining, resolveCooldown } from "./query.js";
 
-export function consume<T extends Card>(card: T, count = 1): T {
+export function consume<S extends object>(card: Card<S>, count = 1): Card<S> {
     assertNonnegativeSafeInteger(count, "card consumption count");
     const { stock } = card.supply;
     if (count > stock) {
         throw new RangeError("card stock is insufficient");
     }
 
-    const supply = replaceIn(card.supply, ["stock"], stock - count);
-
-    return supply === card.supply ? card : { ...card, supply };
+    return replaceIn(card, ["supply", "stock"], stock - count);
 }
 
-export function recharge<T extends Card>(card: T, count: number): T {
+export function recharge<S extends object>(card: Card<S>, count: number): Card<S> {
     assertNonnegativeSafeInteger(count, "card recharge count");
     const stock = card.supply.stock + Math.min(count, remaining(card) ?? Infinity);
-    const supply = replaceIn(card.supply, ["stock"], stock);
 
-    return supply === card.supply ? card : { ...card, supply };
+    return replaceIn(card, ["supply", "stock"], stock);
 }
 
-export function enqueue<T extends Card>(card: T, count = 1): T {
+export function enqueue<S extends object>(card: Card<S>, count = 1): Card<S> {
     assertNonnegativeSafeInteger(count, "card recovery count");
-    const { supply } = card;
-    const { policy } = supply;
+    const { policy } = card.supply;
     if (policy.type !== "QUEUED") {
         throw new TypeError("card recovery queue requires the QUEUED policy");
     }
@@ -36,33 +32,30 @@ export function enqueue<T extends Card>(card: T, count = 1): T {
         return card;
     }
 
-    return {
-        ...card,
-        supply: {
-            ...supply,
-            policy: { ...policy, pending: policy.pending + added },
-            cooldown: policy.pending === 0 ? resolveCooldown(card) : supply.cooldown,
-        },
-    };
+    let next = replaceIn(card, ["supply", "policy"], {
+        ...policy,
+        pending: policy.pending + added,
+    });
+    if (policy.pending === 0) {
+        next = replaceIn(next, ["supply", "cooldown"], resolveCooldown(card));
+    }
+
+    return next;
 }
 
-export function setCooldown<T extends Card>(card: T, ticks: number): T {
+export function setCooldown<S extends object>(card: Card<S>, ticks: number): Card<S> {
     assertNonnegativeSafeInteger(ticks, "cooldown ticks");
-    const supply = replaceIn(card.supply, ["cooldown"], ticks);
 
-    return supply === card.supply ? card : { ...card, supply };
+    return replaceIn(card, ["supply", "cooldown"], ticks);
 }
 
-export function reduceCooldown<T extends Card>(card: T, ticks: number): T {
+export function reduceCooldown<S extends object>(card: Card<S>, ticks: number): Card<S> {
     assertNonnegativeSafeInteger(ticks, "cooldown reduction ticks");
     const cooldown = Math.max(0, card.supply.cooldown - ticks);
-    const supply = replaceIn(card.supply, ["cooldown"], cooldown);
 
-    return supply === card.supply ? card : { ...card, supply };
+    return replaceIn(card, ["supply", "cooldown"], cooldown);
 }
 
-export function setPaused<T extends Card>(card: T, paused: boolean): T {
-    const supply = replaceIn(card.supply, ["paused"], paused);
-
-    return supply === card.supply ? card : { ...card, supply };
+export function setPaused<S extends object>(card: Card<S>, paused: boolean): Card<S> {
+    return replaceIn(card, ["supply", "paused"], paused);
 }

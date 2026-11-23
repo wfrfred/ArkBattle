@@ -38,9 +38,9 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 Card Definition 通过 `dp` 配置基础费用、涨费和退款，通过 `supply` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 保存库存、冷却、恢复队列和再部署时长贡献。部署限制在 Card 外层，参与整次部署的资格判断。
 
-Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 Card，由部署或离场结算一次写回。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
+Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S>`，由部署或离场结算一次写回。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
 
-Supply 的库存、计时和 Contribution 操作接收 Card 并返回更新后的 Card，保留其具体类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 ID 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
+Supply 的库存、计时和 Contribution 操作接收并返回 `Card<S>`。`S` 保留私有状态类型，返回的库存和冷却等字段采用 `Card<S>` 的声明类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 ID 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 

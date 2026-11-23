@@ -940,7 +940,13 @@ const registeredCard = cards.get(cardBattle, cardRef)!;
 const cardMarker: true = registeredCard.definition.marker;
 const cardUnitMarker: 'unit' = registeredCard.unitDefinition.marker;
 const cardCount: number = registeredCard.state.count;
-const rechargedCard: typeof registeredCard = cards.supply.recharge(registeredCard, 1);
+const emptyCard = { ...registeredCard, supply: { ...registeredCard.supply, stock: 0 as const } };
+const rechargedCard = cards.supply.recharge(emptyCard, 1);
+const rechargedCount: number = rechargedCard.state.count;
+// @ts-expect-error Supply operations retain the Card's private state type.
+rechargedCard.state.label;
+// @ts-expect-error recharging can change the previously narrowed stock.
+const emptyStock: 0 = rechargedCard.supply.stock;
 deck.replace(cardBattle, rechargedCard);
 // @ts-expect-error replacement requires the state type declared by the Card Definition.
 deck.replace(cardBattle, { ...registeredCard, state: { count: 'wrong' } });

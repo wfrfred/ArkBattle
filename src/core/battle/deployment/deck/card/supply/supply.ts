@@ -28,70 +28,69 @@ export interface State {
     readonly redeployTime: readonly Contribution<readonly Modifier[]>[];
 }
 
-export function setStockLimitContribution<T extends Card>(
-    card: T,
+export function setStockLimitContribution<S extends object>(
+    card: Card<S>,
     entry: Contribution<Modifier>,
-): T {
+): Card<S> {
     return replaceStockLimit(card, set(card.supply.stockLimit, entry));
 }
 
-export function removeStockLimitContribution<T extends Card>(card: T, id: string): T {
+export function removeStockLimitContribution<S extends object>(card: Card<S>, id: string): Card<S> {
     return replaceStockLimit(card, remove(card.supply.stockLimit, id));
 }
 
-function replaceStockLimit<T extends Card>(card: T, stockLimit: State["stockLimit"]): T {
-    const supply = replaceIn(card.supply, ["stockLimit"], stockLimit);
-    if (supply === card.supply) {
+function replaceStockLimit<S extends object>(
+    card: Card<S>,
+    stockLimit: State["stockLimit"],
+): Card<S> {
+    const next = replaceIn(card, ["supply", "stockLimit"], stockLimit);
+    if (next === card) {
         return card;
     }
 
-    const limit = resolveStockLimit({ ...card, supply }) ?? Infinity;
+    const limit = resolveStockLimit(next) ?? Infinity;
+    const { supply } = next;
     const { policy, stock } = supply;
     if (policy.type !== "QUEUED") {
-        return { ...card, supply: replaceIn(supply, ["stock"], Math.min(stock, limit)) };
+        return replaceIn(next, ["supply", "stock"], Math.min(stock, limit));
     }
 
     const pending = Math.min(policy.pending, limit);
     const emptied = pending === 0 && policy.pending > 0;
 
-    return {
-        ...card,
-        supply: {
-            ...supply,
-            stock: Math.min(stock, limit - pending),
-            policy: { ...policy, pending },
-            cooldown: emptied ? 0 : supply.cooldown,
-            paused: emptied ? false : supply.paused,
-        },
-    };
+    return replaceIn(next, ["supply"], {
+        ...supply,
+        stock: Math.min(stock, limit - pending),
+        policy: { ...policy, pending },
+        cooldown: emptied ? 0 : supply.cooldown,
+        paused: emptied ? false : supply.paused,
+    });
 }
 
-export function setActiveLimitContribution<T extends Card>(
-    card: T,
+export function setActiveLimitContribution<S extends object>(
+    card: Card<S>,
     entry: Contribution<Modifier>,
-): T {
-    const supply = replaceIn(card.supply, ["activeLimit"], set(card.supply.activeLimit, entry));
-
-    return supply === card.supply ? card : { ...card, supply };
+): Card<S> {
+    return replaceIn(card, ["supply", "activeLimit"], set(card.supply.activeLimit, entry));
 }
 
-export function removeActiveLimitContribution<T extends Card>(card: T, id: string): T {
-    const supply = replaceIn(card.supply, ["activeLimit"], remove(card.supply.activeLimit, id));
-
-    return supply === card.supply ? card : { ...card, supply };
+export function removeActiveLimitContribution<S extends object>(
+    card: Card<S>,
+    id: string,
+): Card<S> {
+    return replaceIn(card, ["supply", "activeLimit"], remove(card.supply.activeLimit, id));
 }
 
-export function setRedeployTimeContribution<T extends Card>(
-    card: T,
+export function setRedeployTimeContribution<S extends object>(
+    card: Card<S>,
     entry: Contribution<readonly Modifier[]>,
-): T {
-    const supply = replaceIn(card.supply, ["redeployTime"], set(card.supply.redeployTime, entry));
-
-    return supply === card.supply ? card : { ...card, supply };
+): Card<S> {
+    return replaceIn(card, ["supply", "redeployTime"], set(card.supply.redeployTime, entry));
 }
 
-export function removeRedeployTimeContribution<T extends Card>(card: T, id: string): T {
-    const supply = replaceIn(card.supply, ["redeployTime"], remove(card.supply.redeployTime, id));
-
-    return supply === card.supply ? card : { ...card, supply };
+export function removeRedeployTimeContribution<S extends object>(
+    card: Card<S>,
+    id: string,
+): Card<S> {
+    return replaceIn(card, ["supply", "redeployTime"], remove(card.supply.redeployTime, id));
 }

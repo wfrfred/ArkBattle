@@ -27,7 +27,7 @@ export function incrementCostStage(battle: BattleState, reference: Ref<Card>): B
     return replace(battle, dp.incrementCostStage(get(battle, reference)!));
 }
 
-export function deploy<T extends Card>(card: T, count: number): T {
+export function deploy<S extends object>(card: Card<S>, count: number): Card<S> {
     const { supply } = card;
     const stock = supply.stock - count;
     const cooldown = supply.policy.type === "DEFAULT" ? resolveCooldown(card) : supply.cooldown;
@@ -37,7 +37,7 @@ export function deploy<T extends Card>(card: T, count: number): T {
         : { ...card, supply: { ...supply, stock, cooldown } };
 }
 
-export function recycle<T extends Card>(card: T): T {
+export function recycle<S extends object>(card: Card<S>): Card<S> {
     if (card.definition.dp.increaseCostOnRetreatOrDeath) {
         card = dp.incrementCostStage(card);
     }
