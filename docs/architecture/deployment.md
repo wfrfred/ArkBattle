@@ -34,13 +34,15 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Route 需要本次路线的 Plan 和 offset，因此带 Route 的蓝图在 Card 构造时由类型检查拒绝。
 
-`card.initialize(battle, { definition, unitDefinition })` 分配 ID、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收私有状态与 Definition 配对的 `Card<S>`，按 ID 登记进通用 `Store`，并把新卡追加到当前牌序末尾。`card.get(battle, ref)` 依据 typed Ref 恢复实例类型。
+`card.initialize(battle, { definition, unitDefinition })` 分配 ID、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 将 `Card<S, P>` 按 ID 登记，并把新卡追加到当前牌序末尾。Deck 使用异构 `Store<Id, Card<any, Policy>>` 存放完整实例。`all(battle)` 与 `ordered(battle)` 返回默认 `Card`，`card.get(battle, ref)` 依据精确 Typed Ref 恢复实例类型。
 
-Card Definition 通过 `dp` 配置基础费用、涨费和退款，通过 `supply` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 保存库存、冷却、恢复队列和再部署时长贡献。部署限制在 Card 外层，参与整次部署的资格判断。
+`Card<S, P>` 是按策略区分的判别联合，与 `Definition<S, P>` 共享私有状态类型 `S` 和策略类型 `P`。初始化从 `definition.policy` 设置实例顶层的 `card.policy`，它在卡牌生命周期内保持稳定。策略为 `DEFAULT`、`UNIQUE` 或 `QUEUED`。
 
-Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S>`，由部署或离场结算一次写回。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
+`dp` 配置基础费用、涨费和退款，`Supply.Definition<P>` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。部署限制在 Card 外层，参与整次部署的资格判断。
 
-Supply 的库存、计时和 Contribution 操作接收并返回 `Card<S>`。`S` 保留私有状态类型，返回的库存和冷却等字段采用 `Card<S>` 的声明类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 ID 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
+Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S, P>`，由部署或离场结算一次写回。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
+
+Supply 的库存、计时和 Contribution 操作保留 `Card<S, P>` 的私有状态和策略类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 ID 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
@@ -114,7 +116,7 @@ Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks �
 
 ## 库存与计时
 
-`stock` 是可用库存。QUEUED 的 `policy.pending` 是待恢复份数，总持有量为 `stock + pending`。Supply 的公开接口由 Card 的 `supply` 命名空间导出。`consume` 只扣 `stock`，库存不足时拒绝。`recharge` 直接增加可用库存，`enqueue` 增加 QUEUED 的待恢复份数。两种补充都受总持有上限约束。
+`stock` 是可用库存。`QUEUED` 的 `supply.pending` 是待恢复份数，总持有量为 `stock + pending`。Supply 的公开接口由 Card 的 `supply` 命名空间导出。`consume` 只扣 `stock`，库存不足时拒绝。`recharge` 直接增加可用库存。`enqueue` 要求 `Card<S, "QUEUED">`，增加待恢复份数。通用 Card 可通过 `card.policy === "QUEUED"` 收窄。两种补充都受总持有上限约束。
 
 每张卡保存一个 `cooldown`，记录当前段的剩余 Tick。DEFAULT 部署后开始冷却，普通离场保留库存。UNIQUE 普通离场立即归还一份库存并开始冷却。两种策略都等冷却到零才允许再次部署。QUEUED 普通离场追加一份待恢复库存，已在推进的恢复段保留余时。QUEUED 的可用库存可以在恢复期间部署。
 

@@ -15,11 +15,11 @@ const account = {
     slot: { limit: 1 },
 };
 const cardDefinition = {
+    policy: "UNIQUE",
     dp: { cost: 5, increaseCostOnRetreatOrDeath: false, refund: null },
     slot: 1,
     supply: {
         stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
-        policy: { type: "UNIQUE" },
     },
     deploymentRestrictions: [], unitHooks: Hooks.empty(),
     initialize: (current) => ({ state: current, value: {} }),

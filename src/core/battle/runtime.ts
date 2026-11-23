@@ -24,6 +24,7 @@ import { initialize as initializeSchedule } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
 import * as unit from "../unit/operations.js";
 import * as cards from "./deployment/deck/card/index.js";
+import type { Card } from "./deployment/deck/card/card.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
 
 export type { Input, Command, Event } from "./contract.js";
@@ -33,7 +34,7 @@ export function initialize<
     MechanismStates extends readonly object[],
     UnitDefinitions extends readonly (UnitDefinition & Partial<CapabilityDefinitions>)[],
 >(input: Input<CardStates, MechanismStates, UnitDefinitions>): State;
-export function initialize(input: Input<readonly object[], readonly any[]>): State {
+export function initialize(input: Input<readonly any[], readonly any[]>): State {
     const { pushMultiplier = DEFAULT_PUSH_MULTIPLIER } = input;
     assertNonnegativeNumber(input.routeMoveMultiplier, "routeMoveMultiplier");
     assertNonnegativeNumber(pushMultiplier, "pushMultiplier");
@@ -71,7 +72,7 @@ export function initialize(input: Input<readonly object[], readonly any[]>): Sta
     return initializeBattlefield(initial, input);
 }
 
-export function step(battle: State, commands: readonly Command[]): State {
+export function step(battle: State, commands: readonly Command<Card<any>>[]): State {
     const projectileCandidates = projectiles.all(battle).map(projectiles.ref);
     let state = replaceIn(battle, ["events"], []);
 

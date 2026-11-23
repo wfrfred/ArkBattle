@@ -9,7 +9,7 @@ export interface Parameters {
     readonly respawnTime: number;
 }
 
-export function create({ cost, respawnTime }: Parameters): CardDefinition {
+export function create({ cost, respawnTime }: Parameters): CardDefinition<object, "UNIQUE"> {
     return {
         dp: {
             cost,
@@ -17,8 +17,8 @@ export function create({ cost, respawnTime }: Parameters): CardDefinition {
             refund: { rate: 0.5, limit: "BASE_COST" },
         },
         slot: 1,
+        policy: "UNIQUE",
         supply: {
-            policy: { type: "UNIQUE" },
             stock: 1,
             stockLimit: 1,
             activeLimit: 1,

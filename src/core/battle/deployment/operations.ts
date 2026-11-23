@@ -27,7 +27,7 @@ export { canRetreat, retreat };
 
 export type { DeployRequest, DeployOutcome, Rejection } from "./request.js";
 
-export type DeploymentCommand<T extends Card = Card> =
+export type DeploymentCommand<T extends Card<any> = Card> =
     | {
           readonly type: "DEPLOY_UNIT";
           readonly ref: Ref<T>;
@@ -36,14 +36,14 @@ export type DeploymentCommand<T extends Card = Card> =
       }
     | { readonly type: "RETREAT_UNIT"; readonly ref: Ref<Unit & Deployable> };
 
-export function deploy<T extends Card>(
+export function deploy<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
 ): Result<DeployOutcome> {
     const input = request as object as DeployRequest;
     validateRequest(input);
 
-    const self = get(battle, request.card);
+    const self = get(battle, input.card);
     if (self === undefined) {
         return { state: battle, value: { type: "REJECTED", reason: "UNKNOWN_CARD" } };
     }

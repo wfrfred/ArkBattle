@@ -332,22 +332,38 @@ if (result.type === 'APPLIED') {
 // Independent constructors enforce pairing before heterogeneous storage.
 declare const baseInput: Omit<BattleInput, 'deployment' | 'initialUnits' | 'initialMechanisms'>;
 declare const cardUnit: cards.UnitDefinition;
-declare const policy: Omit<cards.Definition, 'initialize' | 'onTick'>;
-const countCard: cards.Definition<{ count: number }> = {
-    ...policy,
+declare const cardDefaults: Omit<cards.Definition<object, 'UNIQUE'>, 'initialize' | 'onTick' | 'policy'>;
+const countCard: cards.Definition<{ count: number }, 'QUEUED'> = {
+    ...cardDefaults, policy: 'QUEUED',
+    supply: { ...cardDefaults.supply, pending: 0 },
     initialize: state => ({ state, value: { count: 0 } }),
     onTick: (state, self) => cards.setState(state, cards.ref(self), { count: self.state.count + 1 }),
 };
-const nameCard: cards.Definition<{ name: string }> = {
-    ...policy, initialize: state => ({ state, value: { name: 'second' } }),
+const nameCard: cards.Definition<{ name: string }, 'UNIQUE'> = {
+    ...cardDefaults, policy: 'UNIQUE',
+    initialize: state => ({ state, value: { name: 'second' } }),
     onTick: (state, self) => cards.setState(state, cards.ref(self), { name: self.state.name }),
 };
 const countInput = { definition: countCard, unitDefinition: cardUnit };
 const builtCard = cards.initialize(battle, countInput);
+const exactCard = cards.get(builtCard.state, cards.ref(builtCard.value))!;
+const enqueued = cards.supply.enqueue(cards.supply.consume(exactCard));
+enqueued.state.count satisfies number;
+enqueued.supply.pending satisfies number;
+for (const card of cards.all(battle)) {
+    // @ts-expect-error a heterogeneous query does not prove the card has a queue.
+    card.supply.pending;
+    if (card.policy === 'QUEUED') {
+        card.supply.pending satisfies number;
+    } else {
+        // @ts-expect-error only queued cards can enqueue pending stock.
+        cards.supply.enqueue(card);
+    }
+}
 // @ts-expect-error normal placement cannot supply a Route Plan and offset.
 cards.initialize(battle, { ...countInput, unitDefinition: { ...cardUnit, route: routeDefinition.route } });
 // @ts-expect-error registration must reject state that does not match its own Definition.
-cards.add(builtCard.state, { ...builtCard.value, state: { count: 'wrong' } });
+cards.add(builtCard.state, { ...exactCard, state: { count: 'wrong' } });
 const counter: mechanisms.Definition<{ count: number }> = {
     id: 'counter', initialize: () => ({ count: 0 }),
     onTick: (state, self) => mechanisms.setState(state, mechanisms.ref(self), { count: self.state.count + 1 }),

@@ -45,7 +45,7 @@ export interface SkillCommand {
     readonly operation: "ACTIVATE" | Operation;
 }
 
-export type Command<T extends Card = Card> =
+export type Command<T extends Card<any> = Card> =
     | DeploymentCommand<T>
     | SkillCommand
     | {

@@ -17,7 +17,7 @@ const operator = {
     occupancy: { slot: "OCCUPANT" },
     deployable: { retreatRestrictions: [] },
 };
-const operatorCard = createCardDefinition({ policy: { type: "DEFAULT" }, slots: 1 });
+const operatorCard = createCardDefinition({ policy: "DEFAULT", slots: 1 });
 const account = {
     dp: { initial: 50, min: 0, max: 99, recoveryInterval: null },
     slot: { limit: 3 },

@@ -1,4 +1,4 @@
-export type { Policy } from "./supply.js";
+export type { Definition, State } from "./supply.js";
 
 export {
     total,

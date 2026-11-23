@@ -14,7 +14,7 @@ export interface Quote {
     readonly slots: number;
 }
 
-export interface DeployRequest<T extends Card = Card> {
+export interface DeployRequest<T extends Card<any> = Card> {
     readonly card: Ref<T>;
     readonly tilePosition: TilePosition;
     readonly direction?: Direction;

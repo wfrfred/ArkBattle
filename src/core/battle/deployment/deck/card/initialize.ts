@@ -4,11 +4,11 @@ import {
 } from "../../../../common/assert.js";
 import { validateRestrictions } from "../../../../restriction.js";
 import type { State as BattleState, Result } from "../../../state.js";
-import type { Card, UnitDefinition } from "./card.js";
+import type { Card, Policy, UnitDefinition } from "./card.js";
 import type { Definition } from "./definition.js";
 
-export interface Input<S extends object = object> {
-    readonly definition: Definition<S>;
+export interface Input<S extends object = object, P extends Policy = Policy> {
+    readonly definition: Definition<S, P>;
     readonly unitDefinition: UnitDefinition;
 }
 
@@ -22,10 +22,10 @@ export function initialize<
         definition,
         unitDefinition,
     }: Input<S> & { readonly definition: D; readonly unitDefinition: U },
-): Result<Card<S> & { readonly definition: D; readonly unitDefinition: U }> {
-    const { dp, slot, supply } = definition;
+): Result<Card<S, D["policy"]> & { readonly definition: D; readonly unitDefinition: U }> {
+    const { dp, slot, policy, supply } = definition;
     const { cost, refund } = dp;
-    const { policy, stock, stockLimit, activeLimit, cooldown } = supply;
+    const { stock, stockLimit, activeLimit, cooldown } = supply;
 
     assertNonnegativeNumber(cost, "card cost");
     assertNonnegativeSafeInteger(cooldown, "card redeployment ticks");
@@ -43,7 +43,7 @@ export function initialize<
         assertNonnegativeSafeInteger(activeLimit, "card active limit");
     }
 
-    const pending = policy.type === "QUEUED" ? policy.pending : 0;
+    const pending = definition.policy === "QUEUED" ? definition.supply.pending : 0;
     assertNonnegativeSafeInteger(pending, "card pending recovery count");
 
     if (stockLimit !== null && stock + pending > stockLimit) {
@@ -56,25 +56,31 @@ export function initialize<
     battle = { ...battle, execution: { ...battle.execution, nextCardId: id + 1 } };
     const initialized = definition.initialize(battle);
 
+    const value = {
+        id,
+        policy,
+        definition,
+        dp: { stage: 0, cost: [] },
+        supply: {
+            stock,
+            cooldown: pending > 0 ? cooldown : 0,
+            paused: false,
+            stockLimit: [],
+            activeLimit: [],
+            redeployTime: [],
+            ...(policy === "QUEUED" ? { pending } : {}),
+        },
+        unitDefinition,
+        unitHooks: definition.unitHooks,
+        restrictions: [],
+        state: initialized.value,
+    };
+
     return {
         state: initialized.state,
-        value: {
-            id,
-            definition,
-            dp: { stage: 0, cost: [] },
-            supply: {
-                policy,
-                stock,
-                cooldown: pending > 0 ? cooldown : 0,
-                paused: false,
-                stockLimit: [],
-                activeLimit: [],
-                redeployTime: [],
-            },
-            unitDefinition,
-            unitHooks: definition.unitHooks,
-            restrictions: [],
-            state: initialized.value,
+        value: value as object as Card<S, D["policy"]> & {
+            readonly definition: D;
+            readonly unitDefinition: U;
         },
     };
 }

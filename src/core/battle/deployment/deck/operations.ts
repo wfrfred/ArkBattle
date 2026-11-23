@@ -11,7 +11,7 @@ export function add<S extends object>(battle: BattleState, self: Card<S>): Battl
     return replaceIn(battle, ["deployment", "deck"], {
         ...deck,
         cards: deck.cards.add(self.id, self),
-        order: [...deck.order, ref(self)],
+        order: [...deck.order, ref<Card<any>>(self)],
     });
 }
 
@@ -45,6 +45,6 @@ export function sort(battle: BattleState): BattleState {
         : replaceIn(battle, ["deployment", "deck", "order"], order);
 }
 
-export function resolveCost(battle: BattleState, self: Card): number {
+export function resolveCost<S extends object>(battle: BattleState, self: Card<S>): number {
     return resolveCardCost(self, battle.deployment.deck.costCeiling);
 }

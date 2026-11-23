@@ -17,17 +17,24 @@ export type UnitDefinition = BaseDefinition & {
     readonly route?: never;
 };
 
-export interface Card<S extends object = object> extends Identified<{ readonly id: Id }> {
-    readonly id: Id;
-    readonly definition: Definition<S>;
-    readonly dp: dp.State;
-    readonly supply: supply.State;
-    readonly unitDefinition: UnitDefinition;
-    readonly unitHooks: Hooks;
-    readonly restrictions: readonly Contribution<Restriction>[];
-    readonly state: S;
-}
+export type Policy = "DEFAULT" | "UNIQUE" | "QUEUED";
 
-export function ref<T extends Card>(self: T): Ref<T> {
+export type Card<S extends object = object, P extends Policy = Policy> = {
+    readonly state: S;
+    readonly policy: P;
+} & {
+    [K in Policy]: Identified<{ readonly id: Id }> & {
+        readonly id: Id;
+        readonly policy: K;
+        readonly definition: Definition<S, K>;
+        readonly dp: dp.State;
+        readonly supply: supply.State<K>;
+        readonly unitDefinition: UnitDefinition;
+        readonly unitHooks: Hooks;
+        readonly restrictions: readonly Contribution<Restriction>[];
+    };
+}[P];
+
+export function ref<T extends Card<any>>(self: T): Ref<T> {
     return { id: self.id } as Ref<T>;
 }

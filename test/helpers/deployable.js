@@ -10,16 +10,17 @@ export function createCardDefinition({
     cost = 0, redeployTicks = 0, slots = 0,
     stock = 1, stockLimit = 1, activeLimit = 1,
     refund = { rate: 0.5, limit: "BASE_COST" },
-    policy = { type: "UNIQUE" }, increaseCostOnRetreatOrDeath = true,
+    policy = "UNIQUE", increaseCostOnRetreatOrDeath = true,
     placement = "ALL", allowedSiteConditions = [conditions.normal], deploymentRestrictions = [], unitHooks = Hooks.empty(),
     initialize = battle => ({ state: battle, value: {} }),
     ...rest
 } = {}) {
     return {
+        policy,
         dp: { cost, increaseCostOnRetreatOrDeath, refund },
         slot: slots,
         supply: {
-            policy, stock, stockLimit, activeLimit, cooldown: redeployTicks,
+            stock, stockLimit, activeLimit, cooldown: redeployTicks,
         },
         deploymentRestrictions: [{
             id: "deployment/site",

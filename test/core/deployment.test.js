@@ -24,6 +24,7 @@ const operator = {
     vitality: defineVitality(100),
 };
 const operatorCard = {
+    policy: "UNIQUE",
     dp: {
         cost: 10,
         increaseCostOnRetreatOrDeath: true,
@@ -31,7 +32,6 @@ const operatorCard = {
     },
     slot: 1,
     supply: {
-        policy: { type: "UNIQUE" },
         stock: 1,
         stockLimit: 1,
         activeLimit: 1,
@@ -524,7 +524,8 @@ test("default cards start cooldown on deployment and only explicit recharge rest
                 unitDefinition: operator,
                 definition: {
                     ...operatorCard,
-                    supply: { ...operatorCard.supply, policy: { type: "DEFAULT" }, cooldown: 2 },
+                    policy: "DEFAULT",
+                    supply: { ...operatorCard.supply, cooldown: 2 },
                 },
             }],
         },
@@ -553,9 +554,10 @@ test("queued recovery preserves the current interval and transfers at most one a
                 unitDefinition: operator,
                 definition: {
                     ...operatorCard,
+                    policy: "QUEUED",
                     supply: {
                         ...operatorCard.supply,
-                        policy: { type: "QUEUED", pending: 0 },
+                        pending: 0,
                         stockLimit: 3,
                         cooldown: 2,
                     },
@@ -572,8 +574,8 @@ test("queued recovery preserves the current interval and transfers at most one a
     });
     const card = cards.ref([...cards.all(state)][0]);
     const assertSupply = (expected) => {
-        const { stock, policy, cooldown } = cards.get(state, card).supply;
-        assert.deepEqual({ stock, pending: policy.pending, cooldown }, expected);
+        const { stock, pending, cooldown } = cards.get(state, card).supply;
+        assert.deepEqual({ stock, pending, cooldown }, expected);
     };
     const first = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));
     assert.equal(first.value.type, "DEPLOYED");
@@ -626,9 +628,10 @@ test("stock limit includes pending recovery and active limit only gates new depl
                 unitDefinition: operator,
                 definition: {
                     ...operatorCard,
+                    policy: "QUEUED",
                     supply: {
                         ...operatorCard.supply,
-                        policy: { type: "QUEUED", pending: 1 },
+                        pending: 1,
                         stockLimit: 2,
                     },
                 },
@@ -646,10 +649,8 @@ test("stock limit includes pending recovery and active limit only gates new depl
 
     const truncated = cards.supply.removeStockLimitContribution(cards.get(state, card), stockBonus.id);
     state = deck.replace(state, truncated);
-    const { stock, policy, cooldown } = cards.get(state, card).supply;
-    assert.deepEqual({ stock, policy, cooldown }, {
-        stock: 1, policy: { type: "QUEUED", pending: 1 }, cooldown: 10,
-    });
+    const { stock, pending, cooldown } = cards.get(state, card).supply;
+    assert.deepEqual({ stock, pending, cooldown }, { stock: 1, pending: 1, cooldown: 10 });
 
     const paused = cards.supply.setPaused(cards.get(state, card), true);
     const depleted = cards.supply.setStockLimitContribution(paused, {
@@ -658,7 +659,7 @@ test("stock limit includes pending recovery and active limit only gates new depl
     });
     const empty = depleted.supply;
     assert.deepEqual(
-        [empty.stock, empty.policy.pending, empty.cooldown, empty.paused],
+        [empty.stock, empty.pending, empty.cooldown, empty.paused],
         [0, 0, 0, false],
     );
 

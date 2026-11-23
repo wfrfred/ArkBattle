@@ -5,7 +5,7 @@ import { replaceIn } from "../../../../common/object.js";
 import type { State as BattleState } from "../../../state.js";
 import { get } from "../deck.js";
 import { replace } from "../operations.js";
-import type { Card } from "./card.js";
+import type { Card, Policy } from "./card.js";
 import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
@@ -13,7 +13,7 @@ import * as dp from "./dp.js";
 import { enqueue } from "./supply/operations.js";
 import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
 
-export function setState<T extends Card>(
+export function setState<T extends Card<any>>(
     battle: BattleState,
     reference: Ref<T>,
     state: NoInfer<T["state"]>,
@@ -23,20 +23,26 @@ export function setState<T extends Card>(
     return state === self.state ? battle : replace(battle, { ...self, state });
 }
 
-export function incrementCostStage(battle: BattleState, reference: Ref<Card>): BattleState {
-    return replace(battle, dp.incrementCostStage(get(battle, reference)!));
+export function incrementCostStage(battle: BattleState, reference: Ref<Card<any>>): BattleState {
+    const self: Card = get(battle, reference)!;
+
+    return replace(battle, dp.incrementCostStage(self));
 }
 
-export function deploy<S extends object>(card: Card<S>, count: number): Card<S> {
+export function deploy<S extends object, P extends Policy>(
+    card: Card<S, P>,
+    count: number,
+): Card<S, P> {
     const { supply } = card;
     const stock = supply.stock - count;
-    const cooldown = supply.policy.type === "DEFAULT" ? resolveCooldown(card) : supply.cooldown;
+    const cooldown = card.policy === "DEFAULT" ? resolveCooldown(card) : supply.cooldown;
 
     return stock === supply.stock && cooldown === supply.cooldown
         ? card
         : { ...card, supply: { ...supply, stock, cooldown } };
 }
 
+export function recycle<S extends object, P extends Policy>(card: Card<S, P>): Card<S, P>;
 export function recycle<S extends object>(card: Card<S>): Card<S> {
     if (card.definition.dp.increaseCostOnRetreatOrDeath) {
         card = dp.incrementCostStage(card);
@@ -44,7 +50,7 @@ export function recycle<S extends object>(card: Card<S>): Card<S> {
 
     const { supply } = card;
 
-    switch (supply.policy.type) {
+    switch (card.policy) {
         case "DEFAULT":
             return card;
 
@@ -64,20 +70,18 @@ export function recycle<S extends object>(card: Card<S>): Card<S> {
 
 export function advance(battle: BattleState, reference: Ref<Card>): BattleState {
     const card = get(battle, reference)!;
-    const { supply } = card;
     let next = card;
 
-    if (!supply.paused) {
-        const cooldown = Math.max(0, supply.cooldown - 1);
-        const { policy } = supply;
-        if (cooldown === 0 && policy.type === "QUEUED" && policy.pending > 0) {
-            const pending = policy.pending - 1;
+    if (!card.supply.paused) {
+        const cooldown = Math.max(0, card.supply.cooldown - 1);
+        if (cooldown === 0 && card.policy === "QUEUED" && card.supply.pending > 0) {
+            const pending = card.supply.pending - 1;
             next = {
                 ...card,
                 supply: {
-                    ...supply,
-                    stock: supply.stock + 1,
-                    policy: { ...policy, pending },
+                    ...card.supply,
+                    stock: card.supply.stock + 1,
+                    pending,
                     cooldown: pending === 0 ? 0 : resolveCooldown(card),
                 },
             };
@@ -88,16 +92,22 @@ export function advance(battle: BattleState, reference: Ref<Card>): BattleState 
 
     battle = replace(battle, next);
 
-    return next.definition.onTick?.(battle, next) ?? battle;
+    return (
+        (
+            next.definition as {
+                readonly onTick?: (battle: BattleState, self: Card) => BattleState;
+            }
+        ).onTick?.(battle, next) ?? battle
+    );
 }
 
 export function setUnitHook<H extends Entry, Owner extends object>(
     battle: BattleState,
-    reference: Ref<Card>,
+    reference: Ref<Card<any>>,
     key: Key<H, Owner>,
     entry: NoInfer<H>,
 ): BattleState {
-    const self = get(battle, reference)!;
+    const self: Card = get(battle, reference)!;
     const unitHooks = self.unitHooks.set(key, entry);
 
     return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
@@ -105,11 +115,11 @@ export function setUnitHook<H extends Entry, Owner extends object>(
 
 export function removeUnitHook<H extends Entry, Owner extends object>(
     battle: BattleState,
-    reference: Ref<Card>,
+    reference: Ref<Card<any>>,
     key: Key<H, Owner>,
     id: string,
 ): BattleState {
-    const self = get(battle, reference)!;
+    const self: Card = get(battle, reference)!;
     const unitHooks = self.unitHooks.remove(key, id);
 
     return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
@@ -117,10 +127,10 @@ export function removeUnitHook<H extends Entry, Owner extends object>(
 
 export function setRestriction(
     battle: BattleState,
-    reference: Ref<Card>,
+    reference: Ref<Card<any>>,
     entry: Contribution<Restriction>,
 ): BattleState {
-    const self = get(battle, reference)!;
+    const self: Card = get(battle, reference)!;
     const restrictions = set(self.restrictions, entry);
 
     return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
@@ -128,10 +138,10 @@ export function setRestriction(
 
 export function removeRestriction(
     battle: BattleState,
-    reference: Ref<Card>,
+    reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
-    const self = get(battle, reference)!;
+    const self: Card = get(battle, reference)!;
     const restrictions = remove(self.restrictions, id);
 
     return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
@@ -139,16 +149,20 @@ export function removeRestriction(
 
 export function setCostContribution(
     battle: BattleState,
-    reference: Ref<Card>,
+    reference: Ref<Card<any>>,
     entry: Contribution<readonly Modifier[]>,
 ): BattleState {
-    return replace(battle, dp.setCostContribution(get(battle, reference)!, entry));
+    const self: Card = get(battle, reference)!;
+
+    return replace(battle, dp.setCostContribution(self, entry));
 }
 
 export function removeCostContribution(
     battle: BattleState,
-    reference: Ref<Card>,
+    reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
-    return replace(battle, dp.removeCostContribution(get(battle, reference)!, id));
+    const self: Card = get(battle, reference)!;
+
+    return replace(battle, dp.removeCostContribution(self, id));
 }

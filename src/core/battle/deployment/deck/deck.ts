@@ -11,7 +11,7 @@ export interface Definition {
 }
 
 export interface State {
-    readonly cards: Store<CardId, Card>;
+    readonly cards: Store<CardId, Card<any>>;
     readonly order: readonly Ref<Card>[];
     readonly ordering: Ordering | null;
     readonly costCeiling: number;
@@ -29,7 +29,7 @@ export function initialize(definition: Definition = {}): State {
     };
 }
 
-export function get<T extends Card>(battle: BattleState, reference: Ref<T>): T | undefined {
+export function get<T extends Card<any>>(battle: BattleState, reference: Ref<T>): T | undefined {
     return battle.deployment.deck.cards.get(reference.id) as T | undefined;
 }
 
