@@ -52,13 +52,13 @@ test("movement passes intermediate tracking points and reaches the final goal wi
     let state = battle([{ definition, position: [2, 1] }]);
     const host = ref(get(state, 0));
     state = advance(state, host, { nextPoint: [2, 2], goal: [2, 2] }, context);
-    state = advance({ ...state, tick: 1 }, host, { nextPoint: [2.05, 1.2], goal: [6, 1.2] }, context);
+    state = advance(state, host, { nextPoint: [2.05, 1.2], goal: [6, 1.2] }, context);
     near(get(state, 0).position[0], 2.2);
     near(get(state, 0).position[1], 1.2);
     assert.deepEqual(get(state, 0).locomotion.velocity, [0.2, 0]);
 
     const goal = [2.25, 1.2];
-    state = advance({ ...state, tick: 2 }, host, { nextPoint: [1, 1.2], goal }, context);
+    state = advance(state, host, { nextPoint: [1, 1.2], goal }, context);
     assert.deepEqual(get(state, 0).position, goal);
     assert.deepEqual(get(state, 0).locomotion.velocity, [0.2, 0]);
 });
@@ -99,7 +99,7 @@ test("movement uses current terrain and reflects displacement while retaining co
     state = updateTile(state, [2, 2], {
         ...getTile(state.battlefield.map, [2, 2]).state, walkCost: 1000,
     });
-    state = advance({ ...state, tick: 1 }, host, target, context);
+    state = advance(state, host, target, context);
     assert.ok(get(state, 0).position[0] > before[0]);
     assert.ok(get(state, 0).position[1] < before[1]);
 
@@ -107,7 +107,7 @@ test("movement uses current terrain and reflects displacement while retaining co
     state = updateTile(state, [1, 3], {
         ...getTile(state.battlefield.map, [1, 3]).state, passability: "NONE",
     });
-    state = advance({ ...state, tick: 2 }, host, target, context);
+    state = advance(state, host, target, context);
     assert.ok(get(state, 0).position[0] < approaching[0]);
     assert.ok(get(state, 0).locomotion.velocity[0] > 0);
 });

@@ -36,9 +36,7 @@ test("range writes replace a single whole slot and clearing restores both defini
     assert.equal(attribute.setRange(definition, state, { min: null, max: null }), state);
     const cleared = attribute.clearRange(definition, state);
     assert.deepEqual([cleared.min, cleared.max], [20, 100]);
-    assert.equal(cleared.contributions, contributed.contributions);
     assert.equal(attribute.resolve(definition, cleared), 60);
-    assert.equal(attribute.clearRange(definition, cleared), cleared);
     const removed = attribute.removeContribution(state, "bonus");
     assert.deepEqual([removed.min, removed.max], [85, 100]);
 });

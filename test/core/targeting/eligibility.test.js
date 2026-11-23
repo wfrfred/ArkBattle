@@ -5,6 +5,7 @@ import { test } from "node:test";
 import { Hooks } from "../../../dist/core/hook.js";
 import { topK } from "../../../dist/core/common/collection/order.js";
 import { battle, get } from "../../helpers/battle.js";
+import { step } from "../../../dist/core/battle/runtime.js";
 import { update } from "../../../dist/core/unit/operations.js";
 import * as units from "../../../dist/core/unit/query.js";
 import * as targeting from "../../../dist/core/battle/targeting/index.js";
@@ -59,6 +60,10 @@ test("standard HP eligibility is independent of the chosen range origin and uses
     assert.deepEqual(ids(eligible(state).filter(within)), [1, 2]);
     assert.deepEqual(ids(eligible(state).filter(within)
         .filter(target => hasLayer(target) && target.layer.type === "GROUND")), [1]);
+    state = update(state, units.ref(get(state, 1)), targetable.setCategory("OBSTACLE"));
+    const inRange = eligible(state).filter(within);
+    assert.deepEqual(ids(inRange.filter(targeting.inCategories(["DEFAULT"]))), [2]);
+    assert.deepEqual(ids(inRange.filter(targeting.inCategories(["OBSTACLE"]))), [1]);
     state = update(state, units.ref(get(state, 3)), disappear());
     assert.deepEqual(ids(eligible(state)), [1, 2]);
     assert.equal(targetable.allowsRestrictions(state, source)(get(state, 3)), true);
@@ -74,7 +79,7 @@ test("a stored damage filter evaluates restrictions with the supplied battle sta
         id: "delayed-selection", value: { allows: state => state.tick >= enabledAt },
     }));
     const eligible = targeting.damage(get(launched, 0));
-    const impact = { ...launched, tick: enabledAt };
+    const impact = step(launched, []);
 
     assert.deepEqual(ids(candidates(launched).filter(eligible(launched))), []);
     assert.deepEqual(ids(candidates(impact).filter(eligible(impact))), [1]);

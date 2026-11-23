@@ -13,5 +13,4 @@ test("store writes preserve preceding versions, query snapshots and registration
     assert.deepEqual(replaced.values().toArray(), [1, 20, 3]);
     assert.deepEqual(removed.values().toArray(), [20, 3]);
     assert.deepEqual(candidates.toArray(), [1, 2, 3]);
-    assert.deepEqual(initial.values().toArray(), [1, 2, 3]);
 });

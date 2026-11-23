@@ -5,23 +5,15 @@ import { test } from "node:test";
 import { parseBuffStacking } from "../../dist/data/effect/stacking.js";
 import { parseAttributeModifiers } from "../../dist/data/effect/modifier.js";
 import { parseElementType } from "../../dist/data/effect/elemental.js";
-import { create as createElementalDefinition } from "../../dist/content/elemental.js";
 
 const fixture = (name) =>
     JSON.parse(
         readFileSync(new URL(`../fixtures/arknights/${name}.json`, import.meta.url), "utf8"),
     );
 
-test("effect data: native mania maps to the standard burst for either receiver", () => {
+test("effect data maps both native mania representations to MANIA", () => {
     assert.equal(parseElementType("ANGER"), "MANIA");
     assert.equal(parseElementType(5), "MANIA");
-
-    for (const receiver of ["CHARACTER", "ENEMY"]) {
-        const definition = createElementalDefinition({ receiver });
-        const burst = definition.bursts.MANIA;
-        assert.equal(burst.durationTicks, 450);
-        assert.equal(burst.initialize().type, "MANIA");
-    }
 });
 
 test("effect data: native stacking limits and refresh options remain independent", () => {

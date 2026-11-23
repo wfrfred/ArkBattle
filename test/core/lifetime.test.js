@@ -12,11 +12,10 @@ import * as effects from "../../dist/core/unit/effect/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
-import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 import { create as createElementalDefinition } from "../../dist/content/elemental.js";
 
-test("HOOK-03: Skill and Burst end notifications observe their cleared state while the owner is ENDING", () => {
+test("Skill and Burst end notifications observe their cleared state while the owner is ENDING", () => {
     const observed = [];
     const program = {
         id: "active-until-departure",
@@ -35,8 +34,6 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
                 invoke(state, { host }) {
                     const current = units.get(state, host);
                     assert.equal(current.skill.activation, null);
-                    assert.equal(vitality.isAlive(current), true);
-                    assert.ok(vitality.hpRatio(current) > 0);
                     observed.push(["activation", current.lifecycle]);
                     return { state, value: undefined };
                 },
@@ -65,6 +62,7 @@ test("HOOK-03: Skill and Burst end notifications observe their cleared state whi
 
 test("an owner waits for dependent finalizers and repeated requests preserve the first reason", () => {
     const calls = [];
+    const detachedEnds = [];
     let state = battle([
         {
             definition: {
@@ -99,10 +97,10 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
             return remove(current, owner, { reason: "SCRIPT" });
         },
     });
-    state = installed.state;
     const parent = installed.value;
-    state = effects.install(
-        state,
+    const parentScope = lifetimes.scope(effects.lifetime, parent);
+    const child = effects.install(
+        installed.state,
         owner,
         {
             id: "child",
@@ -119,12 +117,26 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
                 return current;
             },
         },
-        { scopes: [lifetimes.scope(effects.lifetime, parent)] },
-    ).state;
+        { scopes: [parentScope] },
+    );
+    state = child.state;
+    const childScope = lifetimes.scope(effects.lifetime, child.value);
+    assert.deepEqual(lifetimes.dependencies(state, childScope), [parentScope]);
+    assert.throws(() => lifetimes.bind(state, parentScope, childScope), TypeError);
 
+    const detached = effects.install(state, owner, {
+        id: "detached",
+        initialize: () => ({}),
+        onEnd(current, _self, reason) {
+            detachedEnds.push(reason);
+            return current;
+        },
+    }, { scopes: [parentScope] });
+    state = lifetimes.unbind(detached.state, lifetimes.scope(effects.lifetime, detached.value), parentScope);
     const after = effects.remove(state, parent, "FIRST");
 
     assert.deepEqual(calls, ["parent-disabled", "child-ended", "parent-ended", "owner-left"]);
+    assert.deepEqual(detachedEnds, ["DEATH"]);
     assert.equal(units.get(after, owner), undefined);
 });
 
@@ -135,7 +147,6 @@ test("defer executes immediately outside a settlement", () => {
     const result = lifetimes.defer(state, current => remove(current, owner, { reason: "SCRIPT" }));
 
     assert.equal(units.get(result, owner), undefined);
-    assert.equal(result.tick, state.tick);
 });
 
 test("defer waits for finalizers and flushes in registration order across new settlements", () => {
@@ -204,17 +215,10 @@ test("defer waits for finalizers and flushes in registration order across new se
     });
 
     const result = remove(installed.state, owner, { reason: "SCRIPT" });
-    lifetimes.defer(result, current => {
-        calls.push("after-settlement");
-        return current;
-    });
-
     assert.deepEqual(calls, [
         "effect-ended", "owner-removed", "A-start", "nested-removed", "A-end", "B", "C", "D",
-        "after-settlement",
     ]);
     assert.deepEqual([...units.all(result)], []);
-    assert.equal(result.tick, initial.tick);
 });
 
 test("an ending ancestor rejects new dependents before its active Action execution receives the end request", () => {

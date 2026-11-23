@@ -107,6 +107,7 @@ test("navigation follows current tile costs, directional restrictions and indepe
     const replacement = overlays.create(open, "WALK", blocked);
     const staleRemoval = overlays.remove(replacement.state, first.value);
     assert.equal(nextPoint(staleRemoval.battlefield.navigation, "WALK", [0, 0], [2, 0]), null);
+    assert.throws(() => overlays.update(staleRemoval, first.value, blocked), RangeError);
     assert.deepEqual(nextPoint(original.battlefield.navigation, "WALK", [0, 0], [2, 0]), [2, 0]);
 
     const closed = updateTile(open.battlefield, [0, 1], { ...tile.state, passability: "FLY_ONLY" });

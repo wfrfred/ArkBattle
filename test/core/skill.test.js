@@ -5,7 +5,9 @@ import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import { step } from "../../dist/core/battle/index.js";
 import * as units from "../../dist/core/unit/index.js";
+import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
+import { create as createSkillAttack } from "../../dist/content/actions/skill.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update } from "../../dist/core/unit/operations.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
@@ -311,6 +313,17 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     state = update(state, source, skills.removeRestriction("recoveryRestrictions", "blocked"));
     for (let tick = 11; tick <= 13; tick++) state = skills.advance({ ...state, tick }, source);
     assert.equal(get(state, 0).skill.sp.value, 0);
+
+    let stopped = update(state, source, skills.setSpContribution("recoverySpeed", {
+        id: "stopped", value: [modifier({ multiplier: -1 })],
+    }));
+    stopped = skills.advance({ ...stopped, tick: 14 }, source);
+    let restarted = update(stopped, source, skills.removeSpContribution("recoverySpeed", "stopped"));
+    for (let tick = 15; tick <= 18; tick++) restarted = skills.advance({ ...restarted, tick }, source);
+    assert.equal(get(restarted, 0).skill.sp.value, 0);
+    restarted = skills.advance({ ...restarted, tick: 19 }, source);
+    assert.equal(get(restarted, 0).skill.sp.value, 1);
+
     state = skills.advance({ ...state, tick: 14 }, source);
     assert.equal(get(state, 0).skill.sp.value, 1);
 
@@ -394,6 +407,23 @@ test("AMMO samples its charged base before payment and applies capacity, consump
             }),
         },
     };
+    const attack = createSkillAttack({
+        id: "last-shot",
+        period: { type: "FIXED", ticks: 1 },
+        timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
+        triggerBindingId: "self",
+        targetGroups: [{
+            id: "self", select: (state, source) => ({ state, value: [source] }), operations: [],
+        }],
+        afterOutput(state, source) {
+            const firingSkill = units.get(state, source).skill;
+            if (firingSkill.activation.duration.remaining > 0) {
+                return state;
+            }
+            state = skills.check(state, skills.activationRef(source, firingSkill));
+            return skills.activate(state, skills.ref(source, program)).state;
+        },
+    });
     const definition = {
         id: "operator",
         hooks: Hooks.empty().set(skills.ammoReplenished, {
@@ -404,6 +434,10 @@ test("AMMO samples its charged base before payment and applies capacity, consump
                 return { state, value: undefined };
             },
         }),
+        action: {
+            speed: attribute(100), interval: attribute(1), definitions: [attack],
+            select: state => ({ state, value: [] }),
+        },
         skill: { definition: program },
     };
     let state = battle([{ definition, position: [1, 1] }]);
@@ -436,11 +470,13 @@ test("AMMO samples its charged base before payment and applies capacity, consump
     state = skills.grant(state, first.value, 1).state;
     assert.equal(skills.getActivation(state, first.value).activation.duration.replenished, 32);
     state = skills.consume(state, first.value).state;
-    state = skills.check(state, first.value);
-    assert.equal(get(state, 0).skill.activation, null);
-    const second = skills.activate(state, reference);
-    state = skills.consume(second.state, first.value).state;
-    assert.equal(skills.getActivation(state, second.value).activation.duration.remaining, 8);
+    const fired = actions.start(state, actions.ref(source, attack));
+    state = step(fired.state, []);
+    assert.equal(skills.getActivation(state, first.value), undefined);
+    assert.equal(get(state, 0).skill.activation.duration.remaining, 8);
+    const nextShot = actions.start(state, actions.ref(source, attack));
+    state = step(nextShot.state, []);
+    assert.equal(get(state, 0).skill.activation.duration.remaining, 7);
 });
 
 test("Ammo contributions registered and withdrawn during TIME affect only later AMMO durations", () => {

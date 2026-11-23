@@ -7,6 +7,8 @@ import { battle, get } from "../helpers/battle.js";
 import { createCardDefinition } from "../helpers/deployable.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
+import { setDirection } from "../../dist/core/unit/capability/occupancy/index.js";
+import { update } from "../../dist/core/unit/operations.js";
 import * as units from "../../dist/core/unit/query.js";
 
 const operator = {
@@ -36,6 +38,8 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
             },
             onOccupantRemoved: (state, pair) => {
                 notifications.push(["occupantRemoved", pair.occupant.id]);
+                assert.notEqual(units.get(state, units.ref(pair.occupant))?.occupancy.pair, pair);
+                assert.notEqual(units.get(state, units.ref(pair.support))?.occupancy.pair, pair);
                 return state;
             },
         },
@@ -79,7 +83,6 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
                 id: "replace-on-leave",
 
                 invoke: (current) => {
-                    assert.equal(current.deployment.slot.used, 0);
                     const result = deployment.deploy(
                         current,
                         deployment.createRequest(current, unitCard, [1, 2]),
@@ -97,20 +100,25 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     });
     assert.deepEqual(denied.value, { type: "REJECTED", reason: "OCCUPIED" });
     state = deployment.retreat(state, units.ref(get(state, placedUnit.value.unitId)));
+    const pair = get(state, placedSupport.value.unitId).occupancy.pair;
+    assert.notEqual(replacement, placedUnit.value.unitId);
+    assert.equal(pair.occupant.id, replacement);
+    state = update(state, units.ref(get(state, replacement)), setDirection("UP"));
+    const occupancy = get(state, replacement).occupancy;
+    assert.equal(occupancy.direction, "UP");
+    assert.equal(occupancy.pair, pair);
+    assert.deepEqual(occupancy.tile, [1, 2]);
     assert.deepEqual(notifications, [
         ["occupantAdded", placedUnit.value.unitId],
         ["occupantRemoved", placedUnit.value.unitId],
         ["occupantAdded", replacement],
     ]);
-    const pair = get(state, placedSupport.value.unitId).occupancy.pair;
-    assert.equal(pair.occupant.id, replacement);
-    assert.equal(get(state, replacement).occupancy.pair, pair);
-    assert.equal(state.deployment.slot.used, 1);
 
     state = deployment.retreat(state, units.ref(get(state, placedSupport.value.unitId)));
     assert.equal(get(state, replacement).occupancy.pair, null);
     const returned = deployment.deploy(state, deployment.createRequest(state, supportCard, [1, 2]));
     assert.equal(returned.value.type, "DEPLOYED");
+    assert.notEqual(returned.value.unitId, replacement);
     state = returned.state;
     assert.equal(get(state, replacement).occupancy.pair.support.id, returned.value.unitId);
     assert.deepEqual(notifications.slice(-2), [

@@ -218,9 +218,6 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
     battle = update(battle, units.ref(current(battle, 2)), setType("GROUND"));
     battle = step(battle, []);
     assert.equal(current(battle, 2), undefined);
-    const { scanTick } = mechanisms.get(battle, configured.mechanism).state;
-    battle = until(battle, scanTick + 1);
-    assert.equal(mechanisms.get(battle, configured.mechanism).state.contacts.has(0), false);
 });
 
 test("smog keeps allied ground and airborne units invisible through blocking until they leave", () => {

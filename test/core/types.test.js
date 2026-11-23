@@ -14,328 +14,214 @@ test("typed construction and identities retain private state and capability proo
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
-import { initialize, ref, get, all as allUnits, compose, optional, setHook as setUnitHook, removeHook as removeUnitHook, type Unit, type Input as UnitInput, type Change } from ${module("unit/index")};
-import { removing as unitRemoving } from ${module("unit/hook")};
-import { update, remove as removeUnit } from ${module("unit/operations")};
+import { initialize, ref, get, all as allUnits, compose, optional, setHook, type Unit, type Input as UnitInput } from ${module("unit/index")};
+import { update, remove } from ${module("unit/operations")};
 import * as actions from ${module("unit/capability/action/index")};
+import * as skills from ${module("unit/capability/skill/index")};
 import * as effects from ${module("unit/effect/index")};
-import * as hpDamage from ${module("battle/resource/hp/damage/index")};
-import * as resource from ${module("battle/resource/index")};
-import { createWithState as createAttackWithState, type Operation as AttackOperation } from ${module("../content/actions/attack")};
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
-import * as facing from ${module("unit/capability/facing/index")};
-import type { Occupancy } from ${module("unit/capability/occupancy/index")};
-import type { Layer } from ${module("unit/capability/layer/index")};
-import * as skills from ${module("unit/capability/skill/index")};
-import { hasSkill, spRecovered, type SkillCapability, type RecoveryRestriction } from ${module("unit/capability/skill/index")};
-import { hasPresence, disappear } from ${module("unit/capability/presence/index")};
-import { dispatch as dispatchElemental } from ${module("unit/capability/elemental/hook")};
-import * as runtime from ${module("battle/runtime")};
-import type { Input as BattleInput, Command } from ${module("battle/contract")};
-import type { SkillCommand } from ${module("battle/index")};
-import * as cards from ${module("battle/deployment/deck/card/index")};
-import * as projectiles from ${module("projectile/index")};
-import type { Definition as ProjectileDefinition, Projectile, Slowable } from ${module("projectile/index")};
-import { reassign, selectContext, setTicking, type Plan, type Route } from ${module("unit/capability/route/index")};
-import * as mechanisms from ${module("mechanism/index")};
-import { createRegistrationOperations } from ${module("unit/registration")};
-import type { Offense } from ${module("unit/capability/offense/index")};
-import { setAttackContribution, resolveAttack } from ${module("unit/capability/offense/index")};
-import type { Blocker, Blockable, Relation, Hook as BlockingHook } from ${module("unit/capability/blocking/index")};
-import * as blocking from ${module("battle/blocking/index")};
-import * as targeting from ${module("battle/targeting/index")};
 import * as classification from ${module("unit/capability/classification/index")};
-import { hasTargetable } from ${module("unit/capability/targetable/capability")};
-import { topK } from ${module("common/collection/order")};
+import * as targeting from ${module("battle/targeting/index")};
+import * as resource from ${module("battle/resource/index")};
+import type { Facing } from ${module("unit/capability/facing/index")};
+import type { Layer } from ${module("unit/capability/layer/index")};
+import type { Occupancy } from ${module("unit/capability/occupancy/index")};
+import type { Plan } from ${module("unit/capability/route/index")};
 import type { Spawn } from ${module("battle/schedule/index")};
+import { hasTargetable } from ${module("unit/capability/targetable/capability")};
+import { setAttackContribution, resolveAttack, type Offense } from ${module("unit/capability/offense/index")};
+import { createWithState as attack, type StatefulDefinition } from ${module("../content/actions/attack")};
+import * as runtime from ${module("battle/runtime")};
+import type { Input as BattleInput } from ${module("battle/contract")};
+import * as cards from ${module("battle/deployment/deck/card/index")};
+import * as mechanisms from ${module("mechanism/index")};
+import * as projectiles from ${module("projectile/index")};
+
 declare const battle: State;
-const attribute = (value: number, min: number | null = 0, max: number | null = null) => ({ default: value, min, max });
-const outputKey = key<Hook<{ amount: number }, number>>('output');
-const textKey = key<Hook<{ text: string }, number>>('text');
-const registered = Hooks.empty().set(outputKey, {
-    id: 'output', priority: 5, invoke: (state, context, current) => ({ state, value: current + context.amount }),
-});
-registered.get(outputKey)[0]!.invoke(battle, { amount: 1 }, 0);
-const prioritizedLifecycle: Change<Unit> = setUnitHook(unitRemoving, {
-    id: 'before-cleanup', priority: 100,
-    invoke: state => ({ state, value: undefined }),
-});
-const killedNotice: hpDamage.TargetKilledHook = {
-    id: 'kill-reward',
-    invoke(state, departure) {
-        const reason: 'DEATH' = departure.reason;
-        const victim: Unit = departure.unit;
-        const killer: Ref<Unit> | null = departure.killer;
-        return { state, value: undefined };
-    },
-};
-const killedChange: Change<Unit> = setUnitHook(hpDamage.targetKilled, killedNotice);
-// @ts-expect-error the death fact notification cannot replace its payload.
-Hooks.empty().set(hpDamage.targetKilled, { id: 'rewrite-death', invoke: state => ({ state, value: 1 }) });
-declare const departedUnit: Unit;
-// @ts-expect-error the key always supplies a DEATH Departure.
-const wrongDeathContext: hpDamage.TargetKilledContext = { reason: 'SCRIPT', unit: departedUnit };
-// @ts-expect-error a key preserves its exact Hook type through storage.
-const mismatchedKey: typeof outputKey = textKey;
-// @ts-expect-error entries cannot widen the Hook type established by their key.
-Hooks.empty().set(outputKey, { id: 'wrong', invoke: (state, context: { text: string }, current) => ({ state, value: current }) });
-const receivingKey = hpDamage.receiving;
-const forbiddenReasons: ReadonlySet<hpDamage.Reason> = new Set(['MISS', 'BLOCKED']);
-const guardedReceiving: hpDamage.ReceivingHook = {
-    id: 'evade', priority: 10, invoke: (state, context, current) => ({ state, value: hpDamage.cancel(current, 'MISS', context.forbidden) }),
-};
-const receivingHooks = Hooks.empty()
-    .set(receivingKey, guardedReceiving)
-    .set(hpDamage.beforeReceive, guardedReceiving);
-const fixedReceiving: hpDamage.ReceivingHook = {
-    id: 'fixed-amount',
-    invoke: (state, _context, current) => ({ state, value: hpDamage.fix(current) }),
-};
-Hooks.empty().set(hpDamage.beforeReceive, fixedReceiving);
-Hooks.empty().set(receivingKey, {
-    id: 'reduce', invoke: (state, _context, current) => ({
-        state, value: current.type === 'NORMAL' ? { ...current, amount: current.amount / 2 } : current,
-    }),
-});
-setUnitHook(hpDamage.receiving, {
-    id: 'conditional-receiving',
-    invoke(state, context, current) {
-        const target: Ref<Unit & vitality.Vitality> = context.request.target;
-        if (current.type === 'CANCELLED' || current.amount <= 0) {
-            return { state, value: current };
-        }
-        if (current.amount > 10) {
-            return { state, value: hpDamage.cancel(current, 'BLOCKED', context.forbidden) };
-        }
-        if (current.type === 'FIXED') {
-            return { state, value: current };
-        }
-        return { state, value: { ...current, amount: current.amount / 2 } };
-    },
-});
-declare const receivingContext: hpDamage.ReceivingContext;
-declare const damageOutcome: hpDamage.Outcome;
-if (damageOutcome.type === 'APPLIED') {
-    const killed: boolean = damageOutcome.killed;
-    // @ts-expect-error the HP commit report does not predict the final kill result.
-    damageOutcome.application.killed;
-}
-declare const appliedContext: hpDamage.AppliedContext;
-// @ts-expect-error Applied executes before death confirmation.
-appliedContext.killed;
-declare const cancelled: hpDamage.Pending<'MISS', 'CANCELLED'>;
-const selectedReason: 'MISS' = cancelled.reason;
-const aggregateReason: 'MISS' = resource.hp.damage.cancel(cancelled, 'BLOCKED', forbiddenReasons).reason;
-// @ts-expect-error the aggregate entry retains HP Damage's finite reason set.
-resource.hp.damage.cancel(cancelled, 'OTHER', forbiddenReasons);
-// @ts-expect-error shared receiving keeps EP's reason set narrower than HP's.
-resource.ep.damage.cancel({ type: 'NORMAL', amount: 10 }, 'MISS', new Set<resource.ep.damage.Reason>());
-Hooks.empty().set(resource.ep.healing.beforeReceive, {
-    id: 'ep-healing',
-    invoke: (state, _context, current) => ({ state, value: { ...current, amount: current.amount / 2 } }),
-});
-// @ts-expect-error EP Healing has no receiving key after admission.
-resource.ep.healing.receiving;
-const normalFixed: 'FIXED' = hpDamage.fix({ type: 'NORMAL', amount: 10 }).type;
-const alreadyFixed: 'FIXED' = hpDamage.fix({ type: 'FIXED', amount: 10 }).type;
-const fixedCancellation: 'MISS' = hpDamage.fix(cancelled).reason;
-// @ts-expect-error cancel always requires an explicit forbidden set.
-hpDamage.cancel(cancelled, 'BLOCKED');
-const guardedNormal = hpDamage.cancel({ type: 'NORMAL', amount: 10 }, 'BLOCKED', forbiddenReasons);
-const guardedNormalType: 'NORMAL' | 'CANCELLED' = guardedNormal.type;
-if (guardedNormal.type === 'CANCELLED') {
-    const guardedNormalReason: 'BLOCKED' = guardedNormal.reason;
-}
-const guardedFixed = hpDamage.cancel({ type: 'FIXED', amount: 10 }, 'BLOCKED', forbiddenReasons);
-const guardedFixedType: 'FIXED' | 'CANCELLED' = guardedFixed.type;
-if (guardedFixed.type === 'CANCELLED') {
-    const guardedFixedReason: 'BLOCKED' = guardedFixed.reason;
-}
-const guardedOriginalReason: 'MISS' = hpDamage.cancel(cancelled, 'BLOCKED', forbiddenReasons).reason;
-// @ts-expect-error forbidden reasons belong to this domain's finite Reason set.
-hpDamage.cancel({ type: 'NORMAL', amount: 10 }, 'BLOCKED', new Set(['OTHER']));
-declare const normalOrCancelled: hpDamage.Pending<'MISS', 'NORMAL' | 'CANCELLED'>;
-const fixedUnion = hpDamage.fix(normalOrCancelled);
-if (fixedUnion.type === 'CANCELLED') {
-    const unionReason: 'MISS' = fixedUnion.reason;
-}
-const cancelledUnion = hpDamage.cancel(normalOrCancelled, 'BLOCKED', forbiddenReasons);
-const cancelledUnionType: 'NORMAL' | 'CANCELLED' = cancelledUnion.type;
-if (cancelledUnion.type === 'CANCELLED') {
-    const cancelledUnionReason: 'MISS' | 'BLOCKED' = cancelledUnion.reason;
-}
-const reception = receivingHooks.get(receivingKey)[0]!.invoke(battle, receivingContext, cancelled);
-const cancelledType: 'CANCELLED' = reception.value.type;
-const preservedReason: 'MISS' = reception.value.reason;
-const beforeReception = receivingHooks.get(hpDamage.beforeReceive)[0]!.invoke(battle, receivingContext, cancelled);
-const beforeReason: 'MISS' = beforeReception.value.reason;
-// @ts-expect-error fixed work cannot become NORMAL, including through erased Hook storage.
-Hooks.empty().set(hpDamage.beforeReceive, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
-// @ts-expect-error cancelled work cannot resume even as FIXED.
-Hooks.empty().set(receivingKey, { id: 'revive', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
-// @ts-expect-error cancellation retains its original reason even when the replacement is a valid Reason.
-Hooks.empty().set(hpDamage.beforeReceive, { id: 'rewrite-reason', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
-type ArmedHost = Unit & Offense & Occupancy & Layer & facing.Facing &
-    actions.ActionCapability<ArmedHost> & SkillCapability<ArmedHost>;
-declare const plainActionHost: Ref<Unit & actions.ActionCapability>;
-const program: actions.Definition<{ uses: number }, { hits: number }, ArmedHost> = {
-    id: 'attack', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
+const attribute = (value: number) => ({ default: value, min: 0, max: null });
+const bare = initialize(battle, {
+    definition: { id: 'bare', hooks: Hooks.empty() }, position: [0, 0],
+}).value;
+
+// Host requirements are checked at assembly.
+type Armed = Unit & Offense & Occupancy & Layer & Facing &
+    actions.ActionCapability<Armed> & skills.SkillCapability<Armed>;
+const strike: actions.Definition<{ uses: number }, { hits: number }, Armed> = {
+    id: 'strike', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
     initialize: state => ({ state, value: { uses: 0 } }),
-    prepare(state, _source, self) {
-        return { state, value: { hits: self.state.uses + 1 } };
-    },
+    prepare: (state, _source, self) => ({ state, value: { hits: self.state.uses + 1 } }),
     onTick(state, source, self) {
-        const owner = get(state, source);
-        if (owner !== undefined) {
-            resolveAttack(state, owner);
-        }
-        const action = actions.ref(source, self.definition);
-        state = actions.setState(state, action, { uses: self.state.uses + 1 });
-        // @ts-expect-error the callback's action identity retains its private state type.
-        actions.setState(state, action, { hits: 0 });
-        return actions.finish(state, actions.executionRef(source, self));
+        const attack = resolveAttack(state, get(state, source)!);
+        state = actions.setState(state, actions.ref(source, self.definition), { uses: self.state.uses + 1 });
+        return actions.setExecutionState(state, actions.executionRef(source, self), {
+            hits: self.execution.state.hits + attack,
+        });
     },
 };
-const timedAttack = createAttackWithState<{ uses: number }, { hits: number }>({
-    id: 'typed-timing', period: { type: 'ATTACK_SPEED' }, triggerBindingId: 'primary',
-    initialize: state => ({ state, value: { uses: 0 } }),
-    prepare: state => ({ state, value: { hits: 1 } }),
-    timing(_battle, _source, self) {
-        const uses: number = self.state.uses;
-        // @ts-expect-error timing evaluation preserves the persistent private state type.
-        self.state.unknown;
-        if (self.execution !== null) {
-            const hits: number = self.execution.state.data.hits;
-            // @ts-expect-error timing evaluation also preserves the execution's private data.
-            self.execution.state.data.unknown;
-        }
-        return { type: 'FIXED', windupTicks: uses, recoveryTicks: 0 };
-    },
-    targetGroups: [{ id: 'primary', select: state => ({ state, value: [] }), operations: [] }],
-});
-const timedAttackInput = {
-    ...timedAttack.attack,
-    initialize: (state: typeof battle) => ({ state, value: { uses: 0 } }),
-    prepare: (state: typeof battle) => ({ state, value: { hits: 1 } }),
-};
-// @ts-expect-error declarative attacks derive their apply way from operations.
-createAttackWithState({ ...timedAttackInput, applyWay: 'RANGED' });
-// @ts-expect-error custom output declares its apply way explicitly.
-createAttackWithState({ ...timedAttackInput, output: state => state });
-type ControlledSkillState = { completed: number };
-type ControlledActivationState = { remaining: number };
-const controlledActivation: skills.ActivationDefinition<ControlledSkillState, ControlledActivationState, ArmedHost> = {
-    trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0,
-    initialize(battle, source, self) {
-        const direction = get(battle, source)?.facing.direction;
-        return {
-            state: { remaining: 3 },
-            duration: self.state.completed === 0 && direction === 'RIGHT'
-                ? { type: 'TIME', durationTicks: 30 }
-                : { type: 'INFINITE' },
-        };
-    },
-    onStart(state, source, self) {
-        const skill = skills.ref(source, self.definition);
-        // @ts-expect-error the callback's skill identity retains its private state type.
-        skills.setState(state, skill, { remaining: 0 });
-        return skills.setState(state, skill, { completed: self.state.completed + 1 });
-    },
-    operations: {
-        STOP(state, source, self) {
-            const reference = skills.activationRef(source, self);
-            // @ts-expect-error operation handlers retain the activation's private state type.
-            skills.setActivationState(state, reference, { completed: 1 });
-            state = skills.setActivationState(state, reference, { remaining: self.activation.state.remaining - 1 });
-            return skills.finish(state, reference);
+const skill: skills.Definition<{ completed: number }, { remaining: number }, Armed> = {
+    id: 'skill', sp: null, initialize: state => ({ state, value: { completed: 0 } }),
+    activation: {
+        trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0,
+        initialize(state, source, self) {
+            const right = get(state, source)!.facing.direction === 'RIGHT';
+            return {
+                state: { remaining: self.state.completed + (right ? 1 : 0) },
+                duration: { type: 'INFINITE' },
+            };
+        },
+        operations: {
+            STOP(state, source, self) {
+                state = skills.setState(state, skills.ref(source, self.definition), { completed: self.state.completed + 1 });
+                return skills.setActivationState(state, skills.activationRef(source, self), {
+                    remaining: self.activation.state.remaining - 1,
+                });
+            },
         },
     },
 };
-const skillProgram = {
-    id: 'controlled-skill', sp: null,
-    initialize: state => ({ state, value: { completed: 0 } }),
-    activation: controlledActivation,
-} satisfies skills.Definition<ControlledSkillState, ControlledActivationState, ArmedHost>;
 const armedDefinition = {
     id: 'armed', hooks: Hooks.empty(), offense: { attack: attribute(100) }, layer: { type: 'GROUND' },
     occupancy: { slot: 'OCCUPANT' }, facing: { restrictions: [] },
-    action: {
-        speed: attribute(100, 20), interval: attribute(10),
-        definitions: [program, timedAttack],
-        select(state, owner) {
-            resolveAttack(state, owner);
-            return { state, value: owner.skill.activation === null ? [program.id] : [] };
-        },
-    },
-    skill: { definition: skillProgram },
-} satisfies ArmedHost['definition'];
-// @ts-expect-error a host without the required capabilities cannot use this program.
-const wrongHostActions: actions.CapabilityDefinition<object>['definitions'] = [program];
-// @ts-expect-error installing a skill also requires the capabilities declared by its program.
-const wrongHostSkill: skills.SkillCapability<object>['definition']['skill']['definition'] = skillProgram;
-const host: ArmedHost = initialize(battle, {
+    action: { speed: attribute(100), interval: attribute(10), definitions: [strike] },
+    skill: { definition: skill },
+} satisfies Armed['definition'];
+// @ts-expect-error this host definition cannot supply the Action's additional capabilities.
+const wrongActionHost: actions.CapabilityDefinition<object>['definitions'] = [strike];
+// @ts-expect-error this host definition cannot supply the Skill's additional capabilities.
+const wrongSkillHost: skills.SkillCapability<object>['definition']['skill']['definition'] = skill;
+const armedInput = {
     position: [0, 0], definition: armedDefinition,
     initial: { occupancy: { tile: [0, 0] }, facing: { direction: 'RIGHT' } },
-}).value;
-const reference = ref(host);
-removeUnit(battle, reference, { reason: 'SCRIPT' });
-removeUnit(battle, reference, { reason: 'DEATH', killer: null });
-// @ts-expect-error every death explicitly declares its attribution.
-removeUnit(battle, reference, { reason: 'DEATH' });
-// @ts-expect-error other departure reasons do not carry death attribution.
-removeUnit(battle, reference, { reason: 'SCRIPT', killer: null });
-const ordinaryAction = host.action.actions.values().find(action => action.definition.id === program.id)!;
-// @ts-expect-error enumerating actions does not recover their private state fields.
-ordinaryAction.state.uses;
-actions.setSpeedContribution({ id: 'fixed-speed', value: [] });
-const dynamicModifiers = (_state: State, _self: Unit & actions.ActionCapability) => [];
-// @ts-expect-error Action time contributions publish fixed values through a Change.
-actions.setSpeedContribution({ id: 'dynamic-speed', value: dynamicModifiers });
-const persistent = actions.ref(plainActionHost, program);
-// @ts-expect-error an Action identity still requires an Action host.
-actions.ref(ref(bare), program);
-const uses: number = actions.getAction(battle, persistent)!.state.uses;
-const started = actions.start(battle, persistent);
+} satisfies UnitInput<typeof armedDefinition>;
+const armed: Armed = initialize(battle, armedInput).value;
+
+// The selected definition determines Initial and the constructed abilities.
+// @ts-expect-error an Occupancy Initial must provide the structural tile.
+initialize(battle, { ...armedInput, initial: { ...armedInput.initial, occupancy: {} } });
+declare const plan: Plan;
+const routeDefinition = { id: 'route', hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } };
+const routeInput = {
+    definition: routeDefinition, position: [0, 0], initial: { route: { plan, offset: [0, 0] } },
+} satisfies UnitInput<typeof routeDefinition>;
+const withUnusedInitial = initialize(battle, { ...routeInput, definition: bare.definition }).value;
+// @ts-expect-error a known spare Initial does not create the associated capability.
+withUnusedInitial.route;
+// @ts-expect-error known spare values still follow the corresponding Initial type.
+initialize(battle, { ...routeInput, definition: bare.definition, initial: { route: { plan, offset: 'wrong' } } });
+declare const spawn: Spawn;
+({ ...spawn, definition: routeDefinition }) satisfies Spawn;
+// @ts-expect-error this entry supplies Route's Initial, but cannot supply Occupancy's.
+({ ...spawn, definition: { ...routeDefinition, occupancy: armedDefinition.occupancy } }) satisfies Spawn;
+
+// Capability proofs survive queries and Changes without being inferred from an ordinary filter.
+const ordinary: (unit: Unit) => boolean = unit => unit.id > 0;
+// @ts-expect-error a boolean filter is not proof of a capability.
+allUnits(battle).filter(ordinary).find(() => true)!.action;
+// @ts-expect-error local queries require their declared capability.
+vitality.isAlive(bare);
+declare const targetingSource: Unit & classification.Classification;
+const candidates = allUnits(battle).filter(actions.hasAction).filter(hasTargetable);
+for (const patient of candidates.filter(targeting.healing(targetingSource)(battle))) {
+    patient satisfies Unit & actions.ActionCapability & classification.Classification & vitality.Vitality;
+}
+for (const owner of candidates.filter(skills.hasSkill).filter(skills.hasSp)) {
+    owner satisfies Unit & actions.ActionCapability;
+    skills.resolveRecoverySpeed(battle, owner);
+}
+// @ts-expect-error selecting Skill alone does not prove that it has SP.
+skills.resolveRecoverySpeed(battle, armed);
+const actionRestriction = actions.setRestriction({ id: 'ready', value: { allows: () => true } });
+const combined = compose(setAttackContribution({ id: 'bonus', value: [] }), actionRestriction);
+combined(armed).next satisfies Armed;
+update(battle, ref(armed), combined);
+declare const offenseOnly: Ref<Unit & Offense>;
+// @ts-expect-error composition must retain the requirements of both Changes.
+update(battle, offenseOnly, combined);
+const whenCapable = optional(actions.hasAction, actionRestriction);
+update(battle, ref(bare), whenCapable);
+whenCapable(armed).next satisfies Armed;
+// @ts-expect-error the guard must establish the capability required by the conditional change.
+optional(skills.hasSkill, actionRestriction);
+
+declare const candidate: (Unit & actions.ActionCapability & classification.Classification<'OPERATOR' | 'SUMMON'>);
+if (classification.isType(candidate, 'OPERATOR')) {
+    candidate satisfies Unit & actions.ActionCapability & classification.Classification<'OPERATOR'>;
+}
+declare const category: classification.Type;
+if (!classification.isType(candidate, category)) {
+    // @ts-expect-error a failed comparison to a dynamic category cannot rule out all categories.
+    candidate satisfies never;
+}
+declare const professionCandidate: Unit & (classification.Classification<'OPERATOR'> | classification.Classification<'SUMMON'>);
+if (!classification.matchesProfession(professionCandidate, ['CASTER'], true)) {
+    // @ts-expect-error another operator profession is still possible after a failed match.
+    professionCandidate satisfies classification.Classification<'SUMMON'>;
+}
+// @ts-expect-error configured professions accept only their own sub-professions.
+const wrongProfession: classification.Definition = { type: 'OPERATOR', side: 'ALLY', groupTags: [], profession: 'CASTER', subProfession: 'EXECUTOR', extraProfessions: [] };
+
+// Typed identities distinguish persistent, execution and erased views.
+const owner = ref(armed);
+const actionRef = actions.ref(owner, strike);
+const started = actions.start(battle, actionRef);
 if (started.value !== null) {
     const execution = started.value;
     const hits: number = actions.getExecution(started.state, execution)!.execution.state.hits;
-    // @ts-expect-error a precise execution cannot be widened to different state types.
-    const widenedExecution: Ref<actions.Execution> = execution;
-    runtime.step(started.state, [{ type: 'CANCEL_ACTION_EXECUTION', ref: execution }]);
     actions.setExecutionState(started.state, execution, { hits: hits + 1 });
-    // @ts-expect-error the execution identity retains its own private state type.
+    // @ts-expect-error a write cannot infer a new private type for the current execution.
     actions.setExecutionState(started.state, execution, { hits: 'wrong' });
-    // @ts-expect-error persistent and execution identities are different.
+    // @ts-expect-error widening an execution type would weaken the private-write guarantee.
+    const widened: Ref<actions.Execution> = execution;
+    // @ts-expect-error an execution and its persistent action are different identities.
     actions.getAction(started.state, execution);
+    runtime.step(started.state, [{ type: 'CANCEL_ACTION_EXECUTION', ref: execution }]);
 }
-const runningIdentity: actions.ExecutionRef = actions.forUnit(battle, reference)[0]!;
-declare const effectOnActionHost: Ref<effects.OrdinaryEffect<object, actions.ActionCapability>>;
-// @ts-expect-error a unit's Effect and Execution have distinct referents.
-actions.cancel(battle, effectOnActionHost);
-const ordinaryExecution = actions.getExecution(battle, runningIdentity)!;
-// @ts-expect-error an ordinary query cannot read fields of the execution's private state.
-ordinaryExecution.execution.state.hits;
-// @ts-expect-error an ordinary query does not recover the callback's host requirement.
-ordinaryExecution.definition.onTick(battle, reference, ordinaryExecution);
-// @ts-expect-error an identity-only reference cannot write private state.
-actions.setExecutionState(battle, runningIdentity, { hits: 0 });
-const shield = {
-    id: 'shield', initialize: () => ({ charges: 1 }),
-    onTick(state, self) {
-        const attack: number = get(state, self.host)!.definition.offense.attack.default;
-        return effects.setState(state, effects.ref(self), { charges: self.state.charges + attack });
+const executionIdentity = actions.forUnit(battle, owner)[0]!;
+const publicExecution = actions.getExecution(battle, executionIdentity)!;
+publicExecution.execution.state satisfies object;
+// @ts-expect-error an erased query cannot read a private field.
+publicExecution.execution.state.hits;
+// @ts-expect-error an erased execution cannot prove the callback's required host.
+publicExecution.definition.onTick(battle, owner, publicExecution);
+// @ts-expect-error a cancellation identity alone cannot write private state.
+actions.setExecutionState(battle, executionIdentity, { hits: 1 });
+// @ts-expect-error the numeric address does not carry a Unit identity proof.
+const forged: Ref<Unit> = { id: 0 };
+const skillRef = skills.ref(owner, skill);
+const activated = skills.activate(battle, skillRef, { requirement: 0, cost: 0 });
+if (activated.value !== null) {
+    const active = skills.getActivation(activated.state, activated.value)!;
+    active.state.completed satisfies number;
+    active.activation.state.remaining satisfies number;
+}
+// @ts-expect-error activating a specific Skill requires its identity, even with a proven host.
+skills.activate(battle, owner);
+// @ts-expect-error this call must specify both the gate and the payment.
+skills.activate(battle, skillRef, { requirement: 0 });
+
+// Definition shape controls policies that span multiple fields.
+const attackInput = {
+    id: 'timed', period: { type: 'FIXED', ticks: 1 } as const, triggerBindingId: 'primary',
+    initialize: (state: State) => ({ state, value: { uses: 0 } }),
+    prepare: (state: State) => ({ state, value: { hits: 0 } }),
+    timing(_state, _source, self) {
+        const hits = self.execution?.state.data.hits ?? 0;
+        return { type: 'FIXED', windupTicks: self.state.uses + hits, recoveryTicks: 0 };
     },
-} satisfies effects.OrdinaryDefinition<{ charges: number }, Offense>;
-const installed = effects.install(battle, reference, shield);
-if (installed.value !== null) {
-    const charges: number = effects.get(installed.state, installed.value)!.state.charges;
-    effects.setExpiration(installed.state, installed.value, { type: 'DEADLINE', tick: 10 });
-    // @ts-expect-error writes cannot widen the identity's private data pairing.
-    effects.setState(installed.state, installed.value, { charges: 'wrong' });
-    // @ts-expect-error ordinary instances cannot be used for stack consumption.
-    effects.decreaseStack(installed.state, installed.value, 1);
-}
+    targetGroups: [{ id: 'primary', select: state => ({ state, value: [] }), operations: [] }],
+} satisfies StatefulDefinition<{ uses: number }, { hits: number }, object>;
+attack(attackInput);
+// @ts-expect-error ordinary attack output derives applyWay from its operations.
+attack({ ...attackInput, applyWay: 'RANGED' });
+// @ts-expect-error a custom output must independently declare its applyWay.
+attack({ ...attackInput, output: (state: State) => state });
+// @ts-expect-error a synchronous cooldown Change accepts static contribution values.
+actions.setSpeedContribution({ id: 'dynamic-speed', value: () => [] });
+declare const recoveryOnly: skills.RecoveryRestriction;
+// @ts-expect-error a recovery predicate cannot serve as an activation exemption.
+({ ...skill.activation!, ignoreRestrictions: [recoveryOnly] }) satisfies NonNullable<typeof skill.activation>;
+
 const layered = {
     id: 'layered',
     group: {
@@ -344,505 +230,152 @@ const layered = {
     },
     initialize: () => ({ power: 1 }),
     onTick(state, self, previous) {
-        const power: number = self.state.power;
-        const layerHost: Ref<Unit & Offense> = self.host;
-        const time: effects.DecayExpiration = previous;
-        // @ts-expect-error the callback's history excludes a DEADLINE.
-        const deadline: Extract<effects.Expiration, { type: 'DEADLINE' }> = previous;
-        return state;
-    },
-    onStackChange(state, self, previous) {
-        const count: number = self.stackCount;
-        const old: number = previous;
+        previous satisfies effects.DecayExpiration;
         return effects.setState(state, effects.ref(self), { power: self.state.power + 1 });
     },
 } satisfies effects.StackDefinition<{ power: number }, Offense, 'DECAY'>;
-const merged = effects.install(battle, reference, layered);
-// @ts-expect-error a DECAY Definition cannot use DEADLINE through another overload.
-effects.install(battle, reference, layered, { expiration: { type: 'DEADLINE', tick: 10 } });
+// @ts-expect-error DECAY cannot be installed with an absolute deadline.
+effects.install(battle, owner, layered, { expiration: { type: 'DEADLINE', tick: 10 } });
+const merged = effects.install(battle, owner, layered);
 if (merged.value !== null) {
     effects.decreaseStack(merged.state, merged.value, 1);
-    effects.setExpiration(merged.state, merged.value, { type: 'INFINITE' });
-    // @ts-expect-error a merged Ref preserves its DECAY policy.
+    // @ts-expect-error the returned DECAY reference must still reject deadlines on write.
     effects.setExpiration(merged.state, merged.value, { type: 'DEADLINE', tick: 10 });
-    // @ts-expect-error the incoming private state does not prove the retained instance's state.
+    // @ts-expect-error a retained Effect may have arrived with a different private definition.
     effects.get(merged.state, merged.value)!.state.power;
-    const known = get(merged.state, reference)!.effects.get(merged.value.id, layered)!;
-    const power: number = known.state.power;
-    const knownRef = effects.ref(known);
-    // @ts-expect-error Definition identity restoration also preserves the time constraint.
-    effects.setExpiration(merged.state, knownRef, { type: 'DEADLINE', tick: 10 });
-}
-declare const privateEffect: effects.Effect<{ power: number }, Offense>;
-if (effects.hasStack(privateEffect)) {
-    const power: number = privateEffect.state.power;
-    const layerHost: Ref<Unit & Offense> = privateEffect.host;
-    const count: number = privateEffect.stackCount;
-}
-declare const burstRef: Ref<elemental.Burst>;
-const burst = elemental.get(battle, burstRef)!;
-effects.setExpiration(battle, burstRef, { ...burst.expiration, remaining: burst.expiration.remaining - 1 });
-// @ts-expect-error writes retain the Burst identity's duration contract.
-effects.setExpiration(battle, burstRef, { type: 'DEADLINE', tick: 10 });
-const bare = initialize(battle, { position: [0, 0], definition: { id: 'bare', hooks: Hooks.empty() } }).value;
-update(battle, ref(bare), killedChange);
-const commonClassification = { side: 'ALLY' as const };
-// @ts-expect-error an operator requires its associated profession facts together.
-const missingProfessionFacts: classification.Definition = { ...commonClassification, type: 'OPERATOR', groupTags: [] };
-// @ts-expect-error a profession only accepts its own sub-professions.
-const wrongProfessionPair: classification.Definition = { ...commonClassification, type: 'OPERATOR', groupTags: [], profession: 'CASTER', subProfession: 'EXECUTOR', extraProfessions: [] };
-// @ts-expect-error summon classification does not carry an operator profession.
-const wrongSummonFields: classification.Definition = { ...commonClassification, type: 'SUMMON', groupTags: [], subProfession: 'EXECUTOR', profession: 'SPECIAL' };
-const receivingChange: Change<Unit & vitality.Vitality> = setUnitHook(hpDamage.receiving, receivingHooks.get(receivingKey)[0]!);
-// @ts-expect-error receiving keys retain their Vitality owner requirement through Change.
-update(battle, ref(bare), receivingChange);
-// @ts-expect-error removal carries the same owner requirement as registration.
-update(battle, ref(bare), removeUnitHook(hpDamage.receiving, 'evade'));
-const facingDefinition = { ...bare.definition, facing: { restrictions: [] }, offense: { attack: attribute(10) } };
-const facingHost = initialize(battle, {
-    definition: facingDefinition, position: [0, 0], initial: { facing: { direction: 'LEFT' } },
-}).value;
-const facingAttack: number = facingHost.definition.offense.attack.default;
-facing.turn(battle, ref(facingHost), 'RIGHT');
-const facingChange: Change<Unit & facing.Facing> = facing.setRestriction({
-    id: 'fixed', value: { allows: (_battle, { self, direction }) => self.facing.direction === direction },
-});
-const facingProduct: typeof facingHost = facingChange(facingHost).next;
-// @ts-expect-error facing operations require a Facing-capable Unit.
-facing.turn(battle, ref(bare), 'LEFT');
-const occupiedDefinition = { ...bare.definition, occupancy: { slot: 'OCCUPANT' as const } };
-const occupiedInput: UnitInput<typeof occupiedDefinition> = {
-    definition: occupiedDefinition, position: [0, 0],
-    initial: { occupancy: { tile: [0, 0] } },
-};
-const occupied = initialize(battle, occupiedInput).value;
-const occupiedTile: readonly [number, number] = occupied.occupancy.tile;
-// @ts-expect-error Occupancy requires a structural tile, independently of optional direction.
-initialize(battle, { ...occupiedInput, initial: { occupancy: { direction: 'RIGHT' } } });
-declare const plan: Plan;
-const routedDefinition = { id: 'routed', hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } };
-const routedInput: UnitInput<typeof routedDefinition> = {
-    definition: routedDefinition, position: [0, 0],
-    initial: { route: { plan, offset: [0, 0] } },
-};
-initialize(battle, routedInput);
-const unusedRoute = initialize(battle, { ...routedInput, definition: bare.definition }).value;
-// @ts-expect-error unused initialization input does not establish a capability.
-unusedRoute.route;
-// @ts-expect-error known input values remain checked even when the capability is absent.
-initialize(battle, { ...routedInput, definition: bare.definition, initial: { route: { plan, offset: 'wrong' } } });
-// @ts-expect-error an unknown initialization key is rejected alongside a valid one.
-initialize(battle, { ...routedInput, initial: { ...routedInput.initial, rouet: routedInput.initial.route } });
-// @ts-expect-error Route construction requires the instance Plan and offset.
-initialize(battle, { definition: routedDefinition, position: [0, 0] });
-declare const scheduleSpawn: Spawn;
-const routedSpawn: Spawn = { ...scheduleSpawn, definition: routedDefinition };
-// @ts-expect-error scheduled construction requires the Route capability.
-const missingRouteSpawn: Spawn = { ...scheduleSpawn, definition: bare.definition };
-const occupiedRoutedDefinition = { ...routedDefinition, occupancy: { slot: 'OCCUPANT' as const } };
-// @ts-expect-error this Spawn entry does not supply Occupancy's required initialization facts.
-const missingOccupancySpawn: Spawn = { ...scheduleSpawn, definition: occupiedRoutedDefinition };
-declare const skillCommandRef: Ref<Unit & SkillCapability>;
-declare const routeCommandRef: Ref<Unit & Route>;
-declare const routeDefinition: Plan;
-const routeChange = compose(reassign(0, routeDefinition), compose(selectContext(0), setTicking(0, false)));
-update(battle, routeCommandRef, routeChange);
-const skillCommand: SkillCommand = { type: 'SKILL', ref: skillCommandRef, operation: 'ACTIVATE' };
-runtime.step(battle, [skillCommand]);
-// @ts-expect-error skill commands require a Skill-capable Unit.
-const missingSkillCommand: Command = { type: 'SKILL', ref: ref(bare), operation: 'STOP' };
-const projectileDefinition: ProjectileDefinition<{ hits: number }> = {
-    id: 'projectile',
-    onTick(state, self) {
-        const hits: number = self.state.hits;
-        return projectiles.update(state, projectiles.ref(self), { state: { hits: hits + 1 } });
-    },
-};
-const createdProjectile = projectiles.initialize(battle, {
-    definition: projectileDefinition, side: 'ALLY', position: [0, 0], state: { hits: 0 },
-});
-// @ts-expect-error an ordinary Definition does not select movement contributions.
-projectiles.initialize(battle, { definition: projectileDefinition, side: 'ALLY', position: [0, 0], state: { hits: 0 }, move: { contributions: [] } });
-// @ts-expect-error construction uses the private state type declared by the Definition.
-projectiles.initialize(battle, { definition: projectileDefinition, side: 'ALLY', position: [0, 0], state: { hits: 'wrong' } });
-const projectileBattle = projectiles.add(createdProjectile.state, createdProjectile.value);
-const projectileRef = projectiles.ref(createdProjectile.value);
-const projectileHits: number = projectiles.get(projectileBattle, projectileRef)!.state.hits;
-// @ts-expect-error a Projectile Ref fixes the private state accepted by writes.
-projectiles.update(projectileBattle, projectileRef, { state: { hits: 'wrong' } });
-// @ts-expect-error a Projectile Ref without eligibility cannot request elimination.
-projectiles.remove(projectileBattle, projectileRef, 'ELIMINATED');
-// @ts-expect-error an ordinary Projectile Ref cannot receive speed contributions.
-projectiles.setMoveContribution(projectileBattle, projectileRef, { id: 'slow', value: 0.05 });
-for (const target of projectiles.all(projectileBattle).filter(projectiles.hasEliminatable)) {
-    projectiles.remove(projectileBattle, projectiles.ref(target), 'ELIMINATED');
-}
-const slowableDefinition: ProjectileDefinition<{ hits: number }, Slowable> = {
-    id: 'slowable-projectile',
-    onTick(state, self) {
-        const scale: number = projectiles.resolveMoveScale(self);
-        return projectiles.update(state, projectiles.ref(self), { position: [scale, 0], state: { hits: self.state.hits + 1 } });
-    },
-};
-const slowableInput = { definition: slowableDefinition, side: 'ENEMY', position: [0, 0], state: { hits: 0 } } as const;
-// @ts-expect-error creation supplies the instance fields used by the paired Definition.
-projectiles.initialize(battle, slowableInput);
-declare const incompleteProjectile: Projectile<{ hits: number }, Slowable>;
-// @ts-expect-error registration requires the assembled instance that onEnter receives.
-projectiles.add(battle, incompleteProjectile);
-const createdSlowable = projectiles.initialize(battle, {
-    ...slowableInput, definition: { ...slowableDefinition, eliminatable: true }, move: { contributions: [] },
-});
-const slowableBattle = projectiles.add(createdSlowable.state, createdSlowable.value);
-const slowableProjectileRef = projectiles.ref(createdSlowable.value);
-const restoredRef = projectiles.ref(projectiles.get(slowableBattle, slowableProjectileRef)!);
-projectiles.setMoveContribution(slowableBattle, restoredRef, { id: 'slow', value: 0.05 });
-projectiles.remove(slowableBattle, restoredRef, 'ELIMINATED');
-declare const elementalUnit: Unit & elemental.Elemental;
-elemental.available(elementalUnit);
-// @ts-expect-error Elemental eligibility requires its resource capability.
-elemental.available(bare);
-declare const blockerRef: Ref<Unit & Blocker>;
-const relation: Relation = blocking.relations(battle, blockerRef)[0]!;
-const targetRef: Ref<Unit & Blockable> = relation.blocked;
-const ownerRef: Ref<Unit & Blocker> = relation.blocker;
-blocking.release(battle, [relation]);
-blocking.maintain(battle, blocking.relations(battle, blockerRef)[0]!);
-// @ts-expect-error each relation endpoint retains its required capability.
-const invalidRelation: Relation = { blocker: blockerRef, blocked: blockerRef };
-const relationshipHook: BlockingHook<Unit & Blocker> = {
-    id: 'relationship',
-    invoke: (state, context) => ({ state: blocking.release(state, [context.relation]), value: undefined }),
-};
-actions.cancelForUnit(battle, reference, 'SOURCE_ABSENT');
-actions.forUnit(battle, reference);
-actions.hasExecution(battle, reference);
-// @ts-expect-error cancelling a Unit's Actions requires its Action capability.
-actions.cancelForUnit(battle, ref(bare), 'SOURCE_ABSENT');
-// @ts-expect-error the host has not established the required capability.
-effects.install(battle, ref(bare), shield);
-const change: Change<Unit & Offense> = setAttackContribution({ id: 'bonus', value: [] });
-const actionChange = actions.setRestriction({ id: 'ready', value: { allows: () => true } });
-const optionalAction: Change<Unit> = optional(actions.hasAction, actionChange);
-const optionalPresence: Change<Unit> = optional(hasPresence, disappear());
-update(battle, ref(bare), optionalAction);
-const optionalResult = optionalAction(host);
-const optionalHost: typeof host = optionalResult.next;
-const optionalLayer: 'GROUND' | 'AIR' = optionalResult.next.layer.type;
-const combined = compose(change, actionChange);
-const intersection: Change<Unit & Offense & actions.ActionCapability> = combined;
-const applied = combined(host);
-const completeHost: typeof host = applied.next;
-const extraLayer: 'GROUND' | 'AIR' = applied.next.layer.type;
-update(battle, reference, combined);
-declare const offenseOnly: Ref<Unit & Offense>;
-declare const actionOnly: Ref<Unit & actions.ActionCapability>;
-// @ts-expect-error the composed Action requirement cannot be supplied by an Offense-only Ref.
-update(battle, offenseOnly, combined);
-// @ts-expect-error the composed Offense requirement cannot be supplied by an Action-only Ref.
-update(battle, actionOnly, combined);
-declare const skillChange: Change<Unit & SkillCapability>;
-// @ts-expect-error an Action guard does not establish Skill.
-optional(actions.hasAction, skillChange);
-// @ts-expect-error requiring Skill cannot be weakened into requiring only Action.
-const wrongRequirement: Change<Unit & actions.ActionCapability> = skillChange;
-const general: Change<Unit> = self => ({ next: self, settlements: [] });
-const usableWithAction: Change<Unit & actions.ActionCapability> = general;
-const attack: number = resolveAttack(battle, host);
-// @ts-expect-error value computation requires the relevant capability.
-resolveAttack(battle, bare);
-// @ts-expect-error life queries require the Vitality capability.
-vitality.isAlive(bare);
-// @ts-expect-error HP proportions require the Vitality capability.
-vitality.hpRatio(bare);
-declare const skillHost: Unit & SkillCapability;
-// @ts-expect-error an activation must declare its payment, including zero.
-const missingPayment: skills.ActivationDefinition<object, object> = {
-    trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }),
-};
-const invalidDynamicPayment: typeof controlledActivation = {
-    ...controlledActivation,
-    // @ts-expect-error activation payment is a static amount.
-    cost: () => 1,
-};
-const recoveryOnly: RecoveryRestriction = {
-    allows: (_battle, context) => context.source === 'TIME',
-};
-const invalidActivationExemption: typeof controlledActivation = {
-    ...controlledActivation,
-    // @ts-expect-error a recovery restriction requires facts not supplied by an activation check.
-    ignoreRestrictions: [recoveryOnly],
-};
-const activationParameters = { requirement: 0, cost: 0 } satisfies skills.ActivationParameters;
-declare const explicitActivation: NonNullable<Parameters<typeof skills.activate>[2]>;
-explicitActivation satisfies { requirement: number; cost: number };
-const skillReference = skills.ref(ref(skillHost), skillProgram);
-// @ts-expect-error a Skill identity still requires a Skill host.
-skills.ref(ref(bare), skillProgram);
-const typedActivation = skills.activate(battle, skillReference, activationParameters);
-if (typedActivation.value !== null) {
-    const self = skills.getActivation(typedActivation.state, typedActivation.value)!;
-    const remaining: number = self.activation.state.remaining;
-    const completed: number = self.state.completed;
-}
-// @ts-expect-error activation requires a Skill Ref.
-skills.activate(battle, ref(skillHost));
-const configuredSkill = skills.ref(ref(skillHost), skillHost.skill.definition);
-const configuredActivation = skills.activate(battle, configuredSkill);
-if (configuredActivation.value !== null) {
-    const self = skills.getActivation(configuredActivation.state, configuredActivation.value)!;
-    // @ts-expect-error an ordinary Skill Ref does not recover private state fields.
-    self.activation.state.remaining;
-}
-// @ts-expect-error explicit activation terms cannot carry a nonnumeric payment.
-skills.activate(battle, skillReference, { ...activationParameters, cost: 'wrong' });
-skills.pay(battle, ref(skillHost), 1);
-// @ts-expect-error resource payment requires an explicit amount.
-skills.pay(battle, ref(skillHost));
-const prioritizedSpRecovery = setUnitHook(spRecovered, {
-    id: 'resource-reaction', priority: 10,
-    invoke: state => ({ state, value: undefined }),
-});
-update(battle, ref(skillHost), prioritizedSpRecovery);
-// @ts-expect-error priority does not weaken a Skill Hook's host requirement.
-update(battle, ref(bare), prioritizedSpRecovery);
-// @ts-expect-error a Skill can legitimately have no SP resource.
-skills.resolveRecoverySpeed(battle, skillHost);
-const actionHost = allUnits(battle).find(actions.hasAction)!;
-const foundAction: actions.ActionCapability = actionHost;
-const ordinaryPredicate: (self: Unit) => boolean = self => self.id > 0;
-// @ts-expect-error an ordinary predicate does not establish a capability proof.
-allUnits(battle).filter(ordinaryPredicate).find(() => true)!.action;
-for (const self of allUnits(battle).filter(actions.hasAction).filter(hasSkill).filter(skills.hasSp)) {
-    const action: actions.ActionCapability = self;
-    const speed: number = skills.resolveRecoverySpeed(battle, self);
-}
-const selectableActions = allUnits(battle).filter(actions.hasAction).filter(hasTargetable);
-for (const self of allUnits(battle).filter(actions.hasAction).filter(classification.hasClassification)) {
-    if (classification.isType(self, 'OPERATOR')) {
-        self satisfies Unit & actions.ActionCapability & classification.Classification<'OPERATOR'>;
-    }
+    get(merged.state, owner)!.effects.get(merged.value.id, layered)!.state.power satisfies number;
 }
 
-declare const professionCandidate: (Unit & classification.Classification<'OPERATOR'>) | (Unit & classification.Classification<'SUMMON'>);
-if (classification.matchesProfession(professionCandidate, ['CASTER'], true)) {
-} else {
-    // @ts-expect-error a failed profession match can still be a non-Caster operator.
-    const incorrectlyExcludedOperator: Unit & classification.Classification<'SUMMON'> = professionCandidate;
-}
-declare const requestedCategory: classification.Type;
-if (classification.isType(professionCandidate, requestedCategory)) {
-} else {
-    // @ts-expect-error comparing a dynamic category does not make the mismatch unreachable.
-    const incorrectlyExcludedCandidate: never = professionCandidate;
-}
+const position = [0, 0] as const;
+const slowable: projectiles.Definition<{ hits: number }, projectiles.Slowable> = {
+    id: 'slowable',
+    onTick(state, self) {
+        const scale = projectiles.resolveMoveScale(self);
+        return projectiles.update(state, projectiles.ref(self), {
+            position: [scale, 0], state: { hits: self.state.hits + 1 },
+        });
+    },
+};
+const shot = { definition: slowable, side: 'ENEMY', position, state: { hits: 0 } } as const;
+// @ts-expect-error the callback's instance trait must be assembled at creation.
+projectiles.initialize(battle, shot);
+const bullet = projectiles.initialize(battle, {
+    ...shot, definition: { ...slowable, eliminatable: true }, move: { contributions: [] },
+});
+const fired = projectiles.add(bullet.state, bullet.value);
+const restored = projectiles.ref(projectiles.get(fired, projectiles.ref(bullet.value))!);
+projectiles.remove(fired, restored, 'ELIMINATED');
+const ordinaryProjectile = projectiles.initialize(battle, {
+    ...shot, definition: { id: 'ordinary' } satisfies projectiles.Definition,
+});
+// @ts-expect-error the base entity does not declare a movement trait.
+ordinaryProjectile.value.move;
+// @ts-expect-error a plain reference gives no elimination eligibility.
+projectiles.remove(battle, projectiles.ref(ordinaryProjectile.value), 'ELIMINATED');
 
-declare const targetingSource: Unit & classification.Classification;
-const patients = selectableActions.filter(targeting.healing(targetingSource)(battle));
-const nearestPatient = topK(patients, 1, targeting.hpRatio)[0]!;
-nearestPatient satisfies Unit & actions.ActionCapability & vitality.Vitality & classification.Classification;
-for (const self of selectableActions.filter(targeting.elementDamage(targetingSource)(battle))) {
-    self satisfies Unit & actions.ActionCapability & elemental.Elemental & classification.Classification;
-}
-// @ts-expect-error standard target eligibility requires the source's Classification capability.
-targeting.damage(host)(battle);
-const patient = initialize(battle, { position: [0, 0], definition: {
-    id: 'patient', hooks: Hooks.empty(),
-    vitality: {
-        maxHp: attribute(100, 1), defense: attribute(10), resistance: attribute(0, 0, 100),
-        recoverySpeed: attribute(0), recoveryRatio: attribute(0, 0, 1),
-    },
-} }).value;
-const patientRef = ref(patient);
-const directRecovery: vitality.HealingApplication = vitality.increaseHp(battle, patientRef, 10).value;
-// @ts-expect-error direct HP recovery requires Vitality on its target.
-vitality.increaseHp(battle, ref(bare), 10);
-const damageCommittingChange = setUnitHook(vitality.damageCommitting, {
-    id: 'protect-health',
-    invoke(state, context, health) {
-        const target: Ref<Unit & vitality.Vitality> = context.request.target;
-        const previous: vitality.Health = context.previous;
-        const proposed: vitality.Health = health;
-        return { state, value: { hp: Math.max(health.hp, 1), minusHp: Math.max(0, health.minusHp - 1) } };
+// Hook keys preserve both the callback contract and its required unit.
+const outputKey = key<Hook<{ amount: number }, number>>('output');
+const registered = Hooks.empty().set(outputKey, {
+    id: 'output', invoke: (state, context, current) => ({ state, value: current + context.amount }),
+});
+registered.get(outputKey)[0]!.invoke(battle, { amount: 1 }, 0) satisfies { state: State; value: number };
+// @ts-expect-error the registration cannot widen the key's callback payload.
+Hooks.empty().set(outputKey, { id: 'wrong', invoke: (state, context: { text: string }, current) => ({ state, value: current }) });
+const guardHealth = setHook(vitality.damageCommitting, {
+    id: 'keep-alive',
+    invoke(state, _context, health) {
+        return { state, value: { ...health, hp: Math.max(1, health.hp) } };
     },
 });
-update(battle, patientRef, damageCommittingChange);
-// @ts-expect-error damage committing hooks require Vitality on the host.
-update(battle, ref(bare), damageCommittingChange);
-// @ts-expect-error damage committing carries Health rather than a scalar HP.
-Hooks.empty().set(vitality.damageCommitting, { id: 'number', invoke: state => ({ state, value: 1 }) });
-const damageCommittedChange = setUnitHook(vitality.damageCommitted, {
-    id: 'observe-health',
-    invoke(state, context, current) {
-        const request: hpDamage.Request = context.request;
-        const application: vitality.DamageApplication = context.application;
-        const after: vitality.Health = application.after;
-        const notification: void = current;
-        return { state, value: undefined };
-    },
-});
-update(battle, patientRef, damageCommittedChange);
-// @ts-expect-error committed notifications retain the Vitality owner requirement.
-update(battle, ref(bare), damageCommittedChange);
-// @ts-expect-error committed notifications cannot replace the already applied Health.
+// @ts-expect-error the key's owning capability remains required through Change.
+update(battle, ref(bare), guardHealth);
+// @ts-expect-error the post-commit key only notifies, so it cannot replace committed health.
 Hooks.empty().set(vitality.damageCommitted, { id: 'rewrite', invoke: state => ({ state, value: { hp: 1, minusHp: 0 } }) });
-const classifiedRequest: hpDamage.Request = {
-    source: null, killer: null, target: patientRef, nature: 'ENVIRONMENT', hitRecovery: true,
-    attackType: 'NONE', applyWay: 'ALL',
-    parameters: { type: 'TRUE', attack: { power: 10, multiplier: 1, addition: 0 } },
-};
-const { attackType: omittedAttackType, ...withoutAttackType } = classifiedRequest;
-const { applyWay: omittedApplyWay, ...withoutApplyWay } = classifiedRequest;
-const { killer: omittedKiller, ...withoutKiller } = classifiedRequest;
-const independentAttribution: hpDamage.Request = { ...classifiedRequest, source: reference, killer: patientRef };
-// @ts-expect-error HP damage declares attribution independently of its participating source.
-const missingKiller: hpDamage.Request = withoutKiller;
-// @ts-expect-error classification is explicit even when the request has no source.
-const missingAttackType: hpDamage.Request = withoutAttackType;
-// @ts-expect-error applyWay is independently required.
-const missingApplyWay: hpDamage.Request = withoutApplyWay;
-// @ts-expect-error classification is one value rather than an array of categories.
-const multipleAttackTypes: hpDamage.Request = { ...classifiedRequest, attackType: ['NORMAL', 'SPLASH'] };
-// @ts-expect-error a projectile does not introduce another ApplyWay value.
-const unknownApplyWay: hpDamage.Request = { ...classifiedRequest, applyWay: 'PROJECTILE' };
-const elementalOperation: AttackOperation = {
-    type: 'ELEMENTAL_INJURY', power: 10, elementType: 'NEURAL',
-    attackType: 'ADDITION', applyWay: 'NONE',
-};
-// @ts-expect-error attack operations provide classification before constructing resource requests.
-const unclassifiedOperation: AttackOperation = { type: 'DAMAGE', power: 10, damageType: 'TRUE' };
-update(battle, patientRef, receivingChange);
-update(battle, patientRef, vitality.setRestriction({
-    id: 'damage-permission', value: { allows: (_state, context) => context.calculated.amount > 0 },
-}));
-const injuryType: elemental.Type = 'NEURAL';
-elemental.setRestriction('damageRestrictions', {
-    id: 'injury-permission', value: { allows: (_state, context) => context.type === 'NEURAL' },
-});
-declare const elementalRestriction: elemental.DamageRestriction;
-declare const elementalRestrictionKey: 'damageRestrictions' | 'healingRestrictions';
-// @ts-expect-error a Restriction cannot be registered against an unrelated field Context.
-elemental.setRestriction('healingRestrictions', { id: 'damage-permission', value: elementalRestriction });
-const fixedRestriction = createRegistrationOperations<
-    Unit & elemental.Elemental, 'elemental', typeof elementalRestrictionKey
->('elemental', elementalRestrictionKey);
-// @ts-expect-error fixing an uncertain field does not erase its Entry pairing.
-fixedRestriction.set({ id: 'damage-permission', value: elementalRestriction });
-vitality.setContribution('defense', {
-    id: 'armor', value: (_state, self) => {
-        const defense: number = self.definition.vitality.defense.default;
-        return [];
-    },
-});
-setUnitHook(hpDamage.receiving, {
-    id: 'cancel',
-    invoke: (state, context, pending) => {
-        const amount: number = context.calculated.amount;
-        // @ts-expect-error inline callbacks retain precise working values rather than any.
-        const invalidAmount: string = pending.amount;
-        return { state, value: hpDamage.cancel(pending, 'MISS', context.forbidden) };
-    },
-});
-setUnitHook(actions.beforeRelease, {
-    id: 'interrupt',
-    invoke: (state, context) => {
-        const source: Ref<Unit> = context.source;
-        return { state, value: { type: 'INTERRUPT', recoveryTicks: 1 } };
-    },
-});
-// @ts-expect-error automatic operations cannot write a special field.
-vitality.setContribution('maxHp', { id: 'wrong', value: [] });
-// @ts-expect-error a numeric address alone does not establish a Unit proof.
-const forged: Ref<Unit> = { id: 0 };
+declare const damageRestriction: elemental.DamageRestriction;
+// @ts-expect-error a restriction from the damage context cannot be installed in the healing context.
+elemental.setRestriction('healingRestrictions', { id: 'wrong-context', value: damageRestriction });
 
-declare const elementalHost: Ref<Unit & elemental.Elemental>;
-declare const elementalDamage: elemental.Damaged;
-dispatchElemental(battle, elementalHost, elemental.damaged, elementalDamage);
-dispatchElemental(battle, elementalHost, elemental.burstStarted, burst);
-// @ts-expect-error the typed notification key determines the exact payload.
-dispatchElemental(battle, elementalHost, elemental.damaged, burst);
+// Resource phases cannot skip the request facts or undo a one-way transition.
+const damage = resource.hp.damage;
+const receiving = Hooks.empty().set(damage.receiving, {
+    id: 'evade', invoke: (state, context, current) => ({ state, value: damage.cancel(current, 'MISS', context.forbidden) }),
+});
+declare const receivingContext: resource.hp.damage.ReceivingContext;
+declare const cancelled: resource.hp.damage.Pending<'MISS', 'CANCELLED'>;
+receiving.get(damage.receiving)[0]!.invoke(battle, receivingContext, cancelled).value.reason satisfies 'MISS';
+// @ts-expect-error a later receiver cannot restore a fixed value to NORMAL.
+Hooks.empty().set(damage.beforeReceive, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
+// @ts-expect-error a later receiver cannot restore an already cancelled hit, even to FIXED.
+Hooks.empty().set(damage.receiving, { id: 'revive', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
+// @ts-expect-error a later receiver cannot replace an established cancellation reason.
+Hooks.empty().set(damage.receiving, { id: 'rewrite', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
+// @ts-expect-error the sender must explicitly supply this settlement's cancellation permissions.
+damage.cancel(cancelled, 'BLOCKED');
+// @ts-expect-error an HP dodge reason is outside EP's cancellation protocol.
+resource.ep.damage.cancel({ type: 'NORMAL', amount: 10 }, 'MISS', new Set());
+declare const request: resource.hp.damage.Request;
+const { killer, ...damageWithoutAttribution } = request;
+// @ts-expect-error attribution is explicit even if the output already has a source.
+damageWithoutAttribution satisfies resource.hp.damage.Request;
+const { applyWay, ...damageWithoutWay } = request;
+// @ts-expect-error each damage request declares its way independently of its attack type.
+damageWithoutWay satisfies resource.hp.damage.Request;
+// @ts-expect-error explicit Unit death needs an attribution decision even without damage.
+remove(battle, owner, { reason: 'DEATH' });
+declare const result: resource.hp.damage.Outcome;
+if (result.type === 'APPLIED') {
+    result.killed satisfies boolean;
+    // @ts-expect-error resource application precedes the final kill decision.
+    result.application.killed;
+}
 
+// Independent constructors enforce pairing before heterogeneous storage.
 declare const baseInput: Omit<BattleInput, 'deployment' | 'initialUnits' | 'initialMechanisms'>;
-declare const cardUnitBase: cards.UnitDefinition;
-declare const cardConfiguration: Omit<cards.Definition, 'initialize' | 'onTick'>;
-const counterCard: cards.Definition<{ count: number }> = {
-    ...cardConfiguration,
+declare const cardUnit: cards.UnitDefinition;
+declare const policy: Omit<cards.Definition, 'initialize' | 'onTick'>;
+const countCard: cards.Definition<{ count: number }> = {
+    ...policy,
     initialize: state => ({ state, value: { count: 0 } }),
-    onTick(state, self) {
-        return cards.setState(state, cards.ref(self), { count: self.state.count + 1 });
+    onTick: (state, self) => cards.setState(state, cards.ref(self), { count: self.state.count + 1 }),
+};
+const nameCard: cards.Definition<{ name: string }> = {
+    ...policy, initialize: state => ({ state, value: { name: 'second' } }),
+    onTick: (state, self) => cards.setState(state, cards.ref(self), { name: self.state.name }),
+};
+const countInput = { definition: countCard, unitDefinition: cardUnit };
+const builtCard = cards.initialize(battle, countInput);
+// @ts-expect-error normal placement cannot supply a Route Plan and offset.
+cards.initialize(battle, { ...countInput, unitDefinition: { ...cardUnit, route: routeDefinition.route } });
+// @ts-expect-error registration must reject state that does not match its own Definition.
+cards.add(builtCard.state, { ...builtCard.value, state: { count: 'wrong' } });
+const counter: mechanisms.Definition<{ count: number }> = {
+    id: 'counter', initialize: () => ({ count: 0 }),
+    onTick: (state, self) => mechanisms.setState(state, mechanisms.ref(self), { count: self.state.count + 1 }),
+};
+const named: mechanisms.Definition<{ name: string }> = {
+    id: 'named', initialize: () => ({ name: 'mechanism' }),
+    onTick: (state, self) => mechanisms.setState(state, mechanisms.ref(self), { name: self.state.name }),
+};
+const startup = {
+    ...baseInput,
+    deployment: {
+        definition: { dp: { initial: 0, min: 0, max: 99, recoveryInterval: null }, slot: { limit: null } },
+        cards: [countInput, { definition: nameCard, unitDefinition: cardUnit }],
     },
-};
-const cardInput = {
-    definition: { ...counterCard, marker: true as const },
-    unitDefinition: { ...cardUnitBase, marker: 'unit' as const },
-};
-const initializedCard = cards.initialize(battle, cardInput);
-const routedCardUnit = { ...cardUnitBase, route: routedDefinition.route };
-// @ts-expect-error ordinary Card deployment cannot supply Route's Plan and offset.
-cards.initialize(battle, { definition: counterCard, unitDefinition: routedCardUnit });
-const cardRef = cards.ref(initializedCard.value);
-const cardBattle = cards.add(initializedCard.state, initializedCard.value);
-// @ts-expect-error registration requires the state type declared by the Card Definition.
-cards.add(initializedCard.state, { ...initializedCard.value, state: { count: 'wrong' } });
-const registeredCard = cards.get(cardBattle, cardRef)!;
-const cardMarker: true = registeredCard.definition.marker;
-const cardUnitMarker: 'unit' = registeredCard.unitDefinition.marker;
-const cardCount: number = registeredCard.state.count;
-cards.setState(cardBattle, cardRef, { count: cardCount + 1 });
-// @ts-expect-error lookup through a Card Ref preserves its exact private state.
-cards.setState(cardBattle, cards.ref(registeredCard), { label: 'wrong' });
-const counterMechanism: mechanisms.Definition<{ count: number }> & { readonly tag: 'counter' } = {
-    id: 'counter', tag: 'counter', initialize: () => ({ count: 0 }),
-    onTick(state, self) {
-        return mechanisms.setState(state, mechanisms.ref(self), { count: self.state.count + 1 });
-    },
-};
-const initializedMechanism = mechanisms.initialize(battle, { definition: counterMechanism });
-const mechanismRef = mechanisms.ref(initializedMechanism.value);
-const mechanismBattle = mechanisms.add(initializedMechanism.state, initializedMechanism.value);
-const exactMechanismTag: 'counter' = mechanisms.get(mechanismBattle, mechanismRef)!.definition.tag;
-// @ts-expect-error the Ref preserves the private state type.
-mechanisms.setState(mechanismBattle, mechanismRef, { count: 'wrong' });
-const labelCard: cards.Definition<{ label: string }> = {
-    ...cardConfiguration,
-    initialize: state => ({ state, value: { label: 'ready' } }),
-    onTick: (state, self) => cards.setState(state, cards.ref(self), { label: self.state.label }),
-};
-const labelMechanism: mechanisms.Definition<{ label: string }> = {
-    id: 'label', initialize: () => ({ label: 'ready' }),
-    onTick: (state, self) => mechanisms.setState(state, mechanisms.ref(self), { label: self.state.label }),
-};
-const account = {
-    dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
-    slot: { limit: null },
-};
-runtime.initialize({ ...baseInput,
-    deployment: { definition: account, cards: [cardInput, { definition: labelCard, unitDefinition: cardUnitBase }] },
-    initialMechanisms: [{ definition: counterMechanism }, { definition: labelMechanism }],
-    initialUnits: [
-        { definition: patient.definition, position: [0, 0] },
-        occupiedInput,
-        { definition: armedDefinition, position: [0, 0], initial: {
-            occupancy: { tile: [0, 0] },
-            facing: { direction: 'LEFT' },
-        } },
-        { definition: bare.definition, position: [0, 0], initial: { occupancy: { tile: [0, 0] } } },
-    ],
+} as const;
+runtime.initialize({
+    ...startup, initialUnits: [armedInput, routeInput],
+    initialMechanisms: [{ definition: counter }, { definition: named }],
 });
-runtime.initialize({ ...baseInput, initialMechanisms: [], initialUnits: [
-    // @ts-expect-error a concrete unit's Facing input remains required alongside Occupancy.
-    { definition: armedDefinition, position: [0, 0], initial: { occupancy: { tile: [0, 0] } } },
-] });
-const mismatchedMechanism = { ...counterMechanism, initialize: () => ({ label: 'wrong' }) };
-// @ts-expect-error aggregating a Mechanism cannot weaken initialize/callback pairing.
-runtime.initialize({ ...baseInput, initialMechanisms: [{ definition: mismatchedMechanism }], initialUnits: [] });
-const mismatchedCard = {
-    ...cardInput,
-    definition: { ...counterCard, initialize: (state: State) => ({ state, value: { label: 'wrong' } }) },
-};
-// @ts-expect-error aggregating a Card cannot weaken initialize/callback pairing.
-runtime.initialize({ ...baseInput, deployment: { definition: account, cards: [mismatchedCard] }, initialMechanisms: [], initialUnits: [] });
-
+runtime.initialize({
+    ...startup,
+    // @ts-expect-error startup must still require Facing's Initial for the selected Unit.
+    initialUnits: [{ ...armedInput, initial: { occupancy: armedInput.initial.occupancy } }],
+    initialMechanisms: [],
+});
+const wrongMechanism = { ...counter, initialize: () => ({ name: 'wrong' }) };
+// @ts-expect-error startup must preserve initializer and callback pairing before aggregation.
+runtime.initialize({ ...startup, initialUnits: [], initialMechanisms: [{ definition: wrongMechanism }] });
 `;
     const options = {
         noEmit: true,

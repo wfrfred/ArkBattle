@@ -5,6 +5,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
+import { step } from "../../dist/core/battle/runtime.js";
 import * as unit from "../../dist/core/unit/operations.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as capability from "../../dist/core/unit/capability/blocking/index.js";
@@ -32,7 +33,7 @@ const enemy = {
 test("HOOK-03: a relation fixes both sides' priority order before notifying either side and reads replacements live", () => {
     const calls = [];
     let state = battle([
-        { definition: blocker, position: [2, 1] },
+        { definition: { ...blocker, blocker: { ...blocker.blocker, capacity: 1 } }, position: [2, 1] },
         { definition: {
             ...enemy,
             hooks: Hooks.empty().set(capability.blockableAcquired, {
@@ -44,14 +45,22 @@ test("HOOK-03: a relation fixes both sides' priority order before notifying eith
                 invoke(current) { calls.push("target-priority"); return { state: current, value: undefined }; },
             }),
         }, position: [2.1, 1] },
+        { definition: enemy, position: [2.2, 1] },
     ]);
     const owner = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
     state = unit.update(state, owner, units.setHook(capability.blockerAcquired, {
         id: "change-target-hooks",
         priority: -10,
+        accepts: (_current, { relation }) => relation.blocked.id === target.id,
         invoke(current) {
             calls.push("blocker");
+            current = unit.update(current, owner, capability.setCapacityContribution({
+                id: "additional-capacity",
+                value: [{ type: "ADD", value: 2 }],
+            }));
+            const entrant = units.initialize(current, { definition: enemy, position: [2.25, 1] });
+            current = units.add(entrant.state, entrant.value);
             return {
                 state: unit.update(current, target, compose(
                     units.setHook(capability.blockableAcquired, {
@@ -71,10 +80,12 @@ test("HOOK-03: a relation fixes both sides' priority order before notifying eith
     }));
     state = unit.update(state, owner, units.setHook(capability.blockerAcquired, {
         id: "blocker-priority",
+        accepts: (_current, { relation }) => relation.blocked.id === target.id,
         invoke(current) { calls.push("blocker-priority"); return { state: current, value: undefined }; },
     }));
-    state = blocking.acquire(state, owner, target);
-    assert.equal(blocking.blockerOf(state, target).id, owner.id);
+    state = blocking.search(state, owner);
+    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [target.id, get(state, 2).id]);
+    assert.equal(blocking.blockerOf(state, units.ref(get(state, 3))), undefined);
     assert.deepEqual(calls, ["blocker-priority", "blocker", "target-priority", "replacement"]);
 });
 
@@ -139,21 +150,18 @@ test("search and maintenance use effective pair restrictions, volume, layers and
         blocking.blocked(state, owner).map(({ id }) => id),
         [2],
     );
-    state = unit.update(state, units.ref(get(state, 2)), capability.setBlockableRestriction({
+    const target = units.ref(get(state, 2));
+    state = unit.update(state, target, capability.setBlockableRestriction({
         id: "first-tick-only", value: { allows: (current) => current.tick === 0 },
     }));
-    state = blocking.advance({ ...state, tick: 1 });
+    state = step(step(state, []), []);
     assert.deepEqual(blocking.blocked(state, owner), []);
 
-    const target = units.ref(get(state, 2));
-    state = unit.update(state, target, compose(
-        capability.setBlockableRestriction({ id: "first-tick-only", value: { allows: () => false }, group: { id: "permission", priority: 1 } }),
-        capability.setBlockableRestriction({ id: "permit", value: { allows: () => true }, group: { id: "permission", priority: 2 } }),
-    ));
+    state = unit.update(state, target, capability.removeBlockableRestriction("first-tick-only"));
     state = blocking.search(state, owner);
     assert.equal(blocking.blockerOf(state, target).id, owner.id);
     state = unit.update(state, target, capability.setBlockableRestriction({
-        id: "first-tick-only", value: { allows: () => false }, group: { id: "permission", priority: 3 },
+        id: "cannot-be-held", value: { allows: () => false },
     }));
     assert.equal(blocking.blockerOf(state, target), undefined);
 });

@@ -1013,16 +1013,21 @@ test("HP Healing accepts full resources and absent patients while damage require
     }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     assert.equal(get(state, 0).vitality.health.hp, 100.5);
-    state = update(state, target, units.compose(units.compose(units.setHook(hpHealing.receiving, {
+    const observe = (hook, id) => units.setHook(hook, {
+        id, invoke(current) { calls.push(id); return { state: current, value: undefined }; },
+    });
+    state = update(state, target, units.compose(
+        units.setHook(hpHealing.receiving, {
             id: "receive", invoke(current, _context, pending) {
                 calls.push("receive");
                 return { state: current, value: { ...pending, amount: pending.amount - 10 } };
             },
-        }), units.setHook(hpHealing.targetApplied, {
-            id: "target", invoke(current) { calls.push("target"); return { state: current, value: undefined }; },
-        })), units.setHook(hpHealing.sourceApplied, {
-            id: "source", invoke(current) { calls.push("source"); return { state: current, value: undefined }; },
-        })));
+        }),
+        units.compose(
+            observe(hpHealing.targetApplied, "target"),
+            units.compose(observe(hpHealing.sourceApplied, "source"), observe(hpHealing.completed, "completed")),
+        ),
+    ));
     const request = { source: target, target, parameters: { power: 25, multiplier: 2 } };
     const calculated = hpHealing.calculateHealing(state, request);
     assert.equal(calculated.value.amount, 50);
@@ -1032,7 +1037,7 @@ test("HP Healing accepts full resources and absent patients while damage require
     assert.equal(full.value.type, "APPLIED");
     assert.equal(full.value.received.amount, 40);
     assert.deepEqual(full.value.application, { before: { hp: 100.5, minusHp: 0 }, after: { hp: 100.5, minusHp: 0 }, hpGain: 0, minusHpLoss: 0, overflow: 40 });
-    assert.deepEqual(calls, ["receive", "target", "source"]);
+    assert.deepEqual(calls, ["receive", "target", "source", "completed"]);
     assert.deepEqual(damageCommits, []);
 
     const hpLoss = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: {

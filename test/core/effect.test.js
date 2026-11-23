@@ -94,6 +94,20 @@ test("installation, participation, and ending preserve completed business and cu
         onInstall: (current, self) => effects.remove(current, effects.ref(self)),
     });
     assert.equal(effects.get(ended.state, ended.value), undefined);
+
+    const renewed = effects.install(state, owner, {
+        ...instant,
+        id: "renewed-on-install",
+        onInstall: (current, self) => effects.setExpiration(current, effects.ref(self), {
+            type: "DURATION", duration: 2, remaining: 2, rate: 1,
+        }),
+        onEnable(current, self) {
+            observed.push(["renewed", self.expiration.remaining]);
+            return current;
+        },
+    }, { expiration: { type: "DURATION", duration: 0, remaining: 0, rate: 1 } });
+    assert.equal(effects.get(renewed.state, renewed.value).lifecycle, "ACTIVE");
+    assert.deepEqual(observed.at(-1), ["renewed", 2]);
 });
 
 test("DEFAULT retains candidates and installs them before priority and enabled determine participation", () => {
@@ -146,6 +160,7 @@ test("DEFAULT retains candidates and installs them before priority and enabled d
 test("time advances independently of participation, publishes before active business, and permits renewal and manual progress", () => {
     const observed = [];
     const ended = [];
+    const laterTicks = [];
     let renewed = false;
     let state = battle([{ definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
@@ -158,6 +173,16 @@ test("time advances independently of participation, publishes before active busi
             onTick(current, self, previous) {
                 observed.push([previous.remaining, self.expiration.remaining]);
                 assert.equal(effects.get(current, effects.ref(self)).expiration, self.expiration);
+                if (current.tick === 2) {
+                    return effects.install(current, self.host, {
+                        id: "added-during-tick",
+                        initialize: () => ({}),
+                        onTick(next) {
+                            laterTicks.push(next.tick);
+                            return next;
+                        },
+                    }, { expiration: { type: "DEADLINE", tick: 3 } }).state;
+                }
                 if (self.expiration.remaining === 0 && !renewed) {
                     renewed = true;
                     return effects.setExpiration(current, effects.ref(self), {
@@ -225,6 +250,7 @@ test("time advances independently of participation, publishes before active busi
         [1, 0],
     ]);
     assert.deepEqual(new Set(ended), new Set(["deadline", "manual", "duration"]));
+    assert.deepEqual(laterTicks, [3]);
     assert.equal(effects.get(state, duration.value), undefined);
 });
 

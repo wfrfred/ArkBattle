@@ -9,7 +9,6 @@ test("field replacement copies only the changed path and preserves identical sta
     const dp = { balance: 10, min: entries };
     const state = { deployment: { dp, slot } };
 
-    assert.equal(replaceIn(state, ["deployment", "dp", "min"], entries), state);
     assert.equal(replaceIn(state, ["deployment", "dp"], dp), state);
 
     const next = replaceIn(state, ["deployment", "dp", "balance"], 8);

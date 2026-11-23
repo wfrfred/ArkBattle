@@ -40,12 +40,6 @@ function injuryRequest(target, type, power, source = null) {
     return { target, source, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type, power } };
 }
 
-const elementalReceiver = {
-    id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-    targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
-    elemental: createElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
-};
-
 test("HP-01: formulas use the calculated type and sampled defenses without beginning reception", () => {
     let state = battle([
         { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
@@ -234,56 +228,35 @@ test("EP-01: full resistance preserves formula floors and sampled EP output; HP 
     assert.equal(get(hp.state, 0).elemental.ep.NEURAL, 970);
 });
 
-test("APPLY-02: Calculate normalizes final HP/EP output before Apply starts receiving", () => {
-    for (const [name, operation, parameters] of [
-        ["HP Damage", hpDamage, {
-            type: "TRUE", attack: { power: -10, multiplier: 1, addition: 0 },
-        }],
-        ["EP Damage", epDamage, { type: "BURN", power: -10 }],
-        ["HP Healing", hpHealing, { power: -10, multiplier: 1 }],
-        ["EP Healing", epHealing, { power: -10 }],
-    ]) {
-        const hooks = Hooks.empty().set(operation.sourceFormula, {
+test("APPLY-02: a formula can change negative input and final Calculate output clamps before reception", () => {
+    const hooks = Hooks.empty()
+        .set(epHealing.sourceFormula, {
             id: "formula",
             invoke(state, _context, current) {
-                assert.equal(current.attack?.power ?? current.power, -10, name);
-                return {
-                    state,
-                    value: current.attack === undefined
-                        ? { ...current, power: 10 }
-                        : { ...current, attack: { ...current.attack, power: 10 } },
-                };
+                assert.equal(current.power, -10);
+                return { state, value: { ...current, power: 10 } };
             },
-        }).set(operation.output, {
+        }).set(epHealing.output, {
             id: "output",
             invoke(state, _context, amount) {
-                assert.equal(amount, 10, name);
+                assert.equal(amount, 10);
                 return { state, value: -5 };
             },
         });
-        const state = battle([
-            { definition: { id: "source", hooks }, position: [0, 0] },
-            { definition: {
-                ...elementalReceiver,
-                vitality: defineVitality(100),
-                hooks: Hooks.empty().set(operation.beforeReceive, {
-                    id: "receive",
-                    invoke: () => assert.fail(`${name}: zero output cannot start receiving`),
-                }),
-            }, position: [1, 0] },
-        ]);
-        const request = {
-            source: units.ref(get(state, 0)),
-            target: units.ref(get(state, 1)),
-            parameters,
-            ...(operation === hpDamage || operation === epDamage ? { attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE" } : {}),
-            ...(operation === hpDamage ? { hitRecovery: true, killer: units.ref(get(state, 0)) } : {}),
-        };
-        const calculate = operation.calculateDamage ?? operation.calculateHealing;
-        const apply = operation.applyDamage ?? operation.applyHealing;
-        const calculated = calculate(state, request);
-        assert.equal(calculated.value.amount, 0, name);
-        const result = apply(request, calculated);
-        assert.equal(result.value.type, "REJECTED", name);
-    }
+    const receiver = elementalDefinition({}, Hooks.empty().set(epHealing.beforeReceive, {
+        id: "receive",
+        invoke: () => assert.fail("zero output cannot start receiving"),
+    }));
+    const state = battle([
+        { definition: { id: "source", hooks }, position: [0, 0] },
+        { definition: receiver, position: [1, 0] },
+    ]);
+    const request = {
+        source: units.ref(get(state, 0)),
+        target: units.ref(get(state, 1)),
+        parameters: { power: -10 },
+    };
+    const calculated = epHealing.calculateHealing(state, request);
+    assert.equal(calculated.value.amount, 0);
+    assert.equal(epHealing.applyHealing(request, calculated).value.type, "REJECTED");
 });

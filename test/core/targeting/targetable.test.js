@@ -71,7 +71,7 @@ test("visibility distinguishes different sides from hostile sides using the supp
 });
 
 test("ordinary taunt comparison uses signed integer attributes after contribution changes", () => {
-    let state = battle([creation("ENEMY", [], -1), creation("ENEMY", [], 0)]);
+    let state = battle([creation("ENEMY", [], -1), creation("ENEMY", [], 1)]);
     const target = units.ref(get(state, 0));
     const preferred = state => topK(units.all(state).filter(targetable.hasTargetable), 1, targeting.taunt(state))[0].id;
 
@@ -82,7 +82,7 @@ test("ordinary taunt comparison uses signed integer attributes after contributio
     assert.equal(preferred(state), 0);
     assert.equal(targetable.resolveTaunt(state, get(state, 0)), 2);
     state = update(state, target, targetable.setTauntRange({ min: null, max: 0.5 }));
-    assert.equal(targetable.resolveTaunt(state, get(state, 0)), 0);
+    assert.equal(preferred(state), 1);
     state = update(state, target, targetable.clearTauntRange());
-    assert.equal(targetable.resolveTaunt(state, get(state, 0)), 2);
+    assert.equal(preferred(state), 0);
 });

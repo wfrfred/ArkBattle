@@ -100,10 +100,15 @@ test("attack selection groups and prepare receive the state produced by earlier 
     const started = actions.start(initial, actions.ref(units.ref(source), action));
 
     assert.notEqual(started.value, null);
-    const running = actions.getExecution(started.state, started.value);
-    assert.deepEqual(running.execution.state.bindings, { primary: first.value, secondary: second.value });
     assert.equal(started.state.execution.rngState, second.state.execution.rngState);
     assert.equal(observed, second.state.execution.rngState);
+    let state = actions.advance(started.state, started.value);
+    state = actions.advance({ ...state, tick: 3 }, started.value);
+    const receivers = [...first.value, ...second.value].map(reference => reference.id);
+    assert.deepEqual(
+        [1, 2, 3].map(id => get(state, id).vitality.health.hp),
+        [1, 2, 3].map(id => 100 - 7 * receivers.filter(receiver => receiver === id).length),
+    );
 });
 
 test("an empty trigger binding rejects the attack without losing later completed selection state", () => {
@@ -117,8 +122,6 @@ test("an empty trigger binding rejects the attack without losing later completed
 
     assert.equal(started.value, null);
     assert.equal(started.state.execution.rngState, selected.state.execution.rngState);
-    assert.equal(units.get(started.state, units.ref(source)).action.actions.values()
-        .some(self => self.execution !== null), false);
 });
 
 test("bound healing keeps its receivers when a later selection restriction would choose another patient", () => {

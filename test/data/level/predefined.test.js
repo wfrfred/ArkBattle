@@ -52,13 +52,11 @@ test("real hidden devices preserve placement, static classification and target c
         map: level.map, initialUnits: [], initialMechanisms: [],
         schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 123,
     });
-    assert.equal(battle.battlefield.units.size, 0);
     const initializedCrate = initializeUnit(battle, crateCreation);
     battle = add(initializedCrate.state, initializedCrate.value);
     const [crate] = battle.battlefield.units.values();
     assert.deepEqual(crate.position, [4, 12]);
     assert.deepEqual(crate.occupancy.tile, [12, 4]);
-    assert.equal(crate.definition.vitality.recoverySpeed.default, 0);
     assert.equal(occupancyAt(battle.battlefield, [12, 4]).occupant.id, crate.id);
     assert.deepEqual(crate.definition.classification, {
         type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [],

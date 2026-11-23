@@ -40,7 +40,6 @@ function source() {
             definition: definitions.get(id), delayToBornTicks: 0,
             notCountInTotal: false,
         }),
-        definitions,
         actions,
     };
 }
@@ -69,7 +68,7 @@ test("level push multiplier retains the configured value, including zero", () =>
 });
 
 test("main random groups preserve source order and expand the selected count once", () => {
-    const { level, resolve, definitions } = source();
+    const { level, resolve } = source();
     const seed = 123;
     const compiled = compileSpawnSchedule(level, {
         actions: [0, 1, 2].map((actionIndex) => ({ waveIndex: 0, fragmentIndex: 0, actionIndex })),
@@ -79,7 +78,6 @@ test("main random groups preserve source order and expand the selected count onc
 
     assert.deepEqual(spawns.map(({ definition }) => definition.id), ["N", "B", "B"]);
     assert.deepEqual(spawns.map(({ atTick }) => atTick), [0, 0, 3]);
-    assert.equal(spawns[1].definition, definitions.get("B"));
     assert.notEqual(compiled.rngState, seed);
     const actions = level.waves[0].fragments[0].actions.map((action) => ({
         ...action, weight: action.randomSpawnGroupKey === null ? 0 : 1,

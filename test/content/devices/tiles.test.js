@@ -1,12 +1,12 @@
 import { vitality } from "../../helpers/attribute.js";
 // Contract: [terrain](../../../docs/architecture/terrain.md).
-import { Hooks } from "../../../dist/core/hook.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { create as createCrate } from "../../../dist/content/devices/crate.js";
 import { hole, normal } from "../../../dist/content/terrain/definition.js";
 import * as conditions from "../../../dist/content/terrain/condition.js";
 import { createBattleState } from "../../../dist/core/battle/state.js";
+import { update as updateTile } from "../../../dist/core/battle/tile.js";
 import { add, remove } from "../../../dist/core/unit/operations.js";
 import { create as createField } from "../../../dist/core/battlefield/state.js";
 import { create as createMap, get as getTile } from "../../../dist/core/battlefield/map/map.js";
@@ -32,17 +32,6 @@ function battle(firstTerrain = normal, firstCost = 2000) {
     return createBattleState(createField(createMap(1, 3, tiles)));
 }
 
-function configuration(id, tileChanges = {}) {
-    return { hooks: Hooks.empty(),
-        id,
-        classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        taunt: -1,
-        vitality: vitality(100),
-        deployable: { retreatRestrictions: [] },
-        tileChanges,
-    };
-}
-
 function place(battle, definition, tile, position = Tile.center(tile)) {
     const initialized = initialize(battle, { definition, position, initial: {
         occupancy: { tile },
@@ -51,18 +40,27 @@ function place(battle, definition, tile, position = Tile.center(tile)) {
     return add(initialized.state, initialized.value);
 }
 
-for (const [terrain, initialCost] of [[normal, 2000], [hole, 1000000]]) {
-    test(`device tile changes use the registered tile and preserve ${terrain === hole ? "hole" : "ordinary"} cost restrictions`, () => {
-        const definition = createCrate(configuration("crate"));
-        let state = battle(terrain, initialCost);
-        const original = getTile(state.battlefield.map, [0, 0]);
-        state = place(state, definition, [0, 0], Tile.center([0, 2]));
-
-        const tile = getTile(state.battlefield.map, [0, 0]);
-        const expectedCost = terrain === hole ? initialCost : 1000;
-        assert.equal(tile.state.walkCost, expectedCost);
-        assert.equal(getTile(state.battlefield.map, [0, 2]).state.walkCost, 2000);
-        state = remove(state, ref(getUnit(state, 0)), { reason: "SCRIPT" });
-        assert.deepEqual(getTile(state.battlefield.map, [0, 0]).state, original.state);
+test("a crate modifies its registered tile, preserves hole cost, and restores only its own fields", () => {
+    const definition = createCrate({
+        id: "crate",
+        classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
+        taunt: -1,
+        vitality: vitality(100),
+        deployable: { retreatRestrictions: [] },
+        tileChanges: {},
     });
-}
+    const tile = [0, 0];
+    let state = place(battle(), definition, tile, Tile.center([0, 2]));
+    const obstructed = getTile(state.battlefield.map, tile).state;
+    assert.equal(obstructed.walkCost, 1000);
+    assert.equal(getTile(state.battlefield.map, [0, 2]).state.walkCost, 2000);
+
+    state = updateTile(state, tile, { ...obstructed, allowsBlocking: false });
+    state = remove(state, ref(getUnit(state, 0)), { reason: "SCRIPT" });
+    const restored = getTile(state.battlefield.map, tile).state;
+    assert.equal(restored.walkCost, 2000);
+    assert.equal(restored.allowsBlocking, false);
+
+    const coveredHole = place(battle(hole, 1000000), definition, tile);
+    assert.equal(getTile(coveredHole.battlefield.map, tile).state.walkCost, 1000000);
+});

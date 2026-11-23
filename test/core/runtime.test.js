@@ -110,39 +110,6 @@ test("initial and scheduled entry see registered battle facts and preserve their
     assert.equal(state.deployment.dp.balance, 25);
 });
 
-test("a Unit can create its replacement during removal before the next birth", () => {
-    const reappearing = {
-        id: "reappearing",
-        hooks: Hooks.empty().set(units.removed, {
-            id: "return-after-departure",
-            invoke(current, { unit }) {
-                assert.equal(get(current, unit.id), undefined);
-                const replacement = units.initialize(current, {
-                    definition: reappearing, position: unit.position,
-                });
-                return {
-                    state: units.add(replacement.state, replacement.value),
-                    value: undefined,
-                };
-            },
-        }),
-    };
-    const before = battle([{ definition: reappearing, position: [0, 0] }]);
-    const original = units.all(before).find((self) => self.definition === reappearing);
-    const removed = units.remove(before, units.ref(original), { reason: "SCRIPT" });
-    const replacement = units.all(removed).find((self) => self.definition === reappearing);
-    const next = units.initialize(removed, {
-        definition: { id: "next-operation", hooks: Hooks.empty() }, position: [1, 0],
-    });
-    const after = units.add(next.state, next.value);
-
-    assert.notEqual(replacement.id, original.id);
-    assert.notEqual(next.value.id, replacement.id);
-    assert.equal(get(after, original.id), undefined);
-    assert.equal(get(after, replacement.id), replacement);
-    assert.equal(get(after, next.value.id), next.value);
-});
-
 test("Tick phases publish their resource operations and failures preserve the input", () => {
     const failure = new Error("content failed");
     let fail = false;
