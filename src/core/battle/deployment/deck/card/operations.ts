@@ -9,7 +9,6 @@ import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
 import * as dp from "./dp/dp.js";
-import type { Parameters as CostParameters } from "./dp/parameter.js";
 import { resolveIncrease } from "./dp/query.js";
 import { enqueue } from "./supply/operations.js";
 import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
@@ -140,16 +139,6 @@ export function removeRestriction(
     const restrictions = remove(self.restrictions, id);
 
     return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
-}
-
-export function setCostContribution(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    entry: Contribution<CostParameters>,
-): BattleState {
-    const self: Card = get(battle, reference)!;
-
-    return replace(battle, dp.setCostContribution(self, entry));
 }
 
 export function removeCostContribution(

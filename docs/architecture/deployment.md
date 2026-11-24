@@ -48,7 +48,7 @@ Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有�
 
 ## 卡牌费用
 
-Card 的 `dp.parameters` 必须提供数值费用。`card.dp.create` 补齐参数的中性值，卡牌初始化验证基础费用非负。运行时 `stage` 记录涨费次数，`contributions` 保存可安装和移除的费用修正。
+Card 的 `dp.parameters` 必须提供数值费用。`card.dp.create` 补齐参数的中性值，卡牌初始化验证基础费用非负。运行时 `stage` 记录涨费次数，`contributions` 保存可安装和移除的费用修正。`card.dp.setCostContribution(card, entry)` 返回修改后的 Card，由调用者通过 `deck.replace` 写回。
 
 有效费用贡献按既有分组规则选出。同组只保留优先级胜出的整条贡献。若仍有多个费用覆写，按贡献 ID 顺序取第一个非 `null` 值。`baseAddition`、`step`、`maxMultiplier`、`finalAddition` 各自加总，`costScale` 相乘。
 

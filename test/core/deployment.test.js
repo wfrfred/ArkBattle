@@ -71,7 +71,8 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
             definition: {
                 ...operatorCard,
                 dp: { ...operatorCard.dp, parameters: { ...operatorCard.dp.parameters, cost } },
-                onTick: (state, self) => cards.setCostContribution(state, cards.ref(self), contribution),
+                onTick: (state, self) =>
+                    deck.replace(state, cards.dp.setCostContribution(self, contribution)),
             },
             unitDefinition: operator,
         };
@@ -89,10 +90,11 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
     assert.deepEqual(ordered(state), [second, first]);
     assert.deepEqual([...cards.all(state)].map(cards.ref), [first, second]);
 
-    state = cards.setCostContribution(state, second, {
+    const surcharged = cards.dp.setCostContribution(cards.get(state, second), {
         id: "surcharge",
         value: cards.dp.create({ finalAddition: 4 }),
     });
+    state = deck.replace(state, surcharged);
     assert.deepEqual(ordered(state), [second, first]);
     state = deployment.setOrdering(state, null);
     state = step(state, []);
@@ -428,12 +430,13 @@ test("retreat refunds before removal, and death delays global slot release indep
         reason: "DEATH", dp: 30, stage: 2, stock: 1, cooldown: 10, slots: 1,
     });
 
-    state = cards.setCostContribution(state, card, {
+    const adjusted = cards.dp.setCostContribution(cards.get(state, card), {
         id: "next-deployment-cost",
         value: cards.dp.create({
             cost: 17, baseAddition: 4, maxMultiplier: -0.25, costScale: 0.75, finalAddition: -2,
         }),
     });
+    state = deck.replace(state, adjusted);
     assert.equal(deployment.createRequest(state, card, tilePosition).quote.dp, 19);
     state = cards.removeCostContribution(state, card, "next-deployment-cost");
     assert.equal(deployment.createRequest(state, card, tilePosition).quote.dp, 20);

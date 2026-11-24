@@ -22,7 +22,6 @@ export {
     removeUnitHook,
     setRestriction,
     removeRestriction,
-    setCostContribution,
     removeCostContribution,
 } from "./operations.js";
 
