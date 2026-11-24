@@ -26,7 +26,7 @@ Action 的 `definitions` 声明所选行动，Skill 的 `definition` 声明所�
 
 能力可在装配时登记 entered／removing／removed 等 Hook。固有登记在完整 add 和任何 entered 前就绪；同级保留默认装配顺序，实际执行按[公共 Hook 优先级](hook.md)。通用装配和 Unit 生命周期不按具体能力建立额外阶段。初始 Effect 在登记后的 entered 正常安装。
 
-Unit 的 entered 和 tick 要求宿主仍为 ACTIVE。removing 使用固定 Departure，在 Lifetime 自动请求依赖者结束之前派发。removed 在注销前捕获最新登记对象与优先级，在注销后派发，历史载荷不变。完整机制见 [Lifetime](lifetime.md)，死亡归属与来源响应见 [Resource](resource.md)。
+Unit 在 `entered` 前完成战场和 Lifetime 节点登记。entered 和 tick 要求宿主仍为 ACTIVE。removing 在 Lifetime 自动请求依赖者结束之前派发。removed 在注销前从最新 Unit 捕获候选与优先级，在注销后派发。两次离场通知的 Departure 都使用 Lifetime 固定的首次结束快照和输入。 [Lifetime](lifetime.md) · [死亡归属与来源响应](resource.md)
 
 ## 构造、校验与命名
 

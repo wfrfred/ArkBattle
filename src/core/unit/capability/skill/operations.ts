@@ -3,7 +3,7 @@ import { lifetime as unitLifetime, replace as replaceUnits, update } from "../..
 import type { Identified, Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as lifetimes from "../../../lifetime/index.js";
-import { register, unregister } from "../../../lifetime/operations.js";
+import { register } from "../../../lifetime/operations.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { setHook, type EnteredHook } from "../../hook.js";
@@ -175,11 +175,7 @@ export function activate<S extends object, A extends object>(
         },
     ]);
     const activatedRef = activationRef(source, active);
-    battle = register(
-        battle,
-        lifetimes.scope(lifetime, activatedRef),
-        lifetimes.scope(unitLifetime, source),
-    );
+    battle = register(battle, lifetime, activatedRef, [lifetimes.scope(unitLifetime, source)]);
     battle = appendEvents(battle, [
         {
             type: "SKILL_ACTIVATED",
@@ -222,40 +218,42 @@ export function activate<S extends object, A extends object>(
     return { state: battle, value: activatedRef };
 }
 
-export const lifetime = lifetimes.create<Activation, Activation<any, any>, End>({
+export const lifetime = lifetimes.create<Activation<any, any>, End>({
     kind: "SKILL",
-    address: (reference) => [reference.host.id, reference.id],
+    address: (reference) => `${reference.host.id}:${reference.id}`,
     get: (battle, reference) => query.getActivation(battle, reference),
-    isEnding: (self) => self.activation.lifecycle === "ENDING",
-    begin: (self) => ({ ...self, activation: { ...self.activation, lifecycle: "ENDING" } }),
-    replace(battle, reference, next) {
-        const host = units.get(battle, reference.host)!;
+    end: {
+        prepare(battle, reference, initial) {
+            const host = units.get(battle, reference.host)!;
 
-        return replaceSkill(battle, host, next);
+            return replaceSkill(
+                battle,
+                host,
+                replaceIn(initial, ["activation", "lifecycle"], "ENDING"),
+            );
+        },
+        finalize(battle, reference, _initial, ending) {
+            const self = query.getActivation(battle, reference as Ref<Activation>)!;
+            const definition = self.definition.activation as ActivationDefinition<object, object>;
+            battle = definition.onEnd?.(battle, reference.host, self, ending) ?? battle;
+
+            const host = units.get(battle, reference.host)!;
+            battle = replaceUnits(battle, [replaceIn(host, ["skill", "activation"], null)]);
+            battle = appendEvents(battle, [
+                {
+                    type: "SKILL_ENDED",
+                    unitId: reference.host.id,
+                    tick: battle.tick,
+                },
+            ]);
+
+            return dispatch(battle, reference.host, activationEnded, {
+                ref: reference,
+                end: ending,
+            });
+        },
+        dependencyEnd: { type: "CANCELLED", reason: "DEPENDENCY" },
     },
-    finalize(battle, reference, ending) {
-        const self = query.getActivation(battle, reference)!;
-        const definition = self.definition.activation as ActivationDefinition<object, object>;
-        battle = definition.onEnd?.(battle, reference.host, self, ending) ?? battle;
-
-        const host = units.get(battle, reference.host)!;
-        battle = replaceUnits(battle, [replaceIn(host, ["skill", "activation"], null)]);
-        battle = unregister(battle, lifetimes.scope(lifetime, reference));
-        battle = appendEvents(battle, [
-            {
-                type: "SKILL_ENDED",
-                unitId: reference.host.id,
-                tick: battle.tick,
-            },
-        ]);
-
-        return dispatch(battle, reference.host, activationEnded, {
-            ref: reference,
-            end: ending,
-        });
-    },
-    reason: (ending) => (ending.type === "FINISHED" ? "SKILL_FINISHED" : ending.reason),
-    fromDependency: (reason) => ({ type: "CANCELLED", reason }),
 });
 
 export function finish<X extends Activation<any, any>>(

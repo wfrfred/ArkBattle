@@ -104,7 +104,8 @@ test("Unit death preserves its attribution through Effect responses and the orig
             .set(units.removed, {
                 id: "retain-departure",
                 invoke(state, departure) {
-                    assert.equal(departure, killedDeparture);
+                    assert.deepEqual(departure, killedDeparture);
+                    assert.equal(departure.unit, killedDeparture.unit);
                     observed.push("victim-removed");
                     return { state, value: undefined };
                 },

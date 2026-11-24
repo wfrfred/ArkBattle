@@ -48,9 +48,9 @@
 | [Attribute](attribute.md#attribute) | [底值按定义边界规范化，修改后数值再按当前范围限幅](../../test/core/attribute.test.js#L7)<br>[后写替换整个区间，未提供一侧恢复该默认边界，清范围与移除数值来源彼此独立](../../test/core/attribute.test.js#L27)<br>[只求值竞争胜出的动态来源，每次读取调用者当前事实](../../test/core/attribute.test.js#L44) |
 | [Hook · 类型化键与集合](hook.md#类型化键与集合) | [同名 Hook Key 仍按对象身份区分，替换同 ID 保留顺序和旧版本](../../test/core/hook.test.js#L12) |
 | [Hook · 派发与生命周期](hook.md#派发与生命周期) | [本轮固定候选及优先级，删除跳过、替换读最新、平级稳定，嵌套独立采样](../../test/core/hook.test.js#L25)<br>[全局 entered 在单位登记后施加规则，本地 entered 读到实际已落地的外部效果](../../test/core/hook.test.js#L82)<br>[全局 entered 同步结束宿主时，剩余全局及本地入场程序都停止](../../test/core/hook.test.js#L123)<br>[removing 已发布 ENDING 并先于依赖收尾，removed 使用注销前最新登记和原历史载荷，本地结束后全局才通知](../../test/core/hook.test.js#L149)<br>[Skill 和 Burst 的结束通知仍能在宿主 ENDING 时读取已清空的激活和爆发](../../test/core/lifetime.test.js#L18) |
-| [Lifetime · 请求与 Prepare](lifetime.md#请求与-prepare) | [上游宿主 ENDING 时拒绝新的间接依赖，即使中间 Action Execution 尚未收到结束请求](../../test/core/lifetime.test.js#L224) |
-| [Lifetime · Finalize 与完成边界](lifetime.md#finalize-与完成边界) | [显式依赖查询排除隐含宿主，反向绑定拒绝闭环。先撤销输出，依赖者完成后才能终结父实例，首次结束固定原因。 显式解绑后只随宿主结束](../../test/core/lifetime.test.js#L63) |
-| [Lifetime · 析构后执行操作](lifetime.md#析构后执行操作) | [结算之外延后操作立即产生其业务结果](../../test/core/lifetime.test.js#L143)<br>[析构队列按登记顺序读取最新状态，嵌套析构完成而新增任务不能抢先](../../test/core/lifetime.test.js#L152) |
+| [Lifetime · 请求与 Prepare](lifetime.md#请求与-prepare) | [上游宿主 ENDING 时冻结间接依赖边，即使中间 Action Execution 仍是 ACTIVE](../../test/core/lifetime.test.js#L221) |
+| [Lifetime · Finalize 与完成边界](lifetime.md#finalize-与完成边界) | [反向绑定拒绝闭环，依赖者以自身结束输入先完成，重复请求保留首次输入，提前解绑让 Effect 继续随宿主存活](../../test/core/lifetime.test.js#L63) |
+| [Lifetime · 析构后执行操作](lifetime.md#析构后执行操作) | [结算之外延后操作立即产生其业务结果](../../test/core/lifetime.test.js#L140)<br>[析构队列按登记顺序读取最新状态，嵌套析构完成而新增任务不能抢先](../../test/core/lifetime.test.js#L149) |
 
 ## Action、Skill 与 Effect
 

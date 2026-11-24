@@ -16,11 +16,11 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 Mechanism 是全场独立身份。Battle 持有通用 `Store` 并安排推进。开场 `initialMechanisms` 与运行时创建共用 `Mechanism.Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 分配 ID、初始化私有 `state` 并保留具体 Definition 类型。`get` 以 Ref 恢复具体类型。 [Mechanism 入口](../../src/core/mechanism/index.ts)
 
-`add` 按初始配置登记 `ACTIVE` 或 `INACTIVE` 实例，默认为 `ACTIVE`。登记后调用一次 `onEnter`。
+`add` 按初始配置登记 `ACTIVE` 或 `INACTIVE` 实例，默认为 `ACTIVE`。实例及 Lifetime 节点登记后调用一次 `onEnter`。
 
 `setState` 只改私有数据。`setActive` 先发布实际发生的启停变化，再分别调用 `onEnable` 或 `onDisable`。重复设置同一状态没有效果。`INACTIVE` 的实例仍可作依赖。
 
-`remove` 请求 Lifetime 发布 `ENDING` 并结束依赖者。依赖者完成收尾后，Finalize 调用 `onEnd` 并注销实例。
+`remove` 请求结束实例。Prepare 发布 `ENDING`，Lifetime 随后请求依赖者结束。依赖者完成收尾后，Finalize 用最新实例调用 `onEnd` 并注销。
 
 嵌套结束与依赖完成统一见 [Lifetime](lifetime.md)，不在地形再实现一套停止协议。
 

@@ -5,7 +5,7 @@ import { replaceIn } from "../../../common/object.js";
 import type { Identified, Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
 import * as lifetimes from "../../../lifetime/index.js";
-import { register, unregister } from "../../../lifetime/operations.js";
+import { register } from "../../../lifetime/operations.js";
 import { allows } from "../../../restriction.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { lifetime as unitLifetime, replace as replaceUnits } from "../../operations.js";
@@ -64,30 +64,35 @@ export function replace(battle: BattleState, unit: Host, next: Unbalance): Battl
     return replaceUnits(battle, [{ ...unit, shiftable: { ...shiftable, ...changes } }]);
 }
 
-export const lifetime = lifetimes.create<Unbalance, Unbalance, End>({
+export const lifetime = lifetimes.create<Unbalance, End>({
     kind: "UNBALANCE",
-    address: ({ host, id }) => [host.id, id],
+    address: ({ host, id }) => `${host.id}:${id}`,
     get,
-    isEnding: (self) => self.lifecycle === "ENDING",
-    begin: (self) => ({ ...self, lifecycle: "ENDING", velocity: ZERO, pendingForce: ZERO }),
-    replace: (battle, reference, next) => replace(battle, units.get(battle, reference.host)!, next),
-    finalize(battle, reference): BattleState {
-        const unit = units.get(battle, reference.host)!;
-        const { shiftable } = unit;
-        if (shiftable.unbalance?.id === reference.id) {
-            battle = replaceUnits(battle, [replaceIn(unit, ["shiftable", "unbalance"], null)]);
-        } else {
+    end: {
+        prepare(battle, reference, initial) {
+            return replace(battle, units.get(battle, reference.host)!, {
+                ...initial,
+                lifecycle: "ENDING",
+                velocity: ZERO,
+                pendingForce: ZERO,
+            });
+        },
+        finalize(battle, reference) {
+            const unit = units.get(battle, reference.host)!;
+            const { shiftable } = unit;
+            if (shiftable.unbalance?.id === reference.id) {
+                return replaceUnits(battle, [replaceIn(unit, ["shiftable", "unbalance"], null)]);
+            }
+
             const endingUnbalances = new Map(shiftable.endingUnbalances);
             endingUnbalances.delete(reference.id);
-            battle = replaceUnits(battle, [
+
+            return replaceUnits(battle, [
                 replaceIn(unit, ["shiftable", "endingUnbalances"], endingUnbalances),
             ]);
-        }
-
-        return unregister(battle, lifetimes.scope(lifetime, reference));
+        },
+        dependencyEnd: "HOST_UNAVAILABLE",
     },
-    reason: (end) => end,
-    fromDependency: () => "HOST_UNAVAILABLE",
 });
 
 function present(unit: Host): boolean {
@@ -124,12 +129,12 @@ export function receive(
     battle: BattleState,
     unit: Host,
     next: Unbalance,
-    traction?: { readonly target: lifetimes.Scope; readonly parents: readonly lifetimes.Scope[] },
+    traction?: { readonly reference: Ref<pull.Pull>; readonly scopes: readonly lifetimes.Scope[] },
 ): BattleState {
     const { shiftable } = unit;
     const previous = shiftable.unbalance;
     const started = previous?.id !== next.id;
-    const owner = lifetimes.scope(lifetime, ref(next));
+    const reference = ref(next);
     if (started) {
         const endingUnbalances =
             previous === null
@@ -146,13 +151,16 @@ export function receive(
                 },
             },
         ]);
-        battle = register(battle, owner, lifetimes.scope(unitLifetime, next.host));
+        battle = register(battle, lifetime, reference, [lifetimes.scope(unitLifetime, next.host)]);
     } else {
         battle = replace(battle, unit, next);
     }
 
     if (traction !== undefined) {
-        battle = register(battle, traction.target, owner, traction.parents);
+        battle = register(battle, pull.lifetime, traction.reference, [
+            lifetimes.scope(lifetime, reference),
+            ...traction.scopes,
+        ]);
     }
 
     if (started && hasBlockable(unit)) {

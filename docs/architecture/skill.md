@@ -84,11 +84,11 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 常规调度由 trigger 决定。advance 调度 AUTO 与尚未成功发动的 PASSIVE，entered 尝试 PASSIVE。手动、自动和被动入口都用宿主的 Skill Ref 调用 `activate`。发动时读取宿主当前的 Skill 并调用它的程序。Content 可以直接调用 `activate` 显式发动任意触发类型的技能。PASSIVE 始终只允许成功发动一次。
 
-发动先检查宿主、占槽、限制、accepts、本次门槛与足额支付；拒绝不初始化、不支付。通过后调用本轮 initialize 一次，构造 Duration，再一次发布扣费、Activation 与下一轮身份，登记其 Unit 所有权。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。零时长也先执行仍有效的 onStart，再复查到期并结束。
+发动先检查宿主、占槽、限制、accepts、本次门槛与足额支付；拒绝不初始化、不支付。通过后调用本轮 initialize 一次，构造 Duration，再一次发布扣费、Activation 与下一轮身份，登记本轮 Activation 对宿主 Unit 的 Lifetime 依赖。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。零时长也先执行仍有效的 onStart，再复查到期并结束。
 
 暂时消失本身不跳过仍成立的 onStart，也不自动结束已有持续技能。启动通知可同步结束本轮；返回的 Ref 仍表示创建事实，支付与已经完成的业务不回滚。依赖本轮身份的业务在登记后执行，不能为前置判断另建本轮状态。
 
-结束按[Lifetime](lifetime.md)等待依赖清理，调用本轮 onEnd，随后只清空同一 activation、保留最新持久状态和 SP，再通知 activationEnded。ENDING 持续占位；在已有结算中，嵌套 finish／cancel 返回不保证槽位已释放，需要下一轮的业务在结束通知中继续。
+宿主离场时，本轮 Activation 以 `DEPENDENCY` 取消。结束等待其依赖者清理，调用本轮 onEnd，随后只清空同一 activation、保留最新持久状态和 SP，再通知 activationEnded。ENDING 持续占位；嵌套 finish／cancel 返回时槽位可能仍被占用，需要下一轮的业务在结束通知中继续。 [Lifetime](lifetime.md)
 
 ## 6. 覆盖边界
 

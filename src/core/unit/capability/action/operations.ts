@@ -2,7 +2,7 @@ import { lifetime as unitLifetime, replace as replaceUnits } from "../../operati
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as lifetimes from "../../../lifetime/index.js";
-import { register, unregister } from "../../../lifetime/operations.js";
+import { register } from "../../../lifetime/operations.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
@@ -113,11 +113,7 @@ export function start<P extends object, E extends object>(
         },
     ]);
     const execution = ref(source, self);
-    battle = register(
-        battle,
-        lifetimes.scope(lifetime, execution),
-        lifetimes.scope(unitLifetime, source),
-    );
+    battle = register(battle, lifetime, execution, [lifetimes.scope(unitLifetime, source)]);
 
     return { state: battle, value: execution };
 }
@@ -155,36 +151,44 @@ export function setExecutionState<P extends object, E extends object>(
         : replaceAction(battle, unit, replaceIn(current, ["execution", "state"], state));
 }
 
-export const lifetime = lifetimes.create<ExecutionIdentity, ExecutionIdentity, End>({
+export const lifetime = lifetimes.create<ExecutionIdentity, End>({
     kind: "ACTION",
-    address: (reference) => [reference.host.id, reference.id],
+    address: (reference) => `${reference.host.id}:${reference.id}`,
     get: (battle, reference) =>
         units.get(battle, reference.host)?.action.actions.getExecution(reference.id),
-    isEnding: (self) => self.execution.lifecycle === "ENDING",
-    begin: (self) => ({ ...self, execution: { ...self.execution, lifecycle: "ENDING" } }),
-    replace: (battle, reference, next) =>
-        replaceAction(battle, units.get(battle, reference.host)!, next as Execution),
-    finalize(battle, reference, result) {
-        const self = units.get(battle, reference.host)!.action.actions.getExecution(reference.id)!;
+    end: {
+        prepare(battle, reference, initial) {
+            const host = units.get(battle, reference.host)!;
+            const self = initial as Execution;
 
-        const definition = self.definition as Definition;
-        battle = definition.onEnd?.(battle, reference.host, self, result) ?? battle;
+            return replaceAction(
+                battle,
+                host,
+                replaceIn(self, ["execution", "lifecycle"], "ENDING"),
+            );
+        },
+        finalize(battle, reference, _initial, result) {
+            const self = units
+                .get(battle, reference.host)!
+                .action.actions.getExecution(reference.id)!;
 
-        const host = units.get(battle, reference.host)!;
-        const action = host.action.actions.get(self.definition.id)!;
-        battle = replaceAction(battle, host, { ...action, execution: null });
-        battle = unregister(battle, lifetimes.scope(lifetime, reference));
+            const definition = self.definition as Definition;
+            battle = definition.onEnd?.(battle, reference.host, self, result) ?? battle;
 
-        return appendEvents(battle, [
-            {
-                sourceUnitId: reference.host.id,
-                tick: battle.tick,
-                type: result.type === "FINISHED" ? "ACTION_FINISHED" : "ACTION_CANCELLED",
-            },
-        ]);
+            const host = units.get(battle, reference.host)!;
+            const action = host.action.actions.get(self.definition.id)!;
+            battle = replaceAction(battle, host, { ...action, execution: null });
+
+            return appendEvents(battle, [
+                {
+                    sourceUnitId: reference.host.id,
+                    tick: battle.tick,
+                    type: result.type === "FINISHED" ? "ACTION_FINISHED" : "ACTION_CANCELLED",
+                },
+            ]);
+        },
+        dependencyEnd: { type: "CANCELLED", reason: "SOURCE_ABSENT" },
     },
-    reason: (result) => (result.type === "FINISHED" ? "ACTION_FINISHED" : result.reason),
-    fromDependency: () => ({ type: "CANCELLED", reason: "SOURCE_ABSENT" }),
 });
 
 export function finish(battle: BattleState, reference: ExecutionRef): BattleState {
@@ -203,7 +207,6 @@ export function cancelForUnit(
     battle: BattleState,
     source: Ref<Unit & ActionCapability>,
     reason: string,
-    lifetimeReason = reason,
 ): BattleState {
     const unit = units.get(battle, source);
     if (unit === undefined) {
@@ -211,7 +214,7 @@ export function cancelForUnit(
     }
 
     for (const reference of executionRefs(unit)) {
-        battle = lifetime.end(battle, reference, { type: "CANCELLED", reason }, lifetimeReason);
+        battle = cancel(battle, reference, reason);
     }
 
     return battle;

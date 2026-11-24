@@ -17,7 +17,7 @@
 
 无单个主要对象的批量操作可以省略 Ref。函数所在目录、名字及是否返回 State，不决定它属于哪类。私有 setter 接收计算完成的结果值；只写状态的操作直接返回 State，有调用者实际消费的结果时才使用 Result 或 Outcome。
 
-实例生命周期阶段统一叫 `lifecycle`，两态生命周期使用 `ACTIVE`／`ENDING`。私有业务数据叫 `state`。Effect.enabled 是启用意图，Lifetime Pending.phase 是结算进度，保留不同名称。Definition 描述配置和程序，Initial 提供本次构造事实；不为普通定义另造 Runtime、Compiled、Program 等别名。
+实例生命周期阶段统一叫 `lifecycle`，两态生命周期使用 `ACTIVE`／`ENDING`。私有业务数据叫 `state`。Effect.enabled 表达启用意图，Lifetime 节点的 `ending` 保存首次结束数据。Definition 描述配置和程序，Initial 提供本次构造事实；不为普通定义另造 Runtime、Compiled、Program 等别名。
 
 实例程序用 `onStart`、`onTick`、`onEnd` 等场景动词。事实通知用 `started`、`ended`、`paid` 等已发生名称，前置干预用 `beforeXxx`。主动操作按业务命名，同一语义复用已有动词，不以转发包装统一表面签名。
 

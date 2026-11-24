@@ -62,13 +62,13 @@ Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤
 
 ## 6. 完整启动、写回与终止
 
-start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与身份计数，并登记 Execution→Unit 所有权。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。
+start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与身份计数，并登记本轮 Execution 对宿主 Unit 的 Lifetime 依赖。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。
 
 持久状态、执行状态和冷却各有字段级写回，只替换对应字段。写入私有状态使用指向对应 Action 或 Execution 的精确 Ref。结束程序可以更新仍登记的本轮私有状态，写回保留执行身份和 ENDING。缺失身份属于调用错误。最新读取和不可变发布遵守公共契约。
 
 `finish` 请求 FINISHED，`cancel` 请求 CANCELLED。终止发布 ENDING，等待依赖者结束后将结果传给 onEnd，再只清空同一轮 execution，保留最新持久状态／冷却并输出结束事实。Lifetime 保护宿主到整个 Finalize 返回；它不保护任意普通 onTick 调用栈。嵌套结束请求返回时本轮可能仍占位，同一结算中立即重启可能被拒绝。
 
-cancelForUnit 从当前状态取得执行 Ref 候选并逐项取消；Unit 真实离场通过所有权边传播。对 Action 报告的 SOURCE_ABSENT 与向依赖者传播的原离场原因分别保留。
+cancelForUnit 从当前状态取得执行 Ref 候选并逐项取消。Unit 离场时，依赖它的 Execution 以 `SOURCE_ABSENT` 取消。依赖本轮 Execution 的实例按各自的结束输入收尾。
 
 ## 7. 调度
 

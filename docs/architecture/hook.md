@@ -46,8 +46,8 @@ accepts 只读。通知使用 void；取消、固定数值等工作值转换由�
 | --- | --- |
 | Battle unit entered | Unit 与占格登记后、Unit 本地 `entered` 前同步派发 `battle.unit.entered`。Unit 进入 ENDING 或注销后停止剩余入场通知。 |
 | Unit entered／tick | 固定候选，每项前要求当前宿主 ACTIVE |
-| Unit removing | 固定 Departure 并发布 ENDING 后执行，早于 Lifetime 自动请求依赖者结束 |
-| Unit removed | 注销前捕获最新 Hook 对象及 priority 快照，注销后执行；不再查已删除宿主 |
+| Unit removing | 使用首次结束快照与输入构造 Departure，在发布 ENDING 后执行，早于 Lifetime 自动请求依赖者结束 |
+| Unit removed | 注销前捕获最新 Hook 对象及 priority 快照，注销后执行，Departure 沿用首次结束的快照与输入 |
 | Battle unit removed | `battle.unit.removed` 在 Unit 本地 `removed` 后派发 |
 | Blocking 一条关系 | 首个回调前同时采样双方候选，各自排序，先 Blocker 后 Blockable；不跨角色按 priority 混排 |
 | Blocking ACQUIRED／RELEASED | 前者随原 Relation 失效停止；后者通知已发生的解除，不追删回调中新建的关系 |

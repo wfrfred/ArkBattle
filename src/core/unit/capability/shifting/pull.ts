@@ -4,7 +4,6 @@ import type { Identified, Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import * as lifetimes from "../../../lifetime/index.js";
-import { unregister } from "../../../lifetime/operations.js";
 import * as projectiles from "../../../projectile/index.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
@@ -72,20 +71,16 @@ function replace(battle: BattleState, reference: Ref<Pull>, next: Pull | null): 
     return unbalance.replace(battle, unit, { ...self, pulls });
 }
 
-export const lifetime = lifetimes.create<Pull, Pull, string>({
+export const lifetime = lifetimes.create<Pull, string>({
     kind: "PULL",
-    address: ({ unbalance, id }) => [unbalance.host.id, unbalance.id, id],
+    address: ({ unbalance, id }) => `${unbalance.host.id}:${unbalance.id}:${id}`,
     get,
-    isEnding: (self) => self.lifecycle === "ENDING",
-    begin: (self) => ({ ...self, lifecycle: "ENDING" }),
-    replace,
-    finalize(battle, reference): BattleState {
-        battle = replace(battle, reference, null);
-
-        return unregister(battle, lifetimes.scope(lifetime, reference));
+    end: {
+        prepare: (battle, reference, initial) =>
+            replace(battle, reference, { ...initial, lifecycle: "ENDING" }),
+        finalize: (battle, reference) => replace(battle, reference, null),
+        dependencyEnd: "CANCELLED",
     },
-    reason: (reason) => reason,
-    fromDependency: (reason) => reason,
 });
 
 export function available(battle: BattleState, self: Pull): boolean {
@@ -130,14 +125,14 @@ export function apply(
 
     const applier = units.get(battle, source);
     const unit = units.get(battle, target);
-    const parents =
+    const scopes =
         input.point.type === "FIXED"
             ? [input.scope]
             : [input.scope, lifetimes.scope(projectiles.lifetime, input.point.projectile)];
     if (
         applier === undefined ||
         unit === undefined ||
-        !parents.every((item) => lifetimes.available(battle, item))
+        !scopes.every((scope) => lifetimes.available(battle, scope))
     ) {
         return { state: battle, value: null };
     }
@@ -168,7 +163,7 @@ export function apply(
         battle,
         unit,
         { ...next, pulls, nextPullId: next.nextPullId + 1 },
-        { target: lifetimes.scope(lifetime, reference), parents },
+        { reference, scopes },
     );
 
     return { state: battle, value: reference };

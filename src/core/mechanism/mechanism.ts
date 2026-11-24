@@ -1,5 +1,5 @@
 import type { Identified, Ref } from "../common/ref.js";
-import { create as createLifetime } from "../lifetime/operations.js";
+import { create as createLifetime, register } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
 import type { Result, State as BattleState } from "../battle/state.js";
 import { replaceIn } from "../common/object.js";
@@ -56,6 +56,7 @@ export function initialize<S extends object, const D extends Definition<S>>(
 
 export function add<S extends object>(battle: BattleState, self: Mechanism<S>): BattleState {
     battle = replaceIn(battle, ["mechanisms"], battle.mechanisms.add(self.id, self));
+    battle = register(battle, lifetime, ref(self));
 
     return self.definition.onEnter?.(battle, self) ?? battle;
 }
@@ -109,21 +110,24 @@ export function setActive<M extends Mechanism<any>>(
     return callback?.(battle, next) ?? battle;
 }
 
-export const lifetime = createLifetime<Mechanism, Mechanism<any>, string>({
+export const lifetime = createLifetime<Mechanism<any>, string>({
     kind: "MECHANISM",
-    address: (ref) => [ref.id],
+    address: (reference) => String(reference.id),
     get,
-    isEnding: (self) => self.lifecycle === "ENDING",
-    begin: (self) => ({ ...self, lifecycle: "ENDING" }),
-    replace: (battle, reference, next) =>
-        replaceIn(battle, ["mechanisms"], battle.mechanisms.replace(reference.id, next)),
-    finalize: (battle, reference) => {
-        const self = get(battle, reference)!;
-        battle = self.definition.onEnd?.(battle, self) ?? battle;
+    end: {
+        prepare: (battle, reference, initial) =>
+            replaceIn(
+                battle,
+                ["mechanisms"],
+                battle.mechanisms.replace(reference.id, { ...initial, lifecycle: "ENDING" }),
+            ),
+        finalize: (battle, reference) => {
+            const self = get(battle, reference)!;
+            battle = self.definition.onEnd?.(battle, self) ?? battle;
 
-        return replaceIn(battle, ["mechanisms"], battle.mechanisms.remove(reference.id));
+            return replaceIn(battle, ["mechanisms"], battle.mechanisms.remove(reference.id));
+        },
     },
-    reason: (reason) => reason,
 });
 
 export function remove<M extends Mechanism<any>>(

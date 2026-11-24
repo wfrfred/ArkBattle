@@ -11,7 +11,7 @@
 | [接口约定](api-conventions.md) | 命名、Typed Ref、类型恢复、Query、Change 与写回 |
 | [Attribute](attribute.md) | 数值底值、有效贡献、当前范围与领域后继 |
 | [Hook](hook.md) | 类型化 Key、登记、优先级、固定候选与逐项读取 |
-| [Lifetime](lifetime.md) | 所有权、Scope、Prepare／Finalize 与依赖顺序 |
+| [Lifetime](lifetime.md) | Scope、依赖图、Prepare／Finalize 与延后操作 |
 | [Resource](resource.md) | 四种 Calculate／Apply、Pending、排除／豁免、死亡归属 |
 | [Event](event.md) | UI 瞬时事实及其与业务结算的边界 |
 | [语义验收](verification.md) | 必要结果、代表场景和集中测试归属 |

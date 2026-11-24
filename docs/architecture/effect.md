@@ -35,9 +35,9 @@ Effects 保存完整实例和宿主内单调分配的 ID。Ref 的身份为宿�
 
 ## 3. 生命周期约束
 
-安装要求宿主 ACTIVE、输入 Scope 可用。先发布 INSTALLING 实例并登记 Unit 所有权和显式依赖，再调用 onInstall。来源允许已经退场；确实需要随来源结束的内容另外绑定 Scope。
+安装要求宿主 ACTIVE、输入 Scope 可用。先发布 INSTALLING 实例并登记对宿主与输入 Scope 的依赖，再调用 onInstall。来源允许已经退场；确实需要随来源结束的内容另外绑定 Scope。
 
-Action Scope 绑定本轮 Execution，Skill Scope 绑定本轮 Activation，Burst 本身使用 Effect Scope。任一上游结束都会请求本实例结束；依赖不共享时间轴。INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可作为可用依赖，开始结束的上游拒绝新绑定。资格与请求完成规则统一由 [Lifetime](lifetime.md) 定义，不从 HP 或空间存在推导生命周期。
+Action Scope 绑定本轮 Execution，Skill Scope 绑定本轮 Activation，Burst 本身使用 Effect Scope。任一上游结束都会以 `CANCELLED` 请求 Effect 结束，Effect 保有自己的时间轴。INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可作为可用依赖，开始结束的上游拒绝新绑定。资格与请求完成规则见 [Lifetime](lifetime.md)。
 
 ## 4. 生效状态与覆写
 
@@ -100,9 +100,9 @@ setState 仅改私有数据，各 lifecycle 均可写入，不恢复实例或刷
 
 ### 结束流程
 
-`remove` 按 Ref 请求终结 Effect，默认原因为 `EXPLICIT`。Lifetime 发布 `ENDING` 后，在 Prepare 阶段对原 `ACTIVE` 实例调用 `onDisable` 撤销输出，并协调组候补。依赖者完整 Finalize 后，调用当前实例的 `onEnd`，再移除实例并注销关系。宿主 `ENDING` 时不启用候补。
+`remove` 按 Ref 请求终结 Effect，默认原因为 `EXPLICIT`。Prepare 先发布 `ENDING`，按开始结束时的生命周期决定是否调用 `onDisable` 撤销原有输出，再协调组候补。依赖者完整 Finalize 后，调用当前实例的 `onEnd`，再移除实例。宿主 `ENDING` 时不启用候补。
 
-请求与完成、首次原因及嵌套结束的边界见 [Lifetime](lifetime.md#请求与-prepare)。onEnd 请求 Unit 离场会先标记 ENDING，但所有权保护宿主直到整个 Effect Finalize 返回。普通 onTick 没有相同的调用栈保护；后继按业务资格接续最新状态。
+onEnd 请求 Unit 离场会先标记 ENDING，宿主等到整个 Effect Finalize 返回才注销。普通 onTick 的后继按业务资格接续最新状态。 [请求、首次原因与嵌套结束](lifetime.md#请求与-prepare)
 
 ## 6. 时间推进
 

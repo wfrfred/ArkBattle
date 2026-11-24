@@ -1,42 +1,240 @@
 import type { Identified, Ref } from "../common/ref.js";
 import { replaceIn } from "../common/object.js";
 import type { State as BattleState, Result } from "../battle/state.js";
-import { paired, type Definition, type Lifetime, type Scope } from "./lifetime.js";
-import * as dependency from "./dependency.js";
+import type { Node } from "./lifetime.js";
+
+const paired: unique symbol = Symbol("lifetime");
+
+interface Config<T extends Identified<object>, E> {
+    readonly kind: string;
+    readonly address: (ref: Ref<T>) => string;
+    readonly get: (battle: BattleState, ref: Ref<T>) => T | undefined;
+    readonly end: {
+        readonly prepare: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
+        readonly finalize: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
+        readonly dependencyEnd?: E;
+    };
+}
+
+export interface Scope {
+    readonly [paired]: unknown;
+}
+
+export interface Lifetime<T extends Identified<object>, E> {
+    readonly end: (battle: BattleState, ref: Ref<T>, end: E) => BattleState;
+    readonly [paired]: Config<T, E>;
+}
 
 interface Pair {
-    readonly definition: Definition<Identified<object>, Identified<object>, unknown>;
+    readonly config: Config<Identified<object>, unknown>;
     readonly ref: Ref<Identified<object>>;
 }
 
-export function create<V extends Identified<object>, S extends V, E>(
-    definition: Definition<V, S, E>,
-): Lifetime<V, S, E> {
-    const lifetime: Lifetime<V, S, E> = {
-        kind: definition.kind,
-        [paired]: definition,
-        end(battle, ref, end, dependencyReason = definition.reason(end)) {
-            const outer = !battle.lifetime.settling;
-            battle = request(battle, scope(lifetime, ref), end, dependencyReason);
+export function create<T extends Identified<object>, E>(config: Config<T, E>): Lifetime<T, E> {
+    const lifetime: Lifetime<T, E> = {
+        [paired]: config,
+        end(battle, ref, end) {
+            const outer = !settling(battle);
+            battle = request(battle, key(scope(lifetime, ref)), end);
 
-            if (!outer || !battle.lifetime.settling) {
-                return battle;
-            }
-
-            battle = drain(battle);
-
-            return flushDeferred(replaceIn(battle, ["lifetime", "settling"], false));
+            return outer ? flushDeferred(drain(battle)) : battle;
         },
     };
 
     return lifetime;
 }
 
+export function scope<T extends Identified<object>, E>(
+    lifetime: Lifetime<T, E>,
+    ref: Ref<T>,
+): Scope {
+    return { [paired]: { config: lifetime[paired], ref } };
+}
+
+function key(target: Scope): string {
+    const { config, ref } = target[paired] as Pair;
+
+    return JSON.stringify([config.kind, config.address(ref)]);
+}
+
+export function available(battle: BattleState, target: Scope): boolean {
+    return isAvailable(battle.lifetime.nodes, key(target));
+}
+
+function isAvailable(nodes: ReadonlyMap<string, Node>, identity: string): boolean {
+    const node = nodes.get(identity);
+
+    return (
+        node !== undefined &&
+        node.ending === undefined &&
+        node.dependencies.every((dependency) => isAvailable(nodes, dependency))
+    );
+}
+
+export function register<T extends Identified<object>, E>(
+    battle: BattleState,
+    lifetime: Lifetime<T, E>,
+    ref: Ref<T>,
+    scopes: readonly Scope[] = [],
+): BattleState {
+    const target = scope(lifetime, ref);
+    const identity = key(target);
+    const nodes = battle.lifetime.nodes;
+    if (nodes.has(identity)) {
+        throw new TypeError("duplicate lifetime node");
+    }
+
+    const dependencies = [...new Set(scopes.map(key))];
+    if (dependencies.length !== 0 && !("dependencyEnd" in lifetime[paired].end)) {
+        throw new TypeError("this lifetime cannot depend on another lifetime");
+    }
+    if (!dependencies.every((dependency) => isAvailable(nodes, dependency))) {
+        throw new TypeError("lifetime dependencies must be available");
+    }
+
+    return replaceIn(
+        battle,
+        ["lifetime", "nodes"],
+        new Map(nodes).set(identity, { target, dependencies }),
+    );
+}
+
+export function bind<T extends Identified<object>, E>(
+    battle: BattleState,
+    lifetime: Lifetime<T, E>,
+    ref: Ref<T>,
+    parent: Scope,
+): Result<boolean> {
+    const nodes = battle.lifetime.nodes;
+    const identity = key(scope(lifetime, ref));
+    const dependency = key(parent);
+    if (!isAvailable(nodes, identity) || !isAvailable(nodes, dependency)) {
+        return { state: battle, value: false };
+    }
+    if (!("dependencyEnd" in lifetime[paired].end)) {
+        throw new TypeError("this lifetime cannot depend on another lifetime");
+    }
+
+    const node = nodes.get(identity)!;
+    if (node.dependencies.includes(dependency)) {
+        return { state: battle, value: true };
+    }
+    if (wouldCycle(nodes, identity, dependency)) {
+        throw new TypeError("lifetime dependencies cannot form a cycle");
+    }
+
+    const next = new Map(nodes).set(identity, {
+        ...node,
+        dependencies: [...node.dependencies, dependency],
+    });
+
+    return { state: replaceIn(battle, ["lifetime", "nodes"], next), value: true };
+}
+
+export function unbind<T extends Identified<object>, E>(
+    battle: BattleState,
+    lifetime: Lifetime<T, E>,
+    ref: Ref<T>,
+    parent: Scope,
+): BattleState {
+    const nodes = battle.lifetime.nodes;
+    const identity = key(scope(lifetime, ref));
+    const dependency = key(parent);
+    if (!isAvailable(nodes, identity) || !isAvailable(nodes, dependency)) {
+        return battle;
+    }
+
+    const node = nodes.get(identity)!;
+    const dependencies = node.dependencies.filter((entry) => entry !== dependency);
+
+    return dependencies.length === node.dependencies.length
+        ? battle
+        : replaceIn(
+              battle,
+              ["lifetime", "nodes"],
+              new Map(nodes).set(identity, { ...node, dependencies }),
+          );
+}
+
+function wouldCycle(
+    nodes: ReadonlyMap<string, Node>,
+    identity: string,
+    dependency: string,
+): boolean {
+    const remaining = [dependency];
+    const visited = new Set<string>();
+
+    while (remaining.length > 0) {
+        const current = remaining.pop()!;
+        if (current === identity) {
+            return true;
+        }
+        if (!visited.has(current)) {
+            visited.add(current);
+            remaining.push(...nodes.get(current)!.dependencies);
+        }
+    }
+
+    return false;
+}
+
+function settling(battle: BattleState): boolean {
+    return [...battle.lifetime.nodes.values()].some((node) => node.ending !== undefined);
+}
+
+function request(battle: BattleState, identity: string, end: unknown): BattleState {
+    const node = battle.lifetime.nodes.get(identity);
+    if (node === undefined || node.ending !== undefined) {
+        return battle;
+    }
+
+    const { config, ref } = node.target[paired] as Pair;
+    const initial = config.get(battle, ref)!;
+    const nodes = new Map(battle.lifetime.nodes);
+    nodes.delete(identity);
+    nodes.set(identity, { ...node, ending: { initial, end } });
+    battle = replaceIn(battle, ["lifetime", "nodes"], nodes);
+    battle = config.end.prepare(battle, ref, initial, end);
+
+    for (const [childKey, child] of battle.lifetime.nodes) {
+        if (child.ending === undefined && child.dependencies.includes(identity)) {
+            const dependent = child.target[paired] as Pair;
+            battle = request(battle, childKey, dependent.config.end.dependencyEnd);
+        }
+    }
+
+    return battle;
+}
+
+function drain(battle: BattleState): BattleState {
+    while (true) {
+        const nodes = [...battle.lifetime.nodes];
+        const ending = nodes.filter(([, node]) => node.ending !== undefined);
+        if (ending.length === 0) {
+            return battle;
+        }
+
+        const waiting = new Set(nodes.flatMap(([, node]) => node.dependencies));
+        const ready = ending.find(([identity]) => !waiting.has(identity));
+        if (ready === undefined) {
+            throw new Error("lifetime endings have no ready node");
+        }
+
+        const [identity, node] = ready;
+        const { config, ref } = node.target[paired] as Pair;
+        const { initial, end } = node.ending!;
+        battle = config.end.finalize(battle, ref, initial as Identified<object>, end);
+        const next = new Map(battle.lifetime.nodes);
+        next.delete(identity);
+        battle = replaceIn(battle, ["lifetime", "nodes"], next);
+    }
+}
+
 export function defer(
     battle: BattleState,
     operation: (battle: BattleState) => BattleState,
 ): BattleState {
-    if (battle.lifetime.settling || battle.lifetime.flushing) {
+    if (settling(battle) || battle.lifetime.flushing) {
         return replaceIn(
             battle,
             ["lifetime", "deferred"],
@@ -45,216 +243,6 @@ export function defer(
     }
 
     return operation(battle);
-}
-
-export function scope<V extends Identified<object>, S extends V, E, T extends S>(
-    lifetime: Lifetime<V, S, E>,
-    ref: Ref<T>,
-): Scope {
-    const definition = lifetime[paired];
-
-    return {
-        type: "LIFETIME",
-        kind: lifetime.kind,
-        address: definition.address(ref as object as Ref<V>),
-        [paired]: { definition, ref },
-    };
-}
-
-export function getRef<V extends Identified<object>, S extends V, E>(
-    target: Scope,
-    lifetime: Lifetime<V, S, E>,
-): Ref<V> | undefined {
-    const pair = target[paired] as Pair;
-
-    return (pair.definition as object) === lifetime[paired] ? (pair.ref as Ref<V>) : undefined;
-}
-
-export function available(battle: BattleState, target: Scope): boolean {
-    if (battle.lifetime.endings.has(dependency.key(target))) {
-        return false;
-    }
-
-    const { definition, ref } = target[paired] as Pair;
-    const self = definition.get(battle, ref);
-
-    return (
-        self !== undefined &&
-        !definition.isEnding(self) &&
-        dependency
-            .parents(battle.lifetime.dependencies, target)
-            .every((parent) => available(battle, parent))
-    );
-}
-
-export function dependencies(battle: BattleState, target: Scope): readonly Scope[] {
-    return battle.lifetime.dependencies.entries.get(dependency.key(target))?.scopes ?? [];
-}
-
-export function register(
-    battle: BattleState,
-    target: Scope,
-    owner: Scope | null,
-    scopes: readonly Scope[] = [],
-): BattleState {
-    return change(battle, target, { target, owner, scopes });
-}
-
-export function unregister(battle: BattleState, target: Scope): BattleState {
-    return change(battle, target, undefined);
-}
-
-export function bind(battle: BattleState, target: Scope, parent: Scope): Result<boolean> {
-    const { definition } = target[paired] as Pair;
-    if (definition.fromDependency === undefined) {
-        throw new TypeError("this lifetime cannot depend on another lifetime");
-    }
-    if (!available(battle, target) || !available(battle, parent)) {
-        return { state: battle, value: false };
-    }
-    if (dependency.wouldCycle(battle.lifetime.dependencies, target, parent)) {
-        throw new TypeError("lifetime dependencies cannot form a cycle");
-    }
-
-    const entry = battle.lifetime.dependencies.entries.get(dependency.key(target));
-    const scopes = entry?.scopes ?? [];
-    if (scopes.some((current) => dependency.key(current) === dependency.key(parent))) {
-        return { state: battle, value: true };
-    }
-
-    return {
-        state: change(battle, target, {
-            target,
-            owner: entry?.owner ?? null,
-            scopes: [...scopes, parent],
-        }),
-        value: true,
-    };
-}
-
-export function unbind(battle: BattleState, target: Scope, parent: Scope): BattleState {
-    const entry = battle.lifetime.dependencies.entries.get(dependency.key(target));
-    if (entry === undefined) {
-        return battle;
-    }
-
-    const scopes = entry.scopes.filter(
-        (current) => dependency.key(current) !== dependency.key(parent),
-    );
-
-    return scopes.length === entry.scopes.length
-        ? battle
-        : change(battle, target, { ...entry, scopes });
-}
-
-function change(
-    battle: BattleState,
-    target: Scope,
-    next: dependency.Entry | undefined,
-): BattleState {
-    const index = battle.lifetime.dependencies;
-    const previous = index.entries.get(dependency.key(target));
-    const dependencies = dependency.derive(index, [{ previous, next }]);
-
-    return replaceIn(battle, ["lifetime", "dependencies"], dependencies);
-}
-
-function request(
-    battle: BattleState,
-    target: Scope,
-    end: unknown,
-    dependencyReason: string,
-): BattleState {
-    const identity = dependency.key(target);
-    if (battle.lifetime.endings.has(identity)) {
-        return battle;
-    }
-
-    const { definition, ref } = target[paired] as Pair;
-    const initial = definition.get(battle, ref);
-    if (initial === undefined || definition.isEnding(initial)) {
-        return battle;
-    }
-
-    const parents = dependency.parents(battle.lifetime.dependencies, target);
-    const children = new Map(
-        dependency
-            .dependents(battle.lifetime.dependencies, target)
-            .map((child) => [dependency.key(child), child]),
-    );
-
-    // A removed child still belongs to its parents until its entire Finalize returns.
-    for (const pending of battle.lifetime.endings.values()) {
-        if (pending.parents.some((parent) => dependency.key(parent) === identity)) {
-            children.set(dependency.key(pending.target), pending.target);
-        }
-    }
-
-    battle = {
-        ...battle,
-        lifetime: {
-            ...battle.lifetime,
-            settling: true,
-            endings: new Map(battle.lifetime.endings).set(identity, {
-                target,
-                end,
-                parents,
-                phase: "PREPARING",
-            }),
-        },
-    };
-    battle = definition.replace(battle, ref, definition.begin(initial));
-    battle = definition.prepare?.(battle, ref, initial, end) ?? battle;
-
-    for (const child of children.values()) {
-        if (!battle.lifetime.endings.has(dependency.key(child))) {
-            const childDefinition = (child[paired] as Pair).definition;
-            battle = request(
-                battle,
-                child,
-                childDefinition.fromDependency!(dependencyReason),
-                dependencyReason,
-            );
-        }
-    }
-
-    const pending = battle.lifetime.endings.get(identity)!;
-
-    const endings = new Map(battle.lifetime.endings).set(identity, {
-        ...pending,
-        phase: "READY",
-    });
-
-    return replaceIn(battle, ["lifetime", "endings"], endings);
-}
-
-function drain(battle: BattleState): BattleState {
-    while (battle.lifetime.endings.size > 0) {
-        const current = [...battle.lifetime.endings.entries()].find(
-            ([identity, pending]) =>
-                pending.phase === "READY" &&
-                ![...battle.lifetime.endings.values()].some((child) =>
-                    child.parents.some((parent) => dependency.key(parent) === identity),
-                ),
-        );
-        if (current === undefined) {
-            throw new Error("lifetime endings have no ready node");
-        }
-
-        const [identity, pending] = current;
-        const finalizing = new Map(battle.lifetime.endings).set(identity, {
-            ...pending,
-            phase: "FINALIZING",
-        });
-        battle = replaceIn(battle, ["lifetime", "endings"], finalizing);
-        const { definition, ref } = pending.target[paired] as Pair;
-        battle = definition.finalize(battle, ref, pending.end);
-        const endings = new Map(battle.lifetime.endings);
-        endings.delete(identity);
-        battle = replaceIn(battle, ["lifetime", "endings"], endings);
-    }
-
-    return battle;
 }
 
 function flushDeferred(battle: BattleState): BattleState {

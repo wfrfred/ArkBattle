@@ -60,9 +60,8 @@ test("Skill and Burst end notifications observe their cleared state while the ow
     assert.deepEqual(observed.sort(), [["activation", "ENDING"], ["burst", "ENDING"]]);
 });
 
-test("an owner waits for dependent finalizers and repeated requests preserve the first reason", () => {
+test("a node waits for dependent finalizers and repeated requests preserve the first reason", () => {
     const calls = [];
-    const detachedEnds = [];
     let state = battle([
         {
             definition: {
@@ -106,7 +105,7 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
             id: "child",
             initialize: () => ({}),
             onEnd(current, _self, reason) {
-                assert.equal(reason, "FIRST");
+                assert.equal(reason, "CANCELLED");
                 current = effects.remove(current, parent, "SECOND");
                 current = remove(current, owner, { reason: "DEATH", killer: null });
                 assert.equal(units.get(current, owner).lifecycle, "ENDING");
@@ -121,22 +120,20 @@ test("an owner waits for dependent finalizers and repeated requests preserve the
     );
     state = child.state;
     const childScope = lifetimes.scope(effects.lifetime, child.value);
-    assert.deepEqual(lifetimes.dependencies(state, childScope), [parentScope]);
-    assert.throws(() => lifetimes.bind(state, parentScope, childScope), TypeError);
+    assert.throws(() => lifetimes.bind(state, effects.lifetime, parent, childScope), TypeError);
 
     const detached = effects.install(state, owner, {
         id: "detached",
         initialize: () => ({}),
-        onEnd(current, _self, reason) {
-            detachedEnds.push(reason);
+        onEnd(current) {
+            calls.push("detached-ended");
             return current;
         },
     }, { scopes: [parentScope] });
-    state = lifetimes.unbind(detached.state, lifetimes.scope(effects.lifetime, detached.value), parentScope);
+    state = lifetimes.unbind(detached.state, effects.lifetime, detached.value, parentScope);
     const after = effects.remove(state, parent, "FIRST");
 
-    assert.deepEqual(calls, ["parent-disabled", "child-ended", "parent-ended", "owner-left"]);
-    assert.deepEqual(detachedEnds, ["DEATH"]);
+    assert.deepEqual(calls, ["parent-disabled", "child-ended", "parent-ended", "detached-ended", "owner-left"]);
     assert.equal(units.get(after, owner), undefined);
 });
 
@@ -221,8 +218,9 @@ test("defer waits for finalizers and flushes in registration order across new se
     assert.deepEqual([...units.all(result)], []);
 });
 
-test("an ending ancestor rejects new dependents before its active Action execution receives the end request", () => {
+test("an ending ancestor freezes dependency edges before its active Action execution receives the end request", () => {
     let execution;
+    let attached;
     let attempted = "not attempted";
     let businessCalls = 0;
     const program = {
@@ -259,12 +257,14 @@ test("an ending ancestor rejects new dependents before its active Action executi
                             const recipient = units
                                 .all(current)
                                 .find((unit) => unit.definition.id === "recipient");
+                            const scope = lifetimes.scope(actions.lifetime, execution);
+                            current = lifetimes.unbind(current, effects.lifetime, attached, scope);
                             const installed = effects.install(
                                 current,
                                 units.ref(recipient),
                                 dependent,
                                 {
-                                    scopes: [lifetimes.scope(actions.lifetime, execution)],
+                                    scopes: [scope],
                                 },
                             );
                             attempted = installed.value;
@@ -279,10 +279,15 @@ test("an ending ancestor rejects new dependents before its active Action executi
     const source = units.all(state).find((unit) => unit.definition.id === "source");
     const started = actions.start(state, actions.ref(units.ref(source), program));
     assert.notEqual(started.value, null);
-    state = started.state;
     execution = started.value;
+    const recipient = units.all(started.state).find((unit) => unit.definition.id === "recipient");
+    const installed = effects.install(started.state, units.ref(recipient), {
+        id: "attached", initialize: () => ({}),
+    }, { scopes: [lifetimes.scope(actions.lifetime, execution)] });
+    assert.notEqual(installed.value, null);
+    attached = installed.value;
 
-    const after = remove(state, units.ref(source), { reason: "DEATH", killer: null });
+    const after = remove(installed.state, units.ref(source), { reason: "DEATH", killer: null });
 
     assert.equal(attempted, null);
     assert.equal(businessCalls, 0);

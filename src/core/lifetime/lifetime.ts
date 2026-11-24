@@ -1,61 +1,21 @@
-import type { Identified, Ref } from "../common/ref.js";
 import type { State as BattleState } from "../battle/state.js";
-import { empty, type Index } from "./dependency.js";
+import type { Scope } from "./operations.js";
 
-export const paired: unique symbol = Symbol("lifetime");
-
-export interface Scope {
-    readonly type: "LIFETIME";
-    readonly kind: string;
-    readonly address: readonly number[];
-    readonly [paired]: unknown;
-}
-
-export interface Definition<V extends Identified<object>, S extends V, E> {
-    readonly kind: string;
-    readonly address: (ref: Ref<V>) => readonly number[];
-    readonly get: (battle: BattleState, ref: Ref<V>) => S | undefined;
-    readonly isEnding: (self: S) => boolean;
-    readonly begin: (self: S) => S;
-    readonly replace: (battle: BattleState, ref: Ref<V>, next: S) => BattleState;
-    readonly prepare?: (battle: BattleState, ref: Ref<V>, initial: S, end: E) => BattleState;
-    readonly finalize: (battle: BattleState, ref: Ref<V>, end: E) => BattleState;
-    readonly reason: (end: E) => string;
-    readonly fromDependency?: (reason: string) => E;
-}
-
-export interface Lifetime<V extends Identified<object>, S extends V, E> {
-    readonly kind: string;
-    readonly end: <T extends S>(
-        battle: BattleState,
-        ref: Ref<T>,
-        end: E,
-        dependencyReason?: string,
-    ) => BattleState;
-    readonly [paired]: Definition<V, S, E>;
-}
-
-export interface Pending {
+export interface Node {
     readonly target: Scope;
-    readonly end: unknown;
-    readonly parents: readonly Scope[];
-    readonly phase: "PREPARING" | "READY" | "FINALIZING";
+    readonly dependencies: readonly string[];
+    readonly ending?: {
+        readonly initial: unknown;
+        readonly end: unknown;
+    };
 }
 
 export interface State {
-    readonly dependencies: Index;
-    readonly endings: ReadonlyMap<string, Pending>;
-    readonly settling: boolean;
-    readonly flushing: boolean;
+    readonly nodes: ReadonlyMap<string, Node>;
     readonly deferred: readonly ((battle: BattleState) => BattleState)[];
+    readonly flushing: boolean;
 }
 
 export function initialize(): State {
-    return {
-        dependencies: empty(),
-        endings: new Map(),
-        settling: false,
-        flushing: false,
-        deferred: [],
-    };
+    return { nodes: new Map(), deferred: [], flushing: false };
 }

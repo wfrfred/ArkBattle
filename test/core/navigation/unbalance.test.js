@@ -182,7 +182,7 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
     current = step(projectiles.update(current, anchorRef, { position: [1.5, 1] }), []);
     assertPosition(current, [1 + 2.5 / 900, 1]);
     current = projectiles.remove(current, anchorRef, "ELIMINATED");
-    assert.equal(endReason, "ELIMINATED");
+    assert.equal(endReason, "CANCELLED");
     assert.equal(lifetime.available(current, scope), false);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
     current = step(current, []);
@@ -344,7 +344,7 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
     const ended = unbalance.lifetime.end(installed.state, first.value.unbalance, "SETTLED");
     assert.ok(next);
     assert.notDeepEqual(next.unbalance, first.value.unbalance);
-    assert.deepEqual(lifetime.dependencies(ended, oldPullScope), []);
+    assert.equal(pull.get(ended, first.value), undefined);
     assert.equal(lifetime.available(ended, lifetime.scope(pull.lifetime, next)), true);
     assertPosition(step(pull.remove(ended, first.value), []), [1, 1 + 40 / 900]);
 });

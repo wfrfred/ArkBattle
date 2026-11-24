@@ -1,9 +1,9 @@
 import * as battlefield from "../battlefield/unit.js";
 import { replaceIn } from "../common/object.js";
-import type { End, Unit, Departure } from "./unit.js";
+import type { End, Unit } from "./unit.js";
 import * as units from "./query.js";
 import { appendEvents, type State as BattleState } from "../battle/state.js";
-import { create as createLifetime } from "../lifetime/operations.js";
+import { create as createLifetime, register } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
 import * as observers from "../battle/unit-hook.js";
 import type { Change } from "./change.js";
@@ -15,6 +15,7 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     const next = battlefield.add(battle.battlefield, unit);
     battle = replaceIn(battle, ["battlefield"], next);
     const reference = units.ref(unit);
+    battle = register(battle, lifetime, reference);
 
     battle = observers.dispatch(
         battle,
@@ -65,52 +66,49 @@ export function replace<U extends Unit>(battle: BattleState, updates: readonly U
 }
 /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
 
-export const lifetime = createLifetime<Unit, Unit, Departure>({
+export const lifetime = createLifetime<Unit, End>({
     kind: "UNIT",
-    address: (ref) => [ref.id],
+    address: (reference) => String(reference.id),
     get: units.get,
-    isEnding: (self) => self.lifecycle === "ENDING",
-    begin: (self) => ({ ...self, lifecycle: "ENDING" }),
-    replace: (battle, _reference, next) => replace(battle, [next]),
-    prepare: (battle, reference, _initial, departure) =>
-        dispatch(battle, departure, undefined, {
-            candidates: (current) => units.get(current, reference)!.hooks.get(lifecycle.removing),
-            find: (current, id) =>
-                units.get(current, reference)!.hooks.find(lifecycle.removing, id),
-        }).state,
-    finalize: (battle, reference, departure) => {
-        const departing = units.get(battle, reference)!;
-        const entries = departing.hooks.get(lifecycle.removed);
-        const { reason } = departure;
-        const next = battlefield.remove(battle.battlefield, reference);
-        battle = replaceIn(battle, ["battlefield"], next);
-        battle = appendEvents(battle, [
-            {
-                type: "UNIT_REMOVED",
-                tick: battle.tick,
-                unitId: reference.id,
-                reason,
-                unit: departing,
-            },
-        ]);
+    end: {
+        prepare: (battle, reference, initial, end) => {
+            battle = replace(battle, [{ ...initial, lifecycle: "ENDING" }]);
 
-        battle = dispatch(battle, departure, undefined, {
-            candidates: () => entries,
-            find: (_current, id) => entries.find((entry) => entry.id === id),
-        }).state;
+            return dispatch(battle, { ...end, unit: initial }, undefined, {
+                candidates: (current) =>
+                    units.get(current, reference)!.hooks.get(lifecycle.removing),
+                find: (current, id) =>
+                    units.get(current, reference)!.hooks.find(lifecycle.removing, id),
+            }).state;
+        },
+        finalize: (battle, reference, initial, end) => {
+            const departing = units.get(battle, reference)!;
+            const entries = departing.hooks.get(lifecycle.removed);
+            const departure = { ...end, unit: initial };
+            const next = battlefield.remove(battle.battlefield, reference);
+            battle = replaceIn(battle, ["battlefield"], next);
+            battle = appendEvents(battle, [
+                {
+                    type: "UNIT_REMOVED",
+                    tick: battle.tick,
+                    unitId: reference.id,
+                    reason: end.reason,
+                    unit: departing,
+                },
+            ]);
 
-        return observers.dispatch(battle, observers.removed, departure);
+            battle = dispatch(battle, departure, undefined, {
+                candidates: () => entries,
+                find: (_current, id) => entries.find((entry) => entry.id === id),
+            }).state;
+
+            return observers.dispatch(battle, observers.removed, departure);
+        },
     },
-    reason: (departure) => departure.reason,
 });
 
 export function remove(battle: BattleState, reference: Ref<Unit>, end: End): BattleState {
-    const unit = units.get(battle, reference);
-    if (unit === undefined) {
-        return battle;
-    }
-
-    return lifetime.end(battle, reference, { ...end, unit });
+    return lifetime.end(battle, reference, end);
 }
 
 export function advance(battle: BattleState): BattleState {

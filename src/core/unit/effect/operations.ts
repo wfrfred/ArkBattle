@@ -5,14 +5,8 @@ import type { Unit } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import * as units from "../query.js";
-import {
-    available,
-    create,
-    scope,
-    type Lifetime,
-    type Scope as LifetimeScope,
-} from "../../lifetime/index.js";
-import { register, unregister } from "../../lifetime/operations.js";
+import { available, create, scope, type Scope as LifetimeScope } from "../../lifetime/index.js";
+import { register } from "../../lifetime/operations.js";
 import type {
     Definition,
     DefinitionFields,
@@ -133,7 +127,7 @@ export function install<S extends object, H extends object>(
     } as unknown as Effect;
     const reference = effectRef(instance);
     battle = replaceUnits(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
-    battle = register(battle, scope(lifetime, reference), scope(unitLifetime, host), scopes);
+    battle = register(battle, lifetime, reference, [scope(unitLifetime, host), ...scopes]);
     battle = callbacks(instance.definition).onInstall?.(battle, instance) ?? battle;
 
     if (get(battle, reference)?.lifecycle === "INSTALLING") {
@@ -235,34 +229,33 @@ export function setEnabled<T extends Effect<any, any>>(
     return updateLifecycle(battle, reference);
 }
 
-export const lifetime: Lifetime<Effect, Effect<any, any>, string> = create({
+export const lifetime = create<Effect<any, any>, string>({
     kind: "EFFECT",
-    address: (reference) => [reference.host.id, reference.id],
+    address: (reference) => `${reference.host.id}:${reference.id}`,
     get: (battle, reference) => units.get<Unit>(battle, reference.host)?.effects.get(reference.id),
-    isEnding: (self) => self.lifecycle === "ENDING",
-    begin: (self) => ({ ...self, lifecycle: "ENDING" }),
-    replace: (battle, reference, next) =>
-        replaceEffect(battle, units.get<Unit>(battle, reference.host)!, next),
-    prepare(battle, reference, initial) {
-        if (initial.lifecycle === "ACTIVE") {
+    end: {
+        prepare(battle, reference, initial) {
+            const host = units.get<Unit>(battle, reference.host)!;
+            const self = { ...initial, lifecycle: "ENDING" as const };
+            battle = replaceEffect(battle, host, self);
+
+            if (initial.lifecycle === "ACTIVE") {
+                battle = callbacks(initial.definition).onDisable?.(battle, self) ?? battle;
+            }
+
+            return initial.definition.group === undefined
+                ? battle
+                : reconcileGroupActivity(battle, initial);
+        },
+        finalize(battle, reference, _initial, reason) {
             const self = units.get<Unit>(battle, reference.host)!.effects.get(reference.id)!;
-            battle = callbacks(initial.definition).onDisable?.(battle, self) ?? battle;
-        }
+            battle = callbacks(self.definition).onEnd?.(battle, self, reason) ?? battle;
+            const unit = units.get<Unit>(battle, reference.host)!;
 
-        return initial.definition.group === undefined
-            ? battle
-            : reconcileGroupActivity(battle, initial);
+            return replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference.id) }]);
+        },
+        dependencyEnd: "CANCELLED",
     },
-    finalize(battle, reference, reason) {
-        const self = units.get<Unit>(battle, reference.host)!.effects.get(reference.id)!;
-        battle = callbacks(self.definition).onEnd?.(battle, self, reason) ?? battle;
-        const unit = units.get<Unit>(battle, reference.host)!;
-        battle = replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference.id) }]);
-
-        return unregister(battle, scope(lifetime, reference));
-    },
-    reason: (reason) => reason,
-    fromDependency: (reason) => reason,
 });
 
 export function remove<T extends Effect<any, any>>(
