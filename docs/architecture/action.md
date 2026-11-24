@@ -34,9 +34,9 @@ prepare 检查本次内容条件、初始化执行数据并采样；返回 null 
 
 ## 4. 异构容器与两种引用身份
 
-行动按配置 ID 登记，重复 ID 在创建边界拒绝。异构容器内部擦除 `P/E`。普通查询返回默认的 `Action` 或 `Execution`，以 `object` 读取私有状态，并保留 Definition 对象身份。Battle 按配置 ID 启动行动，按执行引用推进。Action 操作从宿主读取已登记的聚合，在调用回调或写回时恢复类型。按 Definition 对象身份查询或使用精确 Ref 可以恢复持久状态和执行状态的类型。
+行动按配置 ID 登记，重复 ID 在创建边界拒绝。异构容器内部擦除 `P/E`。普通查询返回默认的 `Action` 或 `Execution`，以 `object` 读取私有状态。Battle 按配置 ID 启动行动，按执行引用推进。Action 操作从宿主读取已登记的聚合，并按精确 Ref 恢复持久状态和执行状态的类型。
 
-持久 Ref 由宿主和 Definition 对象标识，跨多轮有效。`ref` 接收 Action 宿主 Ref 与 Definition，保留 `P/E`。`H` 由 Content 装配约束校验，回调内可直接使用 `ref(source, self.definition)`。`executionRef` 根据已配对的宿主和本轮执行构造精确引用。`ExecutionRef` 表示宿主和本轮执行 ID，可用于 `forUnit` 查询返回、释放通知和取消命令。执行 ID 在宿主内单调分配，不回收，旧引用不能操作后来的执行。`getExecution` 与 `hasExecution` 均读到仍占位的 ENDING 本轮，直到该轮清空。
+持久 Ref 由宿主和配置 ID 标识，跨多轮有效。`ref` 接收 Action 宿主 Ref 与 Definition，从 Definition 取 `id` 并推导 `P/E`。`H` 由 Content 装配约束校验，回调内可直接使用 `ref(source, self.definition)`。`executionRef` 根据已配对的宿主和本轮执行构造精确引用。`ExecutionRef` 表示宿主和本轮执行 ID，可用于 `forUnit` 查询返回、释放通知和取消命令。执行 ID 在宿主内单调分配，不回收，旧引用不能操作后来的执行。`getExecution` 与 `hasExecution` 均读到仍占位的 ENDING 本轮，直到该轮清空。
 
 配置登记顺序用于默认候选，本宿主已有执行按启动顺序枚举。
 
@@ -64,7 +64,7 @@ Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤
 
 start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与身份计数，并登记 Execution→Unit 所有权。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。
 
-持久状态、执行状态和冷却各有字段级写回，只替换对应字段。写入私有状态需要与相应 Definition 配对的精确 Ref。结束程序可以更新仍登记的本轮私有状态，写回保留执行身份和 ENDING。缺失身份或 Definition 错配属于调用错误。最新读取和不可变发布遵守公共契约。
+持久状态、执行状态和冷却各有字段级写回，只替换对应字段。写入私有状态使用指向对应 Action 或 Execution 的精确 Ref。结束程序可以更新仍登记的本轮私有状态，写回保留执行身份和 ENDING。缺失身份属于调用错误。最新读取和不可变发布遵守公共契约。
 
 `finish` 请求 FINISHED，`cancel` 请求 CANCELLED。终止发布 ENDING，等待依赖者结束后将结果传给 onEnd，再只清空同一轮 execution，保留最新持久状态／冷却并输出结束事实。Lifetime 保护宿主到整个 Finalize 返回；它不保护任意普通 onTick 调用栈。嵌套结束请求返回时本轮可能仍占位，同一结算中立即重启可能被拒绝。
 

@@ -72,7 +72,7 @@ const skill: skills.Definition<{ completed: number }, { remaining: number }, Arm
         },
         operations: {
             STOP(state, source, self) {
-                state = skills.setState(state, skills.ref(source, self.definition), { completed: self.state.completed + 1 });
+                state = skills.setState(state, skills.ref<typeof self.state, typeof self.activation.state>(source), { completed: self.state.completed + 1 });
                 return skills.setActivationState(state, skills.activationRef(source, self), {
                     remaining: self.activation.state.remaining - 1,
                 });
@@ -188,15 +188,15 @@ publicExecution.definition.onTick(battle, owner, publicExecution);
 actions.setExecutionState(battle, executionIdentity, { hits: 1 });
 // @ts-expect-error the numeric address does not carry a Unit identity proof.
 const forged: Ref<Unit> = { id: 0 };
-const skillRef = skills.ref(owner, skill);
+const skillRef = skills.ref<{ completed: number }, { remaining: number }>(owner);
 const activated = skills.activate(battle, skillRef, { requirement: 0, cost: 0 });
 if (activated.value !== null) {
     const active = skills.getActivation(activated.state, activated.value)!;
     active.state.completed satisfies number;
     active.activation.state.remaining satisfies number;
+    // @ts-expect-error an Activation Ref identifies one round rather than the persistent Skill.
+    skills.activate(activated.state, activated.value);
 }
-// @ts-expect-error activating a specific Skill requires its identity, even with a proven host.
-skills.activate(battle, owner);
 // @ts-expect-error this call must specify both the gate and the payment.
 skills.activate(battle, skillRef, { requirement: 0 });
 

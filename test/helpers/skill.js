@@ -20,5 +20,5 @@ export function definition(input = {}) {
 }
 
 export function ref(unit) {
-    return skillRef(unitRef(unit), unit.skill.definition);
+    return skillRef(unitRef(unit));
 }

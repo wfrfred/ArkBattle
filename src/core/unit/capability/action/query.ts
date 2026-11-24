@@ -50,9 +50,9 @@ export function getAction<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Action<P, E>>,
 ): Action<P, E> | undefined {
-    return units
-        .get(battle, reference.host)
-        ?.action.actions.get(reference.definition.id, reference.definition);
+    const action = units.get(battle, reference.host)?.action.actions.get(reference.definitionId);
+
+    return action as Action<P, E> | undefined;
 }
 
 export function hasExecution(

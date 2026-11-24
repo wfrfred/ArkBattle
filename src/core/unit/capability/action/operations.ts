@@ -43,7 +43,7 @@ export function start<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Action<P, E>>,
 ): Result<Ref<Execution<P, E>> | null> {
-    const { host: source, definition } = reference;
+    const { host: source, definitionId } = reference;
 
     function check(battle: BattleState) {
         const unit = units.get(battle, source);
@@ -51,16 +51,14 @@ export function start<P extends object, E extends object>(
             return null;
         }
 
-        const action = unit.action.actions.get(definition.id, definition);
+        const action = unit.action.actions.get(definitionId) as Action<P, E> | undefined;
         if (action === undefined) {
             throw new TypeError("action definition is not configured for its source");
         }
         if (action.execution !== null) {
             return null;
         }
-        if (
-            !allows(battle, { self: unit, definitionId: definition.id }, unit.action.restrictions)
-        ) {
+        if (!allows(battle, { self: unit, definitionId }, unit.action.restrictions)) {
             return null;
         }
 
@@ -109,7 +107,7 @@ export function start<P extends object, E extends object>(
             ...unit,
             action: {
                 ...unit.action,
-                actions: unit.action.actions.replace(definition, self),
+                actions: unit.action.actions.replace(action.definition, self),
                 nextExecutionId: unit.action.nextExecutionId + 1,
             },
         },
@@ -173,7 +171,7 @@ export const lifetime = lifetimes.create<ExecutionIdentity, ExecutionIdentity, E
         battle = definition.onEnd?.(battle, reference.host, self, result) ?? battle;
 
         const host = units.get(battle, reference.host)!;
-        const action = host.action.actions.get(self.definition.id, self.definition)!;
+        const action = host.action.actions.get(self.definition.id)!;
         battle = replaceAction(battle, host, { ...action, execution: null });
         battle = unregister(battle, lifetimes.scope(lifetime, reference));
 
@@ -298,7 +296,7 @@ function getAction<P extends object, E extends object>(
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const action = unit.action.actions.get(reference.definition.id, reference.definition);
+    const action = unit.action.actions.get(reference.definitionId) as Action<P, E> | undefined;
     if (action === undefined) {
         throw new TypeError("action definition is not configured for its source");
     }

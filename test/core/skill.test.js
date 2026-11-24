@@ -50,7 +50,7 @@ test("activation publishes payment before onStart and clears only the completed 
                 assert.equal(current.activation.lifecycle, "ENDING");
                 assert.equal(current.activation.state.cleaned, true);
                 observed.push({ stage: "end", total: current.activation.state.total, end });
-                return skills.setState(state, skills.ref(source, program), {
+                return skills.setState(state, skills.ref(source), {
                     completed: self.state.completed + 1,
                 });
             },
@@ -64,7 +64,7 @@ test("activation publishes payment before onStart and clears only the completed 
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source, program);
+    const reference = skills.ref(source);
     state = update(state, source, units.compose(units.setHook(skills.activationStarted, {
             id: "hide-on-start",
             invoke: (state, { host }) => ({ state: update(state, host, presence.disappear()), value: undefined }),
@@ -142,7 +142,7 @@ test("per-call activation parameters preserve ordinary policy and still require 
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source, program);
+    const reference = skills.ref(source);
     assert.equal(skills.activate(state, reference).value, null);
     const belowRequirement = skills.activate(state, reference, { requirement: 4, cost: 0 });
     assert.equal(belowRequirement.value, null);
@@ -180,7 +180,7 @@ test("cancellation during payment notification retains payment and suppresses th
             cost: 10,
             initialize: () => ({ state: {}, duration: { type: "INFINITE" } }),
             onStart: (state, source) =>
-                skills.setState(state, skills.ref(source, program), { started: true }),
+                skills.setState(state, skills.ref(source), { started: true }),
         },
     };
     const definition = {
@@ -200,7 +200,7 @@ test("cancellation during payment notification retains payment and suppresses th
                 };
             },
         }));
-    const activated = skills.activate(state, skills.ref(source, program));
+    const activated = skills.activate(state, skills.ref(source));
     state = activated.state;
     assert.notEqual(activated.value, null);
     assert.equal(get(state, 0).skill.sp.value, 0);
@@ -246,7 +246,7 @@ test("active operations require a declared handler and current permission, while
         position: [1, 1],
     })));
     const source = units.ref(get(state, 0));
-    const first = skills.activate(state, skills.ref(source, ordinary));
+    const first = skills.activate(state, skills.ref(source));
     state = first.state;
     const unsupported = skills.operate(state, first.value, "STOP");
     assert.equal(unsupported.value, false);
@@ -255,7 +255,7 @@ test("active operations require a declared handler and current permission, while
     assert.equal(get(state, 0).skill.activation, null);
 
     const controlledSource = units.ref(get(state, 1));
-    const second = skills.activate(state, skills.ref(controlledSource, controlled));
+    const second = skills.activate(state, skills.ref(controlledSource));
     state = update(second.state, controlledSource, skills.setRestriction("operationRestrictions", {
         id: "not-ready",
         value: {
@@ -361,7 +361,7 @@ test("TIME extension stays in its round while persistent state selects a later I
                 });
             },
             onEnd(state, source, self) {
-                return skills.setState(state, skills.ref(source, program), {
+                return skills.setState(state, skills.ref(source), {
                     completed: self.state.completed + 1,
                 });
             },
@@ -375,7 +375,7 @@ test("TIME extension stays in its round while persistent state selects a later I
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source, program);
+    const reference = skills.ref(source);
     const first = skills.activate(state, reference);
     state = skills.extendTime(step(step(first.state, []), []), first.value, 3);
     state = update(state, source, presence.disappear());
@@ -421,7 +421,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
                 return state;
             }
             state = skills.check(state, skills.activationRef(source, firingSkill));
-            return skills.activate(state, skills.ref(source, program)).state;
+            return skills.activate(state, skills.ref(source)).state;
         },
     });
     const definition = {
@@ -442,7 +442,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source, program);
+    const reference = skills.ref(source);
     state = update(state, source, skills.setAmmoContribution({
             id: "magazine",
             value: [{ addition: 2, ratio: 0.5 }],
@@ -500,7 +500,7 @@ test("Ammo contributions registered and withdrawn during TIME affect only later 
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source, program);
+    const reference = skills.ref(source);
     const timed = skills.activate(state, reference);
     state = update(timed.state, source, units.compose(
         skills.setAmmoContribution({ id: "kept", value: [{ addition: 0, ratio: 0.5 }] }),

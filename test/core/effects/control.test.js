@@ -56,7 +56,7 @@ test("stun interrupts the current action, suppresses its affected capabilities, 
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
     const action = actions.ref(source, content.action);
-    const skill = skills.ref(source, content.skill);
+    const skill = skills.ref(source);
     state = blocking.search(state, source);
     assert.equal(blocking.blockerOf(state, target).id, source.id);
     const started = actions.start(state, action);
@@ -94,7 +94,7 @@ test("silence blocks activation while SP prevention independently blocks recover
     const content = actor([]);
     let state = battle([{ definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } }]);
     const source = units.ref(get(state, 0));
-    const skill = skills.ref(source, content.skill);
+    const skill = skills.ref(source);
     const parent = effects.install(state, source, { id: "combined-control", initialize: () => ({}) });
     const scopes = [scope(effects.lifetime, parent.value)];
     const silenced = effects.install(parent.state, source, silence, { scopes });
@@ -125,7 +125,7 @@ test("a skill can ignore every stun source for activation while silence, SP and 
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
-    const reference = skills.ref(source, content.skill);
+    const reference = skills.ref(source);
     const first = effects.install(state, source, stun);
     const second = effects.install(first.state, source, stun);
     const silenced = effects.install(second.state, source, silence);

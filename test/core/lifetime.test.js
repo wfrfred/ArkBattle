@@ -50,7 +50,7 @@ test("Skill and Burst end notifications observe their cleared state while the ow
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const owner = units.ref(units.all(state).find(() => true));
-    const activated = skills.activate(state, skills.ref(owner, program));
+    const activated = skills.activate(state, skills.ref(owner));
     assert.notEqual(activated.value, null);
     const request = { source: null, target: owner, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 1000 } };
     const burst = epDamage.applyDamage(request, epDamage.calculateDamage(activated.state, request));

@@ -78,10 +78,7 @@ export function setState<X extends Skill<any, any>>(
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const self = query.getSkill(battle, reference);
-    if (self === undefined) {
-        throw new TypeError("skill definition is not configured for its source");
-    }
+    const self = unit.skill;
 
     return state === self.state ? battle : replaceSkill(battle, unit, { ...self, state });
 }
@@ -124,11 +121,7 @@ export function activate<S extends object, A extends object>(
         return { state: battle, value: null };
     }
 
-    const self = query.getSkill(battle, reference);
-    if (self === undefined) {
-        throw new TypeError("skill definition is not configured for its source");
-    }
-
+    const self = unit.skill as unknown as Skill<S, A>;
     const definition = self.definition.activation as ActivationDefinition<S, A> | null;
     if (definition === null) {
         return { state: battle, value: null };
@@ -338,7 +331,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
         current.skill.activation === null &&
         (trigger === "AUTO" || trigger === "PASSIVE")
     ) {
-        battle = activate(battle, skillRef(host, current.skill.definition)).state;
+        battle = activate(battle, skillRef(host)).state;
     }
 
     return battle;
@@ -364,7 +357,7 @@ export const entered: EnteredHook = {
             current?.lifecycle === "ACTIVE" &&
             current.skill.definition.activation?.trigger === "PASSIVE"
         ) {
-            battle = activate(battle, skillRef(host, current.skill.definition)).state;
+            battle = activate(battle, skillRef(host)).state;
         }
 
         return { state: battle, value: undefined };

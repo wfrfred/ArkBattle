@@ -26,7 +26,7 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
 
         if (command.operation === "ACTIVATE") {
             if (unit.skill.definition.activation?.trigger === "MANUAL") {
-                state = activate(state, skillRef(command.ref, unit.skill.definition)).state;
+                state = activate(state, skillRef(command.ref)).state;
             }
         } else if (unit.skill.activation !== null) {
             state = operate(

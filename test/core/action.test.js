@@ -47,7 +47,7 @@ test("capabilities initialize declared programs in order and carry their battle 
 
     assert.equal(actions.getAction(state, actions.ref(host, first)).state.sample, rng.next());
     assert.equal(actions.getAction(state, actions.ref(host, second)).state.sample, rng.next());
-    assert.equal(skills.getSkill(state, skills.ref(host, skill)).state.sample, rng.next());
+    assert.equal(skills.getSkill(state, skills.ref(host)).state.sample, rng.next());
     assert.equal(state.execution.rngState, rng.state());
 });
 

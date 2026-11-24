@@ -22,19 +22,8 @@ export class Actions {
         return this.#store.size;
     }
 
-    get<P extends object, E extends object>(
-        id: Id,
-        definition: Definition<P, E, never>,
-    ): Action<P, E> | undefined;
-    get(id: Id): Action | undefined;
-    get(id: Id, definition?: Definition<any, any, never>): Action<any, any> | undefined {
-        const self = this.#store.get(id);
-
-        if (definition === undefined) {
-            return self;
-        }
-
-        return self?.definition === definition ? self : undefined;
+    get(id: Id): Action | undefined {
+        return this.#store.get(id);
     }
 
     getExecution(id: ExecutionId): Execution | undefined {

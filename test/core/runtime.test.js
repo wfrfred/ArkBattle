@@ -169,7 +169,7 @@ test("manual commands preserve AUTO and PASSIVE scheduling while direct activati
             trigger, ignoreRestrictions: [], requirement: 0, cost: 0,
             initialize: () => ({ state: {}, duration: { type: "TIME", durationTicks: 0 } }),
             onStart(state, source, self) {
-                return skills.setState(state, skills.ref(source, self.definition), {
+                return skills.setState(state, skills.ref(source), {
                     starts: self.state.starts + 1,
                 });
             },
@@ -187,11 +187,11 @@ test("manual commands preserve AUTO and PASSIVE scheduling while direct activati
     assert.deepEqual(starts(state), [0, 0, 1]);
     state = step(state, sources.map(ref => ({ type: "SKILL", ref, operation: "ACTIVATE" })));
     assert.deepEqual(starts(state), [1, 1, 1]);
-    const explicit = skills.activate(state, skills.ref(sources[1], programs[1]));
+    const explicit = skills.activate(state, skills.ref(sources[1]));
     assert.notEqual(explicit.value, null);
     state = explicit.state;
     assert.deepEqual(starts(state), [1, 2, 1]);
-    const repeatedPassive = skills.activate(state, skills.ref(sources[2], programs[2]));
+    const repeatedPassive = skills.activate(state, skills.ref(sources[2]));
     assert.equal(repeatedPassive.value, null);
     assert.equal(repeatedPassive.state, state);
     state = step(state, []);

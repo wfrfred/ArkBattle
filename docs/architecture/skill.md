@@ -28,7 +28,7 @@ Capability 装配时调用 `SkillDefinition.initialize(battle)`，建立私有�
 
 ### 引用、查询与写回
 
-持久 Ref 由宿主与 Definition 对象标识。`skill.ref` 接收 Skill 宿主 Ref 与 Definition。`H` 由 Content 装配约束校验，回调内可直接使用 `skill.ref(source, self.definition)`。Activation Ref 由宿主与本轮 ID 标识。两种精确引用保留 `S/A`，旧激活 Ref 只标识原有轮次。
+每个宿主只有一个 Skill，持久 Ref 以宿主标识。`skill.ref(host)` 构造通用引用，知道具体状态的 Content 可以使用 `skill.ref<S, A>(host)` 保留私有类型。`H` 由 Content 装配约束校验。Activation Ref 由宿主与本轮 ID 标识，旧激活 Ref 只标识原有轮次。
 
 持久与本轮状态有各自写回操作，仅更新对应字段。结束程序可以更新持久状态和仍登记的本轮私有状态，写回保留激活身份和 ENDING。跨完整业务后接续最新状态。通用类型、错误和不可变约定见[接口约定](api-conventions.md)。
 
@@ -82,7 +82,7 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 `Battle.step` 通过 `SKILL` 命令接收 Skill 宿主的 Unit Ref 和操作。`ACTIVATE` 仅受理 MANUAL 技能。`STOP` 与 `RETRIGGER` 在命令执行时取得当前激活并交给 `operate`，没有当前激活时跳过命令。
 
-常规调度由 trigger 决定。advance 调度 AUTO 与尚未成功发动的 PASSIVE，entered 尝试 PASSIVE。手动、自动和被动入口都用已登记的 Definition 构造 Skill Ref 并调用 `activate`。发动时按 Ref 校验 Definition 对象身份，再调用匹配的程序。Content 可以直接调用 `activate` 显式发动任意触发类型的技能。PASSIVE 始终只允许成功发动一次。
+常规调度由 trigger 决定。advance 调度 AUTO 与尚未成功发动的 PASSIVE，entered 尝试 PASSIVE。手动、自动和被动入口都用宿主的 Skill Ref 调用 `activate`。发动时读取宿主当前的 Skill 并调用它的程序。Content 可以直接调用 `activate` 显式发动任意触发类型的技能。PASSIVE 始终只允许成功发动一次。
 
 发动先检查宿主、占槽、限制、accepts、本次门槛与足额支付；拒绝不初始化、不支付。通过后调用本轮 initialize 一次，构造 Duration，再一次发布扣费、Activation 与下一轮身份，登记其 Unit 所有权。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。零时长也先执行仍有效的 onStart，再复查到期并结束。
 

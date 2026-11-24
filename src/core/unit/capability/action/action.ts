@@ -1,7 +1,7 @@
 import type { Identified, Identity, Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
-import type { Definition } from "./definition.js";
+import type { Definition, Id as DefinitionId } from "./definition.js";
 import type * as cooldown from "./cooldown.js";
 import type { State as ExecutionState } from "./execution.js";
 
@@ -10,7 +10,7 @@ export interface Action<
     in out E extends object = object,
 > extends Identified<{
     readonly host: Ref<Unit & ActionCapability>;
-    readonly definition: Definition<P, E, never>;
+    readonly definitionId: DefinitionId;
 }> {
     readonly definition: Definition<P, E, never>;
     readonly state: P;
@@ -22,7 +22,7 @@ export function ref<P extends object, E extends object>(
     host: Ref<Unit & ActionCapability>,
     definition: Definition<P, E, never>,
 ): Ref<Action<P, E>> {
-    const identity: Identity<Action<P, E>> = { host, definition };
+    const identity: Identity<Action<P, E>> = { host, definitionId: definition.id };
 
     return identity as Ref<Action<P, E>>;
 }

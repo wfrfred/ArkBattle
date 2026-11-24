@@ -94,7 +94,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
             .set(units.removing, {
                 id: "prepare",
                 invoke(state, departure) {
-                    assert.equal(skills.getSkill(state, skills.ref(killer, rewardSkill)).sp.value, 1);
+                    assert.equal(skills.getSkill(state, skills.ref(killer)).sp.value, 1);
                     assert.equal(effects.get(state, victimEffect).lifecycle, "ACTIVE");
                     assert.equal(departure, killedDeparture);
                     observed.push("victim-prepare");
@@ -170,7 +170,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     };
     const ended = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
     assert.equal(ended.value.killed, true);
-    assert.equal(skills.getSkill(ended.state, skills.ref(killer, rewardSkill)).sp.value, 1);
+    assert.equal(skills.getSkill(ended.state, skills.ref(killer)).sp.value, 1);
     assert.deepEqual(observed, ["death-response", "victim-prepare", "effect-disabled", "effect-ended", "victim-removed"]);
 
     const created = units.initialize(ended.state, {
@@ -182,7 +182,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
                 invoke(current, departure) {
                     assert.equal(departure, killedDeparture);
                     assert.equal(departure.unit.vitality.health.hp, 40);
-                    assert.equal(skills.getSkill(current, skills.ref(killer, rewardSkill)).sp.value, 2);
+                    assert.equal(skills.getSkill(current, skills.ref(killer)).sp.value, 2);
                     return { state: current, value: undefined };
                 },
             }),
@@ -201,5 +201,5 @@ test("Unit death preserves its attribution through Effect responses and the orig
     }));
     state = remove(state, directTarget, { reason: "DEATH", killer });
     assert.equal(units.get(state, directTarget), undefined);
-    assert.equal(skills.getSkill(state, skills.ref(killer, rewardSkill)).sp.value, 2);
+    assert.equal(skills.getSkill(state, skills.ref(killer)).sp.value, 2);
 });
