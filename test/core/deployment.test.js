@@ -26,8 +26,7 @@ const operator = {
 const operatorCard = {
     policy: "UNIQUE",
     dp: {
-        cost: 10,
-        increaseCostOnRetreatOrDeath: true,
+        parameters: cards.dp.create({ cost: 10, step: 0.5, maxMultiplier: 2 }),
         refund: { rate: 0.5, limit: "BASE_COST" },
     },
     slot: 1,
@@ -67,11 +66,11 @@ test("Card initialization reserves identity before Deck registration", () => {
 
 test("Deck uses the updated fees to sort and keeps the last order after the rule is cleared", () => {
     const input = (cost, adjustment) => {
-        const contribution = { id: "tick-fee", value: [modifier.create({ finalAddition: adjustment })] };
+        const contribution = { id: "tick-fee", value: cards.dp.create({ finalAddition: adjustment }) };
         return {
             definition: {
                 ...operatorCard,
-                dp: { ...operatorCard.dp, cost },
+                dp: { ...operatorCard.dp, parameters: { ...operatorCard.dp.parameters, cost } },
                 onTick: (state, self) => cards.setCostContribution(state, cards.ref(self), contribution),
             },
             unitDefinition: operator,
@@ -92,7 +91,7 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
 
     state = cards.setCostContribution(state, second, {
         id: "surcharge",
-        value: [modifier.create({ finalAddition: 4 })],
+        value: cards.dp.create({ finalAddition: 4 }),
     });
     assert.deepEqual(ordered(state), [second, first]);
     state = deployment.setOrdering(state, null);
@@ -106,7 +105,11 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
 });
 
 test("different Card definitions can deploy the same Unit Definition used by an initial unit", () => {
-    const discount = { ...operatorCard, dp: { ...operatorCard.dp, cost: 7 }, slot: 0 };
+    const discount = {
+        ...operatorCard,
+        dp: { ...operatorCard.dp, parameters: { ...operatorCard.dp.parameters, cost: 7 } },
+        slot: 0,
+    };
     let state = battle([
         { definition: operator, position: [7, 0], initial: { occupancy: { tile: [0, 7] } } },
     ], { deployment: {
@@ -140,7 +143,7 @@ test("different Card definitions can deploy the same Unit Definition used by an 
         state = result.state;
         const unit = get(state, result.value.unitId);
         assert.strictEqual(unit.definition, operator);
-        assert.equal(unit.deployable.cost, card.definition.dp.cost);
+        assert.equal(unit.deployable.cost, card.definition.dp.parameters.cost);
         assert.equal(unit.deployable.slots, card.definition.slot);
         expectedHistory.push({ card: reference, unit: units.ref(unit) });
     }
@@ -425,6 +428,16 @@ test("retreat refunds before removal, and death delays global slot release indep
         reason: "DEATH", dp: 30, stage: 2, stock: 1, cooldown: 10, slots: 1,
     });
 
+    state = cards.setCostContribution(state, card, {
+        id: "next-deployment-cost",
+        value: cards.dp.create({
+            cost: 17, baseAddition: 4, maxMultiplier: -0.25, costScale: 0.75, finalAddition: -2,
+        }),
+    });
+    assert.equal(deployment.createRequest(state, card, tilePosition).quote.dp, 19);
+    state = cards.removeCostContribution(state, card, "next-deployment-cost");
+    assert.equal(deployment.createRequest(state, card, tilePosition).quote.dp, 20);
+
     const releasedAt = state.tick + TICKS_PER_SECOND;
     while (state.tick < releasedAt) {
         state = step(state, []);
@@ -682,7 +695,10 @@ test("natural DP recovery can fund deployment during the same battle step", () =
         deployment: {
             definition: { ...account, dp: { initial: 0, min: 0, max: 10, recoveryInterval: 2 } },
             cards: [{
-                definition: { ...operatorCard, dp: { ...operatorCard.dp, cost: 1 } },
+                definition: {
+                    ...operatorCard,
+                    dp: { ...operatorCard.dp, parameters: { ...operatorCard.dp.parameters, cost: 1 } },
+                },
                 unitDefinition: operator,
             }],
         },

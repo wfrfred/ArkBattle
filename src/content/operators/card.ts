@@ -1,4 +1,7 @@
-import type { Definition as CardDefinition } from "../../core/battle/deployment/deck/card/index.js";
+import {
+    dp,
+    type Definition as CardDefinition,
+} from "../../core/battle/deployment/deck/card/index.js";
 import { get as getTile } from "../../core/battlefield/map/map.js";
 import { Hooks } from "../../core/hook.js";
 import { secondsToTicks } from "../../core/tick.js";
@@ -12,8 +15,7 @@ export interface Parameters {
 export function create({ cost, respawnTime }: Parameters): CardDefinition<object, "UNIQUE"> {
     return {
         dp: {
-            cost,
-            increaseCostOnRetreatOrDeath: true,
+            parameters: dp.create({ cost, step: 0.5, maxMultiplier: 2 }),
             refund: { rate: 0.5, limit: "BASE_COST" },
         },
         slot: 1,

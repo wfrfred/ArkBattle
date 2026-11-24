@@ -10,7 +10,6 @@
 | --- | --- | --- |
 | 特殊移动（U028） | 待接入 | [Deployment / Card / DP](research-necessity-20261122.md#deployment--card--dp) |
 | Card 参与本次 Unit 的初始属性（G06、U035） | 待接入 | [Deployment / Card / DP](research-necessity-20261122.md#deployment--card--dp) |
-| 可修正的再部署涨费上限（U023） | 待接入 | [Deployment / Card / DP](research-necessity-20261122.md#deployment--card--dp) |
 | 跨层阻挡（G04） | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
 | 动态空中阻挡半径（U022） | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
 | 迷狂牢笼的阻挡站位 | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
@@ -73,7 +72,6 @@
 | U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | **待定。** 跨格偏移引起下一移动目标差异已核实。Plan 已保存两项输入，待确定构场使用的格。 | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
 | U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **待接入。** 重艇和凶豕兽需要自主运动资格，受力位移或残留速度不能代替。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
 | U022 | 是否有实际内容修改 BLOCK_RADIUS_SCALE 并改变飞行阻挡半径 | **待接入。** 凯尔希·思衡托 S1 的空中阻挡半径修正已核实，当前搜索仍限于固定半径。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L94) |
-| U023 | 具体 CardBuff／符文来源进入费用汇总的资格、竞争和各段取整顺序 | **待接入。** 涨费上限修正、两次取整和野鬃叠加已查清，Card 缺少独立的倍率上限贡献。 | [实际叠加顺序](../research/cases/24-deployment-cost-and-supply.md#凛御银灰-x3-与野鬃) |
 | U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | **待接入。** 自身与外部的移动部署已核对，缺统一 `deployment.redeploy` 及正常离场后的 Card 账务接续。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L181) |
 | U035 | 本次附加、一般初始化、基础 SP 与具体出生程序实际发生冲突时的可观察顺序（含 Case 01） | **待接入，归入 G06。** 松桐 S2 的修正参与出生 HP 计算，待设计本次 Unit 初始化输入。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L289) |
 | U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
@@ -91,6 +89,7 @@
 | U013 | 原始路线 motionMode 为 E_NUM 时，是否允许实际执行以及如何决议运动方式 | Data 待核对。E_NUM 有配置和出生引用，所查普通实例为占位或停用条目，实际行走未证。 | [Case 14](../research/cases/14-route-definition-fields.md#L43) |
 | U015 | 支持范围内是否有实际内容启用 SeparateMoveController 的邻居分离力 | 未证实 Core 缺口。已见邻居分离绑定来自对战或特殊玩法，支持范围内未取得实例。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L194) |
 | U021 | 支持范围内是否有实际 GiantTrap 配置，需要一个阻挡者从多个位置搜索目标 | 未证实 Core 缺口。已核非零 GiantTrap 阻挡配置来自生息演算，支持范围缺多原点正例。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L92) |
+| U023 | 费用汇总的倍率上限与取整 | **已完成。** Card 费用贡献可修正再部署倍率上限，算价依次执行原始费用与后段倍率取整，再加固定值。 | [实际叠加顺序](../research/cases/24-deployment-cost-and-supply.md#凛御银灰-x3-与野鬃) · [算价契约](deployment.md#卡牌费用) |
 | U024 | MAX_COST_CEIL 的配置来源及与 MAX_COST 的动态同步条件 | **已完成，归入 G05。** DP 上限可在战中修改，Deck 独立持有卡价截断上限。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L53) |
 | U038 | 普通离场何时退还本次部署额度 | **已完成。** Unit 死亡注销后仍占用部署位一战斗秒，到期由 Slot 调度归还，Card 在离场时结算。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#普通撤退与死亡的结算顺序) |
 | U043 | 零伤害、无敌、完全吸收下伤后观察者的资格，含奥术法阵各段跳跃与妮芙附加 EP | 项目选择已定。奥术法阵按正输出尝试施加沉默，后续抵挡和归零沿用现有 Resource 契约。特殊入口按实例核对。 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |

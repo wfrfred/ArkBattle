@@ -16,7 +16,7 @@ const account = {
 };
 const cardDefinition = {
     policy: "UNIQUE",
-    dp: { cost: 5, increaseCostOnRetreatOrDeath: false, refund: null },
+    dp: { parameters: cards.dp.create({ cost: 5, increase: false }), refund: null },
     slot: 1,
     supply: {
         stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,

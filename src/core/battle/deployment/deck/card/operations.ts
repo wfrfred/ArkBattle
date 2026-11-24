@@ -1,6 +1,5 @@
 import type { Ref } from "../../../../common/ref.js";
 import type { Contribution } from "../../../../common/contribution.js";
-import type { Modifier } from "../../../../common/modifier.js";
 import { replaceIn } from "../../../../common/object.js";
 import type { State as BattleState } from "../../../state.js";
 import { get } from "../deck.js";
@@ -9,7 +8,9 @@ import type { Card, Policy } from "./card.js";
 import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
-import * as dp from "./dp/index.js";
+import * as dp from "./dp/dp.js";
+import type { Parameters as CostParameters } from "./dp/parameter.js";
+import { resolve as resolveCostParameters } from "./dp/query.js";
 import { enqueue } from "./supply/operations.js";
 import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
 
@@ -44,10 +45,6 @@ export function deploy<S extends object, P extends Policy>(
 
 export function recycle<S extends object, P extends Policy>(card: Card<S, P>): Card<S, P>;
 export function recycle<S extends object>(card: Card<S>): Card<S> {
-    if (card.definition.dp.increaseCostOnRetreatOrDeath) {
-        card = dp.incrementCostStage(card);
-    }
-
     const { supply } = card;
 
     switch (card.policy) {
@@ -55,6 +52,10 @@ export function recycle<S extends object>(card: Card<S>): Card<S> {
             return card;
 
         case "UNIQUE": {
+            if (resolveCostParameters(card).increase) {
+                card = dp.incrementCostStage(card);
+            }
+
             const stock = Math.min(supply.stock + 1, resolveStockLimit(card) ?? Infinity);
             const cooldown = resolveCooldown(card);
 
@@ -150,7 +151,7 @@ export function removeRestriction(
 export function setCostContribution(
     battle: BattleState,
     reference: Ref<Card<any>>,
-    entry: Contribution<readonly Modifier[]>,
+    entry: Contribution<CostParameters>,
 ): BattleState {
     const self: Card = get(battle, reference)!;
 

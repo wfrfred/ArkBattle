@@ -45,7 +45,10 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     };
     const cardDefinition = {
         policy: "UNIQUE",
-        dp: { cost: 10, increaseCostOnRetreatOrDeath: true, refund: { rate: 0.5, limit: "BASE_COST" } },
+        dp: {
+            parameters: cards.dp.create({ cost: 10, step: 0.5, maxMultiplier: 2 }),
+            refund: { rate: 0.5, limit: "BASE_COST" },
+        },
         slot: 1,
         supply: {
             stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 10,

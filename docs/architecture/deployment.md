@@ -40,11 +40,19 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 `dp` 配置基础费用、涨费和退款，`Supply.Definition<P>` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。部署限制在 Card 外层，参与整次部署的资格判断。
 
-Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S, P>`，由部署或离场结算一次写回。`dp.increaseCostOnRetreatOrDeath` 控制普通回收时的涨费。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
+Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S, P>`，由部署或离场结算一次写回。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
 
 Supply 的库存、计时和 Contribution 操作保留 `Card<S, P>` 的私有状态和策略类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 ID 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
+
+## 卡牌费用
+
+Card 的 `dp.parameters` 必须提供数值费用。`card.dp.create` 补齐参数的中性值，卡牌初始化验证基础费用非负。运行时 `stage` 记录涨费次数，`contributions` 保存可安装和移除的费用修正。
+
+有效贡献按既有分组规则选出。同组只保留优先级胜出的整条贡献。若仍有多个费用覆写，按贡献 ID 顺序取第一个非 `null` 值。`baseAddition`、`step`、`maxMultiplier`、`finalAddition` 各自加总，`costScale` 相乘，`increase` 要求定义与所有生效贡献都允许。
+
+牌价的基数取费用覆写或定义费用加基础增量。先用 `min(1 + stage × step, max(1, maxMultiplier))` 乘基数并向下取整，再乘 `costScale` 并向下取整，最后加 `finalAddition` 并按 Deck 的费用上限截断。使用 `BASE_COST` 的撤退退款上限取定义费用与基础增量，部署时另保存本次牌价。 [算价查询](../../src/core/battle/deployment/deck/card/dp/query.ts) · [原生参数修改](../research/cases/24-deployment-cost-and-supply.md#各费用参数的修改时点)
 
 ## 待部署区顺序
 
@@ -94,7 +102,7 @@ Deployable 单向依赖 Occupancy。初始来源为空、COST／额度为零、�
 
 `retreat` 要求当前 ACTIVE 且撤退限制允许，先按本次依据返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
-Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，按 DP 设置推进费用阶段，按 Supply 策略处理库存与冷却。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
+Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
 
 DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，同卡在场计数仍按当前登记实例计算。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
 
@@ -144,6 +152,6 @@ Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks �
 
 特殊移动需要独立的 `deployment.redeploy` 操作，目前仍待接入。原生正常路径沿用 Card 并更换 Unit，具体的账务、失败后续和通知边界见 [Core 缺口 U028](research-necessity-20261122.md#deployment--card--dp)。
 
-手牌重排竞争、隐藏／锁定和特殊回收仍未完整实现。卫戍倒地、自动部署与经济政策由外部机制／Meta 组合。费用和再部署时间的多来源公式仍待核对。
+手牌重排竞争、隐藏／锁定和特殊回收仍未完整实现。卫戍倒地、自动部署与经济政策由外部机制／Meta 组合。再部署时间的多来源公式仍待核对。
 
 机制依据见[部署与供给研究](../research/cases/24-deployment-cost-and-supply.md)，必要验收和未闭合范围分别集中于 [Verification](verification.md)与 [Tactical 语义](tactical-semantics.md)。
