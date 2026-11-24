@@ -5,33 +5,61 @@
       "2026-11-01"
     ],
     "collectionDateSource": "batch directory",
-    "organizedOn": "2026-11-01",
+    "organizedOn": "2026-11-24",
     "client": {
       "dll": {
-        "kind": "dll",
-        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
-        "gameRelativePath": "GameAssembly.dll",
-        "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
-        "records": [
-          "content-event-mapping.json#/provenance/client/dll",
-          "generic-entry.json#/provenance/client/dll",
-          "probe.json#/provenance/client/dll",
-          "sp-initialization.json#/provenance/client/dll"
-        ],
-        "bytes": 218523112
+        "variants": [
+          {
+            "kind": "dll",
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+            "gameRelativePath": "GameAssembly.dll",
+            "sha256": "583b04ff4d1b1a4b35eaf09d77d936408c25447c9e345ef0463d814b6a123fc5",
+            "records": [
+              "content-event-mapping.json#/provenance/client/dll",
+              "generic-entry.json#/provenance/client/dll",
+              "probe.json#/provenance/client/dll",
+              "sp-initialization.json#/provenance/client/dll"
+            ],
+            "bytes": 218523112
+          },
+          {
+            "kind": "dll",
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+            "gameRelativePath": "GameAssembly.dll",
+            "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+            "records": [
+              "svash2-stack-20261124.json#/provenance/client/dll"
+            ],
+            "bytes": 223112680
+          }
+        ]
       },
       "metadata": {
-        "kind": "metadata",
-        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
-        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
-        "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
-        "records": [
-          "content-event-mapping.json#/provenance/client/metadata",
-          "generic-entry.json#/provenance/client/metadata",
-          "probe.json#/provenance/client/metadata",
-          "sp-initialization.json#/provenance/client/metadata"
-        ],
-        "bytes": 45805368
+        "variants": [
+          {
+            "kind": "metadata",
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+            "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+            "sha256": "d3fede171f92740a6f5dc053c58c7013d3c962db764ad1f05cbe977c074fcd1f",
+            "records": [
+              "content-event-mapping.json#/provenance/client/metadata",
+              "generic-entry.json#/provenance/client/metadata",
+              "probe.json#/provenance/client/metadata",
+              "sp-initialization.json#/provenance/client/metadata"
+            ],
+            "bytes": 45805368
+          },
+          {
+            "kind": "metadata",
+            "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+            "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+            "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+            "records": [
+              "svash2-stack-20261124.json#/provenance/client/metadata"
+            ],
+            "bytes": 46669332
+          }
+        ]
       }
     },
     "sourceRecords": [
@@ -40,13 +68,14 @@
       "generic-entry.json",
       "probe.json",
       "prts-sources.json",
-      "sp-initialization.json"
+      "sp-initialization.json",
+      "svash2-stack-20261124.json"
     ],
     "tool": {
       "script": {
         "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
-        "bytes": 12589,
-        "sha256": "1a85248a6a48d92d61c65f5ba044d079954866ff0c1672488b92f0cf1366af9a"
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
       },
       "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
       "role": "archive inventory; historical tool versions remain in the source records"
@@ -131,6 +160,12 @@
         "kind": "record",
         "bytes": 167870,
         "sha256": "f63efddfd234644e777cb5b0e6fd4fe5658aad3a236f8138e056a33fde91552c"
+      },
+      {
+        "path": "svash2-stack-20261124.json",
+        "kind": "record",
+        "bytes": 58277,
+        "sha256": "804f53b866c3719367b7f6d73ccb590b4c777b37753e78b4c87e3fa3e0ccdaf4"
       }
     ],
     "replay": {
@@ -398,6 +433,56 @@
           "address": "0x1806f92b0"
         },
         {
+          "index": 66923,
+          "mode": "disasm",
+          "records": [
+            "svash2-stack-20261124.json#/result/methods/0",
+            "svash2-stack-20261124.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/DeckBuffContainer.GetDeckBuffDatasOnBorn",
+          "address": "0x180709790"
+        },
+        {
+          "index": 66925,
+          "mode": "disasm",
+          "records": [
+            "svash2-stack-20261124.json#/result/methods/1",
+            "svash2-stack-20261124.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/DeckBuffContainer.AddDeckBuff",
+          "address": "0x1807089a0"
+        },
+        {
+          "index": 66927,
+          "mode": "disasm",
+          "records": [
+            "svash2-stack-20261124.json#/result/methods/2",
+            "svash2-stack-20261124.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/DeckBuffContainer.GetDeckBuffCountByBuffKey",
+          "address": "0x180709470"
+        },
+        {
+          "index": 66929,
+          "mode": "disasm",
+          "records": [
+            "svash2-stack-20261124.json#/result/methods/5",
+            "svash2-stack-20261124.json#/result/methods/5/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/DeckBuffContainer.FinishDeckBuffsOnSpawned",
+          "address": "0x180709340"
+        },
+        {
+          "index": 66947,
+          "mode": "disasm",
+          "records": [
+            "svash2-stack-20261124.json#/result/methods/3",
+            "svash2-stack-20261124.json#/result/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/DeckBuffWrapper.Init",
+          "address": "0x18070b880"
+        },
+        {
           "index": 75932,
           "mode": "disasm",
           "records": [
@@ -449,6 +534,16 @@
           ],
           "fullname": "Torappu.Battle.Character._AssignData",
           "address": "0x180a33dd0"
+        },
+        {
+          "index": 77333,
+          "mode": "disasm",
+          "records": [
+            "svash2-stack-20261124.json#/result/methods/4",
+            "svash2-stack-20261124.json#/result/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.Character._SpawnDeckBuffs",
+          "address": "0x180aade50"
         }
       ],
       "blocks": [],
@@ -511,6 +606,45 @@
             "content-bindings.json#/provenance/inputs/1"
           ],
           "bytes": 1343313
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "svash2-stack-20261124.json#/provenance/sources/1"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "svash2-stack-20261124.json#/provenance/sources/2"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "0d0b4c0f9252c14a69a20d4bea09527403dd3eddfc2f7bcd757c3c30cf37ffc3",
+          "records": [
+            "svash2-stack-20261124.json#/provenance/sources/3"
+          ],
+          "bytes": 1367500
+        },
+        {
+          "kind": "bundle",
+          "path": "battle/prefabs/[uc]skills.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/battle/prefabs/[uc]skills.ab",
+          "sha256": "6b85d8f9977c5e2a432944c56bef710da975a1ff02231f1a4827767ceedd1fc0",
+          "records": [
+            "svash2-stack-20261124.json#/result/components/0"
+          ]
         }
       ]
     },

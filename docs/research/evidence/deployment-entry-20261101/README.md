@@ -44,6 +44,14 @@ Windows x64 PE、IL2CPP metadata v29、image base `0x180000000`。完整路径�
 
 指令以 `.pdata` 范围保存，续段另列；`fullyDecoded=true` 仅说明本区间完成解码。外部错误、热更或其它分支保留在指令记录中，不声称已执行或覆盖它们。内容模板只有在 key／实际引用／动作链对上后才纳入结论，同名字符串不作为绑定证据。
 
+## 凛御银灰 S2 的两次攻击
+
+2026-11-24 用更新后的客户端、实际技能与 Holder 绑定及固定原表补查，版本指纹随[层数配置与指令摘录](svash2-stack-20261124.json)保存。`skchr_svash2_2` 各级配置均为 `max_stack_cnt=2`。`DeckBuffContainer.AddDeckBuff`（66925）逐次追加记录。查卡牌层数的 `GetDeckBuffCountByBuffKey`（66927）及场上 STACK 组的 `OverrideGroup.ResetWithBuff`（66282）均读 `max_stack_cnt`，覆盖模板中的缺省上限 1。`GetDeckBuffDatasOnBorn`（66923）复制 Buff 和黑板，`_SpawnDeckBuffs`（77333）在 `0x180aae0b8` 给新 Unit 安装。普通成功部署的 `FinishDeckBuffsOnSpawned`（66929）清理 `UNTIL_NEXT_SPAWN` 附加。[场上叠层上限指令](../buff-group-expiry-20261111/group/native/ResetWithBuff-66282.asm#L45)
+
+已绑定的 `svash2_s_2[build]` 由同一叠层 Buff 逐次执行。Trigger 到点调用 `AOEDamage`，随后递减一层并推进下一次触发阈值。每次调用从 Buff 宿主读取当时攻击力，再算无来源物理伤害。宿主普通离场时清除剩余 Buff。时间按 PRTS 的约 1.1 秒和其后约 0.5 秒记录，未逐帧实测。[实际攻击模板](svash2-stack-20261124.json#L1740) · [ATK 采样](../death-notification-order-20261116/aoe-regions.json#L2536) · [普通离场清理](../death-notification-order-20261116/README.md#L30) · [PRTS 技能说明](https://prts.wiki/w/凛御银灰#技能)
+
+复查这些摘录时用 `native.py disasm 66923 66925 66927 66929 66947 77333 66282`。`max_stack_cnt` 对应 metadata 字面量 32451，使用槽 `0x188c06d50` 的编码为 `0xa000fd87`。按 JSON 中记录的版本和 Pointer 可复取技能等级配置。Prefab 与 Holder 复用 [Card 资源解码](../card-rules-20261122/extract.py) 的 `read_assets`，选择 `[uc]skills.ab` 的 PathID `-3708874611981639270` 和记录中的三个模板。
+
 ## 文件与复现
 
 | 材料 | 用途 |
