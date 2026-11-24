@@ -16,6 +16,9 @@ export function add<S extends object>(battle: BattleState, self: Card<S>): Battl
 
 export function replace<S extends object>(battle: BattleState, self: Card<S>): BattleState {
     const { deck } = battle.deployment;
+    if (deck.cards.get(self.id)?.ref !== self.ref) {
+        throw new RangeError(`unknown card: ${self.id}`);
+    }
 
     return replaceIn(battle, ["deployment", "deck", "cards"], deck.cards.replace(self.id, self));
 }
@@ -38,8 +41,7 @@ export function sort(battle: BattleState): BattleState {
 
     const order = ordering(battle, previous);
 
-    return order.length === previous.length &&
-        order.every((ref, index) => ref.id === previous[index]!.id)
+    return order.length === previous.length && order.every((ref, index) => ref === previous[index])
         ? battle
         : replaceIn(battle, ["deployment", "deck", "order"], order);
 }

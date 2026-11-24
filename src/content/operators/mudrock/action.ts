@@ -197,7 +197,7 @@ export function createSkill({
             state = healSelf(state, host, healRatio);
 
             for (const targetRef of self.state.bindings.primary ?? []) {
-                if (executionRef(host, self).get(state)?.lifecycle !== "ACTIVE") {
+                if (executionRef(self).get(state)?.lifecycle !== "ACTIVE") {
                     return state;
                 }
 

@@ -1,4 +1,5 @@
 import type { Unit } from "../../unit.js";
+import { ref, type Ref } from "../../../common/ref.js";
 import type * as contribution from "../../../common/contribution.js";
 import * as entries from "../../../common/collection/entries.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
@@ -38,7 +39,11 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
     battle: BattleState,
     unit: U,
 ): Result<U & Skill> {
-    const initialized = initializeSkill(battle, unit.definition.skill.definition);
+    const initialized = initializeSkill(
+        battle,
+        ref<Unit>(unit) as Ref<Unit & Skill>,
+        unit.definition.skill.definition,
+    );
     const skill = initialized.value;
     const value: State = {
         ...skill,

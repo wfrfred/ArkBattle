@@ -79,8 +79,8 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     const targets = [1, 2].map((id) => units.ref(get(state, id)));
     const pair = get(state, owner.id).occupancy.pair;
     assert.ok(pair);
-    const actionRef = actions.ref(owner, program);
-    const idleAction = actions.ref(owner, idle);
+    const actionRef = actions.ref(owner.get(state).action.actions.get(program));
+    const idleAction = actions.ref(owner.get(state).action.actions.get(idle));
     const started = actions.start(state, actionRef);
     state = started.state;
     const installed = effects.install(state, owner, {

@@ -40,9 +40,9 @@
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
-| [Capability · 初始化与装配](capability.md#初始化与装配) | [互斥阻挡角色拒绝装配，无该能力的额外已知 Initial 不创建能力，入场 Effect 附在已登记 Unit](../../test/core/unit.test.js#L16)<br>[开场和后续单位共用身份分配，未登记时不可查，新实例必须保留已有单位](../../test/core/unit.test.js#L72) |
+| [Capability · 初始化与装配](capability.md#初始化与装配)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [互斥阻挡角色拒绝装配，无该能力的额外已知 Initial 不创建能力，入场 Effect 附在已登记 Unit](../../test/core/unit.test.js#L16)<br>[开场和后续单位共用身份分配，未登记时不可查，同一实例跨版本可用原 Ref 作 Map 键，同 ID 的另一分支无法读取或结束它](../../test/core/unit.test.js#L72) |
 | [Capability · 资格限制](capability.md#资格限制) | [各限制列表只拒绝自身重复 ID，同名跨能力独立，运行替换只改所属列表](../../test/core/unit.test.js#L44) |
-| [Resource · 直接致死的调用者组合](resource.md#直接致死的调用者组合) | [伤害和直接致死先通知击杀方再清受害者依赖，沿用首份 Departure，调用者组合直接致死也只奖励一次](../../test/core/unit.test.js#L88) |
+| [Resource · 直接致死的调用者组合](resource.md#直接致死的调用者组合) | [伤害和直接致死先通知击杀方再清受害者依赖，沿用首份 Departure，调用者组合直接致死也只奖励一次](../../test/core/unit.test.js#L102) |
 | [接口约定 · 5.1 Unit 完整操作与批量变更](api-conventions.md#51-unit-完整操作与批量变更) | [组合依序读取先前结果并一次发布最终值，嵌套结算先完成，最终回原值仍执行前项已登记的结算](../../test/core/change.test.js#L10) |
 | [Capability · Classification](capability.md#classification) | [类别与 Side 独立，敌对关系取决于恰有一方为 ENEMY](../../test/core/classification.test.js#L24)<br>[战斗标签与组织标签各按类别提供，缺少对应字段时匹配失败](../../test/core/classification.test.js#L65)<br>[按请求考虑额外职业，召唤复用子职业而没有常规职业，等级只匹配 ENEMY](../../test/core/classification.test.js#L111) |
 | [Attribute](attribute.md#attribute) | [底值按定义边界规范化，修改后数值再按当前范围限幅](../../test/core/attribute.test.js#L7)<br>[后写替换整个区间，未提供一侧恢复该默认边界，清范围与移除数值来源彼此独立](../../test/core/attribute.test.js#L27)<br>[只求值竞争胜出的动态来源，每次读取调用者当前事实](../../test/core/attribute.test.js#L44) |

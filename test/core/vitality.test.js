@@ -36,7 +36,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         prepare: state => ({ state, value: {} }),
         onTick(state, source, self) {
             observed.push(get(state, 0).vitality.health.hp);
-            return actions.finish(state, actions.executionRef(source, self));
+            return actions.finish(state, actions.executionRef(self));
         },
     };
     let state = battle([

@@ -1,7 +1,15 @@
 import type { Identified, Ref } from "../common/ref.js";
 import { replaceIn } from "../common/object.js";
 import type { State as BattleState, Result } from "../battle/state.js";
-import { isAvailable, key, pair, scope, type Lifetime, type Node, type Scope } from "./lifetime.js";
+import {
+    isAvailable,
+    pair,
+    scope,
+    type Lifetime,
+    type Node,
+    type NodeRef,
+    type Scope,
+} from "./lifetime.js";
 
 export function register<T extends Identified<object>, E>(
     battle: BattleState,
@@ -10,13 +18,12 @@ export function register<T extends Identified<object>, E>(
     scopes: readonly Scope[] = [],
 ): BattleState {
     const target = scope(lifetime, ref);
-    const identity = key(target);
     const nodes = battle.lifetime.nodes;
-    if (nodes.has(identity)) {
+    if (nodes.has(ref)) {
         throw new TypeError("duplicate lifetime node");
     }
 
-    const dependencies = [...new Set(scopes.map(key))];
+    const dependencies = [...new Set(scopes.map((dependency) => pair(dependency).ref))];
     if (dependencies.length !== 0 && !("dependencyEnd" in pair(target).config.end)) {
         throw new TypeError("this lifetime cannot depend on another lifetime");
     }
@@ -27,36 +34,36 @@ export function register<T extends Identified<object>, E>(
     return replaceIn(
         battle,
         ["lifetime", "nodes"],
-        new Map(nodes).set(identity, { target, dependencies }),
+        new Map(nodes).set(ref, { target, dependencies }),
     );
 }
 
 export function bind<T extends Identified<object>, E>(
     battle: BattleState,
-    lifetime: Lifetime<T, E>,
+    _lifetime: Lifetime<T, E>,
     ref: Ref<T>,
     parent: Scope,
 ): Result<boolean> {
     const nodes = battle.lifetime.nodes;
-    const target = scope(lifetime, ref);
-    const identity = key(target);
-    const dependency = key(parent);
-    if (!isAvailable(nodes, identity) || !isAvailable(nodes, dependency)) {
+    const dependency = pair(parent).ref;
+    if (!isAvailable(nodes, ref) || !isAvailable(nodes, dependency)) {
         return { state: battle, value: false };
     }
-    if (!("dependencyEnd" in pair(target).config.end)) {
+
+    const node = nodes.get(ref)!;
+
+    if (!("dependencyEnd" in pair(node.target).config.end)) {
         throw new TypeError("this lifetime cannot depend on another lifetime");
     }
 
-    const node = nodes.get(identity)!;
     if (node.dependencies.includes(dependency)) {
         return { state: battle, value: true };
     }
-    if (wouldCycle(nodes, identity, dependency)) {
+    if (wouldCycle(nodes, ref, dependency)) {
         throw new TypeError("lifetime dependencies cannot form a cycle");
     }
 
-    const next = new Map(nodes).set(identity, {
+    const next = new Map(nodes).set(ref, {
         ...node,
         dependencies: [...node.dependencies, dependency],
     });
@@ -66,18 +73,17 @@ export function bind<T extends Identified<object>, E>(
 
 export function unbind<T extends Identified<object>, E>(
     battle: BattleState,
-    lifetime: Lifetime<T, E>,
+    _lifetime: Lifetime<T, E>,
     ref: Ref<T>,
     parent: Scope,
 ): BattleState {
     const nodes = battle.lifetime.nodes;
-    const identity = key(scope(lifetime, ref));
-    const dependency = key(parent);
-    if (!isAvailable(nodes, identity) || !isAvailable(nodes, dependency)) {
+    const dependency = pair(parent).ref;
+    if (!isAvailable(nodes, ref) || !isAvailable(nodes, dependency)) {
         return battle;
     }
 
-    const node = nodes.get(identity)!;
+    const node = nodes.get(ref)!;
     const dependencies = node.dependencies.filter((entry) => entry !== dependency);
 
     return dependencies.length === node.dependencies.length
@@ -85,21 +91,21 @@ export function unbind<T extends Identified<object>, E>(
         : replaceIn(
               battle,
               ["lifetime", "nodes"],
-              new Map(nodes).set(identity, { ...node, dependencies }),
+              new Map(nodes).set(ref, { ...node, dependencies }),
           );
 }
 
 function wouldCycle(
-    nodes: ReadonlyMap<string, Node>,
-    identity: string,
-    dependency: string,
+    nodes: ReadonlyMap<NodeRef, Node>,
+    reference: NodeRef,
+    dependency: NodeRef,
 ): boolean {
     const remaining = [dependency];
-    const visited = new Set<string>();
+    const visited = new Set<NodeRef>();
 
     while (remaining.length > 0) {
         const current = remaining.pop()!;
-        if (current === identity) {
+        if (current === reference) {
             return true;
         }
         if (!visited.has(current)) {
@@ -115,34 +121,29 @@ function settling(battle: BattleState): boolean {
     return [...battle.lifetime.nodes.values()].some((node) => node.ending !== undefined);
 }
 
-export function end<T extends Identified<object>, E>(
-    battle: BattleState,
-    lifetime: Lifetime<T, E>,
-    ref: Ref<T>,
-    payload: NoInfer<E>,
-): BattleState {
+export function end(battle: BattleState, reference: NodeRef, payload: unknown): BattleState {
     const outer = !settling(battle);
-    battle = request(battle, key(scope(lifetime, ref)), payload);
+    battle = request(battle, reference, payload);
 
     return outer ? flushDeferred(drain(battle)) : battle;
 }
 
-function request(battle: BattleState, identity: string, end: unknown): BattleState {
-    const node = battle.lifetime.nodes.get(identity);
+function request(battle: BattleState, reference: NodeRef, end: unknown): BattleState {
+    const node = battle.lifetime.nodes.get(reference);
     if (node === undefined || node.ending !== undefined) {
         return battle;
     }
 
-    const { config, ref } = pair(node.target);
-    const initial = ref.get(battle)!;
+    const { config } = pair(node.target);
+    const initial = reference.get(battle)!;
     const nodes = new Map(battle.lifetime.nodes);
-    nodes.delete(identity);
-    nodes.set(identity, { ...node, ending: { initial, end } });
+    nodes.delete(reference);
+    nodes.set(reference, { ...node, ending: { initial, end } });
     battle = replaceIn(battle, ["lifetime", "nodes"], nodes);
-    battle = config.end.prepare(battle, ref, initial, end);
+    battle = config.end.prepare(battle, reference, initial, end);
 
     for (const [childKey, child] of battle.lifetime.nodes) {
-        if (child.ending === undefined && child.dependencies.includes(identity)) {
+        if (child.ending === undefined && child.dependencies.includes(reference)) {
             const dependent = pair(child.target);
             battle = request(battle, childKey, dependent.config.end.dependencyEnd);
         }

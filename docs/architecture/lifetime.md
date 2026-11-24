@@ -6,7 +6,7 @@ Lifetime 统一结束请求、依赖传播与拓扑析构。领域负责创建�
 
 [公共入口](../../src/core/lifetime/index.ts)提供 `create`、`scope`、`available`、`bind`、`unbind` 和 `defer`。领域使用 `create` 声明一份共用的静态协议，每个已登记的实例都在图中有自己的节点。
 
-节点身份由领域的 `kind` 和 Ref 对应的字符串地址组成。Unit、Projectile 和 Mechanism 使用自身 ID。Execution、Activation、Effect、Unbalance 和 Pull 使用各自 Ref 的宿主与局部身份。
+DAG 直接使用实例保存的 Ref 对象作键。直接依赖也保存 Ref，同一 Ref 始终指向同一个节点。
 
 `scope(lifetime, ref)` 封装描述符与实例 Ref，用来指定另一节点为依赖目标。B 登记 A 的 Scope 就建立 B → A。一个节点可依赖多个目标，也可供多个节点依赖，每条边的结束语义相同。普通来源、槽位与私有 Ref 仍由各领域解释。Burst 使用 Effect 的描述符和节点。
 
@@ -16,7 +16,7 @@ Lifetime 统一结束请求、依赖传播与拓扑析构。领域负责创建�
 
 ## 静态析构适配
 
-Lifetime 配置提供 `kind`、`address`、`end.prepare`、`end.finalize` 和可选的 `end.dependencyEnd`。首次有效结束请求使用节点已配对的 `ref.get(battle)` 取得 `initial`，并固定当时接受的 `end`。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。需要清理过程产生的新事实时，回调使用 Ref 读取最新版本。
+Lifetime 配置提供 `end.prepare`、`end.finalize` 和可选的 `end.dependencyEnd`。首次有效结束请求使用节点已配对的 `ref.get(battle)` 取得 `initial`，并固定当时接受的 `end`。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。需要清理过程产生的新事实时，回调使用 Ref 读取最新版本。
 
 依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入。Action 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 和 Mechanism 可以作为依赖目标，三者当前只接受显式的结束请求。
 

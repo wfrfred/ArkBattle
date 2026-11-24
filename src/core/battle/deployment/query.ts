@@ -24,14 +24,14 @@ import { remaining } from "./slot/query.js";
 import { Hooks } from "../../hook.js";
 
 export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card> | null {
-    return battle.deployment.history.find(({ unit }) => unit.id === reference.id)?.card ?? null;
+    return battle.deployment.history.find(({ unit }) => unit === reference)?.card ?? null;
 }
 
 export function deployedCount<T extends Card<any>>(battle: BattleState, reference: Ref<T>): number {
     let count = 0;
 
     for (const unit of battle.battlefield.units.values()) {
-        if (hasDeployable(unit) && unit.deployable.card?.id === reference.id) {
+        if (hasDeployable(unit) && unit.deployable.card === reference) {
             count++;
         }
     }

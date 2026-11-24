@@ -52,8 +52,6 @@ export function replace<P extends Projectile<object, any>>(
 }
 
 export const lifetime = createLifetime<Projectile<object, any>, EndReason>({
-    kind: "PROJECTILE",
-    address: (reference) => String(reference.id),
     end: {
         prepare: (battle, reference, initial) =>
             replace(battle, reference, { ...initial, lifecycle: "ENDING" }),

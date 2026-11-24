@@ -2,7 +2,7 @@ import { advanceForcedMotion } from "../../../battlefield/collision.js";
 import type { Result, State as BattleState } from "../../../battle/state.js";
 import { assert } from "../../../common/assert.js";
 import { replaceIn } from "../../../common/object.js";
-import type { Identified, Ref } from "../../../common/ref.js";
+import { createRef, ref, type Identified, type Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
 import * as lifetimes from "../../../lifetime/index.js";
 import { register } from "../../../lifetime/operations.js";
@@ -42,21 +42,21 @@ export interface Unbalance extends Identified<{ readonly host: Ref<Host>; readon
 
 type End = "SETTLED" | "RESTRICTED" | "HOST_UNAVAILABLE";
 
-export function ref(self: Unbalance): Ref<Unbalance> {
-    return { host: self.host, id: self.id, get: getUnbalance } as Ref<Unbalance>;
-}
+export { ref } from "../../../common/ref.js";
 
 function getUnbalance(this: object, battle: BattleState): Unbalance | undefined {
     const { host, id } = this as Ref<Unbalance>;
     const state = host.get(battle)?.shiftable;
+    const candidate =
+        state?.unbalance?.id === id ? state.unbalance : state?.endingUnbalances.get(id);
 
-    return state?.unbalance?.id === id ? state.unbalance : state?.endingUnbalances.get(id);
+    return candidate?.ref === this ? candidate : undefined;
 }
 
 export function replace(battle: BattleState, unit: Host, next: Unbalance): BattleState {
     const { shiftable } = unit;
     const changes =
-        shiftable.unbalance?.id === next.id
+        shiftable.unbalance?.ref === next.ref
             ? { unbalance: next }
             : { endingUnbalances: new Map(shiftable.endingUnbalances).set(next.id, next) };
 
@@ -64,8 +64,6 @@ export function replace(battle: BattleState, unit: Host, next: Unbalance): Battl
 }
 
 export const lifetime = lifetimes.create<Unbalance, End>({
-    kind: "UNBALANCE",
-    address: ({ host, id }) => `${host.id}:${id}`,
     end: {
         prepare(battle, reference, initial) {
             return replace(battle, reference.host.get(battle)!, {
@@ -78,7 +76,7 @@ export const lifetime = lifetimes.create<Unbalance, End>({
         finalize(battle, reference) {
             const unit = reference.host.get(battle)!;
             const { shiftable } = unit;
-            if (shiftable.unbalance?.id === reference.id) {
+            if (shiftable.unbalance?.ref === reference) {
                 return replaceUnits(battle, [replaceIn(unit, ["shiftable", "unbalance"], null)]);
             }
 
@@ -109,18 +107,22 @@ export function prepare(battle: BattleState, unit: Host): Unbalance | null {
     const active = unit.shiftable.unbalance;
     const protectedUntil = battle.tick + PROTECTION_TICKS;
 
-    return active?.lifecycle === "ACTIVE"
-        ? { ...active, protectedUntil }
-        : {
-              host: units.ref(unit),
-              id: unit.shiftable.nextUnbalanceId,
-              lifecycle: "ACTIVE",
-              velocity: ZERO,
-              protectedUntil,
-              pendingForce: ZERO,
-              pulls: new Map(),
-              nextPullId: 0,
-          };
+    if (active?.lifecycle === "ACTIVE") {
+        return { ...active, protectedUntil };
+    }
+
+    const identity = { host: units.ref(unit), id: unit.shiftable.nextUnbalanceId };
+
+    return {
+        ...identity,
+        ref: createRef<Unbalance>(identity, getUnbalance),
+        lifecycle: "ACTIVE",
+        velocity: ZERO,
+        protectedUntil,
+        pendingForce: ZERO,
+        pulls: new Map(),
+        nextPullId: 0,
+    };
 }
 
 export function receive(
@@ -131,7 +133,7 @@ export function receive(
 ): BattleState {
     const { shiftable } = unit;
     const previous = shiftable.unbalance;
-    const started = previous?.id !== next.id;
+    const started = previous?.ref !== next.ref;
     const reference = ref(next);
     if (started) {
         const endingUnbalances =
@@ -194,7 +196,7 @@ export function active(
     const self = unit?.shiftable.unbalance;
 
     return unit !== undefined &&
-        self?.id === reference.id &&
+        self?.ref === reference &&
         self.lifecycle === "ACTIVE" &&
         present(unit) &&
         permitsForce(battle, unit)
@@ -277,7 +279,7 @@ function settlePulls(
 export function advance(battle: BattleState, reference: Ref<Unbalance>): BattleState {
     const unit = reference.host.get(battle);
     const self = unit?.shiftable.unbalance;
-    if (unit === undefined || self?.id !== reference.id || self.lifecycle !== "ACTIVE") {
+    if (unit === undefined || self?.ref !== reference || self.lifecycle !== "ACTIVE") {
         return battle;
     }
     if (!present(unit)) {

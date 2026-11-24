@@ -43,7 +43,7 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
     battle = modify(battle, ref(actor), 40).state;
     battle = activate(battle, skillRef(getUnit(battle, 0))).state;
     const attack = actor.action.actions.get("normal-attack").definition;
-    const started = start(battle, actionRef(ref(actor), attack));
+    const started = start(battle, actionRef(actor.action.actions.get(attack)));
     battle = started.state;
     for (let tick = 0; tick <= 29; tick++) battle = advanceAction({ ...battle, tick }, started.value);
     assert.ok(Math.abs(getUnit(battle, 1).vitality.health.hp - (10000 - (738 + 25 + 65) * 1.58)) < 1e-6);
@@ -58,7 +58,7 @@ test("Melantha's ordinary attack still requires a visible target while blocking 
     const battle = advanceBlocking(add(add(createBattleState(fixtureBattlefieldState([])), actor), enemy));
     assert.equal(relations(battle)[0].blocked.id, enemy.id);
     const attack = actor.action.actions.get("normal-attack").definition;
-    assert.equal(start(battle, actionRef(ref(actor), attack)).value, null);
+    assert.equal(start(battle, actionRef(actor.action.actions.get(attack))).value, null);
 });
 
 test("Melantha pays Begin on first entry, skips it for consecutive attacks, and restores it after a target gap or interruption", () => {

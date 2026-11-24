@@ -52,6 +52,6 @@ function running(battle: BattleState, context: Context): boolean {
 
     return (
         source?.lifecycle === "ACTIVE" &&
-        source.action.actions.getByExecution(context.execution.id)?.execution.lifecycle === "ACTIVE"
+        source.action.actions.getByExecution(context.execution)?.execution.lifecycle === "ACTIVE"
     );
 }

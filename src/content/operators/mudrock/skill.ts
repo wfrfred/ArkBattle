@@ -47,25 +47,23 @@ export function create(
                 return source !== undefined && skillTargets(battle, source, range).some(() => true);
             },
             onStart(state, host) {
-                if (host.get(state) === undefined) {
+                const unit = host.get(state);
+                if (unit === undefined) {
                     return state;
                 }
 
-                const normal = actionRef(host, normalAttack).get(state);
-                if (normal?.definition === normalAttack && normal.execution !== null) {
-                    state = cancelAction(
-                        state,
-                        executionRef(host, normal.execution),
-                        "INTERRUPTED",
-                    );
+                const normal = unit.action.actions.get(normalAttack);
+                if (normal?.execution != null) {
+                    state = cancelAction(state, executionRef(normal.execution), "INTERRUPTED");
                 }
 
-                if (host.get(state)?.lifecycle !== "ACTIVE") {
+                const current = host.get(state);
+                if (current?.lifecycle !== "ACTIVE") {
                     return state;
                 }
 
-                state = clearCooldown(state, actionRef(host, normalAttack));
-                state = clearCooldown(state, actionRef(host, action));
+                state = clearCooldown(state, actionRef(current.action.actions.get(normalAttack)!));
+                state = clearCooldown(state, actionRef(current.action.actions.get(action)!));
 
                 return state;
             },

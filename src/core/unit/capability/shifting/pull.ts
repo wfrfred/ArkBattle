@@ -1,6 +1,6 @@
 import type { Result, State as BattleState } from "../../../battle/state.js";
 import { assert, assertNonnegativeNumber } from "../../../common/assert.js";
-import type { Identified, Ref } from "../../../common/ref.js";
+import { createRef, ref, type Identified, type Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import * as lifetimes from "../../../lifetime/index.js";
@@ -49,14 +49,13 @@ export interface Pull extends Identified<{
     readonly braked: boolean;
 }
 
-export function ref(self: Pull): Ref<Pull> {
-    return { unbalance: self.unbalance, id: self.id, get: getPull } as Ref<Pull>;
-}
+export { ref } from "../../../common/ref.js";
 
 function getPull(this: object, battle: BattleState): Pull | undefined {
     const { unbalance, id } = this as Ref<Pull>;
+    const candidate = unbalance.get(battle)?.pulls.get(id);
 
-    return unbalance.get(battle)?.pulls.get(id);
+    return candidate?.ref === this ? candidate : undefined;
 }
 
 function replace(battle: BattleState, reference: Ref<Pull>, next: Pull | null): BattleState {
@@ -73,8 +72,6 @@ function replace(battle: BattleState, reference: Ref<Pull>, next: Pull | null): 
 }
 
 export const lifetime = lifetimes.create<Pull, string>({
-    kind: "PULL",
-    address: ({ unbalance, id }) => `${unbalance.host.id}:${unbalance.id}:${id}`,
     end: {
         prepare: (battle, reference, initial) =>
             replace(battle, reference, { ...initial, lifecycle: "ENDING" }),
@@ -142,9 +139,11 @@ export function apply(
         return { state: battle, value: null };
     }
 
+    const identity = { unbalance: unbalance.ref(next), id: next.nextPullId };
+    const reference = createRef<Pull>(identity, getPull);
     const item: Pull = {
-        unbalance: unbalance.ref(next),
-        id: next.nextPullId,
+        ...identity,
+        ref: reference,
         lifecycle: "ACTIVE",
         scope: input.scope,
         point: input.point,
@@ -155,7 +154,6 @@ export function apply(
         braked: false,
     };
 
-    const reference = ref(item);
     const pulls = new Map(next.pulls).set(item.id, item);
     battle = unbalance.receive(
         battle,
@@ -188,7 +186,7 @@ export function force(battle: BattleState, self: Pull, target: WorldPosition): V
 export function brake(battle: BattleState, reference: Ref<Pull>): BattleState {
     const current = unbalance.active(battle, reference.unbalance);
     const item = current?.self.pulls.get(reference.id);
-    if (current === undefined || item === undefined || !available(battle, item)) {
+    if (current === undefined || item?.ref !== reference || !available(battle, item)) {
         return battle;
     }
 

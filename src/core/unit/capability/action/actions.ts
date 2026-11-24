@@ -1,7 +1,7 @@
 import { Store } from "../../../common/collection/store.js";
 import type { Query } from "../../../common/query.js";
 import type { Action } from "./action.js";
-import type { Execution, Id as ExecutionId } from "./execution.js";
+import type { Execution, ExecutionRef } from "./execution.js";
 import type { Definition, Id } from "./definition.js";
 
 type ActionWithExecution = Action & { readonly execution: Execution };
@@ -23,13 +23,23 @@ export class Actions {
         return this.#store.size;
     }
 
-    get(id: Id): Action | undefined {
-        return this.#store.get(id);
+    get(id: Id): Action | undefined;
+    get<P extends object, E extends object>(
+        definition: Definition<P, E, never>,
+    ): Action<P, E> | undefined;
+    get(identity: Id | Pick<Definition, "id">): Action<any, any> | undefined {
+        if (typeof identity === "string") {
+            return this.#store.get(identity);
+        }
+
+        const self = this.#store.get(identity.id);
+
+        return self?.definition === identity ? self : undefined;
     }
 
-    getByExecution(id: ExecutionId): ActionWithExecution | undefined {
+    getByExecution(reference: ExecutionRef): ActionWithExecution | undefined {
         return this.values().find(
-            (entry): entry is ActionWithExecution => entry.execution?.id === id,
+            (entry): entry is ActionWithExecution => entry.execution?.ref === reference,
         );
     }
 

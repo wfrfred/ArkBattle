@@ -20,6 +20,7 @@ import {
     type OrdinaryEffect,
     type StackEffect,
     type GroupSource,
+    createEffectRef,
     ref as effectRef,
 } from "./effect.js";
 import { expired, validate, type Expiration, type DecayExpiration } from "./expiration.js";
@@ -113,8 +114,11 @@ export function install<S extends object, H extends object>(
         }
     }
 
+    const id = unit.effects.nextId;
+    const reference = createEffectRef(host, id);
     const instance = {
-        id: unit.effects.nextId,
+        id,
+        ref: reference,
         host,
         definition,
         state: initial.state ?? definition.initialize(),
@@ -125,7 +129,6 @@ export function install<S extends object, H extends object>(
         lifecycle: "INSTALLING",
         ...(group?.type === "STACK" ? { stackCount: 1 } : {}),
     } as unknown as Effect;
-    const reference = effectRef(instance);
     battle = replaceUnits(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
     battle = register(battle, lifetime, reference, [scope(unitLifetime, host), ...scopes]);
     battle = callbacks(instance.definition).onInstall?.(battle, instance) ?? battle;
@@ -201,7 +204,7 @@ export function decreaseStack<T extends StackEffect<any, any>>(
 ): BattleState {
     assertNonnegativeSafeInteger(amount, "effect stack consumption");
     const unit = (reference.host as Ref<Unit>).get(battle);
-    const self = unit?.effects.get(reference.id);
+    const self = unit?.effects.get(reference);
     if (self === undefined || self.lifecycle === "ENDING" || amount === 0) {
         return battle;
     }
@@ -219,7 +222,7 @@ export function setEnabled<T extends Effect<any, any>>(
     enabled: boolean,
 ): BattleState {
     const unit = (reference.host as Ref<Unit>).get(battle);
-    const instance = unit?.effects.get(reference.id);
+    const instance = unit?.effects.get(reference);
     if (instance === undefined || instance.lifecycle === "ENDING" || instance.enabled === enabled) {
         return battle;
     }
@@ -230,8 +233,6 @@ export function setEnabled<T extends Effect<any, any>>(
 }
 
 export const lifetime = create<Effect<any, any>, string>({
-    kind: "EFFECT",
-    address: (reference) => `${reference.host.id}:${reference.id}`,
     end: {
         prepare(battle, reference, initial) {
             const host = (reference.host as Ref<Unit>).get(battle)!;
@@ -271,7 +272,7 @@ export function advance(battle: BattleState): BattleState {
     for (const candidate of candidates) {
         const reference = effectRef(candidate);
         const unit = reference.host.get(battle);
-        let instance = unit?.effects.get(reference.id);
+        let instance = unit?.effects.get(reference);
         if (instance?.lifecycle === "ACTIVE" || instance?.lifecycle === "INACTIVE") {
             const previous = instance.expiration;
             if (previous.type === "DURATION") {
@@ -320,20 +321,14 @@ function resolveGroupSource(
         return null;
     }
 
-    const card = cardForUnit(battle, source);
-
-    return card === null ? { type: "UNIT", id: source.id } : { type: "CARD", id: card.id };
+    return cardForUnit(battle, source) ?? source;
 }
 
 function matchesGroup(self: Effect, group: Group, source: GroupSource | null): boolean {
     return (
         self.definition.group?.id === group.id &&
         self.definition.group.independentSource === group.independentSource &&
-        (self.groupSource === source ||
-            (self.groupSource !== null &&
-                source !== null &&
-                self.groupSource.type === source.type &&
-                self.groupSource.id === source.id))
+        self.groupSource === source
     );
 }
 
@@ -385,7 +380,7 @@ function updateStack(
 
 function settleExpiration(battle: BattleState, reference: Ref<Effect>): BattleState {
     const unit = reference.host.get(battle);
-    const self = unit?.effects.get(reference.id);
+    const self = unit?.effects.get(reference);
     if (
         self === undefined ||
         self.lifecycle === "ENDING" ||
@@ -462,7 +457,7 @@ function updateLifecycle<T extends Effect<any, any>>(
     reference: Ref<T>,
 ): BattleState {
     const unit = (reference.host as Ref<Unit>).get(battle);
-    const instance = unit?.effects.get(reference.id);
+    const instance = unit?.effects.get(reference);
     if (
         unit === undefined ||
         instance === undefined ||

@@ -88,14 +88,13 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
             },
             definitions: [attack],
             select(battle, self) {
-                const reference = actionRef(unitRef(self), attack);
-                const current = reference.get(battle);
+                const current = self.action.actions.get(attack);
                 if (
                     !hasTarget(battle, self, attackParameters.range) ||
                     !allows(battle, { self, definitionId: attack.id }, self.action.restrictions)
                 ) {
                     if (current?.execution === null && current.state.inSession) {
-                        battle = setActionState(battle, reference, { inSession: false });
+                        battle = setActionState(battle, actionRef(current), { inSession: false });
                     }
 
                     return { state: battle, value: [] };

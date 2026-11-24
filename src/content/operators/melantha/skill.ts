@@ -41,7 +41,7 @@ export function create({ id, cost, durationTicks, sp, trigger, attackBonus }: Sk
 
                 return install(state, ref(unit), effect, {
                     source: ref(unit),
-                    scopes: [scope(lifetime, activationRef(source, self))],
+                    scopes: [scope(lifetime, activationRef(self))],
                 }).state;
             },
         },

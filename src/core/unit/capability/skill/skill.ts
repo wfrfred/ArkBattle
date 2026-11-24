@@ -1,5 +1,5 @@
 import type { State as BattleState } from "../../../battle/state.js";
-import type { Identified, Identity, Ref } from "../../../common/ref.js";
+import { createRef, type Identified, type Identity, type Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Skill as SkillCapability } from "./capability.js";
 import type { Definition } from "./definition.js";
@@ -16,17 +16,13 @@ export interface Skill<S extends object = object, A extends object = object> ext
     readonly activation: Activation<A> | null;
 }
 
-export function ref<S extends object = object, A extends object = object>(
-    host: Ref<Unit & SkillCapability>,
-): Ref<Skill<S, A>> {
-    return { host, get } as Ref<Skill<S, A>>;
+export function createSkillRef(host: Ref<Unit & SkillCapability>): Ref<Skill> {
+    return createRef<Skill>({ host }, get);
 }
 
-function get<S extends object, A extends object>(
-    this: object,
-    battle: BattleState,
-): Skill<S, A> | undefined {
+function get(this: object, battle: BattleState): Skill | undefined {
     const { host } = this as Identity<Skill>;
+    const current = host.get(battle)?.skill;
 
-    return host.get(battle)?.skill as Skill<S, A> | undefined;
+    return current?.ref === this ? current : undefined;
 }

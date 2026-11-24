@@ -22,7 +22,10 @@ export function update(state: State, updates: readonly Unit[]): State {
     const changes: Change[] = [];
 
     for (const unit of updates) {
-        const previous = state.units.get(unit.id)!;
+        const previous = state.units.get(unit.id);
+        if (previous?.ref !== unit.ref) {
+            throw new RangeError(`unknown unit: ${unit.id}`);
+        }
         if (previous !== unit) {
             changes.push({ type: "UPDATE", previous, next: unit });
         }
@@ -33,7 +36,7 @@ export function update(state: State, updates: readonly Unit[]): State {
 
 export function remove(state: State, reference: Ref<Unit>): State {
     const previous = state.units.get(reference.id);
-    if (previous === undefined) {
+    if (previous?.ref !== reference) {
         throw new RangeError(`unknown unit: ${reference.id}`);
     }
 

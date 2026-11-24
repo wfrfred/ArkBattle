@@ -1,5 +1,4 @@
 import { ref as skillRef } from "../../dist/core/unit/capability/skill/index.js";
-import { ref as unitRef } from "../../dist/core/unit/index.js";
 import { attribute } from "./attribute.js";
 
 export function definition(input = {}) {
@@ -20,5 +19,5 @@ export function definition(input = {}) {
 }
 
 export function ref(unit) {
-    return skillRef(unitRef(unit));
+    return skillRef(unit.skill);
 }

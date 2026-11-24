@@ -1,16 +1,20 @@
 import { lifetime as unitLifetime, replace as replaceUnits } from "../../operations.js";
-import type { Ref } from "../../../common/ref.js";
+import { ref, type Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as lifetimes from "../../../lifetime/index.js";
 import { register } from "../../../lifetime/operations.js";
-import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
 import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
 import { resolvePeriod } from "./timing.js";
-import { ref as actionRef, type Action } from "./action.js";
-import { ref, type Execution, type ExecutionIdentity, type ExecutionRef } from "./execution.js";
+import type { Action } from "./action.js";
+import {
+    create as createExecution,
+    type Execution,
+    type ExecutionIdentity,
+    type ExecutionRef,
+} from "./execution.js";
 import type { Definition, End, Id as DefinitionId } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { executionRefs } from "./query.js";
@@ -91,12 +95,12 @@ export function start<P extends object, E extends object>(
     }
 
     const { unit, action } = latest;
-    const execution: Execution<E> = {
-        id: unit.action.nextExecutionId,
-        startedAtTick: battle.tick,
-        lifecycle: "ACTIVE",
-        state: initialized.value,
-    };
+    const execution = createExecution(
+        source,
+        unit.action.nextExecutionId,
+        battle.tick,
+        initialized.value,
+    );
     battle = replaceUnits(battle, [
         {
             ...unit,
@@ -111,7 +115,7 @@ export function start<P extends object, E extends object>(
             },
         },
     ]);
-    const started = ref(source, execution);
+    const started = ref(execution);
     battle = register(battle, lifetime, started, [lifetimes.scope(unitLifetime, source)]);
 
     return { state: battle, value: started };
@@ -127,7 +131,7 @@ export function startConfigured(
         throw new RangeError(`unknown selected action definition ${id}`);
     }
 
-    return start(battle, actionRef(units.ref(unit), action.definition));
+    return start(battle, ref(action));
 }
 
 export function setExecutionState<E extends object>(
@@ -140,7 +144,7 @@ export function setExecutionState<E extends object>(
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const action = unit.action.actions.getByExecution(reference.id);
+    const action = unit.action.actions.getByExecution(reference);
     if (action === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
     }
@@ -151,12 +155,10 @@ export function setExecutionState<E extends object>(
 }
 
 export const lifetime = lifetimes.create<ExecutionIdentity, End>({
-    kind: "ACTION",
-    address: (reference) => `${reference.host.id}:${reference.id}`,
     end: {
         prepare(battle, reference) {
             const host = reference.host.get(battle)!;
-            const action = host.action.actions.getByExecution(reference.id)!;
+            const action = host.action.actions.getByExecution(reference)!;
 
             return replaceAction(
                 battle,
@@ -166,9 +168,9 @@ export const lifetime = lifetimes.create<ExecutionIdentity, End>({
         },
         finalize(battle, reference, _initial, result) {
             const host = reference.host.get(battle)!;
-            const current = host.action.actions.getByExecution(reference.id)!;
+            const current = host.action.actions.getByExecution(reference)!;
             const definition = current.definition as Definition;
-            const action = actionRef(reference.host, current.definition);
+            const action = ref(current);
             battle =
                 definition.onEnd?.(battle, reference.host, current.execution, result, action) ??
                 battle;
@@ -224,7 +226,7 @@ export function advance(battle: BattleState, reference: ExecutionRef): BattleSta
         return battle;
     }
 
-    const current = source.action.actions.getByExecution(reference.id);
+    const current = source.action.actions.getByExecution(reference);
     if (current?.execution.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -236,7 +238,7 @@ export function advance(battle: BattleState, reference: ExecutionRef): BattleSta
         battle,
         reference.host,
         current.execution,
-        actionRef(reference.host, current.definition),
+        ref(current),
     );
 }
 

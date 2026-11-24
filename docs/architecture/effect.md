@@ -29,7 +29,7 @@ Definition 是共享行为；实例保存稳定身份、宿主、实际来源、
 
 ### 不可变 Effects 容器
 
-Effects 保存完整实例和宿主内单调分配的 ID。Ref 的身份为宿主与局部 ID；重新生效或修改 state 不改变身份。Definition 对象身份查询可恢复具体类型，仅字符串 ID 相同不能互相代替。
+Effects 保存完整实例和宿主内单调分配的 ID。安装时分配一次 Ref，读取用宿主与局部 ID 定位，再匹配保存的 Ref 对象。重新生效或修改 state 沿用同一个 Ref。Definition 查询按对象身份恢复具体类型。
 
 容器只管理存储，不派发业务。旧版本保持可读，诊断 Snapshot 不承担恢复 Definition 或运行程序的协议。内容使用领域操作，不直接替换完整实例。
 
@@ -74,8 +74,8 @@ decreaseStack 是完整减层操作：剩余层数先发布再通知，耗尽正
 | 情况 | 分组身份 |
 | --- | --- |
 | 不按来源独立 | group.id |
-| 按来源独立，来源关联 Card | group.id 与 Card 身份 |
-| 按来源独立，来源没有 Card | group.id 与 Unit 身份 |
+| 按来源独立，来源关联 Card | group.id 与 Card Ref |
+| 按来源独立，来源没有 Card | group.id 与 Unit Ref |
 | 按来源独立，没有来源 | group.id 与 null |
 
 共享组 x 与独立无来源组 `(x, null)` 不匹配。Card 与 Unit 属于不同身份域。`cardForUnit` 从[部署历史](deployment.md#部署历史)反查来源 Card，来源退场后仍可使用。旧弹道及再部署保留同一 Card 分区，不同 Card 不合并。无 Card 的预置对象按各自 Unit 区分。

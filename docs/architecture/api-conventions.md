@@ -62,11 +62,11 @@ Context 只保存本次业务所需的输入和明确样本，不把 `request.ta
 
 ### 统一 Typed Ref 与类型恢复
 
-Ref 保存领域身份和共享的读取函数，对目标类型协变。实体命令使用 Typed Ref，分支 ID 等非实体身份保留自身 ID。跨 Battle 使用 Ref 属调用契约错误，不增加 Battle token 或运行时品牌。
+Ref 保存领域定位所需的身份字段和共享读取函数，对目标类型协变。每个运行实例只在创建时分配一次 Ref，各不可变版本沿用同一个对象。Ref 对象可直接用作 Map 的键。实体命令使用 Typed Ref，波次分支等非实体身份保留自身 ID。
 
-`ref.get(battle)` 在传入的 BattleState 版本中查找该引用的对象，缺失时返回 `undefined`。各领域复用自己的读取函数，使用调用接收者的身份定位存储。签名 `(this: object, battle: BattleState) => T | undefined` 要求通过引用调用，同一个调用形式也适用于不同领域的联合 Ref，结果保留相应的联合类型。
+`reference.get(battle)` 在传入版本中定位候选，候选持有同一个 Ref 时返回对应实体。同一状态分出的两条分支各自创建的实例可以复用数字 ID，各自有独立的 Ref。签名 `(this: object, battle: BattleState) => T | undefined` 要求通过引用调用，同样适用于不同领域的联合 Ref。
 
-Identified 的可选类型标记只声明身份协议，不增加运行字段。身份与完整业务类型在领域的 Ref 构造入口配对，异构容器通过精确 Ref 恢复该类型。带 Definition 的查询按 Definition 身份恢复。不能从空结构猜测身份；未声明身份的类型不能构造 Ref。
+`Identified<I>` 用可选类型标记描述定位字段 `I`，并要求实例保存公共身份类型的 `ref`。各领域在创建时调用 `createRef` 配对这些字段与读取函数。调用方通过 `ref(self)` 取得同一个 Ref，并保留当前已知的实体类型。带 Definition 的查询按 Definition 身份恢复私有类型。
 
 能力组成在同一实例身份下稳定，泛型类型守卫保留输入已有的完整类型。动态 HP、位置、生命周期等谓词只证明当前版本的事实，不能据此建立跨状态更新仍有效的类型保证。
 

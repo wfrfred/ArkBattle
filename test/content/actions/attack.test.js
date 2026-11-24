@@ -64,7 +64,7 @@ test("an attack turns once at its started program, before output, without turnin
         }, position: [1, 1] },
     ]);
     const host = units.ref(get(state, 0));
-    const started = actions.start(state, actions.ref(host, program));
+    const started = actions.start(state, actions.ref(host.get(state).action.actions.get(program)));
     assert.notEqual(started.value, null);
     assert.equal(get(started.state, 0).facing.direction, "RIGHT");
     state = actions.advance(started.state, started.value);
@@ -97,7 +97,7 @@ test("attack selection groups and prepare receive the state produced by earlier 
     const initial = battle(source, unit(1), unit(2), unit(3));
     const first = primary.select(initial, units.ref(source));
     const second = secondary.select(first.state, units.ref(source));
-    const started = actions.start(initial, actions.ref(units.ref(source), action));
+    const started = actions.start(initial, actions.ref(source.action.actions.get(action)));
 
     assert.notEqual(started.value, null);
     assert.equal(started.state.execution.rngState, second.state.execution.rngState);
@@ -118,7 +118,7 @@ test("an empty trigger binding rejects the attack without losing later completed
     const source = unit(0, { action });
     const initial = battle(source, unit(1), unit(2));
     const selected = secondary.select(initial, units.ref(source));
-    const started = actions.start(initial, actions.ref(units.ref(source), action));
+    const started = actions.start(initial, actions.ref(source.action.actions.get(action)));
 
     assert.equal(started.value, null);
     assert.equal(started.state.execution.rngState, selected.state.execution.rngState);
@@ -167,7 +167,7 @@ test("bound healing keeps its receivers when a later selection restriction would
     const source = units.ref(get(state, 0));
     [selected] = recipients(state, source).value;
     assert.equal(selected.id, 1);
-    const started = actions.start(state, actions.ref(source, program));
+    const started = actions.start(state, actions.ref(source.get(state).action.actions.get(program)));
     assert.notEqual(started.value, null);
     assert.deepEqual(recipients(started.state, source).value.map(target => target.id), [2]);
     state = actions.advance(started.state, started.value);
@@ -185,7 +185,7 @@ function timedProgram(timing) {
 function begin(program, intervalTicks = 30, speed = 100) {
     const actor = unit(0, { action: { ...actionCapability(program), interval: attribute(intervalTicks), speed: attribute(speed, 20) } });
     const source = units.ref(actor);
-    const reference = actions.ref(source, program);
+    const reference = actions.ref(actor.action.actions.get(program));
     const started = actions.start(battle(actor, unit(1)), reference);
     assert.notEqual(started.value, null);
     return { source, reference, execution: started.value, state: actions.advance(started.state, started.value) };

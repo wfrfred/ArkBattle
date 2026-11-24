@@ -1,4 +1,4 @@
-import type { Identified, Identity, Ref } from "../../../common/ref.js";
+import { createRef, type Identified, type Identity, type Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Skill as SkillCapability } from "./capability.js";
@@ -89,16 +89,26 @@ export type ActivationIdentity = Omit<Activation, "state"> & { readonly state: u
 
 export type ActivationRef = Ref<ActivationIdentity>;
 
-export function ref<A extends object>(
+export function create<A extends object>(
     host: Ref<Unit & SkillCapability>,
-    self: Activation<A>,
-): Ref<Activation<A>> {
-    return { host, id: self.id, get } as Ref<Activation<A>>;
+    id: number,
+    startedAtTick: number,
+    duration: DurationState,
+    state: A,
+): Activation<A> {
+    return {
+        ref: createRef<Activation>({ host, id }, get),
+        id,
+        startedAtTick,
+        lifecycle: "ACTIVE",
+        duration,
+        state,
+    };
 }
 
-function get<A extends object>(this: object, battle: BattleState): Activation<A> | undefined {
-    const { host, id } = this as Identity<Activation>;
-    const activation: ActivationIdentity | null | undefined = host.get(battle)?.skill.activation;
+function get(this: object, battle: BattleState): Activation | undefined {
+    const { host } = this as Identity<Activation>;
+    const activation = host.get(battle)?.skill.activation;
 
-    return activation?.id === id ? (activation as Activation<A>) : undefined;
+    return activation?.ref === this ? activation : undefined;
 }

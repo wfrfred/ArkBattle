@@ -68,8 +68,6 @@ export function replace<U extends Unit>(battle: BattleState, updates: readonly U
 /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
 
 export const lifetime = createLifetime<Unit, End>({
-    kind: "UNIT",
-    address: (reference) => String(reference.id),
     end: {
         prepare: (battle, reference, initial, end) => {
             battle = replace(battle, [{ ...initial, lifecycle: "ENDING" }]);

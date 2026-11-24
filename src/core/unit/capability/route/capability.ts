@@ -7,9 +7,8 @@ import type { Identified, Ref } from "../../../common/ref.js";
 import type { TilePosition, WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as lifecycle from "../../hook.js";
-import * as units from "../../query.js";
 import { enter } from "./operations.js";
-import { ref } from "./query.js";
+import { createContextRef, ref } from "./query.js";
 
 export interface Definition {
     readonly alwaysCheckCurrentPoint: boolean;
@@ -103,13 +102,14 @@ export function initialize<U extends Unit & Pick<Route, "definition">>(
             hooks: unit.hooks.set(lifecycle.entered, {
                 id: "@route/enter",
                 invoke: (current, self) => ({
-                    state: enter(current, ref(units.ref(self as Unit & Route), { id: 0 })),
+                    state: enter(current, ref((self as Unit & Route).route.main)),
                     value: undefined,
                 }),
             }),
             route: {
                 main: {
                     id: 0,
+                    ref: createContextRef(unit.ref as Ref<Unit & Route>, 0),
                     plan: initial.plan,
                     offset: initial.offset,
                     index: 0,

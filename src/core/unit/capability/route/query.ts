@@ -1,5 +1,5 @@
 import { Vec2 } from "../../../common/vector.js";
-import type { Ref } from "../../../common/ref.js";
+import { createRef, type Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import * as navigation from "../../../battlefield/navigation/state.js";
 import type { Map } from "../../../battlefield/navigation/map.js";
@@ -8,15 +8,18 @@ import type { Unit } from "../../unit.js";
 import type { MovementTarget } from "../locomotion/capability.js";
 import type { Context, ContextId, Route } from "./capability.js";
 
-export function ref(host: Ref<Unit & Route>, context: Pick<Context, "id">): Ref<Context> {
-    return { host, id: context.id, get: getContext } as Ref<Context>;
+export { ref } from "../../../common/ref.js";
+
+export function createContextRef(host: Ref<Unit & Route>, id: ContextId): Ref<Context> {
+    return createRef<Context>({ host, id }, getContext);
 }
 
 function getContext(this: object, battle: BattleState): Context | undefined {
     const { host, id } = this as Ref<Context>;
     const self = host.get(battle);
+    const context = self === undefined ? undefined : contextFor(self, id);
 
-    return self === undefined ? undefined : contextFor(self, id);
+    return context?.ref === this ? context : undefined;
 }
 
 export function contextFor(self: Unit & Route, id: ContextId): Context | undefined {

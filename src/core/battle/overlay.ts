@@ -1,4 +1,4 @@
-import type { Ref } from "../common/ref.js";
+import { createRef, type Ref } from "../common/ref.js";
 import { replaceIn } from "../common/object.js";
 import type { Input, Overlay } from "../battlefield/navigation/overlay.js";
 import {
@@ -14,18 +14,22 @@ export type { Input, Overlay } from "../battlefield/navigation/overlay.js";
 const modes = ["WALK", "FLY"] as const;
 
 function getOverlay(this: object, battle: BattleState): Overlay | undefined {
-    const { id } = this as Ref<Overlay>;
     const { overlays } = battle.battlefield.navigation;
 
     return (
-        overlays.WALK.find((overlay) => overlay.id === id) ??
-        overlays.FLY.find((overlay) => overlay.id === id)
+        overlays.WALK.find(({ ref }) => ref === this) ??
+        overlays.FLY.find(({ ref }) => ref === this)
     );
 }
 
 export function create(battle: BattleState, mode: MotionMode, input: Input): Result<Ref<Overlay>> {
     const id = battle.execution.nextOverlayId;
-    const navigation = setOverlay(battle.battlefield.navigation, mode, { ...input, id });
+    const reference = createRef<Overlay>({ id }, getOverlay);
+    const navigation = setOverlay(battle.battlefield.navigation, mode, {
+        ...input,
+        id,
+        ref: reference,
+    });
 
     return {
         state: {
@@ -33,7 +37,7 @@ export function create(battle: BattleState, mode: MotionMode, input: Input): Res
             execution: { ...battle.execution, nextOverlayId: id + 1 },
             battlefield: { ...battle.battlefield, navigation },
         },
-        value: { id, get: getOverlay } as Ref<Overlay>,
+        value: reference,
     };
 }
 
@@ -44,7 +48,7 @@ export function update(battle: BattleState, reference: Ref<Overlay>, input: Inpu
         throw new RangeError(`unknown navigation overlay: ${reference.id}`);
     }
 
-    const navigation = setOverlay(current, mode, { ...input, id: reference.id });
+    const navigation = setOverlay(current, mode, { ...input, id: reference.id, ref: reference });
 
     return replaceIn(battle, ["battlefield", "navigation"], navigation);
 }
@@ -62,5 +66,5 @@ export function remove(battle: BattleState, reference: Ref<Overlay>): BattleStat
 }
 
 function modeOf(state: NavigationState, reference: Ref<Overlay>): MotionMode | undefined {
-    return modes.find((mode) => state.overlays[mode].some(({ id }) => id === reference.id));
+    return modes.find((mode) => state.overlays[mode].some(({ ref }) => ref === reference));
 }

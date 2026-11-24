@@ -54,7 +54,7 @@ const strike: actions.Definition<{ uses: number }, { hits: number }, Armed> = {
     onTick(state, source, self, action) {
         const attack = resolveAttack(state, source.get(state)!);
         state = actions.setState(state, action, { uses: action.get(state)!.state.uses + 1 });
-        return actions.setExecutionState(state, actions.executionRef(source, self), {
+        return actions.setExecutionState(state, actions.executionRef(self), {
             hits: self.state.hits + attack,
         });
     },
@@ -73,7 +73,7 @@ const skill: skills.Definition<{ completed: number }, { remaining: number }, Arm
         operations: {
             STOP(state, source, self, skillRef) {
                 state = skills.setState(state, skillRef, { completed: skillRef.get(state)!.state.completed + 1 });
-                return skills.setActivationState(state, skills.activationRef(source, self), {
+                return skills.setActivationState(state, skills.activationRef(self), {
                     remaining: self.state.remaining - 1,
                 });
             },
@@ -163,7 +163,7 @@ const wrongProfession: classification.Definition = { type: 'OPERATOR', side: 'AL
 
 // Typed identities distinguish persistent, execution and erased views.
 const owner = ref(armed);
-const actionRef = actions.ref(owner, strike);
+const actionRef = actions.ref(armed.action.actions.get(strike)!);
 const started = actions.start(battle, actionRef);
 if (started.value !== null) {
     const execution = started.value;
@@ -188,7 +188,8 @@ publicExecution.definition;
 actions.setExecutionState(battle, executionIdentity, { hits: 1 });
 // @ts-expect-error the numeric address does not carry a Unit identity proof.
 const forged: Ref<Unit> = { id: 0 };
-const skillRef = skills.ref<{ completed: number }, { remaining: number }>(owner);
+declare const exactSkill: skills.Skill<{ completed: number }, { remaining: number }>;
+const skillRef = skills.ref(exactSkill);
 const activated = skills.activate(battle, skillRef, { requirement: 0, cost: 0 });
 if (activated.value !== null) {
     const active = activated.value.get(activated.state)!;

@@ -30,7 +30,7 @@ import {
     type Plan,
     type Route,
 } from "./capability.js";
-import { activeContext, contextFor, ref, target } from "./query.js";
+import { activeContext, contextFor, createContextRef, ref, target } from "./query.js";
 
 const RADIUS = 0.05;
 
@@ -76,8 +76,11 @@ export function createContext(
     const self = host.get(battle);
     assert(self?.lifecycle === "ACTIVE", "route host is not active", RangeError);
 
+    const id = self.route.nextContextId;
+    const reference = createContextRef(host, id);
     const context: Context = {
-        id: self.route.nextContextId,
+        id,
+        ref: reference,
         plan: input.plan,
         offset: input.offset,
         index: 0,
@@ -85,7 +88,6 @@ export function createContext(
         alwaysCheckCurrentPoint: input.alwaysCheckCurrentPoint,
         ticking: input.ticking,
     };
-    const reference = ref(host, context);
     battle = replaceUnit(battle, [
         {
             ...self,
@@ -154,7 +156,7 @@ export function reassign(id: ContextId, plan: Plan, index = 0): Change<Unit & Ro
     return createChange<Unit & Route>(
         (self) =>
             changeContext(self, id, (context) => ({ ...context, plan, index, current: null })),
-        (battle, previous) => enter(battle, ref(units.ref(previous), { id })),
+        (battle, previous) => enter(battle, ref(contextFor(previous, id)!)),
     );
 }
 
@@ -166,7 +168,7 @@ export function skipWait(id: ContextId): Change<Unit & Route> {
                     ? context
                     : { ...context, index: context.index + 1, current: null },
             ),
-        (battle, previous) => interpret(battle, ref(units.ref(previous), { id })),
+        (battle, previous) => interpret(battle, ref(contextFor(previous, id)!)),
     );
 }
 
@@ -222,7 +224,7 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst = fa
     for (;;) {
         const self = reference.host.get(battle);
         const context = self === undefined ? undefined : contextFor(self, reference.id);
-        if (self?.lifecycle !== "ACTIVE" || context === undefined) {
+        if (self?.lifecycle !== "ACTIVE" || context?.ref !== reference) {
             return battle;
         }
         if (!enterFirst && self.route.activeId !== context.id) {
@@ -369,7 +371,7 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
         battle = replaceUnit(battle, [{ ...self, route: { ...self.route, main, others } }]);
     }
 
-    battle = interpret(battle, ref(reference, activeContext(self)));
+    battle = interpret(battle, ref(activeContext(self)));
     const latest = reference.get(battle);
     if (latest?.lifecycle !== "ACTIVE") {
         return battle;

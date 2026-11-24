@@ -50,7 +50,7 @@ export class Effects {
         definition?: Definition<any, any>,
     ): Effect<any, any> | undefined {
         const effect = this.#entries.get(typeof identity === "number" ? identity : identity.id);
-        if (typeof identity !== "number" && effect?.host.id !== identity.host.id) {
+        if (typeof identity !== "number" && effect?.ref !== identity) {
             return undefined;
         }
         if (definition === undefined) {
@@ -81,7 +81,7 @@ export class Effects {
 
     replace<T extends Effect<any, any>>(reference: Ref<T>, effect: NoInfer<T>): Effects {
         const previous = this.#entries.get(reference.id);
-        if (previous === undefined || previous === effect) {
+        if (previous?.ref !== reference || previous === effect) {
             return this;
         }
 

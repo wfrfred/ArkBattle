@@ -1,10 +1,9 @@
-import type { Identified, Ref } from "../../../../common/ref.js";
+import type { Identified } from "../../../../common/ref.js";
 import type { Definition as BaseDefinition } from "../../../../unit/unit.js";
 import type { Definition as DeployableDefinition } from "../../../../unit/capability/deployable/capability.js";
 import type { Definition as OccupancyDefinition } from "../../../../unit/capability/occupancy/capability.js";
 import type { Contribution } from "../../../../common/contribution.js";
 import type { Hooks } from "../../../../hook.js";
-import type { State as BattleState } from "../../../state.js";
 import type { Definition } from "./definition.js";
 import type * as dp from "./dp/index.js";
 import type { Restriction } from "./restriction.js";
@@ -36,12 +35,4 @@ export type Card<S extends object = object, P extends Policy = Policy> = {
     };
 }[P];
 
-export function ref<T extends Card<any>>(self: T): Ref<T> {
-    return { id: self.id, get: getCard } as Ref<T>;
-}
-
-function getCard(this: object, battle: BattleState): Card | undefined {
-    const { id } = this as Ref<Card>;
-
-    return battle.deployment.deck.cards.get(id);
-}
+export { ref } from "../../../../common/ref.js";

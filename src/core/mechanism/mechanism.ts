@@ -1,4 +1,4 @@
-import type { Identified, Ref } from "../common/ref.js";
+import { createRef, ref, type Identified, type Identity, type Ref } from "../common/ref.js";
 import { create as createLifetime } from "../lifetime/index.js";
 import { register } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
@@ -33,9 +33,7 @@ export interface Mechanism<S extends object = object> extends Identified<{
     readonly state: S;
 }
 
-export function ref<M extends Mechanism<any>>(mechanism: M): Ref<M> {
-    return { id: mechanism.id, get: getMechanism } as Ref<M>;
-}
+export { ref } from "../common/ref.js";
 
 export function initialize<S extends object, const D extends Definition<S>>(
     battle: BattleState,
@@ -48,6 +46,7 @@ export function initialize<S extends object, const D extends Definition<S>>(
         state: replaceIn(battle, ["execution", "nextMechanismId"], id + 1),
         value: {
             id,
+            ref: createRef<Mechanism>({ id }, getMechanism),
             definition,
             state: definition.initialize(),
             lifecycle: active ? "ACTIVE" : "INACTIVE",
@@ -63,9 +62,10 @@ export function add<S extends object>(battle: BattleState, self: Mechanism<S>): 
 }
 
 function getMechanism(this: object, battle: BattleState): Mechanism | undefined {
-    const { id } = this as Ref<Mechanism>;
+    const { id } = this as Identity<Mechanism>;
+    const mechanism = battle.mechanisms.get(id);
 
-    return battle.mechanisms.get(id);
+    return mechanism?.ref === this ? mechanism : undefined;
 }
 
 export function all(battle: BattleState): Query<Mechanism> {
@@ -111,8 +111,6 @@ export function setActive<M extends Mechanism<any>>(
 }
 
 export const lifetime = createLifetime<Mechanism<any>, string>({
-    kind: "MECHANISM",
-    address: (reference) => String(reference.id),
     end: {
         prepare: (battle, reference, initial) =>
             replaceIn(

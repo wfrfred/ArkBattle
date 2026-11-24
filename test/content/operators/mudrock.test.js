@@ -184,7 +184,7 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     let battle = wound(fixture.battle);
     battle = turn(battle, ref(fixture.unit), "LEFT");
     const normal = fixture.unit.action.actions.get("normal-attack").definition;
-    const ordinary = start(battle, actionRef(ref(fixture.unit), normal));
+    const ordinary = start(battle, actionRef(fixture.unit.action.actions.get(normal)));
     battle = ordinary.state;
     for (let tick = 0; tick <= 19; tick++) battle = advanceAction({ ...battle, tick }, ordinary.value);
     assert.equal(getUnit(battle, 0).facing.direction, "RIGHT");
@@ -199,7 +199,7 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     assert.equal(getUnit(battle, 0).action.actions.get(normal.id).cooldown.readyAtTick, battle.tick);
     battle = turn(battle, ref(fixture.unit), "LEFT");
     const action = fixture.unit.action.actions.get("mudrock/s2").definition;
-    const started = start(battle, actionRef(ref(fixture.unit), action));
+    const started = start(battle, actionRef(fixture.unit.action.actions.get(action)));
     assert.notEqual(started.value, null);
     assert.notEqual(getUnit(started.state, 0).skill.activation, null);
     assert.equal(getUnit(started.state, 1).vitality.health.hp, beforeFirst);
@@ -224,7 +224,7 @@ test("S2 interrupts an ordinary attack before its authored release and prevents 
     const fixture = setup({}, [enemy(1, [1, 0])]);
     const host = ref(fixture.unit);
     const normal = fixture.unit.action.actions.get("normal-attack").definition;
-    const pending = start(fixture.battle, actionRef(host, normal));
+    const pending = start(fixture.battle, actionRef(host.get(fixture.battle).action.actions.get(normal)));
     let battle = pending.state;
     for (let tick = 0; tick <= 5; tick++) battle = advanceAction({ ...battle, tick }, pending.value);
     assert.equal(getUnit(battle, 1).vitality.health.hp, 10000);
@@ -234,7 +234,7 @@ test("S2 interrupts an ordinary attack before its authored release and prevents 
     battle = activated.state;
     assert.equal(pending.value.get(battle), undefined);
     const action = fixture.unit.action.actions.get("mudrock/s2").definition;
-    const special = start(battle, actionRef(host, action));
+    const special = start(battle, actionRef(host.get(battle).action.actions.get(action)));
     assert.notEqual(special.value, null);
     battle = advanceAction(special.state, special.value);
     const afterSkill = 10000 - baseAttack * 2.1;

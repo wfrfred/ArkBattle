@@ -41,7 +41,7 @@ const combat = {
         id: "primary", applyWay: "NONE", period: { type: "ATTACK_SPEED" },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: null }),
-        onTick: (state, source, self) => finish(state, executionRef(source, self)),
+        onTick: (state, source, self) => finish(state, executionRef(self)),
     }), interval: attribute(30) },
 };
 const unit = (column, fields = {}) => ({

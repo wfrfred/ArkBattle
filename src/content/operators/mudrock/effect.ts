@@ -118,14 +118,14 @@ export function shieldEffect({
                             return { state, value: pending };
                         }
 
-                        const sourceId = context.request.source?.id ?? null;
-                        const sarkazScale = hasSarkazTag(context.request.source?.get(state))
+                        const source = context.request.source;
+                        const sarkazScale = hasSarkazTag(source?.get(state))
                             ? 1 - sarkazResistance
                             : 1;
                         const blockingScale =
-                            sourceId !== null &&
+                            source !== null &&
                             hasBlocker(host) &&
-                            blocked(state, unitRef(host)).some((ref) => ref.id === sourceId)
+                            blocked(state, unitRef(host)).some((ref) => ref === source)
                                 ? blockedDamageScale
                                 : 1;
 

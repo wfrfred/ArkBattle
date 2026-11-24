@@ -387,7 +387,7 @@ export function createWithState<P extends object, E extends object, H extends ob
             }
 
             const initialized = definition.prepare(battle, source, self);
-            const current = ref(source, attack).get(initialized.state);
+            const current = ref(self).get(initialized.state);
             const host = source.get(initialized.state);
             if (current === undefined || host === undefined) {
                 return { state: initialized.state, value: null };
@@ -415,7 +415,7 @@ export function createWithState<P extends object, E extends object, H extends ob
             };
         },
         onTick(battle, source, self, action) {
-            const identity = executionRef(source, self);
+            const identity = executionRef(self);
 
             if (!self.state.cooldownAdjusted) {
                 const overdue = self.startedAtTick - self.state.previousReadyAtTick;

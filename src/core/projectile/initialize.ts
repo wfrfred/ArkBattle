@@ -1,5 +1,6 @@
 import type { State as BattleState, Result } from "../battle/state.js";
 import { replaceIn } from "../common/object.js";
+import { createRef, type Identity } from "../common/ref.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
 import type { Side } from "../side.js";
 import type { Definition } from "./definition.js";
@@ -20,6 +21,18 @@ export function initialize<S extends object, T extends object, const D extends D
 
     return {
         state: replaceIn(battle, ["execution", "nextProjectileId"], id + 1),
-        value: { ...input, id, lifecycle: "ACTIVE" },
+        value: {
+            ...input,
+            id,
+            ref: createRef<Projectile>({ id }, getProjectile),
+            lifecycle: "ACTIVE",
+        },
     };
+}
+
+function getProjectile(this: object, battle: BattleState): Projectile | undefined {
+    const { id } = this as Identity<Projectile>;
+    const projectile = battle.battlefield.projectiles.get(id);
+
+    return projectile?.ref === this ? projectile : undefined;
 }

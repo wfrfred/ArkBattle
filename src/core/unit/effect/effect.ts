@@ -1,15 +1,15 @@
 import type { Unit } from "../unit.js";
 import type { State as BattleState } from "../../battle/state.js";
+import type { Card } from "../../battle/deployment/deck/card/card.js";
 import type { Definition, OrdinaryDefinition, StackDefinition } from "./definition.js";
-import type { Identified, Identity, Ref } from "../../common/ref.js";
+import { createRef, type Identified, type Identity, type Ref } from "../../common/ref.js";
 import type { Expiration, ExpirationPolicy, StackExpiration } from "./expiration.js";
 
 export type Id = number;
 
 export type Lifecycle = "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
 
-export type GroupSource =
-    { readonly type: "CARD"; readonly id: number } | { readonly type: "UNIT"; readonly id: number };
+export type GroupSource = Ref<Card> | Ref<Unit>;
 
 export interface EffectFields<S extends object, H extends object> extends Identified<{
     readonly host: Identity<Unit> & Ref<Unit & H>;
@@ -53,8 +53,10 @@ export interface Snapshot extends Omit<Effect, "state" | "definition"> {
     readonly state: unknown;
 }
 
-export function ref<E extends Effect<any, any>>(effect: E): Ref<E> {
-    return { host: effect.host, id: effect.id, get: getEffect } as Ref<E>;
+export { ref } from "../../common/ref.js";
+
+export function createEffectRef(host: Ref<Unit>, id: Id): Ref<Effect> {
+    return createRef<Effect>({ host, id }, getEffect);
 }
 
 function getEffect(this: object, battle: BattleState): Effect | undefined {

@@ -1,11 +1,15 @@
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
+import type { Ref } from "../../../common/ref.js";
+import type { Unit } from "../../unit.js";
+import type { Skill as SkillCapability } from "./capability.js";
 import type { Definition } from "./definition.js";
-import type { Skill } from "./skill.js";
+import { createSkillRef, type Skill } from "./skill.js";
 import * as sp from "./sp.js";
 
 export function initialize<S extends object, A extends object>(
     battle: BattleState,
+    source: Ref<Unit & SkillCapability>,
     definition: Definition<S, A, never>,
 ): Result<Skill<S, A>> {
     if (definition.id.length === 0) {
@@ -26,6 +30,7 @@ export function initialize<S extends object, A extends object>(
     return {
         state: initialized.state,
         value: {
+            ref: createSkillRef(source),
             definition,
             state: initialized.value,
             sp:

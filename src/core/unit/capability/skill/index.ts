@@ -1,10 +1,8 @@
 export type { Definition } from "./definition.js";
 
-export { ref } from "./skill.js";
+export { ref, ref as activationRef } from "../../../common/ref.js";
 
 export type { Skill } from "./skill.js";
-
-export { ref as activationRef } from "./activation.js";
 
 export type {
     Operation,

@@ -1,9 +1,10 @@
 import { assertNonnegativeNumber } from "../../../common/assert.js";
+import { ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { resolvePeriod } from "./timing.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
-import type { Action } from "./action.js";
+import { createActionRef, type Action } from "./action.js";
 import type { Definition } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 
@@ -25,6 +26,7 @@ export function initialize<P extends object, E extends object>(
     return {
         state: initialized.state,
         value: {
+            ref: createActionRef(ref(source), definition.id),
             definition,
             state: initialized.value,
             execution: null,

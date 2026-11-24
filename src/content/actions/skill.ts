@@ -41,14 +41,14 @@ export function create<H extends object = object>(
                 value: {
                     activation:
                         host !== undefined && host.skill.activation !== null
-                            ? activationRef(source, host.skill.activation)
+                            ? activationRef(host.skill.activation)
                             : null,
                 },
             };
         },
         afterOutput(battle, source, self, action) {
             battle = afterOutput?.(battle, source, self, action) ?? battle;
-            const current = executionRef(source, self).get(battle);
+            const current = executionRef(self).get(battle);
             const activation = current?.state.data.activation;
             if (current?.lifecycle !== "ACTIVE" || activation == null) {
                 return battle;

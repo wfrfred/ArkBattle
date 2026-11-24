@@ -36,7 +36,7 @@ prepare 检查本次内容条件、初始化执行数据并采样；返回 null 
 
 行动按配置 ID 登记，重复 ID 在创建边界拒绝。异构容器内部擦除 `P/E`，私有状态在普通容器视图中是 `object`。Battle 按配置 ID 启动行动，按执行引用推进。Action Ref 读取持久 Action，Execution Ref 读取指定轮次。两种精确 Ref 都从 `ref.get(battle)` 恢复各自的私有类型。
 
-持久 Ref 由宿主和配置 ID 标识，跨多轮有效。`ref` 接收 Action 宿主 Ref 与 Definition，从 Definition 取 `id` 并推导 `P/E`。`H` 由 Content 装配约束校验。`executionRef` 根据已配对的宿主和本轮执行构造精确引用。`forUnit`、释放通知和取消命令使用擦除私有状态类型的 `ExecutionRef`，只凭该引用可以推进或结束指定轮次。执行 ID 由宿主单调分配，旧引用只定位原轮次。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立。
+持久 Action Ref 在装配时分配，跨多轮有效。每个 Execution 在启动时分配自己的 Ref。`ref(action)` 和 `executionRef(execution)` 取得已保存的对象，精度来自传入的实例。已知 Definition 时可用 Action 容器的 `get(definition)` 查找并恢复 `P/E`。`H` 由 Content 装配约束校验。`forUnit`、释放通知和取消命令使用擦除私有状态类型的 `ExecutionRef`，只凭该引用可以推进或结束指定轮次。执行 ID 由宿主单调分配，旧引用只定位原轮次。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立。
 
 配置登记顺序用于默认候选，本宿主已有执行按启动顺序枚举。
 

@@ -1,5 +1,5 @@
 import type { State as BattleState } from "../../../battle/state.js";
-import type { Identified, Identity, Ref } from "../../../common/ref.js";
+import { createRef, type Identified, type Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
 
@@ -21,16 +21,23 @@ export type ExecutionIdentity = Omit<Execution, "state"> & { readonly state: unk
 
 export type ExecutionRef = Ref<ExecutionIdentity>;
 
-export function ref<E extends object>(
+export function create<E extends object>(
     host: Ref<Unit & ActionCapability>,
-    self: Execution<E>,
-): Ref<Execution<E>> {
-    return { host, id: self.id, get } as Ref<Execution<E>>;
+    id: Id,
+    startedAtTick: number,
+    state: E,
+): Execution<E> {
+    return {
+        ref: createRef<Execution>({ host, id }, get),
+        id,
+        startedAtTick,
+        lifecycle: "ACTIVE",
+        state,
+    };
 }
 
-function get<E extends object>(this: object, battle: BattleState): Execution<E> | undefined {
-    const { host, id } = this as Identity<Execution>;
+function get(this: object, battle: BattleState): Execution | undefined {
+    const reference = this as ExecutionRef;
 
-    return host.get(battle)?.action.actions.getByExecution(id)?.execution as
-        Execution<E> | undefined;
+    return reference.host.get(battle)?.action.actions.getByExecution(reference)?.execution;
 }

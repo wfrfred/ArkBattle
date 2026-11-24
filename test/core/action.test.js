@@ -45,9 +45,9 @@ test("capabilities initialize declared programs in order and carry their battle 
     const host = units.ref(get(state, 0));
     const rng = createRng(seed);
 
-    assert.equal(actions.ref(host, first).get(state).state.sample, rng.next());
-    assert.equal(actions.ref(host, second).get(state).state.sample, rng.next());
-    assert.equal(skills.ref(host).get(state).state.sample, rng.next());
+    assert.equal(host.get(state).action.actions.get(first).state.sample, rng.next());
+    assert.equal(host.get(state).action.actions.get(second).state.sample, rng.next());
+    assert.equal(host.get(state).skill.state.sample, rng.next());
     assert.equal(state.execution.rngState, rng.state());
 });
 
@@ -59,7 +59,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
         initialize: (state) => ({ state, value: { attempts: 0, ended: [] } }),
         prepare(state, source, self) {
             const attempts = self.state.attempts + 1;
-            state = actions.setState(state, actions.ref(source, program), {
+            state = actions.setState(state, actions.ref(self), {
                 ...self.state,
                 attempts,
             });
@@ -67,12 +67,12 @@ test("prepare can reject without allocating a round; ending preserves the latest
         },
         onTick(state, source, self) {
             const advances = self.state.advances + 1;
-            const reference = actions.executionRef(source, self);
+            const reference = actions.executionRef(self);
             state = actions.setExecutionState(state, reference, { advances });
             return advances === 2 ? actions.finish(state, reference) : state;
         },
         onEnd(state, source, self, end, action) {
-            const reference = actions.executionRef(source, self);
+            const reference = actions.executionRef(self);
             state = actions.setExecutionState(state, reference, {
                 ...self.state,
                 cleaned: true,
@@ -95,7 +95,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = actions.ref(source, program);
+    const reference = actions.ref(source.get(state).action.actions.get(program));
 
     const rejected = actions.start(state, reference);
     state = rejected.state;
@@ -131,7 +131,7 @@ test("attribute changes preserve independent attack cooldown progress and leave 
         id: "first", applyWay: "NONE", period: { type: "ATTACK_SPEED" },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
-        onTick: (state, source, self) => actions.finish(state, actions.executionRef(source, self)),
+        onTick: (state, source, self) => actions.finish(state, actions.executionRef(self)),
     };
     const second = { ...first, id: "second" };
     const fixed = { ...first, id: "fixed", period: { type: "FIXED", ticks: 20 } };
@@ -139,7 +139,7 @@ test("attribute changes preserve independent attack cooldown progress and leave 
         id: "actor", hooks: Hooks.empty(), action: actionCapability(first, second, fixed),
     }, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const references = [first, second, fixed].map(definition => actions.ref(source, definition));
+    const references = [first, second, fixed].map(definition => actions.ref(source.get(state).action.actions.get(definition)));
     const startAt = (index, tick) => {
         const started = actions.start({ ...state, tick }, references[index]);
         state = actions.advance(started.state, started.value);
@@ -222,7 +222,7 @@ test("interrupted attack, successful release, and damage output are separate bus
         { definition: target, position: [2, 1] },
     ]);
     const source = units.ref(get(state, 0));
-    const reference = actions.ref(source, program);
+    const reference = actions.ref(source.get(state).action.actions.get(program));
     state = update(state, source, units.setHook(actions.beforeRelease, {
             id: "interrupt",
             invoke: (state) => ({ state, value: { type: "INTERRUPT", recoveryTicks: 2 } }),
@@ -268,7 +268,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
             state = actions.setState(state, action, {
                 completed: action.get(state).state.completed + 1,
             });
-            return actions.finish(state, actions.executionRef(source, self));
+            return actions.finish(state, actions.executionRef(self));
         },
     };
     const resource = {
@@ -291,7 +291,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
         skill: { definition: resource },
     };
     const firstRun = step(battle([{ definition, position: [1, 1] }], { rngState: 42 }), []);
-    const reference = actions.ref(units.ref(get(firstRun, 0)), program);
+    const reference = actions.ref(get(firstRun, 0).action.actions.get(program));
     assert.equal(reference.get(firstRun).state.completed, 1);
     assert.equal(get(firstRun, 0).skill.sp.value, 0);
 

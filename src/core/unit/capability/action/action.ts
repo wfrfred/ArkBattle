@@ -1,5 +1,5 @@
 import type { State as BattleState } from "../../../battle/state.js";
-import type { Identified, Identity, Ref } from "../../../common/ref.js";
+import { createRef, type Identified, type Identity, type Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
 import type { Definition, Id as DefinitionId } from "./definition.js";
@@ -19,18 +19,16 @@ export interface Action<
     readonly execution: Execution<E> | null;
 }
 
-export function ref<P extends object, E extends object>(
+export function createActionRef(
     host: Ref<Unit & ActionCapability>,
-    definition: Definition<P, E, never>,
-): Ref<Action<P, E>> {
-    return { host, definitionId: definition.id, get } as Ref<Action<P, E>>;
+    definitionId: DefinitionId,
+): Ref<Action> {
+    return createRef<Action>({ host, definitionId }, get);
 }
 
-function get<P extends object, E extends object>(
-    this: object,
-    battle: BattleState,
-): Action<P, E> | undefined {
+function get(this: object, battle: BattleState): Action | undefined {
     const { host, definitionId } = this as Identity<Action>;
+    const current = host.get(battle)?.action.actions.get(definitionId);
 
-    return host.get(battle)?.action.actions.get(definitionId) as Action<P, E> | undefined;
+    return current?.ref === this ? current : undefined;
 }

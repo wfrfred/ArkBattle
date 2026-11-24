@@ -1,8 +1,6 @@
-export { ref } from "./action.js";
+export { ref, ref as executionRef } from "../../../common/ref.js";
 
 export type { Action } from "./action.js";
-
-export { ref as executionRef } from "./execution.js";
 
 export type { Execution, ExecutionRef } from "./execution.js";
 

@@ -155,12 +155,12 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   const selectTargets = action.attack.targetGroups[0].select;
   assert.equal(allowsRestrictions(before, hound)(getUnit(before, 0)), false);
   assert.deepEqual(selectTargets(before, unitRef(hound)).value.map(ref => ref.id), [0]);
-  const started = startAction(before, actionRef(unitRef(hound), action));
+  const started = startAction(before, actionRef(hound.action.actions.get(action)));
   const hit = advanceActionUntil(started.state, started.value, 18);
   assert.equal(getUnit(hit, 0).vitality.health.hp, 850);
 
   const protectedState = install(before, unitRef(blocker), invincible).state;
-  const protectedStart = startAction(protectedState, actionRef(unitRef(hound), action));
+  const protectedStart = startAction(protectedState, actionRef(hound.action.actions.get(action)));
   assert.notEqual(protectedStart.value, null);
   assert.equal(getUnit(advanceActionUntil(protectedStart.state, protectedStart.value, 18), 0).vitality.health.hp, 1000);
 });
@@ -212,12 +212,12 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
 
   const position = [2, 3.5];
   const guardUnit = guard(0, [2, 2], 0);
-  const target = unitRef(guardUnit);
   const select = attack.attack.targetGroups[0].select;
   const initial = createBattle([
     { definition: guardUnit.definition, position: guardUnit.position },
     { definition, position, initial: routeInitial(position, [3, 4]) },
   ], { rows: 5, columns: 5 });
+  const target = unitRef(getUnit(initial, 0));
   const bow = getUnit(initial, 1);
   assert.equal(getApplyWay(getUnit(initial, 1)), "ALL");
   assert.deepEqual(select(initial, unitRef(bow)).value, [target]);
@@ -225,7 +225,7 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
   assert.deepEqual(select(device, unitRef(bow)).value, []);
   const before = update(device, target, setCategory("DEFAULT"));
   assert.deepEqual(select(before, unitRef(bow)).value, [target]);
-  const started = startAction(before, actionRef(unitRef(bow), attack));
+  const started = startAction(before, actionRef(bow.action.actions.get(attack)));
   let state = started.state;
   assert.equal(getApplyWay(getUnit(state, 1)), "ALL");
   assert.equal(state.battlefield.projectiles.size, 0);

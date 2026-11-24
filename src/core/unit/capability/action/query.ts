@@ -1,11 +1,10 @@
 import type { State as BattleState } from "../../../battle/state.js";
 import { mergeApplyWays, type ApplyWay } from "../../../battle/resource/damage.js";
 import { sort } from "../../../common/collection/order.js";
-import type { Ref } from "../../../common/ref.js";
-import * as units from "../../query.js";
+import { ref, type Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import { hasAction, type Action as ActionCapability } from "./capability.js";
-import { ref, type ExecutionRef } from "./execution.js";
+import type { ExecutionRef } from "./execution.js";
 import type { Id as DefinitionId } from "./definition.js";
 
 export function getApplyWay(unit: Unit): ApplyWay {
@@ -24,12 +23,10 @@ export function forUnit(
 }
 
 export function executionRefs(self: Unit & ActionCapability): readonly ExecutionRef[] {
-    const host = units.ref(self);
-
     return sort(
         self.action.actions
             .values()
-            .flatMap(({ execution }) => (execution === null ? [] : [ref(host, execution)])),
+            .flatMap(({ execution }) => (execution === null ? [] : [ref(execution)])),
         (left, right) => left.id - right.id,
     );
 }

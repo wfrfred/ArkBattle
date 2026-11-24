@@ -33,14 +33,14 @@ test("activation publishes payment before onStart and clears only the completed 
                 observed.push({
                     stage: "start",
                     sp: get(state, source.id).skill.sp.value,
-                    current: skills.activationRef(source, self).get(state).id,
+                    current: skills.activationRef(self).get(state).id,
                 });
-                return skills.setActivationState(state, skills.activationRef(source, self), {
+                return skills.setActivationState(state, skills.activationRef(self), {
                     total: 7,
                 });
             },
             onEnd(state, source, self, end, skill) {
-                const reference = skills.activationRef(source, self);
+                const reference = skills.activationRef(self);
                 state = skills.setActivationState(state, reference, {
                     ...self.state,
                     cleaned: true,
@@ -63,7 +63,7 @@ test("activation publishes payment before onStart and clears only the completed 
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source);
+    const reference = skills.ref(source.get(state).skill);
     state = update(state, source, units.compose(units.setHook(skills.activationStarted, {
             id: "hide-on-start",
             invoke: (state, { host }) => ({ state: update(state, host, presence.disappear()), value: undefined }),
@@ -141,7 +141,7 @@ test("per-call activation parameters preserve ordinary policy and still require 
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source);
+    const reference = skills.ref(source.get(state).skill);
     assert.equal(skills.activate(state, reference).value, null);
     const belowRequirement = skills.activate(state, reference, { requirement: 4, cost: 0 });
     assert.equal(belowRequirement.value, null);
@@ -194,12 +194,12 @@ test("cancellation during payment notification retains payment and suppresses th
             invoke(state, { host }) {
                 const current = get(state, host.id).skill.activation;
                 return {
-                    state: skills.cancel(state, skills.activationRef(host, current), "STOPPED"),
+                    state: skills.cancel(state, skills.activationRef(current), "STOPPED"),
                     value: undefined,
                 };
             },
         }));
-    const activated = skills.activate(state, skills.ref(source));
+    const activated = skills.activate(state, skills.ref(source.get(state).skill));
     state = activated.state;
     assert.notEqual(activated.value, null);
     assert.equal(get(state, 0).skill.sp.value, 0);
@@ -226,12 +226,12 @@ test("active operations require a declared handler and current permission, while
             ...ordinary.activation,
             operations: {
                 RETRIGGER(state, source, self) {
-                    return skills.setActivationState(state, skills.activationRef(source, self), {
+                    return skills.setActivationState(state, skills.activationRef(self), {
                         ready: true,
                     });
                 },
                 STOP(state, source, self) {
-                    return skills.finish(state, skills.activationRef(source, self));
+                    return skills.finish(state, skills.activationRef(self));
                 },
             },
         },
@@ -245,7 +245,7 @@ test("active operations require a declared handler and current permission, while
         position: [1, 1],
     })));
     const source = units.ref(get(state, 0));
-    const first = skills.activate(state, skills.ref(source));
+    const first = skills.activate(state, skills.ref(source.get(state).skill));
     state = first.state;
     const unsupported = skills.operate(state, first.value, "STOP");
     assert.equal(unsupported.value, false);
@@ -254,7 +254,7 @@ test("active operations require a declared handler and current permission, while
     assert.equal(get(state, 0).skill.activation, null);
 
     const controlledSource = units.ref(get(state, 1));
-    const second = skills.activate(state, skills.ref(controlledSource));
+    const second = skills.activate(state, skills.ref(controlledSource.get(state).skill));
     state = update(second.state, controlledSource, skills.setRestriction("operationRestrictions", {
         id: "not-ready",
         value: {
@@ -355,7 +355,7 @@ test("TIME extension stays in its round while persistent state selects a later I
                     : { type: "INFINITE" },
             }),
             onTick(state, source, self) {
-                return skills.setActivationState(state, skills.activationRef(source, self), {
+                return skills.setActivationState(state, skills.activationRef(self), {
                     ticks: self.state.ticks + 1,
                 });
             },
@@ -374,7 +374,7 @@ test("TIME extension stays in its round while persistent state selects a later I
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source);
+    const reference = skills.ref(source.get(state).skill);
     const first = skills.activate(state, reference);
     state = skills.extendTime(step(step(first.state, []), []), first.value, 3);
     state = update(state, source, presence.disappear());
@@ -419,8 +419,8 @@ test("AMMO samples its charged base before payment and applies capacity, consump
             if (activation.duration.remaining > 0) {
                 return state;
             }
-            state = skills.check(state, skills.activationRef(source, activation));
-            return skills.activate(state, skills.ref(source)).state;
+            state = skills.check(state, skills.activationRef(activation));
+            return skills.activate(state, skills.ref(source.get(state).skill)).state;
         },
     });
     const definition = {
@@ -441,7 +441,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source);
+    const reference = skills.ref(source.get(state).skill);
     state = update(state, source, skills.setAmmoContribution({
             id: "magazine",
             value: [{ addition: 2, ratio: 0.5 }],
@@ -469,11 +469,11 @@ test("AMMO samples its charged base before payment and applies capacity, consump
     state = skills.grant(state, first.value, 1).state;
     assert.equal(first.value.get(state).duration.replenished, 32);
     state = skills.consume(state, first.value).state;
-    const fired = actions.start(state, actions.ref(source, attack));
+    const fired = actions.start(state, actions.ref(source.get(state).action.actions.get(attack)));
     state = step(fired.state, []);
     assert.equal(first.value.get(state), undefined);
     assert.equal(get(state, 0).skill.activation.duration.remaining, 8);
-    const nextShot = actions.start(state, actions.ref(source, attack));
+    const nextShot = actions.start(state, actions.ref(source.get(state).action.actions.get(attack)));
     state = step(nextShot.state, []);
     assert.equal(get(state, 0).skill.activation.duration.remaining, 7);
 });
@@ -499,7 +499,7 @@ test("Ammo contributions registered and withdrawn during TIME affect only later 
     };
     let state = battle([{ definition, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    const reference = skills.ref(source);
+    const reference = skills.ref(source.get(state).skill);
     const timed = skills.activate(state, reference);
     state = update(timed.state, source, units.compose(
         skills.setAmmoContribution({ id: "kept", value: [{ addition: 0, ratio: 0.5 }] }),

@@ -43,7 +43,7 @@ test("source attack samples current Offense separately for each target after nes
             },
         }),
     }, second);
-    const result = actions.start(initial, actions.ref(sourceRef, definition));
+    const result = actions.start(initial, actions.ref(sourceRef.get(initial).action.actions.get(definition)));
     const advanced = advance(result.state, result.value);
     assert.equal(units.ref(first).get(advanced).vitality.health.hp, 90);
     assert.equal(units.ref(second).get(advanced).vitality.health.hp, 75);
@@ -62,7 +62,7 @@ test("fixed damage and healing do not require an Offense capability", () => {
     };
     const initial = hpDamage.applyDamage(wound,
         hpDamage.calculateDamage(battle(source, target), wound)).state;
-    const result = actions.start(initial, actions.ref(sourceRef, definition));
+    const result = actions.start(initial, actions.ref(sourceRef.get(initial).action.actions.get(definition)));
     const advanced = advance(result.state, result.value);
     assert.equal(sourceRef.get(advanced).vitality.health.hp, 55);
     assert.equal(units.ref(target).get(advanced).vitality.health.hp, 95);
