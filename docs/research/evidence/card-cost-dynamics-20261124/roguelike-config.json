@@ -1,0 +1,63 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-24T07:57:45.239836+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      "assets/arknights-game-data/zh_CN/gamedata/excel/roguelike_topic_table.json",
+      "--revision",
+      "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "--out",
+      "docs/research/evidence/card-cost-dynamics-20261124/roguelike-config.json",
+      "--preview",
+      "0",
+      "select",
+      "/details/rogue_6/relics/*/buffs/*/blackboard/*",
+      "--where",
+      "/key",
+      "\"cost_scale\""
+    ],
+    "sourceUrl": null,
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/roguelike_topic_table.json",
+        "bytes": 17958101,
+        "sha256": "36d8189e1e466fa07226effbf2cf224a69fb41a942ae83827934052e7a01cc69",
+        "status": "ok",
+        "matched": 2
+      }
+    ]
+  },
+  "result": {
+    "matched": 2,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/roguelike_topic_table.json",
+        "pointer": "/details/rogue_6/relics/rogue_6_relic_hand_2/buffs/0/blackboard/4",
+        "value": {
+          "key": "cost_scale",
+          "value": 0.5,
+          "valueStr": null
+        }
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/roguelike_topic_table.json",
+        "pointer": "/details/rogue_6/relics/rogue_6_relic_book_3/buffs/0/blackboard/1",
+        "value": {
+          "key": "cost_scale",
+          "value": 0.25,
+          "valueStr": null
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

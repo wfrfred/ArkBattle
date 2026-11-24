@@ -58,6 +58,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [deployment-target-order-20261122](deployment-target-order-20261122/README.md) | 思衡托 S3 的当前在场候选、Card 资格与角色创建时间排序 |
 | [special-redeploy-failure-20261122](special-redeploy-failure-20261122/README.md) | 特殊移动的落点检查、返回失败、待投放与技能接续 |
 | [card-rules-20261122](card-rules-20261122/README.md) | 涨费与减费叠加、两种再部署计时量、临时库存与关系后的阻挡增容 |
+| [card-cost-dynamics-20261124](card-cost-dynamics-20261124/README.md) | 费用基数交换、涨费参数写入时点及梓兰抑制累加 |
 | [route-crash-20261122](route-crash-20261122/README.md) | 5-2 跨格路点的原生构场输入、两种冲撞的自主运动条件 |
 | [signed-hp-adjustment-20261122](signed-hp-adjustment-20261122/README.md) | 跳过普通伤疗通知的生命调整、归零保护和淬羽赫默屏障 |
 | [scheduler-recycle-config-20261122](scheduler-recycle-config-20261122/README.md) | 安装版最终回收等待的配置来源、普通末敌和关卡完成消费者 |

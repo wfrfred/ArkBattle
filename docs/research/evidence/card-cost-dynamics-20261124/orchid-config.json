@@ -1,0 +1,63 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-24T07:53:24.816109+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      "assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json",
+      "--revision",
+      "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "--out",
+      "docs/research/evidence/card-cost-dynamics-20261124/orchid-config.json",
+      "--preview",
+      "0",
+      "select",
+      "/char_1048_orchd2/talents/1/candidates/*/blackboard/*",
+      "--where",
+      "/key",
+      "\"not_add_respawn_cost_cnt\""
+    ],
+    "sourceUrl": null,
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json",
+        "bytes": 15069101,
+        "sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4",
+        "status": "ok",
+        "matched": 2
+      }
+    ]
+  },
+  "result": {
+    "matched": 2,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json",
+        "pointer": "/char_1048_orchd2/talents/1/candidates/0/blackboard/6",
+        "value": {
+          "key": "not_add_respawn_cost_cnt",
+          "value": 0.0,
+          "valueStr": null
+        }
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json",
+        "pointer": "/char_1048_orchd2/talents/1/candidates/1/blackboard/6",
+        "value": {
+          "key": "not_add_respawn_cost_cnt",
+          "value": 1.0,
+          "valueStr": null
+        }
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

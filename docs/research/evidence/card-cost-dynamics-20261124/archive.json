@@ -1,0 +1,370 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-24"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-24",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "fields.json#/provenance/client/dll",
+          "native.json#/provenance/client/dll",
+          "orchid-native.json#/provenance/client/dll",
+          "replacement-callers.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "fields.json#/provenance/client/metadata",
+          "native.json#/provenance/client/metadata",
+          "orchid-native.json#/provenance/client/metadata",
+          "replacement-callers.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "fields.json",
+      "native.json",
+      "orchid-assets.json",
+      "orchid-config.json",
+      "orchid-module-config.json",
+      "orchid-native.json",
+      "replacement-callers.json",
+      "roguelike-config.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "fields.json",
+        "kind": "record",
+        "bytes": 17732,
+        "sha256": "85d9c0c4514b02e586ab18e471cf472c742a5dd4d646a735c430708bfefee50e"
+      },
+      {
+        "path": "native.json",
+        "kind": "record",
+        "bytes": 175171,
+        "sha256": "d4c27625d27c78e95555f0669c15999cae98271832980aa3599a2f18862758bd"
+      },
+      {
+        "path": "orchid-assets.json",
+        "kind": "record",
+        "bytes": 4070,
+        "sha256": "cb3fb2823d9bbbd646aaa46f252402c33d962cc6a6907c41e46f70b60af01c92"
+      },
+      {
+        "path": "orchid-config.json",
+        "kind": "record",
+        "bytes": 2189,
+        "sha256": "76525cf02925a0976281f6a832bbc0f6e8fa71179b2904234933b08ad89f98b6"
+      },
+      {
+        "path": "orchid-module-config.json",
+        "kind": "record",
+        "bytes": 2327,
+        "sha256": "59f7cf755876d692a5ff3131898391263a62bd95193cd75ee363ae22f5590121"
+      },
+      {
+        "path": "orchid-native.json",
+        "kind": "record",
+        "bytes": 34766,
+        "sha256": "3e14dd91f7fcf385e0d848d92ab943a7209f5ad2a9c7eb4571625568695cd580"
+      },
+      {
+        "path": "replacement-callers.json",
+        "kind": "record",
+        "bytes": 17374,
+        "sha256": "6455771e97c2166478605fbe679a0a974f664cafb44469f1ecc5dcbeedc9ce85"
+      },
+      {
+        "path": "roguelike-config.json",
+        "kind": "record",
+        "bytes": 2192,
+        "sha256": "d8a4ad38076582b170cac3e99bb5c949045b7c909d0d28c0df67474647c2adfc"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 65778,
+          "mode": "disasm",
+          "records": [
+            "orchid-native.json#/result/methods/0",
+            "orchid-native.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController.CreateCardBuffWithBlackboard",
+          "address": "0x18064b5c0"
+        },
+        {
+          "index": 66741,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/6",
+            "native.json#/result/methods/6/method"
+          ],
+          "fullname": "Torappu.Battle.Deck.PreprocessDeck",
+          "address": "0x1806fb240"
+        },
+        {
+          "index": 66766,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/5",
+            "native.json#/result/methods/5/method"
+          ],
+          "fullname": "Torappu.Battle.Deck._PostProcessDeckModifiers",
+          "address": "0x1806fe120"
+        },
+        {
+          "index": 66867,
+          "mode": "disasm",
+          "records": [
+            "orchid-native.json#/result/methods/2",
+            "orchid-native.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.OnRecycle",
+          "address": "0x1806ecc70"
+        },
+        {
+          "index": 66868,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/3",
+            "native.json#/result/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.ProcessDeckModifier",
+          "address": "0x1806edc70"
+        },
+        {
+          "index": 66869,
+          "mode": "disasm",
+          "records": [
+            "orchid-native.json#/result/methods/1",
+            "orchid-native.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card._UpdateCardBuff",
+          "address": "0x1806f0c30"
+        },
+        {
+          "index": 66892,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/12",
+            "native.json#/result/methods/12/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.FinishCardBuffsOnSpawned",
+          "address": "0x1806ebfe0"
+        },
+        {
+          "index": 66902,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/0",
+            "native.json#/result/methods/0/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card.ModifyRespawnParameters",
+          "address": "0x1806eca00"
+        },
+        {
+          "index": 67006,
+          "mode": "disasm",
+          "records": [
+            "orchid-native.json#/result/methods/3",
+            "orchid-native.json#/result/methods/3/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RuntimeRespawnTimeModifier.CreateRuntimeModifier",
+          "address": "0x1807198d0"
+        },
+        {
+          "index": 67007,
+          "mode": "disasm",
+          "records": [
+            "orchid-native.json#/result/methods/4",
+            "orchid-native.json#/result/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.Deck/Card/RuntimeRespawnTimeModifier.ApplyFirstPass",
+          "address": "0x180719440"
+        },
+        {
+          "index": 69448,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/10",
+            "native.json#/result/methods/10/method"
+          ],
+          "fullname": "Torappu.Battle.Act47SideBattleManager._PrepareBuild",
+          "address": "0x1807d38c0"
+        },
+        {
+          "index": 69449,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/11",
+            "native.json#/result/methods/11/method"
+          ],
+          "fullname": "Torappu.Battle.Act47SideBattleManager._CreateRebuildCardBuff",
+          "address": "0x1807d3540"
+        },
+        {
+          "index": 69451,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/13",
+            "native.json#/result/methods/13/method"
+          ],
+          "fullname": "Torappu.Battle.Act47SideBattleManager._RebuildCard",
+          "address": "0x1807d4a40"
+        },
+        {
+          "index": 74697,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/4",
+            "native.json#/result/methods/4/method"
+          ],
+          "fullname": "Torappu.Battle.DeckTalentToModifyRespawnMaxMultiplier/DeckModifierToModifyRespawnMaxMultiplier.TryHookMaxMultiplier",
+          "address": "0x1809c5370"
+        },
+        {
+          "index": 83451,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/1",
+            "native.json#/result/methods/1/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/CooperateGameMode/CooperateFootballModeManager/<>c.<OnWaveWillStart>b__35_0",
+          "address": "0x180c9b510"
+        },
+        {
+          "index": 83953,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/2",
+            "native.json#/result/methods/2/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/FootballCupGameMode/<>c.<OnWaveWillStart>b__77_0",
+          "address": "0x180cb4760"
+        },
+        {
+          "index": 87872,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/9",
+            "native.json#/result/methods/9/method"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.MShuffleDeckCost.OnInit",
+          "address": "0x180db1300"
+        },
+        {
+          "index": 98772,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/7",
+            "native.json#/result/methods/7/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Svash2LRCardPositionSwap._SwapCardByCount",
+          "address": "0x1810d8b90"
+        },
+        {
+          "index": 98773,
+          "mode": "disasm",
+          "records": [
+            "native.json#/result/methods/8",
+            "native.json#/result/methods/8/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Svash2LRCardPositionSwap.GenerateCostDic",
+          "address": "0x1810d84c0"
+        }
+      ],
+      "blocks": [],
+      "types": [
+        {
+          "name": "Torappu.AttributesData",
+          "records": [
+            "fields.json#/result/types/1"
+          ]
+        },
+        {
+          "name": "Torappu.Battle.BattleEntityData",
+          "records": [
+            "fields.json#/result/types/0"
+          ]
+        }
+      ],
+      "constants": [
+        {
+          "address": "0x1870adda8",
+          "format": "<f",
+          "records": [
+            "native.json#/result/constants/1"
+          ]
+        },
+        {
+          "address": "0x1870addc0",
+          "format": "<f",
+          "records": [
+            "native.json#/result/constants/0"
+          ]
+        }
+      ],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "orchid-assets.json#/sources/1"
+          ],
+          "bytes": 477255
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+          "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79",
+          "records": [
+            "orchid-assets.json#/sources/2"
+          ],
+          "bytes": 2151020
+        },
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1048_orchd2.ab",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1048_orchd2.ab",
+          "sha256": "546d56c6c7f95602f0ba3653e0ec8f241654dcbf7293bd58af311c2de39f0cf6",
+          "records": [
+            "orchid-assets.json#/sources/3"
+          ],
+          "bytes": 30723
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

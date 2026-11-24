@@ -1,0 +1,119 @@
+{
+  "sources": [
+    {
+      "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+      "bytes": 6749,
+      "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+      "bytes": 477255,
+      "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/config/buff_template_holder.ab",
+      "bytes": 2151020,
+      "sha256": "8edcb8017c977cdf52c2593b58e21db96949f3ad1e6f904180ac1241f145ca79"
+    },
+    {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/charpack/char_1048_orchd2.ab",
+      "bytes": 30723,
+      "sha256": "546d56c6c7f95602f0ba3653e0ec8f241654dcbf7293bd58af311c2de39f0cf6"
+    }
+  ],
+  "components": [
+    {
+      "bundle": "charpack/char_1048_orchd2.ab",
+      "file": "CAB-fc564ff6dd12590daa7abb41f0958568",
+      "pathId": "-8213570048818500284",
+      "owner": "1",
+      "ownerPathId": "5132191918439050564",
+      "enabled": true,
+      "script": "PassiveBuffAbility",
+      "fields": {
+        "_ignoreIfOwnerDead": false
+      },
+      "buffs": [
+        {
+          "templateKey": "orchd2_t_1[respawn_cost]",
+          "durationKey": "duration",
+          "lifeTimeType": {
+            "type": "raw-lifetime",
+            "hex": "00"
+          },
+          "lifeTime": 0.0,
+          "loadFromDB": false,
+          "blackboard": {
+            "Array": []
+          }
+        }
+      ],
+      "objectSha256": "48c69b51d2bd76d84dac40d46088e2f3b31be27402a8bfdcb75776346495f6cb"
+    }
+  ],
+  "templates": [
+    {
+      "key": "orchd2_t_1[respawn_cost]",
+      "file": "CAB-7983df61b3ae63c96fb4e076fc3d80af",
+      "pathId": "6070581171229484677",
+      "events": [
+        {
+          "event": 0,
+          "program": [
+            {
+              "_target": "BUFF_OWNER",
+              "_selectTargetHostOrToken": false,
+              "_key": "orchd2_t_1[respawn_cost]",
+              "_readBuffKeyFromBlackboard": false,
+              "_checkSourceUid": false,
+              "_sourceType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+CheckContainsCardBuff"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfNot"
+            },
+            {
+              "_target": "BUFF_OWNER",
+              "_donotInheritBlackboard": false,
+              "_lifeType": "ALL_THE_TIME",
+              "_isRatio": false,
+              "_enableMaxStackCount": false,
+              "_filterIsInHand": false,
+              "_useCardBuffKey": true,
+              "_cardBuffKey": "orchd2_t_1[respawn_cost]",
+              "$type": "Torappu.Battle.Action.Nodes+CreateCardBuff"
+            }
+          ]
+        },
+        {
+          "event": 4,
+          "program": [
+            {
+              "_target": "BUFF_OWNER",
+              "_selectTargetHostOrToken": false,
+              "_key": "orchd2_t_1[respawn_cost]",
+              "_readBuffKeyFromBlackboard": false,
+              "_checkSourceUid": false,
+              "_sourceType": "BUFF_OWNER",
+              "$type": "Torappu.Battle.Action.Nodes+CheckContainsCardBuff"
+            },
+            {
+              "$type": "Torappu.Battle.Action.Nodes+IfNot"
+            },
+            {
+              "_target": "BUFF_OWNER",
+              "_donotInheritBlackboard": false,
+              "_lifeType": "ALL_THE_TIME",
+              "_isRatio": false,
+              "_enableMaxStackCount": false,
+              "_filterIsInHand": false,
+              "_useCardBuffKey": true,
+              "_cardBuffKey": "orchd2_t_1[respawn_cost]",
+              "$type": "Torappu.Battle.Action.Nodes+CreateCardBuff"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
