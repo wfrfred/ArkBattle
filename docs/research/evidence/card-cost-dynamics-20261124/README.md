@@ -16,6 +16,12 @@
 
 直接引用扫描覆盖该客户端的 E8/E9 调用候选。运行中的 XLua 改写以及经函数指针或内联执行的写入仍按具体样本核实。
 
+## 历阵锐枪芬的共享减费
+
+[Prefab、Holder、字段和指令摘录](fang2-shared-discount.json)保留已安装的 `char_1036_fang2.ab` 中启用的 `PassiveBuffAbility` 及 `fang2_t_1` 实际模板。模板在宿主因 `WITHDRAW` 离场时对适用 Card 登记 `UNTIL_NEXT_SPAWN_DECK_TRIGGER_ONCE`，并排除 Token 和 Trap。该值在同版本元数据中为 5。`FinishCardBuffsOnSpawned`（66892）在 `0x1806ec229` 匹配该值，取得本次 Card 上修正的键后调用 `ForeachCard`。其回调（67052）于 `0x18071f0f0` 对各 Card 调 `FinishCardBuffByKey`。
+
+普通 `SpawnCharacterOrToken`（66755）先经 `SpawnPrefab` 执行 Unit 出生，再走付款和条件性的 `Card.Draw`，随后在 `0x1806fd669` 结束这些 CardBuff。在 `SpawnPrefab` 返回空的分支，原生检查 `SpawnDetailsTracker.isSpawnOperationSucceed` 及叠放标志。成功的叠放类操作在 `0x1806fd472` 调用同一 CardBuff 结束函数。资格拒绝直接返回 false。此处核对分支条件，未逐个验证所有内容适用的叠放配置。[普通出生调用链](../special-redeploy-failure-20261122/README.md#特殊入场的实际观察者) · [Deck 指令](../card-source-identity-20261111/deployment/native/SpawnCharacterOrToken-66755.asm#L124)
+
 ## 复查
 
 从仓库根目录运行。共享工具按已登记的指纹重提方法和常量。对分段方法，可从 `native.json` 的选段首地址用 `native.py disasm-at` 补读。
@@ -27,3 +33,5 @@ UV_CACHE_DIR="$PWD/.cache/uv" uv run --locked --offline \
 ```
 
 复查调用候选时以 `0x1806eca00` 为 `native.py xrefs` 的目标。梓兰 Prefab 可以复用 [Card 资源解码](../card-rules-20261122/extract.py) 的 `read_assets`，将选择器设为 `charpack/char_1048_orchd2.ab` 的 PathID `-8213570048818500284` 与模板 `orchd2_t_1[respawn_cost]`。
+
+复查芬的实际模板时，使用同一个 `read_assets`，将选择器设为 `charpack/char_1036_fang2.ab` 的 PathID `-6268552104545291712` 与模板 `fang2_t_1`。用 `native.py disasm 66755 66892 67052` 复读普通部署与清除分支，用 `native.py type` 读取 `Torappu.Battle.Deck/SpawnDetailsTracker` 和 `Torappu.Battle.Deck/Card/CardBuff/LifeType`。
