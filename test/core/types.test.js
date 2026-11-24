@@ -332,7 +332,7 @@ if (result.type === 'APPLIED') {
 // Independent constructors enforce pairing before heterogeneous storage.
 declare const baseInput: Omit<BattleInput, 'deployment' | 'initialUnits' | 'initialMechanisms'>;
 declare const cardUnit: cards.UnitDefinition;
-declare const cardDefaults: Omit<cards.Definition<object, 'UNIQUE'>, 'initialize' | 'onTick' | 'policy'>;
+declare const cardDefaults: Omit<cards.Definition<object, 'DEFAULT'>, 'initialize' | 'onTick' | 'policy'>;
 const countCard: cards.Definition<{ count: number }, 'QUEUED'> = {
     ...cardDefaults, policy: 'QUEUED',
     supply: { ...cardDefaults.supply, pending: 0 },
@@ -341,6 +341,7 @@ const countCard: cards.Definition<{ count: number }, 'QUEUED'> = {
 };
 const nameCard: cards.Definition<{ name: string }, 'UNIQUE'> = {
     ...cardDefaults, policy: 'UNIQUE',
+    dp: { ...cardDefaults.dp, increase: true },
     initialize: state => ({ state, value: { name: 'second' } }),
     onTick: (state, self) => cards.setState(state, cards.ref(self), { name: self.state.name }),
 };

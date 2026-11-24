@@ -10,7 +10,7 @@ import { type Entry, set, remove } from "../../../../common/collection/entries.j
 import type { Restriction } from "./restriction.js";
 import * as dp from "./dp/dp.js";
 import type { Parameters as CostParameters } from "./dp/parameter.js";
-import { resolve as resolveCostParameters } from "./dp/query.js";
+import { resolveIncrease } from "./dp/query.js";
 import { enqueue } from "./supply/operations.js";
 import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
 
@@ -52,7 +52,7 @@ export function recycle<S extends object>(card: Card<S>): Card<S> {
             return card;
 
         case "UNIQUE": {
-            if (resolveCostParameters(card).increase) {
+            if (resolveIncrease(card)) {
                 card = dp.incrementCostStage(card);
             }
 

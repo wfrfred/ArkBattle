@@ -46,13 +46,13 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     };
     const supportDefinition = {
         ...operatorCard,
-        dp: { ...operatorCard.dp, parameters: cards.dp.create({ cost: 0, increase: false }) },
+        dp: { ...operatorCard.dp, parameters: cards.dp.create({ cost: 0 }) },
         slot: 0,
         supply: { ...operatorCard.supply, stock: 2, stockLimit: 2 },
     };
     const summonDefinition = {
         ...operatorCard,
-        dp: { ...operatorCard.dp, parameters: cards.dp.create({ cost: 0, increase: false }) },
+        dp: { ...operatorCard.dp, parameters: cards.dp.create({ cost: 0 }) },
         supply: {
             ...operatorCard.supply,
             stock: 2,

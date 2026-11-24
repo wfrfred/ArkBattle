@@ -7,7 +7,6 @@ import type * as dp from "./dp/index.js";
 import type * as supply from "./supply/supply.js";
 
 export type Definition<S extends object = object, P extends Policy = Policy> = {
-    readonly dp: dp.Definition;
     readonly slot: number;
     readonly deploymentRestrictions: readonly Contribution<Restriction>[];
     readonly unitHooks: Hooks;
@@ -15,6 +14,7 @@ export type Definition<S extends object = object, P extends Policy = Policy> = {
 } & {
     [K in Policy]: {
         readonly policy: K;
+        readonly dp: dp.Definition<K>;
         readonly supply: supply.Definition<K>;
         readonly onTick?: (battle: BattleState, self: Card<NoInfer<S>, K>) => BattleState;
     };

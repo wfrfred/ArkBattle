@@ -60,7 +60,11 @@ export function initialize<
         id,
         policy,
         definition,
-        dp: { stage: 0, contributions: [] },
+        dp: {
+            stage: 0,
+            contributions: [],
+            ...(policy === "UNIQUE" ? { increase: [] } : {}),
+        },
         supply: {
             stock,
             cooldown: pending > 0 ? cooldown : 0,

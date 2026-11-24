@@ -1,5 +1,6 @@
 import * as entries from "../../../../../common/collection/entries.js";
 import type { Contribution } from "../../../../../common/contribution.js";
+import { replaceIn } from "../../../../../common/object.js";
 import type { Card, Policy } from "../card.js";
 import type { Parameters } from "./parameter.js";
 
@@ -8,15 +9,15 @@ export interface Refund {
     readonly limit: "BASE_COST" | "DEPLOYMENT_COST";
 }
 
-export interface Definition {
+export type Definition<P extends Policy = Policy> = {
     readonly parameters: Parameters & { readonly cost: number };
     readonly refund: Refund | null;
-}
+} & (P extends "UNIQUE" ? { readonly increase: boolean } : object);
 
-export interface State {
+export type State<P extends Policy = Policy> = {
     readonly stage: number;
     readonly contributions: readonly Contribution<Parameters>[];
-}
+} & (P extends "UNIQUE" ? { readonly increase: readonly Contribution<boolean>[] } : object);
 
 export function incrementCostStage<S extends object, P extends Policy>(
     card: Card<S, P>,
@@ -44,4 +45,18 @@ export function removeCostContribution<S extends object, P extends Policy>(
     return contributions === card.dp.contributions
         ? card
         : { ...card, dp: { ...card.dp, contributions } };
+}
+
+export function setIncreaseContribution<S extends object>(
+    card: Card<S, "UNIQUE">,
+    entry: Contribution<boolean>,
+): Card<S, "UNIQUE"> {
+    return replaceIn(card, ["dp", "increase"], entries.set(card.dp.increase, entry));
+}
+
+export function removeIncreaseContribution<S extends object>(
+    card: Card<S, "UNIQUE">,
+    id: string,
+): Card<S, "UNIQUE"> {
+    return replaceIn(card, ["dp", "increase"], entries.remove(card.dp.increase, id));
 }

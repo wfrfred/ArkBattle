@@ -50,7 +50,9 @@ Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有�
 
 Card 的 `dp.parameters` 必须提供数值费用。`card.dp.create` 补齐参数的中性值，卡牌初始化验证基础费用非负。运行时 `stage` 记录涨费次数，`contributions` 保存可安装和移除的费用修正。
 
-有效贡献按既有分组规则选出。同组只保留优先级胜出的整条贡献。若仍有多个费用覆写，按贡献 ID 顺序取第一个非 `null` 值。`baseAddition`、`step`、`maxMultiplier`、`finalAddition` 各自加总，`costScale` 相乘，`increase` 要求定义与所有生效贡献都允许。
+有效费用贡献按既有分组规则选出。同组只保留优先级胜出的整条贡献。若仍有多个费用覆写，按贡献 ID 顺序取第一个非 `null` 值。`baseAddition`、`step`、`maxMultiplier`、`finalAddition` 各自加总，`costScale` 相乘。
+
+只有 `UNIQUE` 的 DP Definition 和 State 声明 `increase`。其基础值与所有生效的布尔贡献都为 true 时，回收允许累加。内容通过 `card.dp.setIncreaseContribution` 和 `card.dp.removeIncreaseContribution` 更新 `UNIQUE` Card 后写回 Deck。
 
 牌价的基数取费用覆写或定义费用加基础增量。先用 `min(1 + stage × step, max(1, maxMultiplier))` 乘基数并向下取整，再乘 `costScale` 并向下取整，最后加 `finalAddition` 并按 Deck 的费用上限截断。使用 `BASE_COST` 的撤退退款上限取定义费用与基础增量，部署时另保存本次牌价。 [算价查询](../../src/core/battle/deployment/deck/card/dp/query.ts) · [原生参数修改](../research/cases/24-deployment-cost-and-supply.md#各费用参数的修改时点)
 

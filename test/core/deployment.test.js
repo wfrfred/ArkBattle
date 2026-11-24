@@ -23,8 +23,7 @@ const operator = {
     deployable: { retreatRestrictions: [] },
     vitality: defineVitality(100),
 };
-const operatorCard = {
-    policy: "UNIQUE",
+const commonCard = {
     dp: {
         parameters: cards.dp.create({ cost: 10, step: 0.5, maxMultiplier: 2 }),
         refund: { rate: 0.5, limit: "BASE_COST" },
@@ -40,6 +39,7 @@ const operatorCard = {
     unitHooks: Hooks.empty(),
     initialize: (state) => ({ state, value: {} }),
 };
+const operatorCard = { ...commonCard, policy: "UNIQUE", dp: { ...commonCard.dp, increase: true } };
 const account = {
     dp: { initial: 50, min: 0, max: 99, recoveryInterval: null },
     slot: { limit: 3 },
@@ -536,9 +536,9 @@ test("default cards start cooldown on deployment and only explicit recharge rest
             cards: [{
                 unitDefinition: operator,
                 definition: {
-                    ...operatorCard,
+                    ...commonCard,
                     policy: "DEFAULT",
-                    supply: { ...operatorCard.supply, cooldown: 2 },
+                    supply: { ...commonCard.supply, cooldown: 2 },
                 },
             }],
         },
@@ -566,10 +566,10 @@ test("queued recovery preserves the current interval and transfers at most one a
             cards: [{
                 unitDefinition: operator,
                 definition: {
-                    ...operatorCard,
+                    ...commonCard,
                     policy: "QUEUED",
                     supply: {
-                        ...operatorCard.supply,
+                        ...commonCard.supply,
                         pending: 0,
                         stockLimit: 3,
                         cooldown: 2,
@@ -640,10 +640,10 @@ test("stock limit includes pending recovery and active limit only gates new depl
             cards: [{
                 unitDefinition: operator,
                 definition: {
-                    ...operatorCard,
+                    ...commonCard,
                     policy: "QUEUED",
                     supply: {
-                        ...operatorCard.supply,
+                        ...commonCard.supply,
                         pending: 1,
                         stockLimit: 2,
                     },

@@ -5,7 +5,6 @@ export interface Parameters {
     readonly maxMultiplier: number;
     readonly costScale: number;
     readonly finalAddition: number;
-    readonly increase: boolean;
 }
 
 export function create(
@@ -20,8 +19,7 @@ export function create(input: Partial<Parameters> = {}): Parameters {
         maxMultiplier = 0,
         costScale = 1,
         finalAddition = 0,
-        increase = true,
     } = input;
 
-    return { cost, baseAddition, step, maxMultiplier, costScale, finalAddition, increase };
+    return { cost, baseAddition, step, maxMultiplier, costScale, finalAddition };
 }

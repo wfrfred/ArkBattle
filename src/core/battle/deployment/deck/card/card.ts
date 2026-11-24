@@ -27,7 +27,7 @@ export type Card<S extends object = object, P extends Policy = Policy> = {
         readonly id: Id;
         readonly policy: K;
         readonly definition: Definition<S, K>;
-        readonly dp: dp.State;
+        readonly dp: dp.State<K>;
         readonly supply: supply.State<K>;
         readonly unitDefinition: UnitDefinition;
         readonly unitHooks: Hooks;

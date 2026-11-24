@@ -18,7 +18,7 @@ export function createCardDefinition({
 } = {}) {
     return {
         policy,
-        dp: { parameters: dp.create({ cost, step: 0.5, maxMultiplier: 2, increase }), refund },
+        dp: { parameters: dp.create({ cost, step: 0.5, maxMultiplier: 2 }), refund, ...(policy === "UNIQUE" ? { increase } : {}) },
         slot: slots,
         supply: {
             stock, stockLimit, activeLimit, cooldown: redeployTicks,
