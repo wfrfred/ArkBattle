@@ -1,5 +1,6 @@
 import type { Identified, Ref } from "../common/ref.js";
-import { create as createLifetime, register } from "../lifetime/operations.js";
+import { create as createLifetime } from "../lifetime/index.js";
+import { register } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
 import type { Result, State as BattleState } from "../battle/state.js";
 import { replaceIn } from "../common/object.js";

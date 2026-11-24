@@ -4,7 +4,8 @@ import type { WorldPosition } from "../geometry/coordinate.js";
 import type { EndReason } from "./definition.js";
 import type { Eliminatable, Projectile } from "./projectile.js";
 import { get, ref } from "./query.js";
-import { create as createLifetime, register } from "../lifetime/operations.js";
+import { create as createLifetime } from "../lifetime/index.js";
+import { register } from "../lifetime/operations.js";
 import type { State as BattleState } from "../battle/state.js";
 
 export function add<S extends object, T extends object>(

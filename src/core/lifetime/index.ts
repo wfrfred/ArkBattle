@@ -1,3 +1,3 @@
-export type { Lifetime, Scope } from "./operations.js";
+export { create, scope, available, type Lifetime, type Scope } from "./lifetime.js";
 
-export { create, scope, available, bind, unbind, defer } from "./operations.js";
+export { bind, unbind, defer } from "./operations.js";

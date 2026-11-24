@@ -1,5 +1,5 @@
 import { update } from "../../unit/operations.js";
-import { scope } from "../../lifetime/operations.js";
+import { scope } from "../../lifetime/index.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import { silence, blockSpRecovery } from "../control.js";
 import * as modifier from "../../common/modifier.js";

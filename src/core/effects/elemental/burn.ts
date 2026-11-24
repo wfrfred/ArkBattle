@@ -1,5 +1,5 @@
 import { update } from "../../unit/operations.js";
-import { scope } from "../../lifetime/operations.js";
+import { scope } from "../../lifetime/index.js";
 import * as modifier from "../../common/modifier.js";
 import * as effects from "../../unit/effect/operations.js";
 import * as units from "../../unit/query.js";

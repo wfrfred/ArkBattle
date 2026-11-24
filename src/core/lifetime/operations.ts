@@ -1,75 +1,7 @@
 import type { Identified, Ref } from "../common/ref.js";
 import { replaceIn } from "../common/object.js";
 import type { State as BattleState, Result } from "../battle/state.js";
-import type { Node } from "./lifetime.js";
-
-const paired: unique symbol = Symbol("lifetime");
-
-interface Config<T extends Identified<object>, E> {
-    readonly kind: string;
-    readonly address: (ref: Ref<T>) => string;
-    readonly get: (battle: BattleState, ref: Ref<T>) => T | undefined;
-    readonly end: {
-        readonly prepare: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
-        readonly finalize: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
-        readonly dependencyEnd?: E;
-    };
-}
-
-export interface Scope {
-    readonly [paired]: unknown;
-}
-
-export interface Lifetime<T extends Identified<object>, E> {
-    readonly end: (battle: BattleState, ref: Ref<T>, end: E) => BattleState;
-    readonly [paired]: Config<T, E>;
-}
-
-interface Pair {
-    readonly config: Config<Identified<object>, unknown>;
-    readonly ref: Ref<Identified<object>>;
-}
-
-export function create<T extends Identified<object>, E>(config: Config<T, E>): Lifetime<T, E> {
-    const lifetime: Lifetime<T, E> = {
-        [paired]: config,
-        end(battle, ref, end) {
-            const outer = !settling(battle);
-            battle = request(battle, key(scope(lifetime, ref)), end);
-
-            return outer ? flushDeferred(drain(battle)) : battle;
-        },
-    };
-
-    return lifetime;
-}
-
-export function scope<T extends Identified<object>, E>(
-    lifetime: Lifetime<T, E>,
-    ref: Ref<T>,
-): Scope {
-    return { [paired]: { config: lifetime[paired], ref } };
-}
-
-function key(target: Scope): string {
-    const { config, ref } = target[paired] as Pair;
-
-    return JSON.stringify([config.kind, config.address(ref)]);
-}
-
-export function available(battle: BattleState, target: Scope): boolean {
-    return isAvailable(battle.lifetime.nodes, key(target));
-}
-
-function isAvailable(nodes: ReadonlyMap<string, Node>, identity: string): boolean {
-    const node = nodes.get(identity);
-
-    return (
-        node !== undefined &&
-        node.ending === undefined &&
-        node.dependencies.every((dependency) => isAvailable(nodes, dependency))
-    );
-}
+import { isAvailable, key, pair, scope, type Lifetime, type Node, type Scope } from "./lifetime.js";
 
 export function register<T extends Identified<object>, E>(
     battle: BattleState,
@@ -85,7 +17,7 @@ export function register<T extends Identified<object>, E>(
     }
 
     const dependencies = [...new Set(scopes.map(key))];
-    if (dependencies.length !== 0 && !("dependencyEnd" in lifetime[paired].end)) {
+    if (dependencies.length !== 0 && !("dependencyEnd" in pair(target).config.end)) {
         throw new TypeError("this lifetime cannot depend on another lifetime");
     }
     if (!dependencies.every((dependency) => isAvailable(nodes, dependency))) {
@@ -106,12 +38,13 @@ export function bind<T extends Identified<object>, E>(
     parent: Scope,
 ): Result<boolean> {
     const nodes = battle.lifetime.nodes;
-    const identity = key(scope(lifetime, ref));
+    const target = scope(lifetime, ref);
+    const identity = key(target);
     const dependency = key(parent);
     if (!isAvailable(nodes, identity) || !isAvailable(nodes, dependency)) {
         return { state: battle, value: false };
     }
-    if (!("dependencyEnd" in lifetime[paired].end)) {
+    if (!("dependencyEnd" in pair(target).config.end)) {
         throw new TypeError("this lifetime cannot depend on another lifetime");
     }
 
@@ -182,13 +115,25 @@ function settling(battle: BattleState): boolean {
     return [...battle.lifetime.nodes.values()].some((node) => node.ending !== undefined);
 }
 
+export function end<T extends Identified<object>, E>(
+    battle: BattleState,
+    lifetime: Lifetime<T, E>,
+    ref: Ref<T>,
+    payload: NoInfer<E>,
+): BattleState {
+    const outer = !settling(battle);
+    battle = request(battle, key(scope(lifetime, ref)), payload);
+
+    return outer ? flushDeferred(drain(battle)) : battle;
+}
+
 function request(battle: BattleState, identity: string, end: unknown): BattleState {
     const node = battle.lifetime.nodes.get(identity);
     if (node === undefined || node.ending !== undefined) {
         return battle;
     }
 
-    const { config, ref } = node.target[paired] as Pair;
+    const { config, ref } = pair(node.target);
     const initial = config.get(battle, ref)!;
     const nodes = new Map(battle.lifetime.nodes);
     nodes.delete(identity);
@@ -198,7 +143,7 @@ function request(battle: BattleState, identity: string, end: unknown): BattleSta
 
     for (const [childKey, child] of battle.lifetime.nodes) {
         if (child.ending === undefined && child.dependencies.includes(identity)) {
-            const dependent = child.target[paired] as Pair;
+            const dependent = pair(child.target);
             battle = request(battle, childKey, dependent.config.end.dependencyEnd);
         }
     }
@@ -221,7 +166,7 @@ function drain(battle: BattleState): BattleState {
         }
 
         const [identity, node] = ready;
-        const { config, ref } = node.target[paired] as Pair;
+        const { config, ref } = pair(node.target);
         const { initial, end } = node.ending!;
         battle = config.end.finalize(battle, ref, initial as Identified<object>, end);
         const next = new Map(battle.lifetime.nodes);
