@@ -526,7 +526,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const deployable = {
         ...operator,
         occupancy: { slot: "OCCUPANT" },
-        deployable: { retreatRestrictions: [] },
+        deployable: { retreatRestrictions: [], refund: null },
     };
     const card = { definition: createCardDefinition(), unitDefinition: deployable };
     let state = battle([{ definition: operator, position: [1, 1] }], {

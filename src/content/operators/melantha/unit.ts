@@ -54,7 +54,7 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
             taunt: { default: attributes.taunt, min: -2, max: 2 },
             restrictions: [],
         },
-        deployable: { retreatRestrictions: [] },
+        deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
         elemental: createElemental({ receiver: "CHARACTER" }),
         vitality: {
             maxHp: { default: attributes.maxHp, min: 1, max: null },

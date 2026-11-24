@@ -4,14 +4,8 @@ import { replaceIn } from "../../../../../common/object.js";
 import type { Card, Policy } from "../card.js";
 import type { Parameters } from "./parameter.js";
 
-export interface Refund {
-    readonly rate: number;
-    readonly limit: "BASE_COST" | "DEPLOYMENT_COST";
-}
-
 export type Definition<P extends Policy = Policy> = {
     readonly parameters: Parameters & { readonly cost: number };
-    readonly refund: Refund | null;
 } & (P extends "UNIQUE" ? { readonly increase: boolean } : object);
 
 export type State<P extends Policy = Policy> = {

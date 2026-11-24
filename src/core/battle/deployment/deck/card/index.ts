@@ -2,8 +2,6 @@ export type { Id, UnitDefinition, Card, Policy } from "./card.js";
 
 export type { Definition } from "./definition.js";
 
-export type { Refund } from "./dp/index.js";
-
 export type { RestrictionContext, Purpose, Restriction } from "./restriction.js";
 
 export { ref } from "./card.js";

@@ -20,13 +20,13 @@ const operator = {
     id: "operator",
     hooks: Hooks.empty(),
     occupancy: { slot: "OCCUPANT" },
-    deployable: { retreatRestrictions: [] },
+    deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
     vitality: defineVitality(100),
 };
+
 const commonCard = {
     dp: {
         parameters: cards.dp.create({ cost: 10, step: 0.5, maxMultiplier: 2 }),
-        refund: { rate: 0.5, limit: "BASE_COST" },
     },
     slot: 1,
     supply: {

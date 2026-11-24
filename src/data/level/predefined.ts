@@ -152,7 +152,7 @@ function unitDefinition(
             recoverySpeed: { default: recoverySpeed!, min: 0, max: null },
             recoveryRatio: { default: 0, min: 0, max: 1 },
         },
-        deployable: { retreatRestrictions: [] },
+        deployable: { retreatRestrictions: [], refund: null },
         tileChanges: profile.tileChanges,
     } satisfies CrateParameters & ShootingPlatformParameters;
 

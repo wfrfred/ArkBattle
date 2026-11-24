@@ -53,15 +53,8 @@ export function deploy<T extends Card<any>>(
         return { state: battle, value: rejected };
     }
 
-    const { refund: refundRule } = self.definition.dp;
     const cost = deck.resolveCost(battle, self);
-    const refund =
-        refundRule === null
-            ? null
-            : {
-                  rate: refundRule.rate,
-                  limit: refundRule.limit === "DEPLOYMENT_COST" ? cost : resolveBaseCost(self),
-              };
+    const baseCost = resolveBaseCost(self);
     const amount = request.quote.dp;
     if (amount !== null) {
         battle = dp.pay(battle, amount).state;
@@ -96,8 +89,8 @@ export function deploy<T extends Card<any>>(
     const unit = setDeployment(initialized.value, {
         card: input.card,
         cost,
+        baseCost,
         slots: request.quote.slots,
-        refund,
     });
     battle = initialized.state;
     battle = replaceIn(

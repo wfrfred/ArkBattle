@@ -16,7 +16,7 @@ const account = {
 };
 const cardDefinition = {
     policy: "UNIQUE",
-    dp: { parameters: cards.dp.create({ cost: 5 }), increase: false, refund: null },
+    dp: { parameters: cards.dp.create({ cost: 5 }), increase: false },
     slot: 1,
     supply: {
         stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
@@ -92,7 +92,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
             unitDefinition: {
                 id: "reserve", hooks: Hooks.empty(),
                 occupancy: { slot: "OCCUPANT" },
-                deployable: { retreatRestrictions: [] },
+                deployable: { retreatRestrictions: [], refund: null },
             },
         }] },
         initialMechanisms: [{ definition: controller }],
@@ -117,7 +117,7 @@ test("Tick phases publish their resource operations and failures preserve the in
     const operator = {
         id: "operator",
         occupancy: { slot: "OCCUPANT" },
-        deployable: { retreatRestrictions: [] },
+        deployable: { retreatRestrictions: [], refund: null },
         hooks: Hooks.empty().set(units.tick, {
             id: "tick-resource",
             invoke(current) {

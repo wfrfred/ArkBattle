@@ -9,9 +9,21 @@ import { allows } from "../../../restriction.js";
 
 export function setDeployment<U extends Unit & Deployable>(
     self: U,
-    deployment: Pick<State, "card" | "cost" | "slots" | "refund">,
+    input: Pick<State, "card" | "cost" | "slots"> & {
+        readonly baseCost: number;
+    },
 ): U {
-    return { ...self, deployable: { ...self.deployable, ...deployment } };
+    const { baseCost, card, cost, slots } = input;
+    const rule = self.definition.deployable.refund;
+    const refund =
+        rule === null
+            ? null
+            : {
+                  rate: rule.rate,
+                  limit: rule.limit === "DEPLOYMENT_COST" ? Math.max(baseCost, cost) : baseCost,
+              };
+
+    return { ...self, deployable: { ...self.deployable, card, cost, slots, refund } };
 }
 
 export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable>): boolean {

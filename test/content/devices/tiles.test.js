@@ -46,7 +46,7 @@ test("a crate modifies its registered tile, preserves hole cost, and restores on
         classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
         taunt: -1,
         vitality: vitality(100),
-        deployable: { retreatRestrictions: [] },
+        deployable: { retreatRestrictions: [], refund: null },
         tileChanges: {},
     });
     const tile = [0, 0];

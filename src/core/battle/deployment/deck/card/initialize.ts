@@ -24,17 +24,12 @@ export function initialize<
     }: Input<S> & { readonly definition: D; readonly unitDefinition: U },
 ): Result<Card<S, D["policy"]> & { readonly definition: D; readonly unitDefinition: U }> {
     const { dp, slot, policy, supply } = definition;
-    const { parameters, refund } = dp;
     const { stock, stockLimit, activeLimit, cooldown } = supply;
 
-    assertNonnegativeNumber(parameters.cost, "card cost");
+    assertNonnegativeNumber(dp.parameters.cost, "card cost");
     assertNonnegativeSafeInteger(cooldown, "card redeployment ticks");
     assertNonnegativeSafeInteger(slot, "card deployment slots");
     assertNonnegativeSafeInteger(stock, "card stock");
-
-    if (refund !== null) {
-        assertNonnegativeNumber(refund.rate, "card refund rate");
-    }
 
     if (stockLimit !== null) {
         assertNonnegativeSafeInteger(stockLimit, "card stock limit");

@@ -2,6 +2,7 @@ import type * as contribution from "../../../common/contribution.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Ref } from "../../../common/ref.js";
+import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Card } from "../../../battle/deployment/deck/card/card.js";
 import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
@@ -10,12 +11,12 @@ import { removed } from "../../hook.js";
 import { settleDeparture } from "../../../battle/deployment/settlement.js";
 import { createRegistrationOperations } from "../../registration.js";
 
-export interface Refund {
-    readonly rate: number;
-    readonly limit: number;
+export interface Definition extends Restrictions {
+    readonly refund: {
+        readonly rate: number;
+        readonly limit: "BASE_COST" | "DEPLOYMENT_COST";
+    } | null;
 }
-
-export interface Definition extends Restrictions {}
 
 export interface Restrictions {
     readonly retreatRestrictions: readonly contribution.Contribution<Restriction>[];
@@ -25,7 +26,10 @@ export interface State extends Restrictions {
     readonly card: Ref<Card> | null;
     readonly cost: number;
     readonly slots: number;
-    readonly refund: Refund | null;
+    readonly refund: {
+        readonly rate: number;
+        readonly limit: number;
+    } | null;
 }
 
 export interface RestrictionContext {
@@ -46,8 +50,12 @@ export function initialize<
         throw new TypeError("deployable requires occupancy");
     }
 
-    const { retreatRestrictions } = unit.definition.deployable;
+    const { refund, retreatRestrictions } = unit.definition.deployable;
     validateRestrictions(retreatRestrictions);
+
+    if (refund !== null) {
+        assertNonnegativeNumber(refund.rate, "withdrawal refund rate");
+    }
 
     return {
         state: battle,

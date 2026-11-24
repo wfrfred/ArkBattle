@@ -1,4 +1,4 @@
-export type { Definition, Refund, State } from "./dp.js";
+export type { Definition, State } from "./dp.js";
 
 export { setIncreaseContribution, removeIncreaseContribution } from "./dp.js";
 

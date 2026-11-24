@@ -22,7 +22,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 | DP 余额、上下限和自然回复 | DP |
 | 全局部署位上限、占用和待归还份额 | Slot |
 | 单卡库存、费用阶段、时钟和私有 state | Card |
-| 本次 Card／COST／额度／退款与撤退限制 | Deployable |
+| 默认返费规则、本次 Card／COST／额度／退款与撤退限制 | Deployable |
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
 
@@ -38,7 +38,7 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 `Card<S, P>` 是按策略区分的判别联合，与 `Definition<S, P>` 共享私有状态类型 `S` 和策略类型 `P`。初始化从 `definition.policy` 设置实例顶层的 `card.policy`，它在卡牌生命周期内保持稳定。策略为 `DEFAULT`、`UNIQUE` 或 `QUEUED`。
 
-`dp` 配置基础费用、涨费和退款，`Supply.Definition<P>` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。部署限制在 Card 外层，参与整次部署的资格判断。
+`dp` 配置基础费用和涨费，`Supply.Definition<P>` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。部署限制在 Card 外层，参与整次部署的资格判断。
 
 Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S, P>`，由部署或离场结算一次写回。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
 
@@ -54,7 +54,7 @@ Card 的 `dp.parameters` 必须提供数值费用。`card.dp.create` 补齐参�
 
 只有 `UNIQUE` 的 DP Definition 和 State 声明 `increase`。其基础值与所有生效的布尔贡献都为 true 时，回收允许累加。内容通过 `card.dp.setIncreaseContribution` 和 `card.dp.removeIncreaseContribution` 更新 `UNIQUE` Card 后写回 Deck。
 
-牌价的基数取费用覆写或定义费用加基础增量。先用 `min(1 + stage × step, max(1, maxMultiplier))` 乘基数并向下取整，再乘 `costScale` 并向下取整，最后加 `finalAddition` 并按 Deck 的费用上限截断。使用 `BASE_COST` 的撤退退款上限取定义费用与基础增量，部署时另保存本次牌价。 [算价查询](../../src/core/battle/deployment/deck/card/dp/query.ts) · [原生参数修改](../research/cases/24-deployment-cost-and-supply.md#各费用参数的修改时点)
+牌价的基数取费用覆写或定义费用加基础增量。先用 `min(1 + stage × step, max(1, maxMultiplier))` 乘基数并向下取整，再乘 `costScale` 并向下取整，最后加 `finalAddition` 并按 Deck 的费用上限截断。部署时从 Card 采样两笔金额，基础费用取定义费用加基础增量，本次 COST 取牌价。 [算价查询](../../src/core/battle/deployment/deck/card/dp/query.ts) · [原生参数修改](../research/cases/24-deployment-cost-and-supply.md#各费用参数的修改时点)
 
 ## 待部署区顺序
 
@@ -82,7 +82,7 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 
 ## 普通部署流程
 
-合并并判定资格 → 采样 COST／退款依据 → 提交 DP、部署位、库存及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
+合并并判定资格 → 采样基础费用与本次 COST → 提交 DP、部署位、库存及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
 
 付款使用当前 DP 余额。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
@@ -96,13 +96,15 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 
 ## Deployable 依赖与构造
 
-Deployable 单向依赖 Occupancy。初始来源为空、COST／额度为零、退款为空；没有专属 Initial，尚未登记时由 setDeployment 构造本次部署事实。运行中的撤退限制经 Change 更新，Context 使用当前 self。
+Deployable 单向依赖 Occupancy。初始来源为空，COST 与额度为零。尚未登记时由 `setDeployment` 构造本次部署事实。运行中的撤退限制经 Change 更新，Context 使用当前 self。
+
+`Deployable.Definition.refund` 声明默认返费倍率和上限规则，`null` 表示禁止返费。`setDeployment` 接收采样的基础费用与本次 COST，根据 Unit 的规则计算实例上限。`BASE_COST` 取基础费用，`DEPLOYMENT_COST` 取基础费用与本次 COST 的较大值。`Deployable.State.refund` 保存本次返费倍率和数值上限，未配置部署事实时为 `null`。 [Deployable 部署操作](../../src/core/unit/capability/deployable/operations.ts)
 
 可占格但不可部署的对象不需要 Card；Deployable.card 只是来源关系，不是 Lifetime 依赖。
 
 ## 离场结算
 
-`retreat` 要求当前 ACTIVE 且撤退限制允许，先按本次依据返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
+`retreat` 要求当前 ACTIVE 且撤退限制允许。返费按本次 COST 与返费倍率计算，并受实例上限约束。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
 Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
 

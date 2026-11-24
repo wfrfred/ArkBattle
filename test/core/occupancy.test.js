@@ -15,7 +15,7 @@ const operator = {
     id: "occupant",
     hooks: Hooks.empty(),
     occupancy: { slot: "OCCUPANT" },
-    deployable: { retreatRestrictions: [] },
+    deployable: { retreatRestrictions: [], refund: null },
 };
 const operatorCard = createCardDefinition({ policy: "DEFAULT", slots: 1 });
 const account = {

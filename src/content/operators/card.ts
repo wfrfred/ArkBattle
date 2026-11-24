@@ -17,7 +17,6 @@ export function create({ cost, respawnTime }: Parameters): CardDefinition<object
         dp: {
             parameters: dp.create({ cost, step: 0.5, maxMultiplier: 2 }),
             increase: true,
-            refund: { rate: 0.5, limit: "BASE_COST" },
         },
         slot: 1,
         policy: "UNIQUE",

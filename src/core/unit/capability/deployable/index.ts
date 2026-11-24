@@ -6,7 +6,6 @@ export type {
     Deployable,
     RestrictionContext,
     Restriction,
-    Refund,
 } from "./capability.js";
 
 export { setDeployment, canRetreat, retreat } from "./operations.js";

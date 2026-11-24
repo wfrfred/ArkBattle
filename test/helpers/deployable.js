@@ -3,14 +3,13 @@ import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { Hooks } from "../../dist/core/hook.js";
 import { dp } from "../../dist/core/battle/deployment/deck/card/index.js";
 
-export function createDefinition({ retreatRestrictions = [] } = {}) {
-    return { retreatRestrictions };
+export function createDefinition({ retreatRestrictions = [], refund = null } = {}) {
+    return { retreatRestrictions, refund };
 }
 
 export function createCardDefinition({
     cost = 0, redeployTicks = 0, slots = 0,
     stock = 1, stockLimit = 1, activeLimit = 1,
-    refund = { rate: 0.5, limit: "BASE_COST" },
     policy = "UNIQUE", increase = true,
     placement = "ALL", allowedSiteConditions = [conditions.normal], deploymentRestrictions = [], unitHooks = Hooks.empty(),
     initialize = battle => ({ state: battle, value: {} }),
@@ -18,7 +17,7 @@ export function createCardDefinition({
 } = {}) {
     return {
         policy,
-        dp: { parameters: dp.create({ cost, step: 0.5, maxMultiplier: 2 }), refund, ...(policy === "UNIQUE" ? { increase } : {}) },
+        dp: { parameters: dp.create({ cost, step: 0.5, maxMultiplier: 2 }), ...(policy === "UNIQUE" ? { increase } : {}) },
         slot: slots,
         supply: {
             stock, stockLimit, activeLimit, cooldown: redeployTicks,

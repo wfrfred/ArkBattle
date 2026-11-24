@@ -39,15 +39,15 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
             id: "leave", invoke(state, departure) { departures.push(departure); return { state, value: undefined }; },
         }),
         occupancy: { slot: "OCCUPANT" },
-        deployable: { retreatRestrictions: [] },
+        deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
         blocker: { capacity: 2, layer: "GROUND", restrictions: [] },
         action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [program, idle] },
     };
+
     const cardDefinition = {
         policy: "UNIQUE",
         dp: {
             parameters: cards.dp.create({ cost: 10, step: 0.5, maxMultiplier: 2 }), increase: true,
-            refund: { rate: 0.5, limit: "BASE_COST" },
         },
         slot: 1,
         supply: {
