@@ -1,0 +1,97 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-25"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-25",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "aegis-native.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "aegis-native.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "aegis-ability-end.json",
+      "aegis-native.json",
+      "reed-killed.json",
+      "reed-skill-clear.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "aegis-ability-end.json",
+        "kind": "record",
+        "bytes": 3136,
+        "sha256": "78ecd202969a499e26432ded5fc4c531ddff1dc42fc7d72fa0f024b60816ecdd"
+      },
+      {
+        "path": "aegis-native.json",
+        "kind": "record",
+        "bytes": 30678,
+        "sha256": "0779c5cc0563e32bbdeaccdbcd792e800ad42c0237abd4eb632273f5862ecf3a"
+      },
+      {
+        "path": "reed-killed.json",
+        "kind": "record",
+        "bytes": 3056,
+        "sha256": "20b9900e93c7265959d060102b3c5eae7f29a00786753ffffa50ee6d23c658ef"
+      },
+      {
+        "path": "reed-skill-clear.json",
+        "kind": "record",
+        "bytes": 2688,
+        "sha256": "ee6a7c4e654d3506ea18875d060b6a382f7beadec1c4fa4f7dc1fc5bb100dc3a"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 101289,
+          "mode": "disasm",
+          "records": [
+            "aegis-native.json#/result",
+            "aegis-native.json#/result/method"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterByAbilityFinishReason.Execute",
+          "address": "0x1811ba7e0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

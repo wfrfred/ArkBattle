@@ -1,0 +1,77 @@
+{
+  "provenance": {
+    "collectedAt": "2026-11-24T16:52:32.874505+00:00",
+    "scope": "Selected local JSON documents only. Value matches locate potential references; they do not resolve or validate bindings.",
+    "tool": {
+      "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/config.py",
+      "sha256": "67c2a913386059a57f9316f25e532c9dd20cdc4adb91d820065d09fd9dec76e4"
+    },
+    "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+    "argv": [
+      "assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+      "--preview",
+      "0",
+      "--source-url",
+      "https://github.com/Kengxxiao/ArknightsGameData/blob/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/battle/buff_template_data.json",
+      "--revision",
+      "17759cc8cdf37388414145d16262a3a06f3ab25e",
+      "--out",
+      "docs/research/evidence/effect-end-triggers-20261125/reed-killed.json",
+      "select",
+      "/reed2_t_1[skill_3_diffuse]/eventToActions/ON_OWNER_KILLED/*",
+      "--field",
+      "/$type",
+      "--field",
+      "/_checkTargetAlive"
+    ],
+    "sourceUrl": "https://github.com/Kengxxiao/ArknightsGameData/blob/17759cc8cdf37388414145d16262a3a06f3ab25e/zh_CN/gamedata/battle/buff_template_data.json",
+    "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "inputs": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "bytes": 28623543,
+        "sha256": "6786d60fa1f081346f7885a0a9782e201c942017588b09830afb011e16c6df3c",
+        "status": "ok",
+        "matched": 3
+      }
+    ]
+  },
+  "result": {
+    "matched": 3,
+    "matches": [
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "pointer": "/reed2_t_1[skill_3_diffuse]/eventToActions/ON_OWNER_KILLED/0",
+        "fields": {
+          "/$type": "Torappu.Battle.Action.Nodes+IfTarget, Assembly-CSharp",
+          "/_checkTargetAlive": true
+        },
+        "missingFields": []
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "pointer": "/reed2_t_1[skill_3_diffuse]/eventToActions/ON_OWNER_KILLED/1",
+        "fields": {
+          "/$type": "Torappu.Battle.Action.Nodes+EmitProjectile, Assembly-CSharp"
+        },
+        "missingFields": [
+          "/_checkTargetAlive"
+        ]
+      },
+      {
+        "source": "/home/wfrfred/workspace/ArkBattle/assets/arknights-game-data/zh_CN/gamedata/battle/buff_template_data.json",
+        "pointer": "/reed2_t_1[skill_3_diffuse]/eventToActions/ON_OWNER_KILLED/2",
+        "fields": {
+          "/$type": "Torappu.Battle.Action.Nodes+CreateBuffInRange, Assembly-CSharp"
+        },
+        "missingFields": [
+          "/_checkTargetAlive"
+        ]
+      }
+    ],
+    "complete": true,
+    "scanned": 1,
+    "succeeded": 1,
+    "errors": []
+  }
+}

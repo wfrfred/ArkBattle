@@ -450,3 +450,16 @@ TokenCard.SpawnInternal 将自身 Card 交给 BattleController.CreateToken；后
 扫描范围：完整 holder 的 9054 个模板中，97 项嵌入描述开启来源独立，分布于 69 个模板；本机 38 个 battle/enm_pfb 包的 53,528 个 MonoBehaviour 中，11,740 个含相关 BuffData 类型的对象完整解码，失败数为 0，直接开启来源独立的嵌入描述为 0。后一个结果不包含模板递归及 BuffDB 的全局证明；上述间接模板另行核对了实际 source。
 
 在已闭合的实际内容中，尚未找到这张表导致伤害、治疗、层数、计数或候补竞争改变的正例；没有把字典前缀回退差异本身当作玩法损失。空来源也未找到可执行的结果差异正例，候选弹道模板不等于已验证的来源回收后施加。该简化已确认为项目选择；上述依据不等于与全部运行时／热更新路径严格等价的证明。
+
+## 10. Effect 结束时的玩法条件
+
+2026-11-25 补核。普通 C# fallback 的 `Buff.OnFinish` 在清理派生 Buff 后以事件 1 运行 `ON_BUFF_FINISH`。所查调用没有给该事件传入顶层结束原因。以下样例的分支来自具体模板读取的计时、所属 Ability 或 Unit 事件。配置、原生方法和版本见[取证记录](../evidence/effect-end-triggers-20261125/README.md)。
+
+| 内容 | 确认的行为与分支输入 |
+| --- | --- |
+| 结城理的替身 | **D／C**　实装的限时 `makoto_standin` 在 `ON_BUFF_FINISH` 读取自己的剩余时间。剩余时间 `<= 0` 才进入回本体流程，有第二天赋时走总攻击再回本体。所查普通 `MarkFinish` 设置结束标志时保留剩余时间。提前结束且还有余量时不满足该条件。 [实际绑定](../evidence/resource-mechanisms-20261114/life/content.json#L19742) · [模板](../evidence/resource-mechanisms-20261114/life/templates.json#L10714) · [PRTS](https://prts.wiki/w/结城理#天赋) |
+| 埃癸斯 S2 | **D／N**　实装的 `aigis_s2_block_walk` 在自身结束时检查宿主存活与所属 Ability 的 `NORMAL_EXIT`，模板经 `IfNot` 执行恢复飞行阻挡和高度的补偿分支。原生检查直接从此 Buff 取得关联 Ability，再读取其结束结果。该分支未做实战中断对照。 [模板与原生检查](../evidence/effect-end-triggers-20261125/README.md) · [PRTS](https://prts.wiki/w/埃癸斯#技能) |
+| 焰影苇草 S3 灼痕 | **D／C**　附加爆炸和传播的灼痕在目标被击倒时走 `ON_OWNER_KILLED`。技能结束通过另一模板清除仍在场目标身上的本次灼痕。 [击倒节点](../evidence/effect-end-triggers-20261125/reed-killed.json) · [清除节点](../evidence/effect-end-triggers-20261125/reed-skill-clear.json) · [PRTS](https://prts.wiki/w/焰影苇草#技能) |
+| 谬因 S3 准备阶段 | **D／N**　准备 Buff 的宿主提前离场时，`ON_OWNER_FINISH` 撤销额外库存和容量并清计时。正常交接改由后续阶段持有这份增量。同角色的普通中继器回收 Buff 在自然结束和宿主离场时执行同一补货。 [阶段交接](24-deployment-cost-and-supply.md#已核的两条附属-card-路径) · [普通回收](24-deployment-cost-and-supply.md#多份队列恢复的预算采样) |
+
+这些样本给出三类实际输入，即自身计时是否走完、指定 Ability 如何收尾、Unit 是否死亡或离场。未确认普通 Effect 必须接收任意上游的结束原因。埃癸斯的分支明确针对关联 Ability，因此顶层 Unit 离场原因和一个固定的依赖结束值都无法替代所读结果。该结论限于已核样本与静态分支。
