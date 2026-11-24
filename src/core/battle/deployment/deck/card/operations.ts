@@ -24,12 +24,6 @@ export function setState<T extends Card<any>>(
     return state === self.state ? battle : replace(battle, { ...self, state });
 }
 
-export function incrementCostStage(battle: BattleState, reference: Ref<Card<any>>): BattleState {
-    const self: Card = get(battle, reference)!;
-
-    return replace(battle, dp.incrementCostStage(self));
-}
-
 export function deploy<S extends object, P extends Policy>(
     card: Card<S, P>,
     count: number,
@@ -53,7 +47,7 @@ export function recycle<S extends object>(card: Card<S>): Card<S> {
 
         case "UNIQUE": {
             if (resolveIncrease(card)) {
-                card = dp.incrementCostStage(card);
+                card = replaceIn(card, ["dp", "stage"], card.dp.stage + 1);
             }
 
             const stock = Math.min(supply.stock + 1, resolveStockLimit(card) ?? Infinity);

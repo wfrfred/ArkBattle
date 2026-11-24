@@ -19,12 +19,6 @@ export type State<P extends Policy = Policy> = {
     readonly contributions: readonly Contribution<Parameters>[];
 } & (P extends "UNIQUE" ? { readonly increase: readonly Contribution<boolean>[] } : object);
 
-export function incrementCostStage<S extends object, P extends Policy>(
-    card: Card<S, P>,
-): Card<S, P> {
-    return { ...card, dp: { ...card.dp, stage: card.dp.stage + 1 } };
-}
-
 export function setCostContribution<S extends object, P extends Policy>(
     card: Card<S, P>,
     entry: Contribution<Parameters>,

@@ -20,7 +20,6 @@ export { resolveBaseCost, resolveCost } from "./dp/index.js";
 
 export {
     setState,
-    incrementCostStage,
     setUnitHook,
     removeUnitHook,
     setRestriction,
