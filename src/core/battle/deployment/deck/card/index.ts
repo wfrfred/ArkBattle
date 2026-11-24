@@ -14,8 +14,6 @@ export { add } from "../operations.js";
 
 export { allows } from "./query.js";
 
-export { resolveBaseCost, resolveCost } from "./dp/index.js";
-
 export {
     setState,
     setUnitHook,

@@ -1,4 +1,5 @@
 import { resolve } from "../../../../../common/contribution.js";
+import type { State as BattleState } from "../../../../state.js";
 import type { Card } from "../card.js";
 
 export function resolveBaseCost<S extends object>(card: Card<S>): number {
@@ -12,7 +13,8 @@ export function resolveBaseCost<S extends object>(card: Card<S>): number {
     return Math.max(0, Math.floor(parameters.cost + addition));
 }
 
-export function resolveCost<S extends object>(card: Card<S>, ceiling = 99): number {
+export function resolveCost<S extends object>(battle: BattleState, card: Card<S>): number {
+    const { costCeiling } = battle.deployment.deck;
     const parameters = card.definition.dp.parameters;
     let { baseAddition, step, maxMultiplier, costScale, finalAddition } = parameters;
     let cost: number | null = null;
@@ -30,7 +32,7 @@ export function resolveCost<S extends object>(card: Card<S>, ceiling = 99): numb
     const multiplier = Math.min(1 + card.dp.stage * step, Math.max(1, maxMultiplier));
     const rawCost = Math.floor(base * multiplier);
 
-    return Math.max(0, Math.min(ceiling, Math.floor(rawCost * costScale) + finalAddition));
+    return Math.max(0, Math.min(costCeiling, Math.floor(rawCost * costScale) + finalAddition));
 }
 
 export function resolveIncrease<S extends object>(card: Card<S, "UNIQUE">): boolean {

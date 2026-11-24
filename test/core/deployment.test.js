@@ -81,7 +81,7 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
     const [first, second] = [...cards.all(state)].map(cards.ref);
     const ordered = (state) => [...deployment.ordered(state)].map(cards.ref);
     const ordering = (state, references) => {
-        const cost = (reference) => cards.resolveCost(cards.get(state, reference));
+        const cost = (reference) => cards.dp.resolveCost(state, cards.get(state, reference));
         return references.toSorted((left, right) => cost(left) - cost(right));
     };
 

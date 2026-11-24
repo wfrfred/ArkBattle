@@ -54,7 +54,7 @@ Card 的 `dp.parameters` 必须提供数值费用。`card.dp.create` 补齐参�
 
 只有 `UNIQUE` 的 DP Definition 和 State 声明 `increase`。其基础值与所有生效的布尔贡献都为 true 时，回收允许累加。内容通过 `card.dp.setIncreaseContribution` 和 `card.dp.removeIncreaseContribution` 更新 `UNIQUE` Card 后写回 Deck。
 
-牌价的基数取费用覆写或定义费用加基础增量。先用 `min(1 + stage × step, max(1, maxMultiplier))` 乘基数并向下取整，再乘 `costScale` 并向下取整，最后加 `finalAddition` 并按 Deck 的费用上限截断。部署时从 Card 采样两笔金额，基础费用取定义费用加基础增量，本次 COST 取牌价。 [算价查询](../../src/core/battle/deployment/deck/card/dp/query.ts) · [原生参数修改](../research/cases/24-deployment-cost-and-supply.md#各费用参数的修改时点)
+`card.dp.resolveCost(battle, card)` 根据当前 Deck 的费用上限计算牌价。牌价的基数取费用覆写或定义费用加基础增量。先用 `min(1 + stage × step, max(1, maxMultiplier))` 乘基数并向下取整，再乘 `costScale` 并向下取整，最后加 `finalAddition` 并按 Deck 的费用上限截断。部署时从 Card 采样两笔金额，基础费用取定义费用加基础增量，本次 COST 取牌价。 [算价查询](../../src/core/battle/deployment/deck/card/dp/query.ts) · [原生参数修改](../research/cases/24-deployment-cost-and-supply.md#各费用参数的修改时点)
 
 ## 待部署区顺序
 

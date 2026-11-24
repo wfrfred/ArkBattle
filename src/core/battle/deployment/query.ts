@@ -9,7 +9,7 @@ import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Card } from "./deck/card/card.js";
 import { get } from "./deck/deck.js";
-import { resolveCost } from "./deck/operations.js";
+import { resolveCost } from "./deck/card/dp/query.js";
 import { isReady, resolveActiveLimit } from "./deck/card/supply/query.js";
 import type { Restriction as CardRestriction } from "./deck/card/restriction.js";
 import type { Restriction } from "./restriction.js";

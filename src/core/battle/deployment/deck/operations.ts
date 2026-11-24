@@ -1,7 +1,6 @@
 import { replaceIn } from "../../../common/object.js";
 import type { State as BattleState } from "../../state.js";
 import { ref, type Card } from "./card/card.js";
-import { resolveCost as resolveCardCost } from "./card/dp/index.js";
 import { advance as advanceCard } from "./card/operations.js";
 import { all } from "./deck.js";
 
@@ -43,8 +42,4 @@ export function sort(battle: BattleState): BattleState {
         order.every((ref, index) => ref.id === previous[index]!.id)
         ? battle
         : replaceIn(battle, ["deployment", "deck", "order"], order);
-}
-
-export function resolveCost<S extends object>(battle: BattleState, self: Card<S>): number {
-    return resolveCardCost(self, battle.deployment.deck.costCeiling);
 }
