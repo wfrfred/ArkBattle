@@ -1,7 +1,7 @@
 import { replaceIn } from "../../../common/object.js";
 import type { State as BattleState } from "../../state.js";
 import { ref, type Card } from "./card/card.js";
-import { resolveCost as resolveCardCost } from "./card/dp.js";
+import { resolveCost as resolveCardCost } from "./card/dp/index.js";
 import { advance as advanceCard } from "./card/operations.js";
 import { all } from "./deck.js";
 

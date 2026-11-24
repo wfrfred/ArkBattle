@@ -4,7 +4,7 @@ export { initialize } from "./deployment.js";
 
 export type { Id as CardId, Card } from "./deck/card/card.js";
 
-export { resolveBaseCost, resolveCost } from "./deck/card/dp.js";
+export { resolveBaseCost, resolveCost } from "./deck/card/dp/index.js";
 
 export { resolveCooldown } from "./deck/card/supply/query.js";
 

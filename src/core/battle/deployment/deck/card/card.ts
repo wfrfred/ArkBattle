@@ -5,7 +5,7 @@ import type { Definition as OccupancyDefinition } from "../../../../unit/capabil
 import type { Contribution } from "../../../../common/contribution.js";
 import type { Hooks } from "../../../../hook.js";
 import type { Definition } from "./definition.js";
-import type * as dp from "./dp.js";
+import type * as dp from "./dp/index.js";
 import type { Restriction } from "./restriction.js";
 import type * as supply from "./supply/supply.js";
 

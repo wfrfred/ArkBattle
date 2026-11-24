@@ -12,7 +12,7 @@ import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
 import { dispatch as notifyDeployed } from "./hook.js";
 import type { Card } from "./deck/card/card.js";
-import { resolveBaseCost } from "./deck/card/dp.js";
+import { resolveBaseCost } from "./deck/card/dp/index.js";
 import { deploy as deployCard } from "./deck/card/operations.js";
 import { get } from "./deck/deck.js";
 import * as deck from "./deck/operations.js";

@@ -1,7 +1,7 @@
-import * as entries from "../../../../common/collection/entries.js";
-import * as contribution from "../../../../common/contribution.js";
-import type { Modifier } from "../../../../common/modifier.js";
-import type { Card, Policy } from "./card.js";
+import * as entries from "../../../../../common/collection/entries.js";
+import * as contribution from "../../../../../common/contribution.js";
+import type { Modifier } from "../../../../../common/modifier.js";
+import type { Card, Policy } from "../card.js";
 
 export interface Refund {
     readonly rate: number;

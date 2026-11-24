@@ -9,7 +9,7 @@ import type { Card, Policy } from "./card.js";
 import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
-import * as dp from "./dp.js";
+import * as dp from "./dp/index.js";
 import { enqueue } from "./supply/operations.js";
 import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
 
