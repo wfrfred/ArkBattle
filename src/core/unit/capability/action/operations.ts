@@ -42,7 +42,7 @@ export function setCooldown<P extends object, E extends object>(
 export function start<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Action<P, E>>,
-): Result<Ref<Execution<P, E>> | null> {
+): Result<Ref<Execution<E>> | null> {
     const { host: source, definitionId } = reference;
 
     function check(battle: BattleState) {
@@ -91,31 +91,30 @@ export function start<P extends object, E extends object>(
     }
 
     const { unit, action } = latest;
-    const self: Execution<P, E> = {
-        definition: action.definition,
-        state: action.state,
-        cooldown: cooldown.reset(action.cooldown, battle.tick),
-        execution: {
-            id: unit.action.nextExecutionId,
-            startedAtTick: battle.tick,
-            lifecycle: "ACTIVE",
-            state: initialized.value,
-        },
+    const execution: Execution<E> = {
+        id: unit.action.nextExecutionId,
+        startedAtTick: battle.tick,
+        lifecycle: "ACTIVE",
+        state: initialized.value,
     };
     battle = replaceUnits(battle, [
         {
             ...unit,
             action: {
                 ...unit.action,
-                actions: unit.action.actions.replace(action.definition, self),
+                actions: unit.action.actions.replace(action.definition, {
+                    ...action,
+                    cooldown: cooldown.reset(action.cooldown, battle.tick),
+                    execution,
+                }),
                 nextExecutionId: unit.action.nextExecutionId + 1,
             },
         },
     ]);
-    const execution = ref(source, self);
-    battle = register(battle, lifetime, execution, [lifetimes.scope(unitLifetime, source)]);
+    const started = ref(source, execution);
+    battle = register(battle, lifetime, started, [lifetimes.scope(unitLifetime, source)]);
 
-    return { state: battle, value: execution };
+    return { state: battle, value: started };
 }
 
 export function startConfigured(
@@ -131,9 +130,9 @@ export function startConfigured(
     return start(battle, actionRef(units.ref(unit), action.definition));
 }
 
-export function setExecutionState<P extends object, E extends object>(
+export function setExecutionState<E extends object>(
     battle: BattleState,
-    reference: Ref<Execution<P, E>>,
+    reference: Ref<Execution<E>>,
     state: NoInfer<E>,
 ): BattleState {
     const unit = reference.host.get(battle);
@@ -141,39 +140,42 @@ export function setExecutionState<P extends object, E extends object>(
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const current = reference.get(battle);
-    if (current === undefined) {
+    const action = unit.action.actions.getByExecution(reference.id);
+    if (action === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
     }
 
-    return state === current.execution.state
+    return state === action.execution.state
         ? battle
-        : replaceAction(battle, unit, replaceIn(current, ["execution", "state"], state));
+        : replaceAction(battle, unit, replaceIn(action, ["execution", "state"], state));
 }
 
 export const lifetime = lifetimes.create<ExecutionIdentity, End>({
     kind: "ACTION",
     address: (reference) => `${reference.host.id}:${reference.id}`,
     end: {
-        prepare(battle, reference, initial) {
+        prepare(battle, reference) {
             const host = reference.host.get(battle)!;
-            const self = initial as Execution;
+            const action = host.action.actions.getByExecution(reference.id)!;
 
             return replaceAction(
                 battle,
                 host,
-                replaceIn(self, ["execution", "lifecycle"], "ENDING"),
+                replaceIn(action, ["execution", "lifecycle"], "ENDING"),
             );
         },
         finalize(battle, reference, _initial, result) {
-            const self = reference.get(battle)! as Execution;
-
-            const definition = self.definition as Definition;
-            battle = definition.onEnd?.(battle, reference.host, self, result) ?? battle;
-
             const host = reference.host.get(battle)!;
-            const action = host.action.actions.get(self.definition.id)!;
-            battle = replaceAction(battle, host, { ...action, execution: null });
+            const current = host.action.actions.getByExecution(reference.id)!;
+            const definition = current.definition as Definition;
+            const action = actionRef(reference.host, current.definition);
+            battle =
+                definition.onEnd?.(battle, reference.host, current.execution, result, action) ??
+                battle;
+
+            const latest = reference.host.get(battle)!;
+            const previous = latest.action.actions.get(action.definitionId)!;
+            battle = replaceAction(battle, latest, { ...previous, execution: null });
 
             return appendEvents(battle, [
                 {
@@ -222,7 +224,7 @@ export function advance(battle: BattleState, reference: ExecutionRef): BattleSta
         return battle;
     }
 
-    const current = reference.get(battle) as Execution | undefined;
+    const current = source.action.actions.getByExecution(reference.id);
     if (current?.execution.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -230,7 +232,12 @@ export function advance(battle: BattleState, reference: ExecutionRef): BattleSta
         return cancel(battle, reference, "SOURCE_ABSENT");
     }
 
-    return (current.definition as Definition).onTick(battle, reference.host, current);
+    return (current.definition as Definition).onTick(
+        battle,
+        reference.host,
+        current.execution,
+        actionRef(reference.host, current.definition),
+    );
 }
 
 export function refreshCooldowns(
@@ -306,7 +313,7 @@ function getAction<P extends object, E extends object>(
 function replaceAction<P extends object, E extends object>(
     battle: BattleState,
     unit: Unit & ActionCapability,
-    self: Action<P, E> | Execution<P, E>,
+    self: Action<P, E>,
 ): BattleState {
     return replaceUnits(battle, [
         replaceIn(unit, ["action", "actions"], unit.action.actions.replace(self.definition, self)),

@@ -186,17 +186,18 @@ export function createSkill({
             },
         ],
         applyWay: "MELEE",
-        output(state, host, self) {
+        output(state, host, self, action) {
             const source = host.get(state);
             if (source?.skill.activation == null) {
                 return state;
             }
 
+            const { applyWay } = action.get(state)!.definition;
             const power = resolveAttack(state, source);
             state = healSelf(state, host, healRatio);
 
-            for (const targetRef of self.execution.state.bindings.primary ?? []) {
-                if (executionRef(host, self).get(state)?.execution.lifecycle !== "ACTIVE") {
+            for (const targetRef of self.state.bindings.primary ?? []) {
+                if (executionRef(host, self).get(state)?.lifecycle !== "ACTIVE") {
                     return state;
                 }
 
@@ -213,7 +214,7 @@ export function createSkill({
 
                 const request: DamageRequest = {
                     attackType: "NORMAL",
-                    applyWay: self.definition.applyWay,
+                    applyWay,
                     source: unitRef(source),
                     killer: unitRef(source),
                     target: unitRef(target),
@@ -241,9 +242,9 @@ export function createSkill({
             return state;
         },
         onEnd(state, _host, self) {
-            return self.execution.state.data.activation === null
+            return self.state.data.activation === null
                 ? state
-                : finish(state, self.execution.state.data.activation);
+                : finish(state, self.state.data.activation);
         },
     });
 }

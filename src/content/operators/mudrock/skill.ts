@@ -1,7 +1,7 @@
 import {
     clearCooldown,
     cancel as cancelAction,
-    forUnit,
+    executionRef,
     ref as actionRef,
     type ActionCapability,
 } from "../../../core/unit/capability/action/index.js";
@@ -51,11 +51,13 @@ export function create(
                     return state;
                 }
 
-                const normal = forUnit(state, host).find(
-                    (reference) => reference.get(state)?.definition === normalAttack,
-                );
-                if (normal !== undefined) {
-                    state = cancelAction(state, normal, "INTERRUPTED");
+                const normal = actionRef(host, normalAttack).get(state);
+                if (normal?.definition === normalAttack && normal.execution !== null) {
+                    state = cancelAction(
+                        state,
+                        executionRef(host, normal.execution),
+                        "INTERRUPTED",
+                    );
                 }
 
                 if (host.get(state)?.lifecycle !== "ACTIVE") {

@@ -66,24 +66,25 @@ test("prepare can reject without allocating a round; ending preserves the latest
             return { state, value: attempts === 1 ? null : { advances: 0 } };
         },
         onTick(state, source, self) {
-            const advances = self.execution.state.advances + 1;
+            const advances = self.state.advances + 1;
             const reference = actions.executionRef(source, self);
             state = actions.setExecutionState(state, reference, { advances });
             return advances === 2 ? actions.finish(state, reference) : state;
         },
-        onEnd(state, source, self, end) {
+        onEnd(state, source, self, end, action) {
             const reference = actions.executionRef(source, self);
             state = actions.setExecutionState(state, reference, {
-                ...self.execution.state,
+                ...self.state,
                 cleaned: true,
             });
             const current = reference.get(state);
-            assert.equal(current.execution.lifecycle, "ENDING");
-            assert.equal(current.execution.state.cleaned, true);
+            assert.equal(current.lifecycle, "ENDING");
+            assert.equal(current.state.cleaned, true);
             assert.equal(actions.hasExecution(state, source, program.id), true);
-            return actions.setState(state, actions.ref(source, program), {
-                ...self.state,
-                ended: [...self.state.ended, { end, advances: current.execution.state.advances }],
+            const { state: persistent } = action.get(state);
+            return actions.setState(state, action, {
+                ...persistent,
+                ended: [...persistent.ended, { end, advances: current.state.advances }],
             });
         },
     };
@@ -117,7 +118,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
 
     const next = actions.start(state, reference);
     state = actions.cancel(next.state, started.value, "OLD_ROUND");
-    assert.equal(next.value.get(state).execution.lifecycle, "ACTIVE");
+    assert.equal(next.value.get(state).lifecycle, "ACTIVE");
     state = actions.cancel(state, next.value, "STOPPED");
     assert.deepEqual(reference.get(state).state.ended[1], {
         end: { type: "CANCELLED", reason: "STOPPED" },
@@ -263,9 +264,9 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
         period: { type: "FIXED", ticks: 0 },
         initialize: (state) => ({ state, value: { completed: 0 } }),
         prepare: (state) => ({ state, value: {} }),
-        onTick(state, source, self) {
-            state = actions.setState(state, actions.ref(source, program), {
-                completed: self.state.completed + 1,
+        onTick(state, source, self, action) {
+            state = actions.setState(state, action, {
+                completed: action.get(state).state.completed + 1,
             });
             return actions.finish(state, actions.executionRef(source, self));
         },

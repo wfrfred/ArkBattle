@@ -1,6 +1,6 @@
 import { createWithState, faceTarget, sourceAttack, type Attack } from "../../actions/attack.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
-import { ref as actionRef, setState } from "../../../core/unit/capability/action/index.js";
+import { setState } from "../../../core/unit/capability/action/index.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 import * as units from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
@@ -65,15 +65,13 @@ export function create({ range, timing }: AttackParameters): Attack<State, objec
         prepare: (battle) => ({ state: battle, value: {} }),
         timing: (_battle, _source, self) =>
             self.state.inSession ? { ...timing, beginTicks: 0 } : timing,
-        onStart(battle, source, self) {
-            battle = setState(battle, actionRef(source, self.definition), { inSession: true });
+        onStart(battle, source, self, action) {
+            battle = setState(battle, action, { inSession: true });
 
             return faceTarget(battle, source, self);
         },
-        onEnd: (battle, source, self, end) =>
-            end.type === "CANCELLED"
-                ? setState(battle, actionRef(source, self.definition), { inSession: false })
-                : battle,
+        onEnd: (battle, _source, _self, end, action) =>
+            end.type === "CANCELLED" ? setState(battle, action, { inSession: false }) : battle,
         period: { type: "ATTACK_SPEED" },
         triggerBindingId: "primary",
         followUps: [],

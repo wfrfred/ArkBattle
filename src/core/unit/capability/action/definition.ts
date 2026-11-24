@@ -31,12 +31,14 @@ export interface Definition<
     readonly onTick: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability & H>,
-        self: Execution<P, E>,
+        self: Execution<E>,
+        action: Ref<Action<P, E>>,
     ) => BattleState;
     readonly onEnd?: (
         battle: BattleState,
         source: Ref<Unit & ActionCapability & H>,
-        self: Execution<P, E>,
+        self: Execution<E>,
         end: End,
+        action: Ref<Action<P, E>>,
     ) => BattleState;
 }

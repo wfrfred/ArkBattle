@@ -168,9 +168,9 @@ test("manual commands preserve AUTO and PASSIVE scheduling while direct activati
         activation: {
             trigger, ignoreRestrictions: [], requirement: 0, cost: 0,
             initialize: () => ({ state: {}, duration: { type: "TIME", durationTicks: 0 } }),
-            onStart(state, source, self) {
-                return skills.setState(state, skills.ref(source), {
-                    starts: self.state.starts + 1,
+            onStart(state, _source, _self, skill) {
+                return skills.setState(state, skill, {
+                    starts: skill.get(state).state.starts + 1,
                 });
             },
         },

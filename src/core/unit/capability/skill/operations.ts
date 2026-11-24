@@ -1,6 +1,6 @@
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import { lifetime as unitLifetime, replace as replaceUnits, update } from "../../operations.js";
-import type { Identified, Ref } from "../../../common/ref.js";
+import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as lifetimes from "../../../lifetime/index.js";
 import { register } from "../../../lifetime/operations.js";
@@ -17,6 +17,8 @@ import { hasSkill, type Skill as SkillCapability } from "./capability.js";
 import {
     ref as activationRef,
     type Activation,
+    type ActivationIdentity,
+    type ActivationRef,
     type Definition as ActivationDefinition,
     type Parameters as ActivationParameters,
     type End,
@@ -77,15 +79,15 @@ export function setState<X extends Skill<any, any>>(
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const self = unit.skill;
-
-    return state === self.state ? battle : replaceSkill(battle, unit, { ...self, state });
+    return state === unit.skill.state
+        ? battle
+        : replaceUnits(battle, [replaceIn(unit, ["skill", "state"], state)]);
 }
 
-export function setActivationState<X extends Activation<any, any>>(
+export function setActivationState<A extends object>(
     battle: BattleState,
-    reference: Ref<X>,
-    state: NoInfer<X["activation"]["state"]>,
+    reference: Ref<Activation<A>>,
+    state: NoInfer<A>,
 ): BattleState {
     const unit = reference.host.get(battle);
     if (unit === undefined) {
@@ -97,18 +99,16 @@ export function setActivationState<X extends Activation<any, any>>(
         throw new RangeError(`unknown skill activation: ${reference.id}`);
     }
 
-    const active = self.activation;
-
-    return state === active.state
+    return state === self.state
         ? battle
-        : replaceSkill(battle, unit, { ...self, activation: { ...active, state } });
+        : replaceUnits(battle, [replaceIn(unit, ["skill", "activation"], { ...self, state })]);
 }
 
 export function activate<S extends object, A extends object>(
     battle: BattleState,
     reference: Ref<Skill<S, A>>,
     parameters?: ActivationParameters,
-): Result<Ref<Activation<S, A>> | null> {
+): Result<Ref<Activation<A>> | null> {
     if (parameters !== undefined) {
         assertNonnegativeSafeInteger(parameters.requirement, "skill activation SP requirement");
         assertNonnegativeSafeInteger(parameters.cost, "skill activation SP cost");
@@ -148,28 +148,22 @@ export function activate<S extends object, A extends object>(
 
     const initialized = definition.initialize(battle, source, self);
     const duration = initialDuration(battle, unit, initialized.duration);
-    const active: Activation<S, A> = {
-        definition: self.definition,
-        state: self.state,
-        sp: previousSp === null ? null : { ...previousSp, value: previousSp.value - cost },
-        activation: {
-            id: unit.skill.nextActivationId,
-            startedAtTick: battle.tick,
-            lifecycle: "ACTIVE",
-            duration,
-            state: initialized.state,
-        },
+    const active: Activation<A> = {
+        id: unit.skill.nextActivationId,
+        startedAtTick: battle.tick,
+        lifecycle: "ACTIVE",
+        duration,
+        state: initialized.state,
     };
-    const nextActivationId = active.activation.id + 1;
 
     battle = replaceUnits(battle, [
         {
             ...unit,
             skill: {
                 ...unit.skill,
-                sp: active.sp,
-                nextActivationId,
-                activation: active.activation,
+                sp: previousSp === null ? null : { ...previousSp, value: previousSp.value - cost },
+                nextActivationId: active.id + 1,
+                activation: active,
             },
         },
     ]);
@@ -199,17 +193,17 @@ export function activate<S extends object, A extends object>(
     if (
         currentUnit?.lifecycle === "ACTIVE" &&
         (!hasVitality(currentUnit) || isAlive(currentUnit)) &&
-        current?.activation.lifecycle === "ACTIVE" &&
+        current?.lifecycle === "ACTIVE" &&
         definition.onStart !== undefined
     ) {
-        battle = definition.onStart(battle, source, current);
+        battle = definition.onStart(battle, source, current, reference);
     }
 
     const after = activatedRef.get(battle);
     if (
-        after?.activation.lifecycle === "ACTIVE" &&
-        after.activation.duration.type === "TIME" &&
-        after.activation.duration.endsAtTick <= battle.tick
+        after?.lifecycle === "ACTIVE" &&
+        after.duration.type === "TIME" &&
+        after.duration.endsAtTick <= battle.tick
     ) {
         battle = finish(battle, activatedRef);
     }
@@ -217,35 +211,41 @@ export function activate<S extends object, A extends object>(
     return { state: battle, value: activatedRef };
 }
 
-export const lifetime = lifetimes.create<Activation<any, any>, End>({
+export const lifetime = lifetimes.create<ActivationIdentity, End>({
     kind: "SKILL",
     address: (reference) => `${reference.host.id}:${reference.id}`,
     end: {
         prepare(battle, reference, initial) {
             const host = reference.host.get(battle)!;
 
-            return replaceSkill(
-                battle,
-                host,
-                replaceIn(initial, ["activation", "lifecycle"], "ENDING"),
-            );
+            return replaceUnits(battle, [
+                replaceIn(host, ["skill", "activation"], {
+                    ...(initial as Activation),
+                    lifecycle: "ENDING",
+                }),
+            ]);
         },
         finalize(battle, reference, _initial, ending) {
-            const self = (reference as Ref<Activation>).get(battle)!;
-            const definition = self.definition.activation as ActivationDefinition<object, object>;
-            battle = definition.onEnd?.(battle, reference.host, self, ending) ?? battle;
+            const source = reference.host;
+            const unit = source.get(battle)!;
+            const active = unit.skill.activation!;
+            const definition = unit.skill.definition.activation as ActivationDefinition<
+                object,
+                object
+            >;
+            battle = definition.onEnd?.(battle, source, active, ending, skillRef(source)) ?? battle;
 
-            const host = reference.host.get(battle)!;
+            const host = source.get(battle)!;
             battle = replaceUnits(battle, [replaceIn(host, ["skill", "activation"], null)]);
             battle = appendEvents(battle, [
                 {
                     type: "SKILL_ENDED",
-                    unitId: reference.host.id,
+                    unitId: source.id,
                     tick: battle.tick,
                 },
             ]);
 
-            return dispatch(battle, reference.host, activationEnded, {
+            return dispatch(battle, source, activationEnded, {
                 ref: reference,
                 end: ending,
             });
@@ -254,24 +254,21 @@ export const lifetime = lifetimes.create<Activation<any, any>, End>({
     },
 });
 
-export function finish<X extends Activation<any, any>>(
-    battle: BattleState,
-    reference: Ref<X>,
-): BattleState {
+export function finish(battle: BattleState, reference: ActivationRef): BattleState {
     return lifetime.end(battle, reference, { type: "FINISHED" });
 }
 
-export function cancel<X extends Activation<any, any>>(
+export function cancel(
     battle: BattleState,
-    reference: Ref<X>,
+    reference: ActivationRef,
     reason = "CANCELLED",
 ): BattleState {
     return lifetime.end(battle, reference, { type: "CANCELLED", reason });
 }
 
-export function operate<X extends Activation<any, any>>(
+export function operate(
     battle: BattleState,
-    reference: Ref<X>,
+    reference: ActivationRef,
     operation: Operation,
 ): Result<boolean> {
     const unit = reference.host.get(battle);
@@ -280,11 +277,11 @@ export function operate<X extends Activation<any, any>>(
     }
 
     const self = reference.get(battle);
-    if (self?.activation.lifecycle !== "ACTIVE") {
+    if (self?.lifecycle !== "ACTIVE") {
         return { state: battle, value: false };
     }
 
-    const definition = self.definition.activation as ActivationDefinition<object, object>;
+    const definition = unit.skill.definition.activation as ActivationDefinition<object, object>;
     const handler = definition.operations?.[operation];
     if (handler === undefined) {
         return { state: battle, value: false };
@@ -294,7 +291,10 @@ export function operate<X extends Activation<any, any>>(
         return { state: battle, value: false };
     }
 
-    return { state: handler(battle, reference.host, self), value: true };
+    return {
+        state: handler(battle, reference.host, self as Activation, skillRef(reference.host)),
+        value: true,
+    };
 }
 
 export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>): BattleState {
@@ -308,15 +308,15 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
     unit = host.get(battle);
 
     if (unit?.lifecycle === "ACTIVE" && unit.skill.activation?.lifecycle === "ACTIVE") {
-        const active = unit.skill as Identified<never, typeof unit.skill> as Activation;
-        if (
-            active.activation.duration.type === "TIME" &&
-            active.activation.duration.endsAtTick <= battle.tick
-        ) {
-            battle = finish(battle, activationRef<Activation>(host, active));
+        const active = unit.skill.activation;
+        if (active.duration.type === "TIME" && active.duration.endsAtTick <= battle.tick) {
+            battle = finish(battle, activationRef(host, active));
         } else {
-            const definition = active.definition.activation as ActivationDefinition<object, object>;
-            battle = definition.onTick?.(battle, host, active) ?? battle;
+            const definition = unit.skill.definition.activation as ActivationDefinition<
+                object,
+                object
+            >;
+            battle = definition.onTick?.(battle, host, active, skillRef(host)) ?? battle;
         }
     }
 
@@ -360,9 +360,9 @@ export const entered: EnteredHook = {
     },
 };
 
-export function extendTime<X extends Activation<any, any>>(
+export function extendTime(
     battle: BattleState,
-    reference: Ref<X>,
+    reference: ActivationRef,
     ticks: number,
 ): BattleState {
     if (!Number.isSafeInteger(ticks)) {
@@ -374,7 +374,7 @@ export function extendTime<X extends Activation<any, any>>(
         return battle;
     }
 
-    const active = reference.get(battle)?.activation;
+    const active = reference.get(battle);
     if (active?.lifecycle !== "ACTIVE" || active.duration.type !== "TIME") {
         return battle;
     }
@@ -417,23 +417,4 @@ function initialDuration(
     assertNonnegativeSafeInteger(definition.durationTicks, "skill duration ticks");
 
     return { type: "TIME", endsAtTick: battle.tick + definition.durationTicks };
-}
-
-function replaceSkill<S extends object, A extends object>(
-    battle: BattleState,
-    unit: Unit & SkillCapability,
-    self: Skill<S, A> | Activation<S, A>,
-): BattleState {
-    return replaceUnits(battle, [
-        {
-            ...unit,
-            skill: {
-                ...unit.skill,
-                definition: self.definition,
-                state: self.state,
-                sp: self.sp,
-                activation: self.activation,
-            },
-        },
-    ]);
 }

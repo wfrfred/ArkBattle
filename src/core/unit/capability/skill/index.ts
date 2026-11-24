@@ -14,6 +14,7 @@ export type {
     Parameters as ActivationParameters,
     Definition as ActivationDefinition,
     Activation,
+    ActivationRef,
 } from "./activation.js";
 
 export {

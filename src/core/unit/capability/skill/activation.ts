@@ -43,12 +43,14 @@ export interface Definition<
     readonly onStart?: (
         battle: BattleState,
         source: Ref<Unit & SkillCapability & H>,
-        self: Activation<S, A>,
+        self: Activation<A>,
+        skill: Ref<Skill<S, A>>,
     ) => BattleState;
     readonly onTick?: (
         battle: BattleState,
         source: Ref<Unit & SkillCapability & H>,
-        self: Activation<S, A>,
+        self: Activation<A>,
+        skill: Ref<Skill<S, A>>,
     ) => BattleState;
     readonly operations?: Readonly<
         Partial<
@@ -57,7 +59,8 @@ export interface Definition<
                 (
                     battle: BattleState,
                     source: Ref<Unit & SkillCapability & H>,
-                    self: Activation<S, A>,
+                    self: Activation<A>,
+                    skill: Ref<Skill<S, A>>,
                 ) => BattleState
             >
         >
@@ -65,12 +68,16 @@ export interface Definition<
     readonly onEnd?: (
         battle: BattleState,
         source: Ref<Unit & SkillCapability & H>,
-        self: Activation<S, A>,
+        self: Activation<A>,
         end: End,
+        skill: Ref<Skill<S, A>>,
     ) => BattleState;
 }
 
-export interface State<A extends object = object> {
+export interface Activation<in out A extends object = object> extends Identified<{
+    readonly host: Ref<Unit & SkillCapability>;
+    readonly id: number;
+}> {
     readonly id: number;
     readonly startedAtTick: number;
     readonly lifecycle: "ACTIVE" | "ENDING";
@@ -78,29 +85,20 @@ export interface State<A extends object = object> {
     readonly state: A;
 }
 
-export interface Activation<
-    S extends object = object,
-    A extends object = object,
-> extends Identified<
-    {
-        readonly host: Ref<Unit & SkillCapability>;
-        readonly id: number;
-    },
-    Skill<S, A>
-> {
-    readonly activation: State<A>;
-}
+export type ActivationIdentity = Omit<Activation, "state"> & { readonly state: unknown };
 
-export function ref<X extends Activation<any, any>>(
+export type ActivationRef = Ref<ActivationIdentity>;
+
+export function ref<A extends object>(
     host: Ref<Unit & SkillCapability>,
-    self: X,
-): Ref<X> {
-    return { host, id: self.activation.id, get } as Ref<X>;
+    self: Activation<A>,
+): Ref<Activation<A>> {
+    return { host, id: self.id, get } as Ref<Activation<A>>;
 }
 
-function get(this: object, battle: BattleState): Activation | undefined {
+function get<A extends object>(this: object, battle: BattleState): Activation<A> | undefined {
     const { host, id } = this as Identity<Activation>;
-    const skill = host.get(battle)?.skill;
+    const activation: ActivationIdentity | null | undefined = host.get(battle)?.skill.activation;
 
-    return (skill?.activation?.id === id ? skill : undefined) as Activation | undefined;
+    return activation?.id === id ? (activation as Activation<A>) : undefined;
 }

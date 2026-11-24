@@ -111,7 +111,7 @@ export function createRanged(rangeRadius: number, timing: Timing, projectile: Pr
         ],
         output: (state, host, self) => {
             const source = host.get(state);
-            const target = self.execution.state.target.get(state);
+            const target = self.state.target.get(state);
             if (source === undefined || target === undefined || !hasVitality(target)) {
                 return state;
             }

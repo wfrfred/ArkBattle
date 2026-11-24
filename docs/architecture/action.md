@@ -12,7 +12,7 @@ Action 管理行动程序的启动、冷却、执行进度与终止；Content �
 
 ## 1. 状态与领域职责
 
-Unit 的 Action Capability 保存宿主的攻速／基础攻击间隔 Attribute、行动容器、宿主内执行身份计数和启动限制。容器中每项 Action 聚合 Definition、持久 state、Cooldown 与可空 execution。Execution 是按本轮身份读取的同一聚合，execution 确定非空；执行私有数据与持久数据分开。
+Unit 的 Action Capability 保存宿主的攻速／基础攻击间隔 Attribute、行动容器、宿主内执行身份计数和启动限制。Action 保存 Definition、持久 state、Cooldown 和当前的可空 Execution 槽位。Execution 持有本轮身份、开始时刻、生命周期与执行状态。
 
 Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onEnd。宿主 Ref 由内容回调参数传入，聚合不重复保存 host。Runtime 负责调度；Action 不拥有全场执行集合。
 
@@ -24,7 +24,7 @@ Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onE
 
 Content 在 Action Capability 的 `definitions` 中按顺序声明行动。Capability 装配时逐项接续 BattleState，执行 Definition 的持久初始化，并保存带就绪冷却和空执行槽位的 Action。`select` 仍由 Content 决定运行时选招。共享 Definition 的不同宿主分别产生私有状态。初始化期间宿主尚未登记，也不能假定兄弟能力已完成装配。
 
-`Definition<P, E, H>` 声明持久状态 `P`、执行状态 `E` 和额外宿主要求 `H`。`prepare`、`onTick` 和 `onEnd` 的 `source` 类型是 `Ref<Unit & ActionCapability & H>`。回调的 `self` 使用 `Action<P, E>` 或 `Execution<P, E>` 保留私有状态类型。只依赖 Action Capability 的程序可使用默认的 `H`。
+`Definition<P, E, H>` 声明持久状态 `P`、执行状态 `E` 和额外宿主要求 `H`。`prepare`、`onTick` 和 `onEnd` 的 `source` 类型是 `Ref<Unit & ActionCapability & H>`。`prepare` 接收 `Action<P, E>`。`onTick` 和 `onEnd` 接收本轮 `Execution<E>`，并在末尾接收精确的 `Ref<Action<P, E>>`。结束原因在 `onEnd` 的第四个参数。只依赖 Action Capability 的程序可使用默认的 `H`。
 
 Content 先声明具体的行动 Definition，再在具备所需能力的 Unit 配置中组装行动列表。`CapabilityDefinition<H>` 在组装处校验行动与宿主的配对，并为 `select` 提供对应的宿主类型。例如，声明了 `Offense` 的行动在查到宿主后可以直接读取攻击力。
 
@@ -34,9 +34,9 @@ prepare 检查本次内容条件、初始化执行数据并采样；返回 null 
 
 ## 4. 异构容器与两种引用身份
 
-行动按配置 ID 登记，重复 ID 在创建边界拒绝。异构容器内部擦除 `P/E`，私有状态在普通容器视图中是 `object`。Battle 按配置 ID 启动行动，按执行引用推进。Action 和 Execution 的精确 Ref 用 `ref.get(battle)` 读取宿主上已登记的聚合并恢复其私有类型。
+行动按配置 ID 登记，重复 ID 在创建边界拒绝。异构容器内部擦除 `P/E`，私有状态在普通容器视图中是 `object`。Battle 按配置 ID 启动行动，按执行引用推进。Action Ref 读取持久 Action，Execution Ref 读取指定轮次。两种精确 Ref 都从 `ref.get(battle)` 恢复各自的私有类型。
 
-持久 Ref 由宿主和配置 ID 标识，跨多轮有效。`ref` 接收 Action 宿主 Ref 与 Definition，从 Definition 取 `id` 并推导 `P/E`。`H` 由 Content 装配约束校验，回调内可直接使用 `ref(source, self.definition)`。`executionRef` 根据已配对的宿主和本轮执行构造精确引用。`forUnit`、释放通知和取消命令使用 `ExecutionRef`，其读取结果提供 `definition.id` 和本轮 `execution`，其中 `execution.state` 的类型为 `object`。执行 ID 由宿主单调分配，旧引用只定位原轮次。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立。
+持久 Ref 由宿主和配置 ID 标识，跨多轮有效。`ref` 接收 Action 宿主 Ref 与 Definition，从 Definition 取 `id` 并推导 `P/E`。`H` 由 Content 装配约束校验。`executionRef` 根据已配对的宿主和本轮执行构造精确引用。`forUnit`、释放通知和取消命令使用擦除私有状态类型的 `ExecutionRef`，只凭该引用可以推进或结束指定轮次。执行 ID 由宿主单调分配，旧引用只定位原轮次。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立。
 
 配置登记顺序用于默认候选，本宿主已有执行按启动顺序枚举。
 

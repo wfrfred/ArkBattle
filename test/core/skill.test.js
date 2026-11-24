@@ -33,25 +33,24 @@ test("activation publishes payment before onStart and clears only the completed 
                 observed.push({
                     stage: "start",
                     sp: get(state, source.id).skill.sp.value,
-                    current: skills.activationRef(source, self).get(state)
-                        .activation.id,
+                    current: skills.activationRef(source, self).get(state).id,
                 });
                 return skills.setActivationState(state, skills.activationRef(source, self), {
                     total: 7,
                 });
             },
-            onEnd(state, source, self, end) {
+            onEnd(state, source, self, end, skill) {
                 const reference = skills.activationRef(source, self);
                 state = skills.setActivationState(state, reference, {
-                    ...self.activation.state,
+                    ...self.state,
                     cleaned: true,
                 });
                 const current = reference.get(state);
-                assert.equal(current.activation.lifecycle, "ENDING");
-                assert.equal(current.activation.state.cleaned, true);
-                observed.push({ stage: "end", total: current.activation.state.total, end });
-                return skills.setState(state, skills.ref(source), {
-                    completed: self.state.completed + 1,
+                assert.equal(current.lifecycle, "ENDING");
+                assert.equal(current.state.cleaned, true);
+                observed.push({ stage: "end", total: current.state.total, end });
+                return skills.setState(state, skill, {
+                    completed: skill.get(state).state.completed + 1,
                 });
             },
         },
@@ -109,7 +108,7 @@ test("activation publishes payment before onStart and clears only the completed 
     state = update(state, source, presence.appear([1, 1]));
     const second = skills.activate(state, reference);
     state = skills.finish(second.state, first.value);
-    assert.equal(second.value.get(state).activation.lifecycle, "ACTIVE");
+    assert.equal(second.value.get(state).lifecycle, "ACTIVE");
     state = skills.cancel(state, second.value, "STOPPED");
     assert.equal(reference.get(state).state.completed, 2);
     assert.deepEqual(
@@ -179,8 +178,8 @@ test("cancellation during payment notification retains payment and suppresses th
             requirement: 10,
             cost: 10,
             initialize: () => ({ state: {}, duration: { type: "INFINITE" } }),
-            onStart: (state, source) =>
-                skills.setState(state, skills.ref(source), { started: true }),
+            onStart: (state, _source, _self, skill) =>
+                skills.setState(state, skill, { started: true }),
         },
     };
     const definition = {
@@ -193,7 +192,7 @@ test("cancellation during payment notification retains payment and suppresses th
     state = update(state, source, units.setHook(skills.spPaid, {
             id: "stop",
             invoke(state, { host }) {
-                const current = get(state, host.id).skill;
+                const current = get(state, host.id).skill.activation;
                 return {
                     state: skills.cancel(state, skills.activationRef(host, current), "STOPPED"),
                     value: undefined,
@@ -269,7 +268,7 @@ test("active operations require a declared handler and current permission, while
     const retriggered = skills.operate(state, second.value, "RETRIGGER");
     state = retriggered.state;
     assert.equal(retriggered.value, true);
-    assert.equal(second.value.get(state).activation.state.ready, true);
+    assert.equal(second.value.get(state).state.ready, true);
     const stopped = skills.operate(state, second.value, "STOP");
     assert.equal(stopped.value, true);
     assert.equal(get(stopped.state, 1).skill.activation, null);
@@ -357,12 +356,12 @@ test("TIME extension stays in its round while persistent state selects a later I
             }),
             onTick(state, source, self) {
                 return skills.setActivationState(state, skills.activationRef(source, self), {
-                    ticks: self.activation.state.ticks + 1,
+                    ticks: self.state.ticks + 1,
                 });
             },
-            onEnd(state, source, self) {
-                return skills.setState(state, skills.ref(source), {
-                    completed: self.state.completed + 1,
+            onEnd(state, _source, _self, _end, skill) {
+                return skills.setState(state, skill, {
+                    completed: skill.get(state).state.completed + 1,
                 });
             },
         },
@@ -380,15 +379,15 @@ test("TIME extension stays in its round while persistent state selects a later I
     state = skills.extendTime(step(step(first.state, []), []), first.value, 3);
     state = update(state, source, presence.disappear());
     while (state.tick <= 5) state = step(state, []);
-    assert.equal(first.value.get(state).activation.duration.endsAtTick, 8);
-    assert.equal(first.value.get(state).activation.state.ticks, 6);
+    assert.equal(first.value.get(state).duration.endsAtTick, 8);
+    assert.equal(first.value.get(state).state.ticks, 6);
     while (state.tick <= 8) state = step(state, []);
     assert.equal(get(state, 0).skill.activation, null);
     state = update(state, source, presence.appear([1, 1]));
     const second = skills.activate(state, reference);
     state = second.state;
     while (state.tick <= 15) state = step(state, []);
-    assert.deepEqual(second.value.get(state).activation.duration, { type: "INFINITE" });
+    assert.deepEqual(second.value.get(state).duration, { type: "INFINITE" });
 });
 
 test("AMMO samples its charged base before payment and applies capacity, consumption, refill and exhaustion policies", () => {
@@ -416,11 +415,11 @@ test("AMMO samples its charged base before payment and applies capacity, consump
             id: "self", select: (state, source) => ({ state, value: [source] }), operations: [],
         }],
         afterOutput(state, source) {
-            const firingSkill = source.get(state).skill;
-            if (firingSkill.activation.duration.remaining > 0) {
+            const activation = source.get(state).skill.activation;
+            if (activation.duration.remaining > 0) {
                 return state;
             }
-            state = skills.check(state, skills.activationRef(source, firingSkill));
+            state = skills.check(state, skills.activationRef(source, activation));
             return skills.activate(state, skills.ref(source)).state;
         },
     });
@@ -430,7 +429,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
             id: "observe-refill",
             invoke(state, { event }) {
                 replenishments.push(event);
-                assert.deepEqual(event.ref.get(state).activation.duration, event.current);
+                assert.deepEqual(event.ref.get(state).duration, event.current);
                 return { state, value: undefined };
             },
         }),
@@ -449,12 +448,12 @@ test("AMMO samples its charged base before payment and applies capacity, consump
         }));
     const first = skills.activate(state, reference);
     state = update(first.state, source, skills.removeAmmoContribution("magazine"));
-    assert.equal(first.value.get(state).activation.duration.initial, 32);
-    assert.equal(first.value.get(state).activation.state.charged, true);
+    assert.equal(first.value.get(state).duration.initial, 32);
+    assert.equal(first.value.get(state).state.charged, true);
     assert.equal(get(state, 0).skill.sp.value, 1);
     assert.equal(skills.resolveAmmoCapacity(5, [{ addition: 0, ratio: 0.5 }]), 7);
     state = skills.consume(state, first.value, 32).state;
-    assert.equal(first.value.get(state).activation.duration.remaining, 0);
+    assert.equal(first.value.get(state).duration.remaining, 0);
     let restored = skills.replenish(state, first.value, 40);
     state = restored.state;
     assert.equal(restored.value.amount, 32);
@@ -468,7 +467,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
     state = restored.state;
     assert.equal(restored.value.amount, 0);
     state = skills.grant(state, first.value, 1).state;
-    assert.equal(first.value.get(state).activation.duration.replenished, 32);
+    assert.equal(first.value.get(state).duration.replenished, 32);
     state = skills.consume(state, first.value).state;
     const fired = actions.start(state, actions.ref(source, attack));
     state = step(fired.state, []);
@@ -507,9 +506,9 @@ test("Ammo contributions registered and withdrawn during TIME affect only later 
         skills.setAmmoContribution({ id: "withdrawn", value: [{ addition: 7, ratio: 0 }] }),
     ));
     state = update(state, source, skills.removeAmmoContribution("withdrawn"));
-    assert.deepEqual(timed.value.get(state).activation.duration, { type: "TIME", endsAtTick: 5 });
+    assert.deepEqual(timed.value.get(state).duration, { type: "TIME", endsAtTick: 5 });
     state = skills.finish(state, timed.value);
     state = skills.setState(state, reference, { ammo: true });
     const ammo = skills.activate(state, reference);
-    assert.equal(ammo.value.get(ammo.state).activation.duration.initial, 15);
+    assert.equal(ammo.value.get(ammo.state).duration.initial, 15);
 });

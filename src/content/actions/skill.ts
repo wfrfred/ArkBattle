@@ -1,20 +1,18 @@
 import { assertPositiveSafeInteger } from "../../core/common/assert.js";
-import type { Identified, Ref } from "../../core/common/ref.js";
 
 import { executionRef } from "../../core/unit/capability/action/index.js";
 import {
     activationRef,
-    type Activation,
+    type ActivationRef,
     consume,
     check,
     type SkillCapability,
 } from "../../core/unit/capability/skill/index.js";
 
-import * as units from "../../core/unit/index.js";
 import { createWithState, type Attack, type Definition as AttackDefinition } from "./attack.js";
 
 export interface State {
-    readonly activation: Ref<Activation> | null;
+    readonly activation: ActivationRef | null;
 }
 
 export type Definition<H extends object = object> = AttackDefinition<
@@ -43,19 +41,16 @@ export function create<H extends object = object>(
                 value: {
                     activation:
                         host !== undefined && host.skill.activation !== null
-                            ? activationRef<Activation>(
-                                  units.ref(host),
-                                  host.skill as Identified<never, typeof host.skill> as Activation,
-                              )
+                            ? activationRef(source, host.skill.activation)
                             : null,
                 },
             };
         },
-        afterOutput(battle, source, self) {
-            battle = afterOutput?.(battle, source, self) ?? battle;
+        afterOutput(battle, source, self, action) {
+            battle = afterOutput?.(battle, source, self, action) ?? battle;
             const current = executionRef(source, self).get(battle);
-            const activation = current?.execution.state.data.activation;
-            if (current?.execution.lifecycle !== "ACTIVE" || activation == null) {
+            const activation = current?.state.data.activation;
+            if (current?.lifecycle !== "ACTIVE" || activation == null) {
                 return battle;
             }
 

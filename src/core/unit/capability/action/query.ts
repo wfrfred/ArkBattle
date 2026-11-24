@@ -5,7 +5,7 @@ import type { Ref } from "../../../common/ref.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { hasAction, type Action as ActionCapability } from "./capability.js";
-import { refForId, type ExecutionRef } from "./execution.js";
+import { ref, type ExecutionRef } from "./execution.js";
 import type { Id as DefinitionId } from "./definition.js";
 
 export function getApplyWay(unit: Unit): ApplyWay {
@@ -29,7 +29,7 @@ export function executionRefs(self: Unit & ActionCapability): readonly Execution
     return sort(
         self.action.actions
             .values()
-            .flatMap(({ execution }) => (execution === null ? [] : [refForId(host, execution.id)])),
+            .flatMap(({ execution }) => (execution === null ? [] : [ref(host, execution)])),
         (left, right) => left.id - right.id,
     );
 }

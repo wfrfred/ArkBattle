@@ -4,11 +4,10 @@ import {
     assertSafeInteger,
 } from "../../../common/assert.js";
 import { roundToEven } from "../../../common/math.js";
-import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import * as units from "../../query.js";
-import type { Activation } from "./activation.js";
+import type { ActivationRef } from "./activation.js";
 import type { Skill } from "./capability.js";
 import { dispatch, ammoConsumed, ammoReplenished } from "./hook.js";
 import { finish } from "./operations.js";
@@ -41,14 +40,14 @@ export function resolveCapacity(base: number, modifiers: Iterable<Modifier>): nu
 }
 
 export interface Consumed {
-    readonly ref: Ref<Activation>;
+    readonly ref: ActivationRef;
     readonly amount: number;
     readonly previous: Ammo;
     readonly current: Ammo;
 }
 
 export interface Replenished {
-    readonly ref: Ref<Activation>;
+    readonly ref: ActivationRef;
     readonly requested: number;
     readonly amount: number;
     readonly previous: Ammo;
@@ -59,9 +58,9 @@ export type Outcome =
     | { readonly type: "APPLIED"; readonly amount: number; readonly remaining: number }
     | { readonly type: "REJECTED"; readonly reason: "UNAVAILABLE" | "NO_AMMO" };
 
-export function consume<X extends Activation<any, any>>(
+export function consume(
     battle: BattleState,
-    reference: Ref<X>,
+    reference: ActivationRef,
     amount = 1,
 ): Result<Outcome> {
     assertPositiveSafeInteger(amount, "skill ammunition consumption");
@@ -71,7 +70,7 @@ export function consume<X extends Activation<any, any>>(
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const active = reference.get(battle)?.activation;
+    const active = reference.get(battle);
     if (self.lifecycle !== "ACTIVE" || active?.lifecycle !== "ACTIVE") {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -101,27 +100,20 @@ export function consume<X extends Activation<any, any>>(
     };
 }
 
-export function replenish<X extends Activation<any, any>>(
+export function replenish(
     battle: BattleState,
-    reference: Ref<X>,
+    reference: ActivationRef,
     amount = 1,
 ): Result<Outcome> {
     return add(battle, reference, amount, true);
 }
 
-export function grant<X extends Activation<any, any>>(
-    battle: BattleState,
-    reference: Ref<X>,
-    amount = 1,
-): Result<Outcome> {
+export function grant(battle: BattleState, reference: ActivationRef, amount = 1): Result<Outcome> {
     return add(battle, reference, amount, false);
 }
 
-export function check<X extends Activation<any, any>>(
-    battle: BattleState,
-    reference: Ref<X>,
-): BattleState {
-    const active = reference.get(battle)?.activation;
+export function check(battle: BattleState, reference: ActivationRef): BattleState {
+    const active = reference.get(battle);
 
     return active?.lifecycle === "ACTIVE" &&
         active.duration.type === "AMMO" &&
@@ -130,9 +122,9 @@ export function check<X extends Activation<any, any>>(
         : battle;
 }
 
-function add<X extends Activation<any, any>>(
+function add(
     battle: BattleState,
-    reference: Ref<X>,
+    reference: ActivationRef,
     requested: number,
     replenishing: boolean,
 ): Result<Outcome> {
@@ -143,7 +135,7 @@ function add<X extends Activation<any, any>>(
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const active = reference.get(battle)?.activation;
+    const active = reference.get(battle);
     if (self.lifecycle !== "ACTIVE" || active?.lifecycle !== "ACTIVE") {
         return rejected(battle, "UNAVAILABLE");
     }

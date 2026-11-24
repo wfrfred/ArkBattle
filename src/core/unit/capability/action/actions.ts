@@ -3,7 +3,8 @@ import type { Query } from "../../../common/query.js";
 import type { Action } from "./action.js";
 import type { Execution, Id as ExecutionId } from "./execution.js";
 import type { Definition, Id } from "./definition.js";
-import type { Identified } from "../../../common/ref.js";
+
+type ActionWithExecution = Action & { readonly execution: Execution };
 
 export class Actions {
     static readonly #empty = new Actions(Store.empty<Id, Action<any, any>>());
@@ -26,10 +27,10 @@ export class Actions {
         return this.#store.get(id);
     }
 
-    getExecution(id: ExecutionId): Execution | undefined {
-        const self = this.#store.values().find((entry) => entry.execution?.id === id);
-
-        return self as Execution | undefined;
+    getByExecution(id: ExecutionId): ActionWithExecution | undefined {
+        return this.values().find(
+            (entry): entry is ActionWithExecution => entry.execution?.id === id,
+        );
     }
 
     values(): Query<Action> {
@@ -40,17 +41,15 @@ export class Actions {
         return this.#store.keys();
     }
 
-    add<P extends object, E extends object>(self: Action<P, E> | Execution<P, E>): Actions {
-        return new Actions(
-            this.#store.add(self.definition.id, self as Identified<never, Action<P, E>>),
-        );
+    add<P extends object, E extends object>(self: Action<P, E>): Actions {
+        return new Actions(this.#store.add(self.definition.id, self));
     }
 
     replace<P extends object, E extends object>(
         definition: Definition<P, E, never>,
-        self: NoInfer<Action<P, E> | Execution<P, E>>,
+        self: NoInfer<Action<P, E>>,
     ): Actions {
-        const store = this.#store.replace(definition.id, self as Identified<never, Action<P, E>>);
+        const store = this.#store.replace(definition.id, self);
 
         return store === this.#store ? this : new Actions(store);
     }

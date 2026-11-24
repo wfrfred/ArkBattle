@@ -51,11 +51,11 @@ const strike: actions.Definition<{ uses: number }, { hits: number }, Armed> = {
     id: 'strike', applyWay: 'NONE', period: { type: 'FIXED', ticks: 10 },
     initialize: state => ({ state, value: { uses: 0 } }),
     prepare: (state, _source, self) => ({ state, value: { hits: self.state.uses + 1 } }),
-    onTick(state, source, self) {
+    onTick(state, source, self, action) {
         const attack = resolveAttack(state, source.get(state)!);
-        state = actions.setState(state, actions.ref(source, self.definition), { uses: self.state.uses + 1 });
+        state = actions.setState(state, action, { uses: action.get(state)!.state.uses + 1 });
         return actions.setExecutionState(state, actions.executionRef(source, self), {
-            hits: self.execution.state.hits + attack,
+            hits: self.state.hits + attack,
         });
     },
 };
@@ -71,10 +71,10 @@ const skill: skills.Definition<{ completed: number }, { remaining: number }, Arm
             };
         },
         operations: {
-            STOP(state, source, self) {
-                state = skills.setState(state, skills.ref<typeof self.state, typeof self.activation.state>(source), { completed: self.state.completed + 1 });
+            STOP(state, source, self, skillRef) {
+                state = skills.setState(state, skillRef, { completed: skillRef.get(state)!.state.completed + 1 });
                 return skills.setActivationState(state, skills.activationRef(source, self), {
-                    remaining: self.activation.state.remaining - 1,
+                    remaining: self.state.remaining - 1,
                 });
             },
         },
@@ -167,7 +167,7 @@ const actionRef = actions.ref(owner, strike);
 const started = actions.start(battle, actionRef);
 if (started.value !== null) {
     const execution = started.value;
-    const hits: number = execution.get(started.state)!.execution.state.hits;
+    const hits: number = execution.get(started.state)!.state.hits;
     actions.setExecutionState(started.state, execution, { hits: hits + 1 });
     // @ts-expect-error a write cannot infer a new private type for the current execution.
     actions.setExecutionState(started.state, execution, { hits: 'wrong' });
@@ -179,11 +179,11 @@ if (started.value !== null) {
 }
 const executionIdentity = actions.forUnit(battle, owner)[0]!;
 const publicExecution = executionIdentity.get(battle)!;
-publicExecution.execution.state satisfies object;
+publicExecution.state satisfies unknown;
 // @ts-expect-error an erased query cannot read a private field.
-publicExecution.execution.state.hits;
-// @ts-expect-error an erased execution exposes the definition identity without its callbacks.
-publicExecution.definition.onTick(battle, owner, publicExecution);
+publicExecution.state.hits;
+// @ts-expect-error a round does not expose the persistent Action's Definition.
+publicExecution.definition;
 // @ts-expect-error a cancellation identity alone cannot write private state.
 actions.setExecutionState(battle, executionIdentity, { hits: 1 });
 // @ts-expect-error the numeric address does not carry a Unit identity proof.
@@ -192,8 +192,8 @@ const skillRef = skills.ref<{ completed: number }, { remaining: number }>(owner)
 const activated = skills.activate(battle, skillRef, { requirement: 0, cost: 0 });
 if (activated.value !== null) {
     const active = activated.value.get(activated.state)!;
-    active.state.completed satisfies number;
-    active.activation.state.remaining satisfies number;
+    active.state.remaining satisfies number;
+    skillRef.get(activated.state)!.state.completed satisfies number;
     // @ts-expect-error an Activation Ref identifies one round rather than the persistent Skill.
     skills.activate(activated.state, activated.value);
 }

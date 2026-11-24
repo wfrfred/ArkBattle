@@ -251,7 +251,7 @@ test("an ending ancestor freezes dependency edges before its active Action execu
 
                         invoke(current) {
                             assert.equal(
-                                execution.get(current).execution.lifecycle,
+                                execution.get(current).lifecycle,
                                 "ACTIVE",
                             );
                             const recipient = units

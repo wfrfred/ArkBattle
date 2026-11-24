@@ -18,19 +18,19 @@ SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保
 
 ## 1. 单槽聚合、Definition 与两种身份
 
-每个 Unit 保存一份 Skill 聚合：Definition、持久 state、可空 SP 与可空 activation。Activation 是同一聚合的非空视图，本轮包含身份、开始时刻、生命周期、Duration 与私有状态。Capability 另保存宿主内激活计数、Ammo 贡献和许可。
+每个 Unit 保存一份 Skill，包含 Definition、持久 state、可空 SP 与当前的可空 Activation 槽位。Activation 保存本轮身份、开始时刻、生命周期、Duration 与私有状态。Capability 另保存宿主内激活计数、Ammo 贡献和许可。
 
 持久 state 保存跨激活事实，本轮 state 保存当次进度。可直接由 activation 槽位判断的阶段不再重复保存；SP.value 是余额的唯一事实。聚合不重复保存 host，内容程序显式接收宿主 Ref。
 
-Content 在 `SkillCapability<H>` 的配置中声明技能。Skill Definition 和 Activation Definition 用 `H` 约束回调的宿主 Ref，回调中的 `Skill<S, A>` 和 `Activation<S, A>` 保留持久状态与本轮状态类型。
+Content 在 `SkillCapability<H>` 的配置中声明技能。Skill Definition 和 Activation Definition 用 `H` 约束回调的宿主 Ref。Activation 创建前的程序接收 `Skill<S, A>`。本轮程序接收 `Activation<A>`，并在末尾接收精确的 `Ref<Skill<S, A>>`。结束原因在 `onEnd` 的第四个参数。
 
 Capability 装配时调用 `SkillDefinition.initialize(battle)`，建立私有状态、SP 初态和空激活槽位，并接续返回的 BattleState。持久初始化发生在宿主登记前。
 
 ### 引用、查询与写回
 
-每个宿主只有一个 Skill，持久 Ref 以宿主标识。`skill.ref(host)` 构造通用引用，知道具体状态的 Content 可以使用 `skill.ref<S, A>(host)` 保留私有类型。`H` 由 Content 装配约束校验。Activation Ref 由宿主与本轮 ID 标识。两种引用均通过 `ref.get(battle)` 读取对应版本，旧激活 Ref 只定位原有轮次。
+每个宿主只有一个 Skill，持久 Ref 以宿主标识。`skill.ref(host)` 构造通用引用，知道具体状态的 Content 可以使用 `skill.ref<S, A>(host)` 保留私有类型。`H` 由 Content 装配约束校验。Activation Ref 由宿主与本轮 ID 标识。两种引用均通过 `ref.get(battle)` 读取各自的实例，旧激活 Ref 只定位原有轮次。
 
-持久与本轮状态有各自写回操作，仅更新对应字段。结束程序可以更新持久状态和仍登记的本轮私有状态，写回保留激活身份和 ENDING。跨完整业务后接续最新状态。通用类型、错误和不可变约定见[接口约定](api-conventions.md)。
+持久与本轮状态有各自写回操作，仅更新对应字段。写入本轮私有状态使用精确 Activation Ref。通知、弹药和结束操作可使用擦除私有状态类型的 `ActivationRef`。结束程序可以更新持久状态和仍登记的本轮私有状态，写回保留激活身份和 ENDING。跨完整业务后接续最新状态。通用类型、错误和不可变约定见[接口约定](api-conventions.md)。
 
 ## 2. SP
 
@@ -74,7 +74,7 @@ Activation Definition 必须显式提供 `ignoreRestrictions: readonly Activatio
 
 entered Hook 先登记回复监听，再执行 onEnter，最后重新取得仍为 ACTIVE 的宿主尝试 PASSIVE 发动。持久 onTick 要求宿主 ACTIVE，本轮 onTick 还要求当前 Activation 为 ACTIVE；它们不机械继承自然 SP 回复的暂停条件。
 
-Activation Definition 的 operations 按 STOP／RETRIGGER 分别提供处理器，未声明的操作不受理。operate 先检查对应处理器存在，再检查 operationRestrictions，通过后调用该处理器并返回 true；处理器接收 BattleState、宿主 Ref 和完整 Activation，不重复接收操作键。true 表示已受理，不承诺激活已经结束。内部 finish／cancel 不受主动操作支持范围或限制否决。
+Activation Definition 的 operations 按 STOP／RETRIGGER 分别提供处理器，未声明的操作不受理。operate 先检查对应处理器存在，再检查 operationRestrictions，通过后以 BattleState、宿主 Ref、当前 Activation 和持久 Skill Ref 调用处理器并返回 true。true 表示已受理，不承诺激活已经结束。内部 finish／cancel 不受主动操作支持范围或限制否决。
 
 Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活创建／结束。全部使用[公共 Hook](hook.md)，结束事实允许仍登记的 ENDING 宿主响应。激活报告只保留本轮 Ref 与必要结束原因，不复制私有状态；activationEnded 在清空槽位后派发，该旧 Ref 不保证仍可查询。
 

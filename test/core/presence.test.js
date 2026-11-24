@@ -96,7 +96,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
             assert.equal(get(current, owner.id).presence.present, false);
             assert.deepEqual(blocking.blocked(current, owner), []);
             assert.ok(targets.every((target) => blocking.blockerOf(current, target) === undefined));
-            assert.equal(started.value.get(current).execution.lifecycle, "ACTIVE");
+            assert.equal(started.value.get(current).lifecycle, "ACTIVE");
             assert.equal(actions.start(current, idleAction).value, null);
             current = blocking.acquire(current, owner, targets[0]);
             assert.deepEqual(blocking.blocked(current, owner), []);
@@ -122,5 +122,5 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     state = update(state, owner, actions.removeRestriction("other-source"));
     const restarted = actions.start(state, actionRef);
     assert.notEqual(restarted.value, null);
-    assert.equal(restarted.value.get(restarted.state).execution.lifecycle, "ACTIVE");
+    assert.equal(restarted.value.get(restarted.state).lifecycle, "ACTIVE");
 });

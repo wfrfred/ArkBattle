@@ -2,17 +2,17 @@ import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
-import type { Activation, End } from "./activation.js";
+import type { ActivationRef, End } from "./activation.js";
 import type { Consumed, Replenished } from "./ammo.js";
 import type { Skill } from "./capability.js";
 import type { Recovered, Paid, Modified } from "./sp.js";
 
 export interface ActivationStarted {
-    readonly ref: Ref<Activation>;
+    readonly ref: ActivationRef;
 }
 
 export interface ActivationEnded {
-    readonly ref: Ref<Activation>;
+    readonly ref: ActivationRef;
     readonly end: End;
 }
 

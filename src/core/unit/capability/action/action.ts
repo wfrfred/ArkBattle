@@ -4,7 +4,7 @@ import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
 import type { Definition, Id as DefinitionId } from "./definition.js";
 import type * as cooldown from "./cooldown.js";
-import type { State as ExecutionState } from "./execution.js";
+import type { Execution } from "./execution.js";
 
 export interface Action<
     in out P extends object = object,
@@ -16,7 +16,7 @@ export interface Action<
     readonly definition: Definition<P, E, never>;
     readonly state: P;
     readonly cooldown: cooldown.State;
-    readonly execution: ExecutionState<E> | null;
+    readonly execution: Execution<E> | null;
 }
 
 export function ref<P extends object, E extends object>(
