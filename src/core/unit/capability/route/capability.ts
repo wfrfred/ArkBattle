@@ -9,6 +9,7 @@ import type { Unit } from "../../unit.js";
 import * as lifecycle from "../../hook.js";
 import * as units from "../../query.js";
 import { enter } from "./operations.js";
+import { ref } from "./query.js";
 
 export interface Definition {
     readonly alwaysCheckCurrentPoint: boolean;
@@ -102,10 +103,7 @@ export function initialize<U extends Unit & Pick<Route, "definition">>(
             hooks: unit.hooks.set(lifecycle.entered, {
                 id: "@route/enter",
                 invoke: (current, self) => ({
-                    state: enter(current, {
-                        host: units.ref(self as Unit & Route),
-                        id: 0,
-                    } as Ref<Context>),
+                    state: enter(current, ref(units.ref(self as Unit & Route), { id: 0 })),
                     value: undefined,
                 }),
             }),

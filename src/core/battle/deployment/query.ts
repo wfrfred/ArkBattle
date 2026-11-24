@@ -8,7 +8,6 @@ import { hasDeployable } from "../../unit/capability/deployable/capability.js";
 import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Card } from "./deck/card/card.js";
-import { get } from "./deck/deck.js";
 import { resolveCost } from "./deck/card/dp/query.js";
 import { isReady, resolveActiveLimit } from "./deck/card/supply/query.js";
 import type { Restriction as CardRestriction } from "./deck/card/restriction.js";
@@ -46,7 +45,7 @@ export function createRequest<T extends Card<any>>(
     tilePosition: TilePosition,
     direction?: Direction,
 ): DeployRequest<T> | undefined {
-    const self: Card | undefined = get(battle, reference);
+    const self: Card | undefined = reference.get(battle);
     if (self === undefined) {
         return undefined;
     }
@@ -71,7 +70,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         {
             id: "@deployment/cooldown",
             value: {
-                allows: (battle, { request }) => isReady(get(battle, request.card)!),
+                allows: (battle, { request }) => isReady(request.card.get(battle)!),
             },
         },
     ],
@@ -81,7 +80,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
             id: "@deployment/active-limit",
             value: {
                 allows: (battle, { request }) => {
-                    const limit = resolveActiveLimit(get(battle, request.card)!);
+                    const limit = resolveActiveLimit(request.card.get(battle)!);
 
                     return limit === null || deployedCount(battle, request.card) < limit;
                 },
@@ -141,7 +140,7 @@ export function evaluateCurrent(
     request: DeployRequest,
     restrictions: readonly Contribution<Restriction | CardRestriction>[],
 ): Rejected | null {
-    const self = get(battle, request.card)!;
+    const self = request.card.get(battle)!;
     if (self.supply.stock < request.quote.stock) {
         return { type: "REJECTED", reason: "NO_STOCK" };
     }
@@ -180,7 +179,7 @@ export function evaluate<T extends Card<any>>(
     const input = request as object as DeployRequest;
     validateRequest(input);
 
-    const self = get(battle, input.card);
+    const self = input.card.get(battle);
     if (self === undefined) {
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
     }
@@ -201,7 +200,7 @@ export function preview<T extends Card<any>>(
     const input = request as object as DeployRequest;
     validateRequest(input);
 
-    const self = get(battle, input.card);
+    const self = input.card.get(battle);
     if (self === undefined) {
         return { type: "REJECTED", reason: "UNKNOWN_CARD" };
     }
@@ -226,7 +225,7 @@ export function positions<T extends Card<any>>(
     validateRequest(input);
 
     const result: TilePosition[] = [];
-    const self = get(battle, input.card);
+    const self = input.card.get(battle);
     if (self === undefined) {
         return result;
     }

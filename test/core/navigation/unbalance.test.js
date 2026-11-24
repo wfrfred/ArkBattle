@@ -145,9 +145,9 @@ test("pulls with a shared source scope stack and only the sole pull can brake", 
     const remaining = pull.remove(multiple, first.value);
     assert.equal(lifetime.available(remaining, firstScope), false);
     assert.equal(lifetime.available(remaining, secondScope), true);
-    assert.deepEqual(unbalance.get(remaining, repeat.value).velocity, [1.2 / 30, 0]);
+    assert.deepEqual(repeat.value.get(remaining).velocity, [1.2 / 30, 0]);
     const braked = pull.brake(remaining, second.value);
-    assert.deepEqual(unbalance.get(braked, repeat.value).velocity, [0, 0]);
+    assert.deepEqual(repeat.value.get(braked).velocity, [0, 0]);
     assert.equal(lifetime.available(braked, secondScope), true);
 });
 
@@ -204,10 +204,10 @@ test("near braking defaults to ONCE and WHILE_NEAR brakes again", () => {
         const segment = linked.value.unbalance;
         const first = step(unbalance.applyImpulse(linked.state, host, [1.5, 0]).state, []);
         assertPosition(first, [1.05, 1]);
-        assert.deepEqual(unbalance.get(first, segment).velocity, [0, 0]);
+        assert.deepEqual(segment.get(first).velocity, [0, 0]);
         const second = step(unbalance.applyImpulse(first, host, [1.5, 0]).state, []);
         assertPosition(second, [1.10, 1]);
-        assert.deepEqual(unbalance.get(second, segment).velocity, secondVelocity);
+        assert.deepEqual(segment.get(second).velocity, secondVelocity);
     }
 });
 
@@ -221,7 +221,7 @@ test("near braking follows displacement and leaves the pull active until explici
             invoke(current) {
                 const position = get(current, 0).position;
                 assert.ok(position[0] >= 1.8 && position[0] <= 2.2);
-                assert.ok(unbalance.get(current, pullRef.unbalance).velocity[0] > 0);
+                assert.ok(pullRef.unbalance.get(current).velocity[0] > 0);
                 assert.equal(lifetime.available(current, lifetime.scope(pull.lifetime, pullRef)), true);
                 moved = true;
                 return { state: current, value: undefined };
@@ -237,7 +237,7 @@ test("near braking follows displacement and leaves the pull active until explici
     const scope = lifetime.scope(pull.lifetime, pullRef);
     let current = step(unbalance.applyImpulse(linked.state, host, [24, 0]).state, []);
     assert.equal(moved, true);
-    assert.deepEqual(unbalance.get(current, pullRef.unbalance).velocity, [0, 0]);
+    assert.deepEqual(pullRef.unbalance.get(current).velocity, [0, 0]);
     for (let i = 0; i < 3; i++) current = step(current, []);
     assert.equal(lifetime.available(current, scope), true);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
@@ -344,7 +344,7 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
     const ended = unbalance.lifetime.end(installed.state, first.value.unbalance, "SETTLED");
     assert.ok(next);
     assert.notDeepEqual(next.unbalance, first.value.unbalance);
-    assert.equal(pull.get(ended, first.value), undefined);
+    assert.equal(first.value.get(ended), undefined);
     assert.equal(lifetime.available(ended, lifetime.scope(pull.lifetime, next)), true);
     assertPosition(step(pull.remove(ended, first.value), []), [1, 1 + 40 / 900]);
 });

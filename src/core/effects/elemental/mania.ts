@@ -5,7 +5,6 @@ import { TICKS_PER_SECOND } from "../../tick.js";
 import * as units from "../../unit/query.js";
 import type { Unit } from "../../unit/unit.js";
 import * as effects from "../../unit/effect/operations.js";
-import { get as getEffect } from "../../unit/effect/query.js";
 import { ref } from "../../unit/effect/effect.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
 import { setHook, removeHook } from "../../unit/hook.js";
@@ -63,7 +62,7 @@ function setSpeed(
     id: number,
     amount: number | null,
 ): BattleState {
-    const host = units.get(battle, reference)!;
+    const host = reference.get(battle)!;
     if (!hasAction(host)) {
         return battle;
     }
@@ -94,7 +93,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
             executions: [],
         }),
         onInstall(battle, self) {
-            const host = units.get(battle, self.host)!;
+            const host = self.host.get(battle)!;
             const reference = ref(self);
 
             return update(
@@ -106,7 +105,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                         setHook(released, {
                             id: `@effect/${self.id}/mania`,
                             accepts(current, { execution }) {
-                                const active = getEffect(current, reference);
+                                const active = reference.get(current);
 
                                 return (
                                     active?.lifecycle === "ACTIVE" &&
@@ -115,7 +114,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                                 );
                             },
                             invoke(current, { execution }) {
-                                const active = getEffect(current, reference)!;
+                                const active = reference.get(current)!;
 
                                 return {
                                     state: effects.setState(current, reference, {
@@ -136,7 +135,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                         setHook(activationStarted, {
                             id: `@effect/${self.id}/mania`,
                             accepts(current) {
-                                const active = getEffect(current, reference);
+                                const active = reference.get(current);
 
                                 return (
                                     active?.lifecycle === "ACTIVE" &&
@@ -144,7 +143,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                                 );
                             },
                             invoke(current) {
-                                const active = getEffect(current, reference)!;
+                                const active = reference.get(current)!;
 
                                 return {
                                     state: effects.setState(current, reference, {
@@ -172,18 +171,11 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
             });
 
             return timer === 0
-                ? hurt(
-                      battle,
-                      units.get(battle, self.host)!,
-                      "TRUE",
-                      self.state.damage,
-                      "NORMAL",
-                      true,
-                  )
+                ? hurt(battle, self.host.get(battle)!, "TRUE", self.state.damage, "NORMAL", true)
                 : battle;
         },
         onEnd(battle, self) {
-            const host = units.get(battle, self.host)!;
+            const host = self.host.get(battle)!;
 
             return update(
                 battle,
@@ -236,7 +228,7 @@ export function createTimeScaledDamage(
         onTick(battle, self) {
             battle = advance(battle, self);
             const reference = ref(self);
-            const current = getEffect(battle, reference)!;
+            const current = reference.get(battle)!;
             const host = availableHost(battle, reference);
             if (host === undefined) {
                 return battle;

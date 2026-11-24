@@ -80,9 +80,9 @@ test("an attack turns once at its started program, before output, without turnin
     state = actions.advance({ ...state, tick: 2 }, started.value);
     assert.equal(get(state, 0).facing.direction, "RIGHT");
     assert.equal(get(state, 1).vitality.health.hp, 93);
-    assert.notEqual(actions.getExecution(state, started.value), undefined);
+    assert.notEqual(started.value.get(state), undefined);
     state = actions.advance({ ...state, tick: 3 }, started.value);
-    assert.equal(actions.getExecution(state, started.value), undefined);
+    assert.equal(started.value.get(state), undefined);
 });
 
 test("attack selection groups and prepare receive the state produced by earlier groups", () => {
@@ -132,7 +132,7 @@ test("bound healing keeps its receivers when a later selection restriction would
     const recipients = (state, source) => ({
         state,
         value: topK(units.all(state).filter(hasTargetable)
-            .filter(targeting.healing(units.get(state, source))(state))
+            .filter(targeting.healing(source.get(state))(state))
             .filter(target => target.id !== source.id), 1, targeting.hpRatio).map(units.ref),
     });
     let selected;
@@ -210,13 +210,13 @@ test("animation scale bounds separate attack release, execution occupancy and co
         const started = begin(timedProgram(timing), 30, speed);
         let state = runTo(started.state, started.execution, release - 1);
         assert.equal(get(state, 1).vitality.health.hp, 100);
-        assert.equal(actions.getAction(state, started.reference).cooldown.readyAtTick, ready);
+        assert.equal(started.reference.get(state).cooldown.readyAtTick, ready);
         state = runTo(state, started.execution, release);
         assert.equal(get(state, 1).vitality.health.hp, 93);
         state = runTo(state, started.execution, finish - 1);
-        assert.notEqual(actions.getExecution(state, started.execution), undefined);
+        assert.notEqual(started.execution.get(state), undefined);
         state = runTo(state, started.execution, finish);
-        assert.equal(actions.getExecution(state, started.execution), undefined);
+        assert.equal(started.execution.get(state), undefined);
     }
 });
 
@@ -229,15 +229,15 @@ test("speed changes update cooldown immediately while entered attack waits remai
     state = update(state, started.source, setSpeedContribution({
         id: "haste", value: [modifier({ addition: 100 })],
     }));
-    assert.equal(actions.getAction(state, started.reference).cooldown.readyAtTick, 17.5);
+    assert.equal(started.reference.get(state).cooldown.readyAtTick, 17.5);
     state = runTo(state, started.execution, 11);
     assert.equal(get(state, 1).vitality.health.hp, 100);
     state = runTo(state, started.execution, 12);
     assert.equal(get(state, 1).vitality.health.hp, 93);
     state = runTo(state, started.execution, 29);
-    assert.notEqual(actions.getExecution(state, started.execution), undefined);
+    assert.notEqual(started.execution.get(state), undefined);
     state = runTo(state, started.execution, 30);
-    assert.equal(actions.getExecution(state, started.execution), undefined);
+    assert.equal(started.execution.get(state), undefined);
 
     const second = actions.start(state, started.reference);
     state = actions.advance(second.state, second.value);
@@ -246,9 +246,9 @@ test("speed changes update cooldown immediately while entered attack waits remai
     state = runTo(state, second.value, 36);
     assert.equal(get(state, 1).vitality.health.hp, 86);
     state = runTo(state, second.value, 44);
-    assert.notEqual(actions.getExecution(state, second.value), undefined);
+    assert.notEqual(second.value.get(state), undefined);
     state = runTo(state, second.value, 45);
-    assert.equal(actions.getExecution(state, second.value), undefined);
+    assert.equal(second.value.get(state), undefined);
 });
 
 test("Begin retains its entered wait and cached budget while the later main segment samples current speed", () => {
@@ -269,8 +269,8 @@ test("Begin retains its entered wait and cached budget while the later main segm
         state = runTo(state, started.execution, release);
         assert.equal(get(state, 1).vitality.health.hp, 93);
         state = runTo(state, started.execution, finish - 1);
-        assert.notEqual(actions.getExecution(state, started.execution), undefined);
+        assert.notEqual(started.execution.get(state), undefined);
         state = runTo(state, started.execution, finish);
-        assert.equal(actions.getExecution(state, started.execution), undefined);
+        assert.equal(started.execution.get(state), undefined);
     }
 });

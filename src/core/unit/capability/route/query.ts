@@ -4,23 +4,23 @@ import type { State as BattleState } from "../../../battle/state.js";
 import * as navigation from "../../../battlefield/navigation/state.js";
 import type { Map } from "../../../battlefield/navigation/map.js";
 import { Tile, World, type WorldPosition } from "../../../geometry/coordinate.js";
-import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import type { MovementTarget } from "../locomotion/capability.js";
 import type { Context, ContextId, Route } from "./capability.js";
 
-export function ref(host: Ref<Unit & Route>, context: Context): Ref<Context> {
-    return { host, id: context.id } as Ref<Context>;
+export function ref(host: Ref<Unit & Route>, context: Pick<Context, "id">): Ref<Context> {
+    return { host, id: context.id, get: getContext } as Ref<Context>;
+}
+
+function getContext(this: object, battle: BattleState): Context | undefined {
+    const { host, id } = this as Ref<Context>;
+    const self = host.get(battle);
+
+    return self === undefined ? undefined : contextFor(self, id);
 }
 
 export function contextFor(self: Unit & Route, id: ContextId): Context | undefined {
     return id === 0 ? self.route.main : self.route.others.find((context) => context.id === id);
-}
-
-export function getContext(battle: BattleState, reference: Ref<Context>): Context | undefined {
-    const self = units.get(battle, reference.host);
-
-    return self === undefined ? undefined : contextFor(self, reference.id);
 }
 
 export function activeContext(self: Unit & Route): Context {
@@ -154,7 +154,7 @@ export function movementTarget(
     battle: BattleState,
     reference: Ref<Unit & Route>,
 ): MovementTarget | null {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
     if (self?.lifecycle !== "ACTIVE") {
         return null;
     }

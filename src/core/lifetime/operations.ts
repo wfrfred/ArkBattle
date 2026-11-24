@@ -134,7 +134,7 @@ function request(battle: BattleState, identity: string, end: unknown): BattleSta
     }
 
     const { config, ref } = pair(node.target);
-    const initial = config.get(battle, ref)!;
+    const initial = ref.get(battle)!;
     const nodes = new Map(battle.lifetime.nodes);
     nodes.delete(identity);
     nodes.set(identity, { ...node, ending: { initial, end } });

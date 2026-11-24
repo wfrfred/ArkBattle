@@ -52,23 +52,23 @@ test('locked arrows follow a disappeared target position and separate identity h
   const launched = launch(fixture.battle, { ...fixture.state, stopDelayTicks: 1 });
   let state = updateUnits(launched.state, ref(fixture.target), compose(appear([3, 0]), disappear()));
   state = step(state, 1);
-  assert.deepEqual(projectiles.get(state, launched.value).position, [1, 0]);
-  assert.deepEqual(projectiles.get(state, launched.value).state.destination, [3, 0]);
+  assert.deepEqual(launched.value.get(state).position, [1, 0]);
+  assert.deepEqual(launched.value.get(state).state.destination, [3, 0]);
   state = step(state, 2);
   state = step(state, 3);
-  assert.equal(projectiles.get(state, launched.value).state.hitAttempted, true);
+  assert.equal(launched.value.get(state).state.hitAttempted, true);
   assert.equal(getUnit(state, 1).vitality.health.hp, 1000);
   state = step(state, 4);
-  assert.equal(projectiles.get(state, launched.value), undefined);
+  assert.equal(launched.value.get(state), undefined);
 
   state = updateUnits(state, ref(fixture.target), appear([3, 0]));
   const visible = launch(state, { ...fixture.state, stopDelayTicks: 2 }, [3, 0]);
   state = step(visible.state, 5);
   assert.equal(getUnit(state, 1).vitality.health.hp, 960);
   state = step(state, 6);
-  assert.equal(projectiles.get(state, visible.value).lifecycle, 'ACTIVE');
+  assert.equal(visible.value.get(state).lifecycle, 'ACTIVE');
   state = step(state, 7);
-  assert.equal(projectiles.get(state, visible.value), undefined);
+  assert.equal(visible.value.get(state), undefined);
   assert.equal(getUnit(state, 1).vitality.health.hp, 960);
 });
 
@@ -76,7 +76,7 @@ test('elimination skips the arrow fallback hit while explicit removal performs i
   const fixture = setup();
   const definition = { ...createArrow(), eliminatable: true };
   const launched = launch(fixture.battle, fixture.state, [0, 0], definition);
-  const arrow = projectiles.get(launched.state, launched.value);
+  const arrow = launched.value.get(launched.state);
   assert.ok(arrow && projectiles.hasEliminatable(arrow));
   const eliminated = projectiles.remove(launched.state, projectiles.ref(arrow), 'ELIMINATED');
   const removed = projectiles.remove(launched.state, launched.value, 'EXPLICIT');
@@ -103,7 +103,7 @@ test('an arrow cannot hit twice when its damage response stops the projectile', 
 
   assert.equal(hits, 1);
   assert.equal(getUnit(after, 1).vitality.health.hp, 960);
-  assert.equal(projectiles.get(after, arrow), undefined);
+  assert.equal(arrow.get(after), undefined);
 });
 
 test('tracking reads current source attack and falls back to its launch sample after removal', () => {
@@ -136,7 +136,7 @@ test('an arrow continues toward the last locked position after its target goes a
   } });
   const withoutTarget = addUnit(removeUnit(tracked, fixture.state.target, { reason: "SCRIPT" }), other);
   const flying = step(withoutTarget, 2);
-  assert.deepEqual(projectiles.get(flying, launched.value).position, [2, 0]);
+  assert.deepEqual(launched.value.get(flying).position, [2, 0]);
   const after = step(flying, 3);
 
   assert.equal(getUnit(after, 2).vitality.health.hp, 100);

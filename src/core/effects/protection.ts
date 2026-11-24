@@ -49,7 +49,7 @@ export const invincible: Definition<object, targetable.Targetable> = {
     id: "protection/invincible",
     initialize: () => ({}),
     onEnable(state, self) {
-        const unit = units.get(state, self.host);
+        const unit = self.host.get(state);
         if (unit === undefined) {
             return state;
         }
@@ -66,7 +66,7 @@ export const invincible: Definition<object, targetable.Targetable> = {
         );
     },
     onDisable(state, self) {
-        const unit = units.get(state, self.host);
+        const unit = self.host.get(state);
         if (unit === undefined) {
             return state;
         }

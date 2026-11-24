@@ -17,7 +17,7 @@ import { advance as advanceBlocking } from "../../../dist/core/battle/blocking/i
 import { advance as advanceEffects } from "../../../dist/core/unit/effect/index.js";
 import { advance as advanceSkill, activate, modify } from "../../../dist/core/unit/capability/skill/index.js";
 import { ref as skillRef } from "../../helpers/skill.js";
-import { start, advance as advanceAction, ref as actionRef, getExecution } from "../../../dist/core/unit/capability/action/index.js";
+import { start, advance as advanceAction, ref as actionRef } from "../../../dist/core/unit/capability/action/index.js";
 import { advance as advanceLocomotion } from "../../../dist/core/unit/capability/locomotion/index.js";
 import { setAttackContribution } from "../../../dist/core/unit/capability/offense/index.js";
 import { setMaxHpContribution } from "../../../dist/core/unit/capability/vitality/index.js";
@@ -47,7 +47,7 @@ function setup(configuration = {}, targets = []) {
     return { unit, battle: advanceBlocking(battle) };
 }
 const hit = (battle, source = null, power = 100) => damage(battle, {
-    source: source === null ? null : { id: source }, target: { id: 0 },
+    source: source === null ? null : ref(getUnit(battle, source)), target: ref(getUnit(battle, 0)),
     parameters: parameters(power, "TRUE"),
 });
 function advanceEffectsUntil(battle, tick) {
@@ -232,7 +232,7 @@ test("S2 interrupts an ordinary attack before its authored release and prevents 
     const activated = activate(battle, skillRef(getUnit(battle, 0)));
     assert.notEqual(activated.value, null);
     battle = activated.state;
-    assert.equal(getExecution(battle, pending.value), undefined);
+    assert.equal(pending.value.get(battle), undefined);
     const action = fixture.unit.action.actions.get("mudrock/s2").definition;
     const special = start(battle, actionRef(host, action));
     assert.notEqual(special.value, null);

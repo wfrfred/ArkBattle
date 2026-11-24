@@ -1,6 +1,7 @@
 import type { Unit } from "../unit.js";
+import type { State as BattleState } from "../../battle/state.js";
 import type { Definition, OrdinaryDefinition, StackDefinition } from "./definition.js";
-import type { Identified, Ref } from "../../common/ref.js";
+import type { Identified, Identity, Ref } from "../../common/ref.js";
 import type { Expiration, ExpirationPolicy, StackExpiration } from "./expiration.js";
 
 export type Id = number;
@@ -11,11 +12,11 @@ export type GroupSource =
     { readonly type: "CARD"; readonly id: number } | { readonly type: "UNIT"; readonly id: number };
 
 export interface EffectFields<S extends object, H extends object> extends Identified<{
-    readonly host: Ref<Unit> & Ref<Unit & H>;
+    readonly host: Identity<Unit> & Ref<Unit & H>;
     readonly id: Id;
 }> {
     readonly id: Id;
-    readonly host: Ref<Unit> & Ref<Unit & H>;
+    readonly host: Identity<Unit> & Ref<Unit & H>;
     readonly state: S;
     readonly source: Ref<Unit> | null;
     readonly groupSource: GroupSource | null;
@@ -53,5 +54,11 @@ export interface Snapshot extends Omit<Effect, "state" | "definition"> {
 }
 
 export function ref<E extends Effect<any, any>>(effect: E): Ref<E> {
-    return { host: effect.host, id: effect.id } as Ref<E>;
+    return { host: effect.host, id: effect.id, get: getEffect } as Ref<E>;
+}
+
+function getEffect(this: object, battle: BattleState): Effect | undefined {
+    const reference = this as Ref<Effect>;
+
+    return reference.host.get(battle)?.effects.get(reference);
 }

@@ -28,7 +28,7 @@ Capability 装配时调用 `SkillDefinition.initialize(battle)`，建立私有�
 
 ### 引用、查询与写回
 
-每个宿主只有一个 Skill，持久 Ref 以宿主标识。`skill.ref(host)` 构造通用引用，知道具体状态的 Content 可以使用 `skill.ref<S, A>(host)` 保留私有类型。`H` 由 Content 装配约束校验。Activation Ref 由宿主与本轮 ID 标识，旧激活 Ref 只标识原有轮次。
+每个宿主只有一个 Skill，持久 Ref 以宿主标识。`skill.ref(host)` 构造通用引用，知道具体状态的 Content 可以使用 `skill.ref<S, A>(host)` 保留私有类型。`H` 由 Content 装配约束校验。Activation Ref 由宿主与本轮 ID 标识。两种引用均通过 `ref.get(battle)` 读取对应版本，旧激活 Ref 只定位原有轮次。
 
 持久与本轮状态有各自写回操作，仅更新对应字段。结束程序可以更新持久状态和仍登记的本轮私有状态，写回保留激活身份和 ENDING。跨完整业务后接续最新状态。通用类型、错误和不可变约定见[接口约定](api-conventions.md)。
 

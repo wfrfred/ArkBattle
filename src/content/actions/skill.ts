@@ -1,7 +1,7 @@
 import { assertPositiveSafeInteger } from "../../core/common/assert.js";
 import type { Identified, Ref } from "../../core/common/ref.js";
 
-import { executionRef, getExecution } from "../../core/unit/capability/action/index.js";
+import { executionRef } from "../../core/unit/capability/action/index.js";
 import {
     activationRef,
     type Activation,
@@ -36,7 +36,7 @@ export function create<H extends object = object>(
         ...definition,
         initialize: (battle) => ({ state: battle, value: {} }),
         prepare(battle, source) {
-            const host = units.get(battle, source);
+            const host = source.get(battle);
 
             return {
                 state: battle,
@@ -53,7 +53,7 @@ export function create<H extends object = object>(
         },
         afterOutput(battle, source, self) {
             battle = afterOutput?.(battle, source, self) ?? battle;
-            const current = getExecution(battle, executionRef(source, self));
+            const current = executionRef(source, self).get(battle);
             const activation = current?.execution.state.data.activation;
             if (current?.execution.lifecycle !== "ACTIVE" || activation == null) {
                 return battle;

@@ -1,5 +1,4 @@
 import type { State as BattleState } from "../state.js";
-import * as units from "../../unit/query.js";
 import * as hooks from "../../hook.js";
 import type { Relation } from "../../unit/capability/blocking/contract.js";
 import { hasRelation } from "./query.js";
@@ -9,8 +8,8 @@ import * as blockableHooks from "../../unit/capability/blocking/blockable.js";
 type Notification = "acquired" | "released";
 
 export function dispatch(battle: BattleState, key: Notification, relation: Relation): BattleState {
-    const blocker = units.get(battle, relation.blocker);
-    const blocked = units.get(battle, relation.blocked);
+    const blocker = relation.blocker.get(battle);
+    const blocked = relation.blocked.get(battle);
     const blockerKey = blockerHooks[key];
     const blockableKey = blockableHooks[key];
     const blockerCandidates = blocker?.hooks.get(blockerKey) ?? [];
@@ -20,7 +19,7 @@ export function dispatch(battle: BattleState, key: Notification, relation: Relat
     battle = hooks.dispatch(battle, { host: relation.blocker, relation }, undefined, {
         candidates: () => blockerCandidates,
         find: (current, id) => {
-            const host = units.get(current, relation.blocker);
+            const host = relation.blocker.get(current);
 
             return host?.hooks.find(blockerKey, id);
         },
@@ -30,7 +29,7 @@ export function dispatch(battle: BattleState, key: Notification, relation: Relat
     return hooks.dispatch(battle, { host: relation.blocked, relation }, undefined, {
         candidates: () => blockedCandidates,
         find: (current, id) => {
-            const host = units.get(current, relation.blocked);
+            const host = relation.blocked.get(current);
 
             return host?.hooks.find(blockableKey, id);
         },

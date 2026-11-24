@@ -1,6 +1,5 @@
 import type { Options } from "../../../../hook.js";
 import type { Result } from "../../../state.js";
-import * as units from "../../../../unit/query.js";
 import { available, canReceiveHealing } from "../../../../unit/capability/elemental/query.js";
 import { commitHealing } from "../../../../unit/capability/elemental/operations.js";
 import type { Calculated, Outcome, Pending, Request } from "./contract.js";
@@ -21,7 +20,7 @@ export function applyHealing(
 ): Result<Outcome> {
     let battle = calculated.state;
     const healing = calculated.value;
-    const target = units.get(battle, request.target);
+    const target = request.target.get(battle);
     if (
         healing === undefined ||
         healing.amount === 0 ||

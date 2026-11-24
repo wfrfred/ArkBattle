@@ -13,6 +13,16 @@ export type { Input, Overlay } from "../battlefield/navigation/overlay.js";
 
 const modes = ["WALK", "FLY"] as const;
 
+function getOverlay(this: object, battle: BattleState): Overlay | undefined {
+    const { id } = this as Ref<Overlay>;
+    const { overlays } = battle.battlefield.navigation;
+
+    return (
+        overlays.WALK.find((overlay) => overlay.id === id) ??
+        overlays.FLY.find((overlay) => overlay.id === id)
+    );
+}
+
 export function create(battle: BattleState, mode: MotionMode, input: Input): Result<Ref<Overlay>> {
     const id = battle.execution.nextOverlayId;
     const navigation = setOverlay(battle.battlefield.navigation, mode, { ...input, id });
@@ -23,7 +33,7 @@ export function create(battle: BattleState, mode: MotionMode, input: Input): Res
             execution: { ...battle.execution, nextOverlayId: id + 1 },
             battlefield: { ...battle.battlefield, navigation },
         },
-        value: { id } as Ref<Overlay>,
+        value: { id, get: getOverlay } as Ref<Overlay>,
     };
 }
 

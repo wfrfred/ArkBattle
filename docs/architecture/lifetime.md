@@ -16,7 +16,7 @@ Lifetime 统一结束请求、依赖传播与拓扑析构。领域负责创建�
 
 ## 静态析构适配
 
-Lifetime 配置提供 `kind`、`address`、`get` 以及 `end.prepare`、`end.finalize` 和可选的 `end.dependencyEnd`。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。首次有效请求确定 `initial` 为当时实例的不可变版本，`end` 为当时接受的结束输入。需要清理过程中产生的新事实时，回调按 Ref 读取最新实例。
+Lifetime 配置提供 `kind`、`address`、`end.prepare`、`end.finalize` 和可选的 `end.dependencyEnd`。首次有效结束请求使用节点已配对的 `ref.get(battle)` 取得 `initial`，并固定当时接受的 `end`。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。需要清理过程产生的新事实时，回调使用 Ref 读取最新版本。
 
 依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入。Action 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 和 Mechanism 可以作为依赖目标，三者当前只接受显式的结束请求。
 

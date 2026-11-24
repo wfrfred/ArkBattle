@@ -62,9 +62,11 @@ Context 只保存本次业务所需的输入和明确样本，不把 `request.ta
 
 ### 统一 Typed Ref 与类型恢复
 
-Ref 表示领域身份，对目标类型协变。实体命令使用 Typed Ref；分支 ID 等非实体身份保留自身 ID。跨 Battle 使用 Ref 属调用契约错误，不增加 Battle token 或运行时品牌。
+Ref 保存领域身份和共享的读取函数，对目标类型协变。实体命令使用 Typed Ref，分支 ID 等非实体身份保留自身 ID。跨 Battle 使用 Ref 属调用契约错误，不增加 Battle token 或运行时品牌。
 
-Identified 的可选类型标记只声明身份协议，不增加运行字段；身份与完整业务类型配对。类型恢复发生在创建、带 Definition 身份的查询或容器内部受信任边界。不能从空结构猜测身份；未声明身份的类型不能构造 Ref。
+`ref.get(battle)` 在传入的 BattleState 版本中查找该引用的对象，缺失时返回 `undefined`。各领域复用自己的读取函数，使用调用接收者的身份定位存储。签名 `(this: object, battle: BattleState) => T | undefined` 要求通过引用调用，同一个调用形式也适用于不同领域的联合 Ref，结果保留相应的联合类型。
+
+Identified 的可选类型标记只声明身份协议，不增加运行字段。身份与完整业务类型在领域的 Ref 构造入口配对，异构容器通过精确 Ref 恢复该类型。带 Definition 的查询按 Definition 身份恢复。不能从空结构猜测身份；未声明身份的类型不能构造 Ref。
 
 能力组成在同一实例身份下稳定，泛型类型守卫保留输入已有的完整类型。动态 HP、位置、生命周期等谓词只证明当前版本的事实，不能据此建立跨状态更新仍有效的类型保证。
 
@@ -74,7 +76,7 @@ Unit Initial 由 Catalog 推导：所选能力要求的输入必填，额外的�
 
 ### 查询与候选
 
-Query 是绑定输入版本的可重复惰性遍历，每次迭代有独立游标。all 返回完整实体，按登记顺序，不隐式筛选能力、生命、Presence 或阵营；get 读取指定版本，ENDING 在物理移除前仍可读。
+Query 是绑定输入版本的可重复惰性遍历，每次迭代有独立游标。all 返回完整实体，按登记顺序，不隐式筛选能力、生命、Presence 或阵营。Ref 读取指定版本，ENDING 在物理移除前仍可读。
 
 filter 保留类型收窄，map／flatMap／take 组合候选；some／find／reduce／toArray 消费序列。take(0) 不访问源，提前退出或异常时关闭迭代器，flatMap 同时关闭当前内层。只有确实需要数组、索引或序列化时才物化。
 

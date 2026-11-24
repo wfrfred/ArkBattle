@@ -46,12 +46,12 @@ export function start<P extends object, E extends object>(
     const { host: source, definitionId } = reference;
 
     function check(battle: BattleState) {
-        const unit = units.get(battle, source);
+        const unit = source.get(battle);
         if (unit?.lifecycle !== "ACTIVE" || (hasVitality(unit) && !isAlive(unit))) {
             return null;
         }
 
-        const action = unit.action.actions.get(definitionId) as Action<P, E> | undefined;
+        const action = reference.get(battle);
         if (action === undefined) {
             throw new TypeError("action definition is not configured for its source");
         }
@@ -136,12 +136,12 @@ export function setExecutionState<P extends object, E extends object>(
     reference: Ref<Execution<P, E>>,
     state: NoInfer<E>,
 ): BattleState {
-    const unit = units.get(battle, reference.host);
+    const unit = reference.host.get(battle);
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const current = unit.action.actions.getExecution(reference.id) as Execution<P, E> | undefined;
+    const current = reference.get(battle);
     if (current === undefined) {
         throw new RangeError(`unknown action execution: ${reference.id}`);
     }
@@ -154,11 +154,9 @@ export function setExecutionState<P extends object, E extends object>(
 export const lifetime = lifetimes.create<ExecutionIdentity, End>({
     kind: "ACTION",
     address: (reference) => `${reference.host.id}:${reference.id}`,
-    get: (battle, reference) =>
-        units.get(battle, reference.host)?.action.actions.getExecution(reference.id),
     end: {
         prepare(battle, reference, initial) {
-            const host = units.get(battle, reference.host)!;
+            const host = reference.host.get(battle)!;
             const self = initial as Execution;
 
             return replaceAction(
@@ -168,14 +166,12 @@ export const lifetime = lifetimes.create<ExecutionIdentity, End>({
             );
         },
         finalize(battle, reference, _initial, result) {
-            const self = units
-                .get(battle, reference.host)!
-                .action.actions.getExecution(reference.id)!;
+            const self = reference.get(battle)! as Execution;
 
             const definition = self.definition as Definition;
             battle = definition.onEnd?.(battle, reference.host, self, result) ?? battle;
 
-            const host = units.get(battle, reference.host)!;
+            const host = reference.host.get(battle)!;
             const action = host.action.actions.get(self.definition.id)!;
             battle = replaceAction(battle, host, { ...action, execution: null });
 
@@ -208,7 +204,7 @@ export function cancelForUnit(
     source: Ref<Unit & ActionCapability>,
     reason: string,
 ): BattleState {
-    const unit = units.get(battle, source);
+    const unit = source.get(battle);
     if (unit === undefined) {
         return battle;
     }
@@ -221,12 +217,12 @@ export function cancelForUnit(
 }
 
 export function advance(battle: BattleState, reference: ExecutionRef): BattleState {
-    const source = units.get(battle, reference.host);
+    const source = reference.host.get(battle);
     if (source === undefined) {
         return battle;
     }
 
-    const current = source.action.actions.getExecution(reference.id);
+    const current = reference.get(battle) as Execution | undefined;
     if (current?.execution.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -241,7 +237,7 @@ export function refreshCooldowns(
     battle: BattleState,
     source: Ref<Unit & ActionCapability>,
 ): BattleState {
-    const unit = units.get(battle, source);
+    const unit = source.get(battle);
     if (unit === undefined) {
         return battle;
     }
@@ -294,12 +290,12 @@ function getAction<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Action<P, E>>,
 ) {
-    const unit = units.get(battle, reference.host);
+    const unit = reference.host.get(battle);
     if (unit === undefined) {
         throw new RangeError(`unknown unit: ${reference.host.id}`);
     }
 
-    const action = unit.action.actions.get(reference.definitionId) as Action<P, E> | undefined;
+    const action = reference.get(battle);
     if (action === undefined) {
         throw new TypeError("action definition is not configured for its source");
     }

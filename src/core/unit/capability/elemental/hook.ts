@@ -1,6 +1,5 @@
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
-import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import type { Elemental } from "./capability.js";
@@ -45,7 +44,7 @@ export function dispatch<E>(
     event: NoInfer<E>,
 ): BattleState {
     return hooks.dispatch(battle, { host, event }, undefined, {
-        candidates: (current) => units.get(current, host)?.hooks.get(key) ?? [],
-        find: (current, id) => units.get(current, host)?.hooks.find(key, id),
+        candidates: (current) => host.get(current)?.hooks.get(key) ?? [],
+        find: (current, id) => host.get(current)?.hooks.find(key, id),
     }).state;
 }

@@ -81,7 +81,7 @@ export function create({ range, timing }: AttackParameters): Attack<State, objec
             {
                 id: "primary",
                 select(battle, source) {
-                    const self = units.get(battle, source);
+                    const self = source.get(battle);
                     if (self === undefined) {
                         return { state: battle, value: [] };
                     }

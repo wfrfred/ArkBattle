@@ -1,6 +1,5 @@
 import type { Options } from "../../../../hook.js";
 import type { State as BattleState, Result } from "../../../state.js";
-import * as units from "../../../../unit/query.js";
 import { available } from "../../../../unit/capability/elemental/query.js";
 import type { Calculated, Request } from "./contract.js";
 import { dispatch, sourceFormula, targetFormula, output } from "./hook.js";
@@ -11,7 +10,7 @@ export function calculateHealing(
     options?: Options,
 ): Result<Calculated | undefined> {
     const unavailable = (current: BattleState) => {
-        const target = units.get(current, request.target);
+        const target = request.target.get(current);
 
         return target === undefined || !available(target);
     };

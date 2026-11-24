@@ -51,7 +51,7 @@ function changeModifiers(
     id: string,
     modifiers?: Modifiers,
 ): BattleState {
-    const unit = units.get(battle, host);
+    const unit = host.get(battle);
     if (unit === undefined) {
         return battle;
     }
@@ -88,7 +88,7 @@ function damage(
     amount: number,
     nature: DamageRequest["nature"],
 ): BattleState {
-    const unit = units.get(battle, host);
+    const unit = host.get(battle);
     if (unit === undefined || !hasVitality(unit)) {
         return battle;
     }
@@ -176,7 +176,7 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
                 return battle;
             }
 
-            const unit = units.get(battle, self.host);
+            const unit = self.host.get(battle);
             if (unit === undefined) {
                 return battle;
             }

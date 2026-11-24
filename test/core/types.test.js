@@ -14,7 +14,7 @@ test("typed construction and identities retain private state and capability proo
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
 import { Hooks, key, type Hook } from ${module("hook")};
-import { initialize, ref, get, all as allUnits, compose, optional, setHook, type Unit, type Input as UnitInput } from ${module("unit/index")};
+import { initialize, ref, all as allUnits, compose, optional, setHook, type Unit, type Input as UnitInput } from ${module("unit/index")};
 import { update, remove } from ${module("unit/operations")};
 import * as actions from ${module("unit/capability/action/index")};
 import * as skills from ${module("unit/capability/skill/index")};
@@ -52,7 +52,7 @@ const strike: actions.Definition<{ uses: number }, { hits: number }, Armed> = {
     initialize: state => ({ state, value: { uses: 0 } }),
     prepare: (state, _source, self) => ({ state, value: { hits: self.state.uses + 1 } }),
     onTick(state, source, self) {
-        const attack = resolveAttack(state, get(state, source)!);
+        const attack = resolveAttack(state, source.get(state)!);
         state = actions.setState(state, actions.ref(source, self.definition), { uses: self.state.uses + 1 });
         return actions.setExecutionState(state, actions.executionRef(source, self), {
             hits: self.execution.state.hits + attack,
@@ -64,7 +64,7 @@ const skill: skills.Definition<{ completed: number }, { remaining: number }, Arm
     activation: {
         trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0,
         initialize(state, source, self) {
-            const right = get(state, source)!.facing.direction === 'RIGHT';
+            const right = source.get(state)!.facing.direction === 'RIGHT';
             return {
                 state: { remaining: self.state.completed + (right ? 1 : 0) },
                 duration: { type: 'INFINITE' },
@@ -167,22 +167,22 @@ const actionRef = actions.ref(owner, strike);
 const started = actions.start(battle, actionRef);
 if (started.value !== null) {
     const execution = started.value;
-    const hits: number = actions.getExecution(started.state, execution)!.execution.state.hits;
+    const hits: number = execution.get(started.state)!.execution.state.hits;
     actions.setExecutionState(started.state, execution, { hits: hits + 1 });
     // @ts-expect-error a write cannot infer a new private type for the current execution.
     actions.setExecutionState(started.state, execution, { hits: 'wrong' });
     // @ts-expect-error widening an execution type would weaken the private-write guarantee.
     const widened: Ref<actions.Execution> = execution;
     // @ts-expect-error an execution and its persistent action are different identities.
-    actions.getAction(started.state, execution);
+    const persistent: typeof actionRef = execution;
     runtime.step(started.state, [{ type: 'CANCEL_ACTION_EXECUTION', ref: execution }]);
 }
 const executionIdentity = actions.forUnit(battle, owner)[0]!;
-const publicExecution = actions.getExecution(battle, executionIdentity)!;
+const publicExecution = executionIdentity.get(battle)!;
 publicExecution.execution.state satisfies object;
 // @ts-expect-error an erased query cannot read a private field.
 publicExecution.execution.state.hits;
-// @ts-expect-error an erased execution cannot prove the callback's required host.
+// @ts-expect-error an erased execution exposes the definition identity without its callbacks.
 publicExecution.definition.onTick(battle, owner, publicExecution);
 // @ts-expect-error a cancellation identity alone cannot write private state.
 actions.setExecutionState(battle, executionIdentity, { hits: 1 });
@@ -191,7 +191,7 @@ const forged: Ref<Unit> = { id: 0 };
 const skillRef = skills.ref<{ completed: number }, { remaining: number }>(owner);
 const activated = skills.activate(battle, skillRef, { requirement: 0, cost: 0 });
 if (activated.value !== null) {
-    const active = skills.getActivation(activated.state, activated.value)!;
+    const active = activated.value.get(activated.state)!;
     active.state.completed satisfies number;
     active.activation.state.remaining satisfies number;
     // @ts-expect-error an Activation Ref identifies one round rather than the persistent Skill.
@@ -242,8 +242,8 @@ if (merged.value !== null) {
     // @ts-expect-error the returned DECAY reference must still reject deadlines on write.
     effects.setExpiration(merged.state, merged.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error a retained Effect may have arrived with a different private definition.
-    effects.get(merged.state, merged.value)!.state.power;
-    get(merged.state, owner)!.effects.get(merged.value.id, layered)!.state.power satisfies number;
+    merged.value.get(merged.state)!.state.power;
+    owner.get(merged.state)!.effects.get(merged.value.id, layered)!.state.power satisfies number;
 }
 
 const position = [0, 0] as const;
@@ -263,7 +263,7 @@ const bullet = projectiles.initialize(battle, {
     ...shot, definition: { ...slowable, eliminatable: true }, move: { contributions: [] },
 });
 const fired = projectiles.add(bullet.state, bullet.value);
-const restored = projectiles.ref(projectiles.get(fired, projectiles.ref(bullet.value))!);
+const restored = projectiles.ref(projectiles.ref(bullet.value).get(fired)!);
 projectiles.remove(fired, restored, 'ELIMINATED');
 const ordinaryProjectile = projectiles.initialize(battle, {
     ...shot, definition: { id: 'ordinary' } satisfies projectiles.Definition,
@@ -347,7 +347,10 @@ const nameCard: cards.Definition<{ name: string }, 'UNIQUE'> = {
 };
 const countInput = { definition: countCard, unitDefinition: cardUnit };
 const builtCard = cards.initialize(battle, countInput);
-const exactCard = cards.get(builtCard.state, cards.ref(builtCard.value))!;
+const countCardRef = cards.ref(builtCard.value);
+const exactCard = countCardRef.get(builtCard.state)!;
+declare const mixedRef: typeof owner | typeof countCardRef;
+mixedRef.get(battle) satisfies typeof armed | typeof exactCard | undefined;
 const enqueued = cards.supply.enqueue(cards.supply.consume(exactCard));
 enqueued.state.count satisfies number;
 enqueued.supply.pending satisfies number;

@@ -34,13 +34,13 @@ export function createMelee(timing: Timing): Attack {
             {
                 id: "primary",
                 select(battle, source) {
-                    const self = units.get(battle, source);
+                    const self = source.get(battle);
                     if (self === undefined) {
                         return { state: battle, value: [] };
                     }
 
                     const owner = self.blockable.relation?.blocker;
-                    const target = owner === undefined ? undefined : units.get(battle, owner);
+                    const target = owner === undefined ? undefined : owner.get(battle);
                     if (target === undefined || !hasTargetable(target)) {
                         return { state: battle, value: [] };
                     }
@@ -81,7 +81,7 @@ export function createRanged(rangeRadius: number, timing: Timing, projectile: Pr
             {
                 id: "primary",
                 select(battle, source) {
-                    const self = units.get(battle, source);
+                    const self = source.get(battle);
                     if (self === undefined) {
                         return { state: battle, value: [] };
                     }
@@ -110,8 +110,8 @@ export function createRanged(rangeRadius: number, timing: Timing, projectile: Pr
             },
         ],
         output: (state, host, self) => {
-            const source = units.get(state, host);
-            const target = units.get(state, self.execution.state.target);
+            const source = host.get(state);
+            const target = self.execution.state.target.get(state);
             if (source === undefined || target === undefined || !hasVitality(target)) {
                 return state;
             }

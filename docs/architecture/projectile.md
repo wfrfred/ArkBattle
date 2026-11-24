@@ -35,7 +35,7 @@ export interface Definition<S extends object = object, T extends object = object
 
 ## 3. 异构集合与类型恢复
 
-`Store` 保存完整异构实例。`all` 按登记顺序提供具有 `Projectile` 公共字段的实例，`ref` 保留传入实例的具体类型，`get` 按 Ref 恢复该类型。
+`Store` 保存完整异构实例。`all` 按登记顺序提供具有 `Projectile` 公共字段的实例，`ref` 保留传入实例的具体类型，由 `reference.get(battle)` 恢复。
 
 创建操作使用 BattleState 中的身份分配进度，替换保留登记位置，删除后不复用。容器只处理存储，不负责业务资格；Query 绑定不可变输入版本。诊断或表现投影不替代运行实例。
 
@@ -45,7 +45,7 @@ export interface Definition<S extends object = object, T extends object = object
 
 `add(battle, self)` 要求实例具备 Definition 声明的额外字段。它先登记 ACTIVE 实例和 Lifetime 节点，随后执行 `onEnter` 并返回 `BattleState`。Projectile 直接调用 Definition 回调，Unit 则通过 `entered` 键派发已登记的 Hook。`onEnter` 可以立即结束弹道，调用方取得的 Ref 仍表示这次分配的身份。 [Unit 登记](../../src/core/unit/operations.ts)
 
-get 返回指定版本中的完整实例，不隐含 ACTIVE 筛选。update 只设置位置及私有 state，保留身份、Definition 与生命周期；ENDING 也可提交命中／清理进度，不因普通写回恢复实例。
+弹道 Ref 在指定版本中读取完整实例，包括尚未注销的 ENDING 实例。update 只设置位置及私有 state，保留身份、Definition 与生命周期；ENDING 也可提交命中／清理进度，不因普通写回恢复实例。
 
 跨完整业务后需要当前进度或资格时重新查询，不以旧 self 覆盖新版本；私有类型和写回错误遵守公共契约。
 

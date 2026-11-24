@@ -5,7 +5,6 @@ import { Vec2 } from "../../../common/vector.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import * as lifetimes from "../../../lifetime/index.js";
 import * as projectiles from "../../../projectile/index.js";
-import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { resolvePullForce } from "./force.js";
 import type { Shiftable } from "./shiftable.js";
@@ -51,16 +50,18 @@ export interface Pull extends Identified<{
 }
 
 export function ref(self: Pull): Ref<Pull> {
-    return { unbalance: self.unbalance, id: self.id } as Ref<Pull>;
+    return { unbalance: self.unbalance, id: self.id, get: getPull } as Ref<Pull>;
 }
 
-export function get(battle: BattleState, reference: Ref<Pull>): Pull | undefined {
-    return unbalance.get(battle, reference.unbalance)?.pulls.get(reference.id);
+function getPull(this: object, battle: BattleState): Pull | undefined {
+    const { unbalance, id } = this as Ref<Pull>;
+
+    return unbalance.get(battle)?.pulls.get(id);
 }
 
 function replace(battle: BattleState, reference: Ref<Pull>, next: Pull | null): BattleState {
-    const unit = units.get(battle, reference.unbalance.host)!;
-    const self = unbalance.get(battle, reference.unbalance)!;
+    const unit = reference.unbalance.host.get(battle)!;
+    const self = reference.unbalance.get(battle)!;
     const pulls = new Map(self.pulls);
     if (next === null) {
         pulls.delete(reference.id);
@@ -74,7 +75,6 @@ function replace(battle: BattleState, reference: Ref<Pull>, next: Pull | null): 
 export const lifetime = lifetimes.create<Pull, string>({
     kind: "PULL",
     address: ({ unbalance, id }) => `${unbalance.host.id}:${unbalance.id}:${id}`,
-    get,
     end: {
         prepare: (battle, reference, initial) =>
             replace(battle, reference, { ...initial, lifecycle: "ENDING" }),
@@ -88,9 +88,7 @@ export function available(battle: BattleState, self: Pull): boolean {
 }
 
 export function position(battle: BattleState, point: Point): WorldPosition | undefined {
-    return point.type === "FIXED"
-        ? point.position
-        : projectiles.get(battle, point.projectile)?.position;
+    return point.type === "FIXED" ? point.position : point.projectile.get(battle)?.position;
 }
 
 export function withinRadius(radius: number): NearStop {
@@ -98,7 +96,7 @@ export function withinRadius(radius: number): NearStop {
     const radiusSquared = radius ** 2;
 
     return (battle, self) => {
-        const target = units.get(battle, self.unbalance.host);
+        const target = self.unbalance.host.get(battle);
         const point = position(battle, self.point);
 
         return (
@@ -123,8 +121,8 @@ export function apply(
         assert(Vec2.is(input.point.position), "pull point must be a finite position", TypeError);
     }
 
-    const applier = units.get(battle, source);
-    const unit = units.get(battle, target);
+    const applier = source.get(battle);
+    const unit = target.get(battle);
     const scopes =
         input.point.type === "FIXED"
             ? [input.scope]

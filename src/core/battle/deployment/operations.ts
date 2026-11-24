@@ -14,7 +14,6 @@ import { dispatch as notifyDeployed } from "./hook.js";
 import type { Card } from "./deck/card/card.js";
 import { resolveBaseCost, resolveCost } from "./deck/card/dp/query.js";
 import { deploy as deployCard } from "./deck/card/operations.js";
-import { get } from "./deck/deck.js";
 import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
 import * as slot from "./slot/operations.js";
@@ -43,7 +42,7 @@ export function deploy<T extends Card<any>>(
     const input = request as object as DeployRequest;
     validateRequest(input);
 
-    const self = get(battle, input.card);
+    const self = input.card.get(battle);
     if (self === undefined) {
         return { state: battle, value: { type: "REJECTED", reason: "UNKNOWN_CARD" } };
     }

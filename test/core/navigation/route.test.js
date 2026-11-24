@@ -78,12 +78,12 @@ test("distance observes the requested Main or TRACE rather than temporary moveme
     state = update(trace.state, host, route.selectContext(trace.value.id));
     state = update(state, host, appear([3, 0]));
     state = route.advance(state, host);
-    assert.equal(route.getContext(state, trace.value).current.reached, true);
+    assert.equal(trace.value.get(state).current.reached, true);
     state = update(state, host, units.compose(appear([1, 0]), route.selectContext(fear.value.id)));
     const self = get(state, 0);
     assert.equal(route.remainingDistance(state, self, self.route.main), 4);
-    assert.equal(route.remainingDistance(state, self, route.getContext(state, trace.value)), 2);
-    assert.equal(route.remainingDistance(state, self, route.getContext(state, fear.value)), undefined);
+    assert.equal(route.remainingDistance(state, self, trace.value.get(state)), 2);
+    assert.equal(route.remainingDistance(state, self, fear.value.get(state)), undefined);
 });
 
 test("Context selection and ticking separately control relative and absolute waits", () => {
@@ -97,7 +97,7 @@ test("Context selection and ticking separately control relative and absolute wai
     ));
     state = ticks(state, 2);
     assert.equal(current(state).current.timer, 3);
-    assert.equal(route.getContext(state, temporary.value).index, 1);
+    assert.equal(temporary.value.get(state).index, 1);
     state = update(state, host, units.compose(route.selectContext(0), route.setTicking(0, true)));
     state = ticks(state, 3);
     assert.equal(current(state).current.type, "MOVE");
@@ -210,7 +210,7 @@ test("TRACE holds its registered tile and control after arrival until explicitly
         route.selectContext(tracing.value.id), route.setTicking(0, false),
     ));
     state = ticks(state, 3);
-    let context = route.getContext(state, tracing.value);
+    let context = tracing.value.get(state);
     assert.deepEqual(context.current.position, [0, 2]);
     assert.equal(context.current.reached, true);
     assert.equal(context.index, 0);
@@ -218,11 +218,11 @@ test("TRACE holds its registered tile and control after arrival until explicitly
     assert.equal(route.movementTarget(state, host), null);
     state = update(state, host, appear([0, 0]));
     state = update(state, host, route.setTraceTarget(context.id, [0, 2]));
-    context = route.getContext(state, tracing.value);
+    context = tracing.value.get(state);
     assert.equal(context.current.reached, false);
     assert.deepEqual(route.movementTarget(state, host).goal, [2, 0]);
     state = update(state, host, route.removeContext(context.id, 0));
-    assert.equal(route.getContext(state, tracing.value), undefined);
+    assert.equal(tracing.value.get(state), undefined);
     assert.equal(current(state).current.timer, 999);
     assert.equal(get(state, 0).route.activeId, 0);
 });

@@ -1,7 +1,6 @@
 import type { Options } from "../../../../hook.js";
 import type { DamageRestriction } from "../../../../unit/capability/elemental/restriction.js";
 import type { Result } from "../../../state.js";
-import * as units from "../../../../unit/query.js";
 import { available, canReceiveDamage } from "../../../../unit/capability/elemental/query.js";
 import { receiveDamage, commitDamage } from "../../../../unit/capability/elemental/operations.js";
 import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
@@ -28,7 +27,7 @@ export function applyDamage(
 ): Result<Outcome> {
     let battle = calculated.state;
     const damage = calculated.value;
-    const target = units.get(battle, request.target);
+    const target = request.target.get(battle);
     if (damage === undefined || damage.amount === 0 || target === undefined || !available(target)) {
         return { state: battle, value: { type: "REJECTED" } };
     }

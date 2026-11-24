@@ -5,7 +5,6 @@ import * as contribution from "../common/contribution.js";
 import type { Ref } from "../common/ref.js";
 import { replace } from "./operations.js";
 import type { Projectile } from "./projectile.js";
-import { get } from "./query.js";
 
 export interface Slowable {
     readonly move: {
@@ -44,7 +43,7 @@ function updateContributions<P extends Projectile<object, any> & Slowable>(
     reference: Ref<P>,
     update: (current: Slowable["move"]["contributions"]) => Slowable["move"]["contributions"],
 ): BattleState {
-    const self = get(battle, reference);
+    const self = reference.get(battle);
     if (self === undefined) {
         throw new RangeError(`unknown projectile: ${reference.id}`);
     }

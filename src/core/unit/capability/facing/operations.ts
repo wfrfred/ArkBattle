@@ -2,7 +2,6 @@ import { replace } from "../../operations.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
 import type { Direction, Facing } from "./capability.js";
 import { allows } from "../../../restriction.js";
 import { replaceIn } from "../../../common/object.js";
@@ -13,7 +12,7 @@ export function turn(
     direction: Direction,
     mode: "NORMAL" | "FORCED" = "NORMAL",
 ): BattleState {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
     if (self?.lifecycle !== "ACTIVE" || self.facing.direction === direction) {
         return battle;
     }

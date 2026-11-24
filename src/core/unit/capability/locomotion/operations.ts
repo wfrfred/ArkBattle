@@ -30,7 +30,7 @@ export function advance(
     target: MovementTarget | null,
     context: MovementContext,
 ): BattleState {
-    const self = units.get(battle, ref);
+    const self = ref.get(battle);
     if (
         self?.lifecycle !== "ACTIVE" ||
         isUnbalanced(self) ||

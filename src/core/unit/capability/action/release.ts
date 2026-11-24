@@ -2,7 +2,6 @@ import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { ExecutionRef } from "./execution.js";
 import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
 import * as hook from "../../../hook.js";
 import type { Action } from "./capability.js";
 
@@ -30,10 +29,8 @@ export function dispatchBeforeRelease(battle: BattleState, ref: ExecutionRef): R
         context,
         { type: "CONTINUE" },
         {
-            candidates: (current) =>
-                units.get(current, context.source)?.hooks.get(beforeRelease) ?? [],
-            find: (current, id) =>
-                units.get(current, context.source)?.hooks.find(beforeRelease, id),
+            candidates: (current) => context.source.get(current)?.hooks.get(beforeRelease) ?? [],
+            find: (current, id) => context.source.get(current)?.hooks.find(beforeRelease, id),
             stop: (current, directive) =>
                 directive.type === "INTERRUPT" || !running(current, context),
         },
@@ -44,17 +41,17 @@ export function dispatchReleased(battle: BattleState, ref: ExecutionRef): Battle
     const context: Context = { execution: ref, source: ref.host };
 
     return hook.dispatch(battle, context, undefined, {
-        candidates: (current) => units.get(current, context.source)?.hooks.get(released) ?? [],
-        find: (current, id) => units.get(current, context.source)?.hooks.find(released, id),
+        candidates: (current) => context.source.get(current)?.hooks.get(released) ?? [],
+        find: (current, id) => context.source.get(current)?.hooks.find(released, id),
         stop: (current) => !running(current, context),
     }).state;
 }
 
 function running(battle: BattleState, context: Context): boolean {
-    const source = units.get(battle, context.source);
+    const source = context.source.get(battle);
 
     return (
         source?.lifecycle === "ACTIVE" &&
-        source.action.actions.getExecution(context.execution.id)?.execution.lifecycle === "ACTIVE"
+        context.execution.get(battle)?.execution.lifecycle === "ACTIVE"
     );
 }

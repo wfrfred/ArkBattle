@@ -2,9 +2,7 @@ import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
 import { replace } from "../../operations.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
-import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
-import { get as getEffect } from "../../effect/query.js";
 import { setExpiration } from "../../effect/operations.js";
 import { ref, type OrdinaryEffect } from "../../effect/effect.js";
 import type { OrdinaryDefinition as EffectDefinition } from "../../effect/definition.js";
@@ -37,7 +35,7 @@ export function onInstall<S extends State>(
     battle: BattleState,
     self: OrdinaryEffect<S, Elemental>,
 ): BattleState {
-    const host = units.get(battle, self.host)!;
+    const host = self.host.get(battle)!;
     const duration = (self.definition as Definition<S>).durationTicks;
     const current: Burst<S> = {
         ...self,
@@ -113,7 +111,7 @@ export function onEnd<S extends State>(
     reason: string,
 ): BattleState {
     const self = instance as Burst<S>;
-    const host = units.get(battle, self.host)!;
+    const host = self.host.get(battle)!;
     battle = replace(battle, [
         {
             ...host,
@@ -136,8 +134,8 @@ export function availableHost<S extends State>(
     battle: BattleState,
     reference: Ref<OrdinaryEffect<S, Elemental>>,
 ): (Unit & Elemental) | undefined {
-    const host = units.get(battle, reference.host);
-    const lifecycle = getEffect(battle, reference)?.lifecycle;
+    const host = reference.host.get(battle);
+    const lifecycle = reference.get(battle)?.lifecycle;
 
     return host !== undefined &&
         available(host) &&

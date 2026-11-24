@@ -9,7 +9,6 @@ import type {
 import { type WorldPosition } from "../../core/geometry/coordinate.js";
 
 import { isAlive, type Vitality } from "../../core/unit/capability/vitality/index.js";
-import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
 import { towards } from "./motion.js";
 
@@ -44,7 +43,7 @@ export function project<S extends object, T extends object>(
     battle: BattleState,
     reference: Ref<Projectile<S, T>>,
 ): Presentation | undefined {
-    const self = projectiles.get(battle, reference);
+    const self = reference.get(battle);
     if (
         self === undefined ||
         !("tracking" in self.definition && self.definition.tracking === true)
@@ -74,7 +73,7 @@ export function hit<S extends State, T extends object>(
     ) => BattleState,
 ): BattleState {
     const reference = projectiles.ref(self);
-    const current = projectiles.get(battle, reference);
+    const current = reference.get(battle);
     if (current === undefined || current.state.hitAttempted) {
         return battle;
     }
@@ -82,8 +81,8 @@ export function hit<S extends State, T extends object>(
     battle = projectiles.update(battle, reference, {
         state: { ...current.state, hitAttempted: true },
     });
-    const marked = projectiles.get(battle, reference)!;
-    const target = units.get(battle, marked.state.target);
+    const marked = reference.get(battle)!;
+    const target = marked.state.target.get(battle);
     if (target?.lifecycle !== "ACTIVE" || !isAlive(target)) {
         return battle;
     }
@@ -105,7 +104,7 @@ export function advance<S extends State, T extends object>(
             : battle;
     }
 
-    const target = units.get(battle, self.state.target);
+    const target = self.state.target.get(battle);
     const destination = target?.position ?? self.state.destination;
     const { position, reached } = towards(
         self.position,
@@ -124,9 +123,9 @@ export function advance<S extends State, T extends object>(
         return battle;
     }
 
-    const advanced = projectiles.get(battle, reference)!;
+    const advanced = reference.get(battle)!;
     battle = onReached(battle, advanced);
-    const latest = projectiles.get(battle, reference);
+    const latest = reference.get(battle);
 
     return latest?.lifecycle === "ACTIVE" &&
         latest.state.stopAtTick !== null &&

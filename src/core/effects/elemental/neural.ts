@@ -72,9 +72,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                 setHook(beforeRelease, {
                     id: `@effect/${effectId}/paralysis`,
                     accepts(current) {
-                        const active = units
-                            .get(current, self.host)
-                            ?.effects.get(effectId, paralysis);
+                        const active = self.host.get(current)?.effects.get(effectId, paralysis);
 
                         return (
                             active?.lifecycle === "ACTIVE" &&
@@ -82,9 +80,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         );
                     },
                     invoke(current) {
-                        const active = units
-                            .get(current, self.host)!
-                            .effects.get(effectId, paralysis)!;
+                        const active = self.host.get(current)!.effects.get(effectId, paralysis)!;
                         const reference = ref(active);
                         const used = active.state.used + 1;
                         current = effects.setState(current, reference, { used });
@@ -94,7 +90,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         }
 
                         const recoveryTicks = TICKS_PER_SECOND / 2;
-                        const host = units.get(current, self.host);
+                        const host = self.host.get(current);
                         if (host?.lifecycle === "ACTIVE") {
                             current = effects.install(current, self.host, stun, {
                                 expiration: {

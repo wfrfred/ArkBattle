@@ -19,7 +19,7 @@ export function advanceSkills(state: BattleState, commands: readonly Command[]):
             continue;
         }
 
-        const unit = units.get(state, command.ref);
+        const unit = command.ref.get(state);
         if (unit === undefined) {
             continue;
         }

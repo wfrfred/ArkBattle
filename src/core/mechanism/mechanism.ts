@@ -34,7 +34,7 @@ export interface Mechanism<S extends object = object> extends Identified<{
 }
 
 export function ref<M extends Mechanism<any>>(mechanism: M): Ref<M> {
-    return { id: mechanism.id } as Ref<M>;
+    return { id: mechanism.id, get: getMechanism } as Ref<M>;
 }
 
 export function initialize<S extends object, const D extends Definition<S>>(
@@ -62,11 +62,10 @@ export function add<S extends object>(battle: BattleState, self: Mechanism<S>): 
     return self.definition.onEnter?.(battle, self) ?? battle;
 }
 
-export function get<M extends Mechanism<any>>(
-    battle: BattleState,
-    reference: Ref<M>,
-): M | undefined {
-    return battle.mechanisms.get(reference.id) as M | undefined;
+function getMechanism(this: object, battle: BattleState): Mechanism | undefined {
+    const { id } = this as Ref<Mechanism>;
+
+    return battle.mechanisms.get(id);
 }
 
 export function all(battle: BattleState): Query<Mechanism> {
@@ -78,7 +77,7 @@ export function setState<T extends Mechanism<any>>(
     reference: Ref<T>,
     state: NoInfer<T["state"]>,
 ): BattleState {
-    const self = get(battle, reference);
+    const self = reference.get(battle);
     if (self === undefined) {
         throw new RangeError(`unknown mechanism: ${reference.id}`);
     }
@@ -97,7 +96,7 @@ export function setActive<M extends Mechanism<any>>(
     reference: Ref<M>,
     active: boolean,
 ): BattleState {
-    const self = get(battle, reference);
+    const self = reference.get(battle);
     const lifecycle = active ? "ACTIVE" : "INACTIVE";
     if (self === undefined || self.lifecycle === "ENDING" || self.lifecycle === lifecycle) {
         return battle;
@@ -114,7 +113,6 @@ export function setActive<M extends Mechanism<any>>(
 export const lifetime = createLifetime<Mechanism<any>, string>({
     kind: "MECHANISM",
     address: (reference) => String(reference.id),
-    get,
     end: {
         prepare: (battle, reference, initial) =>
             replaceIn(
@@ -123,7 +121,7 @@ export const lifetime = createLifetime<Mechanism<any>, string>({
                 battle.mechanisms.replace(reference.id, { ...initial, lifecycle: "ENDING" }),
             ),
         finalize: (battle, reference) => {
-            const self = get(battle, reference)!;
+            const self = reference.get(battle)!;
             battle = self.definition.onEnd?.(battle, self) ?? battle;
 
             return replaceIn(battle, ["mechanisms"], battle.mechanisms.remove(reference.id));
@@ -143,7 +141,7 @@ export function advance(battle: BattleState): BattleState {
 
     for (const candidate of candidates) {
         const reference = ref(candidate);
-        const self = get(battle, reference);
+        const self = reference.get(battle);
         if (self?.lifecycle === "ACTIVE" && self.definition.onTick !== undefined) {
             battle = self.definition.onTick(battle, self);
         }

@@ -1,3 +1,5 @@
+import type { State as BattleState } from "../battle/state.js";
+
 declare const identity: unique symbol;
 declare const referent: unique symbol;
 
@@ -14,4 +16,7 @@ export interface Phantom<out T> {
     readonly [referent]: T;
 }
 
-export type Ref<T> = Identity<T> & Phantom<T>;
+export type Ref<T> = Identity<T> &
+    Phantom<T> & {
+        readonly get: (this: object, battle: BattleState) => T | undefined;
+    };

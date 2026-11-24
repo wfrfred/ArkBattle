@@ -158,7 +158,7 @@ export interface Attack<
 }
 
 function isSourceActive(battle: BattleState, source: Ref<Unit>): boolean {
-    const current = units.get(battle, source);
+    const current = source.get(battle);
 
     return current?.lifecycle === "ACTIVE";
 }
@@ -168,8 +168,8 @@ export function faceTarget<P extends object, E extends object>(
     source: Ref<Unit>,
     self: Execution<P, State<E>>,
 ): BattleState {
-    const host = units.get(battle, source);
-    const target = units.get(battle, self.execution.state.target);
+    const host = source.get(battle);
+    const target = self.execution.state.target.get(battle);
     if (
         host === undefined ||
         !hasFacing(host) ||
@@ -189,7 +189,7 @@ export function chooseTargets<P extends object, E extends object, H extends obje
     source: Source<H>,
     definition: Configuration<P, E, H>,
 ): Result<State["bindings"]> {
-    const unit = units.get(battle, source);
+    const unit = source.get(battle);
     if (unit === undefined) {
         return { state: battle, value: {} };
     }
@@ -206,7 +206,7 @@ export function chooseTargets<P extends object, E extends object, H extends obje
 }
 
 export function sourceAttack(battle: BattleState, source: Ref<Unit & Offense>): number | undefined {
-    const current = units.get(battle, source);
+    const current = source.get(battle);
 
     return current === undefined ? undefined : resolveAttack(battle, current);
 }
@@ -219,7 +219,7 @@ function apply<H extends object>(
 ): BattleState {
     switch (operation.type) {
         case "DAMAGE": {
-            const receiver = units.get(battle, target);
+            const receiver = target.get(battle);
             if (receiver === undefined || !hasVitality(receiver)) {
                 return battle;
             }
@@ -252,7 +252,7 @@ function apply<H extends object>(
         }
 
         case "HEAL": {
-            const receiver = units.get(battle, target);
+            const receiver = target.get(battle);
             if (receiver === undefined || !hasVitality(receiver)) {
                 return battle;
             }
@@ -267,7 +267,7 @@ function apply<H extends object>(
         }
 
         case "ELEMENTAL_INJURY": {
-            const receiver = units.get(battle, target);
+            const receiver = target.get(battle);
             if (receiver === undefined || !hasElemental(receiver)) {
                 return battle;
             }
@@ -285,7 +285,7 @@ function apply<H extends object>(
         }
 
         case "ELEMENTAL_INJURY_HEALED": {
-            const receiver = units.get(battle, target);
+            const receiver = target.get(battle);
             if (receiver === undefined || !hasElemental(receiver)) {
                 return battle;
             }
@@ -376,7 +376,7 @@ export function createWithState<P extends object, E extends object, H extends ob
         prepare(battle, source, self) {
             const selected = chooseTargets(battle, source, definition);
             battle = selected.state;
-            const unit = units.get(battle, source);
+            const unit = source.get(battle);
             const bindings = selected.value;
             const target = bindings[definition.triggerBindingId]?.[0];
             if (unit === undefined || target === undefined) {
@@ -384,8 +384,8 @@ export function createWithState<P extends object, E extends object, H extends ob
             }
 
             const initialized = definition.prepare(battle, source, self);
-            const current = actions.getAction(initialized.state, ref(source, attack));
-            const host = units.get(initialized.state, source);
+            const current = ref(source, attack).get(initialized.state);
+            const host = source.get(initialized.state);
             if (current === undefined || host === undefined) {
                 return { state: initialized.state, value: null };
             }
@@ -429,7 +429,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                     ...self.execution.state,
                     cooldownAdjusted: true,
                 });
-                self = actions.getExecution(battle, identity)!;
+                self = identity.get(battle)!;
                 battle = appendEvents(battle, [
                     {
                         type: "ATTACK_STARTED",
@@ -440,7 +440,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 ]);
                 battle = definition.onStart?.(battle, source, self) ?? battle;
 
-                const current = actions.getExecution(battle, identity);
+                const current = identity.get(battle);
                 if (current?.execution.lifecycle !== "ACTIVE") {
                     return battle;
                 }
@@ -457,7 +457,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 beginUntilTick !== null &&
                 battle.tick >= beginUntilTick
             ) {
-                const host = units.get(battle, source);
+                const host = source.get(battle);
                 if (host === undefined) {
                     return battle;
                 }
@@ -473,7 +473,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                         ...self.execution.state,
                         timing: progressed,
                     });
-                    self = actions.getExecution(battle, identity)!;
+                    self = identity.get(battle)!;
                 }
             }
 
@@ -494,7 +494,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 });
                 const permission = dispatchBeforeRelease(battle, identity);
                 battle = permission.state;
-                const current = actions.getExecution(battle, identity);
+                const current = identity.get(battle);
                 if (current?.execution.lifecycle !== "ACTIVE") {
                     return battle;
                 }
@@ -524,7 +524,7 @@ export function createWithState<P extends object, E extends object, H extends ob
 
                 battle = dispatchReleased(battle, identity);
 
-                const output = actions.getExecution(battle, identity);
+                const output = identity.get(battle);
                 if (output?.execution.lifecycle !== "ACTIVE") {
                     return battle;
                 }
@@ -538,10 +538,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                     for (const group of definition.targetGroups) {
                         for (const operation of group.operations) {
                             for (const target of output.execution.state.bindings[group.id] ?? []) {
-                                if (
-                                    actions.getExecution(battle, identity)?.execution.lifecycle !==
-                                    "ACTIVE"
-                                ) {
+                                if (identity.get(battle)?.execution.lifecycle !== "ACTIVE") {
                                     return battle;
                                 }
 
@@ -554,10 +551,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                             ? [source]
                             : (output.execution.state.bindings[followUp.receiver.bindingId] ??
                               [])) {
-                            if (
-                                actions.getExecution(battle, identity)?.execution.lifecycle !==
-                                "ACTIVE"
-                            ) {
+                            if (identity.get(battle)?.execution.lifecycle !== "ACTIVE") {
                                 return battle;
                             }
 
@@ -566,7 +560,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                     }
                 }
 
-                const completed = actions.getExecution(battle, identity);
+                const completed = identity.get(battle);
                 if (completed?.execution.lifecycle !== "ACTIVE") {
                     return battle;
                 }
@@ -576,7 +570,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 }
             }
 
-            const current = actions.getExecution(battle, identity);
+            const current = identity.get(battle);
             if (current?.execution.lifecycle !== "ACTIVE") {
                 return battle;
             }

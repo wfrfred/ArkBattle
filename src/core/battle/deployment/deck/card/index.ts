@@ -8,7 +8,7 @@ export { ref } from "./card.js";
 
 export { initialize, type Input } from "./initialize.js";
 
-export { all, get } from "../deck.js";
+export { all } from "../deck.js";
 
 export { add } from "../operations.js";
 

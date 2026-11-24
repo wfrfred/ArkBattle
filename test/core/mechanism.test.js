@@ -22,18 +22,18 @@ test("registration invokes enter and actual toggles invoke enable or disable", (
     const trace = [];
     const definition = counter("callbacks", {
         onEnter(state, self) {
-            assert.equal(mechanisms.get(state, mechanisms.ref(self)).lifecycle, self.lifecycle);
+            assert.equal(mechanisms.ref(self).get(state).lifecycle, self.lifecycle);
             trace.push(["enter", self.id, self.lifecycle]);
             return mechanisms.setState(state, mechanisms.ref(self), { count: 1 });
         },
         onEnable(state, self) {
             assert.equal(self.lifecycle, "ACTIVE");
-            assert.equal(mechanisms.get(state, mechanisms.ref(self)).lifecycle, "ACTIVE");
+            assert.equal(mechanisms.ref(self).get(state).lifecycle, "ACTIVE");
             trace.push(["enable", self.id, self.state.count]);
             return state;
         },
         onDisable(state, self) {
-            assert.equal(mechanisms.get(state, mechanisms.ref(self)).lifecycle, "INACTIVE");
+            assert.equal(mechanisms.ref(self).get(state).lifecycle, "INACTIVE");
             trace.push(["disable", self.id]);
             return state;
         },
@@ -48,7 +48,7 @@ test("registration invokes enter and actual toggles invoke enable or disable", (
 
     const initialized = mechanisms.initialize(initial, { definition });
     const addedRef = mechanisms.ref(initialized.value);
-    assert.equal(mechanisms.get(initialized.state, addedRef), undefined);
+    assert.equal(addedRef.get(initialized.state), undefined);
     const inactiveRef = mechanisms.ref(inactive);
     let state = mechanisms.add(initialized.state, initialized.value);
     assert.equal(mechanisms.setActive(state, inactiveRef, false), state);
@@ -57,7 +57,7 @@ test("registration invokes enter and actual toggles invoke enable or disable", (
     state = mechanisms.setActive(state, inactiveRef, false);
     assert.equal(mechanisms.setActive(state, inactiveRef, false), state);
     state = mechanisms.setActive(state, inactiveRef, true);
-    assert.equal(mechanisms.get(state, inactiveRef).lifecycle, "ACTIVE");
+    assert.equal(inactiveRef.get(state).lifecycle, "ACTIVE");
 
     assert.deepEqual(trace, [
         ["enter", active.id, "ACTIVE"], ["enter", inactive.id, "INACTIVE"],
@@ -102,10 +102,10 @@ test("disabled mechanisms stop advancing but still finish their dependents befor
     );
     const advanced = step(linked.state, []);
     let state = mechanisms.remove(advanced, inactiveRef);
-    assert.equal(effects.get(state, linked.value), undefined);
-    assert.equal(mechanisms.get(state, inactiveRef), undefined);
+    assert.equal(linked.value.get(state), undefined);
+    assert.equal(inactiveRef.get(state), undefined);
     state = mechanisms.remove(state, activeRef);
-    assert.equal(mechanisms.get(state, activeRef), undefined);
+    assert.equal(activeRef.get(state), undefined);
     assert.deepEqual(trace, [
         ["disable", "INACTIVE"], ["dependent"], ["end", "ENDING", 1], ["end", "ENDING", 2],
     ]);

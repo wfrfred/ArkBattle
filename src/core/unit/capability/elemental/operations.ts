@@ -5,7 +5,6 @@ import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as effects from "../../effect/operations.js";
 import * as hooks from "../../../hook.js";
-import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import {
     ELEMENT_TYPES,
@@ -50,11 +49,11 @@ export function receiveDamage(
 ): Result<damage.Pending> {
     const result = hooks.dispatch<ReceivingContext, damage.Pending>(battle, context, pending, {
         candidates: (current) =>
-            (units.get(current, context.request.target)?.hooks.get(receiving) ?? []).filter(
+            (context.request.target.get(current)?.hooks.get(receiving) ?? []).filter(
                 ({ id }) => !hooks.excluded(options, receiving, id),
             ),
         find(current, id) {
-            const host = units.get(current, context.request.target);
+            const host = context.request.target.get(current);
 
             return host !== undefined && query.available(host)
                 ? host.hooks.find(receiving, id)
@@ -78,7 +77,7 @@ export function commitDamage(
     const { request, calculated, received } = context;
     const target = request.target;
     const type = calculated.type;
-    const self = units.get(battle, target)!;
+    const self = target.get(battle)!;
     const maximum = query.resolveMaxEp(battle, self);
     const epBefore = Math.min(maximum, self.elemental.ep[type]);
     const epLoss = Math.min(epBefore, received.amount);
@@ -130,7 +129,7 @@ export function commitHealing(
 ): Result<HealingApplication> {
     const { request, received } = context;
     const target = request.target;
-    const self = units.get(battle, target)!;
+    const self = target.get(battle)!;
     const maximum = query.resolveMaxEp(battle, self);
     const epBefore = normalizedEp(self, maximum);
     const epGain = { ...elementValues(0) };
@@ -174,7 +173,7 @@ export function reduceDuration(
         return battle;
     }
 
-    const host = units.get(battle, reference.host);
+    const host = reference.host.get(battle);
     const self = query.get(battle, reference);
     if (
         host === undefined ||
@@ -191,7 +190,7 @@ export function reduceDuration(
     const remaining = Math.max(0, duration - elapsed);
     battle = effects.setExpiration(battle, reference, { ...expiration, duration, remaining });
 
-    const current = units.get(battle, reference.host)!;
+    const current = reference.host.get(battle)!;
     const maximum = query.resolveMaxEp(battle, current);
     const ep = elementValues(remaining === 0 ? maximum : (maximum * elapsed) / duration);
     battle = replaceUnits(battle, [replaceIn(current, ["elemental", "ep"], ep)]);
@@ -212,7 +211,7 @@ export function cancel(
 }
 
 export function advance(battle: BattleState, host: Ref<Unit & Elemental>): BattleState {
-    const self = units.get(battle, host);
+    const self = host.get(battle);
     if (self === undefined || !query.available(self)) {
         return battle;
     }

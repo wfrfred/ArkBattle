@@ -14,7 +14,7 @@ within 检查 Unit.position 是否在 Range 内，不要求 Hitbox，也不使�
 
 sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hitbox 的首次接触。双方各自使用 Shape 的 offset。fraction 在 [0, 1] 内，初始重叠或相切为 0，起点与终点相同时退化为静态相交。结果按 fraction 稳定升序排列，相等时保留 Unit 登记顺序。它不计算目标在 Tick 内的运动轨迹。
 
-三种查询只纳入 `unit.lifecycle === "ACTIVE" && presence.isPresent(unit)` 的 Unit，不检查 HP、阵营、Targetable 或 Effect 免疫。overlap 和 sweep 要求 Hitbox，within 不要求。ENDING 宿主在清理回调期间仍能通过 units.get 读取，但不再参与新的空间集合查询。
+三种查询只纳入 `unit.lifecycle === "ACTIVE" && presence.isPresent(unit)` 的 Unit，不检查 HP、阵营、Targetable 或 Effect 免疫。overlap 和 sweep 要求 Hitbox，within 不要求。ENDING 宿主在清理回调期间仍能通过 `ref.get(battle)` 读取。
 
 每个 Unit 最多返回一次。within 和 overlap 保留 Unit Query 的逻辑登记顺序，不追加优先级。查询不按地图边界裁剪，来源不要求对应实际 Unit。
 
@@ -22,7 +22,7 @@ sweep 检查单个 Shape 沿 from 到 to 线性平移时，与各目标静态 Hi
 
 `geometry/intersection.ts` 提供 contains、overlaps、sweep 的纯几何计算。已持有 Unit 的调用方可直接传入形状与坐标，由自身业务契约决定资格。
 
-空间查询仅接收 BattlefieldState，直接通过通用 Query 遍历该版本的 field.units。查询不修改状态、不执行 Hook、不消费 RNG。结果是传入状态版本上的已完成查询；Ref 只保留身份，Contact.fraction 是当时的几何事实。后续同步业务改变状态后，需要当前资格或几何时，从最新 BattleState 重新读取和判定。消费方从接触顺序中选择符合业务资格的对象，不能把第一个几何接触默认当成实际命中。
+空间查询仅接收 BattlefieldState，直接通过通用 Query 遍历该版本的 field.units。查询不修改状态、不执行 Hook、不消费 RNG。结果是传入状态版本上的已完成查询。`Contact.fraction` 保存当时的几何事实，Ref 可在调用方提供的 BattleState 中查找同一对象。后续同步业务改变状态后，需要当前资格或几何时，从最新 BattleState 重新读取和判定。消费方从接触顺序中选择符合业务资格的对象，不能把第一个几何接触默认当成实际命中。
 
 Projectile 是否查询范围或扫掠，由具体命中程序决定；按保存身份命中的路径不要求 Hitbox。空间 sweep 本身不自动让 Projectile 成为沿途碰撞弹道。
 

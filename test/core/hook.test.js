@@ -54,7 +54,7 @@ test("Hook priority fixes this dispatch's order while replacement and nested dis
         invoke(current, departure) {
             calls.push([nested ? "nested" : "outer", "first"]);
             if (nested) return { state: current, value: undefined };
-            assert.equal(units.get(current, units.ref(departure.unit)), undefined);
+            assert.equal(units.ref(departure.unit).get(current), undefined);
             current = removeHook(current, unitRemoved, "removed");
             current = setHook(current, unitRemoved, record("replacement", 100));
             current = setHook(current, unitRemoved, record("added", 1000));
@@ -91,7 +91,7 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
                         id: "apply-global-effect",
                         invoke(current, unit) {
                             const reference = units.ref(unit);
-                            assert.equal(units.get(current, reference), unit);
+                            assert.equal(reference.get(current), unit);
                             return { state: effects.install(current, reference, effect).state, value: undefined };
                         },
                     });
@@ -116,7 +116,7 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
     });
     const registered = units.add(created.state, created.value);
     assert.equal(localEntered, true);
-    const self = units.get(registered, units.ref(created.value));
+    const self = units.ref(created.value).get(registered);
     assert.ok(self?.effects.values().some((instance) => instance.definition === effect));
 });
 
@@ -143,7 +143,7 @@ test("An ended Unit skips the remaining Battle and local entered programs", () =
         },
     });
     const next = units.add(created.state, created.value);
-    assert.equal(units.get(next, units.ref(created.value)), undefined);
+    assert.equal(units.ref(created.value).get(next), undefined);
 });
 
 test("Unit removing uses priority and removed uses the registrations captured before unlinking", () => {
@@ -156,20 +156,20 @@ test("Unit removing uses priority and removed uses the registrations captured be
             return update(current, self.host, units.setHook(units.removing, {
                 id: "death-output",
                 invoke(next) {
-                    assert.equal(units.get(next, subject).lifecycle, "ENDING");
-                    assert.equal(effects.get(next, effects.ref(self)).lifecycle, "ACTIVE");
+                    assert.equal(subject.get(next).lifecycle, "ENDING");
+                    assert.equal(effects.ref(self).get(next).lifecycle, "ACTIVE");
                     calls.push("death-output");
                     return { state: next, value: undefined };
                 },
             }));
         },
         onEnd(current, self) {
-            assert.equal(units.get(current, subject).lifecycle, "ENDING");
+            assert.equal(subject.get(current).lifecycle, "ENDING");
             calls.push("effect-end");
             return update(current, self.host, units.setHook(units.removed, {
                 id: "latest-leave", priority: 200,
                 invoke(next, departure) {
-                    assert.equal(units.get(next, subject), undefined);
+                    assert.equal(subject.get(next), undefined);
                     assert.equal(departure.unit.hooks.find(units.removed, "latest-leave").priority, -10);
                     calls.push("latest-leave");
                     return { state: next, value: undefined };
@@ -181,7 +181,7 @@ test("Unit removing uses priority and removed uses the registrations captured be
         units.setHook(units.removing, {
             id: "earlier-response", priority: 100,
             invoke(current) {
-                assert.equal(units.get(current, subject).lifecycle, "ENDING");
+                assert.equal(subject.get(current).lifecycle, "ENDING");
                 calls.push("earlier-response");
                 return { state: current, value: undefined };
             },
@@ -194,7 +194,7 @@ test("Unit removing uses priority and removed uses the registrations captured be
             units.setHook(units.removed, {
                 id: "high-leave", priority: 100,
                 invoke(current) {
-                    assert.equal(units.get(current, subject), undefined);
+                    assert.equal(subject.get(current), undefined);
                     calls.push("high-leave");
                     return { state: current, value: undefined };
                 },

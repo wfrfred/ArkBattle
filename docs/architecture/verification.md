@@ -20,7 +20,7 @@
 | [Projectile · 4. 创建、查询与内容更新](projectile.md#4-创建查询与内容更新)、[Projectile · 移除与消除](projectile.md#移除与消除) | [Projectile 创建必须装配回调声明的 Trait，普通弹道不暴露该字段。创建后的精确 Ref 保留 Definition 的消除资格，普通 Ref 不允许以消除原因移除。](../../test/core/types.test.js#L250) |
 | [Hook · 类型化键与集合](hook.md#类型化键与集合)、[Capability · 资格限制](capability.md#资格限制)、[Vitality · 伤害写入前后](vitality.md#伤害写入前后) | [Hook Key 决定载荷、可改工作值与所需宿主。提交后通知不能改已提交的生命报告。接收限制只有对应阶段可用，Elemental 的伤害限制不能用作治疗限制。](../../test/core/types.test.js#L276) |
 | [Resource · 请求分类](resource.md#请求分类)、[Resource · 接收工作值、数值固定与取消](resource.md#接收工作值数值固定与取消)、[Resource · 生命状态、通知与离场](resource.md#生命状态通知与离场) | [被固定和取消的工作值无法恢复，已有的取消原因不能改写。取消使用本次权限和所属领域的原因集。每笔伤害显式声明攻击方式与归属，离场请求也明确死亡归属，提交报告不提前暴露击杀结果。](../../test/core/types.test.js#L298) |
-| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card)、[Terrain · Mechanism 操作](terrain.md#mechanism-操作)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [Card 的精确 Ref 恢复私有状态及策略。普通查询按策略收窄，只有 QUEUED 能入队。Runtime 接收同场多种 Card 与 Mechanism 状态，装配和登记拒绝 Definition 与状态错配。](../../test/core/types.test.js#L332) |
+| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card)、[Terrain · Mechanism 操作](terrain.md#mechanism-操作)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [精确 Card Ref 恢复私有状态及策略，Unit 与 Card 的联合 Ref 保留两种精确读取结果。普通查询按策略收窄，只有 QUEUED 能入队。Runtime 接收同场多种 Card 与 Mechanism 状态，装配和登记拒绝 Definition 与状态错配。](../../test/core/types.test.js#L332) |
 
 ## 通用数据与算法
 

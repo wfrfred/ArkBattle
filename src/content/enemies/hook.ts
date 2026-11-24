@@ -8,7 +8,7 @@ import {
     type Restriction,
 } from "../../core/unit/capability/locomotion/index.js";
 import { hasRoute, movementTarget } from "../../core/unit/capability/route/index.js";
-import { get, ref, update, type Unit } from "../../core/unit/index.js";
+import { ref, update, type Unit } from "../../core/unit/index.js";
 
 const castingRestriction: Restriction = {
     allows: (battle, { self }) => !hasAction(self) || !hasExecution(battle, ref(self)),
@@ -27,7 +27,7 @@ export function restrictMovementDuringAction(battle: BattleState, self: Unit): R
 }
 
 export function faceRoute(battle: BattleState, self: Unit): Result<void> {
-    const current = get(battle, ref(self));
+    const current = ref(self).get(battle);
     if (current !== undefined && hasRoute(current) && hasFacing(current)) {
         const target = movementTarget(battle, ref(current));
         const direction =

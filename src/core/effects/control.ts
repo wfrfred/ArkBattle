@@ -34,7 +34,7 @@ export const stun: Definition<object> = {
         const id = `@effect/${self.id}/stun`;
         state = updateUnit(state, self.host, restrictions(id, true));
 
-        const unit = units.get(state, self.host);
+        const unit = self.host.get(state);
 
         return unit !== undefined && action.hasAction(unit)
             ? cancelForUnit(state, units.ref(unit), "INTERRUPTED")

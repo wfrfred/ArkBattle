@@ -3,12 +3,7 @@ import {
     hasClassification,
     hasFilterTag,
 } from "../../../core/unit/capability/classification/index.js";
-import {
-    update as updateUnit,
-    get as getCurrentUnit,
-    ref as unitRef,
-    type Unit,
-} from "../../../core/unit/index.js";
+import { update as updateUnit, ref as unitRef, type Unit } from "../../../core/unit/index.js";
 import { blocked } from "../../../core/battle/blocking/index.js";
 import { hasBlocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasSkill, modify } from "../../../core/unit/capability/skill/index.js";
@@ -18,7 +13,6 @@ import {
     type OrdinaryDefinition as EffectDefinition,
     type OrdinaryEffect as Effect,
     ref as effectRef,
-    get,
     setState,
 } from "../../../core/unit/effect/index.js";
 import { healSelf } from "./common.js";
@@ -73,7 +67,7 @@ export function shieldEffect({
         onInstall: (state, self) =>
             setState(state, effectRef(self), { ...self.state, lastTick: state.tick }),
         onEnable: (state, self) => {
-            const unit = getCurrentUnit(state, self.host);
+            const unit = self.host.get(state);
             if (unit === undefined) {
                 return state;
             }
@@ -88,8 +82,8 @@ export function shieldEffect({
                     priority: 100,
                     accepts: (_battle, { request }) => request.nature !== "LOSS",
                     invoke(state, context, pending) {
-                        const shield = get(state, ref);
-                        const host = getCurrentUnit(state, self.host);
+                        const shield = ref.get(state);
+                        const host = self.host.get(state);
                         if (
                             pending.type === "CANCELLED" ||
                             pending.amount <= 0 ||
@@ -108,8 +102,8 @@ export function shieldEffect({
                                 ...shield.state,
                                 layers: shield.state.layers - 1,
                             });
-                            state = healSelf(state, self.host.id, healRatio);
-                            const current = getCurrentUnit(state, self.host);
+                            state = healSelf(state, self.host, healRatio);
+                            const current = self.host.get(state);
                             if (current !== undefined && hasSkill(current)) {
                                 state = modify(state, unitRef(current), extraSp).state;
                             }
@@ -125,9 +119,7 @@ export function shieldEffect({
                         }
 
                         const sourceId = context.request.source?.id ?? null;
-                        const sarkazScale = hasSarkazTag(
-                            sourceId === null ? undefined : state.battlefield.units.get(sourceId),
-                        )
+                        const sarkazScale = hasSarkazTag(context.request.source?.get(state))
                             ? 1 - sarkazResistance
                             : 1;
                         const blockingScale =
@@ -149,7 +141,7 @@ export function shieldEffect({
             );
         },
         onDisable: (state, self) => {
-            const unit = getCurrentUnit(state, self.host);
+            const unit = self.host.get(state);
 
             return unit === undefined
                 ? state

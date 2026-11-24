@@ -44,7 +44,7 @@ test("Facing keeps an instance direction and checks current restrictions unless 
         id: "try-forced-turn",
         invoke(current) {
             const attempted = facing.turn(current, host, "RIGHT", "FORCED");
-            departureDirection = units.get(attempted, host).facing.direction;
+            departureDirection = host.get(attempted).facing.direction;
             return { state: attempted, value: undefined };
         },
     }));
@@ -81,7 +81,7 @@ test("eligible movement faces its navigation direction independently of velocity
     const beforeTurn = get(state, 0).position[0];
     state = update(state, host, facing.setRestriction({
         id: "fixed", value: { allows: (current, { self }) =>
-            self.position[0] > beforeTurn && units.get(current, host) === self },
+            self.position[0] > beforeTurn && host.get(current) === self },
     }));
     state = locomotion.advance(state, host, left, context);
     assert.ok(get(state, 0).locomotion.velocity[0] > 0);

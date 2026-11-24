@@ -78,7 +78,7 @@ function create<P extends object>(
             });
 
             function setContact(state: BattleState, unitId: Id, contact?: Contact): BattleState {
-                const current = mechanisms.get(state, reference);
+                const current = reference.get(state);
                 if (current === undefined) {
                     return state;
                 }
@@ -114,7 +114,7 @@ function create<P extends object>(
             }
 
             for (const unitId of self.state.contacts.keys()) {
-                const contact = mechanisms.get(battle, reference)?.state.contacts.get(unitId);
+                const contact = reference.get(battle)?.state.contacts.get(unitId);
                 const current = battle.battlefield.units.get(unitId);
                 if (
                     contact !== undefined &&
@@ -129,23 +129,23 @@ function create<P extends object>(
             }
 
             for (const candidate of candidates) {
-                if (mechanisms.get(battle, reference)?.lifecycle !== "ACTIVE") {
+                if (reference.get(battle)?.lifecycle !== "ACTIVE") {
                     return battle;
                 }
 
                 const candidateRef = units.ref(candidate);
-                const unit = units.get(battle, candidateRef);
+                const unit = candidateRef.get(battle);
                 const index = unit === undefined ? undefined : indexOf(unit);
                 if (unit === undefined || index === undefined) {
                     continue;
                 }
 
-                const previous = mechanisms.get(battle, reference)?.state.contacts.get(unit.id);
+                const previous = reference.get(battle)?.state.contacts.get(unit.id);
                 const tile = map.tiles.get(index, definition)!;
 
                 if (previous !== undefined) {
                     const effect =
-                        previous.effect === null ? undefined : effects.get(battle, previous.effect);
+                        previous.effect === null ? undefined : previous.effect.get(battle);
                     const effectExists = effect !== undefined && effect.lifecycle !== "ENDING";
                     if (previous.index === index && (effectExists || behaviour.retainOnLeave)) {
                         continue;
@@ -168,11 +168,11 @@ function create<P extends object>(
                     }
                 }
 
-                const latest = units.get(battle, candidateRef);
+                const latest = candidateRef.get(battle);
                 if (
                     latest === undefined ||
                     indexOf(latest) !== index ||
-                    mechanisms.get(battle, reference)?.lifecycle !== "ACTIVE"
+                    reference.get(battle)?.lifecycle !== "ACTIVE"
                 ) {
                     continue;
                 }
@@ -185,13 +185,13 @@ function create<P extends object>(
                 );
                 battle = installed.state;
 
-                if (mechanisms.get(battle, reference)?.lifecycle !== "ACTIVE") {
+                if (reference.get(battle)?.lifecycle !== "ACTIVE") {
                     return !behaviour.retainOnLeave && installed.value !== null
                         ? effects.remove(battle, installed.value, "TERRAIN_UNAVAILABLE")
                         : battle;
                 }
 
-                const current = units.get(battle, candidateRef);
+                const current = candidateRef.get(battle);
                 if (current !== undefined && indexOf(current) === index) {
                     battle = setContact(battle, unit.id, { index, effect: installed.value });
                 } else if (!behaviour.retainOnLeave && installed.value !== null) {

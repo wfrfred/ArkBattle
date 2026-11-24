@@ -29,12 +29,12 @@ test("Projectile initialization reserves its identity before add publishes it an
     const observed = [];
     const child = { id: "child", onEnter(battle, self) {
         observed.push("child");
-        assert.strictEqual(projectiles.get(battle, projectiles.ref(self)), self);
+        assert.strictEqual(projectiles.ref(self).get(battle), self);
         return battle;
     } };
     const parent = { id: "parent", onEnter(battle, self) {
         observed.push("parent");
-        assert.strictEqual(projectiles.get(battle, projectiles.ref(self)), self);
+        assert.strictEqual(projectiles.ref(self).get(battle), self);
         return create(battle, child, { child: true }).state;
     } };
     const initial = battle();
@@ -42,13 +42,13 @@ test("Projectile initialization reserves its identity before add publishes it an
         definition: parent, side: "ALLY", position: [0, 0], state: { parent: true },
     });
     const reference = projectiles.ref(initialized.value);
-    assert.equal(projectiles.get(initialized.state, reference), undefined);
+    assert.equal(reference.get(initialized.state), undefined);
     assert.deepEqual(observed, []);
     const added = projectiles.add(initialized.state, initialized.value);
 
     assert.deepEqual(observed, ["parent", "child"]);
-    assert.deepEqual(projectiles.get(added, reference).state, { parent: true });
-    assert.equal(projectiles.get(added, reference).side, "ALLY");
+    assert.deepEqual(reference.get(added).state, { parent: true });
+    assert.equal(reference.get(added).side, "ALLY");
     assert.deepEqual(instances(added).map(self => self.state), [{ parent: true }, { child: true }]);
 });
 
@@ -64,7 +64,7 @@ test("onEnter may synchronously remove its own registered instance", () => {
     };
     const created = create(battle(), definition);
 
-    assert.equal(projectiles.get(created.state, created.value), undefined);
+    assert.equal(created.value.get(created.state), undefined);
     assert.deepEqual(observed, [["ENDING", "EXPLICIT"]]);
 });
 
@@ -82,7 +82,7 @@ test("the Projectile step skips a candidate removed earlier in the same step", (
     const progressed = advance(source.state, [source.value, target.value]);
 
     assert.deepEqual(observed, [["advance", source.value.id]]);
-    assert.equal(projectiles.get(progressed, target.value), undefined);
+    assert.equal(target.value.get(progressed), undefined);
 });
 
 test("Slowable projectiles compose the contributions of each source and remove them independently", () => {
@@ -105,12 +105,12 @@ test("Slowable projectiles compose the contributions of each source and remove t
     state = projectiles.setMoveContribution(state, reference, { id: "b", value: 0.25 });
     state = projectiles.setMoveContribution(state, reference, { id: "b", value: 0.5 });
     state = advance(state, candidates(state));
-    assert.deepEqual(projectiles.get(state, reference).position, [0.25, 0]);
+    assert.deepEqual(reference.get(state).position, [0.25, 0]);
 
     state = advance(projectiles.removeMoveContribution(state, reference, "a"), [reference]);
-    assert.deepEqual(projectiles.get(state, reference).position, [0.75, 0]);
+    assert.deepEqual(reference.get(state).position, [0.75, 0]);
     state = advance(projectiles.removeMoveContribution(state, reference, "b"), [reference]);
-    assert.deepEqual(projectiles.get(state, reference).position, [1.75, 0]);
+    assert.deepEqual(reference.get(state).position, [1.75, 0]);
 });
 
 test("Runtime freezes Projectile candidates before Unit callbacks and Action output", () => {

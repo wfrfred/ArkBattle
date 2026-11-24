@@ -3,7 +3,6 @@ import type { State as BattleState } from "../../../battle/state.js";
 import type { Ref } from "../../../common/ref.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import * as hooks from "../../../hook.js";
-import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import type { Shiftable } from "./shiftable.js";
 import type { Unbalance } from "./unbalance.js";
@@ -23,7 +22,7 @@ export function dispatchMoved(battle: BattleState, event: ForcedMovement): Battl
     const { host } = event.unbalance;
 
     return hooks.dispatch(battle, event, undefined, {
-        candidates: (current) => units.get(current, host)?.hooks.get(forcedMoved) ?? [],
-        find: (current, id) => units.get(current, host)?.hooks.find(forcedMoved, id),
+        candidates: (current) => host.get(current)?.hooks.get(forcedMoved) ?? [],
+        find: (current, id) => host.get(current)?.hooks.find(forcedMoved, id),
     }).state;
 }

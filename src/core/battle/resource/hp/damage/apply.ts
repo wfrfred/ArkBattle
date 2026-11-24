@@ -2,7 +2,6 @@ import type { Options } from "../../../../hook.js";
 import type { Restriction } from "../../../../unit/capability/vitality/restriction.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
-import * as units from "../../../../unit/query.js";
 import { removing, setHook } from "../../../../unit/hook.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { isAlive } from "../../../../unit/capability/vitality/query.js";
@@ -34,7 +33,7 @@ export function applyDamage(
 ): Result<Outcome> {
     let battle = calculated.state;
     const calculation = calculated.value;
-    const target = units.get(battle, request.target);
+    const target = request.target.get(battle);
     if (
         calculation === undefined ||
         calculation.amount === 0 ||
@@ -120,7 +119,7 @@ export function applyDamage(
         options,
     ).state;
 
-    const current = units.get(battle, request.target);
+    const current = request.target.get(battle);
     const killed = current?.lifecycle === "ACTIVE" && !isAlive(current);
     if (killed) {
         if (request.killer !== null) {

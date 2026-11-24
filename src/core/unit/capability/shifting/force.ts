@@ -2,7 +2,6 @@ import type { Result, State as BattleState } from "../../../battle/state.js";
 import { assert } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
-import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { resolveMassLevel, type Shiftable } from "./shiftable.js";
 import { resolveBaseForceLevel, type Shifter } from "./shifter.js";
@@ -46,8 +45,8 @@ export function push(
     input: PushInput,
 ): Result<Ref<Unbalance> | null> {
     assert(Vec2.is(input.direction), "push direction must be a finite vector", TypeError);
-    const applier = units.get(battle, source);
-    const unit = units.get(battle, target);
+    const applier = source.get(battle);
+    const unit = target.get(battle);
     if (applier === undefined || unit === undefined) {
         return { state: battle, value: null };
     }

@@ -30,7 +30,7 @@ import {
     type Plan,
     type Route,
 } from "./capability.js";
-import { activeContext, contextFor, getContext, ref, target } from "./query.js";
+import { activeContext, contextFor, ref, target } from "./query.js";
 
 const RADIUS = 0.05;
 
@@ -73,7 +73,7 @@ export function createContext(
 ): Result<Ref<Context>> {
     validatePlan(input.plan);
     assert(Vec2.is(input.offset), "invalid route offset", TypeError);
-    const self = units.get(battle, host);
+    const self = host.get(battle);
     assert(self?.lifecycle === "ACTIVE", "route host is not active", RangeError);
 
     const context: Context = {
@@ -154,7 +154,7 @@ export function reassign(id: ContextId, plan: Plan, index = 0): Change<Unit & Ro
     return createChange<Unit & Route>(
         (self) =>
             changeContext(self, id, (context) => ({ ...context, plan, index, current: null })),
-        (battle, previous) => enter(battle, { host: units.ref(previous), id } as Ref<Context>),
+        (battle, previous) => enter(battle, ref(units.ref(previous), { id })),
     );
 }
 
@@ -166,7 +166,7 @@ export function skipWait(id: ContextId): Change<Unit & Route> {
                     ? context
                     : { ...context, index: context.index + 1, current: null },
             ),
-        (battle, previous) => interpret(battle, { host: units.ref(previous), id } as Ref<Context>),
+        (battle, previous) => interpret(battle, ref(units.ref(previous), { id })),
     );
 }
 
@@ -210,7 +210,7 @@ function atTarget(self: Unit, context: Context, position: WorldPosition): boolea
 }
 
 export function enter(battle: BattleState, reference: Ref<Context>): BattleState {
-    const context = getContext(battle, reference);
+    const context = reference.get(battle);
 
     return context?.current === null ? interpret(battle, reference, true) : battle;
 }
@@ -220,7 +220,7 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst = fa
     let plan: Plan | undefined;
 
     for (;;) {
-        const self = units.get(battle, reference.host);
+        const self = reference.host.get(battle);
         const context = self === undefined ? undefined : contextFor(self, reference.id);
         if (self?.lifecycle !== "ACTIVE" || context === undefined) {
             return battle;
@@ -344,7 +344,7 @@ function executeSpatial(
 }
 
 export function advance(battle: BattleState, reference: Ref<Unit & Route>): BattleState {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
     if (self?.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -370,7 +370,7 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
     }
 
     battle = interpret(battle, ref(reference, activeContext(self)));
-    const latest = units.get(battle, reference);
+    const latest = reference.get(battle);
     if (latest?.lifecycle !== "ACTIVE") {
         return battle;
     }

@@ -29,10 +29,6 @@ export function initialize(definition: Definition = {}): State {
     };
 }
 
-export function get<T extends Card<any>>(battle: BattleState, reference: Ref<T>): T | undefined {
-    return battle.deployment.deck.cards.get(reference.id) as T | undefined;
-}
-
 export function all(battle: BattleState): Query<Card> {
     return battle.deployment.deck.cards.values();
 }

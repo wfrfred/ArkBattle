@@ -12,7 +12,6 @@ import type { Activation } from "./activation.js";
 import type { Skill } from "./capability.js";
 import { dispatch, ammoConsumed, ammoReplenished } from "./hook.js";
 import { finish } from "./operations.js";
-import * as query from "./query.js";
 import { replace as replaceUnits } from "../../operations.js";
 import type { Ammo } from "./duration.js";
 
@@ -67,17 +66,13 @@ export function consume<X extends Activation<any, any>>(
 ): Result<Outcome> {
     assertPositiveSafeInteger(amount, "skill ammunition consumption");
 
-    const self = units.get(battle, reference.host);
+    const self = reference.host.get(battle);
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const active = self.skill.activation;
-    if (
-        self.lifecycle !== "ACTIVE" ||
-        active?.id !== reference.id ||
-        active.lifecycle !== "ACTIVE"
-    ) {
+    const active = reference.get(battle)?.activation;
+    if (self.lifecycle !== "ACTIVE" || active?.lifecycle !== "ACTIVE") {
         return rejected(battle, "UNAVAILABLE");
     }
     if (active.duration.type !== "AMMO") {
@@ -126,7 +121,7 @@ export function check<X extends Activation<any, any>>(
     battle: BattleState,
     reference: Ref<X>,
 ): BattleState {
-    const active = query.getActivation(battle, reference)?.activation;
+    const active = reference.get(battle)?.activation;
 
     return active?.lifecycle === "ACTIVE" &&
         active.duration.type === "AMMO" &&
@@ -143,17 +138,13 @@ function add<X extends Activation<any, any>>(
 ): Result<Outcome> {
     assertPositiveSafeInteger(requested, "skill ammunition replenishment");
 
-    const self = units.get(battle, reference.host);
+    const self = reference.host.get(battle);
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
 
-    const active = self.skill.activation;
-    if (
-        self.lifecycle !== "ACTIVE" ||
-        active?.id !== reference.id ||
-        active.lifecycle !== "ACTIVE"
-    ) {
+    const active = reference.get(battle)?.activation;
+    if (self.lifecycle !== "ACTIVE" || active?.lifecycle !== "ACTIVE") {
         return rejected(battle, "UNAVAILABLE");
     }
     if (active.duration.type !== "AMMO") {

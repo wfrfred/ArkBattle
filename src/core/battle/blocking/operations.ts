@@ -94,13 +94,13 @@ export function release(battle: BattleState, relations: readonly Relation[]): Ba
     const released: Relation[] = [];
 
     for (const relation of relations) {
-        const owner = (prepared.get(relation.blocker.id) ?? units.get(battle, relation.blocker)) as
+        const owner = (prepared.get(relation.blocker.id) ?? relation.blocker.get(battle)) as
             (Unit & Blocker) | undefined;
         if (!owner?.blocker.relations.includes(relation)) {
             continue;
         }
 
-        const target = units.get(battle, relation.blocked)!;
+        const target = relation.blocked.get(battle)!;
         const nextOwner: Unit & Blocker = {
             ...owner,
             blocker: {
@@ -131,12 +131,12 @@ export function release(battle: BattleState, relations: readonly Relation[]): Ba
 }
 
 export function maintain(battle: BattleState, relation: Relation): BattleState {
-    const blocker = units.get(battle, relation.blocker);
+    const blocker = relation.blocker.get(battle);
     if (!blocker?.blocker.relations.includes(relation)) {
         return battle;
     }
 
-    const target = units.get(battle, relation.blocked)!;
+    const target = relation.blocked.get(battle)!;
 
     return canRetain(battle, blocker, target) ? battle : release(battle, [relation]);
 }
@@ -154,8 +154,8 @@ export function acquire(
     blockerRef: Ref<Unit & Blocker>,
     targetRef: Ref<Unit & Blockable>,
 ): BattleState {
-    const blocker = units.get(battle, blockerRef);
-    const target = units.get(battle, targetRef);
+    const blocker = blockerRef.get(battle);
+    const target = targetRef.get(battle);
     if (
         blocker === undefined ||
         target?.blockable.relation !== null ||
@@ -168,9 +168,7 @@ export function acquire(
     const to = calculatePosition(
         blocker.position,
         target.position,
-        blocker.blocker.relations.map((entry) =>
-            stableBlockPosition(units.get(battle, entry.blocked)!),
-        ),
+        blocker.blocker.relations.map((entry) => stableBlockPosition(entry.blocked.get(battle)!)),
     );
 
     battle = replace(battle, [
@@ -193,7 +191,7 @@ export function acquire(
 }
 
 export function search(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
-    const blocker = units.get(battle, reference);
+    const blocker = reference.get(battle);
     if (blocker === undefined || !canSearch(battle, blocker)) {
         return battle;
     }

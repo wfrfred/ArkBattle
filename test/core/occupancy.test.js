@@ -32,14 +32,14 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
             slot: "SUPPORT",
             onOccupantAdded: (state, pair) => {
                 notifications.push(["occupantAdded", pair.occupant.id]);
-                assert.equal(units.get(state, units.ref(pair.occupant)).occupancy.pair, pair);
-                assert.equal(units.get(state, units.ref(pair.support)).occupancy.pair, pair);
+                assert.equal(units.ref(pair.occupant).get(state).occupancy.pair, pair);
+                assert.equal(units.ref(pair.support).get(state).occupancy.pair, pair);
                 return state;
             },
             onOccupantRemoved: (state, pair) => {
                 notifications.push(["occupantRemoved", pair.occupant.id]);
-                assert.notEqual(units.get(state, units.ref(pair.occupant))?.occupancy.pair, pair);
-                assert.notEqual(units.get(state, units.ref(pair.support))?.occupancy.pair, pair);
+                assert.notEqual(units.ref(pair.occupant).get(state)?.occupancy.pair, pair);
+                assert.notEqual(units.ref(pair.support).get(state)?.occupancy.pair, pair);
                 return state;
             },
         },

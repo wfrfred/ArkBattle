@@ -7,7 +7,6 @@ const paired: unique symbol = Symbol("lifetime");
 interface Config<T extends Identified<object>, E> {
     readonly kind: string;
     readonly address: (ref: Ref<T>) => string;
-    readonly get: (battle: BattleState, ref: Ref<T>) => T | undefined;
     readonly end: {
         readonly prepare: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
         readonly finalize: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;

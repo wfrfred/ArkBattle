@@ -1,4 +1,4 @@
-import type { Identified, Ref } from "../../../common/ref.js";
+import type { Identified, Identity, Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Skill as SkillCapability } from "./capability.js";
@@ -95,5 +95,12 @@ export function ref<X extends Activation<any, any>>(
     host: Ref<Unit & SkillCapability>,
     self: X,
 ): Ref<X> {
-    return { host, id: self.activation.id } as Ref<X>;
+    return { host, id: self.activation.id, get } as Ref<X>;
+}
+
+function get(this: object, battle: BattleState): Activation | undefined {
+    const { host, id } = this as Identity<Activation>;
+    const skill = host.get(battle)?.skill;
+
+    return (skill?.activation?.id === id ? skill : undefined) as Activation | undefined;
 }

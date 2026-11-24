@@ -2,12 +2,10 @@ import {
     clearCooldown,
     cancel as cancelAction,
     forUnit,
-    getExecution,
     ref as actionRef,
     type ActionCapability,
 } from "../../../core/unit/capability/action/index.js";
 import type { TilePosition } from "../../../core/geometry/coordinate.js";
-import { get as getCurrentUnit } from "../../../core/unit/index.js";
 import type {
     Definition as SkillDefinition,
     SpDefinition,
@@ -44,23 +42,23 @@ export function create(
             cost,
             initialize: () => ({ state: {}, duration: { type: "INFINITE" } }),
             accepts(battle, sourceRef) {
-                const source = getCurrentUnit(battle, sourceRef);
+                const source = sourceRef.get(battle);
 
                 return source !== undefined && skillTargets(battle, source, range).some(() => true);
             },
             onStart(state, host) {
-                if (getCurrentUnit(state, host) === undefined) {
+                if (host.get(state) === undefined) {
                     return state;
                 }
 
                 const normal = forUnit(state, host).find(
-                    (reference) => getExecution(state, reference)?.definition === normalAttack,
+                    (reference) => reference.get(state)?.definition === normalAttack,
                 );
                 if (normal !== undefined) {
                     state = cancelAction(state, normal, "INTERRUPTED");
                 }
 
-                if (getCurrentUnit(state, host)?.lifecycle !== "ACTIVE") {
+                if (host.get(state)?.lifecycle !== "ACTIVE") {
                     return state;
                 }
 

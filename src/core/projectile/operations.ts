@@ -3,7 +3,7 @@ import { replaceIn } from "../common/object.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
 import type { EndReason } from "./definition.js";
 import type { Eliminatable, Projectile } from "./projectile.js";
-import { get, ref } from "./query.js";
+import { ref } from "./query.js";
 import { create as createLifetime } from "../lifetime/index.js";
 import { register } from "../lifetime/operations.js";
 import type { State as BattleState } from "../battle/state.js";
@@ -27,7 +27,7 @@ export function update<S extends object, T extends object>(
         readonly state?: NoInfer<S>;
     },
 ): BattleState {
-    const current = get(battle, reference);
+    const current = reference.get(battle);
     if (current === undefined) {
         throw new RangeError("unknown projectile");
     }
@@ -54,12 +54,11 @@ export function replace<P extends Projectile<object, any>>(
 export const lifetime = createLifetime<Projectile<object, any>, EndReason>({
     kind: "PROJECTILE",
     address: (reference) => String(reference.id),
-    get,
     end: {
         prepare: (battle, reference, initial) =>
             replace(battle, reference, { ...initial, lifecycle: "ENDING" }),
         finalize: (battle, reference, _initial, reason) => {
-            const self = get(battle, reference)!;
+            const self = reference.get(battle)!;
             battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
 
             const projectiles = battle.battlefield.projectiles.remove(reference.id);
@@ -92,7 +91,7 @@ export function advance<P extends Projectile<object, any>>(
     candidates: Iterable<Ref<P>>,
 ): BattleState {
     for (const reference of candidates) {
-        const self = get(battle, reference);
+        const self = reference.get(battle);
         if (self?.lifecycle === "ACTIVE") {
             battle = self.definition.onTick?.(battle, self) ?? battle;
         }

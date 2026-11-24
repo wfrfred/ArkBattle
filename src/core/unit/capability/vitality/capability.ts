@@ -107,7 +107,7 @@ function settleHealth(battle: BattleState, previous: Unit & Vitality): BattleSta
     }
 
     const reference = units.ref(previous);
-    const current = units.get(battle, reference);
+    const current = reference.get(battle);
 
     return current?.lifecycle === "ACTIVE" && current.vitality.health.hp <= 0
         ? remove(battle, reference, { reason: "DEATH", killer: null })

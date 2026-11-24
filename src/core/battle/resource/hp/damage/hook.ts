@@ -2,7 +2,6 @@ import type * as receivingProtocol from "../../receiving.js";
 import type { Departure, Unit } from "../../../../unit/unit.js";
 import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
 import * as hooks from "../../../../hook.js";
-import * as units from "../../../../unit/query.js";
 import type { Result, State as BattleState } from "../../../state.js";
 import type {
     Application,
@@ -97,10 +96,10 @@ export function dispatchTargetKilled(
 
     return hooks.dispatch(battle, context, undefined, {
         candidates: (current) =>
-            (units.get(current, killer)?.hooks.get(targetKilled) ?? []).filter(
+            (killer.get(current)?.hooks.get(targetKilled) ?? []).filter(
                 ({ id }) => !hooks.excluded(options, targetKilled, id),
             ),
-        find: (current, id) => units.get(current, killer)?.hooks.find(targetKilled, id),
+        find: (current, id) => killer.get(current)?.hooks.find(targetKilled, id),
     });
 }
 

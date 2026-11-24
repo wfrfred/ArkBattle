@@ -1,4 +1,4 @@
-export { all, get, initialize, type Definition, type State } from "./deck.js";
+export { all, initialize, type Definition, type State } from "./deck.js";
 
 export { add, replace, sort } from "./operations.js";
 

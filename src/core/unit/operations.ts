@@ -22,10 +22,10 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
         battle,
         observers.entered,
         unit,
-        (current) => units.get(current, reference)?.lifecycle !== "ACTIVE",
+        (current) => reference.get(current)?.lifecycle !== "ACTIVE",
     );
 
-    const entered = units.get(battle, reference);
+    const entered = reference.get(battle);
     if (entered?.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -33,7 +33,7 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     return dispatch(battle, entered, undefined, {
         candidates: () => entered.hooks.get(lifecycle.entered),
         find: (current, id) => {
-            const self = units.get(current, reference);
+            const self = reference.get(current);
 
             return self?.lifecycle === "ACTIVE"
                 ? self.hooks.find(lifecycle.entered, id)
@@ -47,7 +47,7 @@ export function update<U extends Unit>(
     reference: Ref<U>,
     change: Change<NoInfer<U>>,
 ): BattleState {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
     if (self === undefined) {
         throw new RangeError(`unknown unit: ${reference.id}`);
     }
@@ -70,20 +70,17 @@ export function replace<U extends Unit>(battle: BattleState, updates: readonly U
 export const lifetime = createLifetime<Unit, End>({
     kind: "UNIT",
     address: (reference) => String(reference.id),
-    get: units.get,
     end: {
         prepare: (battle, reference, initial, end) => {
             battle = replace(battle, [{ ...initial, lifecycle: "ENDING" }]);
 
             return dispatch(battle, { ...end, unit: initial }, undefined, {
-                candidates: (current) =>
-                    units.get(current, reference)!.hooks.get(lifecycle.removing),
-                find: (current, id) =>
-                    units.get(current, reference)!.hooks.find(lifecycle.removing, id),
+                candidates: (current) => reference.get(current)!.hooks.get(lifecycle.removing),
+                find: (current, id) => reference.get(current)!.hooks.find(lifecycle.removing, id),
             }).state;
         },
         finalize: (battle, reference, initial, end) => {
-            const departing = units.get(battle, reference)!;
+            const departing = reference.get(battle)!;
             const entries = departing.hooks.get(lifecycle.removed);
             const departure = { ...end, unit: initial };
             const next = battlefield.remove(battle.battlefield, reference);
@@ -117,7 +114,7 @@ export function advance(battle: BattleState): BattleState {
 
     for (const candidate of candidates) {
         const reference = units.ref(candidate);
-        const self = units.get(battle, reference);
+        const self = reference.get(battle);
         if (self?.lifecycle !== "ACTIVE") {
             continue;
         }
@@ -125,7 +122,7 @@ export function advance(battle: BattleState): BattleState {
         battle = dispatch(battle, self, undefined, {
             candidates: () => self.hooks.get(lifecycle.tick),
             find: (current, id) => {
-                const unit = units.get(current, reference);
+                const unit = reference.get(current);
 
                 return unit?.lifecycle === "ACTIVE"
                     ? unit.hooks.find(lifecycle.tick, id)

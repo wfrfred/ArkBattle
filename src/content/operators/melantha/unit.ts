@@ -2,7 +2,6 @@ import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
 import { create as createElemental } from "../../elemental.js";
 import {
-    getAction,
     ref as actionRef,
     setState as setActionState,
     type ActionCapability,
@@ -90,7 +89,7 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
             definitions: [attack],
             select(battle, self) {
                 const reference = actionRef(unitRef(self), attack);
-                const current = getAction(battle, reference);
+                const current = reference.get(battle);
                 if (
                     !hasTarget(battle, self, attackParameters.range) ||
                     !allows(battle, { self, definitionId: attack.id }, self.action.restrictions)

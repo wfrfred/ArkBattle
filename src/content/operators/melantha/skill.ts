@@ -8,7 +8,7 @@ import {
     type Trigger,
 } from "../../../core/unit/capability/skill/index.js";
 import { install } from "../../../core/unit/effect/index.js";
-import { get, ref } from "../../../core/unit/index.js";
+import { ref } from "../../../core/unit/index.js";
 import { createAttackBonus } from "./effect.js";
 
 export interface SkillParameters {
@@ -34,7 +34,7 @@ export function create({ id, cost, durationTicks, sp, trigger, attackBonus }: Sk
             cost,
             initialize: () => ({ state: {}, duration: { type: "TIME", durationTicks } }),
             onStart(state, source, self) {
-                const unit = get(state, source);
+                const unit = source.get(state);
                 if (unit === undefined) {
                     return state;
                 }

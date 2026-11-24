@@ -2,7 +2,7 @@ export type { Definition, EndReason } from "./definition.js";
 
 export type { Projectile, Id, Lifecycle, Eliminatable } from "./projectile.js";
 
-export { ref, all, get, hasEliminatable } from "./query.js";
+export { ref, all, hasEliminatable } from "./query.js";
 
 export type { Input } from "./initialize.js";
 

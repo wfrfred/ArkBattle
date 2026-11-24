@@ -26,7 +26,7 @@ export const removing: RemovingHook = {
 };
 
 export function releaseAll(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
 
     if (self === undefined) {
         return battle;
@@ -44,7 +44,7 @@ function settleRestrictions(battle: BattleState, reference: Ref<Unit & Blocker>)
 }
 
 export function settleCapacity(battle: BattleState, reference: Ref<Unit & Blocker>): BattleState {
-    let current = units.get(battle, reference);
+    let current = reference.get(battle);
 
     while (current !== undefined) {
         if (
@@ -56,7 +56,7 @@ export function settleCapacity(battle: BattleState, reference: Ref<Unit & Blocke
 
         const relation = current.blocker.relations.at(-1)!;
         battle = blocking.release(battle, [relation]);
-        current = units.get(battle, reference);
+        current = reference.get(battle);
     }
 
     return battle;

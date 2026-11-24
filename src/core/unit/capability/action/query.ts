@@ -5,8 +5,7 @@ import type { Ref } from "../../../common/ref.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { hasAction, type Action as ActionCapability } from "./capability.js";
-import type { Action } from "./action.js";
-import type { Execution, ExecutionRef } from "./execution.js";
+import { refForId, type ExecutionRef } from "./execution.js";
 import type { Id as DefinitionId } from "./definition.js";
 
 export function getApplyWay(unit: Unit): ApplyWay {
@@ -19,7 +18,7 @@ export function forUnit(
     battle: BattleState,
     source: Ref<Unit & ActionCapability>,
 ): readonly ExecutionRef[] {
-    const unit = units.get(battle, source);
+    const unit = source.get(battle);
 
     return unit === undefined ? [] : executionRefs(unit);
 }
@@ -30,29 +29,9 @@ export function executionRefs(self: Unit & ActionCapability): readonly Execution
     return sort(
         self.action.actions
             .values()
-            .flatMap(({ execution }) =>
-                execution === null ? [] : [{ host, id: execution.id } as ExecutionRef],
-            ),
+            .flatMap(({ execution }) => (execution === null ? [] : [refForId(host, execution.id)])),
         (left, right) => left.id - right.id,
     );
-}
-
-export function getExecution<P extends object, E extends object>(
-    battle: BattleState,
-    reference: Ref<Execution<P, E>>,
-): Execution<P, E> | undefined;
-export function getExecution(battle: BattleState, reference: ExecutionRef): Execution | undefined;
-export function getExecution(battle: BattleState, reference: ExecutionRef): Execution | undefined {
-    return units.get(battle, reference.host)?.action.actions.getExecution(reference.id);
-}
-
-export function getAction<P extends object, E extends object>(
-    battle: BattleState,
-    reference: Ref<Action<P, E>>,
-): Action<P, E> | undefined {
-    const action = units.get(battle, reference.host)?.action.actions.get(reference.definitionId);
-
-    return action as Action<P, E> | undefined;
 }
 
 export function hasExecution(
@@ -60,7 +39,7 @@ export function hasExecution(
     source: Ref<Unit & ActionCapability>,
     definitionId?: DefinitionId,
 ): boolean {
-    const unit = units.get(battle, source);
+    const unit = source.get(battle);
 
     return (
         unit !== undefined &&

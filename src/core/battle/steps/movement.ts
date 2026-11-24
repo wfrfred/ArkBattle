@@ -31,7 +31,7 @@ export function advanceMovement(
             battle = route.advance(battle, units.ref(initial));
         }
 
-        const unit = units.get(battle, ref);
+        const unit = ref.get(battle);
         if (unit?.lifecycle !== "ACTIVE" || !hasLocomotion(unit)) {
             continue;
         }

@@ -14,21 +14,19 @@ export function blockerOf(
     battle: BattleState,
     reference: Ref<Unit & Blockable>,
 ): Ref<Unit & Blocker> | undefined {
-    return units.get(battle, reference)?.blockable.relation?.blocker;
+    return reference.get(battle)?.blockable.relation?.blocker;
 }
 
 export function blocked(
     battle: BattleState,
     reference: Ref<Unit & Blocker>,
 ): readonly Ref<Unit & Blockable>[] {
-    return (
-        units.get(battle, reference)?.blocker.relations.map((relation) => relation.blocked) ?? []
-    );
+    return reference.get(battle)?.blocker.relations.map((relation) => relation.blocked) ?? [];
 }
 
 export function usedCapacity(battle: BattleState, reference: Ref<Unit & Blocker>): number {
-    return (units.get(battle, reference)?.blocker.relations ?? []).reduce((used, relation) => {
-        const unit = units.get(battle, relation.blocked)!;
+    return (reference.get(battle)?.blocker.relations ?? []).reduce((used, relation) => {
+        const unit = relation.blocked.get(battle)!;
 
         return used + resolveVolume(unit.definition.blockable, unit.blockable);
     }, 0);
@@ -36,7 +34,7 @@ export function usedCapacity(battle: BattleState, reference: Ref<Unit & Blocker>
 
 export function relations(battle: BattleState, reference?: Ref<Unit>): readonly Relation[] {
     if (reference !== undefined) {
-        const unit = units.get(battle, reference);
+        const unit = reference.get(battle);
         if (unit === undefined) {
             return [];
         }
@@ -58,8 +56,8 @@ export function relations(battle: BattleState, reference?: Ref<Unit>): readonly 
 }
 
 export function hasRelation(battle: BattleState, relation: Relation): boolean {
-    const owner = units.get(battle, relation.blocker);
-    const target = units.get(battle, relation.blocked);
+    const owner = relation.blocker.get(battle);
+    const target = relation.blocked.get(battle);
 
     return (
         owner !== undefined &&

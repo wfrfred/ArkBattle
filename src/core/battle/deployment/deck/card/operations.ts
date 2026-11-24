@@ -2,7 +2,6 @@ import type { Ref } from "../../../../common/ref.js";
 import type { Contribution } from "../../../../common/contribution.js";
 import { replaceIn } from "../../../../common/object.js";
 import type { State as BattleState } from "../../../state.js";
-import { get } from "../deck.js";
 import { replace } from "../operations.js";
 import type { Card, Policy } from "./card.js";
 import type { Key } from "../../../../hook.js";
@@ -17,7 +16,7 @@ export function setState<T extends Card<any>>(
     reference: Ref<T>,
     state: NoInfer<T["state"]>,
 ): BattleState {
-    const self = get(battle, reference)!;
+    const self = reference.get(battle)!;
 
     return state === self.state ? battle : replace(battle, { ...self, state });
 }
@@ -62,7 +61,7 @@ export function recycle<S extends object>(card: Card<S>): Card<S> {
 }
 
 export function advance(battle: BattleState, reference: Ref<Card>): BattleState {
-    const card = get(battle, reference)!;
+    const card = reference.get(battle)!;
     let next = card;
 
     if (!card.supply.paused) {
@@ -100,7 +99,7 @@ export function setUnitHook<H extends Entry, Owner extends object>(
     key: Key<H, Owner>,
     entry: NoInfer<H>,
 ): BattleState {
-    const self: Card = get(battle, reference)!;
+    const self: Card = reference.get(battle)!;
     const unitHooks = self.unitHooks.set(key, entry);
 
     return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
@@ -112,7 +111,7 @@ export function removeUnitHook<H extends Entry, Owner extends object>(
     key: Key<H, Owner>,
     id: string,
 ): BattleState {
-    const self: Card = get(battle, reference)!;
+    const self: Card = reference.get(battle)!;
     const unitHooks = self.unitHooks.remove(key, id);
 
     return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
@@ -123,7 +122,7 @@ export function setRestriction(
     reference: Ref<Card<any>>,
     entry: Contribution<Restriction>,
 ): BattleState {
-    const self: Card = get(battle, reference)!;
+    const self: Card = reference.get(battle)!;
     const restrictions = set(self.restrictions, entry);
 
     return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
@@ -134,7 +133,7 @@ export function removeRestriction(
     reference: Ref<Card<any>>,
     id: string,
 ): BattleState {
-    const self: Card = get(battle, reference)!;
+    const self: Card = reference.get(battle)!;
     const restrictions = remove(self.restrictions, id);
 
     return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });

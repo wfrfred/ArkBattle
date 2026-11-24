@@ -18,8 +18,8 @@ test("composition associates without commuting, publishes the final Unit and pre
         (self) => ({ ...self, position: [self.position[0] + 1, 0] }),
         (state, previous) => {
             assert.deepEqual(previous.position, [0, 0]);
-            assert.deepEqual(units.get(state, first).position, [5, 0]);
-            assert.deepEqual(units.get(state, second).position, [1, 0]);
+            assert.deepEqual(first.get(state).position, [5, 0]);
+            assert.deepEqual(second.get(state).position, [1, 0]);
             order.push("increment");
             return update(state, second, createChange(
                 (self) => ({ ...self, position: [self.position[0], 1] }),
@@ -34,8 +34,8 @@ test("composition associates without commuting, publishes the final Unit and pre
         (self) => ({ ...self, position: [self.position[0] * 3, 0] }),
         (state, previous) => {
             assert.deepEqual(previous.position, [1, 0]);
-            assert.deepEqual(units.get(state, first).position, [5, 0]);
-            assert.deepEqual(units.get(state, second).position, [1, 1]);
+            assert.deepEqual(first.get(state).position, [5, 0]);
+            assert.deepEqual(second.get(state).position, [1, 1]);
             order.push("scale");
             return state;
         },
@@ -55,7 +55,7 @@ test("composition associates without commuting, publishes the final Unit and pre
     const guardedScale = units.optional((self) => self.position[0] > 0, scale);
     const left = units.compose(units.compose(increment, guardedScale), offset);
     const right = units.compose(increment, units.compose(guardedScale, offset));
-    const source = units.get(before, first);
+    const source = first.get(before);
     assert.deepEqual(left(source).next, right(source).next);
     assert.notDeepEqual(
         units.compose(increment, scale)(source).next.position,
@@ -65,19 +65,19 @@ test("composition associates without commuting, publishes the final Unit and pre
 
     const after = update(before, first, units.compose(unchanged, left));
     assert.deepEqual(order, ["increment", "nested", "scale", "offset"]);
-    assert.deepEqual(units.get(after, first).position, [5, 0]);
-    assert.deepEqual(units.get(after, second).position, [1, 1]);
+    assert.deepEqual(first.get(after).position, [5, 0]);
+    assert.deepEqual(second.get(after).position, [1, 1]);
 
-    const original = units.get(after, first);
+    const original = first.get(after);
     const temporary = createChange(
         (self) => ({ ...self, position: [6, 0] }),
         (state) => {
-            assert.equal(units.get(state, first), original);
+            assert.equal(first.get(state), original);
             order.push("restore-settlement");
             return state;
         },
     );
     const restored = update(after, first, units.compose(temporary, createChange(() => original)));
-    assert.equal(units.get(restored, first), original);
+    assert.equal(first.get(restored), original);
     assert.equal(order.at(-1), "restore-settlement");
 });

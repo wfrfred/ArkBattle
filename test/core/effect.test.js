@@ -47,7 +47,7 @@ test("installation, participation, and ending preserve completed business and cu
                 "end",
                 self.lifecycle,
                 self.state.activations,
-                offense.resolveAttack(state, units.get(state, self.host)),
+                offense.resolveAttack(state, self.host.get(state)),
             ]);
             return state;
         },
@@ -58,12 +58,12 @@ test("installation, participation, and ending preserve completed business and cu
     state = installed.state;
     assert.deepEqual(observed, [["install", "INSTALLING"]]);
     state = effects.setEnabled(state, installed.value, true);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 120);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 120);
     state = effects.setEnabled(state, installed.value, false);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 100);
     state = effects.setEnabled(state, installed.value, true);
     state = effects.remove(state, installed.value);
-    assert.equal(effects.get(state, installed.value), undefined);
+    assert.equal(installed.value.get(state), undefined);
     assert.deepEqual(observed.at(-1), ["end", "ENDING", 3, 100]);
 
     const instant = {
@@ -85,7 +85,7 @@ test("installation, participation, and ending preserve completed business and cu
         expiration: { type: "DURATION", duration: 0, remaining: 0, rate: 1 },
     });
     state = expired.state;
-    assert.equal(effects.get(state, expired.value), undefined);
+    assert.equal(expired.value.get(state), undefined);
     assert.deepEqual(observed.slice(-2), ["instant", "instant-ended"]);
 
     const ended = effects.install(state, owner, {
@@ -93,7 +93,7 @@ test("installation, participation, and ending preserve completed business and cu
         id: "self-ending",
         onInstall: (current, self) => effects.remove(current, effects.ref(self)),
     });
-    assert.equal(effects.get(ended.state, ended.value), undefined);
+    assert.equal(ended.value.get(ended.state), undefined);
 
     const renewed = effects.install(state, owner, {
         ...instant,
@@ -106,7 +106,7 @@ test("installation, participation, and ending preserve completed business and cu
             return current;
         },
     }, { expiration: { type: "DURATION", duration: 0, remaining: 0, rate: 1 } });
-    assert.equal(effects.get(renewed.state, renewed.value).lifecycle, "ACTIVE");
+    assert.equal(renewed.value.get(renewed.state).lifecycle, "ACTIVE");
     assert.deepEqual(observed.at(-1), ["renewed", 2]);
 });
 
@@ -146,15 +146,15 @@ test("DEFAULT retains candidates and installs them before priority and enabled d
     const equal = effects.install(high.state, owner, later);
     state = equal.state;
     assert.deepEqual(installed, ["weak", "strong", "later"]);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 120);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 120);
     state = effects.setEnabled(state, high.value, false);
-    assert.equal(effects.get(state, low.value).lifecycle, "INACTIVE");
-    assert.equal(effects.get(state, equal.value).lifecycle, "INACTIVE");
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
+    assert.equal(low.value.get(state).lifecycle, "INACTIVE");
+    assert.equal(equal.value.get(state).lifecycle, "INACTIVE");
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 100);
     state = effects.remove(state, high.value);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 130);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 130);
     state = effects.remove(state, equal.value);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 110);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 110);
 });
 
 test("time advances independently of participation, publishes before active business, and permits renewal and manual progress", () => {
@@ -172,7 +172,7 @@ test("time advances independently of participation, publishes before active busi
             initialize: () => ({}),
             onTick(current, self, previous) {
                 observed.push([previous.remaining, self.expiration.remaining]);
-                assert.equal(effects.get(current, effects.ref(self)).expiration, self.expiration);
+                assert.equal(effects.ref(self).get(current).expiration, self.expiration);
                 if (current.tick === 2) {
                     return effects.install(current, self.host, {
                         id: "added-during-tick",
@@ -237,10 +237,10 @@ test("time advances independently of participation, publishes before active busi
         { expiration: { type: "DURATION", duration: 2, remaining: 2, rate: 0 } },
     );
     state = effects.advance({ ...manual.state, tick: 1 });
-    assert.equal(effects.get(state, duration.value).expiration.remaining, 2);
+    assert.equal(duration.value.get(state).expiration.remaining, 2);
     assert.deepEqual(observed, []);
     state = effects.setExpiration(state, deadline.value, { type: "DEADLINE", tick: 1 });
-    assert.notEqual(effects.get(state, deadline.value), undefined);
+    assert.notEqual(deadline.value.get(state), undefined);
     state = effects.setEnabled(state, duration.value, true);
     for (let tick = 2; tick <= 5; tick++) state = effects.advance({ ...state, tick });
     assert.deepEqual(observed, [
@@ -251,7 +251,7 @@ test("time advances independently of participation, publishes before active busi
     ]);
     assert.deepEqual(new Set(ended), new Set(["deadline", "manual", "duration"]));
     assert.deepEqual(laterTicks, [3]);
-    assert.equal(effects.get(state, duration.value), undefined);
+    assert.equal(duration.value.get(state), undefined);
 });
 
 test("EXTEND and EXTEND_TIME renew the retained instance without creating incoming content", () => {
@@ -290,7 +290,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
     );
     state = renewed.state;
     assert.deepEqual(renewed.value, first.value);
-    const retained = effects.get(state, first.value);
+    const retained = first.value.get(state);
     assert.equal(retained.definition, extend);
     assert.deepEqual(retained.state, { sampled: "retained" });
     assert.equal(retained.source, source);
@@ -319,15 +319,15 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
         expiration: { type: "DURATION", duration: 4, remaining: 4, rate: 1 },
     });
     assert.deepEqual(extended.value, original.value);
-    assert.deepEqual(effects.get(extended.state, original.value).expiration, {
+    assert.deepEqual(original.value.get(extended.state).expiration, {
         type: "DURATION",
         duration: 7,
         remaining: 6,
         rate: 1,
     });
     state = remove(extended.state, source, { reason: "SCRIPT" });
-    assert.equal(effects.get(state, first.value), undefined);
-    assert.notEqual(effects.get(state, original.value), undefined);
+    assert.equal(first.value.get(state), undefined);
+    assert.notEqual(original.value.get(state), undefined);
 });
 
 test("STACK separates effective output, manual consumption, and natural decay while preserving one instance", () => {
@@ -360,7 +360,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
                 }),
             ),
         onStackChange(state, self, previous) {
-            assert.equal(effects.get(state, effects.ref(self)).stackCount, self.stackCount);
+            assert.equal(effects.ref(self).get(state).stackCount, self.stackCount);
             changes.push([previous, self.stackCount, self.expiration.remaining]);
             if (self.lifecycle !== "ACTIVE") {
                 return state;
@@ -403,26 +403,26 @@ test("STACK separates effective output, manual consumption, and natural decay wh
     assert.deepEqual(third.value, first.value);
     assert.deepEqual(full.value, first.value);
     assert.equal(installations, 1);
-    assert.equal(effects.get(state, first.value).stackCount, 3);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 120);
+    assert.equal(first.value.get(state).stackCount, 3);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 120);
     assert.deepEqual(changes, [
         [1, 2, 5],
         [2, 3, 5],
     ]);
     state = effects.setEnabled(state, first.value, false);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 100);
     state = effects.decreaseStack(state, first.value, 1);
-    assert.equal(effects.get(state, first.value).expiration.remaining, 6);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
+    assert.equal(first.value.get(state).expiration.remaining, 6);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 100);
     for (let tick = 3; tick <= 8; tick++) state = effects.advance({ ...state, tick });
-    assert.equal(effects.get(state, first.value).stackCount, 1);
-    assert.equal(effects.get(state, first.value).expiration.remaining, 2);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
+    assert.equal(first.value.get(state).stackCount, 1);
+    assert.equal(first.value.get(state).expiration.remaining, 2);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 100);
     state = effects.setEnabled(state, first.value, true);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 110);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 110);
     for (let tick = 9; tick <= 10; tick++) state = effects.advance({ ...state, tick });
-    assert.equal(effects.get(state, first.value), undefined);
-    assert.equal(offense.resolveAttack(state, units.get(state, owner)), 100);
+    assert.equal(first.value.get(state), undefined);
+    assert.equal(offense.resolveAttack(state, owner.get(state)), 100);
     assert.deepEqual(changes, [
         [1, 2, 5],
         [2, 3, 5],
@@ -459,10 +459,10 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         expiration: { type: "DURATION", duration: 10, remaining: 10, rate: 1 },
     });
     state = effects.advance({ ...capped.state, tick: 11 });
-    assert.equal(effects.get(state, endFirst.value), undefined);
+    assert.equal(endFirst.value.get(state), undefined);
     const consumed = effects.install(state, owner, endTogether);
     state = effects.decreaseStack(consumed.state, consumed.value, 1);
-    assert.equal(effects.get(state, consumed.value), undefined);
+    assert.equal(consumed.value.get(state), undefined);
 });
 
 test("UNIQUE groups distinguish shared, Unit, and absent sources while source attribution remains independent of scope", () => {
@@ -501,8 +501,8 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
     };
     const unpartitioned = effects.install(absent.state, owner, shared, { source: a });
     assert.notEqual(unpartitioned.value, null);
-    assert.equal(effects.get(unpartitioned.state, unpartitioned.value).lifecycle, "ACTIVE");
-    assert.equal(effects.get(unpartitioned.state, absent.value).lifecycle, "ACTIVE");
+    assert.equal(unpartitioned.value.get(unpartitioned.state).lifecycle, "ACTIVE");
+    assert.equal(absent.value.get(unpartitioned.state).lifecycle, "ACTIVE");
     assert.equal(effects.install(unpartitioned.state, owner, shared, { source: b }).value, null);
     const bound = effects.install(
         unpartitioned.state,
@@ -514,12 +514,12 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
         { source: a, scopes: [scope(unitLifetime, a)] },
     );
     state = remove(bound.state, a, { reason: "SCRIPT" });
-    assert.equal(effects.get(state, bound.value), undefined);
-    assert.equal(effects.get(state, first.value).source, a);
+    assert.equal(bound.value.get(state), undefined);
+    assert.equal(first.value.get(state).source, a);
     assert.equal(effects.install(state, owner, definition, { source: a }).value, null);
     state = remove(state, owner, { reason: "SCRIPT" });
-    assert.equal(effects.get(state, first.value), undefined);
-    assert.equal(effects.get(state, other.value), undefined);
+    assert.equal(first.value.get(state), undefined);
+    assert.equal(other.value.get(state), undefined);
 });
 
 test("source grouping follows persistent Cards across redeployment and keeps Card and Unit identities separate", () => {
@@ -549,7 +549,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const firstSource = units.ref(get(firstUnit.state, firstUnit.value.unitId));
     const installed = effects.install(firstUnit.state, owner, definition, { source: firstSource });
     state = deployment.retreat(installed.state, firstSource);
-    assert.equal(units.get(state, firstSource), undefined);
+    assert.equal(firstSource.get(state), undefined);
     assert.equal(effects.install(state, owner, definition, { source: firstSource }).value, null);
     state = effects.remove(state, installed.value);
     const delayed = {
@@ -574,5 +574,5 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     assert.equal(owner.id, a.id);
     const sameNumberUnit = effects.install(other.state, owner, delayed, { source: owner });
     assert.notEqual(sameNumberUnit.value, null);
-    assert.equal(effects.get(sameNumberUnit.state, lateInstall.value).source, firstSource);
+    assert.equal(lateInstall.value.get(sameNumberUnit.state).source, firstSource);
 });

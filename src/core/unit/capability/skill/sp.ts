@@ -203,7 +203,7 @@ export function recover(
         assertNonnegativeSafeInteger(amount, "skill SP recovery amount");
     }
 
-    const self = units.get(battle, ref);
+    const self = ref.get(battle);
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -253,7 +253,7 @@ export function recover(
 export function pay(battle: BattleState, ref: Ref<Unit & Skill>, amount: number): Result<Outcome> {
     assertNonnegativeSafeInteger(amount, "skill SP payment amount");
 
-    const self = units.get(battle, ref);
+    const self = ref.get(battle);
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -289,7 +289,7 @@ export function modify(
 ): Result<Outcome> {
     assertSafeInteger(delta, "skill SP modification");
 
-    const self = units.get(battle, ref);
+    const self = ref.get(battle);
     if (self === undefined) {
         return rejected(battle, "UNAVAILABLE");
     }
@@ -321,7 +321,7 @@ export function modify(
 }
 
 export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleState {
-    const self = units.get(battle, ref);
+    const self = ref.get(battle);
     if (self === undefined) {
         return battle;
     }

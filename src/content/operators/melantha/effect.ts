@@ -5,14 +5,14 @@ import {
     type Offense,
 } from "../../../core/unit/capability/offense/index.js";
 import type { OrdinaryDefinition } from "../../../core/unit/effect/index.js";
-import { get, ref, update } from "../../../core/unit/index.js";
+import { ref, update } from "../../../core/unit/index.js";
 
 export function createAttackBonus(id: string, amount: number): OrdinaryDefinition<object, Offense> {
     return {
         id,
         initialize: () => ({}),
         onEnable: (state, self) => {
-            const unit = get(state, self.host);
+            const unit = self.host.get(state);
 
             return unit === undefined
                 ? state
@@ -26,7 +26,7 @@ export function createAttackBonus(id: string, amount: number): OrdinaryDefinitio
                   );
         },
         onDisable: (state, self) => {
-            const unit = get(state, self.host);
+            const unit = self.host.get(state);
 
             return unit === undefined
                 ? state

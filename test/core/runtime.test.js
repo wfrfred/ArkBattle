@@ -146,7 +146,7 @@ test("Tick phases publish their resource operations and failures preserve the in
         ["operator", [1, 0]],
     ]);
     assert.equal(completed.deployment.dp.balance, 17);
-    assert.equal(cards.get(completed, card).supply.stock, 0);
+    assert.equal(card.get(completed).supply.stock, 0);
     const finished = step(completed, []);
     assert.equal(finished.tick, 2);
     assert.equal(finished.deployment.dp.balance, 19);
@@ -157,7 +157,7 @@ test("Tick phases publish their resource operations and failures preserve the in
     assert.equal(interrupted.deployment.dp.balance, 17);
     assert.equal(branch.tick, 0);
     assert.equal(branch.deployment.dp.balance, 20);
-    assert.equal(cards.get(branch, card).supply.stock, 1);
+    assert.equal(card.get(branch).supply.stock, 1);
     assert.deepEqual([...units.all(branch)], []);
 });
 

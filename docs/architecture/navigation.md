@@ -22,7 +22,7 @@ Navigation 不依赖 BattleState 或战场地块类型。具体类型和签名�
 
 ### Overlay 登记
 
-运行时由 Battle 创建、更新和移除覆盖。创建时提供运动方式和规则，由 Battle 分配本场唯一的 ID 并返回 Ref。后续以 Ref 定位，更新在原运动方式的集合中整份替换规则并保留顺序，省略 cost 表示清除原代价覆盖。更新缺失的 Ref 会抛出 RangeError，重复移除返回原状态。 [覆盖操作](../../src/core/battle/overlay.ts)
+运行时由 Battle 创建、更新和移除覆盖。创建时提供运动方式和规则，由 Battle 分配本场唯一的 ID 并返回 Ref。`ref.get(battle)` 读取指定版本中的对应覆盖。更新在原运动方式的集合中整份替换规则并保留顺序，省略 cost 表示清除原代价覆盖。更新缺失的 Ref 会抛出 RangeError，重复移除返回原状态。 [覆盖操作](../../src/core/battle/overlay.ts)
 
 Navigation 按运动方式保存覆盖，校验代价并投影到有效图。FLY 代价只能省略或为一。覆盖的创建和撤销时机由业务所有者决定。
 

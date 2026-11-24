@@ -32,7 +32,7 @@ test("Skill and Burst end notifications observe their cleared state while the ow
             .set(skills.activationEnded, {
                 id: "activation-ended",
                 invoke(state, { host }) {
-                    const current = units.get(state, host);
+                    const current = host.get(state);
                     assert.equal(current.skill.activation, null);
                     observed.push(["activation", current.lifecycle]);
                     return { state, value: undefined };
@@ -41,7 +41,7 @@ test("Skill and Burst end notifications observe their cleared state while the ow
             .set(elemental.burstEnded, {
                 id: "burst-ended",
                 invoke(state, { host }) {
-                    const current = units.get(state, host);
+                    const current = host.get(state);
                     assert.equal(current.elemental.burst, null);
                     observed.push(["burst", current.lifecycle]);
                     return { state, value: undefined };
@@ -56,7 +56,7 @@ test("Skill and Burst end notifications observe their cleared state while the ow
     const burst = epDamage.applyDamage(request, epDamage.calculateDamage(activated.state, request));
     assert.notEqual(burst.value.application.burst, null);
     state = remove(burst.state, owner, { reason: "SCRIPT" });
-    assert.equal(units.get(state, owner), undefined);
+    assert.equal(owner.get(state), undefined);
     assert.deepEqual(observed.sort(), [["activation", "ENDING"], ["burst", "ENDING"]]);
 });
 
@@ -71,7 +71,7 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
 
                         invoke(current, departure) {
                             assert.equal(departure.reason, "DEATH");
-                            assert.equal(units.get(current, units.ref(departure.unit)), undefined);
+                            assert.equal(units.ref(departure.unit).get(current), undefined);
                             calls.push("owner-left");
                             return { state: current, value: undefined };
                         },
@@ -91,7 +91,7 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
         onEnd(current, self, reason) {
             assert.equal(reason, "FIRST");
             assert.equal(self.state.total, 3);
-            assert.equal(units.get(current, owner).lifecycle, "ENDING");
+            assert.equal(owner.get(current).lifecycle, "ENDING");
             calls.push("parent-ended");
             return remove(current, owner, { reason: "SCRIPT" });
         },
@@ -108,9 +108,9 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
                 assert.equal(reason, "CANCELLED");
                 current = effects.remove(current, parent, "SECOND");
                 current = remove(current, owner, { reason: "DEATH", killer: null });
-                assert.equal(units.get(current, owner).lifecycle, "ENDING");
-                assert.equal(effects.get(current, parent).lifecycle, "ENDING");
-                const previous = effects.get(current, parent);
+                assert.equal(owner.get(current).lifecycle, "ENDING");
+                assert.equal(parent.get(current).lifecycle, "ENDING");
+                const previous = parent.get(current);
                 current = effects.setState(current, parent, { total: previous.state.total + 2 });
                 calls.push("child-ended");
                 return current;
@@ -134,7 +134,7 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
     const after = effects.remove(state, parent, "FIRST");
 
     assert.deepEqual(calls, ["parent-disabled", "child-ended", "parent-ended", "detached-ended", "owner-left"]);
-    assert.equal(units.get(after, owner), undefined);
+    assert.equal(owner.get(after), undefined);
 });
 
 test("defer executes immediately outside a settlement", () => {
@@ -143,7 +143,7 @@ test("defer executes immediately outside a settlement", () => {
 
     const result = lifetimes.defer(state, current => remove(current, owner, { reason: "SCRIPT" }));
 
-    assert.equal(units.get(result, owner), undefined);
+    assert.equal(owner.get(result), undefined);
 });
 
 test("defer waits for finalizers and flushes in registration order across new settlements", () => {
@@ -158,7 +158,7 @@ test("defer waits for finalizers and flushes in registration order across new se
                         calls.push("owner-removed");
                         return {
                             state: lifetimes.defer(current, next => {
-                                assert.equal(units.get(next, nested), undefined);
+                                assert.equal(nested.get(next), undefined);
                                 calls.push("B");
                                 return remove(next, last, { reason: "SCRIPT" });
                             }),
@@ -178,7 +178,7 @@ test("defer waits for finalizers and flushes in registration order across new se
                         calls.push("nested-removed");
                         return {
                             state: lifetimes.defer(current, next => {
-                                assert.equal(units.get(next, last), undefined);
+                                assert.equal(last.get(next), undefined);
                                 calls.push("C");
                                 return next;
                             }),
@@ -198,10 +198,10 @@ test("defer waits for finalizers and flushes in registration order across new se
         onEnd(current) {
             calls.push("effect-ended");
             return lifetimes.defer(current, next => {
-                assert.equal(units.get(next, owner), undefined);
+                assert.equal(owner.get(next), undefined);
                 calls.push("A-start");
                 const removed = remove(next, nested, { reason: "SCRIPT" });
-                assert.equal(units.get(removed, nested), undefined);
+                assert.equal(nested.get(removed), undefined);
                 calls.push("A-end");
                 return lifetimes.defer(removed, latest => {
                     calls.push("D");
@@ -251,7 +251,7 @@ test("an ending ancestor freezes dependency edges before its active Action execu
 
                         invoke(current) {
                             assert.equal(
-                                actions.getExecution(current, execution).execution.lifecycle,
+                                execution.get(current).execution.lifecycle,
                                 "ACTIVE",
                             );
                             const recipient = units
@@ -295,5 +295,5 @@ test("an ending ancestor freezes dependency edges before its active Action execu
         units.all(after).find((unit) => unit.definition.id === "recipient").effects.size,
         0,
     );
-    assert.equal(actions.getExecution(after, execution), undefined);
+    assert.equal(execution.get(after), undefined);
 });

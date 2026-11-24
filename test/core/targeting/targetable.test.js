@@ -41,17 +41,17 @@ test("restriction exemptions use effective definition identity without reviving 
     state = installed.state;
     const visibleToDetector = state => targetable.allowsRestrictions(
         state, source, restriction => restriction === invisibleRestriction,
-    )(units.get(state, target));
+    )(target.get(state));
 
     assert.equal(visibleToDetector(state), true);
     const independent = effects.install(state, target, untargetable);
     state = independent.state;
     assert.equal(visibleToDetector(state), false);
-    assert.equal(targetable.allowsRestrictions(state, source, () => true)(units.get(state, target)), true);
+    assert.equal(targetable.allowsRestrictions(state, source, () => true)(target.get(state)), true);
     state = effects.remove(state, independent.value);
     assert.equal(visibleToDetector(state), true);
     state = effects.remove(state, installed.value);
-    assert.equal(targetable.allowsRestrictions(state, source)(units.get(state, target)), false);
+    assert.equal(targetable.allowsRestrictions(state, source)(target.get(state)), false);
     assert.equal(visibleToDetector(state), true);
 });
 

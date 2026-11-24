@@ -4,7 +4,6 @@ export {
     ref,
     initialize,
     add,
-    get,
     all,
     setState,
     setActive,

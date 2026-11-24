@@ -4,7 +4,6 @@ import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import { remove, replace } from "../../operations.js";
 import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
 import * as hooks from "../../../hook.js";
 import type * as damage from "../../../battle/resource/hp/damage/index.js";
 import type * as healing from "../../../battle/resource/hp/healing/index.js";
@@ -43,7 +42,7 @@ export function canReceiveDamage(
     context: damage.ReceivingContext,
     ignore?: (restriction: Restriction) => boolean,
 ): boolean {
-    const target = units.get(battle, context.request.target);
+    const target = context.request.target.get(battle);
 
     return (
         target?.lifecycle === "ACTIVE" &&
@@ -53,7 +52,7 @@ export function canReceiveDamage(
 }
 
 export function canReceiveHealing(battle: BattleState, target: Ref<Unit & Vitality>): boolean {
-    const unit = units.get(battle, target);
+    const unit = target.get(battle);
 
     return unit?.lifecycle === "ACTIVE" && isAlive(unit);
 }
@@ -97,7 +96,7 @@ export function commitDamage(
     context: damage.CommitContext,
 ): Result<DamageApplication | null> {
     const target = context.request.target;
-    const unit = units.get(battle, target)!;
+    const unit = target.get(battle)!;
     const previous = unit.vitality.health;
     const committed = dispatchHook(
         battle,
@@ -110,7 +109,7 @@ export function commitDamage(
         damageCommitting,
     );
     battle = committed.state;
-    const current = units.get(battle, target);
+    const current = target.get(battle);
     if (current?.lifecycle !== "ACTIVE" || !isAlive(current)) {
         return { state: battle, value: null };
     }
@@ -165,7 +164,7 @@ export function commitHealing(
 }
 
 export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
-    const unit = units.get(battle, reference);
+    const unit = reference.get(battle);
     if (unit?.lifecycle !== "ACTIVE" || !isAlive(unit)) {
         return battle;
     }
@@ -190,7 +189,7 @@ function recoverHp(
     event: "HEAL" | null,
 ): Result<HealingApplication> {
     assertNonnegativeNumber(amount, "HP recovery amount");
-    const unit = units.get(battle, reference);
+    const unit = reference.get(battle);
     assert(unit?.lifecycle === "ACTIVE", "HP recovery target is not active", RangeError);
 
     const before = unit.vitality.health;
@@ -240,14 +239,14 @@ function dispatchHook<C extends damage.Context | healing.Context, T, H extends h
 
     return hooks.dispatch(battle, context, initial, {
         candidates(current) {
-            const unit = units.get(current, target);
+            const unit = target.get(current);
 
             return unit?.lifecycle === "ACTIVE"
                 ? unit.hooks.get(key).filter(({ id }) => !hooks.excluded(options, key, id))
                 : [];
         },
         find(current, id) {
-            const unit = units.get(current, target);
+            const unit = target.get(current);
 
             return unit?.lifecycle === "ACTIVE" ? unit.hooks.find(key, id) : undefined;
         },

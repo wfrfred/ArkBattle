@@ -9,13 +9,8 @@ import {
     create as createSkillAttack,
     type State as SkillAttackState,
 } from "../../actions/skill.js";
-import { getExecution, executionRef } from "../../../core/unit/capability/action/index.js";
-import {
-    get as getCurrentUnit,
-    ref as unitRef,
-    all as allUnits,
-    type Unit,
-} from "../../../core/unit/index.js";
+import { executionRef } from "../../../core/unit/capability/action/index.js";
+import { ref as unitRef, all as allUnits, type Unit } from "../../../core/unit/index.js";
 import {
     hasTargetable,
     type Targetable,
@@ -118,7 +113,7 @@ export function createNormal({
             {
                 id: "primary",
                 select(battle, source) {
-                    const self = getCurrentUnit(battle, source);
+                    const self = source.get(battle);
                     if (self === undefined) {
                         return { state: battle, value: [] };
                     }
@@ -175,7 +170,7 @@ export function createSkill({
             {
                 id: "primary",
                 select(battle, source) {
-                    const self = getCurrentUnit(battle, source);
+                    const self = source.get(battle);
                     if (self === undefined) {
                         return { state: battle, value: [] };
                     }
@@ -192,23 +187,21 @@ export function createSkill({
         ],
         applyWay: "MELEE",
         output(state, host, self) {
-            const source = getCurrentUnit(state, host);
+            const source = host.get(state);
             if (source?.skill.activation == null) {
                 return state;
             }
 
             const power = resolveAttack(state, source);
-            state = healSelf(state, source.id, healRatio);
+            state = healSelf(state, host, healRatio);
 
             for (const targetRef of self.execution.state.bindings.primary ?? []) {
-                if (
-                    getExecution(state, executionRef(host, self))?.execution.lifecycle !== "ACTIVE"
-                ) {
+                if (executionRef(host, self).get(state)?.execution.lifecycle !== "ACTIVE") {
                     return state;
                 }
 
-                const currentSource = getCurrentUnit(state, host);
-                const target = getCurrentUnit(state, targetRef);
+                const currentSource = host.get(state);
+                const target = targetRef.get(state);
 
                 if (currentSource?.lifecycle !== "ACTIVE") {
                     return state;
@@ -236,7 +229,7 @@ export function createSkill({
                 const rng = createRng(state.execution.rngState);
                 const applyStun = rng.chance(stunChance);
                 state = { ...state, execution: { ...state.execution, rngState: rng.state() } };
-                const survivor = getCurrentUnit(state, unitRef(target));
+                const survivor = unitRef(target).get(state);
                 if (applyStun && survivor !== undefined) {
                     state = install(state, unitRef(survivor), stun, {
                         source: unitRef(source),

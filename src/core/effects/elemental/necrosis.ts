@@ -80,7 +80,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
         initialize: () => ({ type: Type.NECROSIS }),
         onInstall: registerBurst,
         onEnable(battle, self) {
-            const unit = units.get(battle, self.host)!;
+            const unit = self.host.get(battle)!;
 
             return hasOffense(unit)
                 ? update(
@@ -98,7 +98,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                 : battle;
         },
         onDisable(battle, self) {
-            const unit = units.get(battle, self.host)!;
+            const unit = self.host.get(battle)!;
 
             return hasOffense(unit)
                 ? update(

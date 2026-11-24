@@ -53,13 +53,13 @@ test("Card initialization reserves identity before Deck registration", () => {
     const firstRef = cards.ref(first.value);
     const secondRef = cards.ref(second.value);
     assert.notEqual(firstRef.id, secondRef.id);
-    assert.equal(cards.get(second.state, firstRef), undefined);
-    assert.equal(cards.get(second.state, secondRef), undefined);
+    assert.equal(firstRef.get(second.state), undefined);
+    assert.equal(secondRef.get(second.state), undefined);
     assert.deepEqual([...deployment.ordered(second.state)], []);
 
     state = cards.add(second.state, first.value);
     state = cards.add(state, second.value);
-    assert.strictEqual(cards.get(state, firstRef), first.value);
+    assert.strictEqual(firstRef.get(state), first.value);
     assert.deepEqual([...cards.all(state)].map(cards.ref), [firstRef, secondRef]);
     assert.deepEqual([...deployment.ordered(state)].map(cards.ref), [firstRef, secondRef]);
 });
@@ -81,7 +81,7 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
     const [first, second] = [...cards.all(state)].map(cards.ref);
     const ordered = (state) => [...deployment.ordered(state)].map(cards.ref);
     const ordering = (state, references) => {
-        const cost = (reference) => cards.dp.resolveCost(state, cards.get(state, reference));
+        const cost = (reference) => cards.dp.resolveCost(state, reference.get(state));
         return references.toSorted((left, right) => cost(left) - cost(right));
     };
 
@@ -90,7 +90,7 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
     assert.deepEqual(ordered(state), [second, first]);
     assert.deepEqual([...cards.all(state)].map(cards.ref), [first, second]);
 
-    const surcharged = cards.dp.setCostContribution(cards.get(state, second), {
+    const surcharged = cards.dp.setCostContribution(second.get(state), {
         id: "surcharge",
         value: cards.dp.create({ finalAddition: 4 }),
     });
@@ -170,7 +170,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
                 initialize(current) {
                     constructions.push({
                         dp: current.deployment.dp.balance,
-                        stock: cards.get(current, card).supply.stock,
+                        stock: card.get(current).supply.stock,
                         slots: current.deployment.slot.used,
                     });
                     return { state: current, value: {} };
@@ -224,7 +224,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
                 invoke: (current, self) => {
                     entered = true;
                     assert.equal(current.deployment.dp.balance, 40);
-                    assert.equal(cards.get(current, card).supply.stock, 0);
+                    assert.equal(card.get(current).supply.stock, 0);
                     assert.equal(current.deployment.slot.used, 1);
                     assert.equal(get(current, self.id).deployable.card.id, card.id);
                     return { state: current, value: undefined };
@@ -283,7 +283,7 @@ test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prer
     const second = deployment.deploy(state, zero);
     state = second.state;
     assert.equal(second.value.type, "DEPLOYED");
-    assert.equal(cards.get(state, card).supply.stock, 1);
+    assert.equal(card.get(state).supply.stock, 1);
     assert.equal(state.deployment.dp.balance, 0);
     assert.equal(state.deployment.slot.used, 0);
     assert.equal(get(state, first.value.unitId).deployable.cost, 10);
@@ -325,7 +325,7 @@ test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before gro
         } }],
     } });
     const card = cards.ref([...cards.all(state)][0]);
-    state = deck.replace(state, cards.supply.setCooldown(cards.get(state, card), 10));
+    state = deck.replace(state, cards.supply.setCooldown(card.get(state), 10));
     state = cards.setRestriction(state, card, { id: "@deployment/cooldown", value: permit });
     state = cards.setRestriction(state, card, {
         id: "@deployment/slots", value: deny, group: { id: "permission", priority: 2 },
@@ -361,7 +361,7 @@ test("retreat refunds before removal, and death delays global slot release indep
                                 id: "observe-retreat-refund",
                                 accepts: (_current, { reason }) => reason === "RETREAT",
                                 invoke: (current, { unit }) => {
-                                    const card = cards.get(current, unit.deployable.card);
+                                    const card = unit.deployable.card.get(current);
                                     retreats.push({
                                         dp: current.deployment.dp.balance,
                                         stage: card.dp.stage,
@@ -374,7 +374,7 @@ test("retreat refunds before removal, and death delays global slot release indep
                             .set(unitLifecycle.removed, {
                                 id: "observe-departure",
                                 invoke: (current, { unit, reason }) => {
-                                    const card = cards.get(current, unit.deployable.card);
+                                    const card = unit.deployable.card.get(current);
                                     departures.push({
                                         reason,
                                         dp: current.deployment.dp.balance,
@@ -430,7 +430,7 @@ test("retreat refunds before removal, and death delays global slot release indep
         reason: "DEATH", dp: 30, stage: 2, stock: 1, cooldown: 10, slots: 1,
     });
 
-    const adjusted = cards.dp.setCostContribution(cards.get(state, card), {
+    const adjusted = cards.dp.setCostContribution(card.get(state), {
         id: "next-deployment-cost",
         value: cards.dp.create({
             cost: 17, baseAddition: 4, maxMultiplier: -0.25, costScale: 0.75, finalAddition: -2,
@@ -524,7 +524,7 @@ test("only external movement recycles the card, and neither movement refunds DP"
         const placed = deployment.deploy(initial, deployment.createRequest(initial, card, [1, 2]));
         const unit = units.ref(get(placed.state, placed.value.unitId));
         const removed = units.remove(placed.state, unit, { reason });
-        const current = cards.get(removed, card);
+        const current = card.get(removed);
         assert.equal(current.dp.stage, recycled ? 1 : 0);
         assert.equal(current.supply.stock, recycled ? 1 : 0);
         assert.equal(current.supply.cooldown, recycled ? 10 : 0);
@@ -551,11 +551,11 @@ test("default cards start cooldown on deployment and only explicit recharge rest
     const deployed = deployment.deploy(initial, request);
     assert.equal(deployed.value.type, "DEPLOYED");
     const reference = units.ref(get(deployed.state, deployed.value.unitId));
-    assert.equal(cards.get(deployed.state, card).supply.cooldown, 2);
+    assert.equal(card.get(deployed.state).supply.cooldown, 2);
     let state = deployment.retreat(step(deployed.state, []), reference);
-    assert.equal(cards.get(state, card).supply.stock, 0);
+    assert.equal(card.get(state).supply.stock, 0);
 
-    state = deck.replace(state, cards.supply.recharge(cards.get(state, card), 1));
+    state = deck.replace(state, cards.supply.recharge(card.get(state), 1));
     assert.deepEqual(deployment.evaluate(state, request), { type: "REJECTED", reason: "COOLDOWN" });
     state = step(state, []);
     assert.equal(deployment.deploy(state, request).value.type, "DEPLOYED");
@@ -580,7 +580,7 @@ test("queued recovery preserves the current interval and transfers at most one a
                     onTick(current, self) {
                         observedStock = {
                             self: self.supply.stock,
-                            registered: cards.get(current, cards.ref(self)).supply.stock,
+                            registered: cards.ref(self).get(current).supply.stock,
                         };
                         return current;
                     },
@@ -590,7 +590,7 @@ test("queued recovery preserves the current interval and transfers at most one a
     });
     const card = cards.ref([...cards.all(state)][0]);
     const assertSupply = (expected) => {
-        const { stock, pending, cooldown } = cards.get(state, card).supply;
+        const { stock, pending, cooldown } = card.get(state).supply;
         assert.deepEqual({ stock, pending, cooldown }, expected);
     };
     const first = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));
@@ -598,18 +598,18 @@ test("queued recovery preserves the current interval and transfers at most one a
     state = deployment.retreat(first.state, units.ref(get(first.state, first.value.unitId)));
     assertSupply({ stock: 0, pending: 1, cooldown: 2 });
     state = step(state, []);
-    state = deck.replace(state, cards.supply.enqueue(cards.get(state, card), 2));
+    state = deck.replace(state, cards.supply.enqueue(card.get(state), 2));
     assertSupply({ stock: 0, pending: 3, cooldown: 1 });
-    assert.throws(() => cards.supply.consume(cards.get(state, card)), RangeError);
+    assert.throws(() => cards.supply.consume(card.get(state)), RangeError);
 
-    const extended = cards.supply.setRedeployTimeContribution(cards.get(state, card), {
+    const extended = cards.supply.setRedeployTimeContribution(card.get(state), {
         id: "recovery-duration",
         value: [modifier.create({ addition: 2 })],
     });
     state = deck.replace(state, cards.supply.setPaused(extended, true));
     state = step(step(state, []), []);
     assertSupply({ stock: 0, pending: 3, cooldown: 1 });
-    state = deck.replace(state, cards.supply.setPaused(cards.get(state, card), false));
+    state = deck.replace(state, cards.supply.setPaused(card.get(state), false));
     state = step(state, []);
     assertSupply({ stock: 1, pending: 2, cooldown: 4 });
     assert.deepEqual(observedStock, { self: 1, registered: 1 });
@@ -619,13 +619,13 @@ test("queued recovery preserves the current interval and transfers at most one a
     assert.equal(deployed.value.type, "DEPLOYED");
     state = deployed.state;
     assertSupply({ stock: 0, pending: 2, cooldown: 4 });
-    state = deck.replace(state, cards.supply.reduceCooldown(cards.get(state, card), 2));
+    state = deck.replace(state, cards.supply.reduceCooldown(card.get(state), 2));
     assertSupply({ stock: 0, pending: 2, cooldown: 2 });
-    state = deck.replace(state, cards.supply.setCooldown(cards.get(state, card), 0));
+    state = deck.replace(state, cards.supply.setCooldown(card.get(state), 0));
     assertSupply({ stock: 0, pending: 2, cooldown: 0 });
     assert.deepEqual(deployment.evaluate(state, next), { type: "REJECTED", reason: "NO_STOCK" });
 
-    const shortened = cards.supply.setRedeployTimeContribution(cards.get(state, card), {
+    const shortened = cards.supply.setRedeployTimeContribution(card.get(state), {
         id: "recovery-duration",
         value: [modifier.create({ addition: -2 })],
     });
@@ -659,16 +659,16 @@ test("stock limit includes pending recovery and active limit only gates new depl
     assert.equal(first.value.type, "DEPLOYED");
     state = first.state;
     const stockBonus = { id: "extra-stock", value: modifier.create({ addition: 2 }) };
-    const expanded = cards.supply.setStockLimitContribution(cards.get(state, card), stockBonus);
+    const expanded = cards.supply.setStockLimitContribution(card.get(state), stockBonus);
     state = deck.replace(state, cards.supply.recharge(expanded, 4));
-    assert.equal(cards.get(state, card).supply.stock, 3);
+    assert.equal(card.get(state).supply.stock, 3);
 
-    const truncated = cards.supply.removeStockLimitContribution(cards.get(state, card), stockBonus.id);
+    const truncated = cards.supply.removeStockLimitContribution(card.get(state), stockBonus.id);
     state = deck.replace(state, truncated);
-    const { stock, pending, cooldown } = cards.get(state, card).supply;
+    const { stock, pending, cooldown } = card.get(state).supply;
     assert.deepEqual({ stock, pending, cooldown }, { stock: 1, pending: 1, cooldown: 10 });
 
-    const paused = cards.supply.setPaused(cards.get(state, card), true);
+    const paused = cards.supply.setPaused(card.get(state), true);
     const depleted = cards.supply.setStockLimitContribution(paused, {
         id: "no-stock",
         value: modifier.create({ addition: -2 }),
@@ -682,11 +682,11 @@ test("stock limit includes pending recovery and active limit only gates new depl
     const request = deployment.createRequest(state, card, [1, 3]);
     assert.deepEqual(deployment.evaluate(state, request), { type: "REJECTED", reason: "ACTIVE_LIMIT" });
     const activeBonus = { id: "extra-active", value: modifier.create({ addition: 1 }) };
-    const withActiveBonus = cards.supply.setActiveLimitContribution(cards.get(state, card), activeBonus);
+    const withActiveBonus = cards.supply.setActiveLimitContribution(card.get(state), activeBonus);
     state = deck.replace(state, withActiveBonus);
     const extra = deployment.deploy(state, request);
     assert.equal(extra.value.type, "DEPLOYED");
-    const restored = cards.supply.removeActiveLimitContribution(cards.get(extra.state, card), activeBonus.id);
+    const restored = cards.supply.removeActiveLimitContribution(card.get(extra.state), activeBonus.id);
     state = deck.replace(extra.state, cards.supply.recharge(restored, 1));
     assert.equal(deployment.deployedCount(state, card), 2);
     const third = deployment.createRequest(state, card, [1, 4]);

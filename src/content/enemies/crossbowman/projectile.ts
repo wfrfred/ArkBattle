@@ -27,7 +27,7 @@ export function createArrow(): tracking.Definition<ArrowState> {
     const hit = (battle: BattleState, self: ProjectileInstance<ArrowState>): BattleState =>
         tracking.hit(battle, self, (state, current, target) => {
             const sourceRef = current.state.source;
-            const source = sourceRef === null ? undefined : units.get(state, sourceRef);
+            const source = sourceRef === null ? undefined : sourceRef.get(state);
             const request: DamageRequest = {
                 attackType: "NORMAL",
                 applyWay: arrowApplyWay,

@@ -40,10 +40,10 @@ function actor(ignoreRestrictions, onEnd = state => state) {
 }
 
 function canMove(state, reference) {
-    const self = units.get(state, reference);
+    const self = reference.get(state);
     const goal = [self.position[0] + 0.05, self.position[1]];
     const moved = advanceLocomotion(state, reference, { nextPoint: goal, goal }, { mode: "WALK", speedMultiplier: 1 });
-    return units.get(moved, reference).position[0] > self.position[0];
+    return reference.get(moved).position[0] > self.position[0];
 }
 
 test("stun interrupts the current action, suppresses its affected capabilities, and withdraws only its own restrictions", () => {
@@ -66,7 +66,7 @@ test("stun interrupts the current action, suppresses its affected capabilities, 
     state = second.state;
 
     assert.deepEqual(endings, [{ type: "CANCELLED", reason: "INTERRUPTED" }]);
-    assert.equal(actions.getExecution(state, started.value), undefined);
+    assert.equal(started.value.get(state), undefined);
     assert.equal(actions.start(state, action).value, null);
     assert.equal(canMove(state, source), false);
     assert.equal(facing.turn(state, source, "LEFT"), state);
@@ -112,8 +112,8 @@ test("silence blocks activation while SP prevention independently blocks recover
     assert.equal(get(state, 0).skill.sp.value, 10);
     assert.equal(skills.activate(state, skill).value, null);
     state = effects.remove(state, parent.value);
-    assert.equal(effects.get(state, silenced.value), undefined);
-    assert.equal(effects.get(state, blocked.value), undefined);
+    assert.equal(silenced.value.get(state), undefined);
+    assert.equal(blocked.value.get(state), undefined);
     assert.notEqual(skills.activate(state, skill).value, null);
 });
 
@@ -143,8 +143,8 @@ test("a skill can ignore every stun source for activation while silence, SP and 
     state = activated.state;
     assert.notEqual(activated.value, null);
     assert.equal(get(state, 0).skill.sp.value, 0);
-    assert.equal(effects.get(state, first.value).lifecycle, "ACTIVE");
-    assert.equal(effects.get(state, second.value).lifecycle, "ACTIVE");
+    assert.equal(first.value.get(state).lifecycle, "ACTIVE");
+    assert.equal(second.value.get(state).lifecycle, "ACTIVE");
     assert.equal(actions.start(state, actions.ref(source, content.action)).value, null);
     assert.equal(canMove(state, source), false);
     assert.equal(facing.turn(state, source, "LEFT"), state);

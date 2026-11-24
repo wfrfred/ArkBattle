@@ -18,7 +18,7 @@ export function setDirection(direction: Direction): Change<Unit & Occupancy> {
 }
 
 export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
     if (self?.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -29,8 +29,8 @@ export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
         return battle;
     }
 
-    const support = units.get(battle, current.support)! as Pair["support"];
-    const occupant = units.get(battle, current.occupant)!;
+    const support = current.support.get(battle)! as Pair["support"];
+    const occupant = current.occupant.get(battle)!;
     if (support.lifecycle !== "ACTIVE" || occupant.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -63,7 +63,7 @@ function release(battle: State, pair: Pair): State {
     const updates: (Unit & Occupancy)[] = [];
 
     for (const self of [pair.support, pair.occupant]) {
-        const current = units.get(battle, units.ref(self));
+        const current = units.ref(self).get(battle);
         if (current?.occupancy.pair === pair) {
             updates.push(replaceIn(current, ["occupancy", "pair"], null));
         }

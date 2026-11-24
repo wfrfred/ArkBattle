@@ -16,8 +16,6 @@ export type {
     Activation,
 } from "./activation.js";
 
-export { getSkill, getActivation } from "./query.js";
-
 export {
     lifetime,
     setState,

@@ -45,9 +45,9 @@ test("capabilities initialize declared programs in order and carry their battle 
     const host = units.ref(get(state, 0));
     const rng = createRng(seed);
 
-    assert.equal(actions.getAction(state, actions.ref(host, first)).state.sample, rng.next());
-    assert.equal(actions.getAction(state, actions.ref(host, second)).state.sample, rng.next());
-    assert.equal(skills.getSkill(state, skills.ref(host)).state.sample, rng.next());
+    assert.equal(actions.ref(host, first).get(state).state.sample, rng.next());
+    assert.equal(actions.ref(host, second).get(state).state.sample, rng.next());
+    assert.equal(skills.ref(host).get(state).state.sample, rng.next());
     assert.equal(state.execution.rngState, rng.state());
 });
 
@@ -77,7 +77,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
                 ...self.execution.state,
                 cleaned: true,
             });
-            const current = actions.getExecution(state, reference);
+            const current = reference.get(state);
             assert.equal(current.execution.lifecycle, "ENDING");
             assert.equal(current.execution.state.cleaned, true);
             assert.equal(actions.hasExecution(state, source, program.id), true);
@@ -99,7 +99,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
     const rejected = actions.start(state, reference);
     state = rejected.state;
     assert.equal(rejected.value, null);
-    assert.equal(actions.getAction(state, reference).state.attempts, 1);
+    assert.equal(reference.get(state).state.attempts, 1);
 
     const started = actions.start(state, reference);
     state = started.state;
@@ -107,19 +107,19 @@ test("prepare can reject without allocating a round; ending preserves the latest
     assert.equal(actions.start(state, reference).value, null);
     state = actions.advance(state, started.value);
     state = actions.advance({ ...state, tick: 1 }, started.value);
-    assert.equal(actions.getAction(state, reference).execution, null);
+    assert.equal(reference.get(state).execution, null);
     assert.equal(actions.hasExecution(state, source, program.id), false);
     assert.throws(() => actions.setExecutionState(state, started.value, { advances: 0 }), RangeError);
-    assert.deepEqual(actions.getAction(state, reference).state, {
+    assert.deepEqual(reference.get(state).state, {
         attempts: 2,
         ended: [{ end: { type: "FINISHED" }, advances: 2 }],
     });
 
     const next = actions.start(state, reference);
     state = actions.cancel(next.state, started.value, "OLD_ROUND");
-    assert.equal(actions.getExecution(state, next.value).execution.lifecycle, "ACTIVE");
+    assert.equal(next.value.get(state).execution.lifecycle, "ACTIVE");
     state = actions.cancel(state, next.value, "STOPPED");
-    assert.deepEqual(actions.getAction(state, reference).state.ended[1], {
+    assert.deepEqual(reference.get(state).state.ended[1], {
         end: { type: "CANCELLED", reason: "STOPPED" },
         advances: 0,
     });
@@ -143,7 +143,7 @@ test("attribute changes preserve independent attack cooldown progress and leave 
         const started = actions.start({ ...state, tick }, references[index]);
         state = actions.advance(started.state, started.value);
     };
-    const ready = () => references.map(reference => actions.getAction(state, reference).cooldown.readyAtTick);
+    const ready = () => references.map(reference => reference.get(state).cooldown.readyAtTick);
     startAt(0, 0);
     startAt(1, 2);
     startAt(2, 2);
@@ -243,7 +243,7 @@ test("interrupted attack, successful release, and damage output are separate bus
     state = step(started.state, []);
     assert.equal(get(state, 0).skill.sp.value, 1);
     assert.equal(get(state, 1).vitality.health.hp, 100);
-    assert.equal(actions.getExecution(state, started.value), undefined);
+    assert.equal(started.value.get(state), undefined);
 
     while (state.tick < 20) state = step(state, []);
     state = update(state, source, presence.appear([1, 1]));
@@ -291,11 +291,11 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
     };
     const firstRun = step(battle([{ definition, position: [1, 1] }], { rngState: 42 }), []);
     const reference = actions.ref(units.ref(get(firstRun, 0)), program);
-    assert.equal(actions.getAction(firstRun, reference).state.completed, 1);
+    assert.equal(reference.get(firstRun).state.completed, 1);
     assert.equal(get(firstRun, 0).skill.sp.value, 0);
 
     const hidden = update(firstRun, units.ref(get(firstRun, 0)), presence.disappear());
     const after = step(hidden, []);
     assert.equal(selections, 1);
-    assert.equal(actions.getAction(after, reference).state.completed, 1);
+    assert.equal(reference.get(after).state.completed, 1);
 });

@@ -1,7 +1,6 @@
 import type { Ref } from "../../../common/ref.js";
 import { type State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
 import * as attribute from "../../attribute.js";
 import { hasClassification } from "../classification/index.js";
 import { hasVitality } from "../vitality/capability.js";
@@ -14,7 +13,7 @@ import { allows } from "../../../restriction.js";
 import type { DamageRestriction } from "./restriction.js";
 
 export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefined {
-    const host = units.get(battle, reference.host);
+    const host = reference.host.get(battle);
 
     return host?.elemental.burst?.id === reference.id ? host.effects.get(reference) : undefined;
 }
@@ -58,7 +57,7 @@ export function canReceiveDamage(
     type: Type = request.parameters.type,
     ignore?: (restriction: DamageRestriction) => boolean,
 ): boolean {
-    const self = units.get(battle, request.target);
+    const self = request.target.get(battle);
 
     return (
         self !== undefined &&
@@ -70,7 +69,7 @@ export function canReceiveDamage(
 }
 
 export function canReceiveHealing(battle: BattleState, request: HealingRequest): boolean {
-    const self = units.get(battle, request.target);
+    const self = request.target.get(battle);
 
     return (
         self !== undefined &&

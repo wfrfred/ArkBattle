@@ -1,3 +1,4 @@
+import type { State as BattleState } from "../../../battle/state.js";
 import type { Identified, Identity, Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
@@ -22,7 +23,14 @@ export function ref<P extends object, E extends object>(
     host: Ref<Unit & ActionCapability>,
     definition: Definition<P, E, never>,
 ): Ref<Action<P, E>> {
-    const identity: Identity<Action<P, E>> = { host, definitionId: definition.id };
+    return { host, definitionId: definition.id, get } as Ref<Action<P, E>>;
+}
 
-    return identity as Ref<Action<P, E>>;
+function get<P extends object, E extends object>(
+    this: object,
+    battle: BattleState,
+): Action<P, E> | undefined {
+    const { host, definitionId } = this as Identity<Action>;
+
+    return host.get(battle)?.action.actions.get(definitionId) as Action<P, E> | undefined;
 }

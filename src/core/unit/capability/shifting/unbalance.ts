@@ -43,15 +43,14 @@ export interface Unbalance extends Identified<{ readonly host: Ref<Host>; readon
 type End = "SETTLED" | "RESTRICTED" | "HOST_UNAVAILABLE";
 
 export function ref(self: Unbalance): Ref<Unbalance> {
-    return { host: self.host, id: self.id } as Ref<Unbalance>;
+    return { host: self.host, id: self.id, get: getUnbalance } as Ref<Unbalance>;
 }
 
-export function get(battle: BattleState, reference: Ref<Unbalance>): Unbalance | undefined {
-    const state = units.get(battle, reference.host)?.shiftable;
+function getUnbalance(this: object, battle: BattleState): Unbalance | undefined {
+    const { host, id } = this as Ref<Unbalance>;
+    const state = host.get(battle)?.shiftable;
 
-    return state?.unbalance?.id === reference.id
-        ? state.unbalance
-        : state?.endingUnbalances.get(reference.id);
+    return state?.unbalance?.id === id ? state.unbalance : state?.endingUnbalances.get(id);
 }
 
 export function replace(battle: BattleState, unit: Host, next: Unbalance): BattleState {
@@ -67,10 +66,9 @@ export function replace(battle: BattleState, unit: Host, next: Unbalance): Battl
 export const lifetime = lifetimes.create<Unbalance, End>({
     kind: "UNBALANCE",
     address: ({ host, id }) => `${host.id}:${id}`,
-    get,
     end: {
         prepare(battle, reference, initial) {
-            return replace(battle, units.get(battle, reference.host)!, {
+            return replace(battle, reference.host.get(battle)!, {
                 ...initial,
                 lifecycle: "ENDING",
                 velocity: ZERO,
@@ -78,7 +76,7 @@ export const lifetime = lifetimes.create<Unbalance, End>({
             });
         },
         finalize(battle, reference) {
-            const unit = units.get(battle, reference.host)!;
+            const unit = reference.host.get(battle)!;
             const { shiftable } = unit;
             if (shiftable.unbalance?.id === reference.id) {
                 return replaceUnits(battle, [replaceIn(unit, ["shiftable", "unbalance"], null)]);
@@ -176,7 +174,7 @@ export function applyImpulse(
     impulse: Vec2,
 ): Result<Ref<Unbalance> | null> {
     assert(Vec2.is(impulse), "impulse must be a finite vector", TypeError);
-    const unit = units.get(battle, host);
+    const unit = host.get(battle);
     const next = unit === undefined ? null : prepare(battle, unit);
     if (unit === undefined || next === null) {
         return { state: battle, value: null };
@@ -192,7 +190,7 @@ export function active(
     battle: BattleState,
     reference: Ref<Unbalance>,
 ): { readonly unit: Host; readonly self: Unbalance } | undefined {
-    const unit = units.get(battle, reference.host);
+    const unit = reference.host.get(battle);
     const self = unit?.shiftable.unbalance;
 
     return unit !== undefined &&
@@ -231,7 +229,7 @@ export function setVelocity(
 }
 
 function finishIfSettled(battle: BattleState, reference: Ref<Unbalance>): BattleState {
-    const self = get(battle, reference);
+    const self = reference.get(battle);
 
     return self?.lifecycle === "ACTIVE" &&
         battle.tick >= self.protectedUntil &&
@@ -277,7 +275,7 @@ function settlePulls(
 }
 
 export function advance(battle: BattleState, reference: Ref<Unbalance>): BattleState {
-    const unit = units.get(battle, reference.host);
+    const unit = reference.host.get(battle);
     const self = unit?.shiftable.unbalance;
     if (unit === undefined || self?.id !== reference.id || self.lifecycle !== "ACTIVE") {
         return battle;

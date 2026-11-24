@@ -13,7 +13,7 @@ function restriction(
         id,
         initialize: () => ({}),
         onEnable(state, self) {
-            const unit = units.get(state, self.host);
+            const unit = self.host.get(state);
             if (unit === undefined) {
                 return state;
             }
@@ -28,7 +28,7 @@ function restriction(
             );
         },
         onDisable(state, self) {
-            const unit = units.get(state, self.host);
+            const unit = self.host.get(state);
             if (unit === undefined) {
                 return state;
             }

@@ -18,7 +18,7 @@ export type {
 
 export { ref } from "./effect.js";
 
-export { get, hasStack, effectiveStackCount } from "./query.js";
+export { hasStack, effectiveStackCount } from "./query.js";
 
 export type { Initial } from "./operations.js";
 

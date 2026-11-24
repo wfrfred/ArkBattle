@@ -3,7 +3,6 @@ import type { State as BattleState } from "../../../battle/state.js";
 import { remove } from "../../operations.js";
 import { modify } from "../../../battle/deployment/dp/operations.js";
 import type { Unit } from "../../unit.js";
-import * as units from "../../query.js";
 import type { Deployable, State } from "./capability.js";
 import { allows } from "../../../restriction.js";
 
@@ -27,7 +26,7 @@ export function setDeployment<U extends Unit & Deployable>(
 }
 
 export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable>): boolean {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
 
     return (
         self?.lifecycle === "ACTIVE" &&
@@ -40,7 +39,7 @@ export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>):
         return battle;
     }
 
-    const self = units.get(battle, reference)!;
+    const self = reference.get(battle)!;
     const refund = self.deployable.refund;
     if (refund !== null) {
         const amount = Math.max(

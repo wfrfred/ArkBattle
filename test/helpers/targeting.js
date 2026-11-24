@@ -6,7 +6,7 @@ import { topK } from "../../dist/core/common/collection/order.js";
 
 export function selectDamage({ geometry, canTargetAir = false, maxTargets = 1 }) {
     return (battle, source) => {
-        const self = units.get(battle, source);
+        const self = source.get(battle);
         const candidates = units.all(battle)
             .filter(hasTargetable)
             .filter(targeting.damage(self)(battle))

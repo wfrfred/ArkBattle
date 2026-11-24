@@ -37,7 +37,7 @@ function settleRestrictions(battle: BattleState, reference: Ref<Unit & Blockable
 }
 
 export function release(battle: BattleState, reference: Ref<Unit & Blockable>): BattleState {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
     if (self === undefined) {
         return battle;
     }
@@ -55,7 +55,7 @@ export function advancePosition(
     battle: BattleState,
     reference: Ref<Unit & Blockable>,
 ): BattleState {
-    const self = units.get(battle, reference);
+    const self = reference.get(battle);
     if (self?.lifecycle !== "ACTIVE") {
         return battle;
     }
@@ -131,7 +131,7 @@ export function setVolumeContribution(
                 : { ...self, blockable: { ...self.blockable, volume } };
         },
         (battle, previous) => {
-            const owner = units.get(battle, units.ref(previous))?.blockable.relation?.blocker;
+            const owner = units.ref(previous).get(battle)?.blockable.relation?.blocker;
 
             return owner == null ? battle : settleCapacity(battle, owner);
         },
@@ -148,7 +148,7 @@ export function removeVolumeContribution(id: string): Change<Unit & Blockable> {
                 : { ...self, blockable: { ...self.blockable, volume } };
         },
         (battle, previous) => {
-            const owner = units.get(battle, units.ref(previous))?.blockable.relation?.blocker;
+            const owner = units.ref(previous).get(battle)?.blockable.relation?.blocker;
 
             return owner == null ? battle : settleCapacity(battle, owner);
         },

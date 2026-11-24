@@ -1,6 +1,5 @@
 import type { Options } from "../../../../hook.js";
 import type { State as BattleState, Result } from "../../../state.js";
-import * as units from "../../../../unit/query.js";
 import {
     available,
     resolveElementResistance,
@@ -14,7 +13,7 @@ export function calculateDamage(
     options?: Options,
 ): Result<Calculated | undefined> {
     const unavailable = (current: BattleState) => {
-        const target = units.get(current, request.target);
+        const target = request.target.get(current);
 
         return target === undefined || !available(target);
     };
@@ -34,7 +33,7 @@ export function calculateDamage(
         parameters = result.value;
     }
 
-    const target = units.get(battle, request.target);
+    const target = request.target.get(battle);
     if (target === undefined || !available(target)) {
         return { state: battle, value: undefined };
     }
