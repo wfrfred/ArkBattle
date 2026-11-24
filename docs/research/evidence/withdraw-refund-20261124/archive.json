@@ -13,7 +13,8 @@
         "gameRelativePath": "GameAssembly.dll",
         "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
         "records": [
-          "native.json#/provenance/client/dll"
+          "native.json#/provenance/client/dll",
+          "rounding.json#/provenance/client/dll"
         ],
         "bytes": 223112680
       },
@@ -23,13 +24,15 @@
         "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
         "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
         "records": [
-          "native.json#/provenance/client/metadata"
+          "native.json#/provenance/client/metadata",
+          "rounding.json#/provenance/client/metadata"
         ],
         "bytes": 46669332
       }
     },
     "sourceRecords": [
-      "native.json"
+      "native.json",
+      "rounding.json"
     ],
     "tool": {
       "script": {
@@ -48,6 +51,12 @@
         "kind": "record",
         "bytes": 30508,
         "sha256": "b5ecd1ea7baa7bd00681a7ee067af35e98073e272a78b47040b0963069befc42"
+      },
+      {
+        "path": "rounding.json",
+        "kind": "record",
+        "bytes": 42915,
+        "sha256": "35607b87b6c76c2d93d728f095c04228fd9dc488c78ac188d10503d99217c369"
       }
     ],
     "replay": {
