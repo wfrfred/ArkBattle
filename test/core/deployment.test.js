@@ -438,7 +438,7 @@ test("retreat refunds before removal, and death delays global slot release indep
     });
     state = deck.replace(state, adjusted);
     assert.equal(deployment.createRequest(state, card, tilePosition).quote.dp, 19);
-    state = cards.removeCostContribution(state, card, "next-deployment-cost");
+    state = deck.replace(state, cards.dp.removeCostContribution(adjusted, "next-deployment-cost"));
     assert.equal(deployment.createRequest(state, card, tilePosition).quote.dp, 20);
 
     const releasedAt = state.tick + TICKS_PER_SECOND;

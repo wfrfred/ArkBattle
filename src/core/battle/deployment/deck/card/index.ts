@@ -20,7 +20,6 @@ export {
     removeUnitHook,
     setRestriction,
     removeRestriction,
-    removeCostContribution,
 } from "./operations.js";
 
 export * as supply from "./supply/index.js";

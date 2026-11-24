@@ -8,7 +8,6 @@ import type { Card, Policy } from "./card.js";
 import type { Key } from "../../../../hook.js";
 import { type Entry, set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
-import * as dp from "./dp/dp.js";
 import { resolveIncrease } from "./dp/query.js";
 import { enqueue } from "./supply/operations.js";
 import { resolveCooldown, resolveStockLimit } from "./supply/query.js";
@@ -139,14 +138,4 @@ export function removeRestriction(
     const restrictions = remove(self.restrictions, id);
 
     return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
-}
-
-export function removeCostContribution(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    id: string,
-): BattleState {
-    const self: Card = get(battle, reference)!;
-
-    return replace(battle, dp.removeCostContribution(self, id));
 }
