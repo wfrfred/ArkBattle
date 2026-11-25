@@ -32,7 +32,7 @@
 | 依赖者完成收尾之后，实例注销之前 | Definition 程序 `onEnd` |
 | 实例注销之后 | Unit 通知 `removed`，Battle 级键名为 `battle.unit.removed` |
 
-`onEnable` 与 `onDisable` 对应生效与停用。Mechanism 在 `setActive` 发布实际变化后调用对应程序。Effect 在安装生效或重新生效时调用 `onEnable`，在可逆停用或移除 `ACTIVE` 实例时调用 `onDisable`。
+`onEnable` 与 `onDisable` 对应生效与停用。Effect 在安装生效或重新生效时调用 `onEnable`，在可逆停用或移除 `ACTIVE` 实例时调用 `onDisable`。
 
 ### Restriction 接口约定
 
@@ -139,6 +139,6 @@ Unit 的 add／remove 与生命周期 Hook 见 [Capability](capability.md)和 [H
 
 ## 6. Effect self 的身份与宿主约束
 
-Effect 的 S 与 H 分别约束私有数据和宿主能力，精确 Ref 保留实例实际的配对。安装以 Definition 决定最低宿主要求；合并可能保留旧 Definition，不能借本次传入类型证明旧私有 state 的类型。
+Effect 的 S、H、P 分别约束私有数据、宿主类型和叠层政策，精确 Ref 保留实例实际的配对。安装以 Definition 决定最低宿主要求；合并可能保留旧 Definition，不能借本次传入类型证明旧私有 state 的类型。
 
-Ordinary／STACK、END／DECAY 与 Expiration 的静态关联、安装返回及类型擦除边界由 [Effect](effect.md#2-definition实例与泛型)维护。通用私有写回规则与其他实例相同，不另提供失去类型关联的写入口。
+非叠层／STACK、END／DECAY 与 `Expiration<P>` 的静态关联、安装返回及类型擦除边界由 [Effect](effect.md#2-definition实例与泛型)维护。通用私有写回规则与其他实例相同，不另提供失去类型关联的写入口。

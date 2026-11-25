@@ -9,7 +9,7 @@ import * as blocking from "../../../dist/core/battle/blocking/index.js";
 import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../../dist/core/unit/capability/skill/index.js";
 import * as sp from "../../../dist/core/unit/capability/skill/sp.js";
-import * as effects from "../../../dist/core/unit/effect/index.js";
+import * as effects from "../../../dist/core/effect/index.js";
 import { advance as advanceLocomotion } from "../../../dist/core/unit/capability/locomotion/index.js";
 import * as facing from "../../../dist/core/unit/capability/facing/index.js";
 import { stun, stunRestriction, silence, blockSpRecovery } from "../../../dist/core/effects/control.js";

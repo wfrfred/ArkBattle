@@ -3,7 +3,7 @@ import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
-import * as effects from "../../effect/operations.js";
+import * as effects from "../../../effect/operations.js";
 import * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import {
@@ -114,7 +114,7 @@ export function commitDamage(
             source: request.source,
         });
         battle = installed.state;
-        reference = installed.value! as Ref<Burst>;
+        reference = installed.value! as unknown as Ref<Burst>;
     }
 
     const application: DamageApplication = { type, epBefore, epAfter, epLoss, burst: reference };

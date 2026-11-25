@@ -6,7 +6,6 @@ import {
     type Initial,
     type Product,
 } from "./capability/catalog.js";
-import { Effects } from "./effect/effects.js";
 import type { Unit, Definition } from "./unit.js";
 import { Hooks } from "../hook.js";
 import { replaceIn } from "../common/object.js";
@@ -36,7 +35,6 @@ export function initialize(battle: BattleState, input: Input): Result<Unit> {
         definition: input.definition,
         hooks: input.hooks ?? Hooks.empty(),
         position: input.position,
-        effects: Effects.empty(),
     };
 
     for (const key of Object.keys(initializers) as (keyof typeof initializers)[]) {

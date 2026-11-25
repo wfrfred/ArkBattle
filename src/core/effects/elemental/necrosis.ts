@@ -2,7 +2,7 @@ import { update } from "../../unit/operations.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import { silence, blockSpRecovery } from "../control.js";
 import * as modifier from "../../common/modifier.js";
-import * as effects from "../../unit/effect/operations.js";
+import * as effects from "../../effect/operations.js";
 import * as units from "../../unit/query.js";
 import { modify } from "../../unit/capability/skill/sp.js";
 import {
@@ -49,7 +49,7 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
                     return battle;
                 }
 
-                battle = effects.install(battle, self.host, control, { scopes }).state;
+                battle = effects.install(battle, self.ref.host, control, { scopes }).state;
             }
 
             return battle;
@@ -79,7 +79,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
         initialize: () => ({ type: Type.NECROSIS }),
         onInstall: registerBurst,
         onEnable(battle, self) {
-            const unit = self.host.get(battle)!;
+            const unit = self.ref.host.get(battle)!;
 
             return hasOffense(unit)
                 ? update(
@@ -97,7 +97,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                 : battle;
         },
         onDisable(battle, self) {
-            const unit = self.host.get(battle)!;
+            const unit = self.ref.host.get(battle)!;
 
             return hasOffense(unit)
                 ? update(

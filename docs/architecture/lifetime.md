@@ -10,7 +10,7 @@ DAG 直接使用 `Ref<Lifetime>` 对象作键，直接依赖亦保存该类型�
 
 B 登记 A 的 Ref 就建立 B → A。一个节点可依赖多个目标，也可供多个节点依赖，每条边的结束语义相同。普通来源、槽位与私有 Ref 仍由各领域解释。Burst 使用 Effect 的配置和节点。
 
-`available` 要求节点及其所有上游都已登记且尚未开始结束。失效沿依赖链立即传递，即使某个依赖者的领域状态还未发布 `ENDING`。已登记的 INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可用。HP、空间存在与启停的业务资格由消费方判断。
+`available` 要求节点及其所有上游都已登记且尚未开始结束。失效沿依赖链立即传递，即使某个依赖者的领域状态还未发布 `ENDING`。已登记的 INSTALLING／INACTIVE Effect 仍可用。HP、空间存在与启停的业务资格由消费方判断。
 
 `bind` 和 `unbind` 只修改两端都可用的边，由领域决定哪些业务依赖能动态调整。内嵌实例依赖其所在存储，调用者须保留这条边直至收尾完成，例如 Effect 对存放它的 Unit 的依赖。进入结束流程的节点及受其影响的下游依赖关系在本轮收尾期间冻结。重复绑定同一对节点只保留一条边，形成环的绑定会被拒绝。
 
@@ -18,7 +18,7 @@ B 登记 A 的 Ref 就建立 B → A。一个节点可依赖多个目标，也�
 
 Lifetime 配置提供 `end.prepare`、`end.finalize` 和可选的 `end.dependencyEnd`。`end(battle, reference, payload)` 从 Ref 的具体 `Config<T, E>` 约束结束输入。首次有效结束请求使用 `ref.get(battle)` 取得 `initial`，并固定当时接受的 `end`。通用调度在回调派发边界恢复实例始终持有的 Config 配对。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。需要清理过程产生的新事实时，回调使用 Ref 读取最新版本。
 
-依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入。Action Execution 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 和 Mechanism 可以作为依赖目标，三者当前只接受显式的结束请求。Card 使用 `Config<Card, never>`，登记后可以作为依赖目标，静态类型禁止请求结束它。
+依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入。Action Execution 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 可以作为依赖目标，两者当前只接受显式的结束请求。Card 使用 `Config<Card, never>`，登记后可以作为依赖目标，静态类型禁止请求结束它。
 
 Unit 以 `End` 请求结束。Lifetime 固定 `initial` 与 `End`，Unit 据此为 removing／removed 构造 `Departure`。DEATH 的 killer 来自首次请求。注销时从最新 Unit 取 removed 候选与优先级，`UNIT_REMOVED` 也记录注销前的最新 Unit。离场 Hook 的 `Departure.unit` 始终是开始结束时的历史快照。 [死亡归属与击杀响应](resource.md#生命状态通知与离场)
 

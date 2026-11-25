@@ -21,6 +21,8 @@ import { overlaps } from "../../geometry/intersection.js";
 import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Range } from "../../geometry/range.js";
 import type { State as BattleState } from "../state.js";
+import { ref } from "../../common/ref.js";
+import { forHost } from "../../effect/index.js";
 
 export function inCategories(
     categories: readonly Category[],
@@ -65,11 +67,10 @@ export function healing(
             hasClassification(target) &&
             source.definition.classification.side === target.definition.classification.side &&
             hpRatio(target) < 1 &&
-            !target.effects
-                .values()
-                .some(
-                    (effect) => effect.definition === healFree && effect.lifecycle === "ACTIVE",
-                ) &&
+            !forHost(battle, ref(target)).some(
+                (effect) =>
+                    effect.definition === (healFree as object) && effect.lifecycle === "ACTIVE",
+            ) &&
             allows(target);
     };
 }

@@ -13,7 +13,7 @@ import * as hpHealing from "../../dist/core/battle/resource/hp/healing/index.js"
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as modifier from "../../dist/core/common/modifier.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
+import * as effects from "../../dist/core/effect/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import { healFree } from "../../dist/core/effects/protection.js";
 
@@ -72,7 +72,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     state = effects.install(state, target, {
         id: "recovery-contributions", initialize: () => ({}),
         onTick(current, self) {
-            return update(current, self.host, units.compose(
+            return update(current, self.ref.host, units.compose(
                 vitality.setContribution("recoverySpeed", {
                     id: "fixed", value: current => [modifier.create({ addition: current.tick * 3 })],
                 }),

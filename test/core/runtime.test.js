@@ -4,7 +4,7 @@ import { test } from "node:test";
 import { battle, get } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
-import * as mechanisms from "../../dist/core/mechanism/index.js";
+import * as effects from "../../dist/core/effect/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { dp } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
@@ -30,7 +30,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
     const controller = {
         id: "controller",
         initialize: () => ({}),
-        onEnter(current) {
+        onInstall(current) {
             assert.ok(cards.all(current).find(card => card.definition === cardDefinition));
             entered.push("controller");
             return current;
@@ -64,8 +64,8 @@ test("initial and scheduled entry see registered battle facts and preserve their
                 assert.equal(current.schedule.definition.waves.length, 1);
                 assert.equal(current.deployment.dp.balance, 20);
                 assert.equal(self.ref.get(current).definition, initial);
-                const mechanism = mechanisms.all(current).find(({ definition }) => definition === controller);
-                assert.equal(mechanism?.lifecycle, "ACTIVE");
+                const globalEffect = effects.forHost(current, null).find(({ definition }) => definition === controller);
+                assert.equal(globalEffect?.lifecycle, "ACTIVE");
                 entered.push(self.definition.id);
                 return { state: dp.modify(current, 2), value: undefined };
             },
@@ -95,7 +95,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
                 deployable: { retreatRestrictions: [], refund: null },
             },
         }] },
-        initialMechanisms: [{ definition: controller }],
+        initialEffects: [{ definition: controller }],
         schedule: { waves: [{
             preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
             fragments: [{ preDelayTicks: 0, entries: [{

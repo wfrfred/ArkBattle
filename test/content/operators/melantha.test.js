@@ -17,7 +17,7 @@ import { start, advance as advanceAction, ref as actionRef, cancel, forUnit } fr
 import { advance as advanceBlocking, relations } from "../../../dist/core/battle/blocking/index.js";
 import { invisible, invisibleRestriction } from "../../../dist/core/effects/visibility.js";
 
-import { install, remove as removeEffect } from "../../../dist/core/unit/effect/index.js";
+import { install, remove as removeEffect } from "../../../dist/core/effect/index.js";
 import { advance as advanceCombat } from "../../../dist/core/battle/steps/combat.js";
 
 const configuration = { elite: 1, level: 55, potential: 6, skillIndex: 0, skillLevel: 7, trust: 100 };

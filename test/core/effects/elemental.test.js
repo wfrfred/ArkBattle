@@ -8,7 +8,7 @@ import { update as applyUnitChanges } from "../../../dist/core/unit/operations.j
 import * as unitQueries from "../../../dist/core/unit/index.js";
 import { resolveDefense } from "../../../dist/core/unit/capability/vitality/index.js";
 import { selectDamage } from "../../helpers/targeting.js";
-import * as effects from "../../../dist/core/unit/effect/index.js";
+import * as effects from "../../../dist/core/effect/index.js";
 import { step as stepBattle } from "../../../dist/core/battle/index.js";
 import { create as createAttack } from "../../../dist/content/actions/attack.js";
 import { actionCapability } from "../../helpers/actions.js";

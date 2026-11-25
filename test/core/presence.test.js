@@ -11,7 +11,7 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as block from "../../dist/core/unit/capability/blocking/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
+import * as effects from "../../dist/core/effect/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { step } from "../../dist/core/battle/runtime.js";

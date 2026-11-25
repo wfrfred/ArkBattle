@@ -1,8 +1,6 @@
 import type { Ref } from "../../core/common/ref.js";
 import type { Lifetime } from "../../core/lifetime/index.js";
 import type { State as BattleState, OperationResult as Result } from "../../core/battle/index.js";
-import * as mechanisms from "../../core/mechanism/index.js";
-import type { Definition as MechanismDefinition } from "../../core/mechanism/index.js";
 import type { Definition as TerrainDefinition } from "../../core/battlefield/map/terrain.js";
 import { contains } from "../../core/battlefield/map/map.js";
 import { World } from "../../core/geometry/coordinate.js";
@@ -10,8 +8,8 @@ import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
 import { inCategories } from "../../core/battle/targeting/index.js";
 
-import * as effects from "../../core/unit/effect/index.js";
-import type { Effect } from "../../core/unit/effect/index.js";
+import * as effects from "../../core/effect/index.js";
+import type { Definition as EffectDefinition, Effect } from "../../core/effect/index.js";
 
 import { hasLayer } from "../../core/unit/capability/layer/capability.js";
 import * as presence from "../../core/unit/capability/presence/index.js";
@@ -42,7 +40,7 @@ interface Behaviour<P extends object> {
         unit: Unit,
         params: P,
         scopes: readonly Ref<Lifetime>[],
-    ) => Result<Ref<Effect> | null>;
+    ) => Result<Ref<Lifetime & Pick<Effect, "config" | "lifecycle">> | null>;
 }
 
 function onGround(unit: Unit): boolean {
@@ -53,7 +51,7 @@ function create<P extends object>(
     definition: TerrainDefinition<P>,
     indices: readonly number[] | undefined,
     behaviour: Behaviour<P>,
-): MechanismDefinition<ContactState> {
+): EffectDefinition<ContactState, null> {
     return {
         id: behaviour.id,
         initialize: () => ({ indices: indices ?? null, scanTick: 0, contacts: new Map() }),
@@ -62,7 +60,7 @@ function create<P extends object>(
                 return battle;
             }
 
-            const reference = mechanisms.ref(self);
+            const reference = effects.ref(self);
             const map = battle.battlefield.map;
             const selected =
                 self.state.indices ??
@@ -71,7 +69,7 @@ function create<P extends object>(
                 );
             const selectedSet = new Set(selected);
             const candidates = units.all(battle);
-            battle = mechanisms.setState(battle, reference, {
+            battle = effects.setState(battle, reference, {
                 ...self.state,
                 indices: selected,
                 scanTick: battle.tick + behaviour.intervalTicks,
@@ -95,7 +93,7 @@ function create<P extends object>(
                     contacts.set(unitRef, contact);
                 }
 
-                return mechanisms.setState(state, reference, { ...current.state, contacts });
+                return effects.setState(state, reference, { ...current.state, contacts });
             }
 
             function indexOf(unit: Unit): number | undefined {
@@ -188,18 +186,19 @@ function create<P extends object>(
                     behaviour.retainOnLeave ? [] : [reference],
                 );
                 battle = installed.state;
+                const effect = installed.value as Ref<Effect> | null;
 
                 if (reference.get(battle)?.lifecycle !== "ACTIVE") {
-                    return !behaviour.retainOnLeave && installed.value !== null
-                        ? effects.remove(battle, installed.value, "TERRAIN_UNAVAILABLE")
+                    return !behaviour.retainOnLeave && effect !== null
+                        ? effects.remove(battle, effect, "TERRAIN_UNAVAILABLE")
                         : battle;
                 }
 
                 const current = candidateRef.get(battle);
                 if (current !== undefined && indexOf(current) === index) {
-                    battle = setContact(battle, candidateRef, { index, effect: installed.value });
-                } else if (!behaviour.retainOnLeave && installed.value !== null) {
-                    battle = effects.remove(battle, installed.value, "LEFT_TERRAIN");
+                    battle = setContact(battle, candidateRef, { index, effect });
+                } else if (!behaviour.retainOnLeave && effect !== null) {
+                    battle = effects.remove(battle, effect, "LEFT_TERRAIN");
                 }
             }
 
@@ -207,7 +206,7 @@ function create<P extends object>(
         },
         onDisable(battle, self) {
             const owned = [...self.state.contacts.values()];
-            battle = mechanisms.setState(battle, mechanisms.ref(self), {
+            battle = effects.setState(battle, effects.ref(self), {
                 ...self.state,
                 contacts: new Map(),
             });
@@ -225,10 +224,10 @@ function create<P extends object>(
     };
 }
 
-export function createTerrainMechanism(
+export function createTerrainEffect(
     definition: Pick<TerrainDefinition, "id">,
     indices?: readonly number[],
-): MechanismDefinition<ContactState> {
+): EffectDefinition<ContactState, null> {
     if (definition === terrain.infection) {
         return create(terrain.infection, indices, {
             id: "terrain/infection",
@@ -300,5 +299,5 @@ export function createTerrainMechanism(
         });
     }
 
-    throw new TypeError("terrain has no runtime mechanism");
+    throw new TypeError("terrain has no runtime effect");
 }

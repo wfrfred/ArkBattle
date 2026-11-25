@@ -14,7 +14,7 @@ import { add, update } from "../../../dist/core/unit/operations.js";
 import { ref, setHook, removeHook } from "../../../dist/core/unit/index.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
 import { advance as advanceBlocking } from "../../../dist/core/battle/blocking/index.js";
-import { advance as advanceEffects } from "../../../dist/core/unit/effect/index.js";
+import { advance as advanceEffects } from "../../../dist/core/effect/index.js";
 import { advance as advanceSkill, activate, modify } from "../../../dist/core/unit/capability/skill/index.js";
 import { ref as skillRef } from "../../helpers/skill.js";
 import { start, advance as advanceAction, ref as actionRef } from "../../../dist/core/unit/capability/action/index.js";
@@ -87,7 +87,7 @@ test("Mudrock's shield keeps recharging while capped", () => {
     const fixture = setup();
     let battle = hit(fixture.battle).state;
     battle = advanceEffectsUntil(battle, 1000);
-    assert.equal(readShield(getUnit(battle, 0)).layers, 3);
+    assert.equal(readShield(battle, ref(getUnit(battle, 0))).layers, 3);
     for (let layer = 0; layer < 3; layer++) battle = hit(battle).state;
     const beforeRecovery = hit(advanceEffectsUntil(battle, 1079));
     assert.equal(beforeRecovery.value.application.hpLoss, 100);
@@ -130,7 +130,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     });
     approximate(getUnit(shielded.state, 0).vitality.health.hp, 1000 + moduleXMaxHp * 0.23);
     assert.equal(getUnit(shielded.state, 0).skill.sp.value, 3);
-    assert.equal(readShield(getUnit(shielded.state, 0)).layers, 0);
+    assert.equal(readShield(shielded.state, ref(getUnit(shielded.state, 0))).layers, 0);
     const request = {
         source: ref(getUnit(battle, 1)), target: ref(getUnit(battle, 0)),
         attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: ref(getUnit(battle, 1)), parameters: parameters(100, "TRUE"),
@@ -143,7 +143,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.equal(accepted.value.application.hpLoss, 100);
     assert.equal(getUnit(accepted.state, 0).vitality.health.hp, 900);
     assert.equal(getUnit(accepted.state, 0).skill.sp.value, 1);
-    assert.equal(readShield(getUnit(accepted.state, 0)).layers, 1);
+    assert.equal(readShield(accepted.state, ref(getUnit(accepted.state, 0))).layers, 1);
 
     const ordinary = update(battle, ref(fixture.unit), removeHook(hpDamage.beforeReceive, "fix-amount"));
     const reduced = hpDamage.applyDamage(request, hpDamage.calculateDamage(ordinary, request), {
@@ -154,7 +154,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     approximate(reduced.value.application.hpLoss, 59.5);
     approximate(getUnit(reduced.state, 0).vitality.health.hp, 940.5);
     assert.equal(getUnit(reduced.state, 0).skill.sp.value, 1);
-    assert.equal(readShield(getUnit(reduced.state, 0)).layers, 1);
+    assert.equal(readShield(reduced.state, ref(getUnit(reduced.state, 0))).layers, 1);
 
     const missed = update(ordinary, ref(fixture.unit), setHook(hpDamage.beforeReceive, {
         id: "evade", priority: 200,
@@ -167,7 +167,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.equal(cancelled.value.received.reason, "MISS");
     assert.equal(getUnit(cancelled.state, 0).vitality.health.hp, 1000);
     assert.equal(getUnit(cancelled.state, 0).skill.sp.value, 0);
-    assert.equal(readShield(getUnit(cancelled.state, 0)).layers, 1);
+    assert.equal(readShield(cancelled.state, ref(getUnit(cancelled.state, 0))).layers, 1);
 });
 
 test("S2 waits for an eligible target without spending its SP", () => {

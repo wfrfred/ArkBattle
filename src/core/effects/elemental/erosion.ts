@@ -1,8 +1,9 @@
 import { update } from "../../unit/operations.js";
 import * as units from "../../unit/query.js";
-import * as effects from "../../unit/effect/operations.js";
-import { ref } from "../../unit/effect/effect.js";
-import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
+import type { Unit } from "../../unit/unit.js";
+import * as effects from "../../effect/operations.js";
+import { ref } from "../../effect/effect.js";
+import type { Definition as EffectDefinition } from "../../effect/definition.js";
 import * as modifier from "../../common/modifier.js";
 import {
     hasVitality,
@@ -26,21 +27,25 @@ export interface Parameters {
     readonly defReduction: number;
 }
 
-function reduction(amount: number): EffectDefinition<object, Vitality> {
+function reduction(amount: number): EffectDefinition<object, Unit & Vitality> {
     return {
         id: "elemental/erosion/reduction",
         initialize: () => ({}),
         onEnable: (battle, self) =>
             update(
                 battle,
-                self.host,
+                self.ref.host,
                 setContribution("defense", {
                     id: `@effect/${self.id}/defense`,
                     value: [modifier.create({ addition: -amount })],
                 }),
             ),
         onDisable: (battle, self) =>
-            update(battle, self.host, removeContribution("defense", `@effect/${self.id}/defense`)),
+            update(
+                battle,
+                self.ref.host,
+                removeContribution("defense", `@effect/${self.id}/defense`),
+            ),
     };
 }
 

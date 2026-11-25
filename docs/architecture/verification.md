@@ -10,17 +10,17 @@
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
-| [Action · 3. Definition、Action 与 Execution](action.md#3-definitionaction-与-execution)、[Skill · 1. 单槽聚合、Definition 与两种身份](skill.md#1-单槽聚合definition-与两种身份) | [Content 将 Action 和 Skill 分别装配到具体宿主。两个 Definition 各自拒绝缺能力的宿主，回调通过宿主 Ref、单轮 self 和持久 Ref 读取各自的精确类型。](../../test/core/types.test.js#L48) |
-| [Capability · 初始化与装配](capability.md#初始化与装配)、[Schedule · 从 Spawn 到 Unit](schedule.md#从-spawn-到-unit)、[Deployment · 静态内容与 Card](deployment.md#静态内容与-card) | [同一 Unit 构造由 Definition 推导必需 Initial。接受已知备用输入，但不给结果增加能力，仍校验备用输入值。Spawn 只接受可提供的 Initial。](../../test/core/types.test.js#L100)<br>[Card 绑定时排除需要 Route Initial 的蓝图。Runtime 的异构开场配置不抹平各 Unit 的 Initial。](../../test/core/types.test.js#L373) |
-| [接口约定 · 查询与候选](api-conventions.md#查询与候选)、[Targeting · 标准资格](targeting.md#标准资格)、[Skill · 1. 单槽聚合、Definition 与两种身份](skill.md#1-单槽聚合definition-与两种身份) | [以 Vitality 的存活查询代表能力前提。普通布尔筛选不建立能力证明，治疗候选和显式 SP 守卫保留输入的 Action 能力。](../../test/core/types.test.js#L118) |
-| [接口约定 · 5.1 Unit 完整操作与批量变更](api-conventions.md#51-unit-完整操作与批量变更)、[Capability · Classification](capability.md#classification) | [组合 Change 要求两项能力并保留输入精度，带正确守卫的 optional 可用于未装配该能力的 Unit。](../../test/core/types.test.js#L135)<br>[明确类别的判断保留既有能力，动态类别和职业匹配的失败分支不排除有效类型。职业配置拒绝不相配的子职业。](../../test/core/types.test.js#L148) |
-| [接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复)、[Action · 4. 异构容器与两种引用身份](action.md#4-异构容器与两种引用身份)、[Skill · 引用、查询与写回](skill.md#引用查询与写回) | [数字地址不能伪造 Ref。Action 持久身份和执行身份分别读取各自的状态，精确执行 Ref 不可通过泛型推断或提前拓宽写错私有状态，通用取消引用不授予该写入资格。](../../test/core/types.test.js#L165)<br>[Skill 发动使用持久 Ref，返回的 Activation Ref 只定位并读取本轮。两种精确 Ref 各自保留私有类型，手工发动参数同时提供门槛和支付额。](../../test/core/types.test.js#L192) |
-| [Action · 5. Capability 与冷却](action.md#5-capability-与冷却)、[Skill · 4. Restriction、程序与 Hook](skill.md#4-restriction程序与-hook) | [输出方式由普通模板的操作推导，专属输出须显式声明。普通攻击模板的 timing 保留私有状态，冷却 Change 仅接收静态修正。回复限制不能充当发动豁免。](../../test/core/types.test.js#L205) |
-| [Effect · 2. Definition、实例与泛型](effect.md#2-definition实例与泛型)、[接口约定 · 6. Effect self 的身份与宿主约束](api-conventions.md#6-effect-self-的身份与宿主约束) | [DECAY 安装和写回都拒绝绝对期限。合并结果保留层数与计时政策，不能借本次传入的 Definition 恢复旧私有状态。精确 Definition 查询可恢复该状态。](../../test/core/types.test.js#L226) |
+| [Action · 3. Definition、Action 与 Execution](action.md#3-definitionaction-与-execution)、[Skill · 1. 单槽聚合、Definition 与两种身份](skill.md#1-单槽聚合definition-与两种身份) | [Content 将 Action 和 Skill 分别装配到具体宿主。两个 Definition 各自拒绝缺能力的宿主，回调通过宿主 Ref、单轮 self 和持久 Ref 读取各自的精确类型。](../../test/core/types.test.js#L47) |
+| [Capability · 初始化与装配](capability.md#初始化与装配)、[Schedule · 从 Spawn 到 Unit](schedule.md#从-spawn-到-unit)、[Deployment · 静态内容与 Card](deployment.md#静态内容与-card) | [同一 Unit 构造由 Definition 推导必需 Initial。接受已知备用输入，但不给结果增加能力，仍校验备用输入值。Spawn 只接受可提供的 Initial。](../../test/core/types.test.js#L99)<br>[Card 绑定时排除需要 Route Initial 的蓝图。Runtime 的异构开场配置不抹平各 Unit 的 Initial。](../../test/core/types.test.js#L389) |
+| [接口约定 · 查询与候选](api-conventions.md#查询与候选)、[Targeting · 标准资格](targeting.md#标准资格)、[Skill · 1. 单槽聚合、Definition 与两种身份](skill.md#1-单槽聚合definition-与两种身份) | [以 Vitality 的存活查询代表能力前提。普通布尔筛选不建立能力证明，治疗候选和显式 SP 守卫保留输入的 Action 能力。](../../test/core/types.test.js#L117) |
+| [接口约定 · 5.1 Unit 完整操作与批量变更](api-conventions.md#51-unit-完整操作与批量变更)、[Capability · Classification](capability.md#classification) | [组合 Change 要求两项能力并保留输入精度，带正确守卫的 optional 可用于未装配该能力的 Unit。](../../test/core/types.test.js#L134)<br>[明确类别的判断保留既有能力，动态类别和职业匹配的失败分支不排除有效类型。职业配置拒绝不相配的子职业。](../../test/core/types.test.js#L147) |
+| [接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复)、[Action · 4. 异构容器与两种引用身份](action.md#4-异构容器与两种引用身份)、[Skill · 引用、查询与写回](skill.md#引用查询与写回) | [数字地址不能伪造 Ref。Action 持久身份和执行身份分别读取各自的状态，精确执行 Ref 不可通过泛型推断或提前拓宽写错私有状态，通用取消引用不授予该写入资格。](../../test/core/types.test.js#L164)<br>[Skill 发动使用持久 Ref，返回的 Activation Ref 只定位并读取本轮。两种精确 Ref 各自保留私有类型，手工发动参数同时提供门槛和支付额。](../../test/core/types.test.js#L191) |
+| [Action · 5. Capability 与冷却](action.md#5-capability-与冷却)、[Skill · 4. Restriction、程序与 Hook](skill.md#4-restriction程序与-hook) | [输出方式由普通模板的操作推导，专属输出须显式声明。普通攻击模板的 timing 保留私有状态，冷却 Change 仅接收静态修正。回复限制不能充当发动豁免。](../../test/core/types.test.js#L204) |
+| [Effect · 2. Definition、实例与泛型](effect.md#2-definition实例与泛型)、[接口约定 · 6. Effect self 的身份与宿主约束](api-conventions.md#6-effect-self-的身份与宿主约束) | [DECAY 安装和写回都拒绝绝对期限。合并结果保留宿主、层数与计时政策，不能借本次传入的 Definition 恢复旧私有状态。精确 Definition 查询可恢复该状态。](../../test/core/types.test.js#L225) |
 | [Projectile · 4. 创建、查询与内容更新](projectile.md#4-创建查询与内容更新)、[Projectile · 移除与消除](projectile.md#移除与消除) | [Projectile 创建必须装配回调声明的 Trait，普通弹道不暴露该字段。创建后的精确 Ref 保留 Definition 的消除资格，普通 Ref 不允许以消除原因移除。](../../test/core/types.test.js#L253) |
 | [Hook · 类型化键与集合](hook.md#类型化键与集合)、[Capability · 资格限制](capability.md#资格限制)、[Vitality · 伤害写入前后](vitality.md#伤害写入前后) | [Hook Key 决定载荷、可改工作值与所需宿主。提交后通知不能改已提交的生命报告。接收限制只有对应阶段可用，Elemental 的伤害限制不能用作治疗限制。](../../test/core/types.test.js#L279) |
 | [Resource · 请求分类](resource.md#请求分类)、[Resource · 接收工作值、数值固定与取消](resource.md#接收工作值数值固定与取消)、[Resource · 生命状态、通知与离场](resource.md#生命状态通知与离场) | [被固定和取消的工作值无法恢复，已有的取消原因不能改写。取消使用本次权限和所属领域的原因集。每笔伤害显式声明攻击方式与归属，离场请求也明确死亡归属，提交报告不提前暴露击杀结果。](../../test/core/types.test.js#L301) |
-| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card)、[Terrain · Mechanism 操作](terrain.md#mechanism-操作)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [精确 Card Ref 恢复私有状态及策略，Unit 与 Card 的联合 Ref 保留两种精确读取结果。Unit 和 Card Ref 都能作为依赖目标，持久 Action 无独立 Lifetime，Card 的 never 结束参数拒绝显式结束。普通查询按策略收窄，只有 QUEUED 能入队。Runtime 接收同场多种 Card 与 Mechanism 状态，装配和登记拒绝 Definition 与状态错配。](../../test/core/types.test.js#L335) |
+| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card)、[Effect · 2. Definition、实例与泛型](effect.md#2-definition实例与泛型)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [精确 Card Ref 恢复私有状态及策略，Unit 与 Card 的联合 Ref 保留两种精确读取结果。Unit 和 Card Ref 都能作为依赖目标，持久 Action 无独立 Lifetime，Card 的 never 结束参数拒绝显式结束。普通查询按策略收窄，只有 QUEUED 能入队。Runtime 接收同场多种 Card 与无宿主 Effect 状态，装配和登记拒绝 Definition 与状态错配。Card Effect 回调持有准确宿主类型，拒绝错误宿主。](../../test/core/types.test.js#L335) |
 
 ## 通用数据与算法
 
@@ -65,11 +65,12 @@
 | [Skill · 3. Duration 与弹药](skill.md#3-duration-与弹药) | [只延长当前 TIME，消失仍推进这轮，持久进度可使后续激活选 INFINITE](../../test/core/skill.test.js#L346)<br>[扣费前按当轮基础抽取弹药贡献，消费和耗尽检查分开，补弹与授予各守额度，正补弹报告已经提交的前后值。 旧行动输出期间切换激活，旧行动不扣新轮弹药，新行动才扣](../../test/core/skill.test.js#L397)<br>[弹药贡献可以在 TIME 期间登记和撤销，只改变以后取样的 AMMO 预算](../../test/core/skill.test.js#L485) |
 | [Skill · 4. Restriction、程序与 Hook](skill.md#4-restriction程序与-hook) | [只受理声明且当前获准的主动处理器，受理可保留当前激活，内部结束独立](../../test/core/skill.test.js#L214) |
 | [Skill · 5. 发动与完整结束](skill.md#5-发动与完整结束) | [拒绝不初始化不支付，支付与激活先发布，在启动通知导致暂时消失时仍可 onStart，结束只清原轮并在清槽后通知](../../test/core/skill.test.js#L16)<br>[支付通知中同步结束会保留已经支付的费用，继续旧 onStart 受重新读取后的激活资格约束](../../test/core/skill.test.js#L175) |
-| [Effect · 4. 生效状态与覆写](effect.md#4-生效状态与覆写) | [DEFAULT 保留已安装的候选，优先级及同级顺序决定参与，停用胜出者仍压制候补，移除后才切换](../../test/core/effect.test.js#L112) |
-| [Effect · 重复施加与叠层](effect.md#重复施加与叠层) | [EXTEND 更新剩余量，EXTEND_TIME 累加总量与余量，更新保留旧身份、内容及依赖关系，拒绝不兼容的政策](../../test/core/effect.test.js#L256)<br>[STACK 区分层数和有效层数，满层续时、手动消耗和到期衰减各自结算，停用保存层数但不输出](../../test/core/effect.test.js#L332) |
-| [Effect · 来源分组](effect.md#来源分组) | [UNIQUE 按共享、Unit 或无来源分别去重，来源归属和显式依赖的结束分别处理](../../test/core/effect.test.js#L467)<br>[同一 Card 的历史及新 Unit 共享来源组，不同 Card 和无卡 Unit 各自独立](../../test/core/effect.test.js#L524) |
-| [Effect · 5. 回调与同步操作](effect.md#5-回调与同步操作) | [安装中续期或结束采样当前实例，零期限不短暂生效，结束读取撤销输出后的最新私有状态](../../test/core/effect.test.js#L18) |
-| [Effect · 6. 时间推进](effect.md#6-时间推进) | [停用时仍扣时，只有 ACTIVE 执行业务，可手动推进和末次续期，新增实例不进本轮](../../test/core/effect.test.js#L159) |
+| [Effect · 3. 生命周期约束](effect.md#3-生命周期约束)、[Effect · 5. 回调与同步操作](effect.md#5-回调与同步操作) | [无宿主程序与 Card 效果采用共同的安装、启停、推进和依赖结束；同组在不同宿主间独立，依赖先于根结束。](../../test/core/effect.test.js#L19) |
+| [Effect · 4. 生效状态与覆写](effect.md#4-生效状态与覆写) | [DEFAULT 保留已安装的候选，优先级及同级顺序决定参与，停用胜出者仍压制候补，移除后才切换](../../test/core/effect.test.js#L182) |
+| [Effect · 重复施加与叠层](effect.md#重复施加与叠层) | [EXTEND 更新剩余量，EXTEND_TIME 累加总量与余量，更新保留旧身份、内容及依赖关系，拒绝不兼容的政策](../../test/core/effect.test.js#L326)<br>[STACK 区分层数和有效层数，满层续时、手动消耗和到期衰减各自结算，停用保存层数但不输出](../../test/core/effect.test.js#L402) |
+| [Effect · 来源分组](effect.md#来源分组) | [UNIQUE 按共享、Unit 或无来源分别去重，来源归属和显式依赖的结束分别处理](../../test/core/effect.test.js#L537)<br>[同一 Card 的历史及新 Unit 共享来源组，不同 Card 和无卡 Unit 各自独立](../../test/core/effect.test.js#L594) |
+| [Effect · 5. 回调与同步操作](effect.md#5-回调与同步操作) | [安装中续期或结束采样当前实例，零期限不短暂生效，结束读取撤销输出后的最新私有状态](../../test/core/effect.test.js#L88) |
+| [Effect · 6. 时间推进](effect.md#6-时间推进) | [停用时仍扣时，只有 ACTIVE 执行业务，可手动推进和末次续期，新增实例不进本轮](../../test/core/effect.test.js#L229) |
 | [Effect · 支持范围](effect.md#支持范围) | [眩晕中断 Action 并限制受影响的能力，允许独立 SP 恢复，其他同类来源仍有效时撤掉一个来源不能恢复](../../test/core/effects/control.test.js#L48)<br>[关闭父项下的 SP 回复限制可恢复回复，沉默仍阻止技能发动。父项结束清理两个标准子效果](../../test/core/effects/control.test.js#L92)<br>[技能按定义豁免各来源的眩晕发动限制，沉默、SP 门槛及其他能力的眩晕限制仍生效](../../test/core/effects/control.test.js#L119) |
 
 ## Battlefield、空间与调度
@@ -130,7 +131,7 @@
 | [Deployment · DP](deployment.md#dp) | [真实 Tick 产生的自然 DP 在同 Tick 部署命令前可用](../../test/core/deployment.test.js#L705)<br>[负 DP 半速、跨零保留已积进度，满额期间不积攒待恢复预算](../../test/core/deployment.test.js#L731)<br>[上限变更默认保留超额，显式裁剪只向下，有效下限控制足额支付，提高下限会同步补齐余额](../../test/core/deployment.test.js#L763)<br>[恢复倍率的登记与移除保留已经积累的自然回复进度](../../test/core/deployment.test.js#L814) |
 | [Deployment · Slot](deployment.md#slot) | [有效限位增加可多部署，撤销不驱逐已有单位，超额时零占用部署仍允许](../../test/core/deployment.test.js#L468)<br>[基础不限位不受有限增量约束](../../test/core/deployment.test.js#L504) |
 
-## Projectile、Mechanism 与 Terrain
+## Projectile 与 Terrain
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
@@ -138,12 +139,11 @@
 | [Projectile · 5. 时间推进](projectile.md#5-时间推进) | [固定候选轮到时取最新资格，先前弹道已经移除的候选不再执行](../../test/core/projectile.test.js#L72)<br>[Runtime 在整 Tick 起点锁定弹道，Unit 和 Action 阶段创建的弹道都立即入场、下一 Tick 才推进](../../test/core/projectile.test.js#L118) |
 | [Projectile · 外部变速与运动](projectile.md#外部变速与运动) | [选择支持变速的弹道，多来源相乘，同 ID 覆盖及独立撤销都体现在后续实际位移](../../test/core/projectile.test.js#L89) |
 | [Projectile · 6. 终止请求与 Finalize](projectile.md#6-终止请求与-finalize) | [登记期间当场结束可进入结束程序，回调看到 ENDING 与指定原因，随后注销](../../test/core/projectile.test.js#L55) |
-| [Terrain · Mechanism 操作](terrain.md#mechanism-操作) | [初始配置可直接 INACTIVE 且登记时只调用 onEnter。运行时同样先保留新身份并在登记后通知，只有实际启停边沿在写入后派发](../../test/core/mechanism.test.js#L20)<br>[停用保存私有状态而不推进，但仍能作为 Lifetime 依赖，移除它时先执行依赖 onEnd 再执行宿主 onEnd](../../test/core/mechanism.test.js#L72) |
 | [Projectile · 移除与消除](projectile.md#移除与消除) | [普通停止可对当前原目标结算保底，可消除弹道收到 ELIMINATED 则跳过保底](../../test/content/projectiles/arrow.test.js#L75) |
 | [Projectile · 7. 命中与内容状态](projectile.md#7-命中与内容状态) | [目标暂时消失仍使用实时位置，几何抵达尝试原目标但接收可拒绝，正常拥有延迟终止](../../test/content/projectiles/arrow.test.js#L50)<br>[伤害同步回调停止弹道时已发布的命中记录防止结算第二次](../../test/content/projectiles/arrow.test.js#L90)<br>[箭从在场来源读最新攻击力，来源注销后维持弹道并使用发射样本](../../test/content/projectiles/arrow.test.js#L109)<br>[目标注销后仍朝最后记忆位置飞行，到达不会改为命中该处新对象](../../test/content/projectiles/arrow.test.js#L130) |
 | [Occupancy · 与其他领域协作](occupancy.md#与其他领域协作) | [平台立即释放其地面乘员的阻挡，地块普通阻挡权仍可由其他单位使用](../../test/content/devices/shooting-platform.test.js#L45)<br>[平台乘员可用空中阻挡，切回地面退出原关系且不能重新接敌](../../test/content/devices/shooting-platform.test.js#L55)<br>[平台移除完整击倒自己的乘员且保留别格单位，同时恢复本格地形](../../test/content/devices/shooting-platform.test.js#L66) |
 | [Terrain · Content 行为](terrain.md#content-行为) | [箱体改的是登记格，普通阻碍成本为 1000 而地穴固定成本不变，离场只恢复自己负责的属性](../../test/content/devices/tiles.test.js#L43)<br>[源石分格入场并独立保留期限，覆盖暂停弱效果周期后延续，离格和控制器停用后按自身期限结束，ENVIRONMENT 正常接收而不授 HIT](../../test/content/terrain.test.js#L85)<br>[沼泽相邻格保留叠层周期，本步有效重量分辨单双层，离开撤销效果](../../test/content/terrain.test.js#L152)<br>[深水只影响地面敌人，地穴检查强制移动落点及空地变化，移除符合资格的单位](../../test/content/terrain.test.js#L184)<br>[烟雾按我方 DEFAULT 资格接纳地面及空中，建立阻挡不破隐，离开取消](../../test/content/terrain.test.js#L223) |
-| [Terrain · 地形接触与调度](terrain.md#地形接触与调度) | [Runtime 在本 Tick 路线自主移动之后扫描地形，用实际落点立即应用效果](../../test/content/terrain.test.js#L249) |
+| [Terrain · 地形接触与调度](terrain.md#地形接触与调度) | [Runtime 在统一 Effect 阶段扫描当前实际位置，移动后的落点由下一次扫描接纳](../../test/content/terrain.test.js#L249) |
 
 ## Hook 与伤害／治疗的回归语义
 
@@ -178,7 +178,7 @@
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
-| [Data · 业务输入](data.md#业务输入) | [实际场景中的沼泽与深水控制器被绑定为机制，所选真实技能黑板提供各自地形参数](../../test/data/level/predefined.test.js#L96) |
+| [Data · 业务输入](data.md#业务输入) | [实际场景中的沼泽与深水控制器被绑定为无宿主 Effect，所选真实技能黑板提供各自地形参数](../../test/data/level/predefined.test.js#L96) |
 | [Data · 共享读取与换算](data.md#共享读取与换算) | [作者帧换算保留 Begin 与连续小数，负上限按无限制规范化](../../test/data/action/timing.test.js#L12)<br>[预置个体指定技能级别并覆盖黑板时，实际场景参数使用覆盖值](../../test/data/level/predefined.test.js#L115) |
 | [Data · 干员静态资料](data.md#干员静态资料) | [按角色身份连接组织标签、养成、范围与选定技能数据，转换范围并保留技能费用和黑板](../../test/data/unit/operator.test.js#L42)<br>[完整原表保留未消费原始行和模式候选，常规内容只解释本次选中数据](../../test/data/unit/operator.test.js#L66)<br>[阶段成长保留连续基础间隔，只对整数属性舍入，并拒绝越过定级上限](../../test/data/unit/operator.test.js#L111)<br>[界面潜能映射累积原表等级，同一份潜能同时影响基础修正与可用天赋候选](../../test/data/unit/operator.test.js#L119)<br>[信赖独立插值和舍入后叠加，超过 100% 与 100% 战斗属性一致](../../test/data/unit/operator.test.js#L133)<br>[实际技能按解锁与专精门槛选择，校验跨表身份，专精后读取新的费用和倍率](../../test/data/unit/operator.test.js#L147)<br>[同个精英阶段内可以跨级更换天赋候选，天赋额外攻击不写进基础攻击属性](../../test/data/unit/operator.test.js#L160)<br>[模组各阶段用各自总属性并检查信赖、等级、归属，替换候选仍受潜能和所选模组身份约束](../../test/data/unit/operator.test.js#L169)<br>[模组的纯数据槽覆盖或追加天赋时保留原生身份和字符串黑板](../../test/data/unit/operator.test.js#L191) |
 | [Data · 敌人静态资料](data.md#敌人静态资料) | [关卡覆写最终 Prefab 后读取该 Prefab 的运动配置，敌人属性进入回血、等级和元素绑定，未支持免疫明确拒绝](../../test/content/enemies.test.js#L84)<br>[等级继承与关卡覆盖逐字段依 m_defined 合并，显式零及标签、位阶、回血规范化](../../test/data/unit/enemy.test.js#L14)<br>[基础、选中等级和关卡原始层分别保留技能、天赋及共享 SP，同层普通属性仍正常读取](../../test/data/unit/enemy.test.js#L43) |

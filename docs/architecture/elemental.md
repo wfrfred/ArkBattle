@@ -78,7 +78,7 @@ EP 写入／五型归零
 
 根结束遵守 Effect Lifetime：先发布 ENDING、撤销持续输出并结束依赖；依赖完整结束后，onEnd 将五型 EP 写为宿主最新有效上限、清空槽位并通知 burstEnded，随后移除根。正常完成与在场取消采用同一资源重置政策，重置不派发 healed。
 
-End 区分 FINISHED 与携带原因的 CANCELLED。自然到期映射 FINISHED，宿主离场使根 Effect 以 `CANCELLED` 结束。ENDING 仍占槽，嵌套结束返回时资源收尾可能仍未完成。宿主等到根 Effect 的整个 Finalize 返回才注销。burstEnded 时旧根仍为 ENDING；在场宿主可创建新爆发，随后旧根移除只处理旧 ID，不覆盖新槽。
+End 区分 FINISHED 与携带原因的 CANCELLED。自然到期映射 FINISHED，宿主离场使根 Effect 以 `CANCELLED` 结束。ENDING 仍占槽，嵌套结束返回时资源收尾可能仍未完成。宿主等到根 Effect 的整个 Finalize 返回才注销。burstEnded 时旧根仍为 ENDING；在场宿主可创建新爆发，随后旧根移除只处理旧 Ref，不覆盖新槽。
 
 ## 6. 时间推进
 

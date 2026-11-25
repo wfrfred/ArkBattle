@@ -11,7 +11,7 @@ import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 import * as epHealing from "../../dist/core/battle/resource/ep/healing/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
+import * as effects from "../../dist/core/effect/index.js";
 import * as locomotion from "../../dist/core/unit/capability/locomotion/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { createStun } from "../../dist/core/effects/elemental/neural.js";
@@ -103,7 +103,7 @@ test("EP-06: reducing recovery preserves elapsed time, immediately refills from 
     const hp = get(state, 0).vitality.health.hp;
     const damageEvents = state.events.filter(event => event.type === "DAMAGE");
     assert.equal(damageEvents.length, 1);
-    assert.equal(get(state, 0).effects.values().some(effect => effect.definition === silence), true);
+    assert.equal(effects.forHost(state, units.ref(get(state, 0))).some(effect => effect.definition === silence), true);
     state = update(state, target, elemental.setContribution("maxEp", {
         id: "capacity", value: [modifier({ addition: 1000 })],
     }));
@@ -118,7 +118,7 @@ test("EP-06: reducing recovery preserves elapsed time, immediately refills from 
     assert.equal(get(state, 0).elemental.burst, null);
     assert.equal(elemental.get(state, burst), undefined);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
-    assert.equal(get(state, 0).effects.values().some(effect =>
+    assert.equal(effects.forHost(state, units.ref(get(state, 0))).some(effect =>
         effect.definition === silence || effect.definition === blockSpRecovery), false);
     assert.equal(get(state, 0).vitality.health.hp, hp);
     assert.deepEqual(state.events.filter(event => event.type === "DAMAGE"), damageEvents);
@@ -132,7 +132,7 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
         id: "restart-recovery",
         invoke(state, { event }) {
             if (effects.ref(event.burst) !== original) return { state, value: undefined };
-            const incoming = injuryRequest(event.burst.host, "BURN", 1000);
+            const incoming = injuryRequest(event.burst.ref.host, "BURN", 1000);
             const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
             restarted = result.value.application.burst;
             return { state: result.state, value: undefined };

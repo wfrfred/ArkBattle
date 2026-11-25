@@ -5,7 +5,7 @@ import {
     type SpDefinition,
     type Trigger,
 } from "../../../core/unit/capability/skill/index.js";
-import { install } from "../../../core/unit/effect/index.js";
+import { install } from "../../../core/effect/index.js";
 import { ref } from "../../../core/unit/index.js";
 import { createAttackBonus } from "./effect.js";
 

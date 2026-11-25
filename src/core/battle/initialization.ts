@@ -1,16 +1,15 @@
-import { add as addMechanism, initialize as initializeMechanism } from "../mechanism/index.js";
+import { install, type Policy } from "../effect/index.js";
 import { initialize as initializeUnit } from "../unit/initialize.js";
 import { add as addUnit } from "../unit/operations.js";
 import type { Input } from "./contract.js";
 import type { State as BattleState } from "./state.js";
 
-export function initializeBattlefield<MechanismStates extends readonly object[]>(
+export function initializeBattlefield<EffectStates extends readonly object[]>(
     state: BattleState,
-    input: Pick<Input<readonly object[], MechanismStates>, "initialMechanisms" | "initialUnits">,
+    input: Pick<Input<readonly object[], EffectStates>, "initialEffects" | "initialUnits">,
 ): BattleState {
-    for (const mechanism of input.initialMechanisms) {
-        const initialized = initializeMechanism(state, mechanism);
-        state = addMechanism(initialized.state, initialized.value);
+    for (const effect of input.initialEffects) {
+        state = install<object, null, Policy>(state, null, effect.definition, effect.initial).state;
     }
 
     for (const unit of input.initialUnits) {

@@ -8,7 +8,7 @@ import { battle } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
 import { remove } from "../../dist/core/unit/operations.js";
 import * as lifetimes from "../../dist/core/lifetime/index.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
+import * as effects from "../../dist/core/effect/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
@@ -289,7 +289,7 @@ test("an ending ancestor freezes dependency edges before its active Action execu
     assert.equal(attempted, null);
     assert.equal(businessCalls, 0);
     assert.equal(
-        units.all(after).find((unit) => unit.definition.id === "recipient").effects.size,
+        effects.forHost(after, units.ref(recipient)).toArray().length,
         0,
     );
     assert.equal(execution.get(after), undefined);

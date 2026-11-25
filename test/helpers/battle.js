@@ -23,7 +23,7 @@ export function battle(initialUnits = [], { rows = 3, columns = 8, ...options } 
     );
     return initialize({
         map: createMap(rows, columns, tiles),
-        initialMechanisms: [],
+        initialEffects: [],
         initialUnits,
         schedule: { waves: [], branches: {} },
         routeMoveMultiplier: 1,

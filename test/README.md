@@ -48,7 +48,7 @@ test/
 | [Schedule](../docs/architecture/schedule.md) | [schedule](core/schedule.test.js) |
 | [Targeting／Targetable](../docs/architecture/targeting.md)、[Presence](../docs/architecture/presence.md) | [eligibility](core/targeting/eligibility.test.js)、[targetable](core/targeting/targetable.test.js)、[presence](core/presence.test.js) |
 | [Blocking](../docs/architecture/blocking.md)、[Occupancy](../docs/architecture/occupancy.md)、[Deployment](../docs/architecture/deployment.md) | [blocking](core/blocking.test.js)、[occupancy](core/occupancy.test.js)、[deployment](core/deployment.test.js) |
-| [Projectile](../docs/architecture/projectile.md)、[Mechanism](../docs/architecture/terrain.md)、[Event](../docs/architecture/event.md) | [projectile](core/projectile.test.js)、[mechanism](core/mechanism.test.js)、[event](core/event.test.js) |
+| [Projectile](../docs/architecture/projectile.md)、[Event](../docs/architecture/event.md) | [projectile](core/projectile.test.js)、[event](core/event.test.js) |
 | [Data：单位配置](../docs/architecture/data.md) | [operator](data/unit/operator.test.js)、[enemy](data/unit/enemy.test.js)、[tags](data/unit/tags.test.js) |
 | [Data：Effect 与关卡](../docs/architecture/data.md) | [effect](data/effect.test.js)、[route／schedule](data/level/route-schedule.test.js)、[predefined](data/level/predefined.test.js) |
 | [Content：行动与角色](../docs/architecture/content.md) | [attack](content/actions/attack.test.js)、[output](content/actions/output.test.js)、[enemies](content/enemies.test.js)、[Melantha](content/operators/melantha.test.js)、[Mudrock](content/operators/mudrock.test.js) |

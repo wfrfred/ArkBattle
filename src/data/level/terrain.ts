@@ -6,7 +6,7 @@ import type { ArknightsResolvedSkill } from "../skill/predefined.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
 
 export interface ArknightsTerrainController {
-    readonly profile: Extract<PredefinedPrefab, { readonly type: "MECHANISM" }>;
+    readonly profile: Extract<PredefinedPrefab, { readonly type: "EFFECT" }>;
     readonly skill: ArknightsResolvedSkill;
 }
 

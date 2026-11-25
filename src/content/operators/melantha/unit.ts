@@ -12,7 +12,7 @@ import type { SkillCapability } from "../../../core/unit/capability/skill/index.
 
 import { sides } from "../../../core/unit/capability/blocking/index.js";
 import { hasOffense } from "../../../core/unit/capability/offense/index.js";
-import { install } from "../../../core/unit/effect/index.js";
+import { install } from "../../../core/effect/index.js";
 
 import { create as createAttack, hasTarget } from "./action.js";
 import { createAttackBonus } from "./effect.js";

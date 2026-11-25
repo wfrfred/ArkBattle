@@ -49,7 +49,7 @@ test("real hidden devices preserve placement, static classification and target c
         consumeTileBlackboard: (_context, entry) => ["isValidHand", "previewNotAlloed"].includes(entry.key),
     });
     let battle = initialize({
-        map: level.map, initialUnits: [], initialMechanisms: [],
+        map: level.map, initialUnits: [], initialEffects: [],
         schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 123,
     });
     const initializedCrate = initializeUnit(battle, crateCreation);
@@ -105,7 +105,7 @@ test("real controller and skill data supply shared terrain parameters", () => {
     ]) {
         const { instance, character, profile, skill } = predefined(fixture(name), key);
         const creation = parsePredefinedCreation(instance, profile, character);
-        assert.equal(creation.type, "MECHANISM");
+        assert.equal(creation.type, "EFFECT");
         assert.equal(creation.definition.id, key);
         const resolved = resolveTerrainControllers([{ profile, skill }]);
         assert.deepEqual(resolved.mapOptions[terrain], parameters);

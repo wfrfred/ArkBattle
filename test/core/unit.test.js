@@ -5,7 +5,7 @@ import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
 import { Hooks, dispatch } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
+import * as effects from "../../dist/core/effect/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as facing from "../../dist/core/unit/capability/facing/index.js";
 import * as targetable from "../../dist/core/unit/capability/targetable/capability.js";
@@ -38,7 +38,7 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     }]);
     const current = units.all(state).find((unit) => unit.definition === definition);
     assert.equal(hasOccupancy(current), false);
-    assert.equal(current.effects.values().find((effect) => effect.definition === entryEffect).state.charges, 2);
+    assert.equal(effects.forHost(state, units.ref(current)).find((effect) => effect.definition === entryEffect).state.charges, 2);
 });
 
 test("Unit construction requires unique restriction IDs within each capability list", () => {
@@ -145,7 +145,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     const response = {
         id: "death-response", initialize: () => ({}),
         onEnable(current, self) {
-            return update(current, self.host, units.setHook(hpDamage.targetKilled, {
+            return update(current, self.ref.host, units.setHook(hpDamage.targetKilled, {
                 id: "death-response",
                 invoke(state, departure) {
                     assert.equal(departure.reason, "DEATH");
@@ -161,7 +161,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
             }));
         },
         onDisable(current, self) {
-            return update(current, self.host, units.removeHook(hpDamage.targetKilled, "death-response"));
+            return update(current, self.ref.host, units.removeHook(hpDamage.targetKilled, "death-response"));
         },
     };
     state = effects.install(state, killer, response).state;

@@ -11,7 +11,7 @@ import { hasTargetable } from "../../../dist/core/unit/capability/targetable/cap
 import * as units from "../../../dist/core/unit/query.js";
 import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
-import * as effects from "../../../dist/core/unit/effect/index.js";
+import * as effects from "../../../dist/core/effect/index.js";
 import { healFree } from "../../../dist/core/effects/protection.js";
 import { battle as createBattle, get } from "../../helpers/battle.js";
 import { unit, battle } from "../../helpers/action-fixture.js";

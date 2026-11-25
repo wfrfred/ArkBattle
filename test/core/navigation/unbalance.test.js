@@ -13,7 +13,7 @@ import { Hooks } from "../../../dist/core/hook.js";
 import * as lifetime from "../../../dist/core/lifetime/index.js";
 import * as projectiles from "../../../dist/core/projectile/index.js";
 import * as units from "../../../dist/core/unit/index.js";
-import * as effects from "../../../dist/core/unit/effect/index.js";
+import * as effects from "../../../dist/core/effect/index.js";
 import { pull, push, shifter, shiftable, unbalance } from "../../../dist/core/unit/capability/shifting/index.js";
 import { unbalanceImmunity } from "../../../dist/core/effects/protection.js";
 

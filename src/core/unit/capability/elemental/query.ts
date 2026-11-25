@@ -15,7 +15,7 @@ import type { DamageRestriction } from "./restriction.js";
 export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefined {
     const host = reference.host.get(battle);
 
-    return host?.elemental.burst === reference ? host.effects.get(reference) : undefined;
+    return host?.elemental.burst === reference ? reference.get(battle) : undefined;
 }
 
 export function resolveMaxEp(battle: BattleState, self: Unit & Elemental): number {

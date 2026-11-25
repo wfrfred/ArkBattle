@@ -14,7 +14,7 @@ import * as vitality from "../../../dist/core/unit/capability/vitality/index.js"
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
 import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";
-import * as effects from "../../../dist/core/unit/effect/index.js";
+import * as effects from "../../../dist/core/effect/index.js";
 import { hasLayer, setType } from "../../../dist/core/unit/capability/layer/index.js";
 import { disappear } from "../../../dist/core/unit/capability/presence/index.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";

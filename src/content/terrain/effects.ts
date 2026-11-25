@@ -7,11 +7,8 @@ import {
     type Request as DamageRequest,
 } from "../../core/battle/resource/hp/damage/index.js";
 
-import * as effects from "../../core/unit/effect/index.js";
-import {
-    type OrdinaryDefinition as Definition,
-    ref as effectRef,
-} from "../../core/unit/effect/index.js";
+import * as effects from "../../core/effect/index.js";
+import { type Definition, ref as effectRef } from "../../core/effect/index.js";
 
 import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
@@ -110,7 +107,7 @@ function damage(
     return applyDamage(request, calculateDamage(battle, request)).state;
 }
 
-export function createInfectionEffect(params: InfectionParams): Definition<InfectionState> {
+export function createInfectionEffect(params: InfectionParams): Definition<InfectionState, Unit> {
     return {
         id: "terrain/infection",
         group: {
@@ -121,12 +118,12 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
         },
         initialize: () => ({ remainingTicks: TICKS_PER_SECOND }),
         onEnable(battle, self) {
-            return changeModifiers(battle, self.host, `terrain/${self.id}`, {
+            return changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
                 attack: modifier.create({ multiplier: params.attackBonusRatio }),
                 attackSpeed: modifier.create({ addition: params.attackSpeedBonus }),
             });
         },
-        onDisable: (battle, self) => changeModifiers(battle, self.host, `terrain/${self.id}`),
+        onDisable: (battle, self) => changeModifiers(battle, self.ref.host, `terrain/${self.id}`),
         onTick(battle, self) {
             const remainingTicks = self.state.remainingTicks - 1;
 
@@ -135,23 +132,23 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
             });
 
             return remainingTicks === 0
-                ? damage(battle, self.host, params.damage, "ENVIRONMENT")
+                ? damage(battle, self.ref.host, params.damage, "ENVIRONMENT")
                 : battle;
         },
     };
 }
 
-export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicState> {
+export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicState, Unit> {
     return {
         id: "terrain/deepsea",
         initialize: () => ({ nextTick: 0 }),
         onEnable(battle, self) {
-            return changeModifiers(battle, self.host, `terrain/${self.id}`, {
+            return changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
                 attackSpeed: modifier.create({ multiplier: params.attackSpeedModifier }),
                 movementSpeed: modifier.create({ finalScaler: params.moveSpeedMultiplier }),
             });
         },
-        onDisable: (battle, self) => changeModifiers(battle, self.host, `terrain/${self.id}`),
+        onDisable: (battle, self) => changeModifiers(battle, self.ref.host, `terrain/${self.id}`),
         onTick(battle, self) {
             if (battle.tick < self.state.nextTick) {
                 return battle;
@@ -162,12 +159,12 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
                 nextTick: battle.tick + TICKS_PER_SECOND,
             });
 
-            return damage(battle, self.host, params.damage, "DAMAGE");
+            return damage(battle, self.ref.host, params.damage, "DAMAGE");
         },
     };
 }
 
-export function createMireEffect(params: MireParams): Definition<MireState> {
+export function createMireEffect(params: MireParams): Definition<MireState, Unit> {
     return {
         id: "terrain/mire",
         initialize: () => ({ nextTick: 0, stacks: 0 }),
@@ -176,7 +173,7 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
                 return battle;
             }
 
-            const unit = self.host.get(battle);
+            const unit = self.ref.host.get(battle);
             if (unit === undefined) {
                 return battle;
             }
@@ -195,7 +192,7 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
                 nextTick: battle.tick + params.stackIntervalTicks,
             });
 
-            return changeModifiers(battle, self.host, `terrain/${self.id}`, {
+            return changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
                 attackSpeed: modifier.create({ multiplier: stacks * params.attackSpeedPerStack }),
                 ...(enemy
                     ? {
@@ -206,6 +203,6 @@ export function createMireEffect(params: MireParams): Definition<MireState> {
                     : {}),
             });
         },
-        onDisable: (battle, self) => changeModifiers(battle, self.host, `terrain/${self.id}`),
+        onDisable: (battle, self) => changeModifiers(battle, self.ref.host, `terrain/${self.id}`),
     };
 }

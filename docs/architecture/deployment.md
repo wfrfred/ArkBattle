@@ -92,7 +92,7 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 
 `Battle.initialize()` 的 `initialUnits` 接收普通 `Unit.Input`。开场依次调用 `Unit.initialize()` 和 `Unit.add()`，用各自的 Definition、位置及 Initial 创建、登记并派发 `entered`。通过这个入口创建的 Deployable 初始来源 Card 为空，COST 与额度为零。
 
-关卡运行中的出现或离场由具体关卡程序调用 Unit 或 Mechanism 的创建及结束入口。开场装配的业务通知沿用所创建实体的登场流程。
+关卡运行中的出现或离场由具体关卡程序调用 Unit 或 Effect 的创建及结束入口。开场装配的业务通知沿用所创建实体的登场流程。
 
 ## Deployable 依赖与构造
 

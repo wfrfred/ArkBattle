@@ -1,78 +1,62 @@
-import { replace as replaceUnits } from "../operations.js";
-import { cardForUnit } from "../../battle/deployment/query.js";
-import { type State as BattleState, type Result } from "../../battle/state.js";
-import type { Unit } from "../unit.js";
-import type { Ref } from "../../common/ref.js";
-import { assertNonnegativeSafeInteger } from "../../common/assert.js";
-import * as units from "../query.js";
-import { available, end, type Lifetime } from "../../lifetime/index.js";
-import { register } from "../../lifetime/operations.js";
-import type {
-    Definition,
-    DefinitionFields,
-    Group,
-    OrdinaryDefinition,
-    OrdinaryGroup,
-    StackDefinition,
-} from "./definition.js";
+import { cardForUnit } from "../battle/deployment/query.js";
+import { type State as BattleState, type Result } from "../battle/state.js";
+import type { Unit } from "../unit/unit.js";
+import type { Ref } from "../common/ref.js";
+import { replaceIn } from "../common/object.js";
+import { assertNonnegativeSafeInteger } from "../common/assert.js";
+import { available, end, type Lifetime } from "../lifetime/index.js";
+import { register } from "../lifetime/operations.js";
+import type { Definition, Group, OrdinaryGroup } from "./definition.js";
 import {
     type Effect,
-    type OrdinaryEffect,
-    type StackEffect,
     type GroupSource,
+    type HostRef,
     createEffectRef,
     ref as effectRef,
 } from "./effect.js";
-import { expired, validate, type Expiration, type DecayExpiration } from "./expiration.js";
-import { hasStack } from "./query.js";
+import {
+    expired,
+    validate,
+    type Expiration,
+    type ExpirationPolicy,
+    type Policy,
+} from "./expiration.js";
+import { all, forHost, hasStack } from "./query.js";
 
-export interface Initial<S extends object, E extends Expiration = Expiration> {
+export interface Initial<S extends object, P extends Policy = undefined> {
     readonly source?: Ref<Unit> | null;
     readonly scopes?: readonly Ref<Lifetime>[];
-    readonly expiration?: E;
+    readonly expiration?: Expiration<P>;
     readonly state?: S;
     readonly enabled?: boolean;
 }
 
-export function install<S extends object, H extends object>(
+export function install<S extends object, H extends Lifetime | null>(
     battle: BattleState,
-    host: Ref<Unit & NoInfer<H>>,
-    definition: OrdinaryDefinition<S, H> & {
+    host: HostRef<NoInfer<H>>,
+    definition: Definition<S, H> & {
         readonly group?: OrdinaryGroup & { readonly type: "DEFAULT" | "UNIQUE" };
     },
     initial?: Initial<NoInfer<S>>,
-): Result<Ref<OrdinaryEffect<S, H>> | null>;
-export function install<S extends object, H extends object>(
+): Result<Ref<Effect<S, H, undefined>> | null>;
+export function install<S extends object, H extends Lifetime | null, P extends Policy = undefined>(
     battle: BattleState,
-    host: Ref<Unit & NoInfer<H>>,
-    definition: StackDefinition<S, H, "END">,
-    initial?: Initial<NoInfer<S>>,
-): Result<Ref<StackEffect<object, object, "END">> | null>;
-export function install<S extends object, H extends object>(
+    host: HostRef<NoInfer<H>>,
+    definition: Definition<S, H, P>,
+    initial?: Initial<NoInfer<S>, NoInfer<P>>,
+): Result<Ref<Effect<object, H, P>> | null>;
+export function install(
     battle: BattleState,
-    host: Ref<Unit & NoInfer<H>>,
-    definition: StackDefinition<S, H, "DECAY">,
-    initial?: Initial<NoInfer<S>, DecayExpiration>,
-): Result<Ref<StackEffect<object, object, "DECAY">> | null>;
-export function install<S extends object, H extends object>(
-    battle: BattleState,
-    host: Ref<Unit & NoInfer<H>>,
-    definition: OrdinaryDefinition<S, H>,
-    initial?: Initial<NoInfer<S>>,
-): Result<Ref<OrdinaryEffect> | null>;
-export function install<S extends object, H extends object>(
-    battle: BattleState,
-    host: Ref<Unit & NoInfer<H>>,
-    definition: Definition<S, H>,
-    initial: Initial<NoInfer<S>> = {},
-): Result<Ref<Effect<any, any>> | null> {
-    const unit = host.get(battle);
+    host: HostRef,
+    definition: Pick<Definition<object, Lifetime | null, Policy>, "id" | "group" | "initialize">,
+    initial: Initial<object, Policy> = {},
+): Result<Ref<Lifetime> | null> {
     const scopes = initial.scopes ?? [];
     const expiration = initial.expiration ?? { type: "INFINITE" };
     validate(expiration);
 
     if (
-        unit?.lifecycle !== "ACTIVE" ||
+        (host !== null && !available(battle, host)) ||
         scopes.some((dependency) => !available(battle, dependency))
     ) {
         return { state: battle, value: null };
@@ -84,12 +68,9 @@ export function install<S extends object, H extends object>(
     const retained =
         group === undefined
             ? undefined
-            : unit.effects
-                  .values()
-                  .find(
-                      (self) =>
-                          self.lifecycle !== "ENDING" && matchesGroup(self, group, groupSource),
-                  );
+            : forHost(battle, host).find(
+                  (self) => self.lifecycle !== "ENDING" && matchesGroup(self, group, groupSource),
+              );
 
     if (retained !== undefined && group !== undefined) {
         const existing = retained.definition.group!;
@@ -108,19 +89,18 @@ export function install<S extends object, H extends object>(
 
         if (group.type !== "DEFAULT") {
             return {
-                state: merge(battle, unit, retained, expiration),
+                state: merge(battle, retained, expiration),
                 value: effectRef(retained),
             };
         }
     }
 
-    const id = unit.effects.nextId;
+    const id = battle.effects.nextId;
     const reference = createEffectRef(host);
     const instance = {
         id,
         ref: reference,
         config,
-        host,
         definition,
         state: initial.state ?? definition.initialize(),
         source,
@@ -130,15 +110,15 @@ export function install<S extends object, H extends object>(
         lifecycle: "INSTALLING",
         ...(group?.type === "STACK" ? { stackCount: 1 } : {}),
     } as unknown as Effect;
-    battle = replaceUnits(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
-    battle = register(battle, reference, [host, ...scopes]);
+    battle = replaceIn(battle, ["effects"], battle.effects.add(instance));
+    battle = register(battle, reference, host === null ? scopes : [host, ...scopes]);
     battle = callbacks(instance.definition).onInstall?.(battle, instance) ?? battle;
 
     if (reference.get(battle)?.lifecycle === "INSTALLING") {
         battle = settleExpiration(battle, reference);
         const current = reference.get(battle);
         if (current?.lifecycle === "INSTALLING") {
-            battle = replaceEffect(battle, host.get(battle)!, {
+            battle = replaceEffect(battle, {
                 ...current,
                 lifecycle: "INACTIVE",
             });
@@ -160,17 +140,12 @@ export function setState<T extends Effect<any, any>>(
     reference: Ref<T>,
     state: NoInfer<T["state"]>,
 ): BattleState {
-    const unit = (reference.host as Ref<Unit>).get(battle);
-    if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${reference.host.id}`);
-    }
-
-    const self = unit.effects.get(reference);
+    const self = reference.get(battle);
     if (self === undefined) {
         throw new RangeError("unknown effect");
     }
 
-    return state === self.state ? battle : replaceEffect(battle, unit, { ...self, state });
+    return state === self.state ? battle : replaceEffect(battle, { ...self, state });
 }
 
 export function setExpiration<T extends Effect<any, any>>(
@@ -179,66 +154,52 @@ export function setExpiration<T extends Effect<any, any>>(
     expiration: NoInfer<T["expiration"]>,
 ): BattleState {
     validate(expiration);
-    const unit = (reference.host as Ref<Unit>).get(battle);
-    if (unit === undefined) {
-        throw new RangeError(`unknown unit: ${reference.host.id}`);
-    }
-
-    const self = unit.effects.get(reference);
+    const self = reference.get(battle);
     if (self === undefined) {
         throw new RangeError("unknown effect");
     }
 
-    if (self.expiration === expiration) {
-        return battle;
-    }
-
-    const next: T = { ...self, expiration };
-
-    return replaceEffect(battle, unit, next);
+    return self.expiration === expiration
+        ? battle
+        : replaceEffect(battle, { ...self, expiration } as Effect<any, any>);
 }
 
-export function decreaseStack<T extends StackEffect<any, any>>(
+export function decreaseStack(
     battle: BattleState,
-    reference: Ref<T>,
+    reference: Ref<Effect<any, any, ExpirationPolicy>>,
     amount: number,
 ): BattleState {
     assertNonnegativeSafeInteger(amount, "effect stack consumption");
-    const unit = (reference.host as Ref<Unit>).get(battle);
-    const self = unit?.effects.get(reference);
+    const self = reference.get(battle);
     if (self === undefined || self.lifecycle === "ENDING" || amount === 0) {
         return battle;
     }
 
-    const stack = self as StackEffect;
-
-    return amount >= stack.stackCount
+    return amount >= self.stackCount
         ? remove(battle, reference)
-        : updateStack(battle, unit!, stack, stack.stackCount - amount, stack.expiration);
+        : updateStack(battle, self, self.stackCount - amount, self.expiration);
 }
 
-export function setEnabled<T extends Effect<any, any>>(
+export function setEnabled(
     battle: BattleState,
-    reference: Ref<T>,
+    reference: Ref<Effect<any, any>>,
     enabled: boolean,
 ): BattleState {
-    const unit = (reference.host as Ref<Unit>).get(battle);
-    const instance = unit?.effects.get(reference);
+    const instance = reference.get(battle);
     if (instance === undefined || instance.lifecycle === "ENDING" || instance.enabled === enabled) {
         return battle;
     }
 
-    battle = replaceEffect(battle, unit!, { ...instance, enabled });
+    battle = replaceEffect(battle, { ...instance, enabled });
 
     return updateLifecycle(battle, reference);
 }
 
 const config: Effect["config"] = {
     end: {
-        prepare(battle, reference, initial) {
-            const host = reference.host.get(battle)!;
+        prepare(battle, _reference, initial) {
             const self = { ...initial, lifecycle: "ENDING" as const };
-            battle = replaceEffect(battle, host, self);
+            battle = replaceEffect(battle, self);
 
             if (initial.lifecycle === "ACTIVE") {
                 battle = callbacks(initial.definition).onDisable?.(battle, self) ?? battle;
@@ -251,36 +212,34 @@ const config: Effect["config"] = {
         finalize(battle, reference, _initial, reason) {
             const self = reference.get(battle)!;
             battle = callbacks(self.definition).onEnd?.(battle, self, reason) ?? battle;
-            const unit = reference.host.get(battle)!;
 
-            return replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference) }]);
+            return replaceIn(battle, ["effects"], battle.effects.remove(reference));
         },
         dependencyEnd: "CANCELLED",
     },
 };
 
-export function remove<T extends Effect<any, any>>(
+export function remove(
     battle: BattleState,
-    reference: Ref<T>,
+    reference: Ref<Effect<any, any>>,
     reason = "EXPLICIT",
 ): BattleState {
     return end(battle, reference, reason);
 }
 
 export function advance(battle: BattleState): BattleState {
-    const candidates = units.all(battle).flatMap((host) => host.effects.values());
+    const candidates = all(battle);
 
     for (const candidate of candidates) {
         const reference = effectRef(candidate);
-        const unit = reference.host.get(battle);
-        let instance = unit?.effects.get(reference);
+        let instance = reference.get(battle);
         if (instance?.lifecycle === "ACTIVE" || instance?.lifecycle === "INACTIVE") {
             const previous = instance.expiration;
             if (previous.type === "DURATION") {
                 const remaining = Math.max(0, previous.remaining - previous.rate);
                 if (remaining !== previous.remaining) {
                     instance = { ...instance, expiration: { ...previous, remaining } };
-                    battle = replaceEffect(battle, unit!, instance);
+                    battle = replaceEffect(battle, instance);
                 }
             }
             if (instance.lifecycle === "ACTIVE") {
@@ -295,20 +254,25 @@ export function advance(battle: BattleState): BattleState {
     return battle;
 }
 
-type Callbacks = DefinitionFields<object, Effect> & {
+interface Callbacks {
+    readonly onInstall?: (battle: BattleState, self: Effect) => BattleState;
+    readonly onEnable?: (battle: BattleState, self: Effect) => BattleState;
+    readonly onDisable?: (battle: BattleState, self: Effect) => BattleState;
+    readonly onTick?: (battle: BattleState, self: Effect, previous: Expiration) => BattleState;
+    readonly onEnd?: (battle: BattleState, self: Effect, reason: string) => BattleState;
     readonly onStackChange?: (
         battle: BattleState,
-        self: StackEffect,
+        self: Effect<object, Lifetime | null, ExpirationPolicy>,
         previous: number,
     ) => BattleState;
-};
-
-function callbacks(definition: Definition<object>): Callbacks {
-    return definition as Callbacks;
 }
 
-function replaceEffect(battle: BattleState, unit: Unit, self: Effect<any, any>): BattleState {
-    return replaceUnits(battle, [{ ...unit, effects: unit.effects.replace(self) }]);
+function callbacks(definition: Effect["definition"]): Callbacks {
+    return definition as unknown as Callbacks;
+}
+
+function replaceEffect(battle: BattleState, self: Effect<any, any>): BattleState {
+    return replaceIn(battle, ["effects"], battle.effects.replace(self));
 }
 
 function resolveGroupSource(
@@ -331,7 +295,7 @@ function matchesGroup(self: Effect, group: Group, source: GroupSource | null): b
     );
 }
 
-function merge(battle: BattleState, unit: Unit, self: Effect, incoming: Expiration): BattleState {
+function merge(battle: BattleState, self: Effect, incoming: Expiration): BattleState {
     const group = self.definition.group!;
     if (hasStack(self)) {
         const policy = self.definition.group;
@@ -344,7 +308,7 @@ function merge(battle: BattleState, unit: Unit, self: Effect, incoming: Expirati
                 ? refreshTime(self.expiration, remainingTime(incoming, battle.tick), battle.tick)
                 : self.expiration;
 
-        return updateStack(battle, unit, self, count, expiration);
+        return updateStack(battle, self, count, expiration);
     }
 
     const amount = fullDuration(incoming, battle.tick);
@@ -353,15 +317,12 @@ function merge(battle: BattleState, unit: Unit, self: Effect, incoming: Expirati
             ? refreshTime(self.expiration, amount, battle.tick)
             : extendTime(self.expiration, amount);
 
-    return expiration === self.expiration
-        ? battle
-        : replaceEffect(battle, unit, { ...self, expiration });
+    return expiration === self.expiration ? battle : replaceEffect(battle, { ...self, expiration });
 }
 
 function updateStack(
     battle: BattleState,
-    unit: Unit,
-    self: StackEffect,
+    self: Effect<object, Lifetime | null, ExpirationPolicy>,
     count: number,
     expiration: Expiration,
 ): BattleState {
@@ -369,17 +330,20 @@ function updateStack(
         return battle;
     }
 
-    const next = { ...self, stackCount: count, expiration } as StackEffect;
-    battle = replaceEffect(battle, unit, next);
+    const next = { ...self, stackCount: count, expiration } as Effect<
+        object,
+        Lifetime | null,
+        ExpirationPolicy
+    >;
+    battle = replaceEffect(battle, next);
 
     return count === self.stackCount
         ? battle
         : (callbacks(next.definition).onStackChange?.(battle, next, self.stackCount) ?? battle);
 }
 
-function settleExpiration(battle: BattleState, reference: Ref<Effect>): BattleState {
-    const unit = reference.host.get(battle);
-    const self = unit?.effects.get(reference);
+function settleExpiration(battle: BattleState, reference: Ref<Effect<any, any>>): BattleState {
+    const self = reference.get(battle) as Effect | undefined;
     if (
         self === undefined ||
         self.lifecycle === "ENDING" ||
@@ -393,7 +357,7 @@ function settleExpiration(battle: BattleState, reference: Ref<Effect>): BattleSt
         self.expiration.type === "DURATION" &&
         self.stackCount > 1
     ) {
-        return updateStack(battle, unit!, self, self.stackCount - 1, {
+        return updateStack(battle, self, self.stackCount - 1, {
             ...self.expiration,
             remaining: self.expiration.duration,
         });
@@ -451,14 +415,9 @@ function extendTime(expiration: Expiration, amount: number): Expiration {
         : { ...expiration, tick: expiration.tick + Math.ceil(amount) };
 }
 
-function updateLifecycle<T extends Effect<any, any>>(
-    battle: BattleState,
-    reference: Ref<T>,
-): BattleState {
-    const unit = (reference.host as Ref<Unit>).get(battle);
-    const instance = unit?.effects.get(reference);
+function updateLifecycle(battle: BattleState, reference: Ref<Effect<any, any>>): BattleState {
+    const instance = reference.get(battle) as unknown as Effect | undefined;
     if (
-        unit === undefined ||
         instance === undefined ||
         instance.lifecycle === "ENDING" ||
         instance.lifecycle === "INSTALLING"
@@ -471,16 +430,14 @@ function updateLifecycle<T extends Effect<any, any>>(
         instance.enabled &&
         available(battle, reference) &&
         (group === undefined ||
-            !unit.effects
-                .values()
-                .some(
-                    (other) =>
-                        other.lifecycle !== "ENDING" &&
-                        matchesGroup(other, group, instance.groupSource) &&
-                        (other.definition.group!.priority > group.priority ||
-                            (other.definition.group!.priority === group.priority &&
-                                other.id < instance.id)),
-                ));
+            !forHost(battle, instance.ref.host).some(
+                (other) =>
+                    other.lifecycle !== "ENDING" &&
+                    matchesGroup(other, group, instance.groupSource) &&
+                    (other.definition.group!.priority > group.priority ||
+                        (other.definition.group!.priority === group.priority &&
+                            other.id < instance.id)),
+            ));
     if (active === (instance.lifecycle === "ACTIVE")) {
         return battle;
     }
@@ -496,7 +453,7 @@ function updateLifecycle<T extends Effect<any, any>>(
     }
 
     const next = { ...instance, lifecycle: active ? "ACTIVE" : "INACTIVE" } as Effect;
-    battle = replaceEffect(battle, unit, next);
+    battle = replaceEffect(battle, next);
     const callback = active
         ? callbacks(next.definition).onEnable
         : callbacks(next.definition).onDisable;
@@ -506,11 +463,9 @@ function updateLifecycle<T extends Effect<any, any>>(
 
 function reconcileGroupActivity(battle: BattleState, self: Effect): BattleState {
     const group = self.definition.group!;
-    const candidates =
-        self.host
-            .get(battle)
-            ?.effects.values()
-            .filter((other) => matchesGroup(other, group, self.groupSource)) ?? [];
+    const candidates = forHost(battle, self.ref.host).filter((other) =>
+        matchesGroup(other, group, self.groupSource),
+    );
 
     for (const candidate of candidates) {
         const reference = effectRef(candidate);

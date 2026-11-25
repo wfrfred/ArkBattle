@@ -1,7 +1,7 @@
 import { update as updateUnit } from "../unit/operations.js";
 import type { Restriction } from "../restriction.js";
 
-import type { OrdinaryDefinition as Definition } from "../unit/effect/definition.js";
+import type { Definition } from "../effect/definition.js";
 import * as action from "../unit/capability/action/capability.js";
 import { hasBlocker } from "../unit/capability/blocking/blocker.js";
 import {
@@ -27,14 +27,14 @@ export const silenceRestriction: ActivationRestriction = { allows: () => false }
 
 export const spRecoveryRestriction: RecoveryRestriction = { allows: () => false };
 
-export const stun: Definition<object> = {
+export const stun: Definition<object, Unit> = {
     id: "control/stun",
     initialize: () => ({}),
     onEnable(state, self) {
         const id = `@effect/${self.id}/stun`;
-        state = updateUnit(state, self.host, restrictions(id, true));
+        state = updateUnit(state, self.ref.host, restrictions(id, true));
 
-        const unit = self.host.get(state);
+        const unit = self.ref.host.get(state);
 
         return unit !== undefined && action.hasAction(unit)
             ? cancelForUnit(state, units.ref(unit), "INTERRUPTED")
@@ -43,17 +43,17 @@ export const stun: Definition<object> = {
     onDisable(state, self) {
         const id = `@effect/${self.id}/stun`;
 
-        return updateUnit(state, self.host, restrictions(id, false));
+        return updateUnit(state, self.ref.host, restrictions(id, false));
     },
 };
 
-export const silence: Definition<object> = {
+export const silence: Definition<object, Unit> = {
     id: "control/silence",
     initialize: () => ({}),
     onEnable(state, self) {
         return updateUnit(
             state,
-            self.host,
+            self.ref.host,
             optional(
                 skill.hasSkill,
                 skill.setRestriction("activationRestrictions", {
@@ -66,7 +66,7 @@ export const silence: Definition<object> = {
     onDisable(state, self) {
         return updateUnit(
             state,
-            self.host,
+            self.ref.host,
             optional(
                 skill.hasSkill,
                 skill.removeRestriction("activationRestrictions", `@effect/${self.id}/silence`),
@@ -75,13 +75,13 @@ export const silence: Definition<object> = {
     },
 };
 
-export const blockSpRecovery: Definition<object> = {
+export const blockSpRecovery: Definition<object, Unit> = {
     id: "control/block-sp-recovery",
     initialize: () => ({}),
     onEnable(state, self) {
         return updateUnit(
             state,
-            self.host,
+            self.ref.host,
             optional(
                 skill.hasSkill,
                 skill.setRestriction("recoveryRestrictions", {
@@ -94,7 +94,7 @@ export const blockSpRecovery: Definition<object> = {
     onDisable(state, self) {
         return updateUnit(
             state,
-            self.host,
+            self.ref.host,
             optional(
                 skill.hasSkill,
                 skill.removeRestriction("recoveryRestrictions", `@effect/${self.id}/sp-recovery`),

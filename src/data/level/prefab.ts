@@ -19,7 +19,7 @@ export type PredefinedPrefab =
           readonly tileChanges: Partial<TileState>;
       }
     | {
-          readonly type: "MECHANISM";
+          readonly type: "EFFECT";
           readonly prefabKey: string;
           readonly skillPrefabKey: string;
           readonly terrain: "MIRE" | "DEEPSEA";
@@ -196,7 +196,7 @@ export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): Pre
         };
     }
     if (token._disableUIHub !== true || token._withdrawable !== false || token._category !== 2) {
-        throw new TypeError(`unsupported token mechanism profile ${source.prefabKey}`);
+        throw new TypeError(`unsupported token effect profile ${source.prefabKey}`);
     }
     if (skillValue === undefined) {
         throw new TypeError(`${source.prefabKey} requires a skill prefab`);
@@ -207,11 +207,11 @@ export function parsePredefinedPrefab(value: unknown, skillValue?: unknown): Pre
     const mire = keys.has("buff_mire[mark]") && keys.has("buff_mire[checker]");
     const deepsea = keys.has("sea_drown[enemy]") && keys.has("buff_sea");
     if (mire === deepsea) {
-        throw new TypeError(`unsupported mechanism profile ${source.prefabKey}`);
+        throw new TypeError(`unsupported effect profile ${source.prefabKey}`);
     }
 
     return {
-        type: "MECHANISM",
+        type: "EFFECT",
         prefabKey: source.prefabKey,
         skillPrefabKey: skill.prefabKey,
         terrain: mire ? "MIRE" : "DEEPSEA",

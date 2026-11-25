@@ -4,9 +4,9 @@ import type { Ref } from "../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import * as units from "../../unit/query.js";
 import type { Unit } from "../../unit/unit.js";
-import * as effects from "../../unit/effect/operations.js";
-import { ref } from "../../unit/effect/effect.js";
-import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
+import * as effects from "../../effect/operations.js";
+import { ref } from "../../effect/effect.js";
+import type { Definition as EffectDefinition } from "../../effect/definition.js";
 import { setHook, removeHook } from "../../unit/hook.js";
 import { compose, optional } from "../../unit/change.js";
 import * as modifier from "../../common/modifier.js";
@@ -80,7 +80,7 @@ function setSpeed(
 }
 
 export function createActionScaledDamage(parameters: ActionScaledDamageParameters): Definition {
-    const damage: EffectDefinition<ActionDamageState> = {
+    const damage: EffectDefinition<ActionDamageState, Unit> = {
         id: "elemental/mania/action-damage",
         group: {
             id: "elemental/mania/action-damage",
@@ -94,7 +94,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
             executions: [],
         }),
         onInstall(battle, self) {
-            const host = self.host.get(battle)!;
+            const host = self.ref.host.get(battle)!;
             const reference = ref(self);
 
             return update(
@@ -162,8 +162,9 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                 ),
             );
         },
-        onEnable: (battle, self) => setSpeed(battle, self.host, self.id, parameters.attackSpeed),
-        onDisable: (battle, self) => setSpeed(battle, self.host, self.id, null),
+        onEnable: (battle, self) =>
+            setSpeed(battle, self.ref.host, self.id, parameters.attackSpeed),
+        onDisable: (battle, self) => setSpeed(battle, self.ref.host, self.id, null),
         onTick(battle, self) {
             const timer = self.state.timer - 1;
             battle = effects.setState(battle, ref(self), {
@@ -172,11 +173,18 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
             });
 
             return timer === 0
-                ? hurt(battle, self.host.get(battle)!, "TRUE", self.state.damage, "NORMAL", true)
+                ? hurt(
+                      battle,
+                      self.ref.host.get(battle)!,
+                      "TRUE",
+                      self.state.damage,
+                      "NORMAL",
+                      true,
+                  )
                 : battle;
         },
         onEnd(battle, self) {
-            const host = self.host.get(battle)!;
+            const host = self.ref.host.get(battle)!;
 
             return update(
                 battle,
@@ -200,7 +208,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                 return battle;
             }
 
-            return effects.install(battle, self.host, damage, {
+            return effects.install(battle, self.ref.host, damage, {
                 expiration: {
                     type: "DEADLINE",
                     tick: battle.tick + parameters.effectDurationTicks,
@@ -224,8 +232,9 @@ export function createTimeScaledDamage(
             timer: TICKS_PER_SECOND,
         }),
         onInstall: registerBurst,
-        onEnable: (battle, self) => setSpeed(battle, self.host, self.id, parameters.attackSpeed),
-        onDisable: (battle, self) => setSpeed(battle, self.host, self.id, null),
+        onEnable: (battle, self) =>
+            setSpeed(battle, self.ref.host, self.id, parameters.attackSpeed),
+        onDisable: (battle, self) => setSpeed(battle, self.ref.host, self.id, null),
         onTick(battle, self) {
             battle = advance(battle, self);
             const reference = ref(self);

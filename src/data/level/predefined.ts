@@ -4,9 +4,9 @@ import {
     assertPositiveSafeInteger,
     assertSafeInteger,
 } from "../../core/common/assert.js";
-import type { Input as MechanismInput } from "../../core/mechanism/index.js";
+import type { Definition as EffectDefinition } from "../../core/effect/index.js";
 import type { Input as UnitInput } from "../../core/unit/index.js";
-import { createTerrainMechanism, type ContactState } from "../../content/terrain/mechanism.js";
+import { createTerrainEffect, type ContactState } from "../../content/terrain/controller.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
 import {
     create as createCrate,
@@ -170,7 +170,7 @@ function unitDefinition(
 
 export type PredefinedCreation =
     | ({ readonly type: "UNIT" } & UnitInput<ReturnType<typeof unitDefinition>>)
-    | ({ readonly type: "MECHANISM" } & MechanismInput<ContactState>);
+    | { readonly type: "EFFECT"; readonly definition: EffectDefinition<ContactState, null> };
 
 export function parsePredefinedCreation(
     instance: ArknightsPredefinedInstance,
@@ -179,11 +179,11 @@ export function parsePredefinedCreation(
 ): PredefinedCreation {
     const phase = predefinedCharacter(instance, profile, characterValue);
 
-    if (profile.type === "MECHANISM") {
+    if (profile.type === "EFFECT") {
         return {
-            type: "MECHANISM",
+            type: "EFFECT",
             definition: {
-                ...createTerrainMechanism(profile.terrain === "MIRE" ? mire : deepsea),
+                ...createTerrainEffect(profile.terrain === "MIRE" ? mire : deepsea),
                 id: instance.inst.characterKey,
             },
         };

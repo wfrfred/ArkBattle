@@ -3,10 +3,10 @@ import { appendEvents, type State as BattleState } from "../../../battle/state.j
 import { replace } from "../../operations.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import type { Unit } from "../../unit.js";
-import { setExpiration } from "../../effect/operations.js";
-import { ref, type OrdinaryEffect } from "../../effect/effect.js";
-import type { OrdinaryDefinition as EffectDefinition } from "../../effect/definition.js";
-import type { Expiration } from "../../effect/expiration.js";
+import { setExpiration } from "../../../effect/operations.js";
+import { ref, type Effect } from "../../../effect/effect.js";
+import type { Definition as EffectDefinition } from "../../../effect/definition.js";
+import type { Expiration } from "../../../effect/expiration.js";
 import { elementValues, type Elemental, type Type } from "./capability.js";
 import { available, resolveMaxEp, resolveBurstRecoverySpeed } from "./query.js";
 import { dispatch, burstStarted, burstEnded } from "./hook.js";
@@ -16,15 +16,15 @@ export interface State {
     readonly type: Type;
 }
 
-export interface Definition<S extends State = State> extends EffectDefinition<S, Elemental> {
+export type Definition<S extends State = State> = EffectDefinition<S, Unit & Elemental> & {
     readonly durationTicks: number;
-}
+};
 
 type Duration = Extract<Expiration, { type: "DURATION" }>;
 
-export interface Burst<S extends State = State> extends OrdinaryEffect<S, Elemental> {
+export type Burst<S extends State = State> = Effect<S, Unit & Elemental, undefined> & {
     readonly expiration: Duration;
-}
+};
 
 export type End =
     { readonly type: "FINISHED" } | { readonly type: "CANCELLED"; readonly reason: string };
@@ -33,9 +33,9 @@ export { ref };
 
 export function onInstall<S extends State>(
     battle: BattleState,
-    self: OrdinaryEffect<S, Elemental>,
+    self: Effect<S, Unit & Elemental, undefined>,
 ): BattleState {
-    const host = self.host.get(battle)!;
+    const host = self.ref.host.get(battle)!;
     const duration = (self.definition as Definition<S>).durationTicks;
     const current: Burst<S> = {
         ...self,
@@ -46,7 +46,8 @@ export function onInstall<S extends State>(
             rate: 0,
         },
     };
-    battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(current))]);
+    const burst = current as unknown as Burst;
+    battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(burst))]);
     battle = setExpiration(battle, ref(current), current.expiration);
     battle = appendEvents(battle, [
         {
@@ -58,12 +59,12 @@ export function onInstall<S extends State>(
         },
     ]);
 
-    return dispatch(battle, current.host, burstStarted, current);
+    return dispatch(battle, current.ref.host, burstStarted, burst);
 }
 
 export function advance<S extends State>(
     battle: BattleState,
-    instance: OrdinaryEffect<S, Elemental>,
+    instance: Effect<S, Unit & Elemental, undefined>,
     onSecond?: (
         battle: BattleState,
         host: Unit & Elemental,
@@ -107,11 +108,11 @@ export function advance<S extends State>(
 
 export function onEnd<S extends State>(
     battle: BattleState,
-    instance: OrdinaryEffect<S, Elemental>,
+    instance: Effect<S, Unit & Elemental, undefined>,
     reason: string,
 ): BattleState {
     const self = instance as Burst<S>;
-    const host = self.host.get(battle)!;
+    const host = self.ref.host.get(battle)!;
     battle = replace(battle, [
         {
             ...host,
@@ -127,12 +128,12 @@ export function onEnd<S extends State>(
             ? { type: "FINISHED" }
             : { type: "CANCELLED", reason };
 
-    return dispatch(battle, self.host, burstEnded, { burst: self, end });
+    return dispatch(battle, self.ref.host, burstEnded, { burst: self as unknown as Burst, end });
 }
 
 export function availableHost<S extends State>(
     battle: BattleState,
-    reference: Ref<OrdinaryEffect<S, Elemental>>,
+    reference: Ref<Effect<S, Unit & Elemental, undefined>>,
 ): (Unit & Elemental) | undefined {
     const host = reference.host.get(battle);
     const lifecycle = reference.get(battle)?.lifecycle;

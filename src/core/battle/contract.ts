@@ -1,6 +1,10 @@
 import type { Seed } from "../common/rng.js";
 import type { Map } from "../battlefield/map/map.js";
-import type { Input as MechanismInput } from "../mechanism/index.js";
+import type {
+    Definition as EffectDefinition,
+    Initial as EffectInitial,
+    Policy as EffectPolicy,
+} from "../effect/index.js";
 import type { Definition as ScheduleDefinition } from "./schedule/definition.js";
 import type { Definition as UnitDefinition, Unit } from "../unit/unit.js";
 import type { Input as UnitInput } from "../unit/initialize.js";
@@ -20,9 +24,16 @@ export interface Definition {
     readonly pushMultiplier: number;
 }
 
+type InitialEffect<S extends object, P extends EffectPolicy = EffectPolicy> = P extends EffectPolicy
+    ? {
+          readonly definition: EffectDefinition<S, null, P>;
+          readonly initial?: EffectInitial<S, P>;
+      }
+    : never;
+
 export interface Input<
     CardStates extends readonly object[] = readonly object[],
-    MechanismStates extends readonly object[] = readonly object[],
+    EffectStates extends readonly object[] = readonly object[],
     UnitDefinitions extends readonly (UnitDefinition & Partial<CapabilityDefinitions>)[] =
         readonly (UnitDefinition & Partial<CapabilityDefinitions>)[],
 > extends Omit<Definition, "pushMultiplier"> {
@@ -30,8 +41,8 @@ export interface Input<
     readonly deployment?: DeploymentInput<CardStates>;
     readonly map: Map;
     readonly schedule: ScheduleDefinition;
-    readonly initialMechanisms: {
-        readonly [K in keyof MechanismStates]: MechanismInput<MechanismStates[K]>;
+    readonly initialEffects: {
+        readonly [K in keyof EffectStates]: InitialEffect<EffectStates[K]>;
     };
     readonly initialUnits: {
         readonly [K in keyof UnitDefinitions]: UnitInput<UnitDefinitions[K]>;

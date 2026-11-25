@@ -6,14 +6,84 @@ import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import { createCardDefinition } from "../helpers/deployable.js";
 import * as units from "../../dist/core/unit/index.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
+import * as effects from "../../dist/core/effect/index.js";
 import * as offense from "../../dist/core/unit/capability/offense/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update, remove } from "../../dist/core/unit/operations.js";
+import { step } from "../../dist/core/battle/runtime.js";
 
 const operator = { id: "operator", hooks: Hooks.empty(), offense: { attack: defineAttribute(100) } };
+
+test("unhosted and Card effects share the lifecycle and keep host groups independent", () => {
+    const trace = [];
+    const group = { id: "global-rule", type: "UNIQUE", priority: 0, independentSource: false };
+    const controller = {
+        id: "global-rule",
+        group,
+        initialize: () => ({ count: 0 }),
+        onInstall(state) {
+            trace.push("install");
+            return state;
+        },
+        onEnable(state) {
+            trace.push("enable");
+            return state;
+        },
+        onDisable(state, self) {
+            trace.push(["disable", self.lifecycle]);
+            return effects.setState(state, effects.ref(self), { count: self.state.count + 1 });
+        },
+        onTick: (state, self) =>
+            effects.setState(state, effects.ref(self), { count: self.state.count + 2 }),
+        onEnd(state, self) {
+            trace.push(["end", self.state.count]);
+            return state;
+        },
+    };
+    const initial = battle([], {
+        initialEffects: [{ definition: controller }],
+        deployment: {
+            definition: {
+                dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
+                slot: { limit: 1 },
+            },
+            cards: [{
+                definition: createCardDefinition(),
+                unitDefinition: {
+                    ...operator,
+                    occupancy: { slot: "OCCUPANT" },
+                    deployable: { retreatRestrictions: [], refund: null },
+                },
+            }],
+        },
+    });
+    const controllerRef = effects.ref(effects.forHost(initial, null).find(self =>
+        self.definition === controller,
+    ));
+    const card = cards.ref(cards.all(initial).find(() => true));
+    const linked = effects.install(initial, card, {
+        id: "card-dependent", group, initialize: () => ({}),
+        onEnd(state) {
+            trace.push("dependent");
+            return state;
+        },
+    }, { scopes: [controllerRef] });
+    let state = effects.setEnabled(linked.state, controllerRef, false);
+    state = step(state, []);
+    assert.equal(controllerRef.get(state).state.count, 1);
+    state = effects.setEnabled(state, controllerRef, true);
+    state = step(state, []);
+    state = effects.remove(state, controllerRef);
+    assert.equal(controllerRef.get(state), undefined);
+    assert.equal(linked.value.get(state), undefined);
+    assert.ok(card.get(state));
+    assert.deepEqual(trace, [
+        "install", "enable", ["disable", "INACTIVE"], "enable",
+        ["disable", "ENDING"], "dependent", ["end", 4],
+    ]);
+});
 
 test("installation, participation, and ending preserve completed business and current private state", () => {
     const observed = [];
@@ -28,7 +98,7 @@ test("installation, participation, and ending preserve completed business and cu
             observed.push(["enable", self.state.activations]);
             return update(
                 state,
-                self.host,
+                self.ref.host,
                 offense.setAttackContribution({
                     id: "buff",
                     value: [modifier({ addition: 20 })],
@@ -36,7 +106,7 @@ test("installation, participation, and ending preserve completed business and cu
             );
         },
         onDisable(state, self) {
-            state = update(state, self.host, offense.removeAttackContribution("buff"));
+            state = update(state, self.ref.host, offense.removeAttackContribution("buff"));
             return effects.setState(state, effects.ref(self), {
                 activations: self.state.activations + 1,
             });
@@ -46,7 +116,7 @@ test("installation, participation, and ending preserve completed business and cu
                 "end",
                 self.lifecycle,
                 self.state.activations,
-                offense.resolveAttack(state, self.host.get(state)),
+                offense.resolveAttack(state, self.ref.host.get(state)),
             ]);
             return state;
         },
@@ -122,14 +192,14 @@ test("DEFAULT retains candidates and installs them before priority and enabled d
         onEnable: (state, self) =>
             update(
                 state,
-                self.host,
+                self.ref.host,
                 offense.setAttackContribution({
                     id: "overall",
                     value: [modifier({ addition: self.state.bonus })],
                 }),
             ),
         onDisable: (state, self) =>
-            update(state, self.host, offense.removeAttackContribution("overall")),
+            update(state, self.ref.host, offense.removeAttackContribution("overall")),
     };
     const strong = {
         ...weak,
@@ -173,7 +243,7 @@ test("time advances independently of participation, publishes before active busi
                 observed.push([previous.remaining, self.expiration.remaining]);
                 assert.equal(effects.ref(self).get(current).expiration, self.expiration);
                 if (current.tick === 2) {
-                    return effects.install(current, self.host, {
+                    return effects.install(current, self.ref.host, {
                         id: "added-during-tick",
                         initialize: () => ({}),
                         onTick(next) {
@@ -352,7 +422,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         onEnable: (state, self) =>
             update(
                 state,
-                self.host,
+                self.ref.host,
                 offense.setAttackContribution({
                     id: "stacked",
                     value: [modifier({ addition: 10 * effects.effectiveStackCount(self) })],
@@ -366,7 +436,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
             }
             return update(
                 state,
-                self.host,
+                self.ref.host,
                 offense.setAttackContribution({
                     id: "stacked",
                     value: [modifier({ addition: 10 * effects.effectiveStackCount(self) })],
@@ -374,7 +444,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
             );
         },
         onDisable: (state, self) =>
-            update(state, self.host, offense.removeAttackContribution("stacked")),
+            update(state, self.ref.host, offense.removeAttackContribution("stacked")),
     };
     let state = battle([{ definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));

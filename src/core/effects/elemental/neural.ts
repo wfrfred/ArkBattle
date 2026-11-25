@@ -1,9 +1,10 @@
 import { update } from "../../unit/operations.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import * as units from "../../unit/query.js";
-import * as effects from "../../unit/effect/operations.js";
-import { ref, type OrdinaryEffect as Effect } from "../../unit/effect/effect.js";
-import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
+import * as effects from "../../effect/index.js";
+import { ref } from "../../effect/effect.js";
+import type { Unit } from "../../unit/unit.js";
+import type { Definition as EffectDefinition } from "../../effect/definition.js";
 import { stun } from "../control.js";
 import { hasAction, type Action } from "../../unit/capability/action/capability.js";
 import { beforeRelease } from "../../unit/capability/action/release.js";
@@ -43,7 +44,7 @@ export function createStun(parameters: StunParameters): Definition {
                 return battle;
             }
 
-            battle = effects.install(battle, self.host, stun, {
+            battle = effects.install(battle, self.ref.host, stun, {
                 expiration: { type: "DEADLINE", tick: battle.tick + parameters.stunDurationTicks },
             }).state;
             host = availableHost(battle, reference);
@@ -60,7 +61,7 @@ export function createStun(parameters: StunParameters): Definition {
 }
 
 export function createParalysis(parameters: ParalysisParameters): Definition {
-    const paralysis: EffectDefinition<{ used: number }, Action> = {
+    const paralysis: EffectDefinition<{ used: number }, Unit & Action> = {
         id: "elemental/neural/paralysis",
         initialize: () => ({ used: 0 }),
         onInstall(battle, self) {
@@ -68,7 +69,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
 
             return update(
                 battle,
-                self.host,
+                self.ref.host,
                 setHook(beforeRelease, {
                     id: `@effect/${self.id}/paralysis`,
                     accepts(current) {
@@ -89,9 +90,9 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         }
 
                         const recoveryTicks = TICKS_PER_SECOND / 2;
-                        const host = self.host.get(current);
+                        const host = self.ref.host.get(current);
                         if (host?.lifecycle === "ACTIVE") {
-                            current = effects.install(current, self.host, stun, {
+                            current = effects.install(current, self.ref.host, stun, {
                                 expiration: {
                                     type: "DEADLINE",
                                     tick: current.tick + recoveryTicks,
@@ -105,7 +106,11 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
             );
         },
         onEnd: (battle, self) =>
-            update(battle, self.host, removeHook(beforeRelease, `@effect/${self.id}/paralysis`)),
+            update(
+                battle,
+                self.ref.host,
+                removeHook(beforeRelease, `@effect/${self.id}/paralysis`),
+            ),
     };
 
     return {
@@ -120,22 +125,14 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                 return battle;
             }
             if (hasAction(host)) {
-                const existing = host.effects
-                    .values()
-                    .find(
-                        (effect) =>
-                            effect.definition === paralysis && effect.lifecycle !== "ENDING",
-                    );
+                const existing = effects
+                    .forHost(battle, units.ref(host))
+                    .map((effect) => battle.effects.get(ref(effect), paralysis))
+                    .find((effect) => effect !== undefined && effect.lifecycle !== "ENDING");
                 battle =
                     existing === undefined
                         ? effects.install(battle, units.ref(host), paralysis).state
-                        : effects.setState(
-                              battle,
-                              ref(existing as Effect<{ used: number }, Action>),
-                              {
-                                  used: 0,
-                              },
-                          );
+                        : effects.setState(battle, ref(existing), { used: 0 });
             }
 
             host = availableHost(battle, reference);

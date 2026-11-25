@@ -29,7 +29,7 @@ import { ref as unitRef } from '../../dist/core/unit/index.js';
 import { allowsRestrictions, setCategory } from '../../dist/core/unit/capability/targetable/capability.js';
 import { invisibleRestriction } from '../../dist/core/effects/visibility.js';
 import { invincible } from '../../dist/core/effects/protection.js';
-import { install } from '../../dist/core/unit/effect/index.js';
+import { install } from '../../dist/core/effect/index.js';
 import { inRange } from '../../dist/core/battle/targeting/index.js';
 import { advance as advanceAction } from '../../dist/core/unit/capability/action/index.js';
 import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js';

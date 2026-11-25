@@ -1,5 +1,5 @@
 import { createBattleState, DEFAULT_PUSH_MULTIPLIER, type State } from "./state.js";
-import { advance as advanceEffects } from "../unit/effect/operations.js";
+import { advance as advanceEffects } from "../effect/operations.js";
 import { assert, assertNonnegativeNumber } from "../common/assert.js";
 import { replaceIn } from "../common/object.js";
 import { create as createBattlefield } from "../battlefield/state.js";
@@ -15,7 +15,6 @@ import {
 import { advanceMovement } from "./steps/movement.js";
 import { advance as advanceBlocking } from "./blocking/operations.js";
 import { advance as advanceProjectiles } from "../projectile/operations.js";
-import { advance as advanceMechanisms } from "../mechanism/mechanism.js";
 import * as projectiles from "../projectile/query.js";
 import { advanceElements } from "./steps/elemental.js";
 import { advanceVitality } from "./steps/vitality.js";
@@ -31,9 +30,9 @@ export type { Input, Command, Event } from "./contract.js";
 
 export function initialize<
     CardStates extends readonly object[],
-    MechanismStates extends readonly object[],
+    EffectStates extends readonly object[],
     UnitDefinitions extends readonly (UnitDefinition & Partial<CapabilityDefinitions>)[],
->(input: Input<CardStates, MechanismStates, UnitDefinitions>): State;
+>(input: Input<CardStates, EffectStates, UnitDefinitions>): State;
 export function initialize(input: Input<readonly any[], readonly any[]>): State {
     const { pushMultiplier = DEFAULT_PUSH_MULTIPLIER } = input;
     assertNonnegativeNumber(input.routeMoveMultiplier, "routeMoveMultiplier");
@@ -98,8 +97,6 @@ export function step(battle: State, commands: readonly Command<Card<any>>[]): St
     state = advanceMovement(state, {
         routeMoveMultiplier: battle.definition.routeMoveMultiplier,
     });
-
-    state = advanceMechanisms(state);
 
     state = advanceBlocking(state);
 

@@ -1,6 +1,6 @@
-# Terrain 与 Mechanism
+# Terrain
 
-Tile 拥有地形定义、初始和当前空间属性；Mechanism 保存接触记录、扫描时间与生命周期；持续伤害、修正、限制和叠层归宿主 Unit 上的 Effect。
+Tile 拥有地形定义、初始和当前空间属性；无宿主 Effect 作为地形控制器，保存接触记录和扫描时间；持续伤害、修正、限制和叠层归以 Unit 为宿主的 Effect。
 
 ## 地块与类型恢复
 
@@ -12,27 +12,17 @@ Terrain 在构造入口建立 Definition 与逐格 params 配对，不列举全�
 
 siteCondition 是单个条件身份或 null，null 不等于普通场地条件。Content 部署限制判断是否支持；Data 将原始位值转换为 normal／deepsea／tide／night／brokenWalkway。后者目前仅接场地许可，完整步道切换和坠落尚未接入。
 
-## Mechanism 操作
+## 地形控制器
 
-Mechanism 是全场独立身份。Battle 持有以 Ref 为键的通用 `Store` 并安排推进。开场 `initialMechanisms` 与运行时创建共用 `Mechanism.Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 创建 Ref、初始化私有 `state` 并保留具体 Definition 类型。`ref.get(battle)` 按具体类型读取实例。 [Mechanism 入口](../../src/core/mechanism/index.ts)
-
-`add` 按初始配置登记 `ACTIVE` 或 `INACTIVE` 实例，默认为 `ACTIVE`。实例及 Lifetime 节点登记后调用一次 `onEnter`。
-
-`setState` 只改私有数据。`setActive` 先发布实际发生的启停变化，再分别调用 `onEnable` 或 `onDisable`。重复设置同一状态没有效果。`INACTIVE` 的实例仍可作依赖。
-
-`remove` 请求结束实例。Prepare 发布 `ENDING`，Lifetime 随后请求依赖者结束。依赖者完成收尾后，Finalize 用最新实例调用 `onEnd` 并注销。
-
-嵌套结束与依赖完成统一见 [Lifetime](lifetime.md)，不在地形再实现一套停止协议。
+控制器使用 `Definition<ContactState, null>` 表达独立的全场效果，开场通过 `initialEffects` 安装，运行中通过 `effect.install(battle, null, definition)` 安装。Content 的 [地形控制器工厂](../../src/content/terrain/controller.ts) 提供具体程序。控制器沿用 [Effect](effect.md) 的登记、状态修改、启停、推进和移除，并可作为其他 Effect 的 Lifetime 依赖，不另建生命周期协议。
 
 ## 地形接触与调度
 
-Runtime 顺序为 Movement → Mechanism → Blocking。Movement 先推进阻挡位置计划，再推进路线／自主运动；地形读取这些操作后的身体位置，要求 ACTIVE 且空间存在，不用 Occupancy 代替接触。
-
-Mechanism 阶段只调用当前 `ACTIVE` 实例的 `onTick`。
+Runtime 统一在 Effect 阶段推进所有 Effect，该阶段早于 Movement；地形控制器只在 ACTIVE 时推进 `onTick`，读取当前身体位置，要求 Unit 为 ACTIVE 且空间存在，不用 Occupancy 代替接触。移动带来的接触变化在下一次扫描时处理。这是项目的统一调度选择，不要求复刻原生的 Tick 内执行先后。
 
 轮询维护进入、离开和持续接触，并每次重判动态资格：活性源石、沼泽、深水、地穴要求地面，烟雾允许空中。单位离场时，其 Effect 随宿主 Lifetime 结束，地形在下一次扫描清理接触记录。轮询不捕获同 Tick 所有中间位置，也不复刻 Unity 对象交错。
 
-同一控制器可管理参数不同的多格；关卡配置的控制器负责其沼泽／深水，静态装配排除重复管理。关卡程序可按 Mechanism 的生命周期操作创建、启停和移除控制器。
+同一控制器可管理参数不同的多格；关卡配置的控制器负责其沼泽／深水，静态装配排除重复管理。关卡程序可按 Effect 的生命周期操作安装、启停和移除控制器。
 
 ## Content 行为
 

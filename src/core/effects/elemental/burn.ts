@@ -1,8 +1,9 @@
 import { update } from "../../unit/operations.js";
 import * as modifier from "../../common/modifier.js";
-import * as effects from "../../unit/effect/operations.js";
+import * as effects from "../../effect/operations.js";
 import * as units from "../../unit/query.js";
-import type { OrdinaryDefinition as EffectDefinition } from "../../unit/effect/definition.js";
+import type { Unit } from "../../unit/unit.js";
+import type { Definition as EffectDefinition } from "../../effect/definition.js";
 import {
     hasVitality,
     setContribution,
@@ -26,14 +27,14 @@ export interface Parameters {
     readonly resReduction: number;
 }
 
-function resistanceReduction(amount: number): EffectDefinition<object, Vitality> {
+function resistanceReduction(amount: number): EffectDefinition<object, Unit & Vitality> {
     return {
         id: "elemental/burn/resistance-reduction",
         initialize: () => ({}),
         onEnable: (battle, self) =>
             update(
                 battle,
-                self.host,
+                self.ref.host,
                 setContribution("resistance", {
                     id: `@effect/${self.id}/resistance`,
                     value: [modifier.create({ addition: -amount })],
@@ -42,7 +43,7 @@ function resistanceReduction(amount: number): EffectDefinition<object, Vitality>
         onDisable: (battle, self) =>
             update(
                 battle,
-                self.host,
+                self.ref.host,
                 removeContribution("resistance", `@effect/${self.id}/resistance`),
             ),
     };

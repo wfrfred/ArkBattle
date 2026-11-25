@@ -4,8 +4,8 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../dist/core/hook.js";
 import * as terrain from "../../dist/content/terrain/definition.js";
-import { createTerrainMechanism } from "../../dist/content/terrain/mechanism.js";
-import * as mechanisms from "../../dist/core/mechanism/index.js";
+import { createTerrainEffect } from "../../dist/content/terrain/controller.js";
+import * as effects from "../../dist/core/effect/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
@@ -57,16 +57,16 @@ function setup(terrains, placements, definitions) {
     const tiles = terrains.reduce(
         (tiles, terrain) => tiles.add(createTile({ terrain, initial })), Tiles.empty(),
     );
-    const controllers = definitions.map(definition => createTerrainMechanism(definition));
+    const controllers = definitions.map(definition => createTerrainEffect(definition));
     const battle = initialize({
         map: createMap(1, terrains.length, tiles),
-        initialMechanisms: controllers.map(definition => ({ definition })),
+        initialEffects: controllers.map(definition => ({ definition })),
         initialUnits: placements,
         schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 7,
     });
     return {
         battle,
-        mechanism: mechanisms.ref(mechanisms.all(battle).find(self => self.definition === controllers[0])),
+        controller: effects.ref(effects.all(battle).find(self => self.definition === controllers[0])),
     };
 }
 
@@ -135,7 +135,7 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
     battle = until(battle, 100);
     assert.equal(resolveAttack(battle, current(battle)), 120);
     assert.equal(current(battle).vitality.health.hp, 845);
-    battle = mechanisms.remove(battle, configured.mechanism);
+    battle = effects.remove(battle, configured.controller);
     battle = until(battle, 112);
     assert.equal(current(battle).vitality.health.hp, 765);
     battle = until(battle, 122);
@@ -211,7 +211,7 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
     battle = updateTile(battle, [0, 1], { ...hole.state, passability: "FLY_ONLY" });
     battle = unbalance.applyImpulse(battle, units.ref(current(battle, 0)), [30, 0]).state;
     for (const id of [1, 2]) battle = move(battle, id, 1);
-    battle = step(battle, []);
+    battle = until(battle, battle.tick + 2);
     assert.equal(current(battle, 0), undefined);
     assert.ok(current(battle, 1));
     assert.ok(current(battle, 2));
@@ -246,7 +246,7 @@ test("smog keeps allied ground and airborne units invisible through blocking unt
     assert.equal(visible(battle, 2), false);
 });
 
-test("runtime checks terrain contact after actual route movement", () => {
+test("terrain contact is detected from the actual route position", () => {
     const traveller = unit(0, {
         offense: combat.offense,
         route: { alwaysCheckCurrentPoint: true },
@@ -263,5 +263,6 @@ test("runtime checks terrain contact after actual route movement", () => {
     ], [traveller], [terrain.infection]);
     const battle = step(configured.battle, []);
     assert.deepEqual(current(battle).position, [1, 0]);
-    assert.equal(resolveAttack(battle, current(battle)), 120);
+    const scanned = step(battle, []);
+    assert.equal(resolveAttack(scanned, current(scanned)), 120);
 });

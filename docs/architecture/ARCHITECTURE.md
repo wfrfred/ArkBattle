@@ -30,11 +30,11 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 
 ## 战斗状态的层级
 
-`BattleState` 持有 Tick、RNG、表现编号分配进度、Schedule、Deployment、Mechanism、Lifetime 与本 Tick 的 events。Battlefield 持有 Map、Unit、Projectile、Navigation 和 Occupancy 结构索引。
+`BattleState` 持有 Tick、RNG、表现编号分配进度、Schedule、Deployment、Effect、Lifetime 与本 Tick 的 events。Battlefield 持有 Map、Unit、Projectile、Navigation 和 Occupancy 结构索引。
 
 每项业务事实有唯一所属领域。索引随权威状态同步维护，不形成第二份 Unit；UI 事件只记录表现所需的瞬时事实，不作为结算命令重放。各领域的所有权见[专题文档](README.md)，不可变和状态接续规则见[函数式内核](functional-core.md)。
 
-`initialize` 按手牌、`initialMechanisms`、`initialUnits` 的顺序创建完整初态，每组按输入顺序逐个初始化并登记。`step(battle, commands)` 接收必填只读命令数组，每次成功调用推进一个 30 Hz 逻辑 Tick。无命令时传 `[]`。
+`initialize` 按手牌、`initialEffects`、`initialUnits` 的顺序创建完整初态，每组按输入顺序逐个初始化并登记。`step(battle, commands)` 接收必填只读命令数组，每次成功调用推进一个 30 Hz 逻辑 Tick。无命令时传 `[]`。
 
 当前 Tick 顺序如下，前一步返回的状态是后一步的输入：
 
@@ -45,13 +45,12 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 | 2 | Combat 命令准备，再处理部署命令 |
 | 3 | Schedule |
 | 4 | Unit tick Hook |
-| 5 | Effect |
+| 5 | Effect（含全场无宿主程序） |
 | 6 | Vitality 自然 HP 回复，再 Elemental 自然 EP 回复 |
 | 7 | Skill，再 Combat |
 | 8 | 开帧候选中的 Projectile |
 | 9 | Movement：站位计划、Route 与 Locomotion |
-| 10 | Mechanism |
-| 11 | Blocking：维护旧关系，再搜索新关系 |
+| 10 | Blocking：维护旧关系，再搜索新关系 |
 | 收帧 | Tick 加一并返回 |
 
 领域决定自己的候选、首次推进和续执行资格。上述顺序不代表所有新实例都采用相同的“下 Tick 才推进”政策。Unit 完整离场会同步解除 Schedule 等待，不依赖收帧扫描；普通 HP 死亡由资源操作确认，不另做 Combat 零 HP 扫描。
@@ -66,14 +65,14 @@ Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Init
 
 `battle/` 保存全局状态、外部命令、初始化和 Tick 调度。Blocking、Deployment、Resource、Schedule 和 Targeting 各有自己的子目录，定义在战斗上下文中生效的规则。`battlefield/` 提供地图、登记、空间索引与导航。Battlefield 的操作以战场状态为输入，Battle 负责协调这些空间事实与战斗业务。
 
-`unit/` 保存 Unit、能力和宿主内实例。Action 与 Skill 各自在 Capability 目录中组织装配和运行模型。`projectile/` 与 `mechanism/` 各自负责独立实例的身份与生命周期。`lifetime/`、`geometry/` 与 `common/` 提供共享机制，`effects/` 提供标准效果。
+`unit/` 保存 Unit、能力和宿主内实例。Action 与 Skill 各自在 Capability 目录中组织装配和运行模型。`projectile/` 与 `effect/` 各自负责独立实例及其生命周期。`lifetime/`、`geometry/` 与 `common/` 提供共享机制，`effects/` 提供标准效果。
 
 | 领域 | 负责的事实与操作 |
 | --- | --- |
 | [Resource](resource.md) | HP／EP Damage、Healing 的 Calculate／Apply 与本次结算结果 |
 | [Vitality](vitality.md)、[Elemental](elemental.md) | 各自资源、属性与提交；Elemental 另负责 Burst |
 | [Action](action.md)、[Skill](skill.md) | 行动执行、冷却，以及技能资源和 Activation |
-| [Effect](effect.md) | 附着实例、重复施加、竞争、启停与到期 |
+| [Effect](effect.md) | 有宿主或无宿主的运行实例、重复施加、竞争、启停与到期 |
 | [Lifetime](lifetime.md) | 依赖、结束请求与 Finalize 顺序 |
 | [Targeting](targeting.md) | 目标资格谓词与比较器，直接组合 Query |
 | [Projectile](projectile.md) | 独立弹道实例及其内容程序 |
@@ -81,7 +80,7 @@ Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Init
 | [Blocking](blocking.md)、[Occupancy](occupancy.md) | 阻挡关系与站位计划、双槽占格与配对 |
 | [Presence](presence.md) | 暂时消失及适用的持续限制、主动清理 |
 | [Schedule](schedule.md)、[Deployment](deployment.md) | 出生与等待，Card、部署资源与部署业务 |
-| [Terrain／Mechanism](terrain.md) | 地块内容、非空间机制实例与接触结算 |
+| [Terrain](terrain.md) | 地块内容、接触控制器与接触结算 |
 
 Runtime 只安排调用时点；各领域拥有内部顺序与业务资格。协调流程也只能通过所属领域的合法 Change 或完整操作修改状态。目录和导出位置不授予跨领域写入权。
 

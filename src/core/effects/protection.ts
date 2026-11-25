@@ -1,7 +1,7 @@
 import { compose, optional, type Change } from "../unit/change.js";
 import { update as updateUnit } from "../unit/operations.js";
 
-import type { OrdinaryDefinition as Definition } from "../unit/effect/index.js";
+import type { Definition } from "../effect/index.js";
 import * as vitality from "../unit/capability/vitality/index.js";
 import * as elemental from "../unit/capability/elemental/index.js";
 import * as shiftable from "../unit/capability/shifting/shiftable.js";
@@ -23,13 +23,13 @@ export const invincibleEpDamageRestriction: elemental.DamageRestriction = {
 
 const forceImmunity: shiftable.Restriction = { allows: () => false };
 
-export const unbalanceImmunity: Definition<object, shiftable.Shiftable> = {
+export const unbalanceImmunity: Definition<object, units.Unit & shiftable.Shiftable> = {
     id: "protection/unbalance-immunity",
     initialize: () => ({}),
     onEnable(state, self) {
         return updateUnit(
             state,
-            self.host,
+            self.ref.host,
             shiftable.setRestriction({
                 id: `@effect/${self.id}/unbalance-immunity`,
                 value: forceImmunity,
@@ -39,17 +39,17 @@ export const unbalanceImmunity: Definition<object, shiftable.Shiftable> = {
     onDisable(state, self) {
         return updateUnit(
             state,
-            self.host,
+            self.ref.host,
             shiftable.removeRestriction(`@effect/${self.id}/unbalance-immunity`),
         );
     },
 };
 
-export const invincible: Definition<object, targetable.Targetable> = {
+export const invincible: Definition<object, units.Unit & targetable.Targetable> = {
     id: "protection/invincible",
     initialize: () => ({}),
     onEnable(state, self) {
-        const unit = self.host.get(state);
+        const unit = self.ref.host.get(state);
         if (unit === undefined) {
             return state;
         }
@@ -66,7 +66,7 @@ export const invincible: Definition<object, targetable.Targetable> = {
         );
     },
     onDisable(state, self) {
-        const unit = self.host.get(state);
+        const unit = self.ref.host.get(state);
         if (unit === undefined) {
             return state;
         }
@@ -81,7 +81,7 @@ export const invincible: Definition<object, targetable.Targetable> = {
     },
 };
 
-export const healFree: Definition<object> = {
+export const healFree: Definition<object, units.Unit> = {
     id: "protection/heal-free",
     initialize: () => ({}),
 };

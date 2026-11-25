@@ -1,6 +1,6 @@
 # Effect
 
-Effect 拥有附着实例、私有状态、生效竞争、重复施加、时间与结束。具体 Definition 组合各领域操作实现属性效果、护盾、周期输出和光环。公共类型与操作见 [unit/effect](../../src/core/unit/effect/index.ts)；通用协议见[接口约定](api-conventions.md)、[Hook](hook.md)、[Lifetime](lifetime.md)和[状态接续](functional-core.md)。
+Effect 拥有可附着或独立存在的运行实例、私有状态、生效竞争、重复施加、时间与结束。具体 Definition 组合各领域操作实现属性效果、护盾、周期输出和光环。公共类型与操作见 [effect](../../src/core/effect/index.ts)；通用协议见[接口约定](api-conventions.md)、[Hook](hook.md)、[Lifetime](lifetime.md)和[状态接续](functional-core.md)。
 
 普通 HP 与负生命债务由 [Vitality](vitality.md) 持有，Effect 只提供启用条件与专属行为。屏障／独立吸收额度可以放在 Effect 私有状态，通过资源 Hook 响应；过量治疗转换读取固定的 overflow，不重复维护生命债务或临时 ES。具体保护和转换内容仍见[支持缺口](tactical-semantics.md)。
 
@@ -15,29 +15,29 @@ Effect 拥有附着实例、私有状态、生效竞争、重复施加、时间�
 
 ## 1. 目录与职责
 
-`core/unit/effect/` 提供通用实例、异构容器、安装与生命周期；`core/effects/` 提供标准规则成品；`content/` 提供具体角色的程序及标准成品的使用方式。
+`core/effect/` 提供通用实例、异构容器、安装与生命周期；`core/effects/` 提供标准规则成品；`content/` 提供具体角色的程序及标准成品的使用方式。
 
-Unit.effects 保存实例，Unit.hooks 保存登记；属性与限制贡献归对应 Capability。Effect 不解释 HP／EP 的结算流程，完整资源协议由 [Resource](resource.md) 说明。
+`BattleState.effects` 统一保存全部 Effect 实例。有宿主时通过宿主 Ref 查询，Unit.hooks 继续保存本地 Hook 登记；属性与限制贡献归对应 Capability。Effect 不解释 HP／EP 的结算流程，完整资源协议由 [Resource](resource.md) 说明。
 
 ## 2. Definition、实例与泛型
 
-Definition 是共享行为；实例保存稳定身份、宿主、实际来源、私有 state、expiration、enabled 与 lifecycle。初始 state、来源、依赖引用、时间与启用许可属于本次安装输入，不覆写 Definition 的规则。Unit 初始化为空 Effects，初始效果在宿主登记后的 `entered` Hook 中正常安装。
+Definition 是共享行为；实例保存稳定身份、实际来源、私有 state、expiration、enabled 与 lifecycle，Ref 携带可空的宿主引用。初始 state、来源、依赖引用、时间与启用许可属于本次安装输入，不覆写 Definition 的规则。有宿主的初始效果在宿主登记后正常安装，无宿主程序可以由 `initialEffects` 开场安装。
 
-私有状态类型与宿主能力要求由具体 Definition 配对，精确 Ref 保持它们。普通查询返回完整实体但不承诺未知私有形状；异构存储及调用自身 Definition 的边界集中擦除类型，内容不逐个断言私有 state。
+`Effect<S, H, P>` 与 `Definition<S, H, P>` 配对私有状态、宿主与策略，精确 Ref 保持这些类型。`H extends Lifetime | null`，任意已登记且可用的 Lifetime 可作为宿主，`null` 表达无宿主。普通查询返回完整实体但不承诺未知私有形状；异构存储及调用自身 Definition 的边界集中擦除类型，内容不逐个断言私有 state。
 
-普通与 STACK 的 Definition／Effect 分开。STACK 额外保存 stackCount，私有 state 不承担通用层数。END 允许全部 Expiration；DECAY 仅允许 DURATION／INFINITE，不能使用缺少重启预算的 DEADLINE。这项配对贯穿安装、回调与时间写回；具体内容选定 END 或 DECAY 后取得准确上下文类型。
+`Policy` 为 `undefined | "END" | "DECAY"`。`Definition` 默认策略为 undefined，`Effect` 默认包含所有策略。非叠层使用 undefined，STACK 额外保存 stackCount，私有 state 不承担通用层数。统一的 `Expiration<P>` 对 undefined／END 允许全部三种形式，DECAY 仅允许 DURATION／INFINITE，不能使用缺少重启预算的 DEADLINE。这项配对贯穿安装、回调与时间写回；具体内容选定 END 或 DECAY 后取得准确上下文类型。
 
 ### 不可变 Effects 容器
 
-Effects 以 Ref 为键保存完整实例。安装时分配一次 Ref，读取通过宿主的 Effects 按 Ref 定位。局部数字 ID 用于生成独立的 Hook／Contribution 登记名及稳定排序。重新生效或修改 state 沿用同一个 Ref。Definition 查询按对象身份恢复具体类型。
+Effects 以 Ref 为键全局保存完整实例。安装时分配一次 Ref 和全场递增的数字 ID，数字 ID 用于生成独立的 Hook／Contribution 登记名及稳定排序。`all(battle)` 按登记顺序枚举，`forHost(battle, host)` 读取指定宿主的实例，`host = null` 读取无宿主实例。重新生效或修改 state 沿用同一个 Ref。Definition 查询按对象身份恢复具体类型。
 
 容器只管理存储，不派发业务。旧版本保持可读。内容使用领域操作，不直接替换完整实例。
 
 ## 3. 生命周期约束
 
-安装要求宿主 ACTIVE、输入的依赖引用可用。先发布 INSTALLING 实例并登记对宿主与输入引用的依赖，再调用 onInstall。来源允许已经退场；确实需要随来源结束的内容另外绑定依赖。
+安装要求存在的宿主及输入的依赖引用均通过 Lifetime 可用性检查。先发布 INSTALLING 实例并登记对宿主（如果有）与输入引用的依赖，再调用 onInstall。来源允许已经退场；确实需要随来源结束的内容另外绑定依赖。
 
-Action 与 Skill 的依赖分别绑定本轮 Execution 和 Activation 的 Ref，Burst 使用 Effect Ref。任一上游结束都会以 `CANCELLED` 请求 Effect 结束，Effect 保有自己的时间轴。INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可作为可用依赖，开始结束的上游拒绝新绑定。资格与请求完成规则见 [Lifetime](lifetime.md)。
+Action 与 Skill 的依赖分别绑定本轮 Execution 和 Activation 的 Ref，Burst 使用 Effect Ref。任一上游结束都会以 `CANCELLED` 请求 Effect 结束，Effect 保有自己的时间轴。INSTALLING／INACTIVE Effect 仍可作为可用依赖，开始结束的上游拒绝新绑定。资格与请求完成规则见 [Lifetime](lifetime.md)。
 
 ## 4. 生效状态与覆写
 
@@ -69,7 +69,7 @@ decreaseStack 是完整减层操作：剩余层数先发布再通知，耗尽正
 
 ### 来源分组
 
-组限于同一宿主，independentSource 是否启用也是身份的一部分：
+组限于同一宿主 Ref，所有无宿主实例共用 null 分组空间。independentSource 是否启用也是身份的一部分：
 
 | 情况 | 分组身份 |
 | --- | --- |
@@ -94,7 +94,7 @@ onInstall 返回后重读实例与时间：仍 INSTALLING 才先结算到期，�
 
 ### 公开 API
 
-具体声明见[公共入口](../../src/core/unit/effect/index.ts)。install 新建或合并成功返回所保留实例的 Ref，拒绝返回 null；回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，只保留实际可证明的普通／STACK 及到期政策，具体类型由原 Definition 身份恢复。
+具体声明见[公共入口](../../src/core/effect/index.ts)。install 新建或合并成功返回所保留实例的 Ref，拒绝返回 null；回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，保留相同的宿主类型及实际可证明的普通／STACK 与到期政策，具体类型由原 Definition 身份恢复。
 
 setState 仅改私有数据，各 lifecycle 均可写入，不恢复实例或刷新静态输出；需要更新贡献的内容显式调用所属领域操作。setEnabled 完整结算启停。setExpiration 只替换合法时间状态，不立即推进、到期或改 Lifetime；remaining 写零仍由既定检查点结算。时间写回保留 Ref 的普通／DECAY／Burst 约束。
 
@@ -106,7 +106,7 @@ onEnd 请求 Unit 离场会先标记 ENDING，宿主等到整个 Effect Finalize
 
 ## 6. 时间推进
 
-Runtime 每 Tick 在 Schedule／Unit tick 后、Elemental／Skill 前调用一次 Effect.advance，固定本次身份候选；新装实例不加入已经固定的候选。
+Runtime 每 Tick 在 Schedule／Unit tick 后、Elemental／Skill 前调用一次 Effect.advance，按全场登记顺序固定本次身份候选，包含所有宿主及无宿主程序；新装实例不加入已经固定的候选。
 
 Expiration 有三种形式：DURATION 保存完整重启预算 duration、当前 remaining 与自动扣量 rate；DEADLINE 保存绝对 Tick；INFINITE 不自动到期。remaining 可大于 duration，刷新当前余量不自动改重启预算。
 
@@ -160,7 +160,7 @@ self 是回调输入版本，跨 Tick 进度归实例 state，不是异步句柄
 
 ### 目录与职责
 
-标准成品位于 [core/effects](../../src/core/effects)：control、protection、visibility 和 elemental。通用附着引擎不认识具体角色；Content 决定成品的对象、时点、参数与额外业务。Data 可为已有工厂绑定静态数值，不执行运行程序。
+标准成品位于 [core/effects](../../src/core/effects)：control、protection、visibility 和 elemental。通用 Effect 引擎不认识具体角色；Content 决定成品的对象、时点、参数与额外业务。Data 可为已有工厂绑定静态数值，不执行运行程序。
 
 Elemental 拥有 EP 与当前 Burst 引用；标准元素 Effect 实现伤害、控制、修正和周期业务，共同恢复与结束归 [Elemental](elemental.md)。
 

@@ -54,7 +54,7 @@ accepts 只读。通知使用 void；取消、固定数值等工作值转换由�
 | 资源常规阶段 | 要求当前宿主 ACTIVE，具体阶段保留自己的停止条件 |
 | Skill／Elemental 结束事实、HP targetKilled | 仍登记的 ENDING 宿主可以参与，不套用来源输出资格 |
 
-Unit 本地 `entered` 从 Battle 级入场程序完成后的最新 Unit 采样载荷和候选。Mechanism 可以在启用全局规则时处理已在场单位，并登记 `battle.unit.entered`。后来加入的单位在执行自身入场程序前同步接受该规则。 [原生全局效果在登记时施加](../research/03-space-units-and-mechanisms.md#普通-globalbuff-与全局共享状态)
+Unit 本地 `entered` 从 Battle 级入场程序完成后的最新 Unit 采样载荷和候选。无宿主 Effect 可以在启用全局规则时处理已在场单位，并登记 `battle.unit.entered`。后来加入的单位在执行自身入场程序前同步接受该规则。 [原生全局效果在登记时施加](../research/03-space-units-and-mechanisms.md#普通-globalbuff-与全局共享状态)
 
 一批关系逐条开始时取各自候选，不提前冻结整批登记。同一 Unit 承担来源和目标等不同角色时，仍按不同 Key 分别通知。历史载荷不随实时查询改变，见[状态接续](functional-core.md#状态接续后的读取与续执行)。
 

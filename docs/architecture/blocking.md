@@ -13,7 +13,7 @@ Blocking 拥有双端关系、取得／解除、资格维护、容量裁撤与�
 
 ## 职责与调度政策
 
-两端状态是关系的唯一权威，不另建全场关系表。Runtime 在 Movement、Mechanism 后执行 Blocking：固定阶段入口的 Blocker 候选，复核旧关系，再逐个搜索。新建 Blocker 不加入已经固定的普通候选，内容仍可明确调用即时 search／acquire。
+两端状态是关系的唯一权威，不另建全场关系表。Runtime 在 Movement 后执行 Blocking：固定阶段入口的 Blocker 候选，复核旧关系，再逐个搜索。新建 Blocker 不加入已经固定的普通候选，内容仍可明确调用即时 search／acquire。
 
 search 固定入口按距离稳定排序的目标，同距保留 Unit 登记顺序；每次 acquire 重读资格、归属与容量。Hook 增容可让后续候选在同次搜索取得，减容可使其失败；新增单位不加入候选。普通阶段不循环全场到收敛。
 

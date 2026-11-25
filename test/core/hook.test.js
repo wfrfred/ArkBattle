@@ -6,7 +6,7 @@ import { battle } from "../helpers/battle.js";
 import * as units from "../../dist/core/unit/index.js";
 import { remove, update } from "../../dist/core/unit/operations.js";
 import * as hooks from "../../dist/core/hook.js";
-import * as effects from "../../dist/core/unit/effect/index.js";
+import * as effects from "../../dist/core/effect/index.js";
 import { entered as unitEntered, removed as unitRemoved, setHook, removeHook } from "../../dist/core/battle/unit-hook.js";
 
 test("Hook keys preserve identity and replacing an ID preserves its position", () => {
@@ -82,11 +82,11 @@ test("Hook priority fixes this dispatch's order while replacement and nested dis
 test("Battle entered applies a global Effect before the Unit runs its own entered", () => {
     const effect = { id: "global-effect", initialize: () => ({}) };
     const initial = battle([], {
-        initialMechanisms: [{
+        initialEffects: [{
             definition: {
                 id: "global-rule",
                 initialize: () => ({}),
-                onEnter(state) {
+                onInstall(state) {
                     return setHook(state, unitEntered, {
                         id: "apply-global-effect",
                         invoke(current, unit) {
@@ -107,7 +107,7 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
             hooks: Hooks.empty().set(units.entered, {
                 id: "observe-global-effect",
                 invoke(current, self) {
-                    assert.ok(self.effects.values().some((instance) => instance.definition === effect));
+                    assert.ok(effects.forHost(current, units.ref(self)).some((instance) => instance.definition === effect));
                     localEntered = true;
                     return { state: current, value: undefined };
                 },
@@ -117,7 +117,7 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
     const registered = units.add(created.state, created.value);
     assert.equal(localEntered, true);
     const self = units.ref(created.value).get(registered);
-    assert.ok(self?.effects.values().some((instance) => instance.definition === effect));
+    assert.ok(self !== undefined && effects.forHost(registered, units.ref(self)).some((instance) => instance.definition === effect));
 });
 
 test("An ended Unit skips the remaining Battle and local entered programs", () => {
@@ -153,7 +153,7 @@ test("Unit removing uses priority and removed uses the registrations captured be
     state = effects.install(state, subject, {
         id: "death-response", initialize: () => ({}),
         onInstall(current, self) {
-            return update(current, self.host, units.setHook(units.removing, {
+            return update(current, self.ref.host, units.setHook(units.removing, {
                 id: "death-output",
                 invoke(next) {
                     assert.equal(subject.get(next).lifecycle, "ENDING");
@@ -166,7 +166,7 @@ test("Unit removing uses priority and removed uses the registrations captured be
         onEnd(current, self) {
             assert.equal(subject.get(current).lifecycle, "ENDING");
             calls.push("effect-end");
-            return update(current, self.host, units.setHook(units.removed, {
+            return update(current, self.ref.host, units.setHook(units.removed, {
                 id: "latest-leave", priority: 200,
                 invoke(next, departure) {
                     assert.equal(subject.get(next), undefined);

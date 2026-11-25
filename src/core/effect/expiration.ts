@@ -1,22 +1,28 @@
-import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
-
-export type Expiration =
-    | {
-          readonly type: "DURATION";
-          readonly duration: number;
-          readonly remaining: number;
-          readonly rate: number;
-      }
-    | { readonly type: "DEADLINE"; readonly tick: number }
-    | { readonly type: "INFINITE" };
+import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../common/assert.js";
 
 export type ExpirationPolicy = "END" | "DECAY";
 
-export type DecayExpiration = Extract<Expiration, { readonly type: "DURATION" | "INFINITE" }>;
+export type Policy = ExpirationPolicy | undefined;
 
-export type StackExpiration<P extends ExpirationPolicy> = P extends "DECAY"
-    ? DecayExpiration
-    : Expiration;
+export interface Duration {
+    readonly type: "DURATION";
+    readonly duration: number;
+    readonly remaining: number;
+    readonly rate: number;
+}
+
+export interface Deadline {
+    readonly type: "DEADLINE";
+    readonly tick: number;
+}
+
+export interface Infinite {
+    readonly type: "INFINITE";
+}
+
+export type Expiration<P extends Policy = Policy> = P extends "DECAY"
+    ? Duration | Infinite
+    : Duration | Deadline | Infinite;
 
 export function validate(expiration: Expiration): void {
     if (expiration.type === "DURATION") {

@@ -19,7 +19,7 @@ import { initialize, ref, all as allUnits, compose, optional, setHook, type Unit
 import { update, remove } from ${module("unit/operations")};
 import * as actions from ${module("unit/capability/action/index")};
 import * as skills from ${module("unit/capability/skill/index")};
-import * as effects from ${module("unit/effect/index")};
+import * as effects from ${module("effect/index")};
 import * as vitality from ${module("unit/capability/vitality/index")};
 import * as elemental from ${module("unit/capability/elemental/index")};
 import * as classification from ${module("unit/capability/classification/index")};
@@ -36,7 +36,6 @@ import { createWithState as attack, type StatefulDefinition } from ${module("../
 import * as runtime from ${module("battle/runtime")};
 import type { Input as BattleInput } from ${module("battle/contract")};
 import * as cards from ${module("battle/deployment/deck/card/index")};
-import * as mechanisms from ${module("mechanism/index")};
 import * as projectiles from ${module("projectile/index")};
 
 declare const battle: State;
@@ -232,20 +231,21 @@ const layered = {
     },
     initialize: () => ({ power: 1 }),
     onTick(state, self, previous) {
-        previous satisfies effects.DecayExpiration;
+        previous satisfies effects.Expiration<'DECAY'>;
         return effects.setState(state, effects.ref(self), { power: self.state.power + 1 });
     },
-} satisfies effects.StackDefinition<{ power: number }, Offense, 'DECAY'>;
+} satisfies effects.Definition<{ power: number }, Unit & Offense, 'DECAY'>;
 // @ts-expect-error DECAY cannot be installed with an absolute deadline.
 effects.install(battle, owner, layered, { expiration: { type: 'DEADLINE', tick: 10 } });
 const merged = effects.install(battle, owner, layered);
 if (merged.value !== null) {
+    merged.value.host.get(merged.state)!.offense satisfies Offense['offense'];
     effects.decreaseStack(merged.state, merged.value, 1);
     // @ts-expect-error the returned DECAY reference must still reject deadlines on write.
     effects.setExpiration(merged.state, merged.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error a retained Effect may have arrived with a different private definition.
     merged.value.get(merged.state)!.state.power;
-    const retained = owner.get(merged.state)!.effects.get(merged.value, layered)!;
+    const retained = merged.state.effects.get(merged.value, layered)!;
     retained.state.power satisfies number;
     endLifetime(merged.state, effects.ref(retained), 'CANCELLED');
 }
@@ -334,7 +334,7 @@ if (result.type === 'APPLIED') {
 }
 
 // Independent constructors enforce pairing before heterogeneous storage.
-declare const baseInput: Omit<BattleInput, 'deployment' | 'initialUnits' | 'initialMechanisms'>;
+declare const baseInput: Omit<BattleInput, 'deployment' | 'initialUnits' | 'initialEffects'>;
 declare const cardUnit: cards.UnitDefinition;
 declare const cardDefaults: Omit<cards.Definition<object, 'DEFAULT'>, 'initialize' | 'onTick' | 'policy'>;
 const countCard: cards.Definition<{ count: number }, 'QUEUED'> = {
@@ -353,6 +353,18 @@ const countInput = { definition: countCard, unitDefinition: cardUnit };
 const builtCard = cards.initialize(battle, countInput);
 const countCardRef = cards.ref(builtCard.value);
 const exactCard = countCardRef.get(builtCard.state)!;
+const cardEffect = {
+    id: 'card-effect',
+    initialize: () => ({}),
+    onTick(state, self) {
+        self.ref.host.get(state)!.state.count satisfies number;
+        return state;
+    },
+} satisfies effects.Definition<object, cards.Card<{ count: number }>>;
+declare const cardEffectHost: Ref<cards.Card<{ count: number }>>;
+effects.install(builtCard.state, cardEffectHost, cardEffect);
+// @ts-expect-error a Definition requiring a Card cannot be installed on a Unit.
+effects.install(battle, owner, cardEffect);
 declare const mixedRef: typeof owner | typeof countCardRef;
 mixedRef.get(battle) satisfies typeof armed | typeof exactCard | undefined;
 const scopes: readonly Ref<Lifetime>[] = [owner, countCardRef];
@@ -378,13 +390,13 @@ for (const card of cards.all(battle)) {
 cards.initialize(battle, { ...countInput, unitDefinition: { ...cardUnit, route: routeDefinition.route } });
 // @ts-expect-error registration must reject state that does not match its own Definition.
 cards.add(builtCard.state, { ...exactCard, state: { count: 'wrong' } });
-const counter: mechanisms.Definition<{ count: number }> = {
+const counter: effects.Definition<{ count: number }, null> = {
     id: 'counter', initialize: () => ({ count: 0 }),
-    onTick: (state, self) => mechanisms.setState(state, mechanisms.ref(self), { count: self.state.count + 1 }),
+    onTick: (state, self) => effects.setState(state, effects.ref(self), { count: self.state.count + 1 }),
 };
-const named: mechanisms.Definition<{ name: string }> = {
-    id: 'named', initialize: () => ({ name: 'mechanism' }),
-    onTick: (state, self) => mechanisms.setState(state, mechanisms.ref(self), { name: self.state.name }),
+const named: effects.Definition<{ name: string }, null> = {
+    id: 'named', initialize: () => ({ name: 'controller' }),
+    onTick: (state, self) => effects.setState(state, effects.ref(self), { name: self.state.name }),
 };
 const startup = {
     ...baseInput,
@@ -395,17 +407,17 @@ const startup = {
 } as const;
 runtime.initialize({
     ...startup, initialUnits: [armedInput, routeInput],
-    initialMechanisms: [{ definition: counter }, { definition: named }],
+    initialEffects: [{ definition: counter }, { definition: named }],
 });
 runtime.initialize({
     ...startup,
     // @ts-expect-error startup must still require Facing's Initial for the selected Unit.
     initialUnits: [{ ...armedInput, initial: { occupancy: armedInput.initial.occupancy } }],
-    initialMechanisms: [],
+    initialEffects: [],
 });
-const wrongMechanism = { ...counter, initialize: () => ({ name: 'wrong' }) };
+const wrongEffect = { ...counter, initialize: () => ({ name: 'wrong' }) };
 // @ts-expect-error startup must preserve initializer and callback pairing before aggregation.
-runtime.initialize({ ...startup, initialUnits: [], initialMechanisms: [{ definition: wrongMechanism }] });
+runtime.initialize({ ...startup, initialUnits: [], initialEffects: [{ definition: wrongEffect }] });
 `;
     const options = {
         noEmit: true,

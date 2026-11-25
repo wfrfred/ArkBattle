@@ -1,5 +1,5 @@
 import type { State as BattlefieldState } from "../battlefield/state.js";
-import { Store } from "../common/collection/store.js";
+import { Effects } from "../effect/effects.js";
 import { replaceIn } from "../common/object.js";
 import {
     initialize as initializeLifetime,
@@ -12,8 +12,6 @@ import type { Event } from "./event.js";
 import type { Id as ProjectileId } from "../projectile/projectile.js";
 import type { Seed } from "../common/rng.js";
 import type { Id as UnitId } from "../unit/unit.js";
-import type { Mechanism } from "../mechanism/index.js";
-import type { Ref } from "../common/ref.js";
 import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
 import { removedHook as scheduleRemovedHook } from "./schedule/runtime.js";
 import {
@@ -43,7 +41,7 @@ const defaultDefinition: Definition = {
 export interface State {
     readonly definition: Definition;
     readonly battlefield: BattlefieldState;
-    readonly mechanisms: Store<Ref<Mechanism<any>>, Mechanism<any>>;
+    readonly effects: Effects;
     readonly tick: number;
     readonly execution: BattleExecutionState;
     readonly deployment: DeploymentState;
@@ -69,7 +67,7 @@ export function createBattleState(
     return {
         definition,
         battlefield,
-        mechanisms: Store.empty(),
+        effects: Effects.empty(),
         tick,
         execution,
         deployment,

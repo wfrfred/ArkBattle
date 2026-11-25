@@ -10,11 +10,13 @@ import { hasSkill, modify } from "../../../core/unit/capability/skill/index.js";
 import type { Vitality } from "../../../core/unit/capability/vitality/index.js";
 import { cancel, receiving } from "../../../core/battle/resource/hp/damage/index.js";
 import {
-    type OrdinaryDefinition as EffectDefinition,
-    type OrdinaryEffect as Effect,
+    type Definition as EffectDefinition,
+    forHost,
     ref as effectRef,
     setState,
-} from "../../../core/unit/effect/index.js";
+} from "../../../core/effect/index.js";
+import type { State as BattleState } from "../../../core/battle/index.js";
+import type { Ref } from "../../../core/common/ref.js";
 import { healSelf } from "./common.js";
 
 interface ShieldState {
@@ -36,14 +38,15 @@ export interface ShieldParameters {
 const SHIELD_ID = "mudrock/shield";
 
 export function readShield(
-    unit: Unit,
+    battle: BattleState,
+    host: Ref<Unit>,
 ): { readonly layers: number; readonly timer: number } | undefined {
-    const effect = unit.effects.values().find((entry) => entry.definition.id === SHIELD_ID);
+    const effect = forHost(battle, host).find((entry) => entry.definition.id === SHIELD_ID);
     if (effect?.lifecycle !== "ACTIVE") {
         return undefined;
     }
 
-    const { layers, timer } = (effect as Effect<ShieldState>).state;
+    const { layers, timer } = effect.state as ShieldState;
 
     return { layers, timer };
 }
@@ -60,14 +63,14 @@ export function shieldEffect({
     extraSp,
     sarkazResistance,
     blockedDamageScale,
-}: ShieldParameters): EffectDefinition<ShieldState, Vitality> {
-    const definition: EffectDefinition<ShieldState, Vitality> = {
+}: ShieldParameters): EffectDefinition<ShieldState, Unit & Vitality> {
+    const definition: EffectDefinition<ShieldState, Unit & Vitality> = {
         id: SHIELD_ID,
         initialize: () => ({ layers: initialLayers, timer: interval, lastTick: 0 }),
         onInstall: (state, self) =>
             setState(state, effectRef(self), { ...self.state, lastTick: state.tick }),
         onEnable: (state, self) => {
-            const unit = self.host.get(state);
+            const unit = self.ref.host.get(state);
             if (unit === undefined) {
                 return state;
             }
@@ -83,7 +86,7 @@ export function shieldEffect({
                     accepts: (_battle, { request }) => request.nature !== "LOSS",
                     invoke(state, context, pending) {
                         const shield = ref.get(state);
-                        const host = self.host.get(state);
+                        const host = self.ref.host.get(state);
                         if (
                             pending.type === "CANCELLED" ||
                             pending.amount <= 0 ||
@@ -102,8 +105,8 @@ export function shieldEffect({
                                 ...shield.state,
                                 layers: shield.state.layers - 1,
                             });
-                            state = healSelf(state, self.host, healRatio);
-                            const current = self.host.get(state);
+                            state = healSelf(state, self.ref.host, healRatio);
+                            const current = self.ref.host.get(state);
                             if (current !== undefined && hasSkill(current)) {
                                 state = modify(state, unitRef(current), extraSp).state;
                             }
@@ -141,7 +144,7 @@ export function shieldEffect({
             );
         },
         onDisable: (state, self) => {
-            const unit = self.host.get(state);
+            const unit = self.ref.host.get(state);
 
             return unit === undefined
                 ? state

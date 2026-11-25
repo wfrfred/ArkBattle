@@ -1,6 +1,6 @@
 import { update as updateUnit } from "../unit/operations.js";
 
-import type { OrdinaryDefinition as Definition } from "../unit/effect/index.js";
+import type { Definition } from "../effect/index.js";
 import * as units from "../unit/index.js";
 import { areHostile, hasClassification } from "../unit/capability/classification/index.js";
 import * as targetable from "../unit/capability/targetable/capability.js";
@@ -8,12 +8,12 @@ import * as targetable from "../unit/capability/targetable/capability.js";
 function restriction(
     id: string,
     value: targetable.Restriction,
-): Definition<object, targetable.Targetable> {
+): Definition<object, units.Unit & targetable.Targetable> {
     return {
         id,
         initialize: () => ({}),
         onEnable(state, self) {
-            const unit = self.host.get(state);
+            const unit = self.ref.host.get(state);
             if (unit === undefined) {
                 return state;
             }
@@ -28,7 +28,7 @@ function restriction(
             );
         },
         onDisable(state, self) {
-            const unit = self.host.get(state);
+            const unit = self.ref.host.get(state);
             if (unit === undefined) {
                 return state;
             }

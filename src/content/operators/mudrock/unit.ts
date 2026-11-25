@@ -9,7 +9,7 @@ import { sides } from "../../../core/unit/capability/blocking/index.js";
 import type { SkillCapability } from "../../../core/unit/capability/skill/index.js";
 import { healFree } from "../../../core/effects/protection.js";
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
-import { install } from "../../../core/unit/effect/index.js";
+import { install } from "../../../core/effect/index.js";
 import type { Operator } from "../operator.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
 import type { Tables } from "../../../data/unit/operator.js";

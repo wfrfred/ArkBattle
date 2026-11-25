@@ -138,7 +138,7 @@
 | U052 | MultiSpine 延后发布有效朝向是否影响一项实际玩法 | 按内容核对。已核延迟发布路径和实际朝向消费者，两者在同一机制的绑定仍未证。 | [Case 35](../research/cases/35-facing-and-turning-conditions.md#L75) |
 | U053 | 异常解除是否主动重发此前无法发布的面向 | 已有表达。需要恢复朝向的内容可在解除限制时转向，普通异常解除自动补发的正例未证。 | [Case 35](../research/cases/35-facing-and-turning-conditions.md#L82) |
 | U057 | 蒂比 S2 成功闪避后普通伤判和天赋时钟的线上行为 | 已有表达。蒂比 S2 可在前置接收触发技能并尝试闪避，时钟是否重置由接收条件决定，线上选择仍待证。 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L298) |
-| U059 | 埃芒加德共享复活额度的实际扣减、取消及例外资格 | 已有表达。Mechanism 保存共享次数，受伤结算时同步扣减，后来出生者可经全局入场 Hook 装配。具体模式扣减例外仍待证。 | [总览03](../research/03-space-units-and-mechanisms.md#L295) |
+| U059 | 埃芒加德共享复活额度的实际扣减、取消及例外资格 | 已有表达。无宿主 Effect 保存共享次数，受伤结算时同步扣减，后来出生者可经全局入场 Hook 装配。具体模式扣减例外仍待证。 | [总览03](../research/03-space-units-and-mechanisms.md#L295) |
 
 #### 初次盘点中的具体内容（84）
 

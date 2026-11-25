@@ -38,7 +38,7 @@ import type { State as BattleState } from "../../../core/battle/index.js";
 
 import { createRng } from "../../../core/common/rng.js";
 import { stun } from "../../../core/effects/control.js";
-import { install } from "../../../core/unit/effect/index.js";
+import { install } from "../../../core/effect/index.js";
 import { healSelf } from "./common.js";
 
 export type AttackHost = Classification & Occupancy & Blocker & Offense;
