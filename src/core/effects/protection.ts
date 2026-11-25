@@ -6,7 +6,7 @@ import * as vitality from "../unit/capability/vitality/index.js";
 import * as elemental from "../unit/capability/elemental/index.js";
 import * as shiftable from "../unit/capability/shifting/shiftable.js";
 import * as targetable from "../unit/capability/targetable/capability.js";
-import * as units from "../unit/index.js";
+import type { Unit } from "../unit/index.js";
 import { untargetableRestriction } from "./visibility.js";
 
 export const invincibleRestriction: targetable.Restriction = {
@@ -23,7 +23,7 @@ export const invincibleEpDamageRestriction: elemental.DamageRestriction = {
 
 const forceImmunity: shiftable.Restriction = { allows: () => false };
 
-export const unbalanceImmunity: Definition<object, units.Unit & shiftable.Shiftable> = {
+export const unbalanceImmunity: Definition<object, Unit & shiftable.Shiftable> = {
     id: "protection/unbalance-immunity",
     initialize: () => ({}),
     onEnable(state, self) {
@@ -45,20 +45,15 @@ export const unbalanceImmunity: Definition<object, units.Unit & shiftable.Shifta
     },
 };
 
-export const invincible: Definition<object, units.Unit & targetable.Targetable> = {
+export const invincible: Definition<object, Unit & targetable.Targetable> = {
     id: "protection/invincible",
     initialize: () => ({}),
     onEnable(state, self) {
-        const unit = self.ref.host.get(state);
-        if (unit === undefined) {
-            return state;
-        }
-
         const id = `@effect/${self.id}/invincible`;
 
         return updateUnit(
             state,
-            units.ref(unit),
+            self.ref.host,
             compose(
                 targetable.setRestriction({ id, value: invincibleRestriction }),
                 receptionRestrictions(id, true),
@@ -66,27 +61,22 @@ export const invincible: Definition<object, units.Unit & targetable.Targetable> 
         );
     },
     onDisable(state, self) {
-        const unit = self.ref.host.get(state);
-        if (unit === undefined) {
-            return state;
-        }
-
         const id = `@effect/${self.id}/invincible`;
 
         return updateUnit(
             state,
-            units.ref(unit),
+            self.ref.host,
             compose(targetable.removeRestriction(id), receptionRestrictions(id, false)),
         );
     },
 };
 
-export const healFree: Definition<object, units.Unit> = {
+export const healFree: Definition<object, Unit> = {
     id: "protection/heal-free",
     initialize: () => ({}),
 };
 
-function receptionRestrictions(id: string, enabled: boolean): Change<units.Unit> {
+function receptionRestrictions(id: string, enabled: boolean): Change<Unit> {
     return compose(
         optional(
             elemental.hasElemental,

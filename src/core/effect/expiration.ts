@@ -76,7 +76,7 @@ export function refreshTime(expiration: Expiration, amount: number, tick: number
     return deadline === expiration.tick ? expiration : { ...expiration, tick: deadline };
 }
 
-export function extendTime(expiration: Expiration, amount: number): Expiration {
+export function extendTime(expiration: Expiration, amount: number, tick: number): Expiration {
     if (expiration.type === "INFINITE" || amount === Infinity || amount === 0) {
         return expiration;
     }
@@ -87,7 +87,7 @@ export function extendTime(expiration: Expiration, amount: number): Expiration {
               duration: expiration.duration + amount,
               remaining: expiration.remaining + amount,
           }
-        : { ...expiration, tick: expiration.tick + Math.ceil(amount) };
+        : { ...expiration, tick: Math.max(expiration.tick, tick) + Math.ceil(amount) };
 }
 
 export function elapse(expiration: Expiration): Expiration {

@@ -400,7 +400,13 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
         remaining: 6,
         rate: 1,
     });
-    state = remove(extended.state, source, { reason: "SCRIPT" });
+    state = effects.setExpiration(extended.state, original.value, { type: "DEADLINE", tick: 1 });
+    const resumed = effects.install(state, owner, cumulative, {
+        ...effectInitial,
+        expiration: { type: "DURATION", duration: 4, remaining: 4, rate: 1 },
+    });
+    assert.deepEqual(original.value.get(resumed.state).expiration, { type: "DEADLINE", tick: 6 });
+    state = remove(resumed.state, source, { reason: "SCRIPT" });
     assert.equal(first.value.get(state), undefined);
     assert.notEqual(original.value.get(state), undefined);
 });

@@ -11,12 +11,9 @@ import type { Vitality } from "../../../core/unit/capability/vitality/index.js";
 import { cancel, receiving } from "../../../core/battle/resource/hp/damage/index.js";
 import {
     type Definition as EffectDefinition,
-    forHost,
     ref as effectRef,
     setState,
 } from "../../../core/effect/index.js";
-import type { State as BattleState } from "../../../core/battle/index.js";
-import type { Ref } from "../../../core/common/ref.js";
 import { healSelf } from "./common.js";
 
 interface ShieldState {
@@ -37,20 +34,6 @@ export interface ShieldParameters {
 
 const SHIELD_ID = "mudrock/shield";
 
-export function readShield(
-    battle: BattleState,
-    host: Ref<Unit>,
-): { readonly layers: number; readonly timer: number } | undefined {
-    const effect = forHost(battle, host).find((entry) => entry.definition.id === SHIELD_ID);
-    if (effect?.lifecycle !== "ACTIVE") {
-        return undefined;
-    }
-
-    const { layers, timer } = effect.state as ShieldState;
-
-    return { layers, timer };
-}
-
 function hasSarkazTag(unit: Unit | undefined): boolean {
     return unit !== undefined && hasClassification(unit) && hasFilterTag(unit, "sarkaz");
 }
@@ -68,28 +51,21 @@ export function shieldEffect({
         id: SHIELD_ID,
         initialize: (state) => ({ layers: initialLayers, timer: interval, lastTick: state.tick }),
         onEnable: (state, self) => {
-            const unit = self.ref.host.get(state);
-            if (unit === undefined) {
-                return state;
-            }
-
             const ref = effectRef(self);
 
             return updateUnit(
                 state,
-                unitRef(unit),
+                self.ref.host,
                 unitHooks.setHook(receiving, {
                     id: `${SHIELD_ID}/${self.id}`,
                     priority: 100,
                     accepts: (_battle, { request }) => request.nature !== "LOSS",
                     invoke(state, context, pending) {
                         const shield = ref.get(state);
-                        const host = self.ref.host.get(state);
                         if (
                             pending.type === "CANCELLED" ||
                             pending.amount <= 0 ||
-                            shield?.lifecycle !== "ACTIVE" ||
-                            host === undefined
+                            shield?.lifecycle !== "ACTIVE"
                         ) {
                             return { state, value: pending };
                         }
@@ -120,6 +96,7 @@ export function shieldEffect({
                         }
 
                         const source = context.request.source;
+                        const host = self.ref.host.get(state)!;
                         const sarkazScale = hasSarkazTag(source?.get(state))
                             ? 1 - sarkazResistance
                             : 1;
@@ -141,17 +118,12 @@ export function shieldEffect({
                 }),
             );
         },
-        onDisable: (state, self) => {
-            const unit = self.ref.host.get(state);
-
-            return unit === undefined
-                ? state
-                : updateUnit(
-                      state,
-                      unitRef(unit),
-                      unitHooks.removeHook(receiving, `${SHIELD_ID}/${self.id}`),
-                  );
-        },
+        onDisable: (state, self) =>
+            updateUnit(
+                state,
+                self.ref.host,
+                unitHooks.removeHook(receiving, `${SHIELD_ID}/${self.id}`),
+            ),
         onTick(state, self) {
             const elapsed = state.tick - self.state.lastTick;
             if (elapsed <= 0) {

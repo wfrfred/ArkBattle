@@ -68,8 +68,7 @@ export function healing(
             source.definition.classification.side === target.definition.classification.side &&
             hpRatio(target) < 1 &&
             !forHost(battle, ref(target)).some(
-                (effect) =>
-                    effect.definition === (healFree as object) && effect.lifecycle === "ACTIVE",
+                (effect) => effect.definition === healFree && effect.lifecycle === "ACTIVE",
             ) &&
             allows(target);
     };

@@ -136,7 +136,7 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
     battle = until(battle, 100);
     assert.equal(resolveAttack(battle, current(battle)), 120);
     assert.equal(current(battle).vitality.health.hp, 845);
-    battle = effects.remove(battle, configured.controller);
+    battle = effects.setEnabled(battle, configured.controller, false);
     battle = until(battle, 112);
     assert.equal(current(battle).vitality.health.hp, 765);
     battle = until(battle, 122);
@@ -174,6 +174,13 @@ test("mire preserves its stacking clock across adjacent tiles and uses effective
     }));
     battle = until(battle, 2);
     assert.deepEqual([0, 1].map(id => attackSpeed(battle, id)), [90, 95]);
+    const mire = effects.ref(effects.forHost(battle, units.ref(current(battle))).find(
+        effect => effect.definition.id === "terrain/mire",
+    ));
+    battle = effects.setEnabled(battle, mire, false);
+    assert.equal(attackSpeed(battle), 100);
+    battle = effects.setEnabled(battle, mire, true);
+    assert.equal(attackSpeed(battle), 90);
     battle = until(move(battle, 0, 1), 31);
     assert.equal(attackSpeed(battle), 90);
     battle = step(battle, []);

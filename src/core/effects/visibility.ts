@@ -1,26 +1,21 @@
 import { update as updateUnit } from "../unit/operations.js";
 
 import type { Definition } from "../effect/index.js";
-import * as units from "../unit/index.js";
+import type { Unit } from "../unit/index.js";
 import { areHostile, hasClassification } from "../unit/capability/classification/index.js";
 import * as targetable from "../unit/capability/targetable/capability.js";
 
 function restriction(
     id: string,
     value: targetable.Restriction,
-): Definition<object, units.Unit & targetable.Targetable> {
+): Definition<object, Unit & targetable.Targetable> {
     return {
         id,
         initialize: () => ({}),
         onEnable(state, self) {
-            const unit = self.ref.host.get(state);
-            if (unit === undefined) {
-                return state;
-            }
-
             return updateUnit(
                 state,
-                units.ref(unit),
+                self.ref.host,
                 targetable.setRestriction({
                     id: `@effect/${self.id}/targeting`,
                     value,
@@ -28,14 +23,9 @@ function restriction(
             );
         },
         onDisable(state, self) {
-            const unit = self.ref.host.get(state);
-            if (unit === undefined) {
-                return state;
-            }
-
             return updateUnit(
                 state,
-                units.ref(unit),
+                self.ref.host,
                 targetable.removeRestriction(`@effect/${self.id}/targeting`),
             );
         },

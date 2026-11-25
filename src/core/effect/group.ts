@@ -3,14 +3,7 @@ import type { Lifetime } from "../lifetime/index.js";
 import type { Ref } from "../common/ref.js";
 import type { Unit } from "../unit/unit.js";
 import type { StackEffect } from "./effect.js";
-import {
-    extendTime,
-    fullDuration,
-    refreshTime,
-    remainingTime,
-    validate,
-    type Expiration,
-} from "./expiration.js";
+import { refreshTime, remainingTime, validate, type Expiration } from "./expiration.js";
 
 export type Group = {
     readonly id: string;
@@ -64,15 +57,4 @@ export function mergeStack(self: StackEffect, incoming: Expiration, tick: number
     return stackCount === self.stackCount && expiration === self.expiration
         ? self
         : { ...self, stackCount, expiration };
-}
-
-export function mergeExpiration(
-    type: "EXTEND" | "EXTEND_TIME",
-    current: Expiration,
-    incoming: Expiration,
-    tick: number,
-): Expiration {
-    const amount = fullDuration(incoming, tick);
-
-    return type === "EXTEND" ? refreshTime(current, amount, tick) : extendTime(current, amount);
 }

@@ -5,7 +5,7 @@ import { assertNonnegativeSafeInteger } from "../common/assert.js";
 import { available, end, type Lifetime } from "../lifetime/index.js";
 import { register } from "../lifetime/operations.js";
 import type { Definition, StackDefinition } from "./definition.js";
-import { assertCompatible, mergeExpiration, mergeStack, validateExpiration } from "./group.js";
+import { assertCompatible, mergeStack, validateExpiration } from "./group.js";
 import {
     type Effect,
     type StackEffect,
@@ -14,7 +14,7 @@ import {
     createEffectRef,
     ref as effectRef,
 } from "./effect.js";
-import { elapse, expired } from "./expiration.js";
+import { elapse, expired, extendTime, fullDuration, refreshTime } from "./expiration.js";
 import { all, forGroup, hasStack, wins } from "./query.js";
 
 export function install<S extends object, H extends Lifetime | null>(
@@ -67,12 +67,11 @@ export function install(
                 };
             }
             if (group.type === "EXTEND" || group.type === "EXTEND_TIME") {
-                const next = mergeExpiration(
-                    group.type,
-                    retained.expiration,
-                    expiration,
-                    battle.tick,
-                );
+                const amount = fullDuration(expiration, battle.tick);
+                const next =
+                    group.type === "EXTEND"
+                        ? refreshTime(retained.expiration, amount, battle.tick)
+                        : extendTime(retained.expiration, amount, battle.tick);
 
                 return {
                     state:

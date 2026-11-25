@@ -48,14 +48,9 @@ function changeModifiers(
     id: string,
     modifiers?: Modifiers,
 ): BattleState {
-    const unit = host.get(battle);
-    if (unit === undefined) {
-        return battle;
-    }
-
     return units.update(
         battle,
-        units.ref(unit),
+        host,
         [
             units.optional(
                 offense.hasOffense,
@@ -164,9 +159,38 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
 }
 
 export function createMireEffect(params: MireParams): Definition<MireState, Unit> {
+    function stackModifiers(stacks: number, enemy: boolean): Modifiers {
+        return {
+            attackSpeed: modifier.create({ multiplier: stacks * params.attackSpeedPerStack }),
+            ...(enemy
+                ? {
+                      movementSpeed: modifier.create({
+                          multiplier: stacks * params.moveSpeedRatioPerStack,
+                      }),
+                  }
+                : {}),
+        };
+    }
+
     return {
         id: "terrain/mire",
         initialize: (battle) => ({ nextTick: battle.tick, stacks: 0 }),
+        onEnable(battle, self) {
+            if (self.state.stacks === 0) {
+                return battle;
+            }
+
+            const unit = self.ref.host.get(battle)!;
+            const enemy =
+                hasClassification(unit) && unit.definition.classification.side === "ENEMY";
+
+            return changeModifiers(
+                battle,
+                self.ref.host,
+                `terrain/${self.id}`,
+                stackModifiers(self.state.stacks, enemy),
+            );
+        },
         onTick(battle, self) {
             if (battle.tick < self.state.nextTick) {
                 return battle;
@@ -191,16 +215,12 @@ export function createMireEffect(params: MireParams): Definition<MireState, Unit
                 nextTick: battle.tick + params.stackIntervalTicks,
             });
 
-            return changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
-                attackSpeed: modifier.create({ multiplier: stacks * params.attackSpeedPerStack }),
-                ...(enemy
-                    ? {
-                          movementSpeed: modifier.create({
-                              multiplier: stacks * params.moveSpeedRatioPerStack,
-                          }),
-                      }
-                    : {}),
-            });
+            return changeModifiers(
+                battle,
+                self.ref.host,
+                `terrain/${self.id}`,
+                stackModifiers(stacks, enemy),
+            );
         },
         onDisable: (battle, self) => changeModifiers(battle, self.ref.host, `terrain/${self.id}`),
     };

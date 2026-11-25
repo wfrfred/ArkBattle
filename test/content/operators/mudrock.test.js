@@ -4,7 +4,6 @@ import { Hooks } from "../../../dist/core/hook.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { create } from "../../../dist/content/operators/mudrock/unit.js";
-import { readShield } from "../../../dist/content/operators/mudrock/effect.js";
 import { initialize, getUnit } from "../../helpers/unit.js";
 import { fixtureBattlefieldState } from "../../helpers/battlefield.js";
 import { tables } from "../../helpers/operator.js";
@@ -14,7 +13,7 @@ import { add, update } from "../../../dist/core/unit/operations.js";
 import { ref, setHook, removeHook } from "../../../dist/core/unit/index.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
 import { advance as advanceBlocking } from "../../../dist/core/battle/blocking/index.js";
-import { advance as advanceEffects } from "../../../dist/core/effect/index.js";
+import { advance as advanceEffects, forHost } from "../../../dist/core/effect/index.js";
 import { advance as advanceSkill, activate, modify } from "../../../dist/core/unit/capability/skill/index.js";
 import { ref as skillRef } from "../../helpers/skill.js";
 import { start, advance as advanceAction, ref as actionRef } from "../../../dist/core/unit/capability/action/index.js";
@@ -55,6 +54,14 @@ function advanceEffectsUntil(battle, tick) {
         battle = advanceEffects({ ...battle, tick: currentTick });
     }
     return battle;
+}
+function readShield(battle, host) {
+    const effect = forHost(battle, host).find(entry => entry.definition.id === "mudrock/shield");
+    if (effect?.lifecycle !== "ACTIVE") {
+        return undefined;
+    }
+    const { layers, timer } = effect.state;
+    return { layers, timer };
 }
 function wound(battle) {
     battle = hit(battle, null, 1).state;
