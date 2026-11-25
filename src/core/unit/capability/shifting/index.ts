@@ -21,7 +21,6 @@ export type { Unbalance } from "./unbalance.js";
 export const pull = {
     apply: pulls.apply,
     ref: pulls.ref,
-    lifetime: pulls.lifetime,
     withinRadius: pulls.withinRadius,
     brake: pulls.brake,
     remove: pulls.remove,
@@ -29,7 +28,6 @@ export const pull = {
 
 export const unbalance = {
     ref: unbalances.ref,
-    lifetime: unbalances.lifetime,
     applyImpulse: unbalances.applyImpulse,
     addForce: unbalances.addForce,
     setVelocity: unbalances.setVelocity,

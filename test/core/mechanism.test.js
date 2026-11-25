@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { step } from "../../dist/core/battle/runtime.js";
 import { Hooks } from "../../dist/core/hook.js";
-import { scope } from "../../dist/core/lifetime/index.js";
 import * as mechanisms from "../../dist/core/mechanism/index.js";
 import * as effects from "../../dist/core/unit/effect/index.js";
 import { ref as unitRef } from "../../dist/core/unit/index.js";
@@ -102,7 +101,7 @@ test("disabled mechanisms stop advancing but still finish their dependents befor
                 return current;
             },
         },
-        { scopes: [scope(mechanisms.lifetime, inactiveRef)] },
+        { scopes: [inactiveRef] },
     );
     const advanced = step(linked.state, []);
     let state = mechanisms.remove(advanced, inactiveRef);

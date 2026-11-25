@@ -1,8 +1,8 @@
 import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
-import { lifetime as unitLifetime, replace as replaceUnits, update } from "../../operations.js";
+import { replace as replaceUnits, update } from "../../operations.js";
 import { ref, type Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
-import * as lifetimes from "../../../lifetime/index.js";
+import { end } from "../../../lifetime/index.js";
 import { register } from "../../../lifetime/operations.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
@@ -17,11 +17,9 @@ import { hasSkill, type Skill as SkillCapability } from "./capability.js";
 import {
     create as createActivation,
     type Activation,
-    type ActivationIdentity,
     type ActivationRef,
     type Definition as ActivationDefinition,
     type Parameters as ActivationParameters,
-    type End,
     type Operation,
 } from "./activation.js";
 import type { Definition as DurationDefinition, State as DurationState } from "./duration.js";
@@ -169,7 +167,7 @@ export function activate<S extends object, A extends object>(
         },
     ]);
     const activatedRef = ref(active);
-    battle = register(battle, lifetime, activatedRef, [lifetimes.scope(unitLifetime, source)]);
+    battle = register(battle, activatedRef, [source]);
     battle = appendEvents(battle, [
         {
             type: "SKILL_ACTIVATED",
@@ -212,7 +210,7 @@ export function activate<S extends object, A extends object>(
     return { state: battle, value: activatedRef };
 }
 
-export const lifetime = lifetimes.create<ActivationIdentity, End>({
+export const config: Activation["config"] = {
     end: {
         prepare(battle, reference, initial) {
             const host = reference.host.get(battle)!;
@@ -251,10 +249,10 @@ export const lifetime = lifetimes.create<ActivationIdentity, End>({
         },
         dependencyEnd: { type: "CANCELLED", reason: "DEPENDENCY" },
     },
-});
+};
 
 export function finish(battle: BattleState, reference: ActivationRef): BattleState {
-    return lifetime.end(battle, reference, { type: "FINISHED" });
+    return end(battle, reference, { type: "FINISHED" });
 }
 
 export function cancel(
@@ -262,7 +260,7 @@ export function cancel(
     reference: ActivationRef,
     reason = "CANCELLED",
 ): BattleState {
-    return lifetime.end(battle, reference, { type: "CANCELLED", reason });
+    return end(battle, reference, { type: "CANCELLED", reason });
 }
 
 export function operate(

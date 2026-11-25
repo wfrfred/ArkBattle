@@ -1,4 +1,4 @@
-import type { Identified } from "../../../../common/ref.js";
+import type { Config, Lifetime } from "../../../../lifetime/index.js";
 import type { Definition as BaseDefinition } from "../../../../unit/unit.js";
 import type { Definition as DeployableDefinition } from "../../../../unit/capability/deployable/capability.js";
 import type { Definition as OccupancyDefinition } from "../../../../unit/capability/occupancy/capability.js";
@@ -20,8 +20,9 @@ export type Policy = "DEFAULT" | "UNIQUE" | "QUEUED";
 export type Card<S extends object = object, P extends Policy = Policy> = {
     readonly state: S;
     readonly policy: P;
+    readonly config: Config<Card, never>;
 } & {
-    [K in Policy]: Identified<object> & {
+    [K in Policy]: Lifetime & {
         readonly policy: K;
         readonly definition: Definition<S, K>;
         readonly dp: dp.State<K>;

@@ -97,7 +97,6 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
         },
     });
     const parent = installed.value;
-    const parentScope = lifetimes.scope(effects.lifetime, parent);
     const child = effects.install(
         installed.state,
         owner,
@@ -116,11 +115,10 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
                 return current;
             },
         },
-        { scopes: [parentScope] },
+        { scopes: [parent] },
     );
     state = child.state;
-    const childScope = lifetimes.scope(effects.lifetime, child.value);
-    assert.throws(() => lifetimes.bind(state, effects.lifetime, parent, childScope), TypeError);
+    assert.throws(() => lifetimes.bind(state, parent, child.value), TypeError);
 
     const detached = effects.install(state, owner, {
         id: "detached",
@@ -129,8 +127,8 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
             calls.push("detached-ended");
             return current;
         },
-    }, { scopes: [parentScope] });
-    state = lifetimes.unbind(detached.state, effects.lifetime, detached.value, parentScope);
+    }, { scopes: [parent] });
+    state = lifetimes.unbind(detached.state, detached.value, parent);
     const after = effects.remove(state, parent, "FIRST");
 
     assert.deepEqual(calls, ["parent-disabled", "child-ended", "parent-ended", "detached-ended", "owner-left"]);
@@ -257,14 +255,13 @@ test("an ending ancestor freezes dependency edges before its active Action execu
                             const recipient = units
                                 .all(current)
                                 .find((unit) => unit.definition.id === "recipient");
-                            const scope = lifetimes.scope(actions.lifetime, execution);
-                            current = lifetimes.unbind(current, effects.lifetime, attached, scope);
+                            current = lifetimes.unbind(current, attached, execution);
                             const installed = effects.install(
                                 current,
                                 units.ref(recipient),
                                 dependent,
                                 {
-                                    scopes: [scope],
+                                    scopes: [execution],
                                 },
                             );
                             attempted = installed.value;
@@ -283,7 +280,7 @@ test("an ending ancestor freezes dependency edges before its active Action execu
     const recipient = units.all(started.state).find((unit) => unit.definition.id === "recipient");
     const installed = effects.install(started.state, units.ref(recipient), {
         id: "attached", initialize: () => ({}),
-    }, { scopes: [lifetimes.scope(actions.lifetime, execution)] });
+    }, { scopes: [execution] });
     assert.notEqual(installed.value, null);
     attached = installed.value;
 

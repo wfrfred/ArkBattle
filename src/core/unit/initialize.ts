@@ -11,6 +11,7 @@ import type { Unit, Definition } from "./unit.js";
 import { Hooks } from "../hook.js";
 import { replaceIn } from "../common/object.js";
 import { createRef, type Ref } from "../common/ref.js";
+import { config } from "./operations.js";
 
 export type Input<D extends Definition & Partial<Definitions> = Definition> = {
     readonly definition: D;
@@ -31,6 +32,7 @@ export function initialize(battle: BattleState, input: Input): Result<Unit> {
     let unit: Unit = {
         id,
         ref: createRef<Unit>({ id }, getUnit),
+        config,
         lifecycle: "ACTIVE",
         definition: input.definition,
         hooks: input.hooks ?? Hooks.empty(),

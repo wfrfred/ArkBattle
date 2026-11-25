@@ -16,7 +16,6 @@ export type {
 } from "./activation.js";
 
 export {
-    lifetime,
     setState,
     setActivationState,
     activate,

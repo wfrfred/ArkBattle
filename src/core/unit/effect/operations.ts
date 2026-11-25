@@ -1,11 +1,11 @@
-import { replace as replaceUnits, lifetime as unitLifetime } from "../operations.js";
+import { replace as replaceUnits } from "../operations.js";
 import { cardForUnit } from "../../battle/deployment/query.js";
 import { type State as BattleState, type Result } from "../../battle/state.js";
 import type { Unit } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import * as units from "../query.js";
-import { available, create, scope, type Scope as LifetimeScope } from "../../lifetime/index.js";
+import { available, end, type Scope as LifetimeScope } from "../../lifetime/index.js";
 import { register } from "../../lifetime/operations.js";
 import type {
     Definition,
@@ -119,6 +119,7 @@ export function install<S extends object, H extends object>(
     const instance = {
         id,
         ref: reference,
+        config,
         host,
         definition,
         state: initial.state ?? definition.initialize(),
@@ -130,7 +131,7 @@ export function install<S extends object, H extends object>(
         ...(group?.type === "STACK" ? { stackCount: 1 } : {}),
     } as unknown as Effect;
     battle = replaceUnits(battle, [{ ...unit, effects: unit.effects.add(instance) }]);
-    battle = register(battle, lifetime, reference, [scope(unitLifetime, host), ...scopes]);
+    battle = register(battle, reference, [host, ...scopes]);
     battle = callbacks(instance.definition).onInstall?.(battle, instance) ?? battle;
 
     if (reference.get(battle)?.lifecycle === "INSTALLING") {
@@ -232,10 +233,10 @@ export function setEnabled<T extends Effect<any, any>>(
     return updateLifecycle(battle, reference);
 }
 
-export const lifetime = create<Effect<any, any>, string>({
+const config: Effect["config"] = {
     end: {
         prepare(battle, reference, initial) {
-            const host = (reference.host as Ref<Unit>).get(battle)!;
+            const host = reference.host.get(battle)!;
             const self = { ...initial, lifecycle: "ENDING" as const };
             battle = replaceEffect(battle, host, self);
 
@@ -250,20 +251,20 @@ export const lifetime = create<Effect<any, any>, string>({
         finalize(battle, reference, _initial, reason) {
             const self = reference.get(battle)!;
             battle = callbacks(self.definition).onEnd?.(battle, self, reason) ?? battle;
-            const unit = (reference.host as Ref<Unit>).get(battle)!;
+            const unit = reference.host.get(battle)!;
 
             return replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference) }]);
         },
         dependencyEnd: "CANCELLED",
     },
-});
+};
 
 export function remove<T extends Effect<any, any>>(
     battle: BattleState,
     reference: Ref<T>,
     reason = "EXPLICIT",
 ): BattleState {
-    return lifetime.end(battle, reference, reason);
+    return end(battle, reference, reason);
 }
 
 export function advance(battle: BattleState): BattleState {
@@ -468,7 +469,7 @@ function updateLifecycle<T extends Effect<any, any>>(
     const group = instance.definition.group;
     const active =
         instance.enabled &&
-        available(battle, scope(lifetime, reference)) &&
+        available(battle, reference) &&
         (group === undefined ||
             !unit.effects
                 .values()

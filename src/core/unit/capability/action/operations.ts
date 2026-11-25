@@ -1,7 +1,7 @@
-import { lifetime as unitLifetime, replace as replaceUnits } from "../../operations.js";
+import { replace as replaceUnits } from "../../operations.js";
 import { ref, type Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
-import * as lifetimes from "../../../lifetime/index.js";
+import { end } from "../../../lifetime/index.js";
 import { register } from "../../../lifetime/operations.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
@@ -9,13 +9,8 @@ import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
 import { resolvePeriod } from "./timing.js";
 import type { Action } from "./action.js";
-import {
-    create as createExecution,
-    type Execution,
-    type ExecutionIdentity,
-    type ExecutionRef,
-} from "./execution.js";
-import type { Definition, End, Id as DefinitionId } from "./definition.js";
+import { create as createExecution, type Execution, type ExecutionRef } from "./execution.js";
+import type { Definition, Id as DefinitionId } from "./definition.js";
 import * as cooldown from "./cooldown.js";
 import { executionRefs } from "./query.js";
 import { allows } from "../../../restriction.js";
@@ -122,7 +117,7 @@ export function start<P extends object, E extends object>(
         },
     ]);
     const started = ref(execution);
-    battle = register(battle, lifetime, started, [lifetimes.scope(unitLifetime, source)]);
+    battle = register(battle, started, [source]);
 
     return { state: battle, value: started };
 }
@@ -160,7 +155,7 @@ export function setExecutionState<E extends object>(
         : replaceAction(battle, unit, replaceIn(action, ["execution", "state"], state));
 }
 
-export const lifetime = lifetimes.create<ExecutionIdentity, End>({
+export const config: Execution["config"] = {
     end: {
         prepare(battle, reference) {
             const host = reference.host.get(battle)!;
@@ -195,10 +190,10 @@ export const lifetime = lifetimes.create<ExecutionIdentity, End>({
         },
         dependencyEnd: { type: "CANCELLED", reason: "SOURCE_ABSENT" },
     },
-});
+};
 
 export function finish(battle: BattleState, reference: ExecutionRef): BattleState {
-    return lifetime.end(battle, reference, { type: "FINISHED" });
+    return end(battle, reference, { type: "FINISHED" });
 }
 
 export function cancel(
@@ -206,7 +201,7 @@ export function cancel(
     reference: ExecutionRef,
     reason = "CANCELLED",
 ): BattleState {
-    return lifetime.end(battle, reference, { type: "CANCELLED", reason });
+    return end(battle, reference, { type: "CANCELLED", reason });
 }
 
 export function cancelForUnit(

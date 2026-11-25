@@ -5,6 +5,7 @@ import type { WorldPosition } from "../geometry/coordinate.js";
 import type { Side } from "../side.js";
 import type { Definition } from "./definition.js";
 import type { Projectile } from "./projectile.js";
+import { config } from "./operations.js";
 
 export type Input<S extends object, T extends object = object> = {
     readonly definition: Definition<S, T>;
@@ -25,6 +26,7 @@ export function initialize<S extends object, T extends object, const D extends D
             ...input,
             id,
             ref: createRef<Projectile>({}, getProjectile),
+            config,
             lifecycle: "ACTIVE",
         },
     };

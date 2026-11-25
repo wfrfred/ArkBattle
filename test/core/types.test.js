@@ -13,6 +13,7 @@ test("typed construction and identities retain private state and capability proo
     const source = `
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
+import { end as endLifetime, type Scope } from ${module("lifetime/index")};
 import { Hooks, key, type Hook } from ${module("hook")};
 import { initialize, ref, all as allUnits, compose, optional, setHook, type Unit, type Input as UnitInput } from ${module("unit/index")};
 import { update, remove } from ${module("unit/operations")};
@@ -244,7 +245,9 @@ if (merged.value !== null) {
     effects.setExpiration(merged.state, merged.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error a retained Effect may have arrived with a different private definition.
     merged.value.get(merged.state)!.state.power;
-    owner.get(merged.state)!.effects.get(merged.value, layered)!.state.power satisfies number;
+    const retained = owner.get(merged.state)!.effects.get(merged.value, layered)!;
+    retained.state.power satisfies number;
+    endLifetime(merged.state, effects.ref(retained), 'CANCELLED');
 }
 
 const position = [0, 0] as const;
@@ -352,6 +355,12 @@ const countCardRef = cards.ref(builtCard.value);
 const exactCard = countCardRef.get(builtCard.state)!;
 declare const mixedRef: typeof owner | typeof countCardRef;
 mixedRef.get(battle) satisfies typeof armed | typeof exactCard | undefined;
+const scopes: readonly Scope[] = [owner, countCardRef];
+endLifetime(battle, owner, { reason: 'SCRIPT' });
+// @ts-expect-error a persistent Action does not have its own Lifetime.
+const invalidScope: Scope = actionRef;
+// @ts-expect-error Card can be a dependency target but cannot be explicitly ended.
+endLifetime(battle, countCardRef, 'SCRIPT');
 const enqueued = cards.supply.enqueue(cards.supply.consume(exactCard));
 enqueued.state.count satisfies number;
 enqueued.supply.pending satisfies number;

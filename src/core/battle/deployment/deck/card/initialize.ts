@@ -8,6 +8,13 @@ import type { State as BattleState, Result } from "../../../state.js";
 import type { Card, Policy, UnitDefinition } from "./card.js";
 import type { Definition } from "./definition.js";
 
+const config: Card["config"] = {
+    end: {
+        prepare: (battle) => battle,
+        finalize: (battle) => battle,
+    },
+};
+
 export interface Input<S extends object = object, P extends Policy = Policy> {
     readonly definition: Definition<S, P>;
     readonly unitDefinition: UnitDefinition;
@@ -52,6 +59,7 @@ export function initialize<
 
     const value = {
         ref: createRef<Card>({}, getCard),
+        config,
         policy,
         definition,
         dp: {

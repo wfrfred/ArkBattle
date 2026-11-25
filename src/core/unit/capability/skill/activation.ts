@@ -1,10 +1,12 @@
-import { createRef, type Identified, type Identity, type Ref } from "../../../common/ref.js";
+import { createRef, type Identity, type Ref } from "../../../common/ref.js";
+import type { Config, Lifetime } from "../../../lifetime/index.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type { Skill as SkillCapability } from "./capability.js";
 import type { ActivationRestriction } from "./restriction.js";
 import type { Skill } from "./skill.js";
 import type { Definition as DurationDefinition, State as DurationState } from "./duration.js";
+import { config } from "./operations.js";
 
 export type Operation = "STOP" | "RETRIGGER";
 
@@ -74,9 +76,10 @@ export interface Definition<
     ) => BattleState;
 }
 
-export interface Activation<in out A extends object = object> extends Identified<{
+export interface Activation<in out A extends object = object> extends Lifetime<{
     readonly host: Ref<Unit & SkillCapability>;
 }> {
+    readonly config: Config<ActivationIdentity, End>;
     readonly startedAtTick: number;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly duration: DurationState;
@@ -95,6 +98,7 @@ export function create<A extends object>(
 ): Activation<A> {
     return {
         ref: createRef<Activation>({ host }, get),
+        config,
         startedAtTick,
         lifecycle: "ACTIVE",
         duration,

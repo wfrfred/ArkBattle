@@ -1,5 +1,4 @@
 import { update } from "../../unit/operations.js";
-import { scope } from "../../lifetime/index.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
 import { silence, blockSpRecovery } from "../control.js";
 import * as modifier from "../../common/modifier.js";
@@ -43,7 +42,7 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
         onInstall(battle, self) {
             battle = registerBurst(battle, self);
             const reference = ref(self);
-            const scopes = [scope(effects.lifetime, reference)];
+            const scopes = [reference];
 
             for (const control of [silence, blockSpRecovery]) {
                 if (availableHost(battle, reference) === undefined) {

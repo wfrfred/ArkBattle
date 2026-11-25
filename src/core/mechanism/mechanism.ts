@@ -1,6 +1,6 @@
-import { createRef, ref, type Identified, type Ref } from "../common/ref.js";
-import { create as createLifetime } from "../lifetime/index.js";
-import { register } from "../lifetime/operations.js";
+import { createRef, ref, type Ref } from "../common/ref.js";
+import type { Config, Lifetime } from "../lifetime/index.js";
+import { end, register } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
 import type { Result, State as BattleState } from "../battle/state.js";
 import { replaceIn } from "../common/object.js";
@@ -22,7 +22,8 @@ export interface Input<S extends object = object> {
     readonly active?: boolean;
 }
 
-export interface Mechanism<S extends object = object> extends Identified<object> {
+export interface Mechanism<S extends object = object> extends Lifetime {
+    readonly config: Config<Mechanism<any>, string>;
     readonly definition: Definition<S>;
     readonly lifecycle: Lifecycle;
     readonly state: S;
@@ -40,6 +41,7 @@ export function initialize<S extends object, const D extends Definition<S>>(
         state: battle,
         value: {
             ref: createRef<Mechanism>({}, getMechanism),
+            config,
             definition,
             state: definition.initialize(),
             lifecycle: active ? "ACTIVE" : "INACTIVE",
@@ -49,7 +51,7 @@ export function initialize<S extends object, const D extends Definition<S>>(
 
 export function add<S extends object>(battle: BattleState, self: Mechanism<S>): BattleState {
     battle = replaceIn(battle, ["mechanisms"], battle.mechanisms.add(ref(self), self));
-    battle = register(battle, lifetime, ref(self));
+    battle = register(battle, ref(self));
 
     return self.definition.onEnter?.(battle, self) ?? battle;
 }
@@ -100,7 +102,7 @@ export function setActive<M extends Mechanism<any>>(
     return callback?.(battle, next) ?? battle;
 }
 
-export const lifetime = createLifetime<Mechanism<any>, string>({
+const config: Mechanism["config"] = {
     end: {
         prepare: (battle, reference, initial) =>
             replaceIn(
@@ -115,13 +117,13 @@ export const lifetime = createLifetime<Mechanism<any>, string>({
             return replaceIn(battle, ["mechanisms"], battle.mechanisms.remove(reference));
         },
     },
-});
+};
 
 export function remove<M extends Mechanism<any>>(
     battle: BattleState,
     reference: Ref<M>,
 ): BattleState {
-    return lifetime.end(battle, reference, "EXPLICIT");
+    return end(battle, reference, "EXPLICIT");
 }
 
 export function advance(battle: BattleState): BattleState {

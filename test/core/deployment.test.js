@@ -10,6 +10,7 @@ import * as deployment from "../../dist/core/battle/deployment/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import * as deck from "../../dist/core/battle/deployment/deck/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
+import { available } from "../../dist/core/lifetime/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as damage from "../../dist/core/battle/resource/hp/damage/index.js";
 import * as modifier from "../../dist/core/common/modifier.js";
@@ -61,12 +62,14 @@ test("Card initialization reserves identity before Deck registration", () => {
     const secondRef = cards.ref(second.value);
     assert.notEqual(firstRef, secondRef);
     assert.equal(firstRef.get(second.state), undefined);
+    assert.equal(available(second.state, firstRef), false);
     assert.equal(secondRef.get(second.state), undefined);
     assert.deepEqual([...deployment.ordered(second.state)], []);
 
     state = cards.add(second.state, first.value);
     state = cards.add(state, second.value);
     assert.strictEqual(firstRef.get(state), first.value);
+    assert.equal(available(state, firstRef), true);
     assertRefOrder([...cards.all(state)].map(cards.ref), [firstRef, secondRef]);
     assertRefOrder([...deployment.ordered(state)].map(cards.ref), [firstRef, secondRef]);
 });

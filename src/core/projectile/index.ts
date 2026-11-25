@@ -8,7 +8,7 @@ export type { Input } from "./initialize.js";
 
 export { initialize } from "./initialize.js";
 
-export { add, update, remove, lifetime } from "./operations.js";
+export { add, update, remove } from "./operations.js";
 
 export {
     hasSlowable,

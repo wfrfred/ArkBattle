@@ -3,8 +3,7 @@ import { replaceIn } from "../common/object.js";
 import type { End, Unit } from "./unit.js";
 import * as units from "./query.js";
 import { appendEvents, type State as BattleState } from "../battle/state.js";
-import { create as createLifetime } from "../lifetime/index.js";
-import { register } from "../lifetime/operations.js";
+import { end as endLifetime, register } from "../lifetime/operations.js";
 import type { Ref } from "../common/ref.js";
 import * as observers from "../battle/unit-hook.js";
 import type { Change } from "./change.js";
@@ -16,7 +15,7 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     const next = battlefield.add(battle.battlefield, unit);
     battle = replaceIn(battle, ["battlefield"], next);
     const reference = units.ref(unit);
-    battle = register(battle, lifetime, reference);
+    battle = register(battle, reference);
 
     battle = observers.dispatch(
         battle,
@@ -67,7 +66,7 @@ export function replace<U extends Unit>(battle: BattleState, updates: readonly U
 }
 /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
 
-export const lifetime = createLifetime<Unit, End>({
+export const config: Unit["config"] = {
     end: {
         prepare: (battle, reference, initial, end) => {
             battle = replace(battle, [{ ...initial, lifecycle: "ENDING" }]);
@@ -101,10 +100,10 @@ export const lifetime = createLifetime<Unit, End>({
             return observers.dispatch(battle, observers.removed, departure);
         },
     },
-});
+};
 
 export function remove(battle: BattleState, reference: Ref<Unit>, end: End): BattleState {
-    return lifetime.end(battle, reference, end);
+    return endLifetime(battle, reference, end);
 }
 
 export function advance(battle: BattleState): BattleState {

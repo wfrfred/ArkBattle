@@ -10,7 +10,6 @@ import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../../dist/core/unit/capability/skill/index.js";
 import * as sp from "../../../dist/core/unit/capability/skill/sp.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
-import { scope } from "../../../dist/core/lifetime/index.js";
 import { advance as advanceLocomotion } from "../../../dist/core/unit/capability/locomotion/index.js";
 import * as facing from "../../../dist/core/unit/capability/facing/index.js";
 import { stun, stunRestriction, silence, blockSpRecovery } from "../../../dist/core/effects/control.js";
@@ -96,7 +95,7 @@ test("silence blocks activation while SP prevention independently blocks recover
     const source = units.ref(get(state, 0));
     const skill = skills.ref(source.get(state).skill);
     const parent = effects.install(state, source, { id: "combined-control", initialize: () => ({}) });
-    const scopes = [scope(effects.lifetime, parent.value)];
+    const scopes = [parent.value];
     const silenced = effects.install(parent.state, source, silence, { scopes });
     state = silenced.state;
     assert.equal(skills.activate(state, skill).value, null);

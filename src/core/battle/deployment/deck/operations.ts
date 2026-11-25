@@ -3,16 +3,19 @@ import type { State as BattleState } from "../../state.js";
 import { ref, type Card } from "./card/card.js";
 import { advance as advanceCard } from "./card/operations.js";
 import { all } from "./deck.js";
+import { register } from "../../../lifetime/operations.js";
 
 export function add<S extends object>(battle: BattleState, self: Card<S>): BattleState {
     const { deck } = battle.deployment;
     const reference = ref<Card<any>>(self);
 
-    return replaceIn(battle, ["deployment", "deck"], {
+    battle = replaceIn(battle, ["deployment", "deck"], {
         ...deck,
         cards: deck.cards.add(reference, self),
         order: [...deck.order, reference],
     });
+
+    return register(battle, reference);
 }
 
 export function replace<S extends object>(battle: BattleState, self: Card<S>): BattleState {

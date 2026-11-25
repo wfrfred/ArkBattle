@@ -2,7 +2,8 @@ import type { Unit } from "../unit.js";
 import type { State as BattleState } from "../../battle/state.js";
 import type { Card } from "../../battle/deployment/deck/card/card.js";
 import type { OrdinaryDefinition, StackDefinition } from "./definition.js";
-import { createRef, type Identified, type Identity, type Ref } from "../../common/ref.js";
+import { createRef, type Identity, type Ref } from "../../common/ref.js";
+import type { Config, Lifetime } from "../../lifetime/index.js";
 import type { Expiration, ExpirationPolicy, StackExpiration } from "./expiration.js";
 
 export type Id = number;
@@ -11,9 +12,10 @@ export type Lifecycle = "INSTALLING" | "INACTIVE" | "ACTIVE" | "ENDING";
 
 export type GroupSource = Ref<Card> | Ref<Unit>;
 
-export interface EffectFields<S extends object, H extends object> extends Identified<{
+export interface EffectFields<S extends object, H extends object> extends Lifetime<{
     readonly host: Identity<Unit> & Ref<Unit & H>;
 }> {
+    readonly config: Config<Effect, string>;
     readonly id: Id;
     readonly host: Identity<Unit> & Ref<Unit & H>;
     readonly state: S;

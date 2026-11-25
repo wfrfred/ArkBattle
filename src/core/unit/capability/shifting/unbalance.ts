@@ -2,13 +2,13 @@ import { advanceForcedMotion } from "../../../battlefield/collision.js";
 import type { Result, State as BattleState } from "../../../battle/state.js";
 import { assert } from "../../../common/assert.js";
 import { replaceIn } from "../../../common/object.js";
-import { createRef, ref, type Identified, type Ref } from "../../../common/ref.js";
+import { createRef, ref, type Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
 import * as lifetimes from "../../../lifetime/index.js";
 import { register } from "../../../lifetime/operations.js";
 import { allows } from "../../../restriction.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
-import { lifetime as unitLifetime, replace as replaceUnits } from "../../operations.js";
+import { replace as replaceUnits } from "../../operations.js";
 import * as units from "../../query.js";
 import type { Unit } from "../../unit.js";
 import { hasBlockable } from "../blocking/blockable.js";
@@ -29,7 +29,8 @@ const FRICTION = 9.81 * 0.5;
 
 type Host = Unit & Shiftable;
 
-export interface Unbalance extends Identified<{ readonly host: Ref<Host> }> {
+export interface Unbalance extends lifetimes.Lifetime<{ readonly host: Ref<Host> }> {
+    readonly config: lifetimes.Config<Unbalance, End>;
     readonly host: Ref<Host>;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly velocity: Vec2;
@@ -61,7 +62,7 @@ export function replace(battle: BattleState, unit: Host, next: Unbalance): Battl
     return replaceUnits(battle, [{ ...unit, shiftable: { ...shiftable, ...changes } }]);
 }
 
-export const lifetime = lifetimes.create<Unbalance, End>({
+const config: Unbalance["config"] = {
     end: {
         prepare(battle, reference, initial) {
             return replace(battle, reference.host.get(battle)!, {
@@ -87,7 +88,7 @@ export const lifetime = lifetimes.create<Unbalance, End>({
         },
         dependencyEnd: "HOST_UNAVAILABLE",
     },
-});
+};
 
 function present(unit: Host): boolean {
     return unit.lifecycle === "ACTIVE" && isPresent(unit) && (!hasVitality(unit) || isAlive(unit));
@@ -114,6 +115,7 @@ export function prepare(battle: BattleState, unit: Host): Unbalance | null {
     return {
         ...identity,
         ref: createRef<Unbalance>(identity, getUnbalance),
+        config,
         lifecycle: "ACTIVE",
         velocity: ZERO,
         protectedUntil,
@@ -147,16 +149,13 @@ export function receive(
                 },
             },
         ]);
-        battle = register(battle, lifetime, reference, [lifetimes.scope(unitLifetime, next.host)]);
+        battle = register(battle, reference, [next.host]);
     } else {
         battle = replace(battle, unit, next);
     }
 
     if (traction !== undefined) {
-        battle = register(battle, pull.lifetime, traction.reference, [
-            lifetimes.scope(lifetime, reference),
-            ...traction.scopes,
-        ]);
+        battle = register(battle, traction.reference, [reference, ...traction.scopes]);
     }
 
     if (started && hasBlockable(unit)) {
@@ -234,7 +233,7 @@ function finishIfSettled(battle: BattleState, reference: Ref<Unbalance>): Battle
         Vec2.length(self.velocity) <= REST_SPEED &&
         Vec2.equal(self.pendingForce, ZERO) &&
         ![...self.pulls.values()].some((item) => pull.available(battle, item))
-        ? lifetime.end(battle, reference, "SETTLED")
+        ? lifetimes.end(battle, reference, "SETTLED")
         : battle;
 }
 
@@ -279,10 +278,10 @@ export function advance(battle: BattleState, reference: Ref<Unbalance>): BattleS
         return battle;
     }
     if (!present(unit)) {
-        return lifetime.end(battle, reference, "HOST_UNAVAILABLE");
+        return lifetimes.end(battle, reference, "HOST_UNAVAILABLE");
     }
     if (!permitsForce(battle, unit)) {
-        return lifetime.end(battle, reference, "RESTRICTED");
+        return lifetimes.end(battle, reference, "RESTRICTED");
     }
 
     const pulls = [...self.pulls.values()].filter((item) => pull.available(battle, item));

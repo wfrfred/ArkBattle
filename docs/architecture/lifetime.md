@@ -4,11 +4,11 @@ Lifetime 统一结束请求、依赖传播与拓扑析构。领域负责创建�
 
 ## 身份、Scope 与公共入口
 
-[公共入口](../../src/core/lifetime/index.ts)提供 `create`、`scope`、`available`、`bind`、`unbind` 和 `defer`。领域使用 `create` 声明一份共用的静态协议，每个已登记的实例都在图中有自己的节点。
+[公共入口](../../src/core/lifetime/index.ts)提供 `end`、`available`、`bind`、`unbind` 和 `defer`。领域实例继承 `Lifetime<I>`，由 Identified 提供稳定 Ref，并保存实际领域类型的 `config: Config<T, E>`。同一领域的实例共享一份静态配置，配置常量使用实例的 `T["config"]` 标注。每个已登记的实例都在图中有自己的节点。
 
-DAG 直接使用实例保存的 Ref 对象作键。直接依赖也保存 Ref，同一 Ref 始终指向同一个节点。
+DAG 直接使用 `Ref<Lifetime>` 对象作键，直接依赖亦保存该类型。具体实例的 Ref 可以用作通用 Scope，只有具备 Lifetime 能力的 Ref 才能声明依赖。
 
-`scope(lifetime, ref)` 封装描述符与实例 Ref，用来指定另一节点为依赖目标。B 登记 A 的 Scope 就建立 B → A。一个节点可依赖多个目标，也可供多个节点依赖，每条边的结束语义相同。普通来源、槽位与私有 Ref 仍由各领域解释。Burst 使用 Effect 的描述符和节点。
+`Scope = Ref<Lifetime>`，直接使用目标实例的 Ref。B 登记 A 的 Scope 就建立 B → A。一个节点可依赖多个目标，也可供多个节点依赖，每条边的结束语义相同。普通来源、槽位与私有 Ref 仍由各领域解释。Burst 使用 Effect 的配置和节点。
 
 `available` 要求节点及其所有上游都已登记且尚未开始结束。失效沿依赖链立即传递，即使某个依赖者的领域状态还未发布 `ENDING`。已登记的 INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可用。HP、空间存在与启停的业务资格由消费方判断。
 
@@ -16,17 +16,17 @@ DAG 直接使用实例保存的 Ref 对象作键。直接依赖也保存 Ref，�
 
 ## 静态析构适配
 
-Lifetime 配置提供 `end.prepare`、`end.finalize` 和可选的 `end.dependencyEnd`。首次有效结束请求使用节点已配对的 `ref.get(battle)` 取得 `initial`，并固定当时接受的 `end`。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。需要清理过程产生的新事实时，回调使用 Ref 读取最新版本。
+Lifetime 配置提供 `end.prepare`、`end.finalize` 和可选的 `end.dependencyEnd`。`end(battle, reference, payload)` 从 Ref 的具体 `Config<T, E>` 约束结束输入。首次有效结束请求使用 `ref.get(battle)` 取得 `initial`，并固定当时接受的 `end`。通用调度在回调派发边界恢复实例始终持有的 Config 配对。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。需要清理过程产生的新事实时，回调使用 Ref 读取最新版本。
 
-依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入。Action 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 和 Mechanism 可以作为依赖目标，三者当前只接受显式的结束请求。
+依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入。Action Execution 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 和 Mechanism 可以作为依赖目标，三者当前只接受显式的结束请求。Card 使用 `Config<Card, never>`，登记后可以作为依赖目标，静态类型禁止请求结束它。
 
 Unit 以 `End` 请求结束。Lifetime 固定 `initial` 与 `End`，Unit 据此为 removing／removed 构造 `Departure`。DEATH 的 killer 来自首次请求。注销时从最新 Unit 取 removed 候选与优先级，`UNIT_REMOVED` 也记录注销前的最新 Unit。离场 Hook 的 `Departure.unit` 始终是开始结束时的历史快照。 [死亡归属与击杀响应](resource.md#生命状态通知与离场)
 
 ## 状态归属与关系权威
 
-`BattleState.lifetime` 保存一张由 `nodes` 表示的 DAG、延后队列 `deferred` 和队列执行状态 `flushing`。节点保存自身 Scope、直接依赖的身份，以及结束期间的 `ending` 数据。实例数据仍存放在所属领域。
+`BattleState.lifetime` 保存一张由 `nodes` 表示的 DAG、延后队列 `deferred` 和队列执行状态 `flushing`。节点保存直接依赖的 Ref，以及结束期间的 `ending` 数据。实例身份由 Map 的键表达，配置与实例数据仍存放在所属领域。Prepare 和 Finalize 都使用首次请求时的 `initial.config`。
 
-领域在实例写入存储后、执行入场业务前登记节点，即使该节点没有依赖。Lifetime 在节点的整个 Finalize 返回后移除节点及其依赖边。领域存储已注销、通知仍在执行时，图中的节点依旧有效地约束上游的收尾顺序。
+领域在实例写入存储后、执行入场业务前通过 `register(battle, reference, scopes)` 登记节点，即使该节点没有依赖。Lifetime 在节点的整个 Finalize 返回后移除节点及其依赖边。领域存储已注销、通知仍在执行时，图中的节点依旧有效地约束上游的收尾顺序。
 
 ## 请求与 Prepare
 

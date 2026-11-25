@@ -11,8 +11,7 @@ import * as offense from "../../dist/core/unit/capability/offense/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
-import { update, remove, lifetime as unitLifetime } from "../../dist/core/unit/operations.js";
-import { scope } from "../../dist/core/lifetime/index.js";
+import { update, remove } from "../../dist/core/unit/operations.js";
 
 const operator = { id: "operator", hooks: Hooks.empty(), offense: { attack: defineAttribute(100) } };
 
@@ -273,7 +272,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
     const source = units.ref(get(state, 1));
     const first = effects.install(state, owner, extend, {
         source,
-        scopes: [scope(unitLifetime, source)],
+        scopes: [source],
         expiration: { type: "DURATION", duration: 3, remaining: 3, rate: 1 },
     });
     state = effects.advance({ ...first.state, tick: 1 });
@@ -511,7 +510,7 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
             id: "bound",
             initialize: () => ({}),
         },
-        { source: a, scopes: [scope(unitLifetime, a)] },
+        { source: a, scopes: [a] },
     );
     state = remove(bound.state, a, { reason: "SCRIPT" });
     assert.equal(bound.value.get(state), undefined);

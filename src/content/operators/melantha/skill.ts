@@ -1,8 +1,6 @@
-import { scope } from "../../../core/lifetime/index.js";
 import type { Offense } from "../../../core/unit/capability/offense/index.js";
 import {
     activationRef,
-    lifetime,
     type Definition,
     type SpDefinition,
     type Trigger,
@@ -41,7 +39,7 @@ export function create({ id, cost, durationTicks, sp, trigger, attackBonus }: Sk
 
                 return install(state, ref(unit), effect, {
                     source: ref(unit),
-                    scopes: [scope(lifetime, activationRef(self))],
+                    scopes: [activationRef(self)],
                 }).state;
             },
         },

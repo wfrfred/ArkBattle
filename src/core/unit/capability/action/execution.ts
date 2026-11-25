@@ -1,15 +1,19 @@
 import type { State as BattleState } from "../../../battle/state.js";
-import { createRef, type Identified, type Ref } from "../../../common/ref.js";
+import { createRef, type Ref } from "../../../common/ref.js";
+import type { Config, Lifetime } from "../../../lifetime/index.js";
 import type { Unit } from "../../unit.js";
 import type { Action as ActionCapability } from "./capability.js";
+import type { End } from "./definition.js";
+import { config } from "./operations.js";
 
 export type Id = number;
 
 export type Lifecycle = "ACTIVE" | "ENDING";
 
-export interface Execution<in out E extends object = object> extends Identified<{
+export interface Execution<in out E extends object = object> extends Lifetime<{
     readonly host: Ref<Unit & ActionCapability>;
 }> {
+    readonly config: Config<ExecutionIdentity, End>;
     readonly id: Id;
     readonly startedAtTick: number;
     readonly lifecycle: Lifecycle;
@@ -28,6 +32,7 @@ export function create<E extends object>(
 ): Execution<E> {
     return {
         ref: createRef<Execution>({ host }, get),
+        config,
         id,
         startedAtTick,
         lifecycle: "ACTIVE",

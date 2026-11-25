@@ -11,7 +11,6 @@ export type { Event } from "./event.js";
 export { forUnit, getApplyWay, hasExecution } from "./query.js";
 
 export {
-    lifetime,
     start,
     setExecutionState,
     setState,

@@ -1,5 +1,4 @@
 import { update } from "../../unit/operations.js";
-import { scope } from "../../lifetime/index.js";
 import * as modifier from "../../common/modifier.js";
 import * as effects from "../../unit/effect/operations.js";
 import * as units from "../../unit/query.js";
@@ -66,7 +65,7 @@ export function createArts(parameters: Parameters): Definition {
             }
             if (hasVitality(unit)) {
                 battle = effects.install(battle, units.ref(unit), reduction, {
-                    scopes: [scope(effects.lifetime, reference)],
+                    scopes: [reference],
                 }).state;
             }
 
@@ -100,7 +99,7 @@ export function createElemental(parameters: Parameters): Definition {
             }
             if (hasVitality(unit)) {
                 battle = effects.install(battle, units.ref(unit), reduction, {
-                    scopes: [scope(effects.lifetime, reference)],
+                    scopes: [reference],
                 }).state;
             }
 

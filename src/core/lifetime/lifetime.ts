@@ -1,10 +1,11 @@
 import type { State as BattleState } from "../battle/state.js";
 import type { Identified, Ref } from "../common/ref.js";
-import { end as endLifetime } from "./operations.js";
 
-const paired: unique symbol = Symbol("lifetime");
+export interface Lifetime<I extends object = object> extends Identified<I> {
+    readonly config: object;
+}
 
-interface Config<T extends Identified<object>, E> {
+export interface Config<T extends Lifetime, E> {
     readonly end: {
         readonly prepare: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
         readonly finalize: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
@@ -12,33 +13,18 @@ interface Config<T extends Identified<object>, E> {
     };
 }
 
-export interface Lifetime<T extends Identified<object>, E> {
-    readonly end: (battle: BattleState, ref: Ref<T>, end: E) => BattleState;
-    readonly [paired]: Config<T, E>;
-}
-
-export interface Scope {
-    readonly [paired]: unknown;
-}
-
-export type NodeRef = Ref<Identified<object>>;
-
-interface Pair {
-    readonly config: Config<Identified<object>, unknown>;
-    readonly ref: NodeRef;
-}
+export type Scope = Ref<Lifetime>;
 
 export interface Node {
-    readonly target: Scope;
-    readonly dependencies: readonly NodeRef[];
+    readonly dependencies: readonly Scope[];
     readonly ending?: {
-        readonly initial: unknown;
+        readonly initial: Lifetime;
         readonly end: unknown;
     };
 }
 
 export interface State {
-    readonly nodes: ReadonlyMap<NodeRef, Node>;
+    readonly nodes: ReadonlyMap<Scope, Node>;
     readonly deferred: readonly ((battle: BattleState) => BattleState)[];
     readonly flushing: boolean;
 }
@@ -47,31 +33,11 @@ export function initialize(): State {
     return { nodes: new Map(), deferred: [], flushing: false };
 }
 
-export function create<T extends Identified<object>, E>(config: Config<T, E>): Lifetime<T, E> {
-    return {
-        [paired]: config,
-        end(battle, ref, end) {
-            return endLifetime(battle, ref, end);
-        },
-    };
-}
-
-export function scope<T extends Identified<object>, E>(
-    lifetime: Lifetime<T, E>,
-    ref: Ref<T>,
-): Scope {
-    return { [paired]: { config: lifetime[paired], ref } };
-}
-
-export function pair(target: Scope): Pair {
-    return target[paired] as Pair;
-}
-
 export function available(battle: BattleState, target: Scope): boolean {
-    return isAvailable(battle.lifetime.nodes, pair(target).ref);
+    return isAvailable(battle.lifetime.nodes, target);
 }
 
-export function isAvailable(nodes: ReadonlyMap<NodeRef, Node>, reference: NodeRef): boolean {
+export function isAvailable(nodes: ReadonlyMap<Scope, Node>, reference: Scope): boolean {
     const node = nodes.get(reference);
 
     return (

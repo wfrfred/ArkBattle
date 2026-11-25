@@ -1,6 +1,6 @@
 import type { Result, State as BattleState } from "../../../battle/state.js";
 import { assert, assertNonnegativeNumber } from "../../../common/assert.js";
-import { createRef, ref, type Identified, type Ref } from "../../../common/ref.js";
+import { createRef, ref, type Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
 import * as lifetimes from "../../../lifetime/index.js";
@@ -33,9 +33,10 @@ export interface Input {
     readonly brake?: Brake;
 }
 
-export interface Pull extends Identified<{
+export interface Pull extends lifetimes.Lifetime<{
     readonly unbalance: Ref<Unbalance>;
 }> {
+    readonly config: lifetimes.Config<Pull, string>;
     readonly unbalance: Ref<Unbalance>;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly scope: lifetimes.Scope;
@@ -68,17 +69,17 @@ function replace(battle: BattleState, reference: Ref<Pull>, next: Pull | null): 
     return unbalance.replace(battle, unit, { ...self, pulls });
 }
 
-export const lifetime = lifetimes.create<Pull, string>({
+const config: Pull["config"] = {
     end: {
         prepare: (battle, reference, initial) =>
             replace(battle, reference, { ...initial, lifecycle: "ENDING" }),
         finalize: (battle, reference) => replace(battle, reference, null),
         dependencyEnd: "CANCELLED",
     },
-});
+};
 
 export function available(battle: BattleState, self: Pull): boolean {
-    return lifetimes.available(battle, lifetimes.scope(lifetime, ref(self)));
+    return lifetimes.available(battle, ref(self));
 }
 
 export function position(battle: BattleState, point: Point): WorldPosition | undefined {
@@ -118,9 +119,7 @@ export function apply(
     const applier = source.get(battle);
     const unit = target.get(battle);
     const scopes =
-        input.point.type === "FIXED"
-            ? [input.scope]
-            : [input.scope, lifetimes.scope(projectiles.lifetime, input.point.projectile)];
+        input.point.type === "FIXED" ? [input.scope] : [input.scope, input.point.projectile];
     if (
         applier === undefined ||
         unit === undefined ||
@@ -141,6 +140,7 @@ export function apply(
     const item: Pull = {
         ...identity,
         ref: reference,
+        config,
         lifecycle: "ACTIVE",
         scope: input.scope,
         point: input.point,
@@ -207,5 +207,5 @@ export function remove(
     reference: Ref<Pull>,
     reason = "EXPLICIT",
 ): BattleState {
-    return lifetime.end(battle, reference, reason);
+    return lifetimes.end(battle, reference, reason);
 }

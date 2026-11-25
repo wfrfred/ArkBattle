@@ -13,7 +13,6 @@ import { Hooks } from "../../../dist/core/hook.js";
 import * as lifetime from "../../../dist/core/lifetime/index.js";
 import * as projectiles from "../../../dist/core/projectile/index.js";
 import * as units from "../../../dist/core/unit/index.js";
-import { lifetime as unitLifetime } from "../../../dist/core/unit/operations.js";
 import * as effects from "../../../dist/core/unit/effect/index.js";
 import { pull, push, shifter, shiftable, unbalance } from "../../../dist/core/unit/capability/shifting/index.js";
 import { unbalanceImmunity } from "../../../dist/core/effects/protection.js";
@@ -45,7 +44,7 @@ function setup(definition = targetDefinition, options) {
 
 function fixedPull(source, position, options = {}) {
     return {
-        scope: lifetime.scope(unitLifetime, source),
+        scope: source,
         point: { type: "FIXED", position },
         forceLevel: 0,
         nearStop: [],
@@ -140,15 +139,13 @@ test("pulls with a shared source scope stack and only the sole pull can brake", 
     const multiple = pull.brake(second.state, first.value);
     assertPosition(step(multiple, []), [1 + 1.2 / 30 + 80 / 900, 1]);
 
-    const firstScope = lifetime.scope(pull.lifetime, first.value);
-    const secondScope = lifetime.scope(pull.lifetime, second.value);
     const remaining = pull.remove(multiple, first.value);
-    assert.equal(lifetime.available(remaining, firstScope), false);
-    assert.equal(lifetime.available(remaining, secondScope), true);
+    assert.equal(lifetime.available(remaining, first.value), false);
+    assert.equal(lifetime.available(remaining, second.value), true);
     assert.deepEqual(repeat.value.get(remaining).velocity, [1.2 / 30, 0]);
     const braked = pull.brake(remaining, second.value);
     assert.deepEqual(repeat.value.get(braked).velocity, [0, 0]);
-    assert.equal(lifetime.available(braked, secondScope), true);
+    assert.equal(lifetime.available(braked, second.value), true);
 });
 
 test("a moving pull point can hold a pull at zero, resume it, and end it without clearing momentum", () => {
@@ -163,7 +160,6 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
         nearStop: [pull.withinRadius(0.05)],
     }));
     assert.ok(linked.value);
-    const scope = lifetime.scope(pull.lifetime, linked.value);
     let endReason;
     const watched = effects.install(linked.state, host, {
         id: "pull-dependent",
@@ -172,18 +168,18 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
             endReason = reason;
             return current;
         },
-    }, { scopes: [scope] });
+    }, { scopes: [linked.value] });
 
     let current = projectiles.update(watched.state, anchorRef, { position: [1.01, 1] });
     for (let i = 0; i < 4; i++) current = step(current, []);
     assertPosition(current, [1, 1]);
-    assert.equal(lifetime.available(current, scope), true);
+    assert.equal(lifetime.available(current, linked.value), true);
 
     current = step(projectiles.update(current, anchorRef, { position: [1.5, 1] }), []);
     assertPosition(current, [1 + 2.5 / 900, 1]);
     current = projectiles.remove(current, anchorRef, "ELIMINATED");
     assert.equal(endReason, "CANCELLED");
-    assert.equal(lifetime.available(current, scope), false);
+    assert.equal(lifetime.available(current, linked.value), false);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
     current = step(current, []);
     assertPosition(current, [1 + 5 / 900, 1]);
@@ -222,7 +218,7 @@ test("near braking follows displacement and leaves the pull active until explici
                 const position = get(current, 0).position;
                 assert.ok(position[0] >= 1.8 && position[0] <= 2.2);
                 assert.ok(pullRef.unbalance.get(current).velocity[0] > 0);
-                assert.equal(lifetime.available(current, lifetime.scope(pull.lifetime, pullRef)), true);
+                assert.equal(lifetime.available(current, pullRef), true);
                 moved = true;
                 return { state: current, value: undefined };
             },
@@ -234,16 +230,15 @@ test("near braking follows displacement and leaves the pull active until explici
     }));
     pullRef = linked.value;
     assert.ok(pullRef);
-    const scope = lifetime.scope(pull.lifetime, pullRef);
     let current = step(unbalance.applyImpulse(linked.state, host, [24, 0]).state, []);
     assert.equal(moved, true);
     assert.deepEqual(pullRef.unbalance.get(current).velocity, [0, 0]);
     for (let i = 0; i < 3; i++) current = step(current, []);
-    assert.equal(lifetime.available(current, scope), true);
+    assert.equal(lifetime.available(current, pullRef), true);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
 
     current = pull.remove(current, pullRef);
-    assert.equal(lifetime.available(current, scope), false);
+    assert.equal(lifetime.available(current, pullRef), false);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), true);
     current = step(current, []);
     assert.equal(shiftable.isUnbalanced(get(current, 0)), false);
@@ -259,7 +254,7 @@ test("immunity rejects reception and ends an existing segment before displacemen
     const advanced = step(immunity.state, []);
     assertPosition(advanced, [1, 1]);
     assert.equal(shiftable.isUnbalanced(get(advanced, 0)), false);
-    assert.equal(lifetime.available(advanced, lifetime.scope(unbalance.lifetime, pushed.value)), false);
+    assert.equal(lifetime.available(advanced, pushed.value), false);
 
     const released = effects.remove(advanced, immunity.value, "SCRIPT");
     const knocked = unbalance.applyImpulse(released, host, [30, 0]);
@@ -326,8 +321,8 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
     const { state, host, source } = setup();
     const first = pull.apply(state, source, host, fixedPull(source, [5, 1]));
     assert.ok(first.value);
-    const oldScope = lifetime.scope(unbalance.lifetime, first.value.unbalance);
-    const oldPullScope = lifetime.scope(pull.lifetime, first.value);
+    const oldScope = first.value.unbalance;
+    const oldPullScope = first.value;
     let next;
     const installed = effects.install(first.state, host, {
         id: "rebound",
@@ -341,10 +336,10 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
             return started.state;
         },
     }, { scopes: [oldPullScope] });
-    const ended = unbalance.lifetime.end(installed.state, first.value.unbalance, "SETTLED");
+    const ended = lifetime.end(installed.state, first.value.unbalance, "SETTLED");
     assert.ok(next);
     assert.notEqual(next.unbalance, first.value.unbalance);
     assert.equal(first.value.get(ended), undefined);
-    assert.equal(lifetime.available(ended, lifetime.scope(pull.lifetime, next)), true);
+    assert.equal(lifetime.available(ended, next), true);
     assertPosition(step(pull.remove(ended, first.value), []), [1, 1 + 40 / 900]);
 });

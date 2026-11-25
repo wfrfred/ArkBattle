@@ -1,5 +1,5 @@
 import type { Ref } from "../../core/common/ref.js";
-import { scope, type Scope as LifetimeScope } from "../../core/lifetime/index.js";
+import type { Scope as LifetimeScope } from "../../core/lifetime/index.js";
 import type { State as BattleState, OperationResult as Result } from "../../core/battle/index.js";
 import * as mechanisms from "../../core/mechanism/index.js";
 import type { Definition as MechanismDefinition } from "../../core/mechanism/index.js";
@@ -185,7 +185,7 @@ function create<P extends object>(
                     battle,
                     latest,
                     tile.definition.terrain.params,
-                    behaviour.retainOnLeave ? [] : [scope(mechanisms.lifetime, reference)],
+                    behaviour.retainOnLeave ? [] : [reference],
                 );
                 battle = installed.state;
 

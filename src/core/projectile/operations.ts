@@ -4,8 +4,7 @@ import type { WorldPosition } from "../geometry/coordinate.js";
 import type { EndReason } from "./definition.js";
 import type { Eliminatable, Projectile } from "./projectile.js";
 import { ref } from "./query.js";
-import { create as createLifetime } from "../lifetime/index.js";
-import { register } from "../lifetime/operations.js";
+import { end, register } from "../lifetime/operations.js";
 import type { State as BattleState } from "../battle/state.js";
 
 export function add<S extends object, T extends object>(
@@ -14,7 +13,7 @@ export function add<S extends object, T extends object>(
 ): BattleState {
     const projectiles = battle.battlefield.projectiles.add(ref(self), self);
     battle = replaceIn(battle, ["battlefield", "projectiles"], projectiles);
-    battle = register(battle, lifetime, ref(self));
+    battle = register(battle, ref(self));
 
     return self.definition.onEnter?.(battle, self) ?? battle;
 }
@@ -51,7 +50,7 @@ export function replace<P extends Projectile<object, any>>(
     return replaceIn(battle, ["battlefield", "projectiles"], projectiles);
 }
 
-export const lifetime = createLifetime<Projectile<object, any>, EndReason>({
+export const config: Projectile["config"] = {
     end: {
         prepare: (battle, reference, initial) =>
             replace(battle, reference, { ...initial, lifecycle: "ENDING" }),
@@ -64,7 +63,7 @@ export const lifetime = createLifetime<Projectile<object, any>, EndReason>({
             return replaceIn(battle, ["battlefield", "projectiles"], projectiles);
         },
     },
-});
+};
 
 export function remove<P extends Projectile<object, any>>(
     battle: BattleState,
@@ -81,7 +80,7 @@ export function remove<P extends Projectile<object, any>>(
     reference: Ref<P>,
     reason: EndReason,
 ): BattleState {
-    return lifetime.end(battle, reference, reason);
+    return end(battle, reference, reason);
 }
 
 export function advance<P extends Projectile<object, any>>(
