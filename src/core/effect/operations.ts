@@ -15,7 +15,7 @@ import {
     ref as effectRef,
 } from "./effect.js";
 import { elapse, expired } from "./expiration.js";
-import { all, forGroup, hasStack, resolveGroupSource, wins } from "./query.js";
+import { all, forGroup, hasStack, wins } from "./query.js";
 
 export function install<S extends object, H extends Lifetime | null>(
     battle: BattleState,
@@ -46,10 +46,10 @@ export function install(
         return { state: battle, value: null };
     }
 
-    const groupSource = resolveGroupSource(battle, group, source);
+    const partition = group?.partition?.(battle, source);
 
     if (group !== undefined) {
-        const [retained] = forGroup(battle, host, group, groupSource);
+        const [retained] = forGroup(battle, host, group.id, partition);
         if (retained !== undefined) {
             assertCompatible(retained.definition.group!, group);
 
@@ -94,7 +94,7 @@ export function install(
         definition,
         state: definition.initialize(battle),
         source,
-        groupSource,
+        partition,
         expiration,
         enabled,
         lifecycle: "INSTALLING",
@@ -315,7 +315,7 @@ function updateLifecycle(battle: BattleState, reference: Ref<Effect>): BattleSta
 }
 
 function reconcileGroupActivity(battle: BattleState, self: Effect): BattleState {
-    const candidates = forGroup(battle, self.ref.host, self.definition.group!, self.groupSource);
+    const candidates = forGroup(battle, self.ref.host, self.definition.group!.id, self.partition);
 
     for (const candidate of candidates) {
         const reference = effectRef(candidate);

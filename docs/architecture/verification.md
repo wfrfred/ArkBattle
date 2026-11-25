@@ -68,7 +68,7 @@
 | [Effect · 3. 生命周期约束](effect.md#3-生命周期约束)、[Effect · 5. 回调与同步操作](effect.md#5-回调与同步操作) | [无宿主程序与 Card 效果采用共同的安装、启停、推进和依赖结束；同组在不同宿主间独立，依赖先于根结束。](../../test/core/effect.test.js#L20) |
 | [Effect · 4. 生效状态与覆写](effect.md#4-生效状态与覆写) | [DEFAULT 保留已安装的候选，优先级及同级顺序决定参与，停用胜出者仍压制候补，移除后才切换](../../test/core/effect.test.js#L184) |
 | [Effect · 重复施加与叠层](effect.md#重复施加与叠层) | [EXTEND 更新剩余量，EXTEND_TIME 累加总量与余量，合并不运行初始化，保留旧身份、内容及依赖关系，拒绝不兼容的政策](../../test/core/effect.test.js#L329)<br>[STACK 区分层数和有效层数，满层续时、手动消耗和到期衰减各自结算，停用保存层数但不输出；DECAY 安装和时间写回拒绝绝对期限](../../test/core/effect.test.js#L408) |
-| [Effect · 来源分组](effect.md#来源分组) | [UNIQUE 按共享、Unit 或无来源分别去重，拒绝重复安装不运行初始化，来源归属和显式依赖的结束分别处理](../../test/core/effect.test.js#L556)<br>[同一 Card 的历史及新 Unit 共享来源组，不同 Card 和无卡 Unit 各自独立](../../test/core/effect.test.js#L613) |
+| [Effect · 来源分组](effect.md#来源分组) | [UNIQUE 按未配置、Unit Ref 或显式 null 的分区结果分别去重，不同分区函数返回同一 Ref 时匹配，来源注销后仍按安装时的采样分区匹配；拒绝重复安装不运行初始化，来源归属和显式依赖的结束分别处理](../../test/core/effect.test.js#L555)<br>[使用 Deployment.sourceIdentity 分区时，同一 Card 的历史及新 Unit 共享来源组，不同 Card 和无卡 Unit 各自独立](../../test/core/effect.test.js#L619) |
 | [Effect · 5. 回调与同步操作](effect.md#5-回调与同步操作) | [安装中续期或结束采样当前实例，零期限不短暂生效，结束读取撤销输出后的最新私有状态](../../test/core/effect.test.js#L89) |
 | [Effect · 6. 时间推进](effect.md#6-时间推进) | [停用时仍扣时，只有 ACTIVE 执行业务，可手动推进和末次续期，新增实例不进本轮](../../test/core/effect.test.js#L231) |
 | [Effect · 支持范围](effect.md#支持范围) | [眩晕中断 Action 并限制受影响的能力，允许独立 SP 恢复，其他同类来源仍有效时撤掉一个来源不能恢复](../../test/core/effects/control.test.js#L49)<br>[关闭父项下的 SP 回复限制可恢复回复，沉默仍阻止技能发动。父项结束清理两个标准子效果](../../test/core/effects/control.test.js#L93)<br>[技能按定义豁免各来源的眩晕发动限制，沉默、SP 门槛及其他能力的眩晕限制仍生效](../../test/core/effects/control.test.js#L120) |

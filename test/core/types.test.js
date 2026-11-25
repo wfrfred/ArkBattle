@@ -227,7 +227,7 @@ declare const recoveryOnly: skills.RecoveryRestriction;
 const layered = {
     id: 'layered',
     group: {
-        type: 'STACK', id: 'layered', independentSource: false,
+        type: 'STACK', id: 'layered',
         maxCount: 3, maxEffectiveCount: 2, refreshAtMax: true, expirationPolicy: 'DECAY',
     },
     initialize: () => ({ power: 1 }),

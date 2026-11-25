@@ -66,7 +66,7 @@ Deck 每 Tick 推进所有 Card 后调用一次 `sort(battle)`。有排序规则
 
 `battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。部署成功的 Result 同样返回 `card` 和 `unit` 的 Ref。
 
-Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card，支持 [Effect 来源分组](effect.md#来源分组)。`deployedCount` 统计当前仍登记的在场实例，包含 `ENDING`。
+Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card。`sourceIdentity(battle, source)` 将 null 保持为 null；有来源时优先返回其历史 Card Ref，否则返回原 Unit Ref。Content 可用此共享查询作为 [Effect 分区](effect.md#来源分组) 函数，Effect 本身不需要理解部署来源。`deployedCount` 统计当前仍登记的在场实例，包含 `ENDING`。
 
 ## 请求与统一资格
 

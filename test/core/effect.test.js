@@ -19,7 +19,7 @@ const operator = { id: "operator", hooks: Hooks.empty(), offense: { attack: defi
 
 test("unhosted and Card effects share the lifecycle and keep host groups independent", () => {
     const trace = [];
-    const group = { id: "global-rule", type: "UNIQUE", independentSource: false };
+    const group = { id: "global-rule", type: "UNIQUE" };
     const controller = {
         id: "global-rule",
         group,
@@ -185,7 +185,7 @@ test("DEFAULT retains candidates and installs them before priority and enabled d
     const installed = [];
     const weak = {
         id: "weak",
-        group: { type: "DEFAULT", id: "overall", priority: 1, independentSource: false },
+        group: { type: "DEFAULT", id: "overall", priority: 1 },
         initialize: () => ({ bonus: 10 }),
         onInstall(state, self) {
             installed.push(self.definition.id);
@@ -330,7 +330,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
     let installations = 0;
     const extend = {
         id: "retained",
-        group: { type: "EXTEND", id: "renewal", independentSource: false },
+        group: { type: "EXTEND", id: "renewal" },
         initialize: () => ({ sampled: "retained" }),
         onInstall(state) {
             installations++;
@@ -381,7 +381,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
 
     const cumulative = {
         id: "cumulative",
-        group: { type: "EXTEND_TIME", id: "cumulative", independentSource: false },
+        group: { type: "EXTEND_TIME", id: "cumulative" },
         initialize: () => ({}),
     };
     const original = effects.install(state, owner, cumulative, {
@@ -413,7 +413,6 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         group: {
             type: "STACK",
             id: "stacked",
-            independentSource: false,
             maxCount: 3,
             maxEffectiveCount: 2,
             refreshAtMax: true,
@@ -556,8 +555,15 @@ test("STACK separates effective output, manual consumption, and natural decay wh
 test("UNIQUE groups distinguish shared, Unit, and absent sources while source attribution remains independent of scope", () => {
     const definition = {
         id: "independent",
-        group: { type: "UNIQUE", id: "independent", independentSource: true },
+        group: {
+            type: "UNIQUE", id: "independent",
+            partition: (battle, source) => source?.get(battle) === undefined ? null : source,
+        },
         initialize: () => ({}),
+    };
+    const bySource = {
+        ...definition,
+        group: { ...definition.group, partition: (_battle, source) => source },
     };
     let state = battle([
         { definition: operator, position: [0, 0] },
@@ -572,7 +578,7 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
         first.state,
         owner,
         {
-            ...definition,
+            ...bySource,
             initialize: () => assert.fail("rejected input must not initialize"),
             onInstall: () => assert.fail("rejected input must not install"),
         },
@@ -585,7 +591,7 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
     assert.notEqual(absent.value, null);
     const shared = {
         ...definition,
-        group: { ...definition.group, independentSource: false },
+        group: { type: "UNIQUE", id: "independent" },
     };
     const unpartitioned = effects.install(absent.state, owner, shared, { ...effectInitial, source: a });
     assert.notEqual(unpartitioned.value, null);
@@ -604,7 +610,7 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
     state = remove(bound.state, a, { reason: "SCRIPT" });
     assert.equal(bound.value.get(state), undefined);
     assert.equal(first.value.get(state).source, a);
-    assert.equal(effects.install(state, owner, definition, { ...effectInitial, source: a }).value, null);
+    assert.equal(effects.install(state, owner, bySource, { ...effectInitial, source: a }).value, null);
     state = remove(state, owner, { reason: "SCRIPT" });
     assert.equal(first.value.get(state), undefined);
     assert.equal(other.value.get(state), undefined);
@@ -631,7 +637,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const definition = {
         id: "card-source",
         initialize: () => ({}),
-        group: { type: "UNIQUE", id: "card-source", independentSource: true },
+        group: { type: "UNIQUE", id: "card-source", partition: deployment.sourceIdentity },
     };
     const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
     const firstSource = firstUnit.value.unit;

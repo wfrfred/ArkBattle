@@ -2,11 +2,8 @@ import type { State as BattleState } from "../battle/state.js";
 import type { Ref } from "../common/ref.js";
 import type { Query } from "../common/query.js";
 import type { Lifetime } from "../lifetime/index.js";
-import { cardForUnit } from "../battle/deployment/query.js";
-import type { Unit } from "../unit/unit.js";
 import type { Effect, StackEffect } from "./effect.js";
 import type { Definition, StackDefinition } from "./definition.js";
-import type { Group, GroupSource } from "./group.js";
 
 export function get<S extends object, H extends Lifetime | null>(
     battle: BattleState,
@@ -39,28 +36,15 @@ export function forHost(battle: BattleState, host: Ref<Lifetime> | null): Query<
 export function forGroup(
     battle: BattleState,
     host: Ref<Lifetime> | null,
-    group: Group,
-    source: GroupSource,
+    id: string,
+    partition: Ref<Lifetime> | null | undefined,
 ): Query<Effect> {
     return forHost(battle, host).filter(
         (effect) =>
             effect.lifecycle !== "ENDING" &&
-            effect.definition.group?.id === group.id &&
-            effect.definition.group.independentSource === group.independentSource &&
-            effect.groupSource === source,
+            effect.definition.group?.id === id &&
+            effect.partition === partition,
     );
-}
-
-export function resolveGroupSource(
-    battle: BattleState,
-    group: Group | undefined,
-    source: Ref<Unit> | null,
-): GroupSource {
-    if (group?.independentSource !== true || source === null) {
-        return null;
-    }
-
-    return cardForUnit(battle, source) ?? source;
 }
 
 export function wins(battle: BattleState, self: Effect): boolean {
@@ -69,7 +53,7 @@ export function wins(battle: BattleState, self: Effect): boolean {
         return true;
     }
 
-    return !forGroup(battle, self.ref.host, group, self.groupSource).some((other) => {
+    return !forGroup(battle, self.ref.host, group.id, self.partition).some((other) => {
         const competing = other.definition.group;
 
         return (

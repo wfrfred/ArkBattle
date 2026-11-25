@@ -4,7 +4,6 @@ import type { Definition, StackDefinition } from "./definition.js";
 import { createRef, type Ref } from "../common/ref.js";
 import type { Config, Lifetime } from "../lifetime/index.js";
 import type { Expiration } from "./expiration.js";
-import type { GroupSource } from "./group.js";
 
 export type Id = number;
 
@@ -22,7 +21,7 @@ export interface Effect<
     readonly definition: Definition<S, H, never>;
     readonly state: S;
     readonly source: Ref<Unit> | null;
-    readonly groupSource: GroupSource;
+    readonly partition: Ref<Lifetime> | null | undefined;
     readonly expiration: Expiration;
     readonly enabled: boolean;
     readonly lifecycle: Lifecycle;

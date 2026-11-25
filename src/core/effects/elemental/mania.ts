@@ -86,7 +86,6 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
             id: "elemental/mania/action-damage",
             type: "DEFAULT",
             priority: 0,
-            independentSource: false,
         },
         initialize: () => ({
             damage: parameters.damagePerSecond,

@@ -23,7 +23,7 @@ Effect 拥有可附着或独立存在的运行实例、私有状态、生效竞�
 
 ## 2. Definition、实例与泛型
 
-Definition 是共享行为；实例保存稳定身份、实际来源、私有 state、expiration、enabled 与 lifecycle，Ref 携带可空的宿主引用。`Initial` 是非泛型的本次安装输入，包含四个必填字段：`source`（可空的来源 Unit Ref）、`scopes`（依赖 Ref 数组）、`expiration`（时间状态）及 `enabled`（启用许可）。没有来源、额外依赖或到期限制时，也分别显式提供 null、空数组和 INFINITE。
+Definition 是共享行为；实例保存稳定身份、实际来源、分组采样 `partition`、私有 state、expiration、enabled 与 lifecycle，Ref 携带可空的宿主引用。`Initial` 是非泛型的本次安装输入，包含四个必填字段：`source`（可空的来源 Unit Ref）、`scopes`（依赖 Ref 数组）、`expiration`（时间状态）及 `enabled`（启用许可）。没有来源、额外依赖或到期限制时，也分别显式提供 null、空数组和 INFINITE。
 
 私有 state 统一由 `Definition.initialize(battle): S` 构造，可以读取本次安装时的战斗事实。只有确定新建实例后才调用；合并或拒绝不初始化，也不从安装输入覆盖私有 state。有宿主的初始效果在宿主登记后正常安装，无宿主程序可以由 `initialEffects` 开场安装，每项均提供 Definition 与完整 Initial。
 
@@ -77,18 +77,17 @@ decreaseStack 是完整减层操作：剩余层数先发布再通知，耗尽正
 
 ### 来源分组
 
-组限于同一宿主 Ref，所有无宿主实例共用 null 分组空间。independentSource 是否启用也是身份的一部分：
+组身份由宿主 Ref、`group.id` 与本次采样的 `partition` 共同决定；所有无宿主实例共用 null 宿主空间。Group 可提供 `partition(battle, source: Ref<Unit> | null): Ref<Lifetime> | null`。Effect 在安装时调用一次并保存结果，实例的 `partition` 字段必填，类型为 `Ref<Lifetime> | null | undefined`。未提供分区函数时保存 undefined。
 
-| 情况 | 分组身份 |
+| 分区值 | 同宿主同 ID 下的含义 |
 | --- | --- |
-| 不按来源独立 | group.id |
-| 按来源独立，来源关联 Card | group.id 与 Card Ref |
-| 按来源独立，来源没有 Card | group.id 与 Unit Ref |
-| 按来源独立，没有来源 | group.id 与 null |
+| undefined | 未配置分区，共享组。 |
+| null | 显式无来源分区。 |
+| Lifetime Ref | 按 Ref 身份划分不同组。 |
 
-共享组 x 与独立无来源组 `(x, null)` 不匹配。Card 与 Unit 属于不同身份域。`cardForUnit` 从[部署历史](deployment.md#部署历史)反查来源 Card，来源退场后仍可使用。旧弹道及再部署保留同一 Card 分区，不同 Card 不合并。无 Card 的预置对象按各自 Unit 区分。
+比较的是分区采样结果，而不是分区函数本身的身份。共享组不匹配显式 null 分区；不同函数返回相同 Ref 时仍属于同组。保留实例的分区不随之后的战斗变化重新计算。分区不替换 `Effect.source`，也不成为 Lifetime 依赖。
 
-Core 安装时采样 `groupSource: GroupSource`，其取值为 Card Ref、Unit Ref 或 null；调用者只传实际 source。该样本不替换 Effect.source，也不成为 Lifetime 依赖。来源由具体机制决定，例如海嗣转发宿主浊心斯卡蒂的身份。
+Effect 引擎不解释 Card 或 Unit 的部署归属。需要跨部署保持来源分组时，Content 可使用 [Deployment](deployment.md#部署历史) 的 `sourceIdentity` 作为 partition：有 Card 的来源按 Card Ref 分区，无 Card 的来源按自身 Unit Ref 分区，无来源返回 null。旧弹道及再部署因此仍可共享同一 Card 分区，不同 Card 不合并；无 Card 的预置对象按各自 Unit 区分。实际来源仍由具体机制决定，例如海嗣转发宿主浊心斯卡蒂的身份。
 
 这是明确的项目简化，不复刻原生匿名组迁移与 Character 前缀查找；实际内容影响见[来源分组调查](../research/cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。
 

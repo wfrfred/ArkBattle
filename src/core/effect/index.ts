@@ -1,6 +1,6 @@
 export type { Definition, StackDefinition } from "./definition.js";
 
-export type { Group, GroupSource } from "./group.js";
+export type { Group } from "./group.js";
 
 export type { Effect, StackEffect, Id, Lifecycle, Initial } from "./effect.js";
 

@@ -27,6 +27,13 @@ export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card
     return battle.deployment.history.find(({ unit }) => unit === reference)?.card ?? null;
 }
 
+export function sourceIdentity(
+    battle: BattleState,
+    source: Ref<Unit> | null,
+): Ref<Unit> | Ref<Card> | null {
+    return source === null ? null : (cardForUnit(battle, source) ?? source);
+}
+
 export function deployedCount<T extends Card<any>>(battle: BattleState, reference: Ref<T>): number {
     let count = 0;
 

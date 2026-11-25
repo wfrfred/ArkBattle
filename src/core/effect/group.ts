@@ -1,4 +1,5 @@
-import type { Card } from "../battle/deployment/deck/card/card.js";
+import type { State as BattleState } from "../battle/state.js";
+import type { Lifetime } from "../lifetime/index.js";
 import type { Ref } from "../common/ref.js";
 import type { Unit } from "../unit/unit.js";
 import type { StackEffect } from "./effect.js";
@@ -13,7 +14,7 @@ import {
 
 export type Group = {
     readonly id: string;
-    readonly independentSource: boolean;
+    readonly partition?: (battle: BattleState, source: Ref<Unit> | null) => Ref<Lifetime> | null;
 } & (
     | { readonly type: "DEFAULT"; readonly priority: number }
     | { readonly type: "UNIQUE" | "EXTEND" | "EXTEND_TIME" }
@@ -25,8 +26,6 @@ export type Group = {
           readonly expirationPolicy: "END" | "DECAY";
       }
 );
-
-export type GroupSource = Ref<Unit> | Ref<Card> | null;
 
 export function assertCompatible(existing: Group, incoming: Group): void {
     if (

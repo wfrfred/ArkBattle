@@ -16,6 +16,7 @@ export { deployed, setHook, removeHook } from "./hook.js";
 
 export {
     cardForUnit,
+    sourceIdentity,
     deployedCount,
     createRequest,
     evaluate,

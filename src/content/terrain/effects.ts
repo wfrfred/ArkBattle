@@ -112,7 +112,6 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
         id: "terrain/infection",
         group: {
             type: "DEFAULT",
-            independentSource: false,
             id: "terrain/infection",
             priority: roundToEven(1000 * (params.attackBonusRatio + params.attackSpeedBonus)),
         },
