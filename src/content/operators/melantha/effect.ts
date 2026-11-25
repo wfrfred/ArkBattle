@@ -10,6 +10,7 @@ import { update, type Unit } from "../../../core/unit/index.js";
 export function createAttackBonus(id: string, amount: number): Definition<object, Unit & Offense> {
     return {
         id,
+        group: null,
         initialize: () => ({}),
         onEnable: (state, self) =>
             update(

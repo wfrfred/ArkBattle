@@ -85,7 +85,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     const started = actions.start(state, actionRef);
     state = started.state;
     const installed = effects.install(state, owner, {
-        id: "ordinary-duration", initialize: () => ({}),
+        id: "ordinary-duration", group: null, initialize: () => ({}),
     }, { ...effectInitial, expiration: { type: "DURATION", duration: 3, remaining: 3, rate: 1 } });
     state = installed.state;
     for (const target of targets) state = blocking.acquire(state, owner, target);

@@ -355,6 +355,7 @@ const countCardRef = cards.ref(builtCard.value);
 const exactCard = countCardRef.get(builtCard.state)!;
 const cardEffect = {
     id: 'card-effect',
+    group: null,
     initialize: () => ({}),
     onTick(state, self) {
         self.ref.host.get(state)!.state.count satisfies number;
@@ -391,11 +392,11 @@ cards.initialize(battle, { ...countInput, unitDefinition: { ...cardUnit, route: 
 // @ts-expect-error registration must reject state that does not match its own Definition.
 cards.add(builtCard.state, { ...exactCard, state: { count: 'wrong' } });
 const counter: effects.Definition<{ count: number }, null> = {
-    id: 'counter', initialize: () => ({ count: 0 }),
+    id: 'counter', group: null, initialize: () => ({ count: 0 }),
     onTick: (state, self) => effects.setState(state, effects.ref(self), { count: self.state.count + 1 }),
 };
 const named: effects.Definition<{ name: string }, null> = {
-    id: 'named', initialize: () => ({ name: 'controller' }),
+    id: 'named', group: null, initialize: () => ({ name: 'controller' }),
     onTick: (state, self) => effects.setState(state, effects.ref(self), { name: self.state.name }),
 };
 const startup = {

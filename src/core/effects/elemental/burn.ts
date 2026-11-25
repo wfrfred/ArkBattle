@@ -30,6 +30,7 @@ export interface Parameters {
 function resistanceReduction(amount: number): EffectDefinition<object, Unit & Vitality> {
     return {
         id: "elemental/burn/resistance-reduction",
+        group: null,
         initialize: () => ({}),
         onEnable: (battle, self) =>
             update(
@@ -54,6 +55,7 @@ export function createArts(parameters: Parameters): Definition {
 
     return {
         id: "elemental/burn/arts",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.BURN }),
         onInstall(battle, self) {
@@ -91,6 +93,7 @@ export function createElemental(parameters: Parameters): Definition {
 
     return {
         id: "elemental/burn/elemental",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.BURN }),
         onInstall(battle, self) {

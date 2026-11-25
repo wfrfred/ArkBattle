@@ -11,6 +11,7 @@ function restriction(
 ): Definition<object, Unit & targetable.Targetable> {
     return {
         id,
+        group: null,
         initialize: () => ({}),
         onEnable(state, self) {
             return updateUnit(

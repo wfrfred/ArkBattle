@@ -37,6 +37,7 @@ export interface AttackReductionParameters {
 export function createSpDrain(parameters: SpDrainParameters): Definition {
     return {
         id: "elemental/necrosis/sp-drain",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.NECROSIS }),
         onInstall(battle, self) {
@@ -80,6 +81,7 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
 export function createAttackReduction(parameters: AttackReductionParameters): Definition {
     return {
         id: "elemental/necrosis/attack-reduction",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.NECROSIS }),
         onInstall: registerBurst,

@@ -31,7 +31,7 @@ export function assertCompatible(existing: Group, incoming: Group): void {
     }
 }
 
-export function validateExpiration(group: Group | undefined, expiration: Expiration): void {
+export function validateExpiration(group: Group | null, expiration: Expiration): void {
     validate(expiration);
 
     if (

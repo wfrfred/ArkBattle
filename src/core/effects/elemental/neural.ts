@@ -34,6 +34,7 @@ export interface ParalysisParameters {
 export function createStun(parameters: StunParameters): Definition {
     return {
         id: "elemental/neural-stun/burst",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.NEURAL }),
         onInstall(battle, self) {
@@ -66,6 +67,7 @@ export function createStun(parameters: StunParameters): Definition {
 export function createParalysis(parameters: ParalysisParameters): Definition {
     const paralysis: EffectDefinition<{ used: number }, Unit & Action> = {
         id: "elemental/neural/paralysis",
+        group: null,
         initialize: () => ({ used: 0 }),
         onInstall(battle, self) {
             const reference = ref(self);
@@ -121,6 +123,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
 
     return {
         id: "elemental/neural-paralysis/burst",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.NEURAL }),
         onInstall(battle, self) {

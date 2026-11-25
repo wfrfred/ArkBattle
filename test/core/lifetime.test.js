@@ -84,6 +84,7 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
     const owner = units.ref(units.all(state).find(() => true));
     const installed = effects.install(state, owner, {
         id: "parent",
+        group: null,
         initialize: () => ({ total: 0 }),
         onDisable(current, self) {
             calls.push("parent-disabled");
@@ -103,6 +104,7 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
         owner,
         {
             id: "child",
+            group: null,
             initialize: () => ({}),
             onEnd(current, _self, reason) {
                 assert.equal(reason, "CANCELLED");
@@ -123,6 +125,7 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
 
     const detached = effects.install(state, owner, {
         id: "detached",
+        group: null,
         initialize: () => ({}),
         onEnd(current) {
             calls.push("detached-ended");
@@ -193,6 +196,7 @@ test("defer waits for finalizers and flushes in registration order across new se
     const [owner, nested, last] = [...units.all(initial)].map(units.ref);
     const installed = effects.install(initial, owner, {
         id: "defer-a",
+        group: null,
         initialize: () => ({}),
         onEnd(current) {
             calls.push("effect-ended");
@@ -232,6 +236,7 @@ test("an ending ancestor freezes dependency edges before its active Action execu
     };
     const dependent = {
         id: "late-dependent",
+        group: null,
         initialize: () => ({}),
         onInstall(state) {
             businessCalls++;
@@ -281,7 +286,7 @@ test("an ending ancestor freezes dependency edges before its active Action execu
     execution = started.value;
     const recipient = units.all(started.state).find((unit) => unit.definition.id === "recipient");
     const installed = effects.install(started.state, units.ref(recipient), {
-        id: "attached", initialize: () => ({}),
+        id: "attached", group: null, initialize: () => ({}),
     }, { ...effectInitial, scopes: [execution] });
     assert.notEqual(installed.value, null);
     attached = installed.value;

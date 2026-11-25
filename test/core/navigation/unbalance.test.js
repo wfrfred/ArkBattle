@@ -164,6 +164,7 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
     let endReason;
     const watched = effects.install(linked.state, host, {
         id: "pull-dependent",
+        group: null,
         initialize: () => ({}),
         onEnd(current, _effect, reason) {
             endReason = reason;
@@ -327,6 +328,7 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
     let next;
     const installed = effects.install(first.state, host, {
         id: "rebound",
+        group: null,
         initialize: () => ({}),
         onEnd(current) {
             assert.equal(shiftable.isUnbalanced(get(current, 0)), false);

@@ -30,6 +30,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
     const entered = [];
     const controller = {
         id: "controller",
+        group: null,
         initialize: () => ({}),
         onInstall(current) {
             assert.ok(cards.all(current).find(card => card.definition === cardDefinition));

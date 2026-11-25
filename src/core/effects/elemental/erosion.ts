@@ -30,6 +30,7 @@ export interface Parameters {
 function reduction(amount: number): EffectDefinition<object, Unit & Vitality> {
     return {
         id: "elemental/erosion/reduction",
+        group: null,
         initialize: () => ({}),
         onEnable: (battle, self) =>
             update(
@@ -54,6 +55,7 @@ export function createPhysical(parameters: Parameters): Definition {
 
     return {
         id: "elemental/erosion-physical/burst",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.EROSION }),
         onInstall(battle, self) {
@@ -90,6 +92,7 @@ export function createElemental(parameters: Parameters): Definition {
 
     return {
         id: "elemental/erosion-elemental/burst",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.EROSION }),
         onInstall(battle, self) {

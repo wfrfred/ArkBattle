@@ -25,6 +25,7 @@ const forceImmunity: shiftable.Restriction = { allows: () => false };
 
 export const unbalanceImmunity: Definition<object, Unit & shiftable.Shiftable> = {
     id: "protection/unbalance-immunity",
+    group: null,
     initialize: () => ({}),
     onEnable(state, self) {
         return updateUnit(
@@ -47,6 +48,7 @@ export const unbalanceImmunity: Definition<object, Unit & shiftable.Shiftable> =
 
 export const invincible: Definition<object, Unit & targetable.Targetable> = {
     id: "protection/invincible",
+    group: null,
     initialize: () => ({}),
     onEnable(state, self) {
         const id = `@effect/${self.id}/invincible`;
@@ -73,6 +75,7 @@ export const invincible: Definition<object, Unit & targetable.Targetable> = {
 
 export const healFree: Definition<object, Unit> = {
     id: "protection/heal-free",
+    group: null,
     initialize: () => ({}),
 };
 

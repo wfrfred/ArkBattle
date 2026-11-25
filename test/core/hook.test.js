@@ -81,12 +81,13 @@ test("Hook priority fixes this dispatch's order while replacement and nested dis
 });
 
 test("Battle entered applies a global Effect before the Unit runs its own entered", () => {
-    const effect = { id: "global-effect", initialize: () => ({}) };
+    const effect = { id: "global-effect", group: null, initialize: () => ({}) };
     const initial = battle([], {
         initialEffects: [{
             initial: effectInitial,
             definition: {
                 id: "global-rule",
+                group: null,
                 initialize: () => ({}),
                 onInstall(state) {
                     return setHook(state, unitEntered, {
@@ -153,7 +154,7 @@ test("Unit removing uses priority and removed uses the registrations captured be
     let state = battle([{ definition: { id: "departing", hooks: Hooks.empty() }, position: [0, 0] }]);
     const subject = units.ref(units.all(state).find(() => true));
     state = effects.install(state, subject, {
-        id: "death-response", initialize: () => ({}),
+        id: "death-response", group: null, initialize: () => ({}),
         onInstall(current, self) {
             return update(current, self.ref.host, units.setHook(units.removing, {
                 id: "death-output",

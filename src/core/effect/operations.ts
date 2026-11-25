@@ -48,7 +48,7 @@ export function install(
 
     const partition = group?.partition?.(battle, source);
 
-    if (group !== undefined) {
+    if (group !== null) {
         const [retained] = forGroup(battle, host, group.id, partition);
         if (retained !== undefined) {
             assertCompatible(retained.definition.group!, group);

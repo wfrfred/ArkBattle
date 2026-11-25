@@ -29,6 +29,7 @@ export const spRecoveryRestriction: RecoveryRestriction = { allows: () => false 
 
 export const stun: Definition<object, Unit> = {
     id: "control/stun",
+    group: null,
     initialize: () => ({}),
     onEnable(state, self) {
         const id = `@effect/${self.id}/stun`;
@@ -49,6 +50,7 @@ export const stun: Definition<object, Unit> = {
 
 export const silence: Definition<object, Unit> = {
     id: "control/silence",
+    group: null,
     initialize: () => ({}),
     onEnable(state, self) {
         return updateUnit(
@@ -77,6 +79,7 @@ export const silence: Definition<object, Unit> = {
 
 export const blockSpRecovery: Definition<object, Unit> = {
     id: "control/block-sp-recovery",
+    group: null,
     initialize: () => ({}),
     onEnable(state, self) {
         return updateUnit(

@@ -198,6 +198,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
 
     return {
         id: "elemental/mania/action-scaled",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.MANIA }),
         onInstall(battle, self) {
@@ -227,6 +228,7 @@ export function createTimeScaledDamage(
 ): Definition<TimeDamageState> {
     return {
         id: "elemental/mania/time-scaled",
+        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({
             type: Type.MANIA,

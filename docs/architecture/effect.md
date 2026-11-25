@@ -65,7 +65,7 @@ Effect 整体竞争、属性 Contribution 的有效项选择、Hook 的阶段顺
 | EXTEND | 保留实例，以本次完整持续时间补足剩余时间；无限输入可使其无限。 |
 | EXTEND_TIME | 保留实例，有限输入同时增加完整预算和剩余量；无限输入不参与加算。 |
 
-未声明组的安装互相独立。安装匹配到同一完整组中尚未进入 ENDING 的实例时，要求重复施加类型一致，STACK 还须采用相同的 END／DECAY 到期政策。配置冲突会抛出 TypeError。合并使用保留实例的规则，包括层数上限与满层刷新，并保留其 Definition、身份、来源、私有状态及依赖。有限续时按当前时间形式写回，DURATION 保留速率，DEADLINE 依据当前 Tick 计算期限；EXTEND_TIME 对 DEADLINE 增加正有限时长时，新期限为 `max(旧期限, battle.tick) + ceil(增加时长)`。已到期但尚未移除的旧期限不会消耗新增加的时间；零或无限输入保持原期限。
+Definition 的 `group` 必填，`null` 表示不参与分组，这些安装互相独立。安装匹配到同一完整组中尚未进入 ENDING 的实例时，要求重复施加类型一致，STACK 还须采用相同的 END／DECAY 到期政策。配置冲突会抛出 TypeError。合并使用保留实例的规则，包括层数上限与满层刷新，并保留其 Definition、身份、来源、私有状态及依赖。有限续时按当前时间形式写回，DURATION 保留速率，DEADLINE 依据当前 Tick 计算期限；EXTEND_TIME 对 DEADLINE 增加正有限时长时，新期限为 `max(旧期限, battle.tick) + ceil(增加时长)`。已到期但尚未移除的旧期限不会消耗新增加的时间；零或无限输入保持原期限。
 
 STACK 实际上限控制可积累层数，`stacks(self)` 返回受有效上限限制的业务层数，null 表示无上限。到期 END 结束整个实例；DECAY 尚有多层时减一并重置 `remaining = duration`，最后一层结束。无限期不会自然衰减。
 

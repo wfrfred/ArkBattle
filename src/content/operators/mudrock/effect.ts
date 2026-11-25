@@ -49,6 +49,7 @@ export function shieldEffect({
 }: ShieldParameters): EffectDefinition<ShieldState, Unit & Vitality> {
     const definition: EffectDefinition<ShieldState, Unit & Vitality> = {
         id: SHIELD_ID,
+        group: null,
         initialize: (state) => ({ layers: initialLayers, timer: interval, lastTick: state.tick }),
         onEnable: (state, self) => {
             const ref = effectRef(self);

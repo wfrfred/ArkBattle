@@ -71,7 +71,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     assert.deepEqual(damageCommits, [[100, 40]]);
     state = effects.install(state, target, healFree, effectInitial).state;
     state = effects.install(state, target, {
-        id: "recovery-contributions", initialize: () => ({}),
+        id: "recovery-contributions", group: null, initialize: () => ({}),
         onTick(current, self) {
             return update(current, self.ref.host, units.compose(
                 vitality.setContribution("recoverySpeed", {

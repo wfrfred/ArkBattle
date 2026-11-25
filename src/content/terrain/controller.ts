@@ -54,6 +54,7 @@ function create<P extends object>(
 ): EffectDefinition<ContactState, null> {
     return {
         id: behaviour.id,
+        group: null,
         initialize: () => ({ indices: indices ?? null, scanTick: 0, contacts: new Map() }),
         onTick(battle, self) {
             if (battle.tick < self.state.scanTick) {

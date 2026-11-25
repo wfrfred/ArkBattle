@@ -135,6 +135,7 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
 export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicState, Unit> {
     return {
         id: "terrain/deepsea",
+        group: null,
         initialize: (battle) => ({ nextTick: battle.tick }),
         onEnable(battle, self) {
             return changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
@@ -174,6 +175,7 @@ export function createMireEffect(params: MireParams): Definition<MireState, Unit
 
     return {
         id: "terrain/mire",
+        group: null,
         initialize: (battle) => ({ nextTick: battle.tick, stacks: 0 }),
         onEnable(battle, self) {
             if (self.state.stacks === 0) {

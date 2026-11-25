@@ -11,7 +11,7 @@ export interface Definition<
 > {
     readonly id: string;
     readonly initialize: (battle: BattleState) => S;
-    readonly group?: Group;
+    readonly group: Group | null;
     readonly onInstall?: (battle: BattleState, self: Self) => BattleState;
     readonly onEnable?: (battle: BattleState, self: Self) => BattleState;
     readonly onDisable?: (battle: BattleState, self: Self) => BattleState;

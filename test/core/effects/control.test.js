@@ -95,7 +95,7 @@ test("silence blocks activation while SP prevention independently blocks recover
     let state = battle([{ definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } }]);
     const source = units.ref(get(state, 0));
     const skill = skills.ref(source.get(state).skill);
-    const parent = effects.install(state, source, { id: "combined-control", initialize: () => ({}) }, effectInitial);
+    const parent = effects.install(state, source, { id: "combined-control", group: null, initialize: () => ({}) }, effectInitial);
     const scopes = [parent.value];
     const silenced = effects.install(parent.state, source, silence, { ...effectInitial, scopes });
     state = silenced.state;

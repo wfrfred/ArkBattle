@@ -948,7 +948,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
         },
     }));
     const installed = effects.install(state, source, {
-        id: "damage-on-end", initialize: () => ({}),
+        id: "damage-on-end", group: null, initialize: () => ({}),
         onEnd(current) {
             const request = damageRequest(source, target, 10);
             outer = hpDamage.applyDamage(request, hpDamage.calculateDamage(current, request));

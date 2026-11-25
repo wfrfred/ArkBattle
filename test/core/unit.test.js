@@ -15,7 +15,7 @@ import { hasOccupancy } from "../../dist/core/unit/capability/occupancy/index.js
 import { effectInitial } from "../helpers/effect.js";
 
 test("Unit construction rejects conflicting roles and installs entry effects on the registered host", () => {
-    const entryEffect = { id: "entry-effect", initialize: () => ({ charges: 2 }) };
+    const entryEffect = { id: "entry-effect", group: null, initialize: () => ({ charges: 2 }) };
     const definition = {
         id: "allied-unit",
         hooks: Hooks.empty().set(units.entered, {
@@ -144,7 +144,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     const killer = units.ref(units.all(state).find(unit => unit.definition.id === "killer"));
     let killedDeparture;
     const response = {
-        id: "death-response", initialize: () => ({}),
+        id: "death-response", group: null, initialize: () => ({}),
         onEnable(current, self) {
             return update(current, self.ref.host, units.setHook(hpDamage.targetKilled, {
                 id: "death-response",
@@ -167,7 +167,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     };
     state = effects.install(state, killer, response, effectInitial).state;
     const installed = effects.install(state, victim, {
-        id: "victim-effect", initialize: () => ({}),
+        id: "victim-effect", group: null, initialize: () => ({}),
         onDisable(current) {
             observed.push("effect-disabled");
             return current;

@@ -90,6 +90,7 @@ test("installation, participation, and ending preserve completed business and cu
     const observed = [];
     const definition = {
         id: "buff",
+        group: null,
         initialize: () => ({ activations: 0 }),
         onInstall(state, self) {
             observed.push(["install", self.lifecycle]);
@@ -138,6 +139,7 @@ test("installation, participation, and ending preserve completed business and cu
 
     const instant = {
         id: "instant",
+        group: null,
         initialize: () => ({}),
         onInstall(state) {
             observed.push("instant");
@@ -240,6 +242,7 @@ test("time advances independently of participation, publishes before active busi
         owner,
         {
             id: "duration",
+            group: null,
             initialize: () => ({}),
             onTick(current, self, previous) {
                 observed.push([previous.remaining, self.expiration.remaining]);
@@ -247,6 +250,7 @@ test("time advances independently of participation, publishes before active busi
                 if (current.tick === 2) {
                     return effects.install(current, self.ref.host, {
                         id: "added-during-tick",
+                        group: null,
                         initialize: () => ({}),
                         onTick(next) {
                             laterTicks.push(next.tick);
@@ -279,6 +283,7 @@ test("time advances independently of participation, publishes before active busi
         owner,
         {
             id: "deadline",
+            group: null,
             initialize: () => ({}),
             onTick: () => assert.fail("inactive deadline must not run business"),
             onEnd(current) {
@@ -293,6 +298,7 @@ test("time advances independently of participation, publishes before active busi
         owner,
         {
             id: "manual",
+            group: null,
             initialize: () => ({}),
             onTick(current, self, previous) {
                 assert.equal(previous.remaining, self.expiration.remaining);
@@ -609,6 +615,7 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
         owner,
         {
             id: "bound",
+            group: null,
             initialize: () => ({}),
         },
         { ...effectInitial, source: a, scopes: [a] },
