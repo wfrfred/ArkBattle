@@ -11,13 +11,7 @@ import { beforeRelease } from "../../unit/capability/action/release.js";
 import { setHook, removeHook } from "../../unit/hook.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import { hurt } from "./damage.js";
-import {
-    availableHost,
-    advance,
-    onInstall as registerBurst,
-    onEnd,
-    type Definition,
-} from "../../unit/capability/elemental/burst.js";
+import * as burst from "../../unit/capability/elemental/burst.js";
 
 export interface StunParameters {
     readonly durationTicks: number;
@@ -31,40 +25,31 @@ export interface ParalysisParameters {
     readonly paralysisStacks: number;
 }
 
-export function createStun(parameters: StunParameters): Definition {
-    return {
+export function createStun(parameters: StunParameters): burst.Definition {
+    return burst.create<burst.State>({
         id: "elemental/neural-stun/burst",
-        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.NEURAL }),
         onInstall(battle, self) {
-            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let host = availableHost(battle, reference);
-            if (host === undefined) {
-                return battle;
-            }
-
             battle = effects.install(battle, self.ref.host, stun, {
                 source: null,
                 scopes: [],
                 expiration: { type: "DEADLINE", tick: battle.tick + parameters.stunDurationTicks },
                 enabled: true,
             }).state;
-            host = availableHost(battle, reference);
+            const current = burst.availableHost(battle, reference);
 
-            if (host !== undefined) {
-                battle = hurt(battle, host, "TRUE", parameters.damage, "NONE", false);
+            if (current !== undefined) {
+                battle = hurt(battle, current, "TRUE", parameters.damage, "NONE", false);
             }
 
             return battle;
         },
-        onTick: (battle, self) => advance(battle, self),
-        onEnd,
-    };
+    });
 }
 
-export function createParalysis(parameters: ParalysisParameters): Definition {
+export function createParalysis(parameters: ParalysisParameters): burst.Definition {
     const paralysis: EffectDefinition<{ used: number }, Unit & Action> = {
         id: "elemental/neural/paralysis",
         group: null,
@@ -122,18 +107,13 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
             ),
     };
 
-    return {
+    return burst.create<burst.State>({
         id: "elemental/neural-paralysis/burst",
-        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.NEURAL }),
         onInstall(battle, self) {
-            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let host = availableHost(battle, reference);
-            if (host === undefined) {
-                return battle;
-            }
+            const host = self.ref.host.get(battle)!;
             if (hasAction(host)) {
                 const existing = effects
                     .forHost(battle, units.ref(host))
@@ -150,15 +130,13 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         : effects.setState(battle, ref(existing), { used: 0 });
             }
 
-            host = availableHost(battle, reference);
+            const current = burst.availableHost(battle, reference);
 
-            if (host !== undefined) {
-                battle = hurt(battle, host, "ELEMENTAL", parameters.damage, "NORMAL", false);
+            if (current !== undefined) {
+                battle = hurt(battle, current, "ELEMENTAL", parameters.damage, "NORMAL", false);
             }
 
             return battle;
         },
-        onTick: (battle, self) => advance(battle, self),
-        onEnd,
-    };
+    });
 }

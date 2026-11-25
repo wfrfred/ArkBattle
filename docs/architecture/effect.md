@@ -169,7 +169,7 @@ self 是回调输入版本，跨 Tick 进度归实例 state，不是异步句柄
 
 标准成品位于 [core/effects](../../src/core/effects)：control、protection、visibility 和 elemental。通用 Effect 引擎不认识具体角色；Content 决定成品的对象、时点、参数与额外业务。Data 可为已有工厂绑定静态数值，不执行运行程序。
 
-Elemental 拥有 EP 与当前 Burst 引用；标准元素 Effect 实现伤害、控制、修正和周期业务，共同恢复与结束归 [Elemental](elemental.md)。
+Elemental 拥有 EP 与当前 Burst 引用；标准元素 Effect 通过 `burst.create` 装配根 Definition，实现伤害、控制、修正和周期业务，登记、恢复与结束由 [Elemental](elemental.md) 统一保障。
 
 ### 支持范围
 

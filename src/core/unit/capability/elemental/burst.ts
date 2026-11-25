@@ -1,7 +1,6 @@
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
 import { replace } from "../../operations.js";
-import { TICKS_PER_SECOND } from "../../../tick.js";
 import type { Unit } from "../../unit.js";
 import { setExpiration } from "../../../effect/operations.js";
 import { ref, type Effect } from "../../../effect/effect.js";
@@ -16,10 +15,21 @@ export interface State {
     readonly type: Type;
 }
 
+export interface Input<S extends State> {
+    readonly id: string;
+    readonly durationTicks: number;
+    readonly initialize: (battle: BattleState) => S;
+    readonly onInstall?: (battle: BattleState, self: Burst<S>) => BattleState;
+    readonly onEnable?: (battle: BattleState, self: Burst<S>) => BattleState;
+    readonly onDisable?: (battle: BattleState, self: Burst<S>) => BattleState;
+    readonly onTick?: (battle: BattleState, self: Burst<S>, previous: Duration) => BattleState;
+}
+
 export interface Definition<
     S extends State = State,
     Self extends Burst<S> = Burst<S>,
 > extends EffectDefinition<S, Unit & Elemental, Self> {
+    readonly group: null;
     readonly durationTicks: number;
 }
 
@@ -33,7 +43,35 @@ export type End =
 
 export { ref };
 
-export function onInstall<S extends State>(battle: BattleState, self: Burst<S>): BattleState {
+export function create<S extends State>(input: Input<S>): Definition<S> {
+    return {
+        ...input,
+        group: null,
+        onInstall(battle, self) {
+            const reference = ref(self);
+            battle = registerBurst(battle, self);
+
+            return availableHost(battle, reference) === undefined
+                ? battle
+                : (input.onInstall?.(battle, reference.get(battle)!) ?? battle);
+        },
+        onTick(battle, self) {
+            const reference = ref(self);
+            const host = availableHost(battle, reference);
+            if (host === undefined) {
+                return battle;
+            }
+
+            const previous = self.expiration;
+            battle = recover(battle, self, host);
+
+            return input.onTick?.(battle, reference.get(battle)!, previous) ?? battle;
+        },
+        onEnd: endBurst,
+    };
+}
+
+function registerBurst<S extends State>(battle: BattleState, self: Burst<S>): BattleState {
     const host = self.ref.host.get(battle)!;
     battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(self))]);
     battle = appendEvents(battle, [
@@ -49,50 +87,22 @@ export function onInstall<S extends State>(battle: BattleState, self: Burst<S>):
     return dispatch(battle, self.ref.host, burstStarted, self);
 }
 
-export function advance<S extends State>(
+function recover<S extends State>(
     battle: BattleState,
     self: Burst<S>,
-    onSecond?: (
-        battle: BattleState,
-        host: Unit & Elemental,
-        reference: Ref<Burst<S>>,
-        second: number,
-    ) => BattleState,
+    host: Unit & Elemental,
 ): BattleState {
-    const reference = ref(self);
-    const host = availableHost(battle, reference);
-    if (host === undefined) {
-        return battle;
-    }
-
     const expiration = self.expiration;
     const remaining = Math.max(0, expiration.remaining - resolveBurstRecoverySpeed(battle, host));
     const elapsed = expiration.duration - remaining;
     const maximum = resolveMaxEp(battle, host);
     const ep = elementValues((maximum * elapsed) / expiration.duration);
     battle = replace(battle, [replaceIn(host, ["elemental", "ep"], ep)]);
-    battle = setExpiration(battle, reference, { ...expiration, remaining });
 
-    if (onSecond !== undefined) {
-        const previousSecond = Math.floor(
-            (expiration.duration - expiration.remaining + 1e-8) / TICKS_PER_SECOND,
-        );
-        const currentSecond = Math.floor((elapsed + 1e-8) / TICKS_PER_SECOND);
-
-        for (let second = previousSecond + 1; second <= currentSecond; second++) {
-            const currentHost = availableHost(battle, reference);
-            if (currentHost === undefined) {
-                return battle;
-            }
-
-            battle = onSecond(battle, currentHost, reference, second);
-        }
-    }
-
-    return battle;
+    return setExpiration(battle, ref(self), { ...expiration, remaining });
 }
 
-export function onEnd<S extends State>(
+function endBurst<S extends State>(
     battle: BattleState,
     self: Burst<S>,
     reason: string,

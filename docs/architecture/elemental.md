@@ -23,7 +23,7 @@ elementResistance 只用于 EP 损伤，damageResistance 只用于 HP 元素伤�
 
 标准库在 `core/effects/elemental/` 提供十种实际 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃、消耗 SP／恢复攻击力的凋亡，以及按行动／时间累加伤害的狂躁。`content/elemental.ts` 根据静态接收者配置绑定参数和爆发表。Core 按元素类型读取已配置的爆发。标准爆发 HP 输出均为 nature=DAMAGE；角色狂躁周期允许 HIT 回复，其余标准输出不允许，不因 Effect 或周期身份变为 ENVIRONMENT，也不以全局阻回替代本笔许可。
 
-Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 durationTicks 恢复预算；Definition／Burst 的泛型保留具体私有 State 与回调配对，异构查表在完成配对后擦除私有类型。安装时直接提供 `duration = remaining = durationTicks`、`rate = 0` 的 DURATION；onInstall 只需把该实例登记到 Burst 槽位并通知入场，具体定义随后执行自身一次性输出。其 expiration 决定恢复与凋亡的周期、攻击力恢复；狂躁另存自己的周期进度。共用操作不覆盖具体私有 State。Elemental 只保存根 Effect 的 Typed Ref，不分配独立 Burst ID；旧 Ref 不操作下一次爆发。
+Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 durationTicks 恢复预算，group 固定为 null。具体爆发通过 `burst.create(input)` 装配 Definition，Input 提供 id、durationTicks、initialize 和可选的 onInstall／onEnable／onDisable／onTick，不提供分组或结束程序。工厂统一保证槽位登记、入场通知、EP 恢复和结束结算；具体回调只实现爆发特有业务。Definition／Burst 的泛型保留具体私有 State 与回调配对，异构查表在完成配对后擦除私有类型。安装时直接提供 `duration = remaining = durationTicks`、`rate = 0` 的 DURATION。Elemental 只保存根 Effect 的 Typed Ref，不分配独立 Burst ID；旧 Ref 不操作下一次爆发。
 
 持续输出由 onEnable／onDisable 管理，一次性输出属于 onInstall。需要随根结束的灼燃减抗、封技、阻止 SP 回复等产物绑定根 Lifetime。神经眩晕按独立 stunDurationTicks 建立 DEADLINE，不绑定恢复预算；标准恢复与眩晕虽各配置十秒，仍分别计时，零眩晕期限遵守 Effect 安装到期规则。永久侵蚀减防与尚未消费的麻痹独立保留，再次神经爆发按标准规则重置麻痹层数。永久性由规则决定，不按数值正负推导。
 
@@ -82,7 +82,7 @@ End 区分 FINISHED 与携带原因的 CANCELLED。自然到期映射 FINISHED�
 
 ## 6. 时间推进
 
-按 Tick 推进恢复由根 onTick 负责；对正 duration：
+按 Tick 推进恢复由 `burst.create` 装配的根 onTick 负责；对正 duration：
 
 ```text
 remaining' = max(0, remaining - 当前 burstRecoverySpeed)
@@ -90,7 +90,7 @@ elapsed' = duration - remaining'
 五型 EP = 当前有效 MaxEP × elapsed' / duration
 ```
 
-先发布 EP 与 remaining，再执行使用该预算的周期业务。恢复速度为零时只暂停恢复预算及其周期，不暂停狂躁独立的 ACTIVE Tick 计数；当前无推进资格时不积攒补算。每次恢复重新求值速度与上限；取消、提前 finish 或离场不补未来输出，onEnd 只收尾。周期与根绑定关系由具体标准程序规定，不据共享的默认时长合并时钟。
+统一检查当前宿主及爆发的推进资格，先发布 EP 与 remaining，再以最新 Burst 和恢复前的 Duration 调用具体 onTick。凋亡根据前后恢复进度结算本次跨过的各个周期，副作用发生后按原 Ref 判断是否继续；狂躁另存自己的周期进度。恢复速度为零时只暂停恢复预算及其周期，不暂停狂躁独立的 ACTIVE Tick 计数；当前无推进资格时不积攒补算。每次恢复重新求值速度与上限；取消、提前 finish 或离场不补未来输出，工厂装配的 onEnd 只收尾。周期与根绑定关系由具体标准程序规定，不据共享的默认时长合并时钟。
 
 `reduceDuration(battle, reference, ticks)` 是本次 Burst 的完整缩时操作，ticks 为非负安全整数，0 保持原状态。操作保留已推进量：
 

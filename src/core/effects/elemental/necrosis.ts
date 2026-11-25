@@ -1,5 +1,6 @@
 import { update } from "../../unit/operations.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
+import type { Duration } from "../../effect/expiration.js";
 import { silence, blockSpRecovery } from "../control.js";
 import * as modifier from "../../common/modifier.js";
 import * as effects from "../../effect/operations.js";
@@ -14,12 +15,11 @@ import { hasSkill } from "../../unit/capability/skill/capability.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import { hurt } from "./damage.js";
 import {
-    onInstall as registerBurst,
-    advance,
-    onEnd,
+    create,
     availableHost,
     ref,
     type Definition,
+    type State,
 } from "../../unit/capability/elemental/burst.js";
 
 export interface SpDrainParameters {
@@ -34,14 +34,16 @@ export interface AttackReductionParameters {
     readonly attackReductionRatio: number;
 }
 
+function elapsedSeconds(expiration: Duration): number {
+    return Math.floor((expiration.duration - expiration.remaining + 1e-8) / TICKS_PER_SECOND);
+}
+
 export function createSpDrain(parameters: SpDrainParameters): Definition {
-    return {
+    return create<State>({
         id: "elemental/necrosis/sp-drain",
-        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.NECROSIS }),
         onInstall(battle, self) {
-            battle = registerBurst(battle, self);
             const reference = ref(self);
             const scopes = [reference];
 
@@ -60,36 +62,44 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
 
             return battle;
         },
-        onTick: (battle, self) =>
-            advance(battle, self, (current, host, reference) => {
+        onTick(battle, self, previous) {
+            const reference = ref(self);
+            const last = elapsedSeconds(self.expiration);
+
+            for (let second = elapsedSeconds(previous) + 1; second <= last; second++) {
+                const host = availableHost(battle, reference);
+                if (host === undefined) {
+                    return battle;
+                }
+
                 if (hasSkill(host)) {
-                    current = modify(
-                        current,
+                    battle = modify(
+                        battle,
                         units.ref(host),
                         -parameters.spDrainPerSecond,
                         false,
                     ).state;
                 }
 
-                const unit = availableHost(current, reference);
+                const unit = availableHost(battle, reference);
 
                 if (unit === undefined) {
-                    return current;
+                    return battle;
                 }
 
-                return hurt(current, unit, "ARTS", parameters.damagePerSecond, "BUFF", false);
-            }),
-        onEnd,
-    };
+                battle = hurt(battle, unit, "ARTS", parameters.damagePerSecond, "BUFF", false);
+            }
+
+            return battle;
+        },
+    });
 }
 
 export function createAttackReduction(parameters: AttackReductionParameters): Definition {
-    return {
+    return create<State>({
         id: "elemental/necrosis/attack-reduction",
-        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.NECROSIS }),
-        onInstall: registerBurst,
         onEnable(battle, self) {
             const unit = self.ref.host.get(battle)!;
 
@@ -120,28 +130,29 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                   )
                 : battle;
         },
-        onTick: (battle, self) =>
-            advance(battle, self, (current, host, reference, second) => {
-                current = hurt(
-                    current,
-                    host,
-                    "ELEMENTAL",
-                    parameters.damagePerSecond,
-                    "BUFF",
-                    false,
-                );
-                const unit = availableHost(current, reference);
+        onTick(battle, self, previous) {
+            const reference = ref(self);
+            const last = elapsedSeconds(self.expiration);
+
+            for (let second = elapsedSeconds(previous) + 1; second <= last; second++) {
+                const host = availableHost(battle, reference);
+                if (host === undefined) {
+                    return battle;
+                }
+
+                battle = hurt(battle, host, "ELEMENTAL", parameters.damagePerSecond, "BUFF", false);
+                const unit = availableHost(battle, reference);
 
                 if (unit === undefined) {
-                    return current;
+                    return battle;
                 }
                 if (hasOffense(unit)) {
                     const scaler =
                         1 -
                         parameters.attackReductionRatio *
                             Math.max(0, 1 - second / (parameters.durationTicks / TICKS_PER_SECOND));
-                    current = update(
-                        current,
+                    battle = update(
+                        battle,
                         units.ref(unit),
                         setAttackContribution({
                             id: `@effect/${self.id}/attack`,
@@ -150,9 +161,9 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                         }),
                     );
                 }
+            }
 
-                return current;
-            }),
-        onEnd,
-    };
+            return battle;
+        },
+    });
 }

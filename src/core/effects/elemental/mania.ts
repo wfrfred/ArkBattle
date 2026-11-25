@@ -21,10 +21,7 @@ import { hasSkill } from "../../unit/capability/skill/capability.js";
 import { activationStarted } from "../../unit/capability/skill/hook.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import {
-    onInstall as registerBurst,
-    advance,
-    onEnd,
-    availableHost,
+    create,
     type Definition,
     type State as BurstState,
 } from "../../unit/capability/elemental/burst.js";
@@ -202,18 +199,11 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
         },
     };
 
-    return {
+    return create<BurstState>({
         id: "elemental/mania/action-scaled",
-        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.MANIA }),
         onInstall(battle, self) {
-            battle = registerBurst(battle, self);
-
-            if (availableHost(battle, ref(self)) === undefined) {
-                return battle;
-            }
-
             return effects.install(battle, self.ref.host, damage, {
                 source: null,
                 scopes: [],
@@ -224,49 +214,38 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                 enabled: true,
             }).state;
         },
-        onTick: (battle, self) => advance(battle, self),
-        onEnd,
-    };
+    });
 }
 
 export function createTimeScaledDamage(
     parameters: TimeScaledDamageParameters,
 ): Definition<TimeDamageState> {
-    return {
+    return create<TimeDamageState>({
         id: "elemental/mania/time-scaled",
-        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({
             type: Type.MANIA,
             damage: parameters.damagePerSecond,
             timer: TICKS_PER_SECOND,
         }),
-        onInstall: registerBurst,
         onEnable: (battle, self) =>
             setSpeed(battle, self.ref.host, self.id, parameters.attackSpeed),
         onDisable: (battle, self) => setSpeed(battle, self.ref.host, self.id, null),
         onTick(battle, self) {
-            battle = advance(battle, self);
             const reference = ref(self);
-            const current = reference.get(battle)!;
-            const host = availableHost(battle, reference);
-            if (host === undefined) {
-                return battle;
-            }
-
-            const timer = current.state.timer - 1;
+            const host = self.ref.host.get(battle)!;
+            const timer = self.state.timer - 1;
             const damage =
                 timer === 0
-                    ? current.state.damage + parameters.damageIncreasePerSecond
-                    : current.state.damage;
+                    ? self.state.damage + parameters.damageIncreasePerSecond
+                    : self.state.damage;
             battle = effects.setState(battle, reference, {
-                ...current.state,
+                ...self.state,
                 damage,
                 timer: timer === 0 ? TICKS_PER_SECOND : timer,
             });
 
             return timer === 0 ? hurt(battle, host, "ELEMENTAL", damage, "BUFF", false) : battle;
         },
-        onEnd,
-    };
+    });
 }

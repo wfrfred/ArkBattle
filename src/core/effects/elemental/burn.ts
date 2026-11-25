@@ -1,6 +1,7 @@
 import { update } from "../../unit/operations.js";
 import * as modifier from "../../common/modifier.js";
 import * as effects from "../../effect/operations.js";
+import { ref } from "../../effect/effect.js";
 import * as units from "../../unit/query.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Definition as EffectDefinition } from "../../effect/definition.js";
@@ -12,14 +13,7 @@ import {
 } from "../../unit/capability/vitality/capability.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
 import { hurt } from "./damage.js";
-import {
-    onInstall as registerBurst,
-    advance,
-    onEnd,
-    availableHost,
-    ref,
-    type Definition,
-} from "../../unit/capability/elemental/burst.js";
+import * as burst from "../../unit/capability/elemental/burst.js";
 
 export interface Parameters {
     readonly durationTicks: number;
@@ -51,22 +45,16 @@ function resistanceReduction(amount: number): EffectDefinition<object, Unit & Vi
     };
 }
 
-export function createArts(parameters: Parameters): Definition {
+export function createArts(parameters: Parameters): burst.Definition {
     const reduction = resistanceReduction(parameters.resReduction);
 
-    return {
+    return burst.create<burst.State>({
         id: "elemental/burn/arts",
-        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.BURN }),
         onInstall(battle, self) {
-            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let unit = availableHost(battle, reference);
-
-            if (unit === undefined) {
-                return battle;
-            }
+            const unit = self.ref.host.get(battle)!;
             if (hasVitality(unit)) {
                 battle = effects.install(battle, units.ref(unit), reduction, {
                     source: null,
@@ -76,35 +64,27 @@ export function createArts(parameters: Parameters): Definition {
                 }).state;
             }
 
-            unit = availableHost(battle, reference);
+            const current = burst.availableHost(battle, reference);
 
-            if (unit === undefined) {
+            if (current === undefined) {
                 return battle;
             }
 
-            return hurt(battle, unit, "ARTS", parameters.damage, "NORMAL", false);
+            return hurt(battle, current, "ARTS", parameters.damage, "NORMAL", false);
         },
-        onTick: (battle, self) => advance(battle, self),
-        onEnd,
-    };
+    });
 }
 
-export function createElemental(parameters: Parameters): Definition {
+export function createElemental(parameters: Parameters): burst.Definition {
     const reduction = resistanceReduction(parameters.resReduction);
 
-    return {
+    return burst.create<burst.State>({
         id: "elemental/burn/elemental",
-        group: null,
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.BURN }),
         onInstall(battle, self) {
-            battle = registerBurst(battle, self);
             const reference = ref(self);
-            let unit = availableHost(battle, reference);
-
-            if (unit === undefined) {
-                return battle;
-            }
+            const unit = self.ref.host.get(battle)!;
             if (hasVitality(unit)) {
                 battle = effects.install(battle, units.ref(unit), reduction, {
                     source: null,
@@ -114,15 +94,13 @@ export function createElemental(parameters: Parameters): Definition {
                 }).state;
             }
 
-            unit = availableHost(battle, reference);
+            const current = burst.availableHost(battle, reference);
 
-            if (unit === undefined) {
+            if (current === undefined) {
                 return battle;
             }
 
-            return hurt(battle, unit, "ELEMENTAL", parameters.damage, "NORMAL", false);
+            return hurt(battle, current, "ELEMENTAL", parameters.damage, "NORMAL", false);
         },
-        onTick: (battle, self) => advance(battle, self),
-        onEnd,
-    };
+    });
 }
