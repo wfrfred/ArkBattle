@@ -3,14 +3,8 @@ import {
     type Definition as ElementalDefinition,
 } from "../core/unit/capability/elemental/index.js";
 import { createStun, createParalysis } from "../core/effects/elemental/neural.js";
-import {
-    createPhysical,
-    createElemental as createElementalErosion,
-} from "../core/effects/elemental/erosion.js";
-import {
-    createArts,
-    createElemental as createElementalBurn,
-} from "../core/effects/elemental/burn.js";
+import { create as createErosion } from "../core/effects/elemental/erosion.js";
+import { create as createBurn } from "../core/effects/elemental/burn.js";
 import { createSpDrain, createAttackReduction } from "../core/effects/elemental/necrosis.js";
 import {
     createActionScaledDamage,
@@ -45,12 +39,14 @@ const bursts: Readonly<Record<Receiver, ElementalDefinition["bursts"]>> = {
             stunDurationTicks: secondsToTicks(10),
             damage: 1000,
         }),
-        [Type.EROSION]: createPhysical({
+        [Type.EROSION]: createErosion({
+            damageType: "PHYSICAL",
             durationTicks: secondsToTicks(10),
             damage: 800,
             defReduction: 100,
         }),
-        [Type.BURN]: createArts({
+        [Type.BURN]: createBurn({
+            damageType: "ARTS",
             durationTicks: secondsToTicks(10),
             damage: 1200,
             resReduction: 20,
@@ -73,12 +69,14 @@ const bursts: Readonly<Record<Receiver, ElementalDefinition["bursts"]>> = {
             damage: 6000,
             paralysisStacks: 3,
         }),
-        [Type.EROSION]: createElementalErosion({
+        [Type.EROSION]: createErosion({
+            damageType: "ELEMENTAL",
             durationTicks: secondsToTicks(8),
             damage: 5000,
             defReduction: 120,
         }),
-        [Type.BURN]: createElementalBurn({
+        [Type.BURN]: createBurn({
+            damageType: "ELEMENTAL",
             durationTicks: secondsToTicks(10),
             damage: 7000,
             resReduction: 20,

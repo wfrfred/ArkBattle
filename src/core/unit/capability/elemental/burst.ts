@@ -71,7 +71,7 @@ export function create<S extends State>(input: Input<S>): Definition<S> {
     };
 }
 
-function registerBurst<S extends State>(battle: BattleState, self: Burst<S>): BattleState {
+function registerBurst(battle: BattleState, self: Burst): BattleState {
     const host = self.ref.host.get(battle)!;
     battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(self))]);
     battle = appendEvents(battle, [
@@ -87,11 +87,7 @@ function registerBurst<S extends State>(battle: BattleState, self: Burst<S>): Ba
     return dispatch(battle, self.ref.host, burstStarted, self);
 }
 
-function recover<S extends State>(
-    battle: BattleState,
-    self: Burst<S>,
-    host: Unit & Elemental,
-): BattleState {
+function recover(battle: BattleState, self: Burst, host: Unit & Elemental): BattleState {
     const expiration = self.expiration;
     const remaining = Math.max(0, expiration.remaining - resolveBurstRecoverySpeed(battle, host));
     const elapsed = expiration.duration - remaining;
@@ -102,11 +98,7 @@ function recover<S extends State>(
     return setExpiration(battle, ref(self), { ...expiration, remaining });
 }
 
-function endBurst<S extends State>(
-    battle: BattleState,
-    self: Burst<S>,
-    reason: string,
-): BattleState {
+function endBurst(battle: BattleState, self: Burst, reason: string): BattleState {
     const host = self.ref.host.get(battle)!;
     battle = replace(battle, [
         {

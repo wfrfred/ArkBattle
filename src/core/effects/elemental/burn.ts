@@ -16,6 +16,7 @@ import { hurt } from "./damage.js";
 import * as burst from "../../unit/capability/elemental/burst.js";
 
 export interface Parameters {
+    readonly damageType: "ARTS" | "ELEMENTAL";
     readonly durationTicks: number;
     readonly damage: number;
     readonly resReduction: number;
@@ -45,11 +46,11 @@ function resistanceReduction(amount: number): EffectDefinition<object, Unit & Vi
     };
 }
 
-export function createArts(parameters: Parameters): burst.Definition {
+export function create(parameters: Parameters): burst.Definition {
     const reduction = resistanceReduction(parameters.resReduction);
 
     return burst.create<burst.State>({
-        id: "elemental/burn/arts",
+        id: parameters.damageType === "ARTS" ? "elemental/burn/arts" : "elemental/burn/elemental",
         durationTicks: parameters.durationTicks,
         initialize: () => ({ type: Type.BURN }),
         onInstall(battle, self) {
@@ -70,37 +71,7 @@ export function createArts(parameters: Parameters): burst.Definition {
                 return battle;
             }
 
-            return hurt(battle, current, "ARTS", parameters.damage, "NORMAL", false);
-        },
-    });
-}
-
-export function createElemental(parameters: Parameters): burst.Definition {
-    const reduction = resistanceReduction(parameters.resReduction);
-
-    return burst.create<burst.State>({
-        id: "elemental/burn/elemental",
-        durationTicks: parameters.durationTicks,
-        initialize: () => ({ type: Type.BURN }),
-        onInstall(battle, self) {
-            const reference = ref(self);
-            const unit = self.ref.host.get(battle)!;
-            if (hasVitality(unit)) {
-                battle = effects.install(battle, units.ref(unit), reduction, {
-                    source: null,
-                    scopes: [reference],
-                    expiration: { type: "INFINITE" },
-                    enabled: true,
-                }).state;
-            }
-
-            const current = burst.availableHost(battle, reference);
-
-            if (current === undefined) {
-                return battle;
-            }
-
-            return hurt(battle, current, "ELEMENTAL", parameters.damage, "NORMAL", false);
+            return hurt(battle, current, parameters.damageType, parameters.damage, "NORMAL", false);
         },
     });
 }

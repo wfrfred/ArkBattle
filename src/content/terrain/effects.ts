@@ -215,10 +215,7 @@ export function createMireEffect(params: MireParams): Definition<MireState, Unit
                 return battle;
             }
 
-            const unit = self.ref.host.get(battle);
-            if (unit === undefined) {
-                return battle;
-            }
+            const unit = self.ref.host.get(battle)!;
 
             const enemy =
                 hasClassification(unit) && unit.definition.classification.side === "ENEMY";
