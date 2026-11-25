@@ -18,7 +18,7 @@ Change 组合、单宿主发布与 Settlement 的详细契约以[接口约定](a
 
 Catalog 从 initializer 字典的函数签名派生配置、标准状态和 Initial，不维护第二份必需能力清单。initializer 接收当前 BattleState 与正在装配的 Unit，读取自身配置并补自身状态，保留已有字段与登记；有前置依赖时在输入类型中明确声明。
 
-具体 Definition 决定装配哪些能力；对应 initializer 的第三参数必填时，initial 对应键及顶层 initial 都必填。允许额外的已知 Initial，它们在未选能力时忽略，未知键和错误值仍被类型拒绝。Occupancy 必需 tile，Route 必需 Plan／offset，Facing 必需方向；调用者不能预装运行进度或 Effects 容器。
+具体 Definition 决定装配哪些能力；对应 initializer 的第三参数必填时，initial 对应键及顶层 initial 都必填。允许额外的已知 Initial，它们在未选能力时忽略，未知键和错误值仍被类型拒绝。Occupancy 必需 tile，Route 必需 Plan／offset，Facing 必需方向；调用者不能预装运行进度。以 Unit 为宿主的 Effect 在 Unit 登记后通过通用安装入口建立。
 
 `Unit.initialize` 创建稳定 Ref，将当前 BattleState 分配的表现编号保存在 `ref.id`，然后按 Catalog 顺序接续各 initializer。最后合并 Definition.hooks，同键同 ID 后者覆盖并保留位置。Occupancy 先于依赖它的 Deployable。初始化期间可以读取当前战场或消费 RNG，需要本次已装配的能力时直接读取输入 Unit。调用方接续返回的 State，可先登记本业务的事实，再用 `Unit.add` 发布实例并触发 entered。
 
