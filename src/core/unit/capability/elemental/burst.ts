@@ -6,7 +6,7 @@ import type { Unit } from "../../unit.js";
 import { setExpiration } from "../../../effect/operations.js";
 import { ref, type Effect } from "../../../effect/effect.js";
 import type { Definition as EffectDefinition } from "../../../effect/definition.js";
-import type { Expiration } from "../../../effect/expiration.js";
+import type { Duration } from "../../../effect/expiration.js";
 import { elementValues, type Elemental, type Type } from "./capability.js";
 import { available, resolveMaxEp, resolveBurstRecoverySpeed } from "./query.js";
 import { dispatch, burstStarted, burstEnded } from "./hook.js";
@@ -16,15 +16,16 @@ export interface State {
     readonly type: Type;
 }
 
-export type Definition<S extends State = State> = EffectDefinition<S, Unit & Elemental> & {
+export interface Definition<
+    S extends State = State,
+    Self extends Effect<S, Unit & Elemental> = Effect<S, Unit & Elemental>,
+> extends EffectDefinition<S, Unit & Elemental, Self> {
     readonly durationTicks: number;
-};
+}
 
-type Duration = Extract<Expiration, { type: "DURATION" }>;
-
-export type Burst<S extends State = State> = Effect<S, Unit & Elemental, undefined> & {
+export interface Burst<S extends State = State> extends Effect<S, Unit & Elemental> {
     readonly expiration: Duration;
-};
+}
 
 export type End =
     { readonly type: "FINISHED" } | { readonly type: "CANCELLED"; readonly reason: string };
@@ -33,10 +34,10 @@ export { ref };
 
 export function onInstall<S extends State>(
     battle: BattleState,
-    self: Effect<S, Unit & Elemental, undefined>,
+    self: Effect<S, Unit & Elemental>,
 ): BattleState {
     const host = self.ref.host.get(battle)!;
-    const duration = (self.definition as Definition<S>).durationTicks;
+    const duration = (self.definition as Definition<S, never>).durationTicks;
     const current: Burst<S> = {
         ...self,
         expiration: {
@@ -46,8 +47,7 @@ export function onInstall<S extends State>(
             rate: 0,
         },
     };
-    const burst = current as unknown as Burst;
-    battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(burst))]);
+    battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(current))]);
     battle = setExpiration(battle, ref(current), current.expiration);
     battle = appendEvents(battle, [
         {
@@ -59,12 +59,12 @@ export function onInstall<S extends State>(
         },
     ]);
 
-    return dispatch(battle, current.ref.host, burstStarted, burst);
+    return dispatch(battle, current.ref.host, burstStarted, current);
 }
 
 export function advance<S extends State>(
     battle: BattleState,
-    instance: Effect<S, Unit & Elemental, undefined>,
+    instance: Effect<S, Unit & Elemental>,
     onSecond?: (
         battle: BattleState,
         host: Unit & Elemental,
@@ -108,7 +108,7 @@ export function advance<S extends State>(
 
 export function onEnd<S extends State>(
     battle: BattleState,
-    instance: Effect<S, Unit & Elemental, undefined>,
+    instance: Effect<S, Unit & Elemental>,
     reason: string,
 ): BattleState {
     const self = instance as Burst<S>;
@@ -128,12 +128,12 @@ export function onEnd<S extends State>(
             ? { type: "FINISHED" }
             : { type: "CANCELLED", reason };
 
-    return dispatch(battle, self.ref.host, burstEnded, { burst: self as unknown as Burst, end });
+    return dispatch(battle, self.ref.host, burstEnded, { burst: self, end });
 }
 
 export function availableHost<S extends State>(
     battle: BattleState,
-    reference: Ref<Effect<S, Unit & Elemental, undefined>>,
+    reference: Ref<Effect<S, Unit & Elemental>>,
 ): (Unit & Elemental) | undefined {
     const host = reference.host.get(battle);
     const lifecycle = reference.get(battle)?.lifecycle;

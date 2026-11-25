@@ -13,7 +13,7 @@ import {
     type Type,
     type Values,
 } from "./capability.js";
-import type { Burst } from "./burst.js";
+import type { Burst, Definition as BurstDefinition } from "./burst.js";
 import { dispatch, damaged, healed } from "./hook.js";
 import * as query from "./query.js";
 import type * as damage from "../../../battle/resource/ep/damage/contract.js";
@@ -110,11 +110,14 @@ export function commitDamage(
 
     let reference: Ref<Burst> | null = null;
     if (depleted) {
-        const installed = effects.install(battle, target, self.definition.elemental.bursts[type], {
-            source: request.source,
-        });
+        const installed = effects.install(
+            battle,
+            target,
+            self.definition.elemental.bursts[type] as BurstDefinition,
+            { source: request.source },
+        );
         battle = installed.state;
-        reference = installed.value! as unknown as Ref<Burst>;
+        reference = installed.value! as Ref<Burst>;
     }
 
     const application: DamageApplication = { type, epBefore, epAfter, epLoss, burst: reference };

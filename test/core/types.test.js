@@ -226,26 +226,25 @@ declare const recoveryOnly: skills.RecoveryRestriction;
 const layered = {
     id: 'layered',
     group: {
-        type: 'STACK', id: 'layered', priority: 0, independentSource: false,
+        type: 'STACK', id: 'layered', independentSource: false,
         maxCount: 3, maxEffectiveCount: 2, refreshAtMax: true, expirationPolicy: 'DECAY',
     },
     initialize: () => ({ power: 1 }),
     onTick(state, self, previous) {
-        previous satisfies effects.Expiration<'DECAY'>;
+        previous satisfies effects.Expiration;
+        self.stackCount satisfies number;
         return effects.setState(state, effects.ref(self), { power: self.state.power + 1 });
     },
-} satisfies effects.Definition<{ power: number }, Unit & Offense, 'DECAY'>;
-// @ts-expect-error DECAY cannot be installed with an absolute deadline.
-effects.install(battle, owner, layered, { expiration: { type: 'DEADLINE', tick: 10 } });
+} satisfies effects.StackDefinition<{ power: number }, Unit & Offense>;
 const merged = effects.install(battle, owner, layered);
 if (merged.value !== null) {
     merged.value.host.get(merged.state)!.offense satisfies Offense['offense'];
     effects.decreaseStack(merged.state, merged.value, 1);
-    // @ts-expect-error the returned DECAY reference must still reject deadlines on write.
-    effects.setExpiration(merged.state, merged.value, { type: 'DEADLINE', tick: 10 });
+    const commonRef: Ref<effects.Effect> = merged.value;
     // @ts-expect-error a retained Effect may have arrived with a different private definition.
     merged.value.get(merged.state)!.state.power;
-    const retained = effects.get(merged.state, merged.value, layered)!;
+    const retained = effects.get(merged.state, commonRef, layered)!;
+    retained.stackCount satisfies number;
     retained.state.power satisfies number;
     endLifetime(merged.state, effects.ref(retained), 'CANCELLED');
 }

@@ -45,7 +45,7 @@ const defaultDefinition: Definition = {
 export interface State {
     readonly definition: Definition;
     readonly battlefield: BattlefieldState;
-    readonly effects: Store<Ref<Effect<any, any>>, Effect<any, any>>;
+    readonly effects: Store<Ref<Effect>, Effect>;
     readonly tick: number;
     readonly execution: BattleExecutionState;
     readonly deployment: DeploymentState;
@@ -71,7 +71,7 @@ export function createBattleState(
     return {
         definition,
         battlefield,
-        effects: Store.empty<Ref<Effect<any, any>>, Effect<any, any>>(),
+        effects: Store.empty<Ref<Effect>, Effect>(),
         tick,
         execution,
         deployment,

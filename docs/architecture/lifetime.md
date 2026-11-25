@@ -32,7 +32,7 @@ Unit 以 `End` 请求结束。Lifetime 固定 `initial` 与 `End`，Unit 据此�
 
 首次有效请求将 `initial` 和 `end` 固定到节点，调用其 Prepare 发布领域的 `ENDING` 并执行前置清理。Prepare 返回后，Lifetime 依次请求尚未开始结束的直接依赖者，顺序采用节点的登记顺序。Prepare 可以主动请求另一实例结束，重复请求沿用已经接受的快照与结束输入。
 
-Unit 在 Prepare 阶段派发 `removing`，早于自动请求依赖者结束。Effect 在 Prepare 撤销持续输出并按宿主资格协调候补。副作用或通知需要看到的领域结束状态在对应 Prepare 的开始发布。 [Hook 顺序](hook.md)
+Unit 在 Prepare 阶段派发 `removing`，早于自动请求依赖者结束。Effect 在 Prepare 撤销持续输出，DEFAULT 组另按宿主资格协调候补。副作用或通知需要看到的领域结束状态在对应 Prepare 的开始发布。 [Hook 顺序](hook.md)
 
 ## Finalize 与完成边界
 

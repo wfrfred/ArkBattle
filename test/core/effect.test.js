@@ -18,7 +18,7 @@ const operator = { id: "operator", hooks: Hooks.empty(), offense: { attack: defi
 
 test("unhosted and Card effects share the lifecycle and keep host groups independent", () => {
     const trace = [];
-    const group = { id: "global-rule", type: "UNIQUE", priority: 0, independentSource: false };
+    const group = { id: "global-rule", type: "UNIQUE", independentSource: false };
     const controller = {
         id: "global-rule",
         group,
@@ -327,7 +327,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
     let installations = 0;
     const extend = {
         id: "retained",
-        group: { type: "EXTEND", id: "renewal", priority: 0, independentSource: false },
+        group: { type: "EXTEND", id: "renewal", independentSource: false },
         initialize: () => ({ sampled: "retained" }),
         onInstall(state) {
             installations++;
@@ -377,7 +377,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
 
     const cumulative = {
         id: "cumulative",
-        group: { type: "EXTEND_TIME", id: "cumulative", priority: 0, independentSource: false },
+        group: { type: "EXTEND_TIME", id: "cumulative", independentSource: false },
         initialize: () => ({}),
     };
     const original = effects.install(state, owner, cumulative, {
@@ -407,7 +407,6 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         group: {
             type: "STACK",
             id: "stacked",
-            priority: 0,
             independentSource: false,
             maxCount: 3,
             maxEffectiveCount: 2,
@@ -448,14 +447,20 @@ test("STACK separates effective output, manual consumption, and natural decay wh
     };
     let state = battle([{ definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
+    assert.throws(() => effects.install(state, owner, stacked, {
+        expiration: { type: "DEADLINE", tick: 10 },
+    }), TypeError);
     const first = effects.install(state, owner, stacked, {
         expiration: { type: "DURATION", duration: 2, remaining: 2, rate: 1 },
     });
+    assert.throws(() => effects.setExpiration(first.state, first.value, {
+        type: "DEADLINE", tick: 10,
+    }), TypeError);
     state = effects.advance({ ...first.state, tick: 1 });
     const incoming = {
         ...stacked,
         id: "incoming-stack",
-        group: { ...stacked.group, priority: 10, maxCount: 1, maxEffectiveCount: 1, refreshAtMax: false },
+        group: { ...stacked.group, maxCount: 1, maxEffectiveCount: 1, refreshAtMax: false },
     };
     const second = effects.install(state, owner, incoming, {
         expiration: { type: "DURATION", duration: 5, remaining: 5, rate: 1 },
@@ -537,7 +542,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
 test("UNIQUE groups distinguish shared, Unit, and absent sources while source attribution remains independent of scope", () => {
     const definition = {
         id: "independent",
-        group: { type: "UNIQUE", id: "independent", priority: 0, independentSource: true },
+        group: { type: "UNIQUE", id: "independent", independentSource: true },
         initialize: () => ({}),
     };
     let state = battle([
@@ -612,7 +617,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const definition = {
         id: "card-source",
         initialize: () => ({}),
-        group: { type: "UNIQUE", id: "card-source", priority: 0, independentSource: true },
+        group: { type: "UNIQUE", id: "card-source", independentSource: true },
     };
     const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
     const firstSource = firstUnit.value.unit;

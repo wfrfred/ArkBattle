@@ -8,7 +8,7 @@ Effect 拥有可附着或独立存在的运行实例、私有状态、生效竞�
 
 - 安装、存在与实际生效分开。零时长仍执行安装业务，随后结束，不短暂启用。
 - 重复施加先决定新建、合并或拒绝；只有新建登记身份、Lifetime 并运行 onInstall，候补也不例外。
-- 整体覆写先选赢家再检查 enabled；禁用赢家不让弱者补位，赢家结束后候补才可能生效。
+- DEFAULT 整体覆写先选赢家再检查 enabled；禁用赢家不让弱者补位，赢家结束后候补才可能生效。其他组不参与优先级竞争。
 - source 记录来源，不自动建立依赖；宿主所有权与显式依赖决定随谁结束。
 - DURATION 在 ACTIVE／INACTIVE 都扣时，只有 ACTIVE 执行业务；最后一次业务先于到期，回调续期按最新状态生效。
 - 层数变化先发布再通知；结束先撤销输出、等待依赖，再收尾移除。
@@ -17,19 +17,23 @@ Effect 拥有可附着或独立存在的运行实例、私有状态、生效竞�
 
 `core/effect/` 提供通用实例、查询、安装与生命周期；`core/effects/` 提供标准规则成品；`content/` 提供具体角色的程序及标准成品的使用方式。
 
+`effect.ts` 定义实例及身份，`definition.ts` 定义共享程序，`group.ts` 定义分组规则并处理纯合并计算，`expiration.ts` 提供时间类型和纯时间算法，`query.ts` 负责实例、同组成员、竞争资格与有效层数查询。`operations.ts` 负责安装、启停、层数与时间的业务提交、生命周期结束及 Tick 推进。
+
 `BattleState.effects` 统一保存全部 Effect 实例。有宿主时通过宿主 Ref 查询，Unit.hooks 继续保存本地 Hook 登记；属性与限制贡献归对应 Capability。Effect 不解释 HP／EP 的结算流程，完整资源协议由 [Resource](resource.md) 说明。
 
 ## 2. Definition、实例与泛型
 
 Definition 是共享行为；实例保存稳定身份、实际来源、私有 state、expiration、enabled 与 lifecycle，Ref 携带可空的宿主引用。初始 state、来源、依赖引用、时间与启用许可属于本次安装输入，不覆写 Definition 的规则。有宿主的初始效果在宿主登记后正常安装，无宿主程序可以由 `initialEffects` 开场安装。
 
-`Effect<S, H, P>` 与 `Definition<S, H, P>` 配对私有状态、宿主与策略，精确 Ref 保持这些类型。`H extends Lifetime | null`，任意已登记且可用的 Lifetime 可作为宿主，`null` 表达无宿主。普通查询返回完整实体但不承诺未知私有形状；异构存储及调用自身 Definition 的边界集中擦除类型，内容不逐个断言私有 state。
+`Effect<S, H>` 是基础实例；`StackEffect<S, H>` 继承它，增加 `stackCount` 和具体叠层定义。`S` 表达私有状态，`H extends Lifetime | null` 表达宿主要求，任意已登记且可用的 Lifetime 可作为宿主，`null` 表达无宿主。精确 Ref 保留具体私有状态、宿主和叠层实例类型；普通查询返回基础 `Effect`，通过 `hasStack` 收窄叠层实例。
 
-`Policy` 为 `undefined | "END" | "DECAY"`。`Definition` 默认策略为 undefined，`Effect` 默认包含所有策略。非叠层使用 undefined，STACK 额外保存 stackCount，私有 state 不承担通用层数。统一的 `Expiration<P>` 对 undefined／END 允许全部三种形式，DECAY 仅允许 DURATION／INFINITE，不能使用缺少重启预算的 DEADLINE。这项配对贯穿安装、回调与时间写回；具体内容选定 END 或 DECAY 后取得准确上下文类型。
+`Definition<S, H, Self>` 与 `StackDefinition<S, H, Self>` 在内容声明时保留具体回调所接收的 self 类型，叠层回调可直接读取 `stackCount`。实例持有 `Self = never` 的共享定义，运行时仅在已经配对的真实实例与自身 Definition 的调用边界恢复该类型，不另建回调视图。普通查询不承诺未知私有状态的形状，内容不需要逐个断言自己已声明的类型。
+
+`Expiration` 不再携带叠层政策泛型。普通效果与 END 叠层允许全部时间形式；DECAY 只允许 DURATION／INFINITE，不能使用缺少重启预算的 DEADLINE。安装和 `setExpiration` 在实际输入边界依据叠层定义检查该约束。
 
 ### 存储与查询
 
-`BattleState.effects` 使用通用 `Store<Ref<Effect<any, any>>, Effect<any, any>>`，以 Ref 为键全局保存完整实例。安装新实例时分配一次 Ref，并从 `execution.nextEffectId` 取得全场递增的数字 ID，用于生成独立的 Hook／Contribution 登记名及稳定排序。合并与拒绝不分配新身份。
+`BattleState.effects` 使用通用 `Store<Ref<Effect>, Effect>`，以 Ref 为键全局保存完整实例。安装新实例时分配一次 Ref，并从 `execution.nextEffectId` 取得全场递增的数字 ID，用于生成独立的 Hook／Contribution 登记名及稳定排序。合并与拒绝不分配新身份。
 
 `all(battle)` 按登记顺序枚举，`forHost(battle, host)` 读取指定宿主的实例，`host = null` 读取无宿主实例。已知精确 Ref 时直接调用 `reference.get(battle)`；已知 Definition 时使用 `effects.get(battle, reference, definition)` 按 Definition 对象身份恢复具体类型。重新生效或修改 state 沿用同一个 Ref。
 
@@ -45,7 +49,7 @@ Action 与 Skill 的依赖分别绑定本轮 Execution 和 Activation 的 Ref，
 
 INSTALLING 已登记但尚未运行生效／推进；ACTIVE 执行输出；INACTIVE 保留实例与私有进度但不执行业务；ENDING 不再正常参与，等待收尾移除。enabled 表达外部许可，与竞争决定的 lifecycle 不同。
 
-同宿主同完整组先在未结束实例中选最高 priority，平局取先安装者，再检查 enabled。禁用最强者仍占组位置；它结束后才协调候补。重新生效调用 onEnable，不重跑 onInstall，也不默认重置状态或样本。
+仅 DEFAULT 组拥有 priority。同宿主同完整 DEFAULT 组先在未结束实例中选最高优先级，平局取先安装者，再检查 enabled。禁用最强者仍占组位置；它结束后才协调候补。UNIQUE、EXTEND、EXTEND_TIME 和 STACK 通过拒绝重复或合并来保留唯一实例，不参与生效竞争。重新生效调用 onEnable，不重跑 onInstall，也不默认重置状态或样本。
 
 Effect 整体竞争、属性 Contribution 的有效项选择、Hook 的阶段顺序和本次业务资格各有自己的职责，不能互相替代。
 
@@ -82,7 +86,7 @@ decreaseStack 是完整减层操作：剩余层数先发布再通知，耗尽正
 
 共享组 x 与独立无来源组 `(x, null)` 不匹配。Card 与 Unit 属于不同身份域。`cardForUnit` 从[部署历史](deployment.md#部署历史)反查来源 Card，来源退场后仍可使用。旧弹道及再部署保留同一 Card 分区，不同 Card 不合并。无 Card 的预置对象按各自 Unit 区分。
 
-Core 安装时采样 groupSource；调用者只传实际 source。该样本不替换 Effect.source，也不成为 Lifetime 依赖。来源由具体机制决定，例如海嗣转发宿主浊心斯卡蒂的身份。
+Core 安装时采样 `groupSource: GroupSource`，其取值为 Card Ref、Unit Ref 或 null；调用者只传实际 source。该样本不替换 Effect.source，也不成为 Lifetime 依赖。来源由具体机制决定，例如海嗣转发宿主浊心斯卡蒂的身份。
 
 这是明确的项目简化，不复刻原生匿名组迁移与 Character 前缀查找；实际内容影响见[来源分组调查](../research/cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。
 
@@ -96,13 +100,13 @@ onInstall 返回后重读实例与时间：仍 INSTALLING 才先结算到期，�
 
 ### 公开 API
 
-具体声明见[公共入口](../../src/core/effect/index.ts)。install 新建或合并成功返回所保留实例的 Ref，拒绝返回 null；回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，保留相同的宿主类型及实际可证明的普通／STACK 与到期政策，具体类型由 `effects.get(battle, reference, definition)` 按原 Definition 身份恢复。
+具体声明见[公共入口](../../src/core/effect/index.ts)。install 新建或合并成功返回所保留实例的 Ref，拒绝返回 null；回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，保留相同的宿主类型及实际可证明的实例类型，具体类型由 `effects.get(battle, reference, definition)` 按原 Definition 身份恢复。
 
-setState 仅改私有数据，各 lifecycle 均可写入，不恢复实例或刷新静态输出；需要更新贡献的内容显式调用所属领域操作。setEnabled 完整结算启停。setExpiration 只替换合法时间状态，不立即推进、到期或改 Lifetime；remaining 写零仍由既定检查点结算。时间写回保留 Ref 的普通／DECAY／Burst 约束。
+setState 仅改私有数据，各 lifecycle 均可写入，不恢复实例或刷新静态输出；需要更新贡献的内容显式调用所属领域操作。setEnabled 完整结算启停。setExpiration 只替换合法时间状态，不立即推进、到期或改 Lifetime；remaining 写零仍由既定检查点结算。时间写回保留 Ref 已明确的时间类型（例如 Burst 的 DURATION），并在运行时拒绝 DECAY 叠层的 DEADLINE。
 
 ### 结束流程
 
-`remove` 按 Ref 请求终结 Effect，默认原因为 `EXPLICIT`。Prepare 先发布 `ENDING`，按开始结束时的生命周期决定是否调用 `onDisable` 撤销原有输出，再协调组候补。依赖者完整 Finalize 后，调用当前实例的 `onEnd`，再移除实例。宿主 `ENDING` 时不启用候补。
+`remove` 按 Ref 请求终结 Effect，默认原因为 `EXPLICIT`。Prepare 先发布 `ENDING`，按开始结束时的生命周期决定是否调用 `onDisable` 撤销原有输出；仅 DEFAULT 组需要再协调候补。依赖者完整 Finalize 后，调用当前实例的 `onEnd`，再移除实例。宿主 `ENDING` 时不启用候补。
 
 onEnd 请求 Unit 离场会先标记 ENDING，宿主等到整个 Effect Finalize 返回才注销。普通 onTick 的后继按业务资格接续最新状态。 [请求、首次原因与嵌套结束](lifetime.md#请求与-prepare)
 
@@ -118,7 +122,7 @@ rate=0 不自动扣时，但 ACTIVE 仍运行 onTick；DEADLINE／INFINITE 的 A
 
 ### 必要回归场景
 
-安装中续期／结束、零时长不短暂生效、五种重应用、STACK 实际／有效层数与衰减、停用扣时、rate=0、末次业务与回调续期集中由[语义验收](verification.md)保障。具体效果只验证自身新增的玩法结果。
+安装中续期／结束、零时长不短暂生效、五种重应用、STACK 实际／有效层数与衰减、DECAY 到期形式的入口约束、停用扣时、rate=0、末次业务与回调续期集中由[语义验收](verification.md)保障。具体效果只验证自身新增的玩法结果。
 
 ## 7. Capability 的接入
 

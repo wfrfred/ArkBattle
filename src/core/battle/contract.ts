@@ -3,7 +3,7 @@ import type { Map } from "../battlefield/map/map.js";
 import type {
     Definition as EffectDefinition,
     Initial as EffectInitial,
-    Policy as EffectPolicy,
+    StackDefinition as StackEffectDefinition,
 } from "../effect/index.js";
 import type { Definition as ScheduleDefinition } from "./schedule/definition.js";
 import type { Definition as UnitDefinition, Unit } from "../unit/unit.js";
@@ -24,12 +24,10 @@ export interface Definition {
     readonly pushMultiplier: number;
 }
 
-type InitialEffect<S extends object, P extends EffectPolicy = EffectPolicy> = P extends EffectPolicy
-    ? {
-          readonly definition: EffectDefinition<S, null, P>;
-          readonly initial?: EffectInitial<S, P>;
-      }
-    : never;
+interface InitialEffect<S extends object> {
+    readonly definition: EffectDefinition<S, null> | StackEffectDefinition<S, null>;
+    readonly initial?: EffectInitial<S>;
+}
 
 export interface Input<
     CardStates extends readonly object[] = readonly object[],

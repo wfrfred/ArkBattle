@@ -3,7 +3,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Unit } from "../../unit.js";
 import type * as contribution from "../../../common/contribution.js";
 import * as attribute from "../../attribute.js";
-import type { Burst, Definition as BurstDefinition } from "./burst.js";
+import type { Burst, Definition as BurstDefinition, State as BurstState } from "./burst.js";
 import type { Ref } from "../../../common/ref.js";
 import type { Restrictions } from "./restriction.js";
 import { createRegistrationOperations } from "../../registration.js";
@@ -31,7 +31,7 @@ export interface Definition {
     readonly elementResistance: attribute.Definition;
     readonly damageResistance: attribute.Definition;
     readonly burstRecoverySpeed: attribute.Definition;
-    readonly bursts: Readonly<Record<Type, BurstDefinition>>;
+    readonly bursts: Readonly<Record<Type, BurstDefinition<BurstState, never>>>;
 }
 
 interface Attributes {

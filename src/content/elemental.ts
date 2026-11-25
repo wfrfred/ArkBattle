@@ -1,7 +1,6 @@
 import {
     Type,
     type Definition as ElementalDefinition,
-    type BurstDefinition,
 } from "../core/unit/capability/elemental/index.js";
 import { createStun, createParalysis } from "../core/effects/elemental/neural.js";
 import {
@@ -31,7 +30,7 @@ export interface Options {
     readonly burstRecoverySpeed?: number;
 }
 
-const bursts: Readonly<Record<Receiver, Readonly<Record<Type, BurstDefinition>>>> = {
+const bursts: Readonly<Record<Receiver, ElementalDefinition["bursts"]>> = {
     CHARACTER: {
         [Type.MANIA]: createActionScaledDamage({
             durationTicks: secondsToTicks(15),
@@ -63,13 +62,12 @@ const bursts: Readonly<Record<Receiver, Readonly<Record<Type, BurstDefinition>>>
         }),
     },
     ENEMY: {
-        // Erase only after the factory has paired its private state with its callbacks.
         [Type.MANIA]: createTimeScaledDamage({
             durationTicks: secondsToTicks(15),
             attackSpeed: 20,
             damagePerSecond: 160,
             damageIncreasePerSecond: 130,
-        }) as unknown as BurstDefinition,
+        }),
         [Type.NEURAL]: createParalysis({
             durationTicks: secondsToTicks(10),
             damage: 6000,

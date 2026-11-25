@@ -40,7 +40,7 @@ interface Behaviour<P extends object> {
         unit: Unit,
         params: P,
         scopes: readonly Ref<Lifetime>[],
-    ) => Result<Ref<Lifetime & Pick<Effect, "config" | "lifecycle">> | null>;
+    ) => Result<Ref<Effect> | null>;
 }
 
 function onGround(unit: Unit): boolean {
@@ -186,7 +186,7 @@ function create<P extends object>(
                     behaviour.retainOnLeave ? [] : [reference],
                 );
                 battle = installed.state;
-                const effect = installed.value as Ref<Effect> | null;
+                const effect = installed.value;
 
                 if (reference.get(battle)?.lifecycle !== "ACTIVE") {
                     return !behaviour.retainOnLeave && effect !== null
