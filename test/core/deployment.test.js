@@ -31,6 +31,7 @@ const commonCard = {
     },
     slot: 1,
     supply: {
+        consumption: 1,
         stock: 1,
         stockLimit: 1,
         activeLimit: 1,
@@ -586,33 +587,42 @@ test("only external movement recycles the card, and neither movement refunds DP"
     }
 });
 
-test("default cards start cooldown on deployment and only explicit recharge restores stock", () => {
-    const initial = battle([], {
-        deployment: {
-            definition: account,
-            cards: [{
-                unitDefinition: operator,
-                definition: {
-                    ...commonCard,
-                    policy: "DEFAULT",
-                    supply: { ...commonCard.supply, cooldown: 2 },
-                },
-            }],
-        },
-    });
-    const card = cards.ref([...cards.all(initial)][0]);
-    const request = deployment.createRequest(initial, card, [1, 2], null);
-    const deployed = deployment.deploy(initial, request);
-    assert.equal(deployed.value.type, "DEPLOYED");
-    const reference = deployed.value.unit;
-    assert.equal(card.get(deployed.state).supply.cooldown, 2);
-    let state = deployment.retreat(step(deployed.state, []), reference);
-    assert.equal(card.get(state).supply.stock, 0);
+test("default cards start cooldown even without stock consumption and only explicit recharge restores stock", () => {
+    for (const consumption of [1, 0]) {
+        const initial = battle([], {
+            deployment: {
+                definition: account,
+                cards: [{
+                    unitDefinition: operator,
+                    definition: {
+                        ...commonCard,
+                        policy: "DEFAULT",
+                        supply: { ...commonCard.supply, consumption, stock: consumption, cooldown: 2 },
+                    },
+                }],
+            },
+        });
+        const card = cards.ref([...cards.all(initial)][0]);
+        const request = deployment.createRequest(initial, card, [1, 2], null);
+        assert.equal(request.quote.stock, consumption);
+        const deployed = deployment.deploy(initial, request);
+        assert.equal(deployed.value.type, "DEPLOYED");
+        const reference = deployed.value.unit;
+        assert.equal(card.get(deployed.state).supply.cooldown, 2);
+        assert.equal(card.get(deployed.state).supply.stock, 0);
+        let state = deployment.retreat(step(deployed.state, []), reference);
+        assert.equal(card.get(state).supply.stock, 0);
 
-    state = deck.replace(state, cards.supply.recharge(card.get(state), 1));
-    assert.deepEqual(deployment.evaluate(state, request), { type: "REJECTED", reason: "COOLDOWN" });
-    state = step(state, []);
-    assert.equal(deployment.deploy(state, request).value.type, "DEPLOYED");
+        if (consumption > 0) {
+            state = deck.replace(state, cards.supply.recharge(card.get(state), 1));
+        }
+        assert.deepEqual(deployment.evaluate(state, request), { type: "REJECTED", reason: "COOLDOWN" });
+        state = step(state, []);
+        const redeployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
+        assert.equal(redeployed.value.type, "DEPLOYED");
+        assert.equal(card.get(redeployed.state).supply.stock, 0);
+        assert.equal(card.get(redeployed.state).supply.cooldown, 2);
+    }
 });
 
 test("queued recovery preserves the current interval and transfers at most one available share per Tick", () => {

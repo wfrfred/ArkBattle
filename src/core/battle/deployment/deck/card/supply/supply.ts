@@ -7,6 +7,7 @@ import { resolveStockLimit } from "./query.js";
 
 export type Definition<P extends Policy = Policy> = {
     readonly stock: number;
+    readonly consumption: number;
     readonly stockLimit: number | null;
     readonly activeLimit: number | null;
     readonly cooldown: number;

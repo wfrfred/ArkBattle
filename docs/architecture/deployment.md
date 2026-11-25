@@ -38,7 +38,7 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 `Card<S, P>` 是按策略区分的判别联合，与 `Definition<S, P>` 共享私有状态类型 `S` 和策略类型 `P`。初始化从 `definition.policy` 设置实例顶层的 `card.policy`，它在卡牌生命周期内保持稳定。策略为 `DEFAULT`、`UNIQUE` 或 `QUEUED`。
 
-`dp` 配置基础费用和涨费，`Supply.Definition<P>` 配置初始库存、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。部署限制在 Card 外层，参与整次部署的资格判断。
+`dp` 配置基础费用和涨费，`Supply.Definition<P>` 配置初始库存、普通部署的库存消耗量 `consumption`、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。部署限制在 Card 外层，参与整次部署的资格判断。
 
 Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S, P>`，由部署或离场结算一次写回。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
 
@@ -72,7 +72,7 @@ Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card。`s
 
 DeployRequest 明确 Card Ref、落点、方向（`null` 表示未指定）、Quote、本次限制及 Hook。普通 Command 与 createRequest 同样显式提供方向。普通 Command 生成默认请求，Content 可以按本次业务提供报价和策略；显示／点选与部署 Context 各保留实际所需输入，不伪造落点。
 
-Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表示正常零费；stock／slots 可为零。公开查询与执行共用请求校验，合法请求中的未知 Card 返回业务拒绝。
+Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表示正常零费；stock／slots 可为零。普通 `createRequest` 从 Card 的 `supply.consumption` 与 `slot` 生成默认库存和额度消费；consumption 为必填非负安全整数，特殊部署仍可显式指定 quote.stock。公开查询与执行共用请求校验，合法请求中的未知 Card 返回业务拒绝。
 
 固定前提由代码检查：Card 存在、资源足够、支付后不低于 DP 下限、落点合法、同 Slot 不冲突。不能用限制豁免保留无法履行的消费承诺。冷却、同卡在场上限、部署位上限及普通地块许可属于可配置限制。
 
@@ -130,7 +130,7 @@ removing 和依赖收尾期间的 removed 登记变化进入注销前快照；�
 
 `stock` 是可用库存。`QUEUED` 的 `supply.pending` 是待恢复份数，总持有量为 `stock + pending`。Supply 的公开接口由 Card 的 `supply` 命名空间导出。`consume` 只扣 `stock`，库存不足时拒绝。`recharge` 直接增加可用库存。`enqueue` 要求 `Card<S, "QUEUED">`，增加待恢复份数。通用 Card 可通过 `card.policy === "QUEUED"` 收窄。两种补充都受总持有上限约束。
 
-每张卡保存一个 `cooldown`，记录当前段的剩余 Tick。DEFAULT 部署后开始冷却，普通离场保留库存。UNIQUE 普通离场立即归还一份库存并开始冷却。两种策略都等冷却到零才允许再次部署。QUEUED 普通离场追加一份待恢复库存，已在推进的恢复段保留余时。QUEUED 的可用库存可以在恢复期间部署。
+每张卡保存一个 `cooldown`，记录当前段的剩余 Tick。DEFAULT 部署后开始冷却，普通离场保留库存。默认消耗为零的 Card（如风雪之眼）普通部署不扣库存，仍启动冷却；库存容量不限不等于免消耗。见[原生策略与消费行为](../research/cases/24-deployment-cost-and-supply.md#计时与消耗是不同的原生维度)。UNIQUE 普通离场立即归还一份库存并开始冷却。两种策略都等冷却到零才允许再次部署。QUEUED 普通离场追加一份待恢复库存，已在推进的恢复段保留余时。QUEUED 的可用库存可以在恢复期间部署。
 
 调度器每 Tick 通过 Deck 逐张调用 `card.advance`。Card 先推进库存和冷却，再用已发布的状态执行 `Definition.onTick`。暂停保留余时。QUEUED 中一段到期时，将一份从 `pending` 移到 `stock`，必要时用有效时长开始下一段。每次推进最多恢复一份，包括零时长。`setCooldown`、`reduceCooldown` 只改当前余时，设置为零后由下一次正常推进结算队列。时长 Contribution 作用于未来段。
 

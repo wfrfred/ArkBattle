@@ -120,16 +120,16 @@
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
-| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card) | [初始化先保留互异 Card 身份，添加后才能查询、成为可用的依赖目标，且按登记顺序追加](../../test/core/deployment.test.js#L56) |
-| [Deployment · 待部署区顺序](deployment.md#待部署区顺序) | [两个 Card 收费变化都参与当 Tick 排序，撤销规则保留已排顺序，显式排序可同步重排](../../test/core/deployment.test.js#L78) |
-| [Deployment · 部署历史](deployment.md#部署历史) | [多张不同价格的 Card 共用 Unit 蓝图，开场 Unit 无 Card，成功记录按实际顺序先于 entered 发布](../../test/core/deployment.test.js#L121) |
-| [Deployment · 请求与统一资格](deployment.md#请求与统一资格) | [策略覆盖不能豁免库存、支付、地图和占格固有前提，免支付及合法零支付均保有本次真实部署事实](../../test/core/deployment.test.js#L304)<br>[Card Definition 与 DeployRequest 各在本身入口拒绝同列表重复限制 ID](../../test/core/deployment.test.js#L343)<br>[分层按 ID 覆盖之后才求有效组贡献，并用稳定拒绝原因报告第一项失败](../../test/core/deployment.test.js#L365) |
-| [Deployment · 普通部署流程](deployment.md#普通部署流程) | [预览和实际操作共享报价与资格，拒绝无消费或构造前 Hook，成功先结账，再仅向本次 Card 派发构造前 Hook 接续 Unit.Input，然后构造和入场，并保留本次摆放方向](../../test/core/deployment.test.js#L172) |
-| [Deployment · 卡牌费用](deployment.md#卡牌费用) | [实际部署报价采用费用覆写与有效的涨费倍率上限，分两段取整并最后加固定值，移除贡献后恢复报价](../../test/core/deployment.test.js#L397) |
-| [Deployment · 离场结算](deployment.md#离场结算) | [撤退先退款、注销统一回收 Card，死亡无退款且即时清格，额度延后一秒归还，同一 Card 再部署产生新身份而可反查旧来源](../../test/core/deployment.test.js#L397)<br>[SELF 与 EXTERNAL 都不返还撤退 DP，只有 EXTERNAL 启动 Card 回收和涨费](../../test/core/deployment.test.js#L569) |
-| [Deployment · 库存与计时](deployment.md#库存与计时) | [DEFAULT 部署开钟，撤退不重置计时也不还库存，显式补货仍等待原冷却后方可部署](../../test/core/deployment.test.js#L589)<br>[QUEUED 追加与暂停保留当前段，可边恢复边部署，归零也每 Tick 最多转一份，当次 onTick 读取已发布库存](../../test/core/deployment.test.js#L618)<br>[持有上限同时计可用及待恢复，缩容优先保留队列、裁空清计时和暂停，在场上限只限制新部署](../../test/core/deployment.test.js#L695) |
-| [Deployment · DP](deployment.md#dp) | [真实 Tick 产生的自然 DP 在同 Tick 部署命令前可用](../../test/core/deployment.test.js#L753)<br>[负 DP 半速、跨零保留已积进度，满额期间不积攒待恢复预算](../../test/core/deployment.test.js#L779)<br>[上限变更默认保留超额，显式裁剪只向下，有效下限控制足额支付，提高下限会同步补齐余额](../../test/core/deployment.test.js#L811)<br>[恢复倍率的登记与移除保留已经积累的自然回复进度](../../test/core/deployment.test.js#L863) |
-| [Deployment · Slot](deployment.md#slot) | [有效限位增加可多部署，撤销不驱逐已有单位，超额时零占用部署仍允许](../../test/core/deployment.test.js#L512)<br>[基础不限位不受有限增量约束](../../test/core/deployment.test.js#L548) |
+| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card) | [初始化先保留互异 Card 身份，添加后才能查询、成为可用的依赖目标，且按登记顺序追加](../../test/core/deployment.test.js#L58) |
+| [Deployment · 待部署区顺序](deployment.md#待部署区顺序) | [两个 Card 收费变化都参与当 Tick 排序，撤销规则保留已排顺序，显式排序可同步重排](../../test/core/deployment.test.js#L79) |
+| [Deployment · 部署历史](deployment.md#部署历史) | [多张不同价格的 Card 共用 Unit 蓝图，开场 Unit 无 Card，成功记录按实际顺序先于 entered 发布](../../test/core/deployment.test.js#L122) |
+| [Deployment · 请求与统一资格](deployment.md#请求与统一资格) | [策略覆盖不能豁免库存、支付、地图和占格固有前提，免支付及合法零支付均保有本次真实部署事实](../../test/core/deployment.test.js#L305)<br>[Card Definition 与 DeployRequest 各在本身入口拒绝同列表重复限制 ID](../../test/core/deployment.test.js#L344)<br>[分层按 ID 覆盖之后才求有效组贡献，并用稳定拒绝原因报告第一项失败](../../test/core/deployment.test.js#L366) |
+| [Deployment · 普通部署流程](deployment.md#普通部署流程) | [预览和实际操作共享报价与资格，拒绝无消费或构造前 Hook，成功先结账，再仅向本次 Card 派发构造前 Hook 接续 Unit.Input，然后构造和入场，并保留本次摆放方向](../../test/core/deployment.test.js#L173) |
+| [Deployment · 卡牌费用](deployment.md#卡牌费用) | [实际部署报价采用费用覆写与有效的涨费倍率上限，分两段取整并最后加固定值，移除贡献后恢复报价](../../test/core/deployment.test.js#L398) |
+| [Deployment · 离场结算](deployment.md#离场结算) | [撤退先退款、注销统一回收 Card，死亡无退款且即时清格，额度延后一秒归还，同一 Card 再部署产生新身份而可反查旧来源](../../test/core/deployment.test.js#L398)<br>[SELF 与 EXTERNAL 都不返还撤退 DP，只有 EXTERNAL 启动 Card 回收和涨费](../../test/core/deployment.test.js#L570) |
+| [Deployment · 库存与计时](deployment.md#库存与计时) | [DEFAULT 按卡配置决定普通部署扣库存或免扣库存，均开钟；撤退不重置计时也不还库存，显式补货仍等待原冷却后方可部署](../../test/core/deployment.test.js#L590)<br>[QUEUED 追加与暂停保留当前段，可边恢复边部署，归零也每 Tick 最多转一份，当次 onTick 读取已发布库存](../../test/core/deployment.test.js#L628)<br>[持有上限同时计可用及待恢复，缩容优先保留队列、裁空清计时和暂停，在场上限只限制新部署](../../test/core/deployment.test.js#L705) |
+| [Deployment · DP](deployment.md#dp) | [真实 Tick 产生的自然 DP 在同 Tick 部署命令前可用](../../test/core/deployment.test.js#L763)<br>[负 DP 半速、跨零保留已积进度，满额期间不积攒待恢复预算](../../test/core/deployment.test.js#L789)<br>[上限变更默认保留超额，显式裁剪只向下，有效下限控制足额支付，提高下限会同步补齐余额](../../test/core/deployment.test.js#L821)<br>[恢复倍率的登记与移除保留已经积累的自然回复进度](../../test/core/deployment.test.js#L873) |
+| [Deployment · Slot](deployment.md#slot) | [有效限位增加可多部署，撤销不驱逐已有单位，超额时零占用部署仍允许](../../test/core/deployment.test.js#L513)<br>[基础不限位不受有限增量约束](../../test/core/deployment.test.js#L549) |
 
 ## Projectile 与 Terrain
 

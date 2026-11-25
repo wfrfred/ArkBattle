@@ -9,7 +9,7 @@ export function createDefinition({ retreatRestrictions = [], refund = null } = {
 
 export function createCardDefinition({
     cost = 0, redeployTicks = 0, slots = 0,
-    stock = 1, stockLimit = 1, activeLimit = 1,
+    consumption = 1, stock = 1, stockLimit = 1, activeLimit = 1,
     policy = "UNIQUE", increase = true,
     placement = "ALL", allowedSiteConditions = [conditions.normal], deploymentRestrictions = [], hooks = Hooks.empty(),
     initialize = battle => ({ state: battle, value: {} }),
@@ -20,7 +20,7 @@ export function createCardDefinition({
         dp: { parameters: dp.create({ cost, step: 0.5, maxMultiplier: 2 }), ...(policy === "UNIQUE" ? { increase } : {}) },
         slot: slots,
         supply: {
-            stock, stockLimit, activeLimit, cooldown: redeployTicks,
+            consumption, stock, stockLimit, activeLimit, cooldown: redeployTicks,
         },
         deploymentRestrictions: [{
             id: "deployment/site",

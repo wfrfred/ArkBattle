@@ -52,7 +52,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         },
         slot: 1,
         supply: {
-            stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 10,
+            consumption: 1, stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 10,
         },
         deploymentRestrictions: [], hooks: Hooks.empty(),
         initialize: (state) => ({ state, value: {} }),

@@ -22,6 +22,7 @@ export function create({ cost, respawnTime }: Parameters): CardDefinition<object
         policy: "UNIQUE",
         supply: {
             stock: 1,
+            consumption: 1,
             stockLimit: 1,
             activeLimit: 1,
             cooldown: secondsToTicks(respawnTime),

@@ -63,7 +63,7 @@ export function createRequest<T extends Card<any>>(
         direction,
         quote: {
             dp: resolveCost(battle, self),
-            stock: 1,
+            stock: self.definition.supply.consumption,
             slots: self.definition.slot,
         },
         restrictions: [],

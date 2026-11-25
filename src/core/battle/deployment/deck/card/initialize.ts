@@ -39,6 +39,7 @@ export function initialize<
     assertNonnegativeSafeInteger(cooldown, "card redeployment ticks");
     assertNonnegativeSafeInteger(slot, "card deployment slots");
     assertNonnegativeSafeInteger(stock, "card stock");
+    assertNonnegativeSafeInteger(supply.consumption, "card stock consumption");
 
     if (stockLimit !== null) {
         assertNonnegativeSafeInteger(stockLimit, "card stock limit");

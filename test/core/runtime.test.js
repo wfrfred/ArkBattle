@@ -21,7 +21,7 @@ const cardDefinition = {
     dp: { parameters: cards.dp.create({ cost: 5 }), increase: false },
     slot: 1,
     supply: {
-        stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
+        consumption: 1, stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
     },
     deploymentRestrictions: [], hooks: Hooks.empty(),
     initialize: (current) => ({ state: current, value: {} }),
