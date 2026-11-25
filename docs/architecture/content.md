@@ -122,7 +122,9 @@ const definition = {
 
 `ActionCapability<H>` 的配置用具体宿主检查行动列表并为 `select` 提供宿主类型。`SkillCapability<H>` 的配置以同样方式检查选定技能。具体 Action、Skill 和 Activation Definition 声明回调所需的最小宿主能力，再组装进单位 Definition。
 
-Effect 也通过 Definition 声明宿主要求。调用者先确定具体构造分支，Catalog 自动推导标准状态和必需 Initial；允许额外已知 Initial，不为联合 Definition 维护并行校验层。
+Effect 也通过 Definition 声明宿主要求，安装时显式提供统一的 Initial，由 Definition.initialize 构造私有状态。
+
+Unit 的调用者先确定具体构造分支，Capability Catalog 自动推导标准状态和必需 Initial；允许额外已知 Initial，不为联合 Definition 维护并行校验层。
 
 干员的 `create(configuration, tables)` 返回 Unit Definition。编队把它与独立的 Card Definition 绑定为开场手牌，普通干员的费用与再部署时间可由 `operators/card.ts` 组装。Unit 的 `Deployable` 和 `Occupancy` 由各具体内容声明。预布置和普通出生直接使用 Unit Definition，方向属于本次 Initial。[干员 Card 工厂](../../src/content/operators/card.ts) · [部署](deployment.md#静态内容与-card)
 

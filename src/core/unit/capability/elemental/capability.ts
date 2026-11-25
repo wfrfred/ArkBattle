@@ -58,7 +58,7 @@ export function hasElemental<U extends Unit>(unit: U): unit is U & Elemental {
     return "elemental" in unit && "elemental" in unit.definition;
 }
 
-export function elementValues(value: number): Values {
+export function elementValues(value: number): Record<Type, number> {
     return {
         NEURAL: value,
         EROSION: value,

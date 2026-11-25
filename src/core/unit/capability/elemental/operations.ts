@@ -84,10 +84,9 @@ export function commitDamage(
     const epLoss = Math.min(epBefore, received.amount);
     const epAfter = epBefore - epLoss;
     const depleted = epAfter === 0;
-    const ep =
-        epLoss > 0 && depleted
-            ? elementValues(0)
-            : { ...normalizedEp(self, maximum), [type]: epAfter };
+    const ep = epLoss > 0 && depleted ? elementValues(0) : normalizedEp(self, maximum);
+    ep[type] = epAfter;
+
     if (ELEMENT_TYPES.some((type) => ep[type] !== self.elemental.ep[type])) {
         battle = replaceUnits(battle, [replaceIn(self, ["elemental", "ep"], ep)]);
     }
@@ -143,7 +142,7 @@ export function commitHealing(
     const self = target.get(battle)!;
     const maximum = query.resolveMaxEp(battle, self);
     const epBefore = normalizedEp(self, maximum);
-    const epGain = { ...elementValues(0) };
+    const epGain = elementValues(0);
     const epAfter = { ...epBefore };
 
     for (const type of ELEMENT_TYPES) {
@@ -238,7 +237,7 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
     }
 
     const maximum = query.resolveMaxEp(battle, self);
-    const ep = { ...normalizedEp(self, maximum) };
+    const ep = normalizedEp(self, maximum);
 
     for (const type of ELEMENT_TYPES) {
         ep[type] = Math.min(maximum, ep[type] + power);
@@ -251,7 +250,7 @@ export function advance(battle: BattleState, host: Ref<Unit & Elemental>): Battl
     return replaceUnits(battle, [replaceIn(self, ["elemental", "ep"], ep)]);
 }
 
-function normalizedEp(self: Unit & Elemental, maximum: number): Values {
+function normalizedEp(self: Unit & Elemental, maximum: number): Record<Type, number> {
     const ep = { ...self.elemental.ep };
 
     for (const type of ELEMENT_TYPES) {

@@ -1,7 +1,6 @@
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
-import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import { create as createElemental } from "../../elemental.js";
 import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef } from "../../../core/unit/index.js";
@@ -92,7 +91,7 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
             id: "mudrock/install-initial-effects",
             priority: 0,
             invoke(state, self) {
-                if (!hasVitality(self) || !hasTargetable(self)) {
+                if (!hasVitality(self)) {
                     return { state, value: undefined };
                 }
 
