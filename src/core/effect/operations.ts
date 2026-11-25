@@ -5,13 +5,7 @@ import { assertNonnegativeSafeInteger } from "../common/assert.js";
 import { available, end, type Lifetime } from "../lifetime/index.js";
 import { register } from "../lifetime/operations.js";
 import type { Definition, StackDefinition } from "./definition.js";
-import {
-    assertCompatible,
-    mergeExpiration,
-    mergeStack,
-    validateExpiration,
-    type Group,
-} from "./group.js";
+import { assertCompatible, mergeExpiration, mergeStack, validateExpiration } from "./group.js";
 import {
     type Effect,
     type StackEffect,
@@ -26,21 +20,13 @@ import { all, canEnable, forGroup, hasStack, resolveGroupSource } from "./query.
 export function install<S extends object, H extends Lifetime | null>(
     battle: BattleState,
     host: HostRef<H>,
-    definition: Definition<S, H> & {
-        readonly group?: Group & { readonly type: "DEFAULT" | "UNIQUE" };
-    },
-    initial: Initial,
-): Result<Ref<Effect<S, H>> | null>;
-export function install<S extends object, H extends Lifetime | null>(
-    battle: BattleState,
-    host: HostRef<H>,
     definition: StackDefinition<S, H>,
     initial: Initial,
 ): Result<Ref<StackEffect<object, H>> | null>;
 export function install<S extends object, H extends Lifetime | null>(
     battle: BattleState,
     host: HostRef<H>,
-    definition: Definition<S, H> | StackDefinition<S, H>,
+    definition: Definition<S, H>,
     initial: Initial,
 ): Result<Ref<Effect<object, H>> | null>;
 export function install(

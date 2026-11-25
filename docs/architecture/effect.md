@@ -102,7 +102,7 @@ onInstall 返回后重读实例与时间：仍 INSTALLING 才先结算到期，�
 
 ### 公开 API
 
-具体声明见[公共入口](../../src/core/effect/index.ts)。`install(battle, host, definition, initial)` 的四个参数均必填；新建或合并成功返回所保留实例的 Ref，拒绝返回 null。回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，保留相同的宿主类型及实际可证明的实例类型，具体类型由 `effects.get(battle, reference, definition)` 按原 Definition 身份恢复。
+具体声明见[公共入口](../../src/core/effect/index.ts)。`install(battle, host, definition, initial)` 的四个参数均必填；新建或合并成功返回所保留实例的 Ref，拒绝返回 null。回调结束该实例不撤销创建／合并事实。普通与叠层安装各有一个签名，返回 Ref 一律擦除私有状态类型，保留宿主类型及实际可证明的实例类型。具体私有类型由 `effects.get(battle, reference, definition)` 按原 Definition 身份恢复。
 
 setState 仅改私有数据，各 lifecycle 均可写入，不恢复实例或刷新静态输出；需要更新贡献的内容显式调用所属领域操作。setEnabled 完整结算启停。setExpiration 只替换合法时间状态，不立即推进、到期或改 Lifetime；remaining 写零仍由既定检查点结算。时间写回保留 Ref 已明确的时间类型（例如 Burst 的 DURATION），并在运行时拒绝 DECAY 叠层的 DEADLINE。
 
