@@ -1,6 +1,6 @@
 # Deployment、Card 与 Unit 生命周期
 
-Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨部署资源，Deployable 保存本次场上部署事实，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、主动撤退及被动死亡。
+Deployment 完成部署资格、消费、构造前装配与实例创建；Card 保存跨部署资源，Deployable 保存本次场上部署事实，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、主动撤退及被动死亡。
 
 ## 关键语义
 
@@ -21,7 +21,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 | Card 集合、排序、费用截断上限 | Deck |
 | DP 余额、上下限和自然回复 | DP |
 | 全局部署位上限、占用和待归还份额 | Slot |
-| 单卡库存、费用阶段、时钟、成功部署通知和私有 state | Card |
+| 单卡库存、费用阶段、时钟、构造前 Hook 和私有 state | Card |
 | 默认返费规则、本次 Card／COST／额度／退款与撤退限制 | Deployable |
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
@@ -30,7 +30,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 ## 静态内容与 Card
 
-开场手牌的每一项绑定一份 `definition` 和一份 `unitDefinition`。Card Definition 描述卡牌政策和程序。Unit Definition 描述场上单位，并提供卡牌部署所需的 `occupancy` 和 `deployable`。部署时直接复用该 Unit Definition。多张 Card 可以共用一份 Unit Definition，各有独立身份和资源。
+开场手牌的每一项绑定一份 `definition` 和一份 `unitDefinition`。Card Definition 描述卡牌政策和程序。Unit Definition 描述场上单位，并提供卡牌部署所需的 `occupancy` 和 `deployable`。部署时默认复用该 Unit Definition，可由本次构造前 Hook 调整。多张 Card 可以共用一份 Unit Definition，各有独立身份和资源。
 
 Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Route 需要本次路线的 Plan 和 offset，因此带 Route 的蓝图在 Card 构造时由类型检查拒绝。
 
@@ -82,11 +82,11 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 
 ## 普通部署流程
 
-合并并判定资格 → 采样基础费用与本次 COST → 提交 DP、部署位、库存及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered` → 派发本次 Card 的 `deployed`。
+合并并判定资格 → 采样基础费用与本次 COST → 提交 DP、部署位、库存及部署间隔 → 同步派发本次 Card 的 `card.beforeDeploy` → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
 
 付款使用当前 DP 余额。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
-Unit 构造依次装配 Request Hook、Capability 和 Unit Definition 的程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Unit.add 完成登记、全场及本地 entered，Occupancy 配对由其本地程序处理。Unit.add 返回后，Deployment 直接派发对应 Card 的 deployed，不给 Unit 注入部署通知 Hook。
+Unit 构造从本次调整后的 Unit.Input 装配输入 Hook、Capability 和 Unit Definition 的程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Unit.add 完成登记、全场及本地 entered，Occupancy 配对由其本地程序处理。
 
 ## 开场 Unit
 
@@ -114,17 +114,17 @@ DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占
 
 公共阶段为：发布 ENDING／派发 removing → 真实依赖完整结束 → 捕获当前 removed 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 removed → 全局 removed。
 
-本地默认同级装配顺序为 Request Hook、Capability 程序（包含 Deployment 离场结算与 Occupancy 配对清理）、Unit Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
+本地默认同级装配顺序为 Unit.Input Hook、Capability 程序（包含 Deployment 离场结算与 Occupancy 配对清理）、Unit Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
 
 removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
 `slot.used` 在 `removing`、依赖结束和死亡延迟期间仍计入本次份额。预置份额为零。部署历史用于来源反查，`deployedCount` 用于当前在场统计。
 
-## 部署观察
+## 构造前 Hook
 
-`card.deployed` 只通知本次成功部署的 Card，直接从该 Card 的 Hooks 派发；拒绝部署不派发。Deployed 固定 `{ unit, request }` 创建事实，支付读取 request.quote。通知在 Unit.add 返回后发生，即使入场程序已改变或移除新 Unit，成功部署事实仍成立；需要实时状态时按 Ref 重新查询。全场观察者通过 `battle.unit.entered` 及 Deployable 的 Card 关联区分部署入场，不维护另一份全局 deployed Hook。
+`type BeforeDeployHook = Hook<DeployRequest, UnitInput<UnitDefinition>>`。资格通过并提交 DP、部署位、库存和部署间隔之后，`Unit.initialize` 之前，直接从本次 Card 的 Hooks 同步派发 `card.beforeDeploy`；拒绝部署不派发。Context 固定为 DeployRequest，工作值为本次 Unit.Input。内容可以调整本次 Unit 的 definition、initial 和 hooks，已确认的落点及支付事实不属于修改职责。Card 的 Hooks 不复制给 Unit，不提前保存一组 Unit 程序。
 
-公共候选、priority、替换和嵌套派发见 [Hook](hook.md)。一次性来源在同步触发新部署前先消费自己的机会，不用 Event 执行业务。
+公共候选、priority、替换和嵌套派发见 [Hook](hook.md)。多卡共享的效果通过同一个 Effect Ref 读取最新状态，并在可能重入的操作前先发布机会消耗。构造前时点本身不保证重入安全；同组优惠或报价等更早使用的机会仍须在可能重入的操作前消费，不用 Event 执行业务。全场观察者通过 `battle.unit.entered` 及 Deployable 的 Card 关联区分部署入场；不提供额外的 Card 后置通知或全局 deployed Hook。
 
 ## 库存与计时
 

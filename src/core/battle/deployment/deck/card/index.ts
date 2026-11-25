@@ -16,7 +16,7 @@ export { allows } from "./query.js";
 
 export { setState, setRestriction, removeRestriction } from "./operations.js";
 
-export { deployed, setHook, removeHook, type Deployed, type Hook } from "./hook.js";
+export { beforeDeploy, setHook, removeHook, type BeforeDeployHook } from "./hook.js";
 
 export * as supply from "./supply/index.js";
 

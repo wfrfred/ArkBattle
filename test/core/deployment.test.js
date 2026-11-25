@@ -169,8 +169,9 @@ test("different Card definitions can deploy the same Unit Definition used by an 
     }
 });
 
-test("preview, evaluation and deployment share a request, rejection spends nothing, and Card notification follows Unit entered", () => {
+test("preview, evaluation and deployment share a request, rejection spends nothing, and Card prepares Unit input after consumption", () => {
     const constructions = [];
+    const preparations = [];
     const deployments = [];
     let entered = false;
     const definition = {
@@ -184,6 +185,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
                 applyWay: "NONE",
                 period: { type: "FIXED", ticks: 1 },
                 initialize(current) {
+                    assert.equal(preparations.length, 1);
                     constructions.push({
                         dp: current.deployment.dp.balance,
                         stock: card.get(current).supply.stock,
@@ -203,20 +205,37 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
         ] },
     });
     const [card, otherCard] = [...cards.all(state)].map(cards.ref);
-    state = cards.setHook(state, otherCard, cards.deployed, {
+    state = cards.setHook(state, otherCard, cards.beforeDeploy, {
         priority: 0,
-        id: "deployed",
-        invoke: () => assert.fail("another Card cannot receive this notification"),
+        id: "before-deploy",
+        invoke: () => assert.fail("another Card cannot prepare this deployment"),
     });
-    state = cards.setHook(state, card, cards.deployed, {
+    state = cards.setHook(state, card, cards.beforeDeploy, {
         priority: 0,
-        id: "deployed",
-        invoke(current, { unit, request }) {
-            assert.equal(entered, true);
+        id: "before-deploy",
+        invoke(current, request, input) {
+            assert.equal(entered, false);
+            assert.deepEqual(constructions, []);
             assert.equal(request.card, card);
-            assert.notEqual(unit.ref.get(current), undefined);
-            deployments.push({ id: unit.ref.id, tile: request.tilePosition });
-            return { state: current, value: undefined };
+            assert.equal(current.deployment.dp.balance, 40);
+            assert.equal(card.get(current).supply.stock, 0);
+            assert.equal(current.deployment.slot.used, 1);
+            preparations.push(request);
+            return {
+                state: current,
+                value: {
+                    ...input,
+                    hooks: input.hooks.set(unitLifecycle.entered, {
+                        priority: 0,
+                        id: "observe-prepared-unit",
+                        invoke(current, unit) {
+                            assert.notEqual(unit.ref.get(current), undefined);
+                            deployments.push({ id: unit.ref.id, tile: request.tilePosition });
+                            return { state: current, value: undefined };
+                        },
+                    }),
+                },
+            };
         },
     });
     const request = deployment.createRequest(state, card, [1, 2], "LEFT");
@@ -240,6 +259,7 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
         state,
         value: { type: "REJECTED", reason: "RULE" },
     });
+    assert.deepEqual(preparations, []);
     assert.deepEqual(deployments, []);
 
     const allowed = {
@@ -267,10 +287,12 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
     const positions = deployment.positions(state, allowed);
     assert.ok(positions.every(([row]) => row === 0));
     assert.ok(positions.some(([row, column]) => row === 0 && column === 2));
+    assert.deepEqual(preparations, []);
     assert.deepEqual(constructions, []);
     const deployed = deployment.deploy(state, allowed);
     state = deployed.state;
     assert.equal(deployed.value.type, "DEPLOYED");
+    assert.deepEqual(preparations, [allowed]);
     assert.deepEqual(deployments, [{ id: deployed.value.unit.id, tile: [0, 2] }]);
     assert.deepEqual(constructions, [{ dp: 40, stock: 0, slots: 1 }]);
     assert.equal(entered, true);

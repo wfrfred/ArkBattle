@@ -1,21 +1,15 @@
 import type { Entry } from "../../../../common/collection/entries.js";
 import type { Ref } from "../../../../common/ref.js";
 import * as hooks from "../../../../hook.js";
-import type { Unit } from "../../../../unit/unit.js";
-import type { Deployable } from "../../../../unit/capability/deployable/capability.js";
-import type { State as BattleState } from "../../../state.js";
+import type { Input as UnitInput } from "../../../../unit/initialize.js";
+import type { Result, State as BattleState } from "../../../state.js";
 import type { DeployRequest } from "../../request.js";
 import { replace } from "../operations.js";
-import type { Card } from "./card.js";
+import type { Card, UnitDefinition } from "./card.js";
 
-export interface Deployed {
-    readonly unit: Unit & Deployable;
-    readonly request: DeployRequest;
-}
+export type BeforeDeployHook = hooks.Hook<DeployRequest, UnitInput<UnitDefinition>>;
 
-export type Hook = hooks.Hook<Deployed, void>;
-
-export const deployed = hooks.key<Hook, Card>("card.deployed");
+export const beforeDeploy = hooks.key<BeforeDeployHook, Card>("card.beforeDeploy");
 
 export function setHook<H extends Entry>(
     battle: BattleState,
@@ -41,11 +35,15 @@ export function removeHook<H extends Entry>(
     return next === self.hooks ? battle : replace(battle, { ...self, hooks: next });
 }
 
-export function dispatch(battle: BattleState, event: Deployed): BattleState {
-    const reference = event.request.card;
+export function dispatch(
+    battle: BattleState,
+    request: DeployRequest,
+    input: UnitInput<UnitDefinition>,
+): Result<UnitInput<UnitDefinition>> {
+    const reference = request.card;
 
-    return hooks.dispatch(battle, event, undefined, {
-        candidates: (current) => reference.get(current)!.hooks.get(deployed),
-        find: (current, id) => reference.get(current)!.hooks.find(deployed, id),
-    }).state;
+    return hooks.dispatch(battle, request, input, {
+        candidates: (current) => reference.get(current)!.hooks.get(beforeDeploy),
+        find: (current, id) => reference.get(current)!.hooks.find(beforeDeploy, id),
+    });
 }

@@ -10,7 +10,7 @@ import type { State as BattleState, Result } from "../state.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
-import { dispatch as notifyDeployed } from "./deck/card/hook.js";
+import { dispatch as prepareDeployment } from "./deck/card/hook.js";
 import type { Card } from "./deck/card/card.js";
 import { resolveBaseCost, resolveCost } from "./deck/card/dp/query.js";
 import { deploy as deployCard } from "./deck/card/operations.js";
@@ -59,7 +59,7 @@ export function deploy<T extends Card<any>>(
 
     battle = slot.occupy(battle, request.quote.slots);
     battle = deck.replace(battle, deployCard(self, request.quote.stock));
-    const initialized = initializeUnit(battle, {
+    const prepared = prepareDeployment(battle, input, {
         definition: self.unitDefinition,
         position: Tile.center(request.tilePosition),
         initial: {
@@ -71,6 +71,7 @@ export function deploy<T extends Card<any>>(
         },
         hooks: request.hooks,
     });
+    const initialized = initializeUnit(prepared.state, prepared.value);
     const unit = setDeployment(initialized.value, {
         card: input.card,
         cost,
@@ -84,7 +85,6 @@ export function deploy<T extends Card<any>>(
         [...battle.deployment.history, { card: input.card, unit: unitRef(unit) }],
     );
     battle = add(battle, unit);
-    battle = notifyDeployed(battle, { unit, request: input });
 
     return {
         state: battle,
