@@ -4,6 +4,7 @@ import type { Ref } from "../../../common/ref.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
 import * as effects from "../../../effect/operations.js";
+import type { Definition as EffectDefinition } from "../../../effect/definition.js";
 import * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import {
@@ -13,7 +14,7 @@ import {
     type Type,
     type Values,
 } from "./capability.js";
-import type { Burst, Definition as BurstDefinition } from "./burst.js";
+import type { Burst, State as BurstState } from "./burst.js";
 import { dispatch, damaged, healed } from "./hook.js";
 import * as query from "./query.js";
 import type * as damage from "../../../battle/resource/ep/damage/contract.js";
@@ -110,14 +111,16 @@ export function commitDamage(
 
     let reference: Ref<Burst> | null = null;
     if (depleted) {
+        const definition = self.definition.elemental.bursts[type];
+        const duration = definition.durationTicks;
         const installed = effects.install(
             battle,
             target,
-            self.definition.elemental.bursts[type] as BurstDefinition,
+            definition as unknown as EffectDefinition<BurstState, Unit & Elemental>,
             {
                 source: request.source,
                 scopes: [],
-                expiration: { type: "INFINITE" },
+                expiration: { type: "DURATION", duration, remaining: duration, rate: 0 },
                 enabled: true,
             },
         );

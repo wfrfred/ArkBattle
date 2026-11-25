@@ -17,7 +17,7 @@ Effect 拥有可附着或独立存在的运行实例、私有状态、生效竞�
 
 `core/effect/` 提供通用实例、查询、安装与生命周期；`core/effects/` 提供标准规则成品；`content/` 提供具体角色的程序及标准成品的使用方式。
 
-`effect.ts` 定义实例及身份，`definition.ts` 定义共享程序，`group.ts` 定义分组规则并处理纯合并计算，`expiration.ts` 提供时间类型和纯时间算法，`query.ts` 负责实例、同组成员、竞争资格与有效层数查询。`operations.ts` 负责安装、启停、层数与时间的业务提交、生命周期结束及 Tick 推进。
+`effect.ts` 定义实例及身份，`definition.ts` 定义共享程序，`group.ts` 定义分组规则并处理纯合并计算，`expiration.ts` 提供时间类型和纯时间算法，`query.ts` 负责实例、同组成员、竞争结果与有效层数查询。`operations.ts` 负责安装、启停、层数与时间的业务提交、生命周期结束及 Tick 推进。
 
 `BattleState.effects` 统一保存全部 Effect 实例。有宿主时通过宿主 Ref 查询，Unit.hooks 继续保存本地 Hook 登记；属性与限制贡献归对应 Capability。Effect 不解释 HP／EP 的结算流程，完整资源协议由 [Resource](resource.md) 说明。
 
@@ -27,7 +27,7 @@ Definition 是共享行为；实例保存稳定身份、实际来源、私有 st
 
 私有 state 统一由 `Definition.initialize(battle): S` 构造，可以读取本次安装时的战斗事实。只有确定新建实例后才调用；合并或拒绝不初始化，也不从安装输入覆盖私有 state。有宿主的初始效果在宿主登记后正常安装，无宿主程序可以由 `initialEffects` 开场安装，每项均提供 Definition 与完整 Initial。
 
-`Effect<S, H>` 是基础实例；`StackEffect<S, H>` 继承它，增加 `stackCount` 和具体叠层定义。`S` 表达私有状态，`H extends Lifetime | null` 表达宿主要求，任意已登记且可用的 Lifetime 可作为宿主，`null` 表达无宿主。精确 Ref 保留具体私有状态、宿主和叠层实例类型；普通查询返回基础 `Effect`，通过 `hasStack` 收窄叠层实例。
+`Effect<S, H>` 是基础实例；`StackEffect<S, H>` 继承它，增加 `stackCount` 和具体叠层定义。`S` 表达私有状态，`H extends Lifetime | null` 表达宿主要求，任意已登记且可用的 Lifetime 可作为宿主，`null` 表达无宿主。精确 Ref 保留具体私有状态、宿主和叠层实例类型；普通查询返回基础 `Effect`，通过 `hasStack` 按 `stackCount` 字段是否存在收窄叠层实例。
 
 `Definition<S, H, Self>` 与 `StackDefinition<S, H, Self>` 在内容声明时保留具体回调所接收的 self 类型，叠层回调可直接读取 `stackCount`。实例持有 `Self = never` 的共享定义，运行时仅在已经配对的真实实例与自身 Definition 的调用边界恢复该类型，不另建回调视图。普通查询不承诺未知私有状态的形状，内容不需要逐个断言自己已声明的类型。
 
@@ -37,7 +37,7 @@ Definition 是共享行为；实例保存稳定身份、实际来源、私有 st
 
 `BattleState.effects` 使用通用 `Store<Ref<Effect>, Effect>`，以 Ref 为键全局保存完整实例。安装新实例时分配一次 Ref，并从 `execution.nextEffectId` 取得全场递增的数字 ID，用于生成独立的 Hook／Contribution 登记名及稳定排序。合并与拒绝不分配新身份。
 
-`all(battle)` 按登记顺序枚举，`forHost(battle, host)` 读取指定宿主的实例，`host = null` 读取无宿主实例。已知精确 Ref 时直接调用 `reference.get(battle)`；已知 Definition 时使用 `effects.get(battle, reference, definition)` 按 Definition 对象身份恢复具体类型。重新生效或修改 state 沿用同一个 Ref。
+`all(battle)` 按登记顺序枚举，`forHost(battle, host)` 读取指定宿主的实例，`host = null` 读取无宿主实例。已知精确 Ref 时直接调用 `reference.get(battle)`；已知 Definition 时使用 `effects.get(battle, reference, definition)` 按 Definition 对象身份恢复对应的 `Effect<S, H>` 或 `StackEffect<S, H>`，不额外恢复任意 Self 子类型。重新生效或修改 state 沿用同一个 Ref。
 
 Effect 的内部写回与注销直接使用 Store 的 `replace`、`remove`，遵守通用 Store 契约。旧版本保持可读。内容使用领域操作，不直接替换完整实例。
 
@@ -51,7 +51,7 @@ Action 与 Skill 的依赖分别绑定本轮 Execution 和 Activation 的 Ref，
 
 INSTALLING 已登记但尚未运行生效／推进；ACTIVE 执行输出；INACTIVE 保留实例与私有进度但不执行业务；ENDING 不再正常参与，等待收尾移除。enabled 表达外部许可，与竞争决定的 lifecycle 不同。
 
-仅 DEFAULT 组拥有 priority。同宿主同完整 DEFAULT 组先在未结束实例中选最高优先级，平局取先安装者，再检查 enabled。禁用最强者仍占组位置；它结束后才协调候补。UNIQUE、EXTEND、EXTEND_TIME 和 STACK 通过拒绝重复或合并来保留唯一实例，不参与生效竞争。重新生效调用 onEnable，不重跑 onInstall，也不默认重置状态或样本。
+仅 DEFAULT 组拥有 priority。同宿主同完整 DEFAULT 组先在未结束实例中选最高优先级，平局取先安装者。`wins` 只判断竞争结果，不检查 enabled 或 Lifetime 可用性；实际启用操作同时检查这些条件。禁用最强者仍占组位置；它结束后才协调候补。UNIQUE、EXTEND、EXTEND_TIME 和 STACK 通过拒绝重复或合并来保留唯一实例，不参与生效竞争。重新生效调用 onEnable，不重跑 onInstall，也不默认重置状态或样本。
 
 Effect 整体竞争、属性 Contribution 的有效项选择、Hook 的阶段顺序和本次业务资格各有自己的职责，不能互相替代。
 
@@ -67,7 +67,7 @@ Effect 整体竞争、属性 Contribution 的有效项选择、Hook 的阶段顺
 
 未声明组的安装互相独立。安装匹配到同一完整组中尚未进入 ENDING 的实例时，要求重复施加类型一致，STACK 还须采用相同的 END／DECAY 到期政策。配置冲突会抛出 TypeError。合并使用保留实例的规则，包括层数上限与满层刷新，并保留其 Definition、身份、来源、私有状态及依赖。有限续时按当前时间形式写回，DURATION 保留速率，DEADLINE 依据当前 Tick 计算期限。
 
-STACK 实际上限控制可积累层数，有效上限控制业务取值，null 表示无上限。到期 END 结束整个实例；DECAY 尚有多层时减一并重置 `remaining = duration`，最后一层结束。无限期不会自然衰减。
+STACK 实际上限控制可积累层数，`stacks(self)` 返回受有效上限限制的业务层数，null 表示无上限。到期 END 结束整个实例；DECAY 尚有多层时减一并重置 `remaining = duration`，最后一层结束。无限期不会自然衰减。
 
 onStackChange 接收已经发布的新实例和旧实际层数 previous；实际层数改变即调用，即使有效层数未变。INACTIVE 也通知变层，内容须避免恢复已撤销的贡献；onEnable 按最新层数恢复输出。满层仅刷新时间不通知，初建由安装／启用程序处理。
 

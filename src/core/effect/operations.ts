@@ -15,7 +15,7 @@ import {
     ref as effectRef,
 } from "./effect.js";
 import { elapse, expired } from "./expiration.js";
-import { all, canEnable, forGroup, hasStack, resolveGroupSource } from "./query.js";
+import { all, forGroup, hasStack, resolveGroupSource, wins } from "./query.js";
 
 export function install<S extends object, H extends Lifetime | null>(
     battle: BattleState,
@@ -291,7 +291,7 @@ function updateLifecycle(battle: BattleState, reference: Ref<Effect>): BattleSta
         return battle;
     }
 
-    const active = canEnable(battle, instance);
+    const active = instance.enabled && available(battle, reference) && wins(battle, instance);
     if (active === (instance.lifecycle === "ACTIVE")) {
         return battle;
     }

@@ -430,7 +430,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
                 self.ref.host,
                 offense.setAttackContribution({
                     id: "stacked",
-                    value: [modifier({ addition: 10 * effects.effectiveStackCount(self) })],
+                    value: [modifier({ addition: 10 * effects.stacks(self) })],
                 }),
             ),
         onStackChange(state, self, previous) {
@@ -444,7 +444,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
                 self.ref.host,
                 offense.setAttackContribution({
                     id: "stacked",
-                    value: [modifier({ addition: 10 * effects.effectiveStackCount(self) })],
+                    value: [modifier({ addition: 10 * effects.stacks(self) })],
                 }),
             );
         },

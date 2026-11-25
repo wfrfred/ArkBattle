@@ -18,12 +18,13 @@ export interface State {
 
 export interface Definition<
     S extends State = State,
-    Self extends Effect<S, Unit & Elemental> = Effect<S, Unit & Elemental>,
+    Self extends Burst<S> = Burst<S>,
 > extends EffectDefinition<S, Unit & Elemental, Self> {
     readonly durationTicks: number;
 }
 
 export interface Burst<S extends State = State> extends Effect<S, Unit & Elemental> {
+    readonly definition: Definition<S, never>;
     readonly expiration: Duration;
 }
 
@@ -32,23 +33,9 @@ export type End =
 
 export { ref };
 
-export function onInstall<S extends State>(
-    battle: BattleState,
-    self: Effect<S, Unit & Elemental>,
-): BattleState {
+export function onInstall<S extends State>(battle: BattleState, self: Burst<S>): BattleState {
     const host = self.ref.host.get(battle)!;
-    const duration = (self.definition as Definition<S, never>).durationTicks;
-    const current: Burst<S> = {
-        ...self,
-        expiration: {
-            type: "DURATION",
-            duration,
-            remaining: duration,
-            rate: 0,
-        },
-    };
-    battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(current))]);
-    battle = setExpiration(battle, ref(current), current.expiration);
+    battle = replace(battle, [replaceIn(host, ["elemental", "burst"], ref(self))]);
     battle = appendEvents(battle, [
         {
             type: "ELEMENTAL_BURST",
@@ -59,12 +46,12 @@ export function onInstall<S extends State>(
         },
     ]);
 
-    return dispatch(battle, current.ref.host, burstStarted, current);
+    return dispatch(battle, self.ref.host, burstStarted, self);
 }
 
 export function advance<S extends State>(
     battle: BattleState,
-    instance: Effect<S, Unit & Elemental>,
+    self: Burst<S>,
     onSecond?: (
         battle: BattleState,
         host: Unit & Elemental,
@@ -72,7 +59,6 @@ export function advance<S extends State>(
         second: number,
     ) => BattleState,
 ): BattleState {
-    const self = instance as Burst<S>;
     const reference = ref(self);
     const host = availableHost(battle, reference);
     if (host === undefined) {
@@ -108,10 +94,9 @@ export function advance<S extends State>(
 
 export function onEnd<S extends State>(
     battle: BattleState,
-    instance: Effect<S, Unit & Elemental>,
+    self: Burst<S>,
     reason: string,
 ): BattleState {
-    const self = instance as Burst<S>;
     const host = self.ref.host.get(battle)!;
     battle = replace(battle, [
         {
@@ -131,9 +116,9 @@ export function onEnd<S extends State>(
     return dispatch(battle, self.ref.host, burstEnded, { burst: self, end });
 }
 
-export function availableHost<S extends State>(
+export function availableHost(
     battle: BattleState,
-    reference: Ref<Effect<S, Unit & Elemental>>,
+    reference: Ref<Burst>,
 ): (Unit & Elemental) | undefined {
     const host = reference.host.get(battle);
     const lifecycle = reference.get(battle)?.lifecycle;

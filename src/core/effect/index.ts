@@ -8,7 +8,7 @@ export type { Expiration, Duration, Deadline, Infinite } from "./expiration.js";
 
 export { ref } from "./effect.js";
 
-export { get, all, forHost, hasStack, effectiveStackCount } from "./query.js";
+export { get, all, forHost, hasStack, stacks } from "./query.js";
 
 export {
     install,
