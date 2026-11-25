@@ -133,9 +133,9 @@ test("pulls with a shared source scope stack and only the sole pull can brake", 
     const first = pull.apply(repeat.state, source, host, options);
     const second = pull.apply(first.state, source, host, options);
     assert.ok(first.value && second.value);
-    assert.deepEqual(repeat.value, initial.value);
-    assert.deepEqual(first.value.unbalance, second.value.unbalance);
-    assert.notDeepEqual(first.value, second.value);
+    assert.equal(repeat.value, initial.value);
+    assert.equal(first.value.unbalance, second.value.unbalance);
+    assert.notEqual(first.value, second.value);
 
     const multiple = pull.brake(second.state, first.value);
     assertPosition(step(multiple, []), [1 + 1.2 / 30 + 80 / 900, 1]);
@@ -291,7 +291,7 @@ test("runtime friction applies during a segment and the next segment until resto
 
     const second = unbalance.applyImpulse(current, host, impulse);
     assert.ok(second.value);
-    assert.notDeepEqual(second.value, first.value);
+    assert.notEqual(second.value, first.value);
     current = step(second.state, []);
     assertPosition(current, [restingX + speed, 1]);
 
@@ -343,7 +343,7 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
     }, { scopes: [oldPullScope] });
     const ended = unbalance.lifetime.end(installed.state, first.value.unbalance, "SETTLED");
     assert.ok(next);
-    assert.notDeepEqual(next.unbalance, first.value.unbalance);
+    assert.notEqual(next.unbalance, first.value.unbalance);
     assert.equal(first.value.get(ended), undefined);
     assert.equal(lifetime.available(ended, lifetime.scope(pull.lifetime, next)), true);
     assertPosition(step(pull.remove(ended, first.value), []), [1, 1 + 40 / 900]);

@@ -115,7 +115,7 @@ export function install<S extends object, H extends object>(
     }
 
     const id = unit.effects.nextId;
-    const reference = createEffectRef(host, id);
+    const reference = createEffectRef(host);
     const instance = {
         id,
         ref: reference,
@@ -166,7 +166,7 @@ export function setState<T extends Effect<any, any>>(
 
     const self = unit.effects.get(reference);
     if (self === undefined) {
-        throw new RangeError(`unknown effect: ${reference.id}`);
+        throw new RangeError("unknown effect");
     }
 
     return state === self.state ? battle : replaceEffect(battle, unit, { ...self, state });
@@ -185,7 +185,7 @@ export function setExpiration<T extends Effect<any, any>>(
 
     const self = unit.effects.get(reference);
     if (self === undefined) {
-        throw new RangeError(`unknown effect: ${reference.id}`);
+        throw new RangeError("unknown effect");
     }
 
     if (self.expiration === expiration) {
@@ -252,7 +252,7 @@ export const lifetime = create<Effect<any, any>, string>({
             battle = callbacks(self.definition).onEnd?.(battle, self, reason) ?? battle;
             const unit = (reference.host as Ref<Unit>).get(battle)!;
 
-            return replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference.id) }]);
+            return replaceUnits(battle, [{ ...unit, effects: unit.effects.remove(reference) }]);
         },
         dependencyEnd: "CANCELLED",
     },
@@ -307,9 +307,7 @@ function callbacks(definition: Definition<object>): Callbacks {
 }
 
 function replaceEffect(battle: BattleState, unit: Unit, self: Effect<any, any>): BattleState {
-    return replaceUnits(battle, [
-        { ...unit, effects: unit.effects.replace(effectRef(self), self) },
-    ]);
+    return replaceUnits(battle, [{ ...unit, effects: unit.effects.replace(self) }]);
 }
 
 function resolveGroupSource(

@@ -10,7 +10,7 @@ export type Lifecycle = "ACTIVE" | "ENDING";
 export interface Projectile<
     S extends object = object,
     T extends object = object,
-> extends Identified<{ readonly id: Id }> {
+> extends Identified<object> {
     readonly id: Id;
     readonly definition: Definition<S, T>;
     readonly side: Side;

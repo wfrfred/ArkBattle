@@ -6,6 +6,8 @@ import type { TilePosition } from "../../geometry/coordinate.js";
 import type { Hooks } from "../../hook.js";
 import { validateRestrictions } from "../../restriction.js";
 import type { Card } from "./deck/card/card.js";
+import type { Unit } from "../../unit/unit.js";
+import type { Deployable } from "../../unit/capability/deployable/capability.js";
 import type { Restriction } from "./restriction.js";
 
 export interface Quote {
@@ -50,4 +52,9 @@ export interface Rejected {
 }
 
 export type DeployOutcome =
-    { readonly type: "DEPLOYED"; readonly cardId: number; readonly unitId: number } | Rejected;
+    | {
+          readonly type: "DEPLOYED";
+          readonly card: Ref<Card>;
+          readonly unit: Ref<Unit & Deployable>;
+      }
+    | Rejected;

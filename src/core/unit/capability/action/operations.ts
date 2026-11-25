@@ -47,7 +47,7 @@ export function start<P extends object, E extends object>(
     battle: BattleState,
     reference: Ref<Action<P, E>>,
 ): Result<Ref<Execution<E>> | null> {
-    const { host: source, definitionId } = reference;
+    const source = reference.host;
 
     function check(battle: BattleState) {
         const unit = source.get(battle);
@@ -62,7 +62,13 @@ export function start<P extends object, E extends object>(
         if (action.execution !== null) {
             return null;
         }
-        if (!allows(battle, { self: unit, definitionId }, unit.action.restrictions)) {
+        if (
+            !allows(
+                battle,
+                { self: unit, definitionId: action.definition.id },
+                unit.action.restrictions,
+            )
+        ) {
             return null;
         }
 
@@ -106,7 +112,7 @@ export function start<P extends object, E extends object>(
             ...unit,
             action: {
                 ...unit.action,
-                actions: unit.action.actions.replace(action.definition, {
+                actions: unit.action.actions.replace({
                     ...action,
                     cooldown: cooldown.reset(action.cooldown, battle.tick),
                     execution,
@@ -146,7 +152,7 @@ export function setExecutionState<E extends object>(
 
     const action = unit.action.actions.getByExecution(reference);
     if (action === undefined) {
-        throw new RangeError(`unknown action execution: ${reference.id}`);
+        throw new RangeError("unknown action execution");
     }
 
     return state === action.execution.state
@@ -176,7 +182,7 @@ export const lifetime = lifetimes.create<ExecutionIdentity, End>({
                 battle;
 
             const latest = reference.host.get(battle)!;
-            const previous = latest.action.actions.get(action.definitionId)!;
+            const previous = latest.action.actions.get(action)!;
             battle = replaceAction(battle, latest, { ...previous, execution: null });
 
             return appendEvents(battle, [
@@ -253,8 +259,7 @@ export function refreshCooldowns(
 
     let actions = unit.action.actions;
 
-    for (const id of actions.keys()) {
-        const self = actions.get(id)!;
+    for (const self of actions.values()) {
         if (self.definition.period.type !== "ATTACK_SPEED") {
             continue;
         }
@@ -262,7 +267,7 @@ export function refreshCooldowns(
         const period = resolvePeriod(unit, self.definition);
         const next = cooldown.resizeKeepingProgress(self.cooldown, period, battle.tick);
         if (next !== self.cooldown) {
-            actions = actions.replace(self.definition, { ...self, cooldown: next });
+            actions = actions.replace({ ...self, cooldown: next });
         }
     }
 
@@ -318,6 +323,6 @@ function replaceAction<P extends object, E extends object>(
     self: Action<P, E>,
 ): BattleState {
     return replaceUnits(battle, [
-        replaceIn(unit, ["action", "actions"], unit.action.actions.replace(self.definition, self)),
+        replaceIn(unit, ["action", "actions"], unit.action.actions.replace(self)),
     ]);
 }

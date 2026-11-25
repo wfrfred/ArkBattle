@@ -9,8 +9,6 @@ import type * as dp from "./dp/index.js";
 import type { Restriction } from "./restriction.js";
 import type * as supply from "./supply/supply.js";
 
-export type Id = number;
-
 export type UnitDefinition = BaseDefinition & {
     readonly deployable: DeployableDefinition;
     readonly occupancy: OccupancyDefinition;
@@ -23,8 +21,7 @@ export type Card<S extends object = object, P extends Policy = Policy> = {
     readonly state: S;
     readonly policy: P;
 } & {
-    [K in Policy]: Identified<{ readonly id: Id }> & {
-        readonly id: Id;
+    [K in Policy]: Identified<object> & {
         readonly policy: K;
         readonly definition: Definition<S, K>;
         readonly dp: dp.State<K>;

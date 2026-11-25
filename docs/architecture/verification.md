@@ -61,10 +61,10 @@
 | [Action · 6. 完整启动、写回与终止](action.md#6-完整启动写回与终止) | [拒绝保留准备期已完成的写入，结束期间仍可写该轮并保留持久状态，旧轮取消不影响新轮](../../test/core/action.test.js#L54) |
 | [Action · 7. 调度](action.md#7-调度) | [重复自动候选的即时行动只执行一次，无释放程序不授 ACTION SP，空间消失时跳过选择](../../test/core/action.test.js#L258) |
 | [Action · 8. 普通攻击、释放 Hook 与移动](action.md#8-普通攻击释放-hook-与移动) | [具体 onStart 在释放前转向一次，手动改变朝向后输出不再次转向，固定前后摇独立于攻速](../../test/content/actions/attack.test.js#L49)<br>[各组选敌以及 prepare 接续前组随机结果，实际输出落到已绑定的各组接收者](../../test/content/actions/attack.test.js#L88)<br>[触发组为空不进入内容准备，仍保留其他选敌程序已经消费的随机数](../../test/content/actions/attack.test.js#L114)<br>[既定治疗对象不被后来限制导致的新选择替换，纯治愈与未注册行动都汇总 NONE](../../test/content/actions/attack.test.js#L127)<br>[实际释放和结束遵守作者缩放上下界，执行占用与冷却就绪各自判断](../../test/content/actions/attack.test.js#L201)<br>[执行中改速立即影响冷却，已进入的等待保留样本，下一轮重新采样](../../test/content/actions/attack.test.js#L223)<br>[起手的等待和总预算先固定，中途改速能改变下一段采样，减速仍受原缓存截止限制](../../test/content/actions/attack.test.js#L254)<br>[每个目标独立读取最新攻击力，前一个目标的同步反应影响下一个，伤害保留本次明确分类](../../test/content/actions/output.test.js#L18)<br>[无 Offense 的宿主仍按静态数值施加伤害和自疗](../../test/content/actions/output.test.js#L52)<br>[释放前拦截不给 ACTION 回复，释放通知导致消失会保留回复并停止旧输出，成功攻击按序发布事实](../../test/core/action.test.js#L174) |
-| [Skill · 2. SP](skill.md#2-sp) | [发动门槛和足额支付彼此独立，单次零费覆盖不改通常策略或后续启动](../../test/core/skill.test.js#L123)<br>[支付与阻回独立，满槽和阻回不追补，正速率按实时贡献推进，归零后恢复须等完整周期](../../test/core/skill.test.js#L284) |
-| [Skill · 3. Duration 与弹药](skill.md#3-duration-与弹药) | [只延长当前 TIME，消失仍推进这轮，持久进度可使后续激活选 INFINITE](../../test/core/skill.test.js#L343)<br>[扣费前按当轮基础抽取弹药贡献，消费和耗尽检查分开，补弹与授予各守额度，正补弹报告已经提交的前后值。 旧行动输出期间切换激活，旧行动不扣新轮弹药，新行动才扣](../../test/core/skill.test.js#L394)<br>[弹药贡献可以在 TIME 期间登记和撤销，只改变以后取样的 AMMO 预算](../../test/core/skill.test.js#L482) |
-| [Skill · 4. Restriction、程序与 Hook](skill.md#4-restriction程序与-hook) | [只受理声明且当前获准的主动处理器，受理可保留当前激活，内部结束独立](../../test/core/skill.test.js#L211) |
-| [Skill · 5. 发动与完整结束](skill.md#5-发动与完整结束) | [拒绝不初始化不支付，支付与激活先发布，在启动通知导致暂时消失时仍可 onStart，结束只清原轮并在清槽后通知](../../test/core/skill.test.js#L16)<br>[支付通知中同步结束会保留已经支付的费用，继续旧 onStart 受重新读取后的激活资格约束](../../test/core/skill.test.js#L172) |
+| [Skill · 2. SP](skill.md#2-sp) | [发动门槛和足额支付彼此独立，单次零费覆盖不改通常策略或后续启动](../../test/core/skill.test.js#L126)<br>[支付与阻回独立，满槽和阻回不追补，正速率按实时贡献推进，归零后恢复须等完整周期](../../test/core/skill.test.js#L287) |
+| [Skill · 3. Duration 与弹药](skill.md#3-duration-与弹药) | [只延长当前 TIME，消失仍推进这轮，持久进度可使后续激活选 INFINITE](../../test/core/skill.test.js#L346)<br>[扣费前按当轮基础抽取弹药贡献，消费和耗尽检查分开，补弹与授予各守额度，正补弹报告已经提交的前后值。 旧行动输出期间切换激活，旧行动不扣新轮弹药，新行动才扣](../../test/core/skill.test.js#L397)<br>[弹药贡献可以在 TIME 期间登记和撤销，只改变以后取样的 AMMO 预算](../../test/core/skill.test.js#L485) |
+| [Skill · 4. Restriction、程序与 Hook](skill.md#4-restriction程序与-hook) | [只受理声明且当前获准的主动处理器，受理可保留当前激活，内部结束独立](../../test/core/skill.test.js#L214) |
+| [Skill · 5. 发动与完整结束](skill.md#5-发动与完整结束) | [拒绝不初始化不支付，支付与激活先发布，在启动通知导致暂时消失时仍可 onStart，结束只清原轮并在清槽后通知](../../test/core/skill.test.js#L16)<br>[支付通知中同步结束会保留已经支付的费用，继续旧 onStart 受重新读取后的激活资格约束](../../test/core/skill.test.js#L175) |
 | [Effect · 4. 生效状态与覆写](effect.md#4-生效状态与覆写) | [DEFAULT 保留已安装的候选，优先级及同级顺序决定参与，停用胜出者仍压制候补，移除后才切换](../../test/core/effect.test.js#L113) |
 | [Effect · 重复施加与叠层](effect.md#重复施加与叠层) | [EXTEND 更新剩余量，EXTEND_TIME 累加总量与余量，更新保留旧身份、内容及 Scope，拒绝不兼容的政策](../../test/core/effect.test.js#L257)<br>[STACK 区分层数和有效层数，满层续时、手动消耗和到期衰减各自结算，停用保存层数但不输出](../../test/core/effect.test.js#L333) |
 | [Effect · 来源分组](effect.md#来源分组) | [UNIQUE 按共享、Unit 或无来源分别去重，来源归属和显式 Scope 的结束分别处理](../../test/core/effect.test.js#L468)<br>[同一 Card 的历史及新 Unit 共享来源组，不同 Card 和同数字的无卡 Unit 各自独立](../../test/core/effect.test.js#L525) |
@@ -94,10 +94,10 @@
 | [函数式内核 · 正常取消与失败](functional-core.md#正常取消与失败) | [Tick 各阶段接续已发布资源，后继异常不污染输入版本，无调度计划仍可正常推进战斗](../../test/core/runtime.test.js#L113) |
 | [Skill · 5. 发动与完整结束](skill.md#5-发动与完整结束) | [命令 MANUAL 检查触发类型而不抑制 AUTO 或 PASSIVE，显式发动可按程序启动 AUTO](../../test/core/runtime.test.js#L164) |
 | [Schedule · 调度时间](schedule.md#调度时间) | [主线待重试操作不快进本队列，其他队列照常推进，目标出现后待重试和已到期后继继续接续](../../test/core/schedule.test.js#L91) |
-| [Schedule · 从 Spawn 到 Unit](schedule.md#从-spawn-到-unit) | [波次和片段前延迟决定实际出生 Tick，出生位置和 Route 使用同一偏移样本](../../test/core/schedule.test.js#L56)<br>[出生已登记的等待在该 Unit 的 entered 立即移除自身时同步释放，允许下一波按时出生](../../test/core/schedule.test.js#L292) |
-| [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [已抽中的 Branch 操作可保留到过期后，使用实际出现的新目标完成该实例](../../test/core/schedule.test.js#L148)<br>[Branch 在 entered 中触发后继 Phase 能读到已发布索引，外层旧 Phase 后继保留](../../test/core/schedule.test.js#L325)<br>[循环重入时重新抽选并在 entered 前发布 RNG，各次实例保存自己已选择的后续条目](../../test/core/schedule.test.js#L366) |
-| [Schedule · Route 的主流程时间上下文](schedule.md#route-的主流程时间上下文) | [动态出生取得主线 Wave 和 Fragment 时基快照，之后 Route 的绝对等待按其出生时基推进](../../test/core/schedule.test.js#L417) |
-| [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [出生的等待先于 entered 可见，Wave 超时只清前进等待，最终等待在对应 Unit 完成离场后解除](../../test/core/schedule.test.js#L190)<br>[活 Unit 可只撤销自身 Wave 等待，操作本身不推进，也保留实例和最终等待](../../test/core/schedule.test.js#L259) |
+| [Schedule · 从 Spawn 到 Unit](schedule.md#从-spawn-到-unit) | [波次和片段前延迟决定实际出生 Tick，出生位置和 Route 使用同一偏移样本](../../test/core/schedule.test.js#L56)<br>[出生已登记的等待在该 Unit 的 entered 立即移除自身时同步释放，允许下一波按时出生](../../test/core/schedule.test.js#L295) |
+| [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [已抽中的 Branch 操作可保留到过期后，使用实际出现的新目标完成该实例](../../test/core/schedule.test.js#L148)<br>[Branch 在 entered 中触发后继 Phase 能读到已发布索引，外层旧 Phase 后继保留](../../test/core/schedule.test.js#L328)<br>[循环重入时重新抽选并在 entered 前发布 RNG，各次实例保存自己已选择的后续条目](../../test/core/schedule.test.js#L369) |
+| [Schedule · Route 的主流程时间上下文](schedule.md#route-的主流程时间上下文) | [动态出生取得主线 Wave 和 Fragment 时基快照，之后 Route 的绝对等待按其出生时基推进](../../test/core/schedule.test.js#L420) |
+| [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [出生的等待先于 entered 可见，Wave 超时只清前进等待，最终等待在对应 Unit 完成离场后解除](../../test/core/schedule.test.js#L190)<br>[活 Unit 可只撤销自身 Wave 等待，操作本身不推进，也保留实例和最终等待](../../test/core/schedule.test.js#L262) |
 | [Navigation · distance](navigation.md#distance) | [路线剩余距离使用导航几何长度且排除瞬移路段，不用搜索代价](../../test/core/navigation/route.test.js#L42) |
 | [Navigation · Route／Locomotion 的交互约束](navigation.md#routelocomotion-的交互约束) | [受力时路线等待继续经过，控制权在外力运动完成后恢复自主推进](../../test/core/navigation/route.test.js#L120)<br>[所在格变为不可通时能移向邻格恢复，当前 MOVE 不因无导航建议而被消费](../../test/core/navigation/route.test.js#L145) |
 | [Navigation · 类型与身份](navigation.md#类型与身份) | [指定 Context 的距离查询不随另一个路线取得当前控制权而改变](../../test/core/navigation/route.test.js#L68) |
@@ -119,26 +119,26 @@
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
-| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card) | [初始化先保留互异 Card 身份，添加后才能查询且按登记顺序追加](../../test/core/deployment.test.js#L48) |
-| [Deployment · 待部署区顺序](deployment.md#待部署区顺序) | [两个 Card 收费变化都参与当 Tick 排序，撤销规则保留已排顺序，显式排序可同步重排](../../test/core/deployment.test.js#L67) |
-| [Deployment · 部署历史](deployment.md#部署历史) | [多张不同价格的 Card 共用 Unit 蓝图，开场 Unit 无 Card，成功记录按实际顺序先于 entered 发布](../../test/core/deployment.test.js#L107) |
-| [Deployment · 请求与统一资格](deployment.md#请求与统一资格) | [策略覆盖不能豁免库存、支付、地图和占格固有前提，免支付及合法零支付均保有本次真实部署事实](../../test/core/deployment.test.js#L252)<br>[Card Definition 与 DeployRequest 各在本身入口拒绝同列表重复限制 ID](../../test/core/deployment.test.js#L291)<br>[分层按 ID 覆盖之后才求有效组贡献，并用稳定拒绝原因报告第一项失败](../../test/core/deployment.test.js#L313) |
-| [Deployment · 普通部署流程](deployment.md#普通部署流程) | [预览和实际操作共享报价与资格，拒绝无消费或通知，成功先结账再构造和入场，并保留本次摆放方向](../../test/core/deployment.test.js#L155) |
-| [Deployment · 卡牌费用](deployment.md#卡牌费用) | [实际部署报价采用费用覆写与有效的涨费倍率上限，分两段取整并最后加固定值，移除贡献后恢复报价](../../test/core/deployment.test.js#L345) |
-| [Deployment · 离场结算](deployment.md#离场结算) | [撤退先退款、注销统一回收 Card，死亡无退款且即时清格，额度延后一秒归还，同一 Card 再部署产生新身份而可反查旧来源](../../test/core/deployment.test.js#L345)<br>[SELF 与 EXTERNAL 都不返还撤退 DP，只有 EXTERNAL 启动 Card 回收和涨费](../../test/core/deployment.test.js#L512) |
-| [Deployment · 库存与计时](deployment.md#库存与计时) | [DEFAULT 部署开钟，撤退不重置计时也不还库存，显式补货仍等待原冷却后方可部署](../../test/core/deployment.test.js#L532)<br>[QUEUED 追加与暂停保留当前段，可边恢复边部署，归零也每 Tick 最多转一份，当次 onTick 读取已发布库存](../../test/core/deployment.test.js#L561)<br>[持有上限同时计可用及待恢复，缩容优先保留队列、裁空清计时和暂停，在场上限只限制新部署](../../test/core/deployment.test.js#L636) |
-| [Deployment · DP](deployment.md#dp) | [真实 Tick 产生的自然 DP 在同 Tick 部署命令前可用](../../test/core/deployment.test.js#L693)<br>[负 DP 半速、跨零保留已积进度，满额期间不积攒待恢复预算](../../test/core/deployment.test.js#L719)<br>[上限变更默认保留超额，显式裁剪只向下，有效下限控制足额支付，提高下限会同步补齐余额](../../test/core/deployment.test.js#L751)<br>[恢复倍率的登记与移除保留已经积累的自然回复进度](../../test/core/deployment.test.js#L802) |
-| [Deployment · Slot](deployment.md#slot) | [有效限位增加可多部署，撤销不驱逐已有单位，超额时零占用部署仍允许](../../test/core/deployment.test.js#L456)<br>[基础不限位不受有限增量约束](../../test/core/deployment.test.js#L492) |
+| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card) | [初始化先保留互异 Card 身份，添加后才能查询且按登记顺序追加](../../test/core/deployment.test.js#L55) |
+| [Deployment · 待部署区顺序](deployment.md#待部署区顺序) | [两个 Card 收费变化都参与当 Tick 排序，撤销规则保留已排顺序，显式排序可同步重排](../../test/core/deployment.test.js#L74) |
+| [Deployment · 部署历史](deployment.md#部署历史) | [多张不同价格的 Card 共用 Unit 蓝图，开场 Unit 无 Card，成功记录按实际顺序先于 entered 发布](../../test/core/deployment.test.js#L114) |
+| [Deployment · 请求与统一资格](deployment.md#请求与统一资格) | [策略覆盖不能豁免库存、支付、地图和占格固有前提，免支付及合法零支付均保有本次真实部署事实](../../test/core/deployment.test.js#L261)<br>[Card Definition 与 DeployRequest 各在本身入口拒绝同列表重复限制 ID](../../test/core/deployment.test.js#L300)<br>[分层按 ID 覆盖之后才求有效组贡献，并用稳定拒绝原因报告第一项失败](../../test/core/deployment.test.js#L322) |
+| [Deployment · 普通部署流程](deployment.md#普通部署流程) | [预览和实际操作共享报价与资格，拒绝无消费或通知，成功先结账再构造和入场，并保留本次摆放方向](../../test/core/deployment.test.js#L164) |
+| [Deployment · 卡牌费用](deployment.md#卡牌费用) | [实际部署报价采用费用覆写与有效的涨费倍率上限，分两段取整并最后加固定值，移除贡献后恢复报价](../../test/core/deployment.test.js#L354) |
+| [Deployment · 离场结算](deployment.md#离场结算) | [撤退先退款、注销统一回收 Card，死亡无退款且即时清格，额度延后一秒归还，同一 Card 再部署产生新身份而可反查旧来源](../../test/core/deployment.test.js#L354)<br>[SELF 与 EXTERNAL 都不返还撤退 DP，只有 EXTERNAL 启动 Card 回收和涨费](../../test/core/deployment.test.js#L521) |
+| [Deployment · 库存与计时](deployment.md#库存与计时) | [DEFAULT 部署开钟，撤退不重置计时也不还库存，显式补货仍等待原冷却后方可部署](../../test/core/deployment.test.js#L541)<br>[QUEUED 追加与暂停保留当前段，可边恢复边部署，归零也每 Tick 最多转一份，当次 onTick 读取已发布库存](../../test/core/deployment.test.js#L570)<br>[持有上限同时计可用及待恢复，缩容优先保留队列、裁空清计时和暂停，在场上限只限制新部署](../../test/core/deployment.test.js#L645) |
+| [Deployment · DP](deployment.md#dp) | [真实 Tick 产生的自然 DP 在同 Tick 部署命令前可用](../../test/core/deployment.test.js#L702)<br>[负 DP 半速、跨零保留已积进度，满额期间不积攒待恢复预算](../../test/core/deployment.test.js#L728)<br>[上限变更默认保留超额，显式裁剪只向下，有效下限控制足额支付，提高下限会同步补齐余额](../../test/core/deployment.test.js#L760)<br>[恢复倍率的登记与移除保留已经积累的自然回复进度](../../test/core/deployment.test.js#L811) |
+| [Deployment · Slot](deployment.md#slot) | [有效限位增加可多部署，撤销不驱逐已有单位，超额时零占用部署仍允许](../../test/core/deployment.test.js#L465)<br>[基础不限位不受有限增量约束](../../test/core/deployment.test.js#L501) |
 
 ## Projectile、Mechanism 与 Terrain
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
 | [Projectile · 4. 创建、查询与内容更新](projectile.md#4-创建查询与内容更新) | [初始化仅预留身份，登记后入场能读取自己并接续嵌套创建，弹道保存自身阵营](../../test/core/projectile.test.js#L28) |
-| [Projectile · 5. 时间推进](projectile.md#5-时间推进) | [固定候选轮到时取最新资格，先前弹道已经移除的候选不再执行](../../test/core/projectile.test.js#L72)<br>[Runtime 在整 Tick 起点锁定弹道，Unit 和 Action 阶段创建的弹道都立即入场、下一 Tick 才推进](../../test/core/projectile.test.js#L116) |
-| [Projectile · 外部变速与运动](projectile.md#外部变速与运动) | [选择支持变速的弹道，多来源相乘，同 ID 覆盖及独立撤销都体现在后续实际位移](../../test/core/projectile.test.js#L88) |
+| [Projectile · 5. 时间推进](projectile.md#5-时间推进) | [固定候选轮到时取最新资格，先前弹道已经移除的候选不再执行](../../test/core/projectile.test.js#L72)<br>[Runtime 在整 Tick 起点锁定弹道，Unit 和 Action 阶段创建的弹道都立即入场、下一 Tick 才推进](../../test/core/projectile.test.js#L118) |
+| [Projectile · 外部变速与运动](projectile.md#外部变速与运动) | [选择支持变速的弹道，多来源相乘，同 ID 覆盖及独立撤销都体现在后续实际位移](../../test/core/projectile.test.js#L89) |
 | [Projectile · 6. 终止请求与 Finalize](projectile.md#6-终止请求与-finalize) | [登记期间当场结束可进入结束程序，回调看到 ENDING 与指定原因，随后注销](../../test/core/projectile.test.js#L55) |
-| [Terrain · Mechanism 操作](terrain.md#mechanism-操作) | [初始配置可直接 INACTIVE 且登记时只调用 onEnter。运行时同样先保留新身份并在登记后通知，只有实际启停边沿在写入后派发](../../test/core/mechanism.test.js#L21)<br>[停用保存私有状态而不推进，但仍能作为 Lifetime 依赖，移除它时先执行依赖 onEnd 再执行宿主 onEnd](../../test/core/mechanism.test.js#L69) |
+| [Terrain · Mechanism 操作](terrain.md#mechanism-操作) | [初始配置可直接 INACTIVE 且登记时只调用 onEnter。运行时同样先保留新身份并在登记后通知，只有实际启停边沿在写入后派发](../../test/core/mechanism.test.js#L21)<br>[停用保存私有状态而不推进，但仍能作为 Lifetime 依赖，移除它时先执行依赖 onEnd 再执行宿主 onEnd](../../test/core/mechanism.test.js#L73) |
 | [Projectile · 移除与消除](projectile.md#移除与消除) | [普通停止可对当前原目标结算保底，可消除弹道收到 ELIMINATED 则跳过保底](../../test/content/projectiles/arrow.test.js#L75) |
 | [Projectile · 7. 命中与内容状态](projectile.md#7-命中与内容状态) | [目标暂时消失仍使用实时位置，几何抵达尝试原目标但接收可拒绝，正常拥有延迟终止](../../test/content/projectiles/arrow.test.js#L50)<br>[伤害同步回调停止弹道时已发布的命中记录防止结算第二次](../../test/content/projectiles/arrow.test.js#L90)<br>[箭从在场来源读最新攻击力，来源注销后维持弹道并使用发射样本](../../test/content/projectiles/arrow.test.js#L109)<br>[目标注销后仍朝最后记忆位置飞行，到达不会改为命中该处新对象](../../test/content/projectiles/arrow.test.js#L130) |
 | [Occupancy · 与其他领域协作](occupancy.md#与其他领域协作) | [平台立即释放其地面乘员的阻挡，地块普通阻挡权仍可由其他单位使用](../../test/content/devices/shooting-platform.test.js#L45)<br>[平台乘员可用空中阻挡，切回地面退出原关系且不能重新接敌](../../test/content/devices/shooting-platform.test.js#L55)<br>[平台移除完整击倒自己的乘员且保留别格单位，同时恢复本格地形](../../test/content/devices/shooting-platform.test.js#L66) |

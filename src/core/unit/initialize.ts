@@ -10,7 +10,7 @@ import { Effects } from "./effect/effects.js";
 import type { Unit, Definition } from "./unit.js";
 import { Hooks } from "../hook.js";
 import { replaceIn } from "../common/object.js";
-import { createRef, type Identity } from "../common/ref.js";
+import { createRef, type Ref } from "../common/ref.js";
 
 export type Input<D extends Definition & Partial<Definitions> = Definition> = {
     readonly definition: D;
@@ -63,8 +63,5 @@ export function initialize(battle: BattleState, input: Input): Result<Unit> {
 }
 
 function getUnit(this: object, battle: BattleState): Unit | undefined {
-    const { id } = this as Identity<Unit>;
-    const unit = battle.battlefield.units.get(id);
-
-    return unit?.ref === this ? unit : undefined;
+    return battle.battlefield.units.get(this as Ref<Unit>);
 }

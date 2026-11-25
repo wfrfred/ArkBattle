@@ -22,7 +22,7 @@ Navigation 不依赖 BattleState 或战场地块类型。具体类型和签名�
 
 ### Overlay 登记
 
-运行时由 Battle 创建、更新和移除覆盖。创建时提供运动方式和规则，由 Battle 分配本场唯一的 ID 并返回 Ref。`ref.get(battle)` 读取指定版本中的对应覆盖。更新在原运动方式的集合中整份替换规则并保留顺序，省略 cost 表示清除原代价覆盖。更新缺失的 Ref 会抛出 RangeError，重复移除返回原状态。 [覆盖操作](../../src/core/battle/overlay.ts)
+运行时由 Battle 创建、更新和移除覆盖。创建时提供运动方式和规则，由 Battle 分配并返回稳定 Ref。`ref.get(battle)` 读取指定版本中的对应覆盖。更新在原运动方式的集合中整份替换规则并保留顺序，省略 cost 表示清除原代价覆盖。更新缺失的 Ref 会抛出 RangeError，重复移除返回原状态。 [覆盖操作](../../src/core/battle/overlay.ts)
 
 Navigation 按运动方式保存覆盖，校验代价并投影到有效图。FLY 代价只能省略或为一。覆盖的创建和撤销时机由业务所有者决定。
 
@@ -52,13 +52,13 @@ Route 是统一的路线解释器。Main 与其他 Context 使用相同 Plan 和
 
 Definition 保存初始执行政策 alwaysCheckCurrentPoint；Plan 保存运动方式、出生起点、可空最终终点、指令序列和 requireAllCheckpoints。Plan 不属于共享 UnitDefinition；创建时必需 Initial 提供本次 Plan 与 offset。
 
-Context 保存 Plan、offset、index、已进入的 current、有效的不可达政策和 ticking。Main 固定 ID 0，其他 Context 使用宿主内递增 ID，移除后不复用；Ref 由宿主和 Context ID 定位，不使用数组位置或不断替换的对象引用作长期身份。
+Context 保存 Plan、offset、index、已进入的 current、有效的不可达政策和 ticking。Main 与其他 Context 各有独立 Ref，Ref 持有宿主引用，并在宿主中按 Ref 对象身份读取对应 Context。路线切换、更新和移除使用对应 Context 的 Ref。
 
-Route State 组织 Main、其他 Context、activeId 与出生时的 Wave／Fragment 时间快照。index 是执行位置，current 是已经进入的指令实例；current 为空且索引耗尽表示序列完成，不等于 Context 移除或 Main 可以退出。
+Route State 组织 Main、其他 Context、active 与出生时的 Wave／Fragment 时间快照。index 是执行位置，current 是已经进入的指令实例；current 为空且索引耗尽表示序列完成，不等于 Context 移除或 Main 可以退出。
 
 ### 控制选择与计时
 
-activeId 选择跨指令推进与位移目标；ticking 独立决定各 Context 的当前指令是否计时。非活动 Context 可以计时但不消费指令；活动 Context 即使不计时，仍能执行无需计时的到达检查和即时指令。Main 出口检查独立于 activeId。
+active 选择跨指令推进与位移目标；ticking 独立决定各 Context 的当前指令是否计时。非活动 Context 可以计时但不消费指令；活动 Context 即使不计时，仍能执行无需计时的到达检查和即时指令。Main 出口检查独立于 active。
 
 切换 Context 不自动改 ticking 或删除其他执行。Fear／Attract／Trace 的控制政策由内容明确提交，Route 不建立优先级系统或通用暂停栈；Locomotion 禁止移动也不自动暂停路线计时。
 
@@ -94,7 +94,7 @@ advance 先更新各 Context 的计时，再连续解释活动 Context，最后�
 
 一次连续解释以局部已访问索引集合保证终止；再遇索引时在进入前让出，保留待进入位置，下一 Tick 再进入。长而无环的序列不受固定次数截断；集合不写 State、不跨调用共享，Plan 改变时重置。
 
-APPEAR／DISAPPEAR 先提交已消费的指令进度，再执行跨领域操作。返回后重读最新宿主、Context 与 activeId；宿主离场、Context 移除或失去资格便停止，重建路线则按最新进度继续，不恢复旧快照。查询不隐式进入、跳转或采样。
+APPEAR／DISAPPEAR 先提交已消费的指令进度，再执行跨领域操作。返回后重读最新宿主、Context 与 active；宿主离场、Context 移除或失去资格便停止，重建路线则按最新进度继续，不恢复旧快照。查询不隐式进入、跳转或采样。
 
 ### 公开操作
 
@@ -148,7 +148,7 @@ Movement 将本步的路线目标或空值传给 Locomotion。没有目标时，
 
 `push` 读取施力方基础力度、目标重量与本次力度。推表与拉表分别使用 `clamp(3 + 本次力度 + 基础力度 − 重量, 0, 表长 − 1)`。推击以方向、推表值、战斗 `pushMultiplier` 和 0.02 换算一次冲量，默认倍率为 0.5，关卡可从 `options.moveMultiplier` 提供倍率。`unbalance.applyImpulse` 也可直接接收以质量单位乘格／秒表示的冲量，换算后叠加到以格／Tick 表示的外力速度。
 
-一次失衡以宿主和递增段 ID 定位，重复推击与新牵引可叠加在当前段。推击和开始牵引通过存活、空间存在和受力限制后刷新三 Tick 保护。首次进入先发布失衡和本次受力，再释放阻挡关系。已有失衡暂停自主积分和接敌，Route 继续推进。新受力被免疫拒绝时返回 `null`，已有段在下一次失衡推进时结束。
+一次失衡以独立 Ref 标识，重复推击与新牵引可叠加在当前段。推击和开始牵引通过存活、空间存在和受力限制后刷新三 Tick 保护。首次进入先发布失衡和本次受力，再释放阻挡关系。已有失衡暂停自主积分和接敌，Route 继续推进。新受力被免疫拒绝时返回 `null`，已有段在下一次失衡推进时结束。
 
 ### 牵引的身份、近停和结束
 

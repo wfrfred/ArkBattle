@@ -75,11 +75,11 @@ test("distance observes the requested Main or TRACE rather than temporary moveme
         plan: plan([{ type: "TRACE", position: [0, 3], reached: false }]),
         offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
     });
-    state = update(trace.state, host, route.selectContext(trace.value.id));
+    state = update(trace.state, host, route.selectContext(trace.value));
     state = update(state, host, appear([3, 0]));
     state = route.advance(state, host);
     assert.equal(trace.value.get(state).current.reached, true);
-    state = update(state, host, units.compose(appear([1, 0]), route.selectContext(fear.value.id)));
+    state = update(state, host, units.compose(appear([1, 0]), route.selectContext(fear.value)));
     const self = get(state, 0);
     assert.equal(route.remainingDistance(state, self, self.route.main), 4);
     assert.equal(route.remainingDistance(state, self, trace.value.get(state)), 2);
@@ -93,12 +93,12 @@ test("Context selection and ticking separately control relative and absolute wai
         plan: plan([wait(2)]), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
     });
     state = update(temporary.state, host, units.compose(
-        route.selectContext(temporary.value.id), route.setTicking(0, false),
+        route.selectContext(temporary.value), route.setTicking(route.ref(current(state)), false),
     ));
     state = ticks(state, 2);
     assert.equal(current(state).current.timer, 3);
     assert.equal(temporary.value.get(state).index, 1);
-    state = update(state, host, units.compose(route.selectContext(0), route.setTicking(0, true)));
+    state = update(state, host, units.compose(route.selectContext(route.ref(current(state))), route.setTicking(route.ref(current(state)), true)));
     state = ticks(state, 3);
     assert.equal(current(state).current.type, "MOVE");
 
@@ -108,11 +108,11 @@ test("Context selection and ticking separately control relative and absolute wai
         plan: plan(), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
     });
     absolute = update(other.state, absoluteHost, units.compose(
-        route.selectContext(other.value.id), route.setTicking(0, false),
+        route.selectContext(other.value), route.setTicking(route.ref(current(absolute)), false),
     ));
     absolute = ticks(absolute, 3);
     assert.equal(current(absolute).current.anchor, "BATTLE");
-    absolute = update(absolute, absoluteHost, route.selectContext(0));
+    absolute = update(absolute, absoluteHost, route.selectContext(route.ref(current(absolute))));
     absolute = step(absolute, []);
     assert.equal(current(absolute).current.type, "MOVE");
 });
@@ -166,12 +166,12 @@ test("reassign rebuilds the entered instruction and skipWait only skips a relati
     const program = plan([wait(5), move([0, 3])]);
     let state = battle([creation(program)]);
     const host = units.ref(get(state, 0));
-    state = update(state, host, route.skipWait(0));
+    state = update(state, host, route.skipWait(route.ref(current(state))));
     assert.equal(current(state).current.type, "MOVE");
-    state = update(state, host, route.reassign(0, program));
+    state = update(state, host, route.reassign(route.ref(current(state)), program));
     assert.equal(current(state).current.timer, 5);
-    state = update(state, host, route.reassign(0, plan([wait(100, "BATTLE")])));
-    state = update(state, host, route.skipWait(0));
+    state = update(state, host, route.reassign(route.ref(current(state)), plan([wait(100, "BATTLE")])));
+    state = update(state, host, route.skipWait(route.ref(current(state))));
     assert.equal(current(state).current.anchor, "BATTLE");
     assert.equal(current(state).current.tick, 100);
 });
@@ -207,24 +207,24 @@ test("TRACE holds its registered tile and control after arrival until explicitly
         offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
     });
     state = update(tracing.state, host, units.compose(
-        route.selectContext(tracing.value.id), route.setTicking(0, false),
+        route.selectContext(tracing.value), route.setTicking(route.ref(current(state)), false),
     ));
     state = ticks(state, 3);
     let context = tracing.value.get(state);
     assert.deepEqual(context.current.position, [0, 2]);
     assert.equal(context.current.reached, true);
     assert.equal(context.index, 0);
-    assert.equal(get(state, 0).route.activeId, context.id);
+    assert.equal(get(state, 0).route.active, route.ref(context));
     assert.equal(route.movementTarget(state, host), null);
     state = update(state, host, appear([0, 0]));
-    state = update(state, host, route.setTraceTarget(context.id, [0, 2]));
+    state = update(state, host, route.setTraceTarget(route.ref(context), [0, 2]));
     context = tracing.value.get(state);
     assert.equal(context.current.reached, false);
     assert.deepEqual(route.movementTarget(state, host).goal, [2, 0]);
-    state = update(state, host, route.removeContext(context.id, 0));
+    state = update(state, host, route.removeContext(route.ref(context), route.ref(current(state))));
     assert.equal(tracing.value.get(state), undefined);
     assert.equal(current(state).current.timer, 999);
-    assert.equal(get(state, 0).route.activeId, 0);
+    assert.equal(get(state, 0).route.active, route.ref(current(state)));
 });
 
 test("Main exit is independent of the selected Context and completes Unit lifetime once", () => {
@@ -242,7 +242,7 @@ test("Main exit is independent of the selected Context and completes Unit lifeti
         offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
     });
     state = update(temporary.state, host, units.compose(
-        route.selectContext(temporary.value.id), route.setTicking(0, false),
+        route.selectContext(temporary.value), route.setTicking(route.ref(current(state)), false),
     ));
     const exitTick = state.tick;
     state = step(state, []);
@@ -280,14 +280,14 @@ test("spatial instructions publish consumption before hooks and resume the lates
                 assert.equal(current(state).current, null);
                 assert.equal(get(state, 0).presence.present, false);
                 state = update(state, host, operation === "reassign"
-                    ? route.reassign(0, replacement)
-                    : route.setTicking(0, false));
+                    ? route.reassign(route.ref(current(state)), replacement)
+                    : route.setTicking(route.ref(current(state)), false));
                 return { state, value: undefined };
             },
         }));
         state = search(state, units.ref(get(state, 1)));
         assert.notEqual(get(state, 0).blockable.relation, null);
-        state = update(state, host, route.reassign(0, plan([
+        state = update(state, host, route.reassign(route.ref(current(state)), plan([
             { type: "DISAPPEAR" }, { type: "APPEAR", position: [0, 6], offset: [0, 0] }, wait(4),
         ])));
         assert.equal(released, 1);

@@ -3,7 +3,7 @@ import { Store } from "../../../common/collection/store.js";
 import type { Query } from "../../../common/query.js";
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../state.js";
-import type { Card, Id as CardId } from "./card/card.js";
+import type { Card } from "./card/card.js";
 import type { Ordering } from "./order.js";
 
 export interface Definition {
@@ -11,7 +11,7 @@ export interface Definition {
 }
 
 export interface State {
-    readonly cards: Store<CardId, Card<any>>;
+    readonly cards: Store<Ref<Card<any>>, Card<any>>;
     readonly order: readonly Ref<Card>[];
     readonly ordering: Ordering | null;
     readonly costCeiling: number;

@@ -1,5 +1,6 @@
 import { Store } from "../../../common/collection/store.js";
 import type { Query } from "../../../common/query.js";
+import { ref, type Ref } from "../../../common/ref.js";
 import type { Action } from "./action.js";
 import type { Execution, ExecutionRef } from "./execution.js";
 import type { Definition, Id } from "./definition.js";
@@ -7,11 +8,11 @@ import type { Definition, Id } from "./definition.js";
 type ActionWithExecution = Action & { readonly execution: Execution };
 
 export class Actions {
-    static readonly #empty = new Actions(Store.empty<Id, Action<any, any>>());
+    static readonly #empty = new Actions(Store.empty<Ref<Action<any, any>>, Action<any, any>>());
 
-    readonly #store: Store<Id, Action<any, any>>;
+    readonly #store: Store<Ref<Action<any, any>>, Action<any, any>>;
 
-    private constructor(store: Store<Id, Action<any, any>>) {
+    private constructor(store: Store<Ref<Action<any, any>>, Action<any, any>>) {
         this.#store = store;
     }
 
@@ -27,14 +28,19 @@ export class Actions {
     get<P extends object, E extends object>(
         definition: Definition<P, E, never>,
     ): Action<P, E> | undefined;
-    get(identity: Id | Pick<Definition, "id">): Action<any, any> | undefined {
+    get<P extends object, E extends object>(reference: Ref<Action<P, E>>): Action<P, E> | undefined;
+    get(
+        identity: Id | Pick<Definition, "id"> | Ref<Action<any, any>>,
+    ): Action<any, any> | undefined {
         if (typeof identity === "string") {
-            return this.#store.get(identity);
+            return this.#store.values().find((self) => self.definition.id === identity);
         }
 
-        const self = this.#store.get(identity.id);
+        if ("id" in identity) {
+            return this.#store.values().find((self) => self.definition === identity);
+        }
 
-        return self?.definition === identity ? self : undefined;
+        return this.#store.get(identity);
     }
 
     getByExecution(reference: ExecutionRef): ActionWithExecution | undefined {
@@ -47,19 +53,16 @@ export class Actions {
         return this.#store.values() as Query<Action>;
     }
 
-    keys(): Query<Id> {
-        return this.#store.keys();
-    }
-
     add<P extends object, E extends object>(self: Action<P, E>): Actions {
-        return new Actions(this.#store.add(self.definition.id, self));
+        if (this.get(self.definition.id) !== undefined) {
+            throw new RangeError(`duplicate action definition: ${self.definition.id}`);
+        }
+
+        return new Actions(this.#store.add(ref(self), self));
     }
 
-    replace<P extends object, E extends object>(
-        definition: Definition<P, E, never>,
-        self: NoInfer<Action<P, E>>,
-    ): Actions {
-        const store = this.#store.replace(definition.id, self);
+    replace<P extends object, E extends object>(self: Action<P, E>): Actions {
+        const store = this.#store.replace(ref(self), self);
 
         return store === this.#store ? this : new Actions(store);
     }

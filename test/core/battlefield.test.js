@@ -51,7 +51,7 @@ test("a field batch publishes final occupancy without moving bodies or executing
 
     assert.equal(at(next, [0, 0]).occupant.id, 1);
     assert.equal(at(next, [0, 1]).occupant.id, 0);
-    assert.deepEqual(next.units.get(0).position, [0, 0]);
+    assert.deepEqual(next.units.get(ref(first)).position, [0, 0]);
     assert.equal(at(state.battlefield, [0, 0]).occupant.id, 0);
     assert.equal(at(state.battlefield, [0, 1]).occupant.id, 1);
     assert.deepEqual(notices, ["first", "second"]);

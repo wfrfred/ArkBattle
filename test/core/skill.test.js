@@ -32,8 +32,8 @@ test("activation publishes payment before onStart and clears only the completed 
             onStart(state, source, self) {
                 observed.push({
                     stage: "start",
-                    sp: get(state, source.id).skill.sp.value,
-                    current: skills.activationRef(self).get(state).id,
+                    sp: source.get(state).skill.sp.value,
+                    current: skills.activationRef(self).get(state).ref,
                 });
                 return skills.setActivationState(state, skills.activationRef(self), {
                     total: 7,
@@ -70,7 +70,7 @@ test("activation publishes payment before onStart and clears only the completed 
         }), units.compose(units.setHook(skills.spPaid, {
             id: "observe-payment",
             invoke(state, { host, event }) {
-                payments.push([event.amount, event.previous, event.current, get(state, host.id).skill.activation.id]);
+                payments.push([event.amount, event.previous, event.current, skills.activationRef(host.get(state).skill.activation)]);
                 return { state, value: undefined };
             },
         }), units.setHook(skills.activationEnded, {
@@ -78,8 +78,8 @@ test("activation publishes payment before onStart and clears only the completed 
             invoke(state, { host, event }) {
                 observed.push({
                     stage: "notified",
-                    activation: get(state, host.id).skill.activation,
-                    id: event.ref.id,
+                    activation: host.get(state).skill.activation,
+                    ref: event.ref,
                 });
                 return { state, value: undefined };
             },
@@ -93,14 +93,17 @@ test("activation publishes payment before onStart and clears only the completed 
     const first = skills.activate(state, reference);
     state = first.state;
     assert.deepEqual(initializedAtSp, [30]);
-    assert.deepEqual(payments, [[10, 30, 20, first.value.id]]);
+    assert.deepEqual(payments, [[10, 30, 20, first.value]]);
+    assert.equal(payments[0][3], first.value);
     assert.notEqual(first.value, null);
-    assert.deepEqual(observed[0], { stage: "start", sp: 20, current: first.value.id });
+    assert.deepEqual(observed[0], { stage: "start", sp: 20, current: first.value });
+    assert.equal(observed[0].current, first.value);
     state = skills.finish(state, first.value);
     assert.deepEqual(observed.slice(1), [
         { stage: "end", total: 7, end: { type: "FINISHED" } },
-        { stage: "notified", activation: null, id: first.value.id },
+        { stage: "notified", activation: null, ref: first.value },
     ]);
+    assert.equal(observed[2].ref, first.value);
     assert.equal(reference.get(state).state.completed, 1);
     assert.throws(() => skills.setActivationState(state, first.value, { total: 0 }), RangeError);
 
@@ -132,8 +135,8 @@ test("per-call activation parameters preserve ordinary policy and still require 
     const definition = {
         id: "operator", hooks: Hooks.empty().set(skills.spPaid, {
             id: "observe-payment",
-            invoke(state, { host, event }) {
-                payments.push([event.amount, event.previous, event.current, get(state, host.id).skill.activation.id]);
+            invoke(state, { event }) {
+                payments.push([event.amount, event.previous, event.current]);
                 return { state, value: undefined };
             },
         }),
@@ -155,7 +158,7 @@ test("per-call activation parameters preserve ordinary policy and still require 
     state = free.state;
     assert.notEqual(free.value, null);
     assert.equal(get(state, 0).skill.sp.value, 3);
-    assert.deepEqual(payments, [[0, 3, 3, free.value.id]]);
+    assert.deepEqual(payments, [[0, 3, 3]]);
     assert.equal(reference.get(state).definition, program);
     assert.equal(program.activation.requirement, 10);
     assert.equal(program.activation.cost, 7);
@@ -165,7 +168,7 @@ test("per-call activation parameters preserve ordinary policy and still require 
     const ordinary = skills.activate(state, reference);
     assert.notEqual(ordinary.value, null);
     assert.equal(get(ordinary.state, 0).skill.sp.value, 3);
-    assert.deepEqual(payments[1], [7, 10, 3, ordinary.value.id]);
+    assert.deepEqual(payments[1], [7, 10, 3]);
 });
 
 test("cancellation during payment notification retains payment and suppresses the old onStart", () => {
@@ -192,7 +195,7 @@ test("cancellation during payment notification retains payment and suppresses th
     state = update(state, source, units.setHook(skills.spPaid, {
             id: "stop",
             invoke(state, { host }) {
-                const current = get(state, host.id).skill.activation;
+                const current = host.get(state).skill.activation;
                 return {
                     state: skills.cancel(state, skills.activationRef(current), "STOPPED"),
                     value: undefined,

@@ -192,8 +192,8 @@ test("wait policies publish before the entered hook and timeout leaves final wai
     const observe = (state, self) => {
         entries.push({
             id: self.id,
-            wave: state.schedule.waiting.wave.includes(self.id),
-            final: state.schedule.waiting.final.includes(self.id),
+            wave: state.schedule.waiting.wave.includes(ref(self)),
+            final: state.schedule.waiting.final.includes(ref(self)),
         });
         return state;
     };
@@ -232,21 +232,24 @@ test("wait policies publish before the entered hook and timeout leaves final wai
         { id: 2, wave: true, final: true },
     ]);
     assert.equal(state.schedule.main.type, "WAITING");
+    const final = ref(getUnit(state, 1));
+    const waitingUnit = ref(getUnit(state, 2));
     state = through(state, 2);
     assert.equal(state.schedule.main.type, "POST_DELAY");
-    assert.deepEqual(state.schedule.waiting, { wave: [], final: [1, 2] });
+    assert.deepEqual(state.schedule.waiting, { wave: [], final: [final, waitingUnit] });
 
     state = triggerBranch(state, "late", false);
-    assert.deepEqual(state.schedule.waiting, { wave: [3], final: [1, 2, 3] });
+    const late = ref(getUnit(state, 3));
+    assert.deepEqual(state.schedule.waiting, { wave: [late], final: [final, waitingUnit, late] });
     state = through(state, 4);
     assert.equal(state.schedule.waveIndex, 1);
-    assert.deepEqual(state.schedule.waiting, { wave: [], final: [1, 2, 3] });
+    assert.deepEqual(state.schedule.waiting, { wave: [], final: [final, waitingUnit, late] });
     state = through(state, 5);
     assert.equal(state.schedule.main.type, "COMPLETED");
     assert.equal(isCompleted(state.schedule), false);
 
     state = remove(state, ref(getUnit(state, 2)), { reason: "SCRIPT" });
-    assert.deepEqual(state.schedule.waiting.final, [1, 3]);
+    assert.deepEqual(state.schedule.waiting.final, [final, late]);
     state = remove(state, ref(getUnit(state, 1)), { reason: "SCRIPT" });
     state = remove(state, ref(getUnit(state, 3)), { reason: "SCRIPT" });
     assert.equal(isCompleted(state.schedule), true);
@@ -271,13 +274,13 @@ test("a living Unit can release only its Wave wait without advancing the main pr
     const other = getUnit(state, 1);
 
     state = releaseFromWave(state, ref(returning));
-    assert.deepEqual(state.schedule.waiting, { wave: [1], final: [0, 1] });
+    assert.deepEqual(state.schedule.waiting, { wave: [ref(other)], final: [ref(returning), ref(other)] });
     assert.equal(getUnit(state, 0), returning);
     assert.equal(getUnit(state, 1), other);
     assert.equal(releaseFromWave(state, ref(returning)), state);
 
     state = releaseFromWave(state, ref(other));
-    assert.deepEqual(state.schedule.waiting, { wave: [], final: [0, 1] });
+    assert.deepEqual(state.schedule.waiting, { wave: [], final: [ref(returning), ref(other)] });
     assert.equal(state.schedule.main.type, "WAITING");
     assert.equal(getUnit(state, 2), undefined);
 
@@ -285,7 +288,7 @@ test("a living Unit can release only its Wave wait without advancing the main pr
     assert.equal(getUnit(state, 2).definition.id, "following");
     assert.equal(state.schedule.main.type, "COMPLETED");
     assert.equal(isCompleted(state.schedule), false);
-    assert.deepEqual(state.schedule.waiting.final, [0, 1]);
+    assert.deepEqual(state.schedule.waiting.final, [ref(returning), ref(other)]);
     assert.equal(getUnit(state, 0).lifecycle, "ACTIVE");
 });
 

@@ -125,7 +125,7 @@ export function createNormal({
                             (target) =>
                                 (inDefaultCategory(target) && withinRange(target)) ||
                                 (hasBlockable(target) &&
-                                    target.blockable.relation?.blocker.id === self.id),
+                                    target.blockable.relation?.blocker === source),
                         );
                     const blockedFirst = targeting.blockedFirst(self);
                     const distance = targeting.distance(self.position);

@@ -26,7 +26,7 @@ export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): St
     }
 
     const current = state.overlays[mode];
-    const index = current.findIndex((entry) => entry.id === overlay.id);
+    const index = current.findIndex((entry) => entry.ref === overlay.ref);
     const entries = [...current];
     if (index === -1) {
         entries.push(overlay);
@@ -47,7 +47,7 @@ export function removeOverlay(state: State, mode: MotionMode, ref: Ref<Overlay>)
         baseline: state.baseline,
         overlays: {
             ...state.overlays,
-            [mode]: entries.filter((entry) => entry.id !== ref.id),
+            [mode]: entries.filter((entry) => entry.ref !== ref),
         },
     };
 }

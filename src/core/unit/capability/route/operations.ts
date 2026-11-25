@@ -25,7 +25,6 @@ import {
     validatePlan,
     type Checkpoint,
     type Context,
-    type ContextId,
     type ContextInput,
     type Plan,
     type Route,
@@ -36,10 +35,10 @@ const RADIUS = 0.05;
 
 function changeContext<U extends Unit & Route>(
     self: U,
-    id: ContextId,
+    reference: Ref<Context>,
     transform: (context: Context) => Context,
 ): U {
-    const context = contextFor(self, id);
+    const context = contextFor(self, reference);
     if (self.lifecycle !== "ACTIVE" || context === undefined) {
         return self;
     }
@@ -51,19 +50,19 @@ function changeContext<U extends Unit & Route>(
         : {
               ...self,
               route:
-                  id === 0
+                  self.route.main.ref === reference
                       ? { ...self.route, main: next }
                       : {
                             ...self.route,
                             others: self.route.others.map((entry) =>
-                                entry.id === id ? next : entry,
+                                entry.ref === reference ? next : entry,
                             ),
                         },
           };
 }
 
 function publish(battle: BattleState, self: Unit & Route, next: Context): BattleState {
-    return replaceUnit(battle, [changeContext(self, next.id, () => next)]);
+    return replaceUnit(battle, [changeContext(self, ref(next), () => next)]);
 }
 
 export function createContext(
@@ -76,10 +75,8 @@ export function createContext(
     const self = host.get(battle);
     assert(self?.lifecycle === "ACTIVE", "route host is not active", RangeError);
 
-    const id = self.route.nextContextId;
-    const reference = createContextRef(host, id);
+    const reference = createContextRef(host);
     const context: Context = {
-        id,
         ref: reference,
         plan: input.plan,
         offset: input.offset,
@@ -94,7 +91,6 @@ export function createContext(
             route: {
                 ...self.route,
                 others: [...self.route.others, context],
-                nextContextId: context.id + 1,
             },
         },
     ]);
@@ -102,18 +98,25 @@ export function createContext(
     return { state: enter(battle, reference), value: reference };
 }
 
-export function removeContext(id: ContextId, nextActiveId: ContextId): Change<Unit & Route> {
-    assert(id !== 0, "main route context cannot be removed", RangeError);
-
+export function removeContext(
+    reference: Ref<Context>,
+    nextActive: Ref<Context>,
+): Change<Unit & Route> {
     return createChange<Unit & Route>((self) => {
-        if (self.lifecycle !== "ACTIVE" || contextFor(self, id) === undefined) {
+        assert(
+            self.route.main.ref !== reference,
+            "main route context cannot be removed",
+            RangeError,
+        );
+
+        if (self.lifecycle !== "ACTIVE" || contextFor(self, reference) === undefined) {
             return self;
         }
 
-        const active = self.route.activeId === id;
+        const active = self.route.active === reference;
         if (active) {
             assert(
-                nextActiveId !== id && contextFor(self, nextActiveId) !== undefined,
+                nextActive !== reference && contextFor(self, nextActive) !== undefined,
                 "route successor must identify a remaining context",
                 RangeError,
             );
@@ -123,58 +126,66 @@ export function removeContext(id: ContextId, nextActiveId: ContextId): Change<Un
             ...self,
             route: {
                 ...self.route,
-                others: self.route.others.filter((context) => context.id !== id),
-                activeId: active ? nextActiveId : self.route.activeId,
+                others: self.route.others.filter((context) => context.ref !== reference),
+                active: active ? nextActive : self.route.active,
             },
         };
     });
 }
 
-export function selectContext(id: ContextId): Change<Unit & Route> {
+export function selectContext(reference: Ref<Context>): Change<Unit & Route> {
     return createChange<Unit & Route>((self) =>
         self.lifecycle !== "ACTIVE" ||
-        self.route.activeId === id ||
-        contextFor(self, id) === undefined
+        self.route.active === reference ||
+        contextFor(self, reference) === undefined
             ? self
-            : { ...self, route: { ...self.route, activeId: id } },
+            : { ...self, route: { ...self.route, active: reference } },
     );
 }
 
-export function setTicking(id: ContextId, ticking: boolean): Change<Unit & Route> {
+export function setTicking(reference: Ref<Context>, ticking: boolean): Change<Unit & Route> {
     return createChange<Unit & Route>((self) =>
-        changeContext(self, id, (context) =>
+        changeContext(self, reference, (context) =>
             context.ticking === ticking ? context : { ...context, ticking },
         ),
     );
 }
 
-export function reassign(id: ContextId, plan: Plan, index = 0): Change<Unit & Route> {
+export function reassign(reference: Ref<Context>, plan: Plan, index = 0): Change<Unit & Route> {
     validatePlan(plan);
     assertNonnegativeSafeInteger(index, "route index");
     assert(index <= plan.checkpoints.length, "route index is outside its plan", RangeError);
 
     return createChange<Unit & Route>(
         (self) =>
-            changeContext(self, id, (context) => ({ ...context, plan, index, current: null })),
-        (battle, previous) => enter(battle, ref(contextFor(previous, id)!)),
+            changeContext(self, reference, (context) => ({
+                ...context,
+                plan,
+                index,
+                current: null,
+            })),
+        (battle) => enter(battle, reference),
     );
 }
 
-export function skipWait(id: ContextId): Change<Unit & Route> {
+export function skipWait(reference: Ref<Context>): Change<Unit & Route> {
     return createChange<Unit & Route>(
         (self) =>
-            changeContext(self, id, (context) =>
+            changeContext(self, reference, (context) =>
                 context.current?.type !== "WAIT" || context.current.anchor !== "ENTER"
                     ? context
                     : { ...context, index: context.index + 1, current: null },
             ),
-        (battle, previous) => interpret(battle, ref(contextFor(previous, id)!)),
+        (battle) => interpret(battle, reference),
     );
 }
 
-export function setTraceTarget(id: ContextId, position: TilePosition): Change<Unit & Route> {
+export function setTraceTarget(
+    reference: Ref<Context>,
+    position: TilePosition,
+): Change<Unit & Route> {
     return createChange<Unit & Route>((self) =>
-        changeContext(self, id, (context) => {
+        changeContext(self, reference, (context) => {
             const current = context.current;
 
             return current?.type !== "TRACE" ||
@@ -223,11 +234,11 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst = fa
 
     for (;;) {
         const self = reference.host.get(battle);
-        const context = self === undefined ? undefined : contextFor(self, reference.id);
-        if (self?.lifecycle !== "ACTIVE" || context?.ref !== reference) {
+        const context = self === undefined ? undefined : contextFor(self, reference);
+        if (self?.lifecycle !== "ACTIVE" || context === undefined) {
             return battle;
         }
-        if (!enterFirst && self.route.activeId !== context.id) {
+        if (!enterFirst && self.route.active !== reference) {
             return battle;
         }
         if (plan !== context.plan) {

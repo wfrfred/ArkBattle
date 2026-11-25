@@ -14,7 +14,7 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 ## Mechanism 操作
 
-Mechanism 是全场独立身份。Battle 持有通用 `Store` 并安排推进。开场 `initialMechanisms` 与运行时创建共用 `Mechanism.Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 分配 ID、初始化私有 `state` 并保留具体 Definition 类型。`ref.get(battle)` 按具体类型读取实例。 [Mechanism 入口](../../src/core/mechanism/index.ts)
+Mechanism 是全场独立身份。Battle 持有以 Ref 为键的通用 `Store` 并安排推进。开场 `initialMechanisms` 与运行时创建共用 `Mechanism.Input`，提供 `Definition<S>` 和可选的初始启用状态。`initialize` 创建 Ref、初始化私有 `state` 并保留具体 Definition 类型。`ref.get(battle)` 按具体类型读取实例。 [Mechanism 入口](../../src/core/mechanism/index.ts)
 
 `add` 按初始配置登记 `ACTIVE` 或 `INACTIVE` 实例，默认为 `ACTIVE`。实例及 Lifetime 节点登记后调用一次 `onEnter`。
 

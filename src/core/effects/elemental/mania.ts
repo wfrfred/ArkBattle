@@ -16,6 +16,7 @@ import {
     removeSpeedContribution,
 } from "../../unit/capability/action/attributes.js";
 import { released } from "../../unit/capability/action/release.js";
+import type { ExecutionRef } from "../../unit/capability/action/execution.js";
 import { hasSkill } from "../../unit/capability/skill/capability.js";
 import { activationStarted } from "../../unit/capability/skill/hook.js";
 import { Type } from "../../unit/capability/elemental/capability.js";
@@ -48,7 +49,7 @@ export interface TimeScaledDamageParameters {
 interface ActionDamageState {
     readonly damage: number;
     readonly timer: number;
-    readonly executions: readonly number[];
+    readonly executions: readonly ExecutionRef[];
 }
 
 interface TimeDamageState extends BurstState {
@@ -110,7 +111,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                                 return (
                                     active?.lifecycle === "ACTIVE" &&
                                     active.state.damage < parameters.maxDamagePerSecond &&
-                                    !active.state.executions.includes(execution.id)
+                                    !active.state.executions.includes(execution)
                                 );
                             },
                             invoke(current, { execution }) {
@@ -123,7 +124,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                                             parameters.maxDamagePerSecond,
                                             active.state.damage + parameters.damagePerAction,
                                         ),
-                                        executions: [...active.state.executions, execution.id],
+                                        executions: [...active.state.executions, execution],
                                     }),
                                     value: undefined,
                                 };

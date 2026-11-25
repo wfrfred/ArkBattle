@@ -34,7 +34,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Route 需要本次路线的 Plan 和 offset，因此带 Route 的蓝图在 Card 构造时由类型检查拒绝。
 
-`card.initialize(battle, { definition, unitDefinition })` 分配 ID、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 将 `Card<S, P>` 按 ID 登记，并把新卡追加到当前牌序末尾。Deck 使用异构 `Store<Id, Card<any, Policy>>` 存放完整实例。`all(battle)` 与 `ordered(battle)` 返回默认 `Card`，精确引用通过 `ref.get(battle)` 取得对应的实例类型。
+`card.initialize(battle, { definition, unitDefinition })` 创建 Ref、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 将 `Card<S, P>` 按 Ref 登记，并把新卡追加到当前牌序末尾。Deck 使用异构 Store 以 Ref 为键存放完整实例。`all(battle)` 与 `ordered(battle)` 返回默认 `Card`，精确引用通过 `ref.get(battle)` 取得对应的实例类型。
 
 `Card<S, P>` 是按策略区分的判别联合，与 `Definition<S, P>` 共享私有状态类型 `S` 和策略类型 `P`。初始化从 `definition.policy` 设置实例顶层的 `card.policy`，它在卡牌生命周期内保持稳定。策略为 `DEFAULT`、`UNIQUE` 或 `QUEUED`。
 
@@ -42,7 +42,7 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S, P>`，由部署或离场结算一次写回。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
 
-Supply 的库存、计时和 Contribution 操作保留 `Card<S, P>` 的私有状态和策略类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 ID 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
+Supply 的库存、计时和 Contribution 操作保留 `Card<S, P>` 的私有状态和策略类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 Ref 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
 
 Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
@@ -64,7 +64,7 @@ Deck 每 Tick 推进所有 Card 后调用一次 `sort(battle)`。有排序规则
 
 ## 部署历史
 
-`battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。
+`battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。部署成功的 Result 同样返回 `card` 和 `unit` 的 Ref。
 
 Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card，支持 [Effect 来源分组](effect.md#来源分组)。`deployedCount` 统计当前仍登记的在场实例，包含 `ENDING`。
 

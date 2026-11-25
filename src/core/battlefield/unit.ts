@@ -11,7 +11,7 @@ type Change =
     | { readonly type: "REMOVE"; readonly previous: Unit };
 
 export function add(state: State, unit: Unit): State {
-    if (state.units.has(unit.id)) {
+    if (state.units.has(ref(unit))) {
         throw new RangeError(`duplicate unit: ${unit.id}`);
     }
 
@@ -22,8 +22,8 @@ export function update(state: State, updates: readonly Unit[]): State {
     const changes: Change[] = [];
 
     for (const unit of updates) {
-        const previous = state.units.get(unit.id);
-        if (previous?.ref !== unit.ref) {
+        const previous = state.units.get(ref(unit));
+        if (previous === undefined) {
             throw new RangeError(`unknown unit: ${unit.id}`);
         }
         if (previous !== unit) {
@@ -35,8 +35,8 @@ export function update(state: State, updates: readonly Unit[]): State {
 }
 
 export function remove(state: State, reference: Ref<Unit>): State {
-    const previous = state.units.get(reference.id);
-    if (previous?.ref !== reference) {
+    const previous = state.units.get(reference);
+    if (previous === undefined) {
         throw new RangeError(`unknown unit: ${reference.id}`);
     }
 
@@ -52,9 +52,9 @@ function applyChanges(state: State, changes: readonly Change[]): State {
 
     for (const change of changes) {
         if (change.type === "REMOVE") {
-            units.delete(change.previous.id);
+            units.delete(ref(change.previous));
         } else {
-            units.set(change.next.id, change.next);
+            units.set(ref(change.next), change.next);
         }
     }
 

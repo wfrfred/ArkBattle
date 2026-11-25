@@ -49,10 +49,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
         battlefield,
         {
             rngState: input.rngState,
-            nextCardId: 0,
             nextUnitId: 0,
-            nextMechanismId: 0,
-            nextOverlayId: 0,
             nextProjectileId: 0,
         },
         0,

@@ -1,4 +1,4 @@
-export type { MechanismId, Lifecycle, Definition, Input, Mechanism } from "./mechanism.js";
+export type { Lifecycle, Definition, Input, Mechanism } from "./mechanism.js";
 
 export {
     ref,

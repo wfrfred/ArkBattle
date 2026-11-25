@@ -8,7 +8,6 @@ import type { Activation } from "./activation.js";
 
 export interface Skill<S extends object = object, A extends object = object> extends Identified<{
     readonly host: Ref<Unit & SkillCapability>;
-    readonly id?: never;
 }> {
     readonly definition: Definition<S, A, never>;
     readonly state: S;

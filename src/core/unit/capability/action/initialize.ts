@@ -26,7 +26,7 @@ export function initialize<P extends object, E extends object>(
     return {
         state: initialized.state,
         value: {
-            ref: createActionRef(ref(source), definition.id),
+            ref: createActionRef(ref(source)),
             definition,
             state: initialized.value,
             execution: null,

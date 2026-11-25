@@ -1,11 +1,9 @@
-import { createRef, ref, type Identified, type Identity, type Ref } from "../common/ref.js";
+import { createRef, ref, type Identified, type Ref } from "../common/ref.js";
 import { create as createLifetime } from "../lifetime/index.js";
 import { register } from "../lifetime/operations.js";
 import type { Query } from "../common/query.js";
 import type { Result, State as BattleState } from "../battle/state.js";
 import { replaceIn } from "../common/object.js";
-
-export type MechanismId = number;
 
 export type Lifecycle = "ACTIVE" | "INACTIVE" | "ENDING";
 
@@ -24,10 +22,7 @@ export interface Input<S extends object = object> {
     readonly active?: boolean;
 }
 
-export interface Mechanism<S extends object = object> extends Identified<{
-    readonly id: MechanismId;
-}> {
-    readonly id: MechanismId;
+export interface Mechanism<S extends object = object> extends Identified<object> {
     readonly definition: Definition<S>;
     readonly lifecycle: Lifecycle;
     readonly state: S;
@@ -39,14 +34,12 @@ export function initialize<S extends object, const D extends Definition<S>>(
     battle: BattleState,
     input: Input<S> & { readonly definition: D },
 ): Result<Mechanism<S> & { readonly definition: D }> {
-    const id = battle.execution.nextMechanismId;
     const { definition, active = true } = input;
 
     return {
-        state: replaceIn(battle, ["execution", "nextMechanismId"], id + 1),
+        state: battle,
         value: {
-            id,
-            ref: createRef<Mechanism>({ id }, getMechanism),
+            ref: createRef<Mechanism>({}, getMechanism),
             definition,
             state: definition.initialize(),
             lifecycle: active ? "ACTIVE" : "INACTIVE",
@@ -55,17 +48,14 @@ export function initialize<S extends object, const D extends Definition<S>>(
 }
 
 export function add<S extends object>(battle: BattleState, self: Mechanism<S>): BattleState {
-    battle = replaceIn(battle, ["mechanisms"], battle.mechanisms.add(self.id, self));
+    battle = replaceIn(battle, ["mechanisms"], battle.mechanisms.add(ref(self), self));
     battle = register(battle, lifetime, ref(self));
 
     return self.definition.onEnter?.(battle, self) ?? battle;
 }
 
 function getMechanism(this: object, battle: BattleState): Mechanism | undefined {
-    const { id } = this as Identity<Mechanism>;
-    const mechanism = battle.mechanisms.get(id);
-
-    return mechanism?.ref === this ? mechanism : undefined;
+    return battle.mechanisms.get(this as Ref<Mechanism>);
 }
 
 export function all(battle: BattleState): Query<Mechanism> {
@@ -79,7 +69,7 @@ export function setState<T extends Mechanism<any>>(
 ): BattleState {
     const self = reference.get(battle);
     if (self === undefined) {
-        throw new RangeError(`unknown mechanism: ${reference.id}`);
+        throw new RangeError("unknown mechanism");
     }
 
     return state === self.state
@@ -87,7 +77,7 @@ export function setState<T extends Mechanism<any>>(
         : replaceIn(
               battle,
               ["mechanisms"],
-              battle.mechanisms.replace(reference.id, { ...self, state }),
+              battle.mechanisms.replace(reference, { ...self, state }),
           );
 }
 
@@ -103,7 +93,7 @@ export function setActive<M extends Mechanism<any>>(
     }
 
     const next: M = { ...self, lifecycle };
-    battle = replaceIn(battle, ["mechanisms"], battle.mechanisms.replace(reference.id, next));
+    battle = replaceIn(battle, ["mechanisms"], battle.mechanisms.replace(reference, next));
 
     const callback = active ? next.definition.onEnable : next.definition.onDisable;
 
@@ -116,13 +106,13 @@ export const lifetime = createLifetime<Mechanism<any>, string>({
             replaceIn(
                 battle,
                 ["mechanisms"],
-                battle.mechanisms.replace(reference.id, { ...initial, lifecycle: "ENDING" }),
+                battle.mechanisms.replace(reference, { ...initial, lifecycle: "ENDING" }),
             ),
         finalize: (battle, reference) => {
             const self = reference.get(battle)!;
             battle = self.definition.onEnd?.(battle, self) ?? battle;
 
-            return replaceIn(battle, ["mechanisms"], battle.mechanisms.remove(reference.id));
+            return replaceIn(battle, ["mechanisms"], battle.mechanisms.remove(reference));
         },
     },
 });

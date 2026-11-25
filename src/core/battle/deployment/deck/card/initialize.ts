@@ -2,7 +2,7 @@ import {
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
 } from "../../../../common/assert.js";
-import { createRef, type Identity } from "../../../../common/ref.js";
+import { createRef, type Ref } from "../../../../common/ref.js";
 import { validateRestrictions } from "../../../../restriction.js";
 import type { State as BattleState, Result } from "../../../state.js";
 import type { Card, Policy, UnitDefinition } from "./card.js";
@@ -48,13 +48,10 @@ export function initialize<
 
     validateRestrictions(definition.deploymentRestrictions);
 
-    const id = battle.execution.nextCardId;
-    battle = { ...battle, execution: { ...battle.execution, nextCardId: id + 1 } };
     const initialized = definition.initialize(battle);
 
     const value = {
-        id,
-        ref: createRef<Card>({ id }, getCard),
+        ref: createRef<Card>({}, getCard),
         policy,
         definition,
         dp: {
@@ -87,8 +84,5 @@ export function initialize<
 }
 
 function getCard(this: object, battle: BattleState): Card | undefined {
-    const { id } = this as Identity<Card>;
-    const card: Card | undefined = battle.deployment.deck.cards.get(id);
-
-    return card?.ref === this ? card : undefined;
+    return battle.deployment.deck.cards.get(this as Ref<Card>);
 }

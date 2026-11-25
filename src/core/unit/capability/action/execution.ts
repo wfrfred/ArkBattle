@@ -9,7 +9,6 @@ export type Lifecycle = "ACTIVE" | "ENDING";
 
 export interface Execution<in out E extends object = object> extends Identified<{
     readonly host: Ref<Unit & ActionCapability>;
-    readonly id: Id;
 }> {
     readonly id: Id;
     readonly startedAtTick: number;
@@ -28,7 +27,7 @@ export function create<E extends object>(
     state: E,
 ): Execution<E> {
     return {
-        ref: createRef<Execution>({ host, id }, get),
+        ref: createRef<Execution>({ host }, get),
         id,
         startedAtTick,
         lifecycle: "ACTIVE",

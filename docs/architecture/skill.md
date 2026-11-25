@@ -18,7 +18,7 @@ SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保
 
 ## 1. 单槽聚合、Definition 与两种身份
 
-每个 Unit 保存一份 Skill，包含 Definition、持久 state、可空 SP 与当前的可空 Activation 槽位。Activation 保存本轮身份、开始时刻、生命周期、Duration 与私有状态。Capability 另保存宿主内激活计数、Ammo 贡献和许可。
+每个 Unit 保存一份 Skill，包含 Definition、持久 state、可空 SP 与当前的可空 Activation 槽位。Activation 保存本轮 Ref、开始时刻、生命周期、Duration 与私有状态。Capability 另保存是否曾成功激活、Ammo 贡献和许可。PASSIVE 技能只成功激活一次。
 
 持久 state 保存跨激活事实，本轮 state 保存当次进度。可直接由 activation 槽位判断的阶段不再重复保存；SP.value 是余额的唯一事实。聚合不重复保存 host，内容程序显式接收宿主 Ref。
 
@@ -84,7 +84,7 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 常规调度由 trigger 决定。advance 调度 AUTO 与尚未成功发动的 PASSIVE，entered 尝试 PASSIVE。手动、自动和被动入口都用宿主的 Skill Ref 调用 `activate`。发动时读取宿主当前的 Skill 并调用它的程序。Content 可以直接调用 `activate` 显式发动任意触发类型的技能。PASSIVE 始终只允许成功发动一次。
 
-发动先检查宿主、占槽、限制、accepts、本次门槛与足额支付；拒绝不初始化、不支付。通过后调用本轮 initialize 一次，构造 Duration，再一次发布扣费、Activation 与下一轮身份，登记本轮 Activation 对宿主 Unit 的 Lifetime 依赖。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。零时长也先执行仍有效的 onStart，再复查到期并结束。
+发动先检查宿主、占槽、限制、accepts、本次门槛与足额支付；拒绝不初始化、不支付。通过后调用本轮 initialize 一次，构造 Duration，再一次发布扣费、Activation 与已成功激活的标记，登记本轮 Activation 对宿主 Unit 的 Lifetime 依赖。随后记录启动表现、派发 activationStarted 和 spPaid，再重读同一身份、ACTIVE 状态及宿主生命资格，决定是否执行 onStart。零时长也先执行仍有效的 onStart，再复查到期并结束。
 
 暂时消失本身不跳过仍成立的 onStart，也不自动结束已有持续技能。启动通知可同步结束本轮；返回的 Ref 仍表示创建事实，支付与已经完成的业务不回滚。依赖本轮身份的业务在登记后执行，不能为前置判断另建本轮状态。
 

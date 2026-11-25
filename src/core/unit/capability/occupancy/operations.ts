@@ -36,7 +36,7 @@ export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
     }
 
     const previous = support.occupancy.pair;
-    if (previous !== null && previous.occupant.id === occupant.id) {
+    if (previous !== null && previous.occupant.ref === occupant.ref) {
         return battle;
     }
     if (previous !== null) {

@@ -46,7 +46,7 @@ function candidates(
         .filter(
             (target) =>
                 (inDefaultCategory(target) && withinRange(target)) ||
-                (hasBlockable(target) && target.blockable.relation?.blocker.id === self.id),
+                (hasBlockable(target) && target.blockable.relation?.blocker === self.ref),
         );
 }
 

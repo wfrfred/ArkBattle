@@ -1,4 +1,5 @@
 import { Vec2 } from "../../common/vector.js";
+import { ref, type Ref } from "../../common/ref.js";
 
 import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Unit } from "../../unit/unit.js";
@@ -27,21 +28,21 @@ export function taunt(
 export function blockedFirst(
     source: Unit & (Blocker | Blockable),
 ): (left: Unit, right: Unit) => number {
-    const order = (id: number) => {
-        if (hasBlockable(source) && source.blockable.relation?.blocker.id === id) {
+    const order = (reference: Ref<Unit>) => {
+        if (hasBlockable(source) && source.blockable.relation?.blocker === reference) {
             return 0;
         }
 
         const index = hasBlocker(source)
-            ? source.blocker.relations.findIndex((relation) => relation.blocked.id === id)
+            ? source.blocker.relations.findIndex((relation) => relation.blocked === reference)
             : -1;
 
         return index < 0 ? -1 : index + 1;
     };
 
     return (left, right) => {
-        const leftOrder = order(left.id);
-        const rightOrder = order(right.id);
+        const leftOrder = order(ref(left));
+        const rightOrder = order(ref(right));
 
         if (leftOrder < 0) {
             return rightOrder < 0 ? 0 : 1;

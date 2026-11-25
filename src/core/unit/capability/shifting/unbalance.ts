@@ -29,15 +29,13 @@ const FRICTION = 9.81 * 0.5;
 
 type Host = Unit & Shiftable;
 
-export interface Unbalance extends Identified<{ readonly host: Ref<Host>; readonly id: number }> {
+export interface Unbalance extends Identified<{ readonly host: Ref<Host> }> {
     readonly host: Ref<Host>;
-    readonly id: number;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly velocity: Vec2;
     readonly protectedUntil: number;
     readonly pendingForce: Vec2;
-    readonly pulls: ReadonlyMap<number, pull.Pull>;
-    readonly nextPullId: number;
+    readonly pulls: ReadonlyMap<Ref<pull.Pull>, pull.Pull>;
 }
 
 type End = "SETTLED" | "RESTRICTED" | "HOST_UNAVAILABLE";
@@ -45,12 +43,12 @@ type End = "SETTLED" | "RESTRICTED" | "HOST_UNAVAILABLE";
 export { ref } from "../../../common/ref.js";
 
 function getUnbalance(this: object, battle: BattleState): Unbalance | undefined {
-    const { host, id } = this as Ref<Unbalance>;
-    const state = host.get(battle)?.shiftable;
-    const candidate =
-        state?.unbalance?.id === id ? state.unbalance : state?.endingUnbalances.get(id);
+    const reference = this as Ref<Unbalance>;
+    const state = reference.host.get(battle)?.shiftable;
 
-    return candidate?.ref === this ? candidate : undefined;
+    return state?.unbalance?.ref === reference
+        ? state.unbalance
+        : state?.endingUnbalances.get(reference);
 }
 
 export function replace(battle: BattleState, unit: Host, next: Unbalance): BattleState {
@@ -58,7 +56,7 @@ export function replace(battle: BattleState, unit: Host, next: Unbalance): Battl
     const changes =
         shiftable.unbalance?.ref === next.ref
             ? { unbalance: next }
-            : { endingUnbalances: new Map(shiftable.endingUnbalances).set(next.id, next) };
+            : { endingUnbalances: new Map(shiftable.endingUnbalances).set(ref(next), next) };
 
     return replaceUnits(battle, [{ ...unit, shiftable: { ...shiftable, ...changes } }]);
 }
@@ -81,7 +79,7 @@ export const lifetime = lifetimes.create<Unbalance, End>({
             }
 
             const endingUnbalances = new Map(shiftable.endingUnbalances);
-            endingUnbalances.delete(reference.id);
+            endingUnbalances.delete(reference);
 
             return replaceUnits(battle, [
                 replaceIn(unit, ["shiftable", "endingUnbalances"], endingUnbalances),
@@ -111,7 +109,7 @@ export function prepare(battle: BattleState, unit: Host): Unbalance | null {
         return { ...active, protectedUntil };
     }
 
-    const identity = { host: units.ref(unit), id: unit.shiftable.nextUnbalanceId };
+    const identity = { host: units.ref(unit) };
 
     return {
         ...identity,
@@ -121,7 +119,6 @@ export function prepare(battle: BattleState, unit: Host): Unbalance | null {
         protectedUntil,
         pendingForce: ZERO,
         pulls: new Map(),
-        nextPullId: 0,
     };
 }
 
@@ -139,7 +136,7 @@ export function receive(
         const endingUnbalances =
             previous === null
                 ? shiftable.endingUnbalances
-                : new Map(shiftable.endingUnbalances).set(previous.id, previous);
+                : new Map(shiftable.endingUnbalances).set(ref(previous), previous);
         battle = replaceUnits(battle, [
             {
                 ...unit,
@@ -147,7 +144,6 @@ export function receive(
                     ...shiftable,
                     unbalance: next,
                     endingUnbalances,
-                    nextUnbalanceId: next.id + 1,
                 },
             },
         ]);
@@ -245,7 +241,7 @@ function finishIfSettled(battle: BattleState, reference: Ref<Unbalance>): Battle
 function settlePulls(
     battle: BattleState,
     reference: Ref<Unbalance>,
-    advanced: ReadonlySet<number>,
+    advanced: ReadonlySet<Ref<pull.Pull>>,
 ): BattleState {
     const current = active(battle, reference);
     if (current === undefined || advanced.size === 0) {
@@ -256,12 +252,12 @@ function settlePulls(
         pull.available(battle, item),
     );
     const lost = effective.filter(
-        (item) => advanced.has(item.id) && pull.position(battle, item.point) === undefined,
+        (item) => advanced.has(pull.ref(item)) && pull.position(battle, item.point) === undefined,
     );
     const sole = effective.length === 1 ? effective[0] : undefined;
     if (
         sole !== undefined &&
-        advanced.has(sole.id) &&
+        advanced.has(pull.ref(sole)) &&
         lost.length === 0 &&
         (!sole.braked || sole.brake === "WHILE_NEAR") &&
         pull.isNear(battle, sole)
@@ -323,7 +319,7 @@ export function advance(battle: BattleState, reference: Ref<Unbalance>): BattleS
         });
     }
 
-    battle = settlePulls(battle, reference, new Set(pulls.map(({ id }) => id)));
+    battle = settlePulls(battle, reference, new Set(pulls.map(pull.ref)));
 
     return finishIfSettled(battle, reference);
 }

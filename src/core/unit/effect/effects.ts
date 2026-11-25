@@ -1,16 +1,16 @@
 import { Store } from "../../common/collection/store.js";
 import type { Query } from "../../common/query.js";
-import type { Ref } from "../../common/ref.js";
+import { ref, type Ref } from "../../common/ref.js";
 import type { Definition, OrdinaryDefinition, StackDefinition } from "./definition.js";
-import type { Effect, OrdinaryEffect, StackEffect, Id, Snapshot } from "./effect.js";
+import type { Effect, OrdinaryEffect, StackEffect, Id } from "./effect.js";
 
 export class Effects {
-    static readonly #empty = new Effects(Store.empty<Id, Effect<any, any>>(), 0);
+    static readonly #empty = new Effects(Store.empty<Ref<Effect<any, any>>, Effect<any, any>>(), 0);
 
-    readonly #entries: Store<Id, Effect<any, any>>;
+    readonly #entries: Store<Ref<Effect<any, any>>, Effect<any, any>>;
     readonly nextId: Id;
 
-    private constructor(entries: Store<Id, Effect<any, any>>, nextId: Id) {
+    private constructor(entries: Store<Ref<Effect<any, any>>, Effect<any, any>>, nextId: Id) {
         this.#entries = entries;
         this.nextId = nextId;
     }
@@ -23,36 +23,32 @@ export class Effects {
         return this.#entries.size;
     }
 
-    get(id: Id): Effect | undefined;
     get<E extends Effect<any, any>>(reference: Ref<E>): E | undefined;
     get<S extends object, H extends object>(
-        id: Id,
+        reference: Ref<Effect<any, any>>,
         definition: StackDefinition<S, H, "END">,
     ): StackEffect<S, H, "END"> | undefined;
     get<S extends object, H extends object>(
-        id: Id,
+        reference: Ref<Effect<any, any>>,
         definition: StackDefinition<S, H, "DECAY">,
     ): StackEffect<S, H, "DECAY"> | undefined;
     get<S extends object, H extends object>(
-        id: Id,
+        reference: Ref<Effect<any, any>>,
         definition: StackDefinition<S, H>,
     ): StackEffect<S, H> | undefined;
     get<S extends object, H extends object>(
-        id: Id,
+        reference: Ref<Effect<any, any>>,
         definition: OrdinaryDefinition<S, H>,
     ): OrdinaryEffect<S, H> | undefined;
     get<S extends object, H extends object>(
-        id: Id,
+        reference: Ref<Effect<any, any>>,
         definition: Definition<S, H>,
     ): Effect<S, H> | undefined;
     get<E extends Effect<any, any>>(
-        identity: Id | Ref<E>,
+        reference: Ref<E>,
         definition?: Definition<any, any>,
     ): Effect<any, any> | undefined {
-        const effect = this.#entries.get(typeof identity === "number" ? identity : identity.id);
-        if (typeof identity !== "number" && effect?.ref !== identity) {
-            return undefined;
-        }
+        const effect = this.#entries.get(reference);
         if (definition === undefined) {
             return effect;
         }
@@ -64,40 +60,34 @@ export class Effects {
         return this.#entries.values() as Query<Effect>;
     }
 
-    keys(): Query<Id> {
+    keys(): Query<Ref<Effect>> {
         return this.#entries.keys();
     }
 
     add<S extends object, H extends object>(effect: Effect<S, H>): Effects {
         if (effect.id !== this.nextId) {
-            throw new RangeError("invalid effect identity");
+            throw new RangeError("invalid effect registration id");
         }
 
-        return new Effects(
-            this.#entries.add(effect.id, effect as Effect<any, any>),
-            this.nextId + 1,
-        );
+        const stored = effect as Effect<any, any>;
+
+        return new Effects(this.#entries.add(ref(stored), stored), this.nextId + 1);
     }
 
-    replace<T extends Effect<any, any>>(reference: Ref<T>, effect: NoInfer<T>): Effects {
-        const previous = this.#entries.get(reference.id);
-        if (previous?.ref !== reference || previous === effect) {
+    replace<S extends object, H extends object>(effect: Effect<S, H>): Effects {
+        const stored = effect as Effect<any, any>;
+        const reference = ref(stored);
+        const previous = this.#entries.get(reference);
+        if (previous === undefined || previous === stored) {
             return this;
         }
 
-        return new Effects(this.#entries.replace(reference.id, effect), this.nextId);
+        return new Effects(this.#entries.replace(reference, stored), this.nextId);
     }
 
-    remove(id: Id): Effects {
-        return this.#entries.get(id) === undefined
+    remove(reference: Ref<Effect>): Effects {
+        return this.#entries.get(reference) === undefined
             ? this
-            : new Effects(this.#entries.remove(id), this.nextId);
-    }
-
-    toJSON(): { readonly instances: readonly Snapshot[]; readonly nextId: Id } {
-        return {
-            instances: this.#entries.values().toArray(),
-            nextId: this.nextId,
-        };
+            : new Effects(this.#entries.remove(reference), this.nextId);
     }
 }

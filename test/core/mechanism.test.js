@@ -23,18 +23,18 @@ test("registration invokes enter and actual toggles invoke enable or disable", (
     const definition = counter("callbacks", {
         onEnter(state, self) {
             assert.equal(mechanisms.ref(self).get(state).lifecycle, self.lifecycle);
-            trace.push(["enter", self.id, self.lifecycle]);
+            trace.push(["enter", mechanisms.ref(self), self.lifecycle]);
             return mechanisms.setState(state, mechanisms.ref(self), { count: 1 });
         },
         onEnable(state, self) {
             assert.equal(self.lifecycle, "ACTIVE");
             assert.equal(mechanisms.ref(self).get(state).lifecycle, "ACTIVE");
-            trace.push(["enable", self.id, self.state.count]);
+            trace.push(["enable", mechanisms.ref(self), self.state.count]);
             return state;
         },
         onDisable(state, self) {
             assert.equal(mechanisms.ref(self).get(state).lifecycle, "INACTIVE");
-            trace.push(["disable", self.id]);
+            trace.push(["disable", mechanisms.ref(self)]);
             return state;
         },
     });
@@ -42,14 +42,15 @@ test("registration invokes enter and actual toggles invoke enable or disable", (
         initialMechanisms: [{ definition }, { definition, active: false }],
     });
     const [active, inactive] = mechanisms.all(initial).toArray();
+    const activeRef = mechanisms.ref(active);
+    const inactiveRef = mechanisms.ref(inactive);
     assert.deepEqual(trace, [
-        ["enter", active.id, "ACTIVE"], ["enter", inactive.id, "INACTIVE"],
+        ["enter", activeRef, "ACTIVE"], ["enter", inactiveRef, "INACTIVE"],
     ]);
 
     const initialized = mechanisms.initialize(initial, { definition });
     const addedRef = mechanisms.ref(initialized.value);
     assert.equal(addedRef.get(initialized.state), undefined);
-    const inactiveRef = mechanisms.ref(inactive);
     let state = mechanisms.add(initialized.state, initialized.value);
     assert.equal(mechanisms.setActive(state, inactiveRef, false), state);
     state = mechanisms.setActive(state, inactiveRef, true);
@@ -60,10 +61,13 @@ test("registration invokes enter and actual toggles invoke enable or disable", (
     assert.equal(inactiveRef.get(state).lifecycle, "ACTIVE");
 
     assert.deepEqual(trace, [
-        ["enter", active.id, "ACTIVE"], ["enter", inactive.id, "INACTIVE"],
-        ["enter", addedRef.id, "ACTIVE"],
-        ["enable", inactive.id, 1], ["disable", inactive.id], ["enable", inactive.id, 1],
+        ["enter", activeRef, "ACTIVE"], ["enter", inactiveRef, "INACTIVE"],
+        ["enter", addedRef, "ACTIVE"],
+        ["enable", inactiveRef, 1], ["disable", inactiveRef], ["enable", inactiveRef, 1],
     ]);
+    assert.equal(trace[0][1], activeRef);
+    assert.equal(trace[2][1], addedRef);
+    assert.ok([trace[1], ...trace.slice(3)].every((entry) => entry[1] === inactiveRef));
 });
 
 test("disabled mechanisms stop advancing but still finish their dependents before removal", () => {

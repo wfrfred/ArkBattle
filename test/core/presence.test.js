@@ -75,9 +75,9 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));
     assert.equal(deployed.value.type, "DEPLOYED");
     state = deployed.state;
-    const owner = units.ref(get(state, deployed.value.unitId));
+    const owner = deployed.value.unit;
     const targets = [1, 2].map((id) => units.ref(get(state, id)));
-    const pair = get(state, owner.id).occupancy.pair;
+    const pair = owner.get(state).occupancy.pair;
     assert.ok(pair);
     const actionRef = actions.ref(owner.get(state).action.actions.get(program));
     const idleAction = actions.ref(owner.get(state).action.actions.get(idle));
@@ -93,7 +93,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         id: "observe-published-restrictions",
         invoke(current) {
             notifications++;
-            assert.equal(get(current, owner.id).presence.present, false);
+            assert.equal(owner.get(current).presence.present, false);
             assert.deepEqual(blocking.blocked(current, owner), []);
             assert.ok(targets.every((target) => blocking.blockerOf(current, target) === undefined));
             assert.equal(started.value.get(current).lifecycle, "ACTIVE");
@@ -104,9 +104,9 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         },
     }), presence.disappear()));
     assert.equal(notifications, 2);
-    assert.equal(get(state, owner.id).lifecycle, "ACTIVE");
-    assert.deepEqual(get(state, owner.id).position, [2, 1]);
-    assert.equal(get(state, owner.id).occupancy.pair, pair);
+    assert.equal(owner.get(state).lifecycle, "ACTIVE");
+    assert.deepEqual(owner.get(state).position, [2, 1]);
+    assert.equal(owner.get(state).occupancy.pair, pair);
     assert.equal(get(state, 0).occupancy.pair, pair);
     assert.equal(state.deployment.slot.used, 1);
     assert.equal(entries, 1);

@@ -12,7 +12,7 @@ Action 管理行动程序的启动、冷却、执行进度与终止；Content �
 
 ## 1. 状态与领域职责
 
-Unit 的 Action Capability 保存宿主的攻速／基础攻击间隔 Attribute、行动容器、宿主内执行身份计数和启动限制。Action 保存 Definition、持久 state、Cooldown 和当前的可空 Execution 槽位。Execution 持有本轮身份、开始时刻、生命周期与执行状态。
+Unit 的 Action Capability 保存宿主的攻速／基础攻击间隔 Attribute、行动容器、宿主内执行启动顺序计数和启动限制。Action 保存 Definition、持久 state、Cooldown 和当前的可空 Execution 槽位。Execution 持有本轮身份、开始时刻、启动序号、生命周期与执行状态。
 
 Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onEnd。宿主 Ref 由内容回调参数传入，聚合不重复保存 host。Runtime 负责调度；Action 不拥有全场执行集合。
 
@@ -34,9 +34,9 @@ prepare 检查本次内容条件、初始化执行数据并采样；返回 null 
 
 ## 4. 异构容器与两种引用身份
 
-行动按配置 ID 登记，重复 ID 在创建边界拒绝。异构容器内部擦除 `P/E`，私有状态在普通容器视图中是 `object`。Battle 按配置 ID 启动行动，按执行引用推进。Action Ref 读取持久 Action，Execution Ref 读取指定轮次。两种精确 Ref 都从 `ref.get(battle)` 恢复各自的私有类型。
+行动以 Ref 为容器键登记，重复配置 ID 在创建边界拒绝。异构容器内部擦除 `P/E`，私有状态在普通容器视图中是 `object`。Battle 按配置 ID 选择并启动行动，按执行引用推进。Action Ref 读取持久 Action，Execution Ref 读取指定轮次。两种精确 Ref 都从 `ref.get(battle)` 恢复各自的私有类型。
 
-持久 Action Ref 在装配时分配，跨多轮有效。每个 Execution 在启动时分配自己的 Ref。`ref(action)` 和 `executionRef(execution)` 取得已保存的对象，精度来自传入的实例。已知 Definition 时可用 Action 容器的 `get(definition)` 查找并恢复 `P/E`。`H` 由 Content 装配约束校验。`forUnit`、释放通知和取消命令使用擦除私有状态类型的 `ExecutionRef`，只凭该引用可以推进或结束指定轮次。执行 ID 由宿主单调分配，旧引用只定位原轮次。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立。
+持久 Action Ref 在装配时分配，跨多轮有效。每个 Execution 在启动时分配自己的 Ref。`ref(action)` 和 `executionRef(execution)` 取得已保存的对象，精度来自传入的实例。已知 Definition 时可用 Action 容器的 `get(definition)` 查找并恢复 `P/E`；已知 Ref 时直接以该 Ref 查询。`H` 由 Content 装配约束校验。`forUnit`、释放通知和取消命令使用擦除私有状态类型的 `ExecutionRef`，只凭该引用可以推进或结束指定轮次。旧引用只定位原轮次，执行 ID 由宿主单调分配以保留本宿主的启动顺序。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立。
 
 配置登记顺序用于默认候选，本宿主已有执行按启动顺序枚举。
 
@@ -62,7 +62,7 @@ Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤
 
 ## 6. 完整启动、写回与终止
 
-start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与身份计数，并登记本轮 Execution 对宿主 Unit 的 Lifetime 依赖。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。
+start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与启动顺序计数，并登记本轮 Execution 对宿主 Unit 的 Lifetime 依赖。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。
 
 持久状态、执行状态和冷却各有字段级写回，只替换对应字段。写入私有状态使用指向对应 Action 或 Execution 的精确 Ref。结束程序可以更新仍登记的本轮私有状态，写回保留执行身份和 ENDING。缺失身份属于调用错误。最新读取和不可变发布遵守公共契约。
 

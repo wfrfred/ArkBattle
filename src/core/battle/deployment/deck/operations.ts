@@ -6,21 +6,19 @@ import { all } from "./deck.js";
 
 export function add<S extends object>(battle: BattleState, self: Card<S>): BattleState {
     const { deck } = battle.deployment;
+    const reference = ref<Card<any>>(self);
 
     return replaceIn(battle, ["deployment", "deck"], {
         ...deck,
-        cards: deck.cards.add(self.id, self),
-        order: [...deck.order, ref<Card<any>>(self)],
+        cards: deck.cards.add(reference, self),
+        order: [...deck.order, reference],
     });
 }
 
 export function replace<S extends object>(battle: BattleState, self: Card<S>): BattleState {
     const { deck } = battle.deployment;
-    if (deck.cards.get(self.id)?.ref !== self.ref) {
-        throw new RangeError(`unknown card: ${self.id}`);
-    }
 
-    return replaceIn(battle, ["deployment", "deck", "cards"], deck.cards.replace(self.id, self));
+    return replaceIn(battle, ["deployment", "deck", "cards"], deck.cards.replace(ref(self), self));
 }
 
 export function advance(battle: BattleState): BattleState {

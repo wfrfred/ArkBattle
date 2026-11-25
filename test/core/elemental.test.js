@@ -131,7 +131,7 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
     const hooks = Hooks.empty().set(elemental.burstEnded, {
         id: "restart-recovery",
         invoke(state, { event }) {
-            if (event.burst.id !== original.id) return { state, value: undefined };
+            if (effects.ref(event.burst) !== original) return { state, value: undefined };
             const incoming = injuryRequest(event.burst.host, "BURN", 1000);
             const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
             restarted = result.value.application.burst;
@@ -157,7 +157,7 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
 
     state = elemental.reduceDuration(state, original, 270);
     assert.equal(elemental.get(state, original), undefined);
-    assert.notEqual(restarted.id, original.id);
+    assert.notEqual(restarted, original);
     assert.deepEqual(get(state, 0).elemental.burst, restarted);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(0));
     assert.deepEqual(elemental.get(state, restarted).expiration, {
@@ -243,7 +243,7 @@ test("EP-02: depletion registers the Burst and completes standard output before 
             id: "creation", invoke(current, { event }) {
                 order.push("started");
                 const reference = effects.ref(event);
-                assert.equal(get(current, 0).elemental.burst.id, reference.id);
+                assert.equal(get(current, 0).elemental.burst, reference);
                 return { state: current, value: undefined };
             },
         }), units.setHook(elemental.damaged, {

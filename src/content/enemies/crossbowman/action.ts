@@ -92,7 +92,7 @@ export function createRanged(rangeRadius: number, timing: Timing, projectile: Pr
                         .filter(hasTargetable)
                         .filter(targeting.inCategories(["DEFAULT"]))
                         .filter(targeting.damage(self)(battle))
-                        .filter((target) => target.id !== blocker?.id)
+                        .filter((target) => target.ref !== blocker)
                         .filter(
                             targeting.inRange(self.position, [
                                 { type: "CIRCLE", offset: [0, 0], radius: rangeRadius },

@@ -76,7 +76,7 @@ export function create(parameters: Parameters): Definition {
                     : battle;
             },
             onOccupantRemoved(battle, { support, occupant }) {
-                const current = battle.battlefield.units.get(occupant.id);
+                const current = unitRef(occupant).get(battle);
                 if (current !== undefined && hasBlocker(current)) {
                     battle = update(
                         battle,

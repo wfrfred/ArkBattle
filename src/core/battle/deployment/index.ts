@@ -2,7 +2,7 @@ export type { Definition, Input, DeploymentRecord, State } from "./deployment.js
 
 export { initialize } from "./deployment.js";
 
-export type { Id as CardId, Card } from "./deck/card/card.js";
+export type { Card } from "./deck/card/card.js";
 
 export { resolveCooldown } from "./deck/card/supply/query.js";
 

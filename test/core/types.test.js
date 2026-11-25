@@ -244,7 +244,7 @@ if (merged.value !== null) {
     effects.setExpiration(merged.state, merged.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error a retained Effect may have arrived with a different private definition.
     merged.value.get(merged.state)!.state.power;
-    owner.get(merged.state)!.effects.get(merged.value.id, layered)!.state.power satisfies number;
+    owner.get(merged.state)!.effects.get(merged.value, layered)!.state.power satisfies number;
 }
 
 const position = [0, 0] as const;

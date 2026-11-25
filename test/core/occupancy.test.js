@@ -3,7 +3,7 @@ import { Hooks } from "../../dist/core/hook.js";
 import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
-import { battle, get } from "../helpers/battle.js";
+import { battle } from "../helpers/battle.js";
 import { createCardDefinition } from "../helpers/deployable.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
@@ -31,13 +31,13 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         occupancy: {
             slot: "SUPPORT",
             onOccupantAdded: (state, pair) => {
-                notifications.push(["occupantAdded", pair.occupant.id]);
+                notifications.push(["occupantAdded", units.ref(pair.occupant)]);
                 assert.equal(units.ref(pair.occupant).get(state).occupancy.pair, pair);
                 assert.equal(units.ref(pair.support).get(state).occupancy.pair, pair);
                 return state;
             },
             onOccupantRemoved: (state, pair) => {
-                notifications.push(["occupantRemoved", pair.occupant.id]);
+                notifications.push(["occupantRemoved", units.ref(pair.occupant)]);
                 assert.notEqual(units.ref(pair.occupant).get(state)?.occupancy.pair, pair);
                 assert.notEqual(units.ref(pair.support).get(state)?.occupancy.pair, pair);
                 return state;
@@ -88,7 +88,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
                         deployment.createRequest(current, unitCard, [1, 2]),
                     );
                     assert.equal(result.value.type, "DEPLOYED");
-                    replacement = result.value.unitId;
+                    replacement = result.value.unit;
                     return { state: result.state, value: undefined };
                 },
             }),
@@ -99,28 +99,28 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         quote: { ...request.quote, slots: 0 },
     });
     assert.deepEqual(denied.value, { type: "REJECTED", reason: "OCCUPIED" });
-    state = deployment.retreat(state, units.ref(get(state, placedUnit.value.unitId)));
-    const pair = get(state, placedSupport.value.unitId).occupancy.pair;
-    assert.notEqual(replacement, placedUnit.value.unitId);
-    assert.equal(pair.occupant.id, replacement);
-    state = update(state, units.ref(get(state, replacement)), setDirection("UP"));
-    const occupancy = get(state, replacement).occupancy;
+    state = deployment.retreat(state, placedUnit.value.unit);
+    const pair = placedSupport.value.unit.get(state).occupancy.pair;
+    assert.notEqual(replacement, placedUnit.value.unit);
+    assert.equal(units.ref(pair.occupant), replacement);
+    state = update(state, replacement, setDirection("UP"));
+    const occupancy = replacement.get(state).occupancy;
     assert.equal(occupancy.direction, "UP");
     assert.equal(occupancy.pair, pair);
     assert.deepEqual(occupancy.tile, [1, 2]);
     assert.deepEqual(notifications, [
-        ["occupantAdded", placedUnit.value.unitId],
-        ["occupantRemoved", placedUnit.value.unitId],
+        ["occupantAdded", placedUnit.value.unit],
+        ["occupantRemoved", placedUnit.value.unit],
         ["occupantAdded", replacement],
     ]);
 
-    state = deployment.retreat(state, units.ref(get(state, placedSupport.value.unitId)));
-    assert.equal(get(state, replacement).occupancy.pair, null);
+    state = deployment.retreat(state, placedSupport.value.unit);
+    assert.equal(replacement.get(state).occupancy.pair, null);
     const returned = deployment.deploy(state, deployment.createRequest(state, supportCard, [1, 2]));
     assert.equal(returned.value.type, "DEPLOYED");
-    assert.notEqual(returned.value.unitId, replacement);
+    assert.notEqual(returned.value.unit, replacement);
     state = returned.state;
-    assert.equal(get(state, replacement).occupancy.pair.support.id, returned.value.unitId);
+    assert.equal(units.ref(replacement.get(state).occupancy.pair.support), returned.value.unit);
     assert.deepEqual(notifications.slice(-2), [
         ["occupantRemoved", replacement], ["occupantAdded", replacement],
     ]);

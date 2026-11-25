@@ -3,8 +3,6 @@ import type { TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
 import { Map } from "./map.js";
 
-export type Id = number;
-
 export interface Input {
     readonly cells: readonly TilePosition[];
     readonly denyPassage: boolean;
@@ -12,9 +10,7 @@ export interface Input {
     readonly cost?: number;
 }
 
-export interface Overlay extends Identified<{ readonly id: Id }>, Input {
-    readonly id: Id;
-}
+export interface Overlay extends Identified<object>, Input {}
 
 export function apply(base: Map, overlays: readonly Overlay[]): Map {
     const cells = base.cells.slice();

@@ -35,10 +35,8 @@ export interface Input {
 
 export interface Pull extends Identified<{
     readonly unbalance: Ref<Unbalance>;
-    readonly id: number;
 }> {
     readonly unbalance: Ref<Unbalance>;
-    readonly id: number;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly scope: lifetimes.Scope;
     readonly point: Point;
@@ -52,10 +50,9 @@ export interface Pull extends Identified<{
 export { ref } from "../../../common/ref.js";
 
 function getPull(this: object, battle: BattleState): Pull | undefined {
-    const { unbalance, id } = this as Ref<Pull>;
-    const candidate = unbalance.get(battle)?.pulls.get(id);
+    const reference = this as Ref<Pull>;
 
-    return candidate?.ref === this ? candidate : undefined;
+    return reference.unbalance.get(battle)?.pulls.get(reference);
 }
 
 function replace(battle: BattleState, reference: Ref<Pull>, next: Pull | null): BattleState {
@@ -63,9 +60,9 @@ function replace(battle: BattleState, reference: Ref<Pull>, next: Pull | null): 
     const self = reference.unbalance.get(battle)!;
     const pulls = new Map(self.pulls);
     if (next === null) {
-        pulls.delete(reference.id);
+        pulls.delete(reference);
     } else {
-        pulls.set(reference.id, next);
+        pulls.set(reference, next);
     }
 
     return unbalance.replace(battle, unit, { ...self, pulls });
@@ -139,7 +136,7 @@ export function apply(
         return { state: battle, value: null };
     }
 
-    const identity = { unbalance: unbalance.ref(next), id: next.nextPullId };
+    const identity = { unbalance: unbalance.ref(next) };
     const reference = createRef<Pull>(identity, getPull);
     const item: Pull = {
         ...identity,
@@ -154,13 +151,8 @@ export function apply(
         braked: false,
     };
 
-    const pulls = new Map(next.pulls).set(item.id, item);
-    battle = unbalance.receive(
-        battle,
-        unit,
-        { ...next, pulls, nextPullId: next.nextPullId + 1 },
-        { reference, scopes },
-    );
+    const pulls = new Map(next.pulls).set(reference, item);
+    battle = unbalance.receive(battle, unit, { ...next, pulls }, { reference, scopes });
 
     return { state: battle, value: reference };
 }
@@ -185,14 +177,16 @@ export function force(battle: BattleState, self: Pull, target: WorldPosition): V
 
 export function brake(battle: BattleState, reference: Ref<Pull>): BattleState {
     const current = unbalance.active(battle, reference.unbalance);
-    const item = current?.self.pulls.get(reference.id);
-    if (current === undefined || item?.ref !== reference || !available(battle, item)) {
+    const item = current?.self.pulls.get(reference);
+    if (current === undefined || item === undefined || !available(battle, item)) {
         return battle;
     }
 
     const { unit, self } = current;
     if (
-        [...self.pulls.values()].some((other) => other.id !== item.id && available(battle, other))
+        [...self.pulls.values()].some(
+            (other) => other.ref !== reference && available(battle, other),
+        )
     ) {
         return battle;
     }
@@ -203,7 +197,7 @@ export function brake(battle: BattleState, reference: Ref<Pull>): BattleState {
 
     const pulls = item.braked
         ? self.pulls
-        : new Map(self.pulls).set(item.id, { ...item, braked: true });
+        : new Map(self.pulls).set(reference, { ...item, braked: true });
 
     return unbalance.replace(battle, unit, { ...self, velocity: ZERO, pulls });
 }

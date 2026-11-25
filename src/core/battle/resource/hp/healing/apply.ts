@@ -136,7 +136,7 @@ function complete(
     }
 
     const observers: readonly Ref<Unit>[] =
-        request.source !== null && request.source.id !== request.target.id
+        request.source !== null && request.source !== request.target
             ? [request.target, request.source]
             : [request.target];
     const context = { request, calculated, outcome };

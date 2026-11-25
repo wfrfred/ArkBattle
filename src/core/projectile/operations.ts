@@ -12,7 +12,7 @@ export function add<S extends object, T extends object>(
     battle: BattleState,
     self: Projectile<S, T> & NoInfer<T>,
 ): BattleState {
-    const projectiles = battle.battlefield.projectiles.add(self.id, self);
+    const projectiles = battle.battlefield.projectiles.add(ref(self), self);
     battle = replaceIn(battle, ["battlefield", "projectiles"], projectiles);
     battle = register(battle, lifetime, ref(self));
 
@@ -46,7 +46,7 @@ export function replace<P extends Projectile<object, any>>(
     reference: Ref<P>,
     self: NoInfer<P>,
 ): BattleState {
-    const projectiles = battle.battlefield.projectiles.replace(reference.id, self);
+    const projectiles = battle.battlefield.projectiles.replace(reference, self);
 
     return replaceIn(battle, ["battlefield", "projectiles"], projectiles);
 }
@@ -59,7 +59,7 @@ export const lifetime = createLifetime<Projectile<object, any>, EndReason>({
             const self = reference.get(battle)!;
             battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
 
-            const projectiles = battle.battlefield.projectiles.remove(reference.id);
+            const projectiles = battle.battlefield.projectiles.remove(reference);
 
             return replaceIn(battle, ["battlefield", "projectiles"], projectiles);
         },

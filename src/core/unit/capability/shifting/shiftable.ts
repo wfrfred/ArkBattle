@@ -2,6 +2,7 @@ import type { State as BattleState, Result } from "../../../battle/state.js";
 import { assertNonnegativeNumber, assertPositiveNumber } from "../../../common/assert.js";
 import type * as contribution from "../../../common/contribution.js";
 import { roundToEven } from "../../../common/math.js";
+import type { Ref } from "../../../common/ref.js";
 import { validateShape, type Shape } from "../../../geometry/shape.js";
 import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import * as attribute from "../../attribute.js";
@@ -34,8 +35,7 @@ export interface State extends Restrictions {
     readonly massLevel: attribute.State<Input>;
     readonly frictionFactor: number;
     readonly unbalance: Unbalance | null;
-    readonly endingUnbalances: ReadonlyMap<number, Unbalance>;
-    readonly nextUnbalanceId: number;
+    readonly endingUnbalances: ReadonlyMap<Ref<Unbalance>, Unbalance>;
 }
 
 export type Shiftable = Locomotion & {
@@ -75,7 +75,6 @@ export function initialize<
                 restrictions: definition.restrictions,
                 unbalance: null,
                 endingUnbalances: new Map(),
-                nextUnbalanceId: 0,
             },
         },
     };

@@ -1,11 +1,11 @@
 import { createRng } from "../../common/rng.js";
 import { replaceIn } from "../../common/object.js";
 import { Vec2 } from "../../common/vector.js";
-import type { Ref } from "../../common/ref.js";
+import { ref, type Ref } from "../../common/ref.js";
 import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
 import type { RemovedHook } from "../../unit/hook.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
-import type { Id as UnitId, Unit } from "../../unit/unit.js";
+import type { Unit } from "../../unit/unit.js";
 import type { Result, State as BattleState } from "../state.js";
 import { add } from "../../unit/operations.js";
 import type { Entry, Spawn, Wave } from "./definition.js";
@@ -30,11 +30,11 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
     battle = created.state;
 
     if (entry.wait !== "NONE") {
-        const { id } = created.value;
+        const reference = ref(created.value);
         const { waiting } = battle.schedule;
         battle = replaceIn(battle, ["schedule", "waiting"], {
-            wave: entry.wait === "WAVE" ? [...waiting.wave, id] : waiting.wave,
-            final: [...waiting.final, id],
+            wave: entry.wait === "WAVE" ? [...waiting.wave, reference] : waiting.wave,
+            final: [...waiting.final, reference],
         });
     }
 
@@ -260,18 +260,18 @@ export function triggerBranch(battle: BattleState, id: string, loop: boolean): B
 
 export function releaseFromWave(battle: BattleState, reference: Ref<Unit>): BattleState {
     const { waiting } = battle.schedule;
-    const wave = waiting.wave.filter((id) => id !== reference.id);
+    const wave = waiting.wave.filter((entry) => entry !== reference);
 
     return wave.length === waiting.wave.length
         ? battle
         : replaceIn(battle, ["schedule", "waiting", "wave"], wave);
 }
 
-export function resolveUnits(battle: BattleState, removedUnitIds: readonly UnitId[]): BattleState {
+export function resolveUnits(battle: BattleState, removedUnits: readonly Ref<Unit>[]): BattleState {
     const { waiting } = battle.schedule;
-    const removed = new Set(removedUnitIds);
-    const wave = waiting.wave.filter((id) => !removed.has(id));
-    const final = waiting.final.filter((id) => !removed.has(id));
+    const removed = new Set(removedUnits);
+    const wave = waiting.wave.filter((entry) => !removed.has(entry));
+    const final = waiting.final.filter((entry) => !removed.has(entry));
 
     return wave.length === waiting.wave.length && final.length === waiting.final.length
         ? battle
@@ -283,5 +283,5 @@ export function resolveUnits(battle: BattleState, removedUnitIds: readonly UnitI
 
 export const removedHook: RemovedHook = {
     id: "@schedule/resolve-unit",
-    invoke: (battle, { unit }) => ({ state: resolveUnits(battle, [unit.id]), value: undefined }),
+    invoke: (battle, { unit }) => ({ state: resolveUnits(battle, [ref(unit)]), value: undefined }),
 };

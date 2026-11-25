@@ -6,28 +6,29 @@ import type { Map } from "../../../battlefield/navigation/map.js";
 import { Tile, World, type WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import type { MovementTarget } from "../locomotion/capability.js";
-import type { Context, ContextId, Route } from "./capability.js";
+import type { Context, Route } from "./capability.js";
 
 export { ref } from "../../../common/ref.js";
 
-export function createContextRef(host: Ref<Unit & Route>, id: ContextId): Ref<Context> {
-    return createRef<Context>({ host, id }, getContext);
+export function createContextRef(host: Ref<Unit & Route>): Ref<Context> {
+    return createRef<Context>({ host }, getContext);
 }
 
 function getContext(this: object, battle: BattleState): Context | undefined {
-    const { host, id } = this as Ref<Context>;
-    const self = host.get(battle);
-    const context = self === undefined ? undefined : contextFor(self, id);
+    const reference = this as Ref<Context>;
+    const self = reference.host.get(battle);
 
-    return context?.ref === this ? context : undefined;
+    return self === undefined ? undefined : contextFor(self, reference);
 }
 
-export function contextFor(self: Unit & Route, id: ContextId): Context | undefined {
-    return id === 0 ? self.route.main : self.route.others.find((context) => context.id === id);
+export function contextFor(self: Unit & Route, reference: Ref<Context>): Context | undefined {
+    return self.route.main.ref === reference
+        ? self.route.main
+        : self.route.others.find((context) => context.ref === reference);
 }
 
 export function activeContext(self: Unit & Route): Context {
-    return contextFor(self, self.route.activeId)!;
+    return contextFor(self, self.route.active)!;
 }
 
 export function target(context: Context): WorldPosition | null {

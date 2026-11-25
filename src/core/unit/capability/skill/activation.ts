@@ -76,9 +76,7 @@ export interface Definition<
 
 export interface Activation<in out A extends object = object> extends Identified<{
     readonly host: Ref<Unit & SkillCapability>;
-    readonly id: number;
 }> {
-    readonly id: number;
     readonly startedAtTick: number;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly duration: DurationState;
@@ -91,14 +89,12 @@ export type ActivationRef = Ref<ActivationIdentity>;
 
 export function create<A extends object>(
     host: Ref<Unit & SkillCapability>,
-    id: number,
     startedAtTick: number,
     duration: DurationState,
     state: A,
 ): Activation<A> {
     return {
-        ref: createRef<Activation>({ host, id }, get),
-        id,
+        ref: createRef<Activation>({ host }, get),
         startedAtTick,
         lifecycle: "ACTIVE",
         duration,

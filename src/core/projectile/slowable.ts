@@ -45,7 +45,7 @@ function updateContributions<P extends Projectile<object, any> & Slowable>(
 ): BattleState {
     const self = reference.get(battle);
     if (self === undefined) {
-        throw new RangeError(`unknown projectile: ${reference.id}`);
+        throw new RangeError("unknown projectile");
     }
 
     const contributions = update(self.move.contributions);

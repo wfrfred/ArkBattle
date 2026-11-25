@@ -99,7 +99,7 @@ export function setActivationState<A extends object>(
 
     const self = reference.get(battle);
     if (self === undefined) {
-        throw new RangeError(`unknown skill activation: ${reference.id}`);
+        throw new RangeError("unknown skill activation");
     }
 
     return state === self.state
@@ -135,7 +135,7 @@ export function activate<S extends object, A extends object>(
     if (self.activation !== null) {
         return { state: battle, value: null };
     }
-    if (definition.trigger === "PASSIVE" && unit.skill.nextActivationId !== 0) {
+    if (definition.trigger === "PASSIVE" && unit.skill.activated) {
         return { state: battle, value: null };
     }
     if (
@@ -155,13 +155,7 @@ export function activate<S extends object, A extends object>(
 
     const initialized = definition.initialize(battle, source, self);
     const duration = initialDuration(battle, unit, initialized.duration);
-    const active = createActivation(
-        source,
-        unit.skill.nextActivationId,
-        battle.tick,
-        duration,
-        initialized.state,
-    );
+    const active = createActivation(source, battle.tick, duration, initialized.state);
 
     battle = replaceUnits(battle, [
         {
@@ -169,7 +163,7 @@ export function activate<S extends object, A extends object>(
             skill: {
                 ...unit.skill,
                 sp: previousSp === null ? null : { ...previousSp, value: previousSp.value - cost },
-                nextActivationId: active.id + 1,
+                activated: true,
                 activation: active,
             },
         },

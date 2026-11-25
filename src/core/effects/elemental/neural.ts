@@ -64,15 +64,15 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
         id: "elemental/neural/paralysis",
         initialize: () => ({ used: 0 }),
         onInstall(battle, self) {
-            const effectId = self.id;
+            const reference = ref(self);
 
             return update(
                 battle,
                 self.host,
                 setHook(beforeRelease, {
-                    id: `@effect/${effectId}/paralysis`,
+                    id: `@effect/${self.id}/paralysis`,
                     accepts(current) {
-                        const active = self.host.get(current)?.effects.get(effectId, paralysis);
+                        const active = reference.get(current);
 
                         return (
                             active?.lifecycle === "ACTIVE" &&
@@ -80,8 +80,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         );
                     },
                     invoke(current) {
-                        const active = self.host.get(current)!.effects.get(effectId, paralysis)!;
-                        const reference = ref(active);
+                        const active = reference.get(current)!;
                         const used = active.state.used + 1;
                         current = effects.setState(current, reference, { used });
 

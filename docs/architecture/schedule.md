@@ -18,7 +18,7 @@ Operation 包含相对时刻 `atTick` 和 `execute(battle): Result<boolean>`。�
 
 主线保存 waveIndex、waveStartTick、fragmentStartTick 与阶段。FRAGMENT 持有当前 fragmentIndex、排序后的条目与游标。WAITING／POST_DELAY 持有开始时刻。其他阶段从主线位置与 Definition 查最近进入过的片段。
 
-每个 Branch 保存下次 Phase 索引，活动实例保存 Phase 定义、触发时刻、本次抽选并排序的条目及游标。waiting.wave 与 waiting.final 分别保存实际 Unit 等待关系。
+每个 Branch 保存下次 Phase 索引，活动实例保存 Phase 定义、触发时刻、本次抽选并排序的条目及游标。waiting.wave 与 waiting.final 分别保存等待的 Unit Ref。
 
 全部调度完成要求主线 COMPLETED、活动 Phase 为空且 final 等待为空。
 
@@ -26,7 +26,7 @@ Operation 包含相对时刻 `atTick` 和 `execute(battle): Result<boolean>`。�
 
 initialize 建立初始主线、Branch 索引和空等待；无 Wave 时主线直接完成，尚无历史的时基为零。isCompleted 只读推导主线完成、活动 Phase 为空且 final 等待为空，不裁决战斗胜负。
 
-advance 推进主线与已有活动 Phase；triggerBranch 触发一个 Phase，loop 仅决定末尾选择是否回首；resolveUnits 释放已离场 Unit 的两个集合关系；releaseFromWave 只解除指定活 Unit 的 wave 等待。后两者不隐式 advance，不移除 Unit 或改变计数。
+advance 推进主线与已有活动 Phase；triggerBranch 触发一个 Phase，loop 仅决定末尾选择是否回首；resolveUnits 按已离场的 Unit Ref 释放两个集合关系；releaseFromWave 只解除指定活 Unit 的 wave 等待。后两者不隐式 advance，不移除 Unit 或改变计数。
 
 Battle 初始化登记全局 `battle.unit.removed` 反馈，任意完整 Unit 离场同步释放等待；通用 Unit 生命周期不依赖 Schedule。
 

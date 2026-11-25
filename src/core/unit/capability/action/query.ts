@@ -26,9 +26,9 @@ export function executionRefs(self: Unit & ActionCapability): readonly Execution
     return sort(
         self.action.actions
             .values()
-            .flatMap(({ execution }) => (execution === null ? [] : [ref(execution)])),
+            .flatMap(({ execution }) => (execution === null ? [] : [execution])),
         (left, right) => left.id - right.id,
-    );
+    ).map((execution) => ref(execution));
 }
 
 export function hasExecution(

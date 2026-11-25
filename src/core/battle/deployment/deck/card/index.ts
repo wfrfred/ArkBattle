@@ -1,4 +1,4 @@
-export type { Id, UnitDefinition, Card, Policy } from "./card.js";
+export type { UnitDefinition, Card, Policy } from "./card.js";
 
 export type { Definition } from "./definition.js";
 

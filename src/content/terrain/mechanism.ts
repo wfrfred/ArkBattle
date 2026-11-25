@@ -7,7 +7,7 @@ import type { Definition as TerrainDefinition } from "../../core/battlefield/map
 import { contains } from "../../core/battlefield/map/map.js";
 import { World } from "../../core/geometry/coordinate.js";
 import * as units from "../../core/unit/index.js";
-import type { Id, Unit } from "../../core/unit/index.js";
+import type { Unit } from "../../core/unit/index.js";
 import { inCategories } from "../../core/battle/targeting/index.js";
 
 import * as effects from "../../core/unit/effect/index.js";
@@ -29,7 +29,7 @@ export interface Contact {
 export interface ContactState {
     readonly indices: readonly number[] | null;
     readonly scanTick: number;
-    readonly contacts: ReadonlyMap<Id, Contact>;
+    readonly contacts: ReadonlyMap<Ref<Unit>, Contact>;
 }
 
 interface Behaviour<P extends object> {
@@ -77,7 +77,11 @@ function create<P extends object>(
                 scanTick: battle.tick + behaviour.intervalTicks,
             });
 
-            function setContact(state: BattleState, unitId: Id, contact?: Contact): BattleState {
+            function setContact(
+                state: BattleState,
+                unitRef: Ref<Unit>,
+                contact?: Contact,
+            ): BattleState {
                 const current = reference.get(state);
                 if (current === undefined) {
                     return state;
@@ -86,9 +90,9 @@ function create<P extends object>(
                 const contacts = new Map(current.state.contacts);
 
                 if (contact === undefined) {
-                    contacts.delete(unitId);
+                    contacts.delete(unitRef);
                 } else {
-                    contacts.set(unitId, contact);
+                    contacts.set(unitRef, contact);
                 }
 
                 return mechanisms.setState(state, reference, { ...current.state, contacts });
@@ -113,14 +117,14 @@ function create<P extends object>(
                     : undefined;
             }
 
-            for (const unitId of self.state.contacts.keys()) {
-                const contact = reference.get(battle)?.state.contacts.get(unitId);
-                const current = battle.battlefield.units.get(unitId);
+            for (const unitRef of self.state.contacts.keys()) {
+                const contact = reference.get(battle)?.state.contacts.get(unitRef);
+                const current = unitRef.get(battle);
                 if (
                     contact !== undefined &&
                     (current === undefined || indexOf(current) === undefined)
                 ) {
-                    battle = setContact(battle, unitId);
+                    battle = setContact(battle, unitRef);
 
                     if (!behaviour.retainOnLeave && contact.effect !== null) {
                         battle = effects.remove(battle, contact.effect, "LEFT_TERRAIN");
@@ -140,7 +144,7 @@ function create<P extends object>(
                     continue;
                 }
 
-                const previous = reference.get(battle)?.state.contacts.get(unit.id);
+                const previous = reference.get(battle)?.state.contacts.get(candidateRef);
                 const tile = map.tiles.get(index, definition)!;
 
                 if (previous !== undefined) {
@@ -157,11 +161,11 @@ function create<P extends object>(
                         effectExists &&
                         previousTile?.definition.terrain.params === tile.definition.terrain.params
                     ) {
-                        battle = setContact(battle, unit.id, { ...previous, index });
+                        battle = setContact(battle, candidateRef, { ...previous, index });
                         continue;
                     }
 
-                    battle = setContact(battle, unit.id);
+                    battle = setContact(battle, candidateRef);
 
                     if (!behaviour.retainOnLeave && previous.effect !== null) {
                         battle = effects.remove(battle, previous.effect, "TERRAIN_CHANGED");
@@ -193,7 +197,7 @@ function create<P extends object>(
 
                 const current = candidateRef.get(battle);
                 if (current !== undefined && indexOf(current) === index) {
-                    battle = setContact(battle, unit.id, { index, effect: installed.value });
+                    battle = setContact(battle, candidateRef, { index, effect: installed.value });
                 } else if (!behaviour.retainOnLeave && installed.value !== null) {
                     battle = effects.remove(battle, installed.value, "LEFT_TERRAIN");
                 }

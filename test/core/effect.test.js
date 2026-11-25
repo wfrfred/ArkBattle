@@ -289,7 +289,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
         { expiration: { type: "DURATION", duration: 7, remaining: 7, rate: 1 } },
     );
     state = renewed.state;
-    assert.deepEqual(renewed.value, first.value);
+    assert.equal(renewed.value, first.value);
     const retained = first.value.get(state);
     assert.equal(retained.definition, extend);
     assert.deepEqual(retained.state, { sampled: "retained" });
@@ -318,7 +318,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
     const extended = effects.install(state, owner, cumulative, {
         expiration: { type: "DURATION", duration: 4, remaining: 4, rate: 1 },
     });
-    assert.deepEqual(extended.value, original.value);
+    assert.equal(extended.value, original.value);
     assert.deepEqual(original.value.get(extended.state).expiration, {
         type: "DURATION",
         duration: 7,
@@ -399,9 +399,9 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         expiration: { type: "DURATION", duration: 6, remaining: 6, rate: 1 },
     });
     state = full.state;
-    assert.deepEqual(second.value, first.value);
-    assert.deepEqual(third.value, first.value);
-    assert.deepEqual(full.value, first.value);
+    assert.equal(second.value, first.value);
+    assert.equal(third.value, first.value);
+    assert.equal(full.value, first.value);
     assert.equal(installations, 1);
     assert.equal(first.value.get(state).stackCount, 3);
     assert.equal(offense.resolveAttack(state, owner.get(state)), 120);
@@ -546,7 +546,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
         group: { type: "UNIQUE", id: "card-source", priority: 0, independentSource: true },
     };
     const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
-    const firstSource = units.ref(get(firstUnit.state, firstUnit.value.unitId));
+    const firstSource = firstUnit.value.unit;
     const installed = effects.install(firstUnit.state, owner, definition, { source: firstSource });
     state = deployment.retreat(installed.state, firstSource);
     assert.equal(firstSource.get(state), undefined);
@@ -563,16 +563,15 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const redeployed = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
     state = redeployed.state;
     assert.equal(redeployed.value.type, "DEPLOYED");
-    const nextSource = units.ref(get(state, redeployed.value.unitId));
-    assert.notEqual(nextSource.id, firstSource.id);
+    const nextSource = redeployed.value.unit;
+    assert.notEqual(nextSource, firstSource);
     assert.equal(effects.install(state, owner, delayed, { source: nextSource }).value, null);
     const otherUnit = deployment.deploy(state, deployment.createRequest(state, b, [0, 1]));
     const other = effects.install(otherUnit.state, owner, delayed, {
-        source: units.ref(get(otherUnit.state, otherUnit.value.unitId)),
+        source: otherUnit.value.unit,
     });
     assert.notEqual(other.value, null);
-    assert.equal(owner.id, a.id);
-    const sameNumberUnit = effects.install(other.state, owner, delayed, { source: owner });
-    assert.notEqual(sameNumberUnit.value, null);
-    assert.equal(lateInstall.value.get(sameNumberUnit.state).source, firstSource);
+    const unitSource = effects.install(other.state, owner, delayed, { source: owner });
+    assert.notEqual(unitSource.value, null);
+    assert.equal(lateInstall.value.get(unitSource.state).source, firstSource);
 });

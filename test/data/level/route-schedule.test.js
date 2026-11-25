@@ -156,10 +156,11 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         map: level.map, schedule: compiled.schedule, initialUnits: [], initialMechanisms: [],
         routeMoveMultiplier: 1, pushMultiplier: level.pushMultiplier, rngState: compiled.rngState,
     }), []);
-    assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
+    const waiting = ref(get(state, 1));
+    assert.deepEqual(state.schedule.waiting, { wave: [waiting], final: [waiting] });
     state = triggerBranch(state, "uncounted", false);
-    assert.deepEqual(state.schedule.waiting, { wave: [1], final: [1] });
-    state = step(remove(state, ref(get(state, 1)), { reason: "DEATH", killer: null }), []);
+    assert.deepEqual(state.schedule.waiting, { wave: [waiting], final: [waiting] });
+    state = step(remove(state, waiting, { reason: "DEATH", killer: null }), []);
     assert.equal(isCompleted(state.schedule), true);
     assert.deepEqual(all(state).map(({ id }) => id).toArray(), [0, 2]);
 });

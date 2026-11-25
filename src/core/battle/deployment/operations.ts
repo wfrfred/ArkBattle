@@ -101,7 +101,7 @@ export function deploy<T extends Card<any>>(
 
     return {
         state: battle,
-        value: { type: "DEPLOYED", cardId: self.id, unitId: unit.id },
+        value: { type: "DEPLOYED", card: input.card, unit: unitRef(unit) },
     };
 }
 

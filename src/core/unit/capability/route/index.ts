@@ -5,7 +5,6 @@ export type {
     Plan,
     Initial,
     Checkpoint,
-    ContextId,
     Context,
     ContextInput,
     State,

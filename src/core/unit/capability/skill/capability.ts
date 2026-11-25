@@ -22,7 +22,7 @@ export interface Definition<H extends object = never> {
 }
 
 export interface State extends SkillState, Restrictions {
-    readonly nextActivationId: number;
+    readonly activated: boolean;
     readonly ammo: readonly contribution.Contribution<AmmoInput>[];
 }
 
@@ -47,7 +47,7 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
     const skill = initialized.value;
     const value: State = {
         ...skill,
-        nextActivationId: 0,
+        activated: false,
         ammo: [],
         activationRestrictions: [],
         operationRestrictions: [],

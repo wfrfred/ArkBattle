@@ -1,4 +1,5 @@
-import type { Id as UnitId } from "../../unit/unit.js";
+import type { Ref } from "../../common/ref.js";
+import type { Unit } from "../../unit/unit.js";
 import type { BranchPhase, Definition, Entry } from "./definition.js";
 
 export interface State {
@@ -10,8 +11,8 @@ export interface State {
     readonly nextPhaseIndices: Readonly<Record<string, number>>;
     readonly activePhases: readonly ActivePhase[];
     readonly waiting: {
-        readonly wave: readonly UnitId[];
-        readonly final: readonly UnitId[];
+        readonly wave: readonly Ref<Unit>[];
+        readonly final: readonly Ref<Unit>[];
     };
 }
 

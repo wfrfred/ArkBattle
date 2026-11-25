@@ -76,12 +76,13 @@ test("the Projectile step skips a candidate removed earlier in the same step", (
         return battle;
     } });
     const source = create(target.state, { id: "source", onTick(battle, self) {
-        observed.push(["advance", self.id]);
+        observed.push(["advance", projectiles.ref(self)]);
         return projectiles.remove(battle, target.value, "EXPLICIT");
     } });
     const progressed = advance(source.state, [source.value, target.value]);
 
-    assert.deepEqual(observed, [["advance", source.value.id]]);
+    assert.deepEqual(observed, [["advance", source.value]]);
+    assert.equal(observed[0][1], source.value);
     assert.equal(target.value.get(progressed), undefined);
 });
 
@@ -98,7 +99,8 @@ test("Slowable projectiles compose the contributions of each source and remove t
     const ordinary = create(added, { id: "ordinary" });
     const references = projectiles.all(ordinary.state)
         .filter(projectiles.hasSlowable).map(projectiles.ref).toArray();
-    assert.deepEqual(references, [projectiles.ref(initialized.value)]);
+    assert.equal(references.length, 1);
+    assert.equal(references[0], projectiles.ref(initialized.value));
     const [reference] = references;
 
     let state = projectiles.setMoveContribution(ordinary.state, reference, { id: "a", value: 0.5 });

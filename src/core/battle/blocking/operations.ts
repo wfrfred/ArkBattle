@@ -21,7 +21,7 @@ import { hasOccupancy } from "../../unit/capability/occupancy/capability.js";
 import { hasVitality } from "../../unit/capability/vitality/capability.js";
 import { isAlive } from "../../unit/capability/vitality/query.js";
 import * as units from "../../unit/query.js";
-import type { Id, Unit } from "../../unit/unit.js";
+import type { Unit } from "../../unit/unit.js";
 import type { State as BattleState } from "../state.js";
 import type { Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
@@ -90,11 +90,11 @@ function canAcquire(
 }
 
 export function release(battle: BattleState, relations: readonly Relation[]): BattleState {
-    const prepared = new Map<Id, Unit>();
+    const prepared = new Map<Ref<Unit>, Unit>();
     const released: Relation[] = [];
 
     for (const relation of relations) {
-        const owner = (prepared.get(relation.blocker.id) ?? relation.blocker.get(battle)) as
+        const owner = (prepared.get(relation.blocker) ?? relation.blocker.get(battle)) as
             (Unit & Blocker) | undefined;
         if (!owner?.blocker.relations.includes(relation)) {
             continue;
@@ -112,8 +112,8 @@ export function release(battle: BattleState, relations: readonly Relation[]): Ba
             ...target,
             blockable: { ...target.blockable, relation: null },
         };
-        prepared.set(owner.id, nextOwner);
-        prepared.set(target.id, nextTarget);
+        prepared.set(relation.blocker, nextOwner);
+        prepared.set(relation.blocked, nextTarget);
         released.push(relation);
     }
 

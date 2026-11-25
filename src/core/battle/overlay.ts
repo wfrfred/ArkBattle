@@ -23,18 +23,15 @@ function getOverlay(this: object, battle: BattleState): Overlay | undefined {
 }
 
 export function create(battle: BattleState, mode: MotionMode, input: Input): Result<Ref<Overlay>> {
-    const id = battle.execution.nextOverlayId;
-    const reference = createRef<Overlay>({ id }, getOverlay);
+    const reference = createRef<Overlay>({}, getOverlay);
     const navigation = setOverlay(battle.battlefield.navigation, mode, {
         ...input,
-        id,
         ref: reference,
     });
 
     return {
         state: {
             ...battle,
-            execution: { ...battle.execution, nextOverlayId: id + 1 },
             battlefield: { ...battle.battlefield, navigation },
         },
         value: reference,
@@ -45,10 +42,10 @@ export function update(battle: BattleState, reference: Ref<Overlay>, input: Inpu
     const current = battle.battlefield.navigation;
     const mode = modeOf(current, reference);
     if (mode === undefined) {
-        throw new RangeError(`unknown navigation overlay: ${reference.id}`);
+        throw new RangeError("unknown navigation overlay");
     }
 
-    const navigation = setOverlay(current, mode, { ...input, id: reference.id, ref: reference });
+    const navigation = setOverlay(current, mode, { ...input, ref: reference });
 
     return replaceIn(battle, ["battlefield", "navigation"], navigation);
 }

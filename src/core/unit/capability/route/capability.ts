@@ -49,13 +49,9 @@ export type Checkpoint =
           readonly offset: WorldPosition;
       };
 
-export type ContextId = number;
-
 export interface Context extends Identified<{
     readonly host: Ref<Unit & Route>;
-    readonly id: ContextId;
 }> {
-    readonly id: ContextId;
     readonly plan: Plan;
     readonly offset: WorldPosition;
     readonly index: number;
@@ -72,8 +68,7 @@ export interface ContextInput extends Initial {
 export interface State {
     readonly main: Context;
     readonly others: readonly Context[];
-    readonly activeId: ContextId;
-    readonly nextContextId: ContextId;
+    readonly active: Ref<Context>;
     readonly waveStartTick: number;
     readonly fragmentReadyTick: number;
 }
@@ -94,6 +89,7 @@ export function initialize<U extends Unit & Pick<Route, "definition">>(
 ): Result<U & Route> {
     validatePlan(initial.plan);
     assert(Vec2.is(initial.offset), "invalid route offset", TypeError);
+    const reference = createContextRef(unit.ref as Ref<Unit & Route>);
 
     return {
         state: battle,
@@ -108,8 +104,7 @@ export function initialize<U extends Unit & Pick<Route, "definition">>(
             }),
             route: {
                 main: {
-                    id: 0,
-                    ref: createContextRef(unit.ref as Ref<Unit & Route>, 0),
+                    ref: reference,
                     plan: initial.plan,
                     offset: initial.offset,
                     index: 0,
@@ -118,8 +113,7 @@ export function initialize<U extends Unit & Pick<Route, "definition">>(
                     ticking: true,
                 },
                 others: [],
-                activeId: 0,
-                nextContextId: 1,
+                active: reference,
                 ...timing(battle.schedule),
             },
         },

@@ -29,7 +29,7 @@ Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 dura
 
 ### 狂躁的行动与时间累加
 
-依据[案例25第10节](../research/cases/25-elemental-burst-recovery-timing.md#10-狂躁的两套程序与能力计数)，`createActionScaledDamage` 的根仅负责恢复；独立程序使用 DEADLINE，默认持续15秒，保存周期 timer、当前伤害及已计数的 Execution ID。生效时增加50攻速，每30次 ACTIVE Tick 造成一次当前伤害，初始100。Action 每次 Execution 首次 released、Skill 每次 activationStarted 各增加50，默认最高600；未释放的行动、失败的技能发动不加，多段释放不重复计数。两项监听按宿主能力分别安装，技能激活与期间的攻击分别计数。天赋与通用被动程序由 Effect／回调表达，安装和推进本身不算施放。输出为无来源、无途径的 TRUE／NORMAL，hitRecovery=true；实际回复仍服从 Skill 资格。取消根不清除此独立程序，其到期自行撤销攻速和两项 Hook。
+依据[案例25第10节](../research/cases/25-elemental-burst-recovery-timing.md#10-狂躁的两套程序与能力计数)，`createActionScaledDamage` 的根仅负责恢复；独立程序使用 DEADLINE，默认持续15秒，保存周期 timer、当前伤害及已计数的 Execution Ref。生效时增加50攻速，每30次 ACTIVE Tick 造成一次当前伤害，初始100。Action 每次 Execution 首次 released、Skill 每次 activationStarted 各增加50，默认最高600；未释放的行动、失败的技能发动不加，多段释放不重复计数。两项监听按宿主能力分别安装，技能激活与期间的攻击分别计数。天赋与通用被动程序由 Effect／回调表达，安装和推进本身不算施放。输出为无来源、无途径的 TRUE／NORMAL，hitRecovery=true；实际回复仍服从 Skill 资格。取消根不清除此独立程序，其到期自行撤销攻速和两项 Hook。
 
 `createTimeScaledDamage` 由根保存私有 timer／damage，生效时增加20攻速；每30次 ACTIVE Tick 先增加130，再造成当前伤害，默认160起步，首跳290。输出为无来源、无途径的 ELEMENTAL／BUFF，hitRecovery=false。根结束即撤销输出；周期不随恢复倍率加速。每次先推进恢复，再处理当次周期，整个 onTick 返回后才结算到期，因此正常15秒的末次脉冲保留。
 

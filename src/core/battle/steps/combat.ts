@@ -39,7 +39,7 @@ export function advance(battle: BattleState): BattleState {
         const configuration = unit.definition.action as CapabilityDefinition<object>;
         const selected = configuration.select?.(battle, unit) ?? {
             state: battle,
-            value: unit.action.actions.keys(),
+            value: unit.action.actions.values().map(({ definition }) => definition.id),
         };
         battle = selected.state;
 
