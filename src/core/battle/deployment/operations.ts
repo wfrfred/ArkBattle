@@ -10,7 +10,7 @@ import type { State as BattleState, Result } from "../state.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
-import { dispatch as notifyDeployed } from "./hook.js";
+import { dispatch as notifyDeployed } from "./deck/card/hook.js";
 import type { Card } from "./deck/card/card.js";
 import { resolveBaseCost, resolveCost } from "./deck/card/dp/query.js";
 import { deploy as deployCard } from "./deck/card/operations.js";
@@ -19,8 +19,6 @@ import * as dp from "./dp/operations.js";
 import * as slot from "./slot/operations.js";
 import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
 import { validateRequest, type DeployRequest, type DeployOutcome } from "./request.js";
-import { Hooks } from "../../hook.js";
-import * as lifecycle from "../../unit/hook.js";
 
 export { canRetreat, retreat };
 
@@ -71,20 +69,7 @@ export function deploy<T extends Card<any>>(
                 direction: request.direction,
             },
         },
-        hooks: Hooks.empty()
-            .set(lifecycle.entered, {
-                id: "@deployment/enter",
-                priority: 0,
-                invoke: (state, unit) => ({
-                    state: notifyDeployed(state, {
-                        unit: unit as Unit & Deployable,
-                        request: input,
-                    }),
-                    value: undefined,
-                }),
-            })
-            .merge(self.unitHooks)
-            .merge(request.hooks),
+        hooks: request.hooks,
     });
     const unit = setDeployment(initialized.value, {
         card: input.card,
@@ -99,6 +84,7 @@ export function deploy<T extends Card<any>>(
         [...battle.deployment.history, { card: input.card, unit: unitRef(unit) }],
     );
     battle = add(battle, unit);
+    battle = notifyDeployed(battle, { unit, request: input });
 
     return {
         state: battle,

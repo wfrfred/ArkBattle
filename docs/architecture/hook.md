@@ -4,7 +4,7 @@
 
 ## 存储与领域职责
 
-所有登记使用类型化 Key。Unit 的生命周期、资源、Action、Skill、Blocking、Elemental 等本地登记统一存于 `Unit.hooks`；全局 Unit 观察和 Deployment 观察存于各自 Battle 领域的 Hooks 集合。存储一致不合并业务阶段或宿主所有权。
+所有登记使用类型化 Key。Unit 的生命周期、资源、Action、Skill、Blocking、Elemental 等本地登记统一存于 `Unit.hooks`；全局 Unit 观察存于 Battle 的 Hooks 集合，Card 的部署通知存于各 Card 自身的 Hooks 集合。存储一致不合并业务阶段或宿主所有权。
 
 各领域自行派发，不建立万能业务广播器。公共集合负责存取，公共 dispatch 负责共同调用协议；它们不判断 ACTIVE、资源资格或业务是否应继续。
 
@@ -22,11 +22,11 @@ ID 的范围是集合 × Key × ID。无登记返回空集合；同键同 ID 的
 
 Definition、创建输入与 Unit 使用同一种 Hooks 集合，无登记使用 Hooks.empty()。初始化从输入集合开始，按 Capability initializer 顺序装配，最后合并 Definition.hooks；全部固有登记在 add 与 entered 之前就绪。
 
-固有 Hook 可以直接声明，不必包装 Effect。Card 的 Unit Hook 和 `Unit.Input` 也使用同一集合；修改 Card 只影响以后创建的 Unit，不追溯已有实例。
+固有 Hook 可以直接声明，不必包装 Effect。Card 持有自身的 Hooks，通过 `card.deployed` 响应成功部署；`Unit.Input` 独立提供本次 Unit 构造的 Hooks，不复制 Card 的 Hooks。
 
 ## 动态登记
 
-通用 setHook／removeHook 返回 Change，由 Unit.update 发布；Key 保留最低宿主类型。登记本身不执行内容、重放旧阶段或维护关系。
+通用 setHook／removeHook 返回 Change，由 Unit.update 发布；Key 保留最低宿主类型。Card 通过 `card.setHook`／`card.removeHook` 按 Ref 写回自身集合。登记本身不执行内容、重放旧阶段或维护关系。
 
 机制向其他 Unit 登记时，由机制负责撤销；宿主注销自然移除本地集合。Effect 按自身启停或结束程序管理登记与资格，不维护外置 Unit 订阅表。Battle 归属的观察使用所属领域操作修改，不能强塞入某个 Unit。
 
@@ -46,6 +46,7 @@ accepts 只读。通知使用 void；取消、固定数值等工作值转换由�
 | --- | --- |
 | Battle unit entered | Unit 与占格登记后、Unit 本地 `entered` 前同步派发 `battle.unit.entered`。Unit 进入 ENDING 或注销后停止剩余入场通知。 |
 | Unit entered／tick | 固定候选，每项前要求当前宿主 ACTIVE |
+| Card deployed | Unit.add 返回后仅派发成功部署的 Card；通知创建事实，不以新 Unit 仍存活为条件 |
 | Unit removing | 使用首次结束快照与输入构造 Departure，在发布 ENDING 后执行，早于 Lifetime 自动请求依赖者结束 |
 | Unit removed | 注销前捕获最新 Hook 对象及 priority 快照，注销后执行，Departure 沿用首次结束的快照与输入 |
 | Battle unit removed | `battle.unit.removed` 在 Unit 本地 `removed` 后派发 |

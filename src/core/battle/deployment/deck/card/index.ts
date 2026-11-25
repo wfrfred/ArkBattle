@@ -14,13 +14,9 @@ export { add } from "../operations.js";
 
 export { allows } from "./query.js";
 
-export {
-    setState,
-    setUnitHook,
-    removeUnitHook,
-    setRestriction,
-    removeRestriction,
-} from "./operations.js";
+export { setState, setRestriction, removeRestriction } from "./operations.js";
+
+export { deployed, setHook, removeHook, type Deployed, type Hook } from "./hook.js";
 
 export * as supply from "./supply/index.js";
 

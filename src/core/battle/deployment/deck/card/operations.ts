@@ -4,8 +4,7 @@ import { replaceIn } from "../../../../common/object.js";
 import type { State as BattleState } from "../../../state.js";
 import { replace } from "../operations.js";
 import type { Card, Policy } from "./card.js";
-import type { Key } from "../../../../hook.js";
-import { type Entry, set, remove } from "../../../../common/collection/entries.js";
+import { set, remove } from "../../../../common/collection/entries.js";
 import type { Restriction } from "./restriction.js";
 import { resolveIncrease } from "./dp/query.js";
 import { enqueue } from "./supply/operations.js";
@@ -91,30 +90,6 @@ export function advance(battle: BattleState, reference: Ref<Card>): BattleState 
             }
         ).onTick?.(battle, next) ?? battle
     );
-}
-
-export function setUnitHook<H extends Entry, Owner extends object>(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    key: Key<H, Owner>,
-    entry: NoInfer<H>,
-): BattleState {
-    const self: Card = reference.get(battle)!;
-    const unitHooks = self.unitHooks.set(key, entry);
-
-    return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
-}
-
-export function removeUnitHook<H extends Entry, Owner extends object>(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    key: Key<H, Owner>,
-    id: string,
-): BattleState {
-    const self: Card = reference.get(battle)!;
-    const unitHooks = self.unitHooks.remove(key, id);
-
-    return unitHooks === self.unitHooks ? battle : replace(battle, { ...self, unitHooks });
 }
 
 export function setRestriction(

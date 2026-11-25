@@ -9,7 +9,7 @@ import type * as supply from "./supply/supply.js";
 export type Definition<S extends object = object, P extends Policy = Policy> = {
     readonly slot: number;
     readonly deploymentRestrictions: readonly Contribution<Restriction>[];
-    readonly unitHooks: Hooks;
+    readonly hooks: Hooks;
     readonly initialize: (battle: BattleState) => Result<S>;
 } & {
     [K in Policy]: {

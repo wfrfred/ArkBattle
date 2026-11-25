@@ -6,7 +6,6 @@ import * as slot from "./slot/slot.js";
 import type { Ref } from "../../common/ref.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Deployable } from "../../unit/capability/deployable/capability.js";
-import { Hooks } from "../../hook.js";
 
 export interface Definition extends deck.Definition {
     readonly dp: dp.Definition;
@@ -28,7 +27,6 @@ export interface State {
     readonly dp: dp.State;
     readonly slot: slot.State;
     readonly history: readonly DeploymentRecord[];
-    readonly hooks: Hooks;
 }
 
 const emptyDefinition: Definition = {
@@ -45,6 +43,5 @@ export function initialize(definition: Definition | null): State {
         dp: dp.initialize(config.dp),
         slot: slot.initialize(config.slot),
         history: [],
-        hooks: Hooks.empty(),
     };
 }

@@ -11,7 +11,7 @@ export function createCardDefinition({
     cost = 0, redeployTicks = 0, slots = 0,
     stock = 1, stockLimit = 1, activeLimit = 1,
     policy = "UNIQUE", increase = true,
-    placement = "ALL", allowedSiteConditions = [conditions.normal], deploymentRestrictions = [], unitHooks = Hooks.empty(),
+    placement = "ALL", allowedSiteConditions = [conditions.normal], deploymentRestrictions = [], hooks = Hooks.empty(),
     initialize = battle => ({ state: battle, value: {} }),
     ...rest
 } = {}) {
@@ -32,6 +32,6 @@ export function createCardDefinition({
                     (tile.state.siteCondition === null || allowedSiteConditions.includes(tile.state.siteCondition));
             } },
         }, ...deploymentRestrictions],
-        unitHooks, initialize, ...rest,
+        hooks, initialize, ...rest,
     };
 }

@@ -78,7 +78,7 @@ export function initialize<
             ...(policy === "QUEUED" ? { pending } : {}),
         },
         unitDefinition,
-        unitHooks: definition.unitHooks,
+        hooks: definition.hooks,
         restrictions: [],
         state: initialized.value,
     };

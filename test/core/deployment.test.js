@@ -37,7 +37,7 @@ const commonCard = {
         cooldown: 10,
     },
     deploymentRestrictions: [],
-    unitHooks: Hooks.empty(),
+    hooks: Hooks.empty(),
     initialize: (state) => ({ state, value: {} }),
 };
 const operatorCard = { ...commonCard, policy: "UNIQUE", dp: { ...commonCard.dp, increase: true } };
@@ -169,9 +169,10 @@ test("different Card definitions can deploy the same Unit Definition used by an 
     }
 });
 
-test("preview, evaluation and deployment share a request, rejection spends nothing, and the entered hook sees consumption", () => {
+test("preview, evaluation and deployment share a request, rejection spends nothing, and Card notification follows Unit entered", () => {
     const constructions = [];
     const deployments = [];
+    let entered = false;
     const definition = {
         ...operator,
         facing: { restrictions: [] },
@@ -196,18 +197,28 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
         },
     };
     let state = battle([], {
-        deployment: { definition: account, cards: [{ definition: operatorCard, unitDefinition: definition }] },
+        deployment: { definition: account, cards: [
+            { definition: operatorCard, unitDefinition: definition },
+            { definition: operatorCard, unitDefinition: definition },
+        ] },
     });
-    state = deployment.setHook(state, deployment.deployed, {
+    const [card, otherCard] = [...cards.all(state)].map(cards.ref);
+    state = cards.setHook(state, otherCard, cards.deployed, {
+        priority: 0,
+        id: "deployed",
+        invoke: () => assert.fail("another Card cannot receive this notification"),
+    });
+    state = cards.setHook(state, card, cards.deployed, {
         priority: 0,
         id: "deployed",
         invoke(current, { unit, request }) {
+            assert.equal(entered, true);
+            assert.equal(request.card, card);
             assert.notEqual(unit.ref.get(current), undefined);
             deployments.push({ id: unit.ref.id, tile: request.tilePosition });
             return { state: current, value: undefined };
         },
     });
-    const card = cards.ref([...cards.all(state)][0]);
     const request = deployment.createRequest(state, card, [1, 2], "LEFT");
     const invalid = { ...request, quote: { ...request.quote, dp: -1 } };
     for (const operation of [deployment.preview, deployment.deploy]) {
@@ -231,7 +242,6 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
     });
     assert.deepEqual(deployments, []);
 
-    let entered = false;
     const allowed = {
         ...rejected,
         tilePosition: [0, 2],
@@ -371,10 +381,10 @@ test("retreat refunds before removal, and death delays global slot release indep
             definition: { ...account, slot: { limit: 1 } },
             cards: [
                 {
-                    unitDefinition: operator,
-                    definition: {
-                        ...operatorCard,
-                        unitHooks: Hooks.empty()
+                    definition: operatorCard,
+                    unitDefinition: {
+                        ...operator,
+                        hooks: Hooks.empty()
                             .set(unitLifecycle.removing, {
                                 priority: 0,
                                 id: "observe-retreat-refund",
@@ -391,7 +401,7 @@ test("retreat refunds before removal, and death delays global slot release indep
                                 },
                             })
                             .set(unitLifecycle.removed, {
-                                priority: 0,
+                                priority: -1,
                                 id: "observe-departure",
                                 invoke: (current, { unit, reason }) => {
                                     const card = unit.deployable.card.get(current);

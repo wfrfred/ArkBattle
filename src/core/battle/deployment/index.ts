@@ -10,10 +10,6 @@ export type { Quote, DeployRequest, DeployOutcome, Rejection, Rejected } from ".
 
 export type { Restriction, RestrictionContext } from "./restriction.js";
 
-export type { Hook, Deployed } from "./hook.js";
-
-export { deployed, setHook, removeHook } from "./hook.js";
-
 export {
     cardForUnit,
     sourceIdentity,

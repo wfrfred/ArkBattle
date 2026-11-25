@@ -30,7 +30,7 @@ Pair 保存 tile 及建立时的双方快照，两端引用同一对象。建立
 
 ## 与其他领域协作
 
-Deployment 提供落点与本次方向，部署事实通知和 Support 配对不同。默认同级装配先部署通知，实际 priority 见 [Deployment](deployment.md)。
+Deployment 提供落点与本次方向，Support 配对由 Unit 的本地 entered 程序完成。Card 的成功部署通知在 Unit.add 返回后派发，见 [Deployment](deployment.md)。
 
 Blocking 对占格 Unit 使用登记根格，无占格则身体格；平台限制不从高度自动推断。射击台加入配对时只禁止乘员 GROUND 阻挡，解除只撤销自身来源。
 

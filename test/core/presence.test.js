@@ -54,7 +54,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         supply: {
             stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 10,
         },
-        deploymentRestrictions: [], unitHooks: Hooks.empty(),
+        deploymentRestrictions: [], hooks: Hooks.empty(),
         initialize: (state) => ({ state, value: {} }),
     };
     const enemy = {

@@ -17,16 +17,16 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 | --- | --- |
 | 身份、身体位置、生命周期 | Unit |
 | 登记格、方向与 Support 配对 | Occupancy |
-| 部署历史和部署通知 | Deployment |
+| 部署历史 | Deployment |
 | Card 集合、排序、费用截断上限 | Deck |
 | DP 余额、上下限和自然回复 | DP |
 | 全局部署位上限、占用和待归还份额 | Slot |
-| 单卡库存、费用阶段、时钟和私有 state | Card |
+| 单卡库存、费用阶段、时钟、成功部署通知和私有 state | Card |
 | 默认返费规则、本次 Card／COST／额度／退款与撤退限制 | Deployable |
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
 
-`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史和通知。初始化配置由三个子域的 Definition 组合，`Deployment.Definition.dp` 和 `Deployment.Definition.slot` 分别提供账户和部署位的基础配置。`Deployment.Definition.costCeiling` 必填，是 Card 费用计算的截断上限，DP 的有效上限约束账户余额。Battle Input 的 deployment 必填；`null` 表示没有部署输入，仍初始化空牌组、99 费用上限、零 DP（账户范围 0–99、无自然回复）及不限部署位。
+`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史。初始化配置由三个子域的 Definition 组合，`Deployment.Definition.dp` 和 `Deployment.Definition.slot` 分别提供账户和部署位的基础配置。`Deployment.Definition.costCeiling` 必填，是 Card 费用计算的截断上限，DP 的有效上限约束账户余额。Battle Input 的 deployment 必填；`null` 表示没有部署输入，仍初始化空牌组、99 费用上限、零 DP（账户范围 0–99、无自然回复）及不限部署位。
 
 ## 静态内容与 Card
 
@@ -44,7 +44,7 @@ Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `
 
 Supply 的库存、计时和 Contribution 操作保留 `Card<S, P>` 的私有状态和策略类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 Ref 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
 
-Card 的 unitHooks 注入未来实例，不追改已经创建的 Unit。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
+Card 保存自身的 Hooks，初始化时由 Definition 装配。Card 是 Lifetime 实例，可以直接作为 Effect 的宿主；需要跟踪或消费后续部署机会的 Effect，通过 Card 的 Hook 执行本卡业务，不提前保存一组 Unit 程序。私有状态的构造、类型配对与写回遵守公共约定，不在此复制异构容器接口。
 
 ## 卡牌费用
 
@@ -82,11 +82,11 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 
 ## 普通部署流程
 
-合并并判定资格 → 采样基础费用与本次 COST → 提交 DP、部署位、库存及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
+合并并判定资格 → 采样基础费用与本次 COST → 提交 DP、部署位、库存及部署间隔 → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered` → 派发本次 Card 的 `deployed`。
 
 付款使用当前 DP 余额。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
 
-部署 entered 程序先装配，然后 Card／Request Hook，再 Capability 和内容程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Deployment 部署通知和 Occupancy 配对各自通过已登记程序完成，Unit.add 不特判这些领域。
+Unit 构造依次装配 Request Hook、Capability 和 Unit Definition 的程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Unit.add 完成登记、全场及本地 entered，Occupancy 配对由其本地程序处理。Unit.add 返回后，Deployment 直接派发对应 Card 的 deployed，不给 Unit 注入部署通知 Hook。
 
 ## 开场 Unit
 
@@ -114,7 +114,7 @@ DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占
 
 公共阶段为：发布 ENDING／派发 removing → 真实依赖完整结束 → 捕获当前 removed 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 removed → 全局 removed。
 
-本地默认同级装配顺序为 Deployment 离场结算、Card Hook、Request Hook、Occupancy 配对清理、Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
+本地默认同级装配顺序为 Request Hook、Capability 程序（包含 Deployment 离场结算与 Occupancy 配对清理）、Unit Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
 
 removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
@@ -122,7 +122,7 @@ removing 和依赖收尾期间的 removed 登记变化进入注销前快照；�
 
 ## 部署观察
 
-Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks 集合，不塞进某个 Unit。Deployed 固定 `{ unit, request }` 创建事实，支付读取 request.quote；后续 entered 仍可能改变或移除实例，需要实时状态时重新查询。
+`card.deployed` 只通知本次成功部署的 Card，直接从该 Card 的 Hooks 派发；拒绝部署不派发。Deployed 固定 `{ unit, request }` 创建事实，支付读取 request.quote。通知在 Unit.add 返回后发生，即使入场程序已改变或移除新 Unit，成功部署事实仍成立；需要实时状态时按 Ref 重新查询。全场观察者通过 `battle.unit.entered` 及 Deployable 的 Card 关联区分部署入场，不维护另一份全局 deployed Hook。
 
 公共候选、priority、替换和嵌套派发见 [Hook](hook.md)。一次性来源在同步触发新部署前先消费自己的机会，不用 Event 执行业务。
 

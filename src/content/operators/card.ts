@@ -44,7 +44,7 @@ export function create({ cost, respawnTime }: Parameters): CardDefinition<object
                 },
             },
         ],
-        unitHooks: Hooks.empty(),
+        hooks: Hooks.empty(),
         initialize: (battle) => ({ state: battle, value: {} }),
     };
 }
