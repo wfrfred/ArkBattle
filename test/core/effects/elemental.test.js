@@ -27,6 +27,7 @@ import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js
 import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import { dispatchReleased } from "../../../dist/core/unit/capability/action/release.js";
 import { resolveSpeed } from "../../../dist/core/unit/capability/action/timing.js";
+import { effectInitial } from "../../helpers/effect.js";
 
 const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
@@ -159,6 +160,7 @@ function victim(runtime) { return unitQueries.all(runtime).find(entry => entry.r
 test('elemental runtime: unused neural paralysis survives recovery and the next burst resets its remaining charges', () => {
   let runtime = battle('ENEMY', 'NEURAL');
   runtime = effects.install(runtime, unitRef(victim(runtime)), stun, {
+    ...effectInitial,
     expiration: { type: 'DEADLINE', tick: 301 },
   }).state;
   const events = [];

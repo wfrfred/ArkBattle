@@ -209,10 +209,13 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
             }
 
             return effects.install(battle, self.ref.host, damage, {
+                source: null,
+                scopes: [],
                 expiration: {
                     type: "DEADLINE",
                     tick: battle.tick + parameters.effectDurationTicks,
                 },
+                enabled: true,
             }).state;
         },
         onTick: (battle, self) => advance(battle, self),

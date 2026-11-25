@@ -19,6 +19,7 @@ import { invisible, invisibleRestriction } from "../../../dist/core/effects/visi
 
 import { install, remove as removeEffect } from "../../../dist/core/effect/index.js";
 import { advance as advanceCombat } from "../../../dist/core/battle/steps/combat.js";
+import { effectInitial } from "../../helpers/effect.js";
 
 const configuration = { elite: 1, level: 55, potential: 6, skillIndex: 0, skillLevel: 7, trust: 100 };
 const receiver = (restrictions = []) => initialize({
@@ -81,7 +82,7 @@ test("Melantha pays Begin on first entry, skips it for consecutive attacks, and 
     through(66);
     assert.deepEqual(releases(), [29, 66]);
 
-    const hidden = install(battle, ref(getUnit(battle, 1)), invisible);
+    const hidden = install(battle, ref(getUnit(battle, 1)), invisible, effectInitial);
     battle = hidden.state;
     through(90);
     assert.deepEqual(battle.events.filter(event => event.type === "ATTACK_STARTED").map(event => event.tick), [0, 45]);

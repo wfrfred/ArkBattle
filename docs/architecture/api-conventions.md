@@ -141,4 +141,4 @@ Unit 的 add／remove 与生命周期 Hook 见 [Capability](capability.md)和 [H
 
 Effect 的 S、H 分别约束私有数据和宿主类型；`StackEffect` 直接继承 Effect 并表达叠层身份，精确 Ref 保留实例实际的配对。安装以 Definition 决定最低宿主要求；合并可能保留旧 Definition，不能借本次传入类型证明旧私有 state 的类型。
 
-`Definition` 和 `StackDefinition` 的 Self 泛型保留具体回调的实例要求；实例持有的 Definition 将 Self 擦除为 never，实际调用自身 Definition 时由 Core 恢复已建立的配对。叠层的 END／DECAY 到期形式由安装与时间写回边界检查。安装返回及类型擦除边界由 [Effect](effect.md#2-definition实例与泛型)维护。通用私有写回规则与其他实例相同，不另提供失去类型关联的写入口。
+`Definition` 和 `StackDefinition` 的 Self 泛型保留具体回调的实例要求；实例持有的 Definition 将 Self 擦除为 never，实际调用自身 Definition 时由 Core 恢复已建立的配对。安装必须提供独立于私有类型的完整 Initial，只有新实例才由 `Definition.initialize(battle)` 构造私有 state。叠层的 END／DECAY 到期形式由安装与时间写回边界检查。安装返回及类型擦除边界由 [Effect](effect.md#2-definition实例与泛型)维护。通用私有写回规则与其他实例相同，不另提供失去类型关联的写入口。

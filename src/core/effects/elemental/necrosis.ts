@@ -49,7 +49,12 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
                     return battle;
                 }
 
-                battle = effects.install(battle, self.ref.host, control, { scopes }).state;
+                battle = effects.install(battle, self.ref.host, control, {
+                    source: null,
+                    scopes,
+                    expiration: { type: "INFINITE" },
+                    enabled: true,
+                }).state;
             }
 
             return battle;

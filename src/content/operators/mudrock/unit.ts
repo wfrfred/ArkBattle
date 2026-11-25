@@ -87,9 +87,22 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
                 }
 
                 const host = unitRef(self);
-                state = install(state, host, shield).state;
+                state = install(state, host, shield, {
+                    source: null,
+                    scopes: [],
+                    expiration: { type: "INFINITE" },
+                    enabled: true,
+                }).state;
 
-                return { state: install(state, host, healFree).state, value: undefined };
+                return {
+                    state: install(state, host, healFree, {
+                        source: null,
+                        scopes: [],
+                        expiration: { type: "INFINITE" },
+                        enabled: true,
+                    }).state,
+                    value: undefined,
+                };
             },
         }),
     } satisfies Definition;

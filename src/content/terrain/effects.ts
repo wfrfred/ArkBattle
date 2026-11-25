@@ -141,7 +141,7 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
 export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicState, Unit> {
     return {
         id: "terrain/deepsea",
-        initialize: () => ({ nextTick: 0 }),
+        initialize: (battle) => ({ nextTick: battle.tick }),
         onEnable(battle, self) {
             return changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
                 attackSpeed: modifier.create({ multiplier: params.attackSpeedModifier }),
@@ -167,7 +167,7 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
 export function createMireEffect(params: MireParams): Definition<MireState, Unit> {
     return {
         id: "terrain/mire",
-        initialize: () => ({ nextTick: 0, stacks: 0 }),
+        initialize: (battle) => ({ nextTick: battle.tick, stacks: 0 }),
         onTick(battle, self) {
             if (battle.tick < self.state.nextTick) {
                 return battle;

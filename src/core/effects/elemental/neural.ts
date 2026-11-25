@@ -45,7 +45,10 @@ export function createStun(parameters: StunParameters): Definition {
             }
 
             battle = effects.install(battle, self.ref.host, stun, {
+                source: null,
+                scopes: [],
                 expiration: { type: "DEADLINE", tick: battle.tick + parameters.stunDurationTicks },
+                enabled: true,
             }).state;
             host = availableHost(battle, reference);
 
@@ -93,10 +96,13 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                         const host = self.ref.host.get(current);
                         if (host?.lifecycle === "ACTIVE") {
                             current = effects.install(current, self.ref.host, stun, {
+                                source: null,
+                                scopes: [],
                                 expiration: {
                                     type: "DEADLINE",
                                     tick: current.tick + recoveryTicks,
                                 },
+                                enabled: true,
                             }).state;
                         }
 
@@ -131,7 +137,12 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                     .find((effect) => effect !== undefined && effect.lifecycle !== "ENDING");
                 battle =
                     existing === undefined
-                        ? effects.install(battle, units.ref(host), paralysis).state
+                        ? effects.install(battle, units.ref(host), paralysis, {
+                              source: null,
+                              scopes: [],
+                              expiration: { type: "INFINITE" },
+                              enabled: true,
+                          }).state
                         : effects.setState(battle, ref(existing), { used: 0 });
             }
 

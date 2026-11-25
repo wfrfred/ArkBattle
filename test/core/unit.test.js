@@ -12,6 +12,7 @@ import * as targetable from "../../dist/core/unit/capability/targetable/capabili
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
 import { add, update, remove } from "../../dist/core/unit/operations.js";
 import { hasOccupancy } from "../../dist/core/unit/capability/occupancy/index.js";
+import { effectInitial } from "../helpers/effect.js";
 
 test("Unit construction rejects conflicting roles and installs entry effects on the registered host", () => {
     const entryEffect = { id: "entry-effect", initialize: () => ({ charges: 2 }) };
@@ -21,7 +22,7 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
             id: "install-entry-effect",
             invoke(state, self) {
                 assert.ok(units.ref(self).get(state));
-                return { state: effects.install(state, units.ref(self), entryEffect).state, value: undefined };
+                return { state: effects.install(state, units.ref(self), entryEffect, effectInitial).state, value: undefined };
             },
         }),
     };
@@ -164,7 +165,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
             return update(current, self.ref.host, units.removeHook(hpDamage.targetKilled, "death-response"));
         },
     };
-    state = effects.install(state, killer, response).state;
+    state = effects.install(state, killer, response, effectInitial).state;
     const installed = effects.install(state, victim, {
         id: "victim-effect", initialize: () => ({}),
         onDisable(current) {
@@ -175,7 +176,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
             observed.push("effect-ended");
             return current;
         },
-    });
+    }, effectInitial);
     state = installed.state;
     const victimEffect = installed.value;
     const request = {

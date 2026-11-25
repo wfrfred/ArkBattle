@@ -36,12 +36,11 @@ export interface StackEffect<
     readonly stackCount: number;
 }
 
-export interface Initial<S extends object> {
-    readonly source?: Ref<Unit> | null;
-    readonly scopes?: readonly Ref<Lifetime>[];
-    readonly expiration?: Expiration;
-    readonly state?: S;
-    readonly enabled?: boolean;
+export interface Initial {
+    readonly source: Ref<Unit> | null;
+    readonly scopes: readonly Ref<Lifetime>[];
+    readonly expiration: Expiration;
+    readonly enabled: boolean;
 }
 
 export { ref } from "../common/ref.js";

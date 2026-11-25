@@ -20,6 +20,7 @@ import { actionCapability } from "../../helpers/actions.js";
 import { setSpeedContribution } from "../../../dist/core/unit/capability/action/index.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { update } from "../../../dist/core/unit/operations.js";
+import { effectInitial } from "../../helpers/effect.js";
 
 function definition(groups, prepare = state => ({ state, value: {} })) {
     return createWithState({
@@ -140,7 +141,7 @@ test("bound healing keeps its receivers when a later selection restriction would
         id: "bound-healing", period: { type: "FIXED", ticks: 1 }, timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 }, triggerBindingId: "primary",
         initialize: state => ({ state, value: {} }),
         prepare(state) {
-            return { state: effects.install(state, selected, healFree).state, value: {} };
+            return { state: effects.install(state, selected, healFree, effectInitial).state, value: {} };
         },
         targetGroups: [{ id: "primary", select: recipients, operations: [{ type: "HEAL", power: 20 }] }],
         followUps: [

@@ -14,6 +14,7 @@ import {
     invisible, invisibleRestriction, untargetable,
     camouflageRestriction, allyUntargetableRestriction,
 } from "../../../dist/core/effects/visibility.js";
+import { effectInitial } from "../../helpers/effect.js";
 
 const definition = (side, restrictions = [], taunt = 0) => ({
     id: `targetable-${side}`, hooks: Hooks.empty(), classification: { type: "DEVICE", side, filterTags: [], groupTags: [] },
@@ -37,14 +38,14 @@ test("restriction exemptions use effective definition identity without reviving 
     assert.equal(targetable.allowsRestrictions(state, source,
         restriction => restriction === camouflageRestriction)(get(state, 2)), true);
     const target = units.ref(get(state, 1));
-    const installed = effects.install(state, target, invisible);
+    const installed = effects.install(state, target, invisible, effectInitial);
     state = installed.state;
     const visibleToDetector = state => targetable.allowsRestrictions(
         state, source, restriction => restriction === invisibleRestriction,
     )(target.get(state));
 
     assert.equal(visibleToDetector(state), true);
-    const independent = effects.install(state, target, untargetable);
+    const independent = effects.install(state, target, untargetable, effectInitial);
     state = independent.state;
     assert.equal(visibleToDetector(state), false);
     assert.equal(targetable.allowsRestrictions(state, source, () => true)(target.get(state)), true);

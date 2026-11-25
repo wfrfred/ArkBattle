@@ -66,7 +66,10 @@ export function createArts(parameters: Parameters): Definition {
             }
             if (hasVitality(unit)) {
                 battle = effects.install(battle, units.ref(unit), reduction, {
+                    source: null,
                     scopes: [reference],
+                    expiration: { type: "INFINITE" },
+                    enabled: true,
                 }).state;
             }
 
@@ -100,7 +103,10 @@ export function createElemental(parameters: Parameters): Definition {
             }
             if (hasVitality(unit)) {
                 battle = effects.install(battle, units.ref(unit), reduction, {
+                    source: null,
                     scopes: [reference],
+                    expiration: { type: "INFINITE" },
+                    enabled: true,
                 }).state;
             }
 

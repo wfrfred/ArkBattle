@@ -34,7 +34,7 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 
 每项业务事实有唯一所属领域。索引随权威状态同步维护，不形成第二份 Unit；UI 事件只记录表现所需的瞬时事实，不作为结算命令重放。各领域的所有权见[专题文档](README.md)，不可变和状态接续规则见[函数式内核](functional-core.md)。
 
-`initialize` 按手牌、`initialEffects`、`initialUnits` 的顺序创建完整初态，每组按输入顺序逐个初始化并登记。`step(battle, commands)` 接收必填只读命令数组，每次成功调用推进一个 30 Hz 逻辑 Tick。无命令时传 `[]`。
+`initialize` 按手牌、`initialEffects`、`initialUnits` 的顺序创建完整初态，每组按输入顺序逐个初始化并登记。`initialEffects` 指定无宿主 Effect 的 Definition 与完整 Initial，使用正常安装入口。`step(battle, commands)` 接收必填只读命令数组，每次成功调用推进一个 30 Hz 逻辑 Tick。无命令时传 `[]`。
 
 当前 Tick 顺序如下，前一步返回的状态是后一步的输入：
 

@@ -16,6 +16,7 @@ import * as units from "../../../dist/core/unit/index.js";
 import * as effects from "../../../dist/core/effect/index.js";
 import { pull, push, shifter, shiftable, unbalance } from "../../../dist/core/unit/capability/shifting/index.js";
 import { unbalanceImmunity } from "../../../dist/core/effects/protection.js";
+import { effectInitial } from "../../helpers/effect.js";
 
 const body = { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 0 };
 const targetDefinition = {
@@ -168,7 +169,7 @@ test("a moving pull point can hold a pull at zero, resume it, and end it without
             endReason = reason;
             return current;
         },
-    }, { scopes: [linked.value] });
+    }, { ...effectInitial, scopes: [linked.value] });
 
     let current = projectiles.update(watched.state, anchorRef, { position: [1.01, 1] });
     for (let i = 0; i < 4; i++) current = step(current, []);
@@ -247,7 +248,7 @@ test("near braking follows displacement and leaves the pull active until explici
 test("immunity rejects reception and ends an existing segment before displacement", () => {
     const { state, host } = setup();
     const pushed = unbalance.applyImpulse(state, host, [30, 0]);
-    const immunity = effects.install(pushed.state, host, unbalanceImmunity);
+    const immunity = effects.install(pushed.state, host, unbalanceImmunity, effectInitial);
     assert.equal(unbalance.applyImpulse(immunity.state, host, [30, 0]).value, null);
     assert.equal(shiftable.isUnbalanced(get(immunity.state, 0)), true);
 
@@ -335,7 +336,7 @@ test("ending a segment settles its pulls even when a pull dependent starts the n
             next = started.value;
             return started.state;
         },
-    }, { scopes: [oldPullScope] });
+    }, { ...effectInitial, scopes: [oldPullScope] });
     const ended = lifetime.end(installed.state, first.value.unbalance, "SETTLED");
     assert.ok(next);
     assert.notEqual(next.unbalance, first.value.unbalance);

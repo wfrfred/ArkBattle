@@ -236,7 +236,10 @@ export function createTerrainEffect(
             accepts: onGround,
             enter: (battle, unit, params) =>
                 effects.install(battle, units.ref(unit), createInfectionEffect(params), {
+                    source: null,
+                    scopes: [],
                     expiration: { type: "DEADLINE", tick: battle.tick + params.durationTicks },
+                    enabled: true,
                 }),
         });
     }
@@ -247,8 +250,10 @@ export function createTerrainEffect(
             accepts: onGround,
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createMireEffect(params), {
+                    source: null,
                     scopes,
-                    state: { nextTick: battle.tick, stacks: 0 },
+                    expiration: { type: "INFINITE" },
+                    enabled: true,
                 }),
         });
     }
@@ -262,8 +267,10 @@ export function createTerrainEffect(
                 unit.definition.classification.side === "ENEMY",
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createDeepseaEffect(params), {
+                    source: null,
                     scopes,
-                    state: { nextTick: battle.tick },
+                    expiration: { type: "INFINITE" },
+                    enabled: true,
                 }),
         });
     }
@@ -280,7 +287,12 @@ export function createTerrainEffect(
                 inDefaultCategory(unit),
             enter: (battle, unit, _params, scopes) =>
                 hasTargetable(unit)
-                    ? effects.install(battle, units.ref(unit), invisible, { scopes })
+                    ? effects.install(battle, units.ref(unit), invisible, {
+                          source: null,
+                          scopes,
+                          expiration: { type: "INFINITE" },
+                          enabled: true,
+                      })
                     : { state: battle, value: null },
         });
     }

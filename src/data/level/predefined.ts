@@ -4,7 +4,10 @@ import {
     assertPositiveSafeInteger,
     assertSafeInteger,
 } from "../../core/common/assert.js";
-import type { Definition as EffectDefinition } from "../../core/effect/index.js";
+import type {
+    Definition as EffectDefinition,
+    Initial as EffectInitial,
+} from "../../core/effect/index.js";
 import type { Input as UnitInput } from "../../core/unit/index.js";
 import { createTerrainEffect, type ContactState } from "../../content/terrain/controller.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
@@ -170,7 +173,11 @@ function unitDefinition(
 
 export type PredefinedCreation =
     | ({ readonly type: "UNIT" } & UnitInput<ReturnType<typeof unitDefinition>>)
-    | { readonly type: "EFFECT"; readonly definition: EffectDefinition<ContactState, null> };
+    | {
+          readonly type: "EFFECT";
+          readonly definition: EffectDefinition<ContactState, null>;
+          readonly initial: EffectInitial;
+      };
 
 export function parsePredefinedCreation(
     instance: ArknightsPredefinedInstance,
@@ -185,6 +192,12 @@ export function parsePredefinedCreation(
             definition: {
                 ...createTerrainEffect(profile.terrain === "MIRE" ? mire : deepsea),
                 id: instance.inst.characterKey,
+            },
+            initial: {
+                source: null,
+                scopes: [],
+                expiration: { type: "INFINITE" },
+                enabled: true,
             },
         };
     }

@@ -19,6 +19,7 @@ import * as effects from "../../../dist/core/effect/index.js";
 import { invincible, invincibleHpDamageRestriction } from "../../../dist/core/effects/protection.js";
 import * as presence from "../../../dist/core/unit/capability/presence/index.js";
 import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
+import { effectInitial } from "../../helpers/effect.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };
@@ -174,7 +175,7 @@ test("APPLY-01: cancellation before immunity preserves its outcome and suppresse
             units.setHook(hpDamage.beforeReceive, {
                 id: "enable-immunity",
                 invoke(current, context, pending) {
-                    const installed = effects.install(current, target, invincible);
+                    const installed = effects.install(current, target, invincible, effectInitial);
                     protection = installed.value;
                     return {
                         state: installed.state,
@@ -254,8 +255,8 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
-    state = effects.install(state, target, invincible).state;
-    state = effects.install(state, target, invincible).state;
+    state = effects.install(state, target, invincible, effectInitial).state;
+    state = effects.install(state, target, invincible, effectInitial).state;
     const separateMechanism = { allows: invincibleHpDamageRestriction.allows };
     state = update(state, target, vitality.setRestriction({ id: "separate", value: separateMechanism }));
     const request = damageRequest(source, target, 30);
@@ -269,7 +270,7 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
         units.setHook(hpDamage.receiving, {
             id: "protect-again",
             invoke(current, _context, pending) {
-                return { state: effects.install(current, target, invincible).state, value: pending };
+                return { state: effects.install(current, target, invincible, effectInitial).state, value: pending };
             },
         }),
     ));
@@ -277,7 +278,7 @@ test("RESTRICTION-02: damage exemptions cover one mechanism through reentrant ch
     state = update(state, source, units.setHook(hpDamage.beforeCommit, {
         id: "protect-and-nest",
         invoke(current) {
-            current = effects.install(current, target, invincible).state;
+            current = effects.install(current, target, invincible, effectInitial).state;
             const next = damageRequest(source, target, 5);
             const applied = hpDamage.applyDamage(next, hpDamage.calculateDamage(current, next));
             nested = applied.value.type;
@@ -684,7 +685,7 @@ test("HP-05/06: LOSS completes the shared pipeline against an invincible absent 
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
-    state = effects.install(state, target, invincible).state;
+    state = effects.install(state, target, invincible, effectInitial).state;
     state = update(state, target, units.compose(
         presence.disappear(),
         units.setHook(hpDamage.receiving, {
@@ -954,7 +955,7 @@ test("KILL-02: nested damage owns its kill even while Lifetime defers the victim
             assert.equal(get(outer.state, target.id).lifecycle, "ENDING");
             return outer.state;
         },
-    });
+    }, effectInitial);
     state = effects.remove(installed.state, installed.value);
 
     assert.equal(nested.value.killed, true);

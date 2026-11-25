@@ -13,6 +13,7 @@ import * as effects from "../../../dist/core/effect/index.js";
 import { advance as advanceLocomotion } from "../../../dist/core/unit/capability/locomotion/index.js";
 import * as facing from "../../../dist/core/unit/capability/facing/index.js";
 import { stun, stunRestriction, silence, blockSpRecovery } from "../../../dist/core/effects/control.js";
+import { effectInitial } from "../../helpers/effect.js";
 
 function actor(ignoreRestrictions, onEnd = state => state) {
     const action = {
@@ -60,8 +61,8 @@ test("stun interrupts the current action, suppresses its affected capabilities, 
     assert.equal(blocking.blockerOf(state, target).id, source.id);
     const started = actions.start(state, action);
     state = sp.pay(started.state, source, 5).state;
-    const first = effects.install(state, source, stun);
-    const second = effects.install(first.state, source, stun);
+    const first = effects.install(state, source, stun, effectInitial);
+    const second = effects.install(first.state, source, stun, effectInitial);
     state = second.state;
 
     assert.deepEqual(endings, [{ type: "CANCELLED", reason: "INTERRUPTED" }]);
@@ -94,16 +95,16 @@ test("silence blocks activation while SP prevention independently blocks recover
     let state = battle([{ definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } }]);
     const source = units.ref(get(state, 0));
     const skill = skills.ref(source.get(state).skill);
-    const parent = effects.install(state, source, { id: "combined-control", initialize: () => ({}) });
+    const parent = effects.install(state, source, { id: "combined-control", initialize: () => ({}) }, effectInitial);
     const scopes = [parent.value];
-    const silenced = effects.install(parent.state, source, silence, { scopes });
+    const silenced = effects.install(parent.state, source, silence, { ...effectInitial, scopes });
     state = silenced.state;
     assert.equal(skills.activate(state, skill).value, null);
     assert.notEqual(actions.start(state, actions.ref(source.get(state).action.actions.get(content.action))).value, null);
     assert.equal(canMove(state, source), true);
 
     state = sp.pay(state, source, 1).state;
-    const blocked = effects.install(state, source, blockSpRecovery, { scopes });
+    const blocked = effects.install(state, source, blockSpRecovery, { ...effectInitial, scopes });
     state = blocked.state;
     assert.equal(sp.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
     state = effects.setEnabled(state, blocked.value, false);
@@ -125,9 +126,9 @@ test("a skill can ignore every stun source for activation while silence, SP and 
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
     const reference = skills.ref(source.get(state).skill);
-    const first = effects.install(state, source, stun);
-    const second = effects.install(first.state, source, stun);
-    const silenced = effects.install(second.state, source, silence);
+    const first = effects.install(state, source, stun, effectInitial);
+    const second = effects.install(first.state, source, stun, effectInitial);
+    const silenced = effects.install(second.state, source, silence, effectInitial);
     state = silenced.state;
     const rejected = skills.activate(state, reference);
     assert.equal(rejected.value, null);

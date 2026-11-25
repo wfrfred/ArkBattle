@@ -114,7 +114,12 @@ export function commitDamage(
             battle,
             target,
             self.definition.elemental.bursts[type] as BurstDefinition,
-            { source: request.source },
+            {
+                source: request.source,
+                scopes: [],
+                expiration: { type: "INFINITE" },
+                enabled: true,
+            },
         );
         battle = installed.state;
         reference = installed.value! as Ref<Burst>;

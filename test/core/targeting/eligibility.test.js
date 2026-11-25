@@ -20,6 +20,7 @@ import { disappear } from "../../../dist/core/unit/capability/presence/index.js"
 import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { healFree } from "../../../dist/core/effects/protection.js";
 import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
+import { effectInitial } from "../../helpers/effect.js";
 
 const living = {
     id: "target", hooks: Hooks.empty(),
@@ -122,7 +123,7 @@ test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker r
 
     const patientRef = units.ref(get(state, 2));
     state = wound(state, patientRef, 50);
-    const marker = effects.install(state, patientRef, healFree, { enabled: false });
+    const marker = effects.install(state, patientRef, healFree, { ...effectInitial, enabled: false });
     state = marker.state;
     assert.deepEqual(ids(hpRecipients(state)), [1, 2, 4]);
     state = effects.setEnabled(state, marker.value, true);

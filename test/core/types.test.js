@@ -39,6 +39,7 @@ import * as cards from ${module("battle/deployment/deck/card/index")};
 import * as projectiles from ${module("projectile/index")};
 
 declare const battle: State;
+const effectInitial: effects.Initial = { source: null, scopes: [], expiration: { type: 'INFINITE' }, enabled: true };
 const attribute = (value: number) => ({ default: value, min: 0, max: null });
 const bare = initialize(battle, {
     definition: { id: 'bare', hooks: Hooks.empty() }, position: [0, 0],
@@ -236,7 +237,7 @@ const layered = {
         return effects.setState(state, effects.ref(self), { power: self.state.power + 1 });
     },
 } satisfies effects.StackDefinition<{ power: number }, Unit & Offense>;
-const merged = effects.install(battle, owner, layered);
+const merged = effects.install(battle, owner, layered, effectInitial);
 if (merged.value !== null) {
     merged.value.host.get(merged.state)!.offense satisfies Offense['offense'];
     effects.decreaseStack(merged.state, merged.value, 1);
@@ -361,9 +362,9 @@ const cardEffect = {
     },
 } satisfies effects.Definition<object, cards.Card<{ count: number }>>;
 declare const cardEffectHost: Ref<cards.Card<{ count: number }>>;
-effects.install(builtCard.state, cardEffectHost, cardEffect);
+effects.install(builtCard.state, cardEffectHost, cardEffect, effectInitial);
 // @ts-expect-error a Definition requiring a Card cannot be installed on a Unit.
-effects.install(battle, owner, cardEffect);
+effects.install(battle, owner, cardEffect, effectInitial);
 declare const mixedRef: typeof owner | typeof countCardRef;
 mixedRef.get(battle) satisfies typeof armed | typeof exactCard | undefined;
 const scopes: readonly Ref<Lifetime>[] = [owner, countCardRef];
@@ -406,7 +407,7 @@ const startup = {
 } as const;
 runtime.initialize({
     ...startup, initialUnits: [armedInput, routeInput],
-    initialEffects: [{ definition: counter }, { definition: named }],
+    initialEffects: [{ definition: counter, initial: effectInitial }, { definition: named, initial: effectInitial }],
 });
 runtime.initialize({
     ...startup,
@@ -416,7 +417,7 @@ runtime.initialize({
 });
 const wrongEffect = { ...counter, initialize: () => ({ name: 'wrong' }) };
 // @ts-expect-error startup must preserve initializer and callback pairing before aggregation.
-runtime.initialize({ ...startup, initialUnits: [], initialEffects: [{ definition: wrongEffect }] });
+runtime.initialize({ ...startup, initialUnits: [], initialEffects: [{ definition: wrongEffect, initial: effectInitial }] });
 `;
     const options = {
         noEmit: true,

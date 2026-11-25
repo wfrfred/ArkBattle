@@ -9,6 +9,7 @@ import { step } from "../../dist/core/battle/runtime.js";
 import { dp } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
+import { effectInitial } from "../helpers/effect.js";
 
 const account = {
     dp: { initial: 20, min: 0, max: 99, recoveryInterval: null },
@@ -95,7 +96,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
                 deployable: { retreatRestrictions: [], refund: null },
             },
         }] },
-        initialEffects: [{ definition: controller }],
+        initialEffects: [{ initial: effectInitial, definition: controller }],
         schedule: { waves: [{
             preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
             fragments: [{ preDelayTicks: 0, entries: [{

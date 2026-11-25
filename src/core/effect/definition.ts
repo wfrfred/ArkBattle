@@ -10,7 +10,7 @@ export interface Definition<
     Self extends Effect<S, H> = Effect<S, H>,
 > {
     readonly id: string;
-    readonly initialize: () => S;
+    readonly initialize: (battle: BattleState) => S;
     readonly group?: Group;
     readonly onInstall?: (battle: BattleState, self: Self) => BattleState;
     readonly onEnable?: (battle: BattleState, self: Self) => BattleState;

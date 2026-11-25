@@ -15,6 +15,7 @@ import * as effects from "../../dist/core/effect/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
+import { effectInitial } from "../helpers/effect.js";
 
 test("disappearance preserves deployment and lifetimes, releases blocking before cancelling actions, and removes only its restrictions", () => {
     const departures = [];
@@ -85,7 +86,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     state = started.state;
     const installed = effects.install(state, owner, {
         id: "ordinary-duration", initialize: () => ({}),
-    }, { expiration: { type: "DURATION", duration: 3, remaining: 3, rate: 1 } });
+    }, { ...effectInitial, expiration: { type: "DURATION", duration: 3, remaining: 3, rate: 1 } });
     state = installed.state;
     for (const target of targets) state = blocking.acquire(state, owner, target);
     let notifications = 0;

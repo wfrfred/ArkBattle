@@ -110,7 +110,12 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
                 return {
                     state:
                         talent !== undefined && hasOffense(self)
-                            ? install(state, unitRef(self), talent).state
+                            ? install(state, unitRef(self), talent, {
+                                  source: null,
+                                  scopes: [],
+                                  expiration: { type: "INFINITE" },
+                                  enabled: true,
+                              }).state
                             : state,
                     value: undefined,
                 };

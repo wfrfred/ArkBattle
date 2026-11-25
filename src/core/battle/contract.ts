@@ -26,7 +26,7 @@ export interface Definition {
 
 interface InitialEffect<S extends object> {
     readonly definition: EffectDefinition<S, null> | StackEffectDefinition<S, null>;
-    readonly initial?: EffectInitial<S>;
+    readonly initial: EffectInitial;
 }
 
 export interface Input<

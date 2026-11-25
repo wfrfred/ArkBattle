@@ -14,7 +14,7 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 ## 地形控制器
 
-控制器使用 `Definition<ContactState, null>` 表达独立的全场效果，开场通过 `initialEffects` 安装，运行中通过 `effect.install(battle, null, definition)` 安装。Content 的 [地形控制器工厂](../../src/content/terrain/controller.ts) 提供具体程序。控制器沿用 [Effect](effect.md) 的登记、状态修改、启停、推进和移除，并可作为其他 Effect 的 Lifetime 依赖，不另建生命周期协议。
+控制器使用 `Definition<ContactState, null>` 表达独立的全场效果，开场通过 `initialEffects` 安装，运行中通过 `effect.install(battle, null, definition, initial)` 安装。两种入口均显式提供完整 Initial。Content 的 [地形控制器工厂](../../src/content/terrain/controller.ts) 提供具体程序。控制器沿用 [Effect](effect.md) 的登记、状态修改、启停、推进和移除，并可作为其他 Effect 的 Lifetime 依赖，不另建生命周期协议。
 
 ## 地形接触与调度
 
@@ -32,7 +32,7 @@ walkCost 是最终有效代价。普通装置阻碍为 1000，真实地穴固定
 
 - 活性源石每次入格安装独立 Effect，相邻同参数格也分别登记，离格保留。绝对期限从入格算起，被覆盖仍流逝，停留到期不重装。同组优先级为 `roundToEven(1000 × (attackBonusRatio + attackSpeedBonus))`，高者生效，同级先安装者生效。周期仅 ACTIVE 推进，首次等待一秒，被覆盖时暂停周期，恢复沿用余量且不补发。
 - 烟雾为受选类别为 DEFAULT 的我方单位安装标准隐匿，离开撤销；阻挡不破隐，也没有三秒恢复延迟，空中同样受益。
-- 沼泽与深水分开保存控制器扫描和宿主 Effect 周期，不每轮重装；沼泽一秒叠层与重量门槛是独立参数，重型敌人按内容取得双层。
+- 沼泽与深水分开保存控制器扫描和宿主 Effect 周期，不每轮重装；宿主 Effect 在自身 `initialize(battle)` 读取当前 Tick，初始化周期起点。沼泽一秒叠层与重量门槛是独立参数，重型敌人按内容取得双层。
 - 活性源石 HP 周期伤害为 ENVIRONMENT，敌方深水为 DAMAGE；均禁本笔 HIT 而保留正常接收／Applied，不把地形、无来源或周期一概等同流失，见 [Resource](resource.md)。
 - 停用控制器时，`onDisable` 清除接触记录，并按内容的保留规则结束接触 Effect。需要随控制器移除的 Effect 绑定其 Lifetime，在依赖结算阶段结束。活性源石的 Effect 在离格及控制器停用后保留，按自身期限结束。
 - 地穴由内容判断坠落资格并完整移除 Unit，空地变化在后续接触轮询重判。

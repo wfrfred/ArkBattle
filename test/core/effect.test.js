@@ -13,6 +13,7 @@ import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update, remove } from "../../dist/core/unit/operations.js";
 import { step } from "../../dist/core/battle/runtime.js";
+import { effectInitial } from "../helpers/effect.js";
 
 const operator = { id: "operator", hooks: Hooks.empty(), offense: { attack: defineAttribute(100) } };
 
@@ -43,7 +44,7 @@ test("unhosted and Card effects share the lifecycle and keep host groups indepen
         },
     };
     const initial = battle([], {
-        initialEffects: [{ definition: controller }],
+        initialEffects: [{ initial: effectInitial, definition: controller }],
         deployment: {
             definition: {
                 dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
@@ -69,7 +70,7 @@ test("unhosted and Card effects share the lifecycle and keep host groups indepen
             trace.push("dependent");
             return state;
         },
-    }, { scopes: [controllerRef] });
+    }, { ...effectInitial, scopes: [controllerRef] });
     let state = effects.setEnabled(linked.state, controllerRef, false);
     state = step(state, []);
     assert.equal(controllerRef.get(state).state.count, 1);
@@ -123,7 +124,7 @@ test("installation, participation, and ending preserve completed business and cu
     };
     let state = battle([{ definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
-    const installed = effects.install(state, owner, definition, { enabled: false });
+    const installed = effects.install(state, owner, definition, { ...effectInitial, enabled: false });
     state = installed.state;
     assert.deepEqual(observed, [["install", "INSTALLING"]]);
     state = effects.setEnabled(state, installed.value, true);
@@ -151,6 +152,7 @@ test("installation, participation, and ending preserve completed business and cu
         },
     };
     const expired = effects.install(state, owner, instant, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 0, remaining: 0, rate: 1 },
     });
     state = expired.state;
@@ -161,7 +163,7 @@ test("installation, participation, and ending preserve completed business and cu
         ...instant,
         id: "self-ending",
         onInstall: (current, self) => effects.remove(current, effects.ref(self)),
-    });
+    }, effectInitial);
     assert.equal(ended.value.get(ended.state), undefined);
 
     const renewed = effects.install(state, owner, {
@@ -174,7 +176,7 @@ test("installation, participation, and ending preserve completed business and cu
             observed.push(["renewed", self.expiration.remaining]);
             return current;
         },
-    }, { expiration: { type: "DURATION", duration: 0, remaining: 0, rate: 1 } });
+    }, { ...effectInitial, expiration: { type: "DURATION", duration: 0, remaining: 0, rate: 1 } });
     assert.equal(renewed.value.get(renewed.state).lifecycle, "ACTIVE");
     assert.deepEqual(observed.at(-1), ["renewed", 2]);
 });
@@ -210,9 +212,9 @@ test("DEFAULT retains candidates and installs them before priority and enabled d
     const later = { ...strong, id: "later", initialize: () => ({ bonus: 30 }) };
     let state = battle([{ definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
-    const low = effects.install(state, owner, weak);
-    const high = effects.install(low.state, owner, strong);
-    const equal = effects.install(high.state, owner, later);
+    const low = effects.install(state, owner, weak, effectInitial);
+    const high = effects.install(low.state, owner, strong, effectInitial);
+    const equal = effects.install(high.state, owner, later, effectInitial);
     state = equal.state;
     assert.deepEqual(installed, ["weak", "strong", "later"]);
     assert.equal(offense.resolveAttack(state, owner.get(state)), 120);
@@ -250,7 +252,7 @@ test("time advances independently of participation, publishes before active busi
                             laterTicks.push(next.tick);
                             return next;
                         },
-                    }, { expiration: { type: "DEADLINE", tick: 3 } }).state;
+                    }, { ...effectInitial, expiration: { type: "DEADLINE", tick: 3 } }).state;
                 }
                 if (self.expiration.remaining === 0 && !renewed) {
                     renewed = true;
@@ -267,6 +269,7 @@ test("time advances independently of participation, publishes before active busi
             },
         },
         {
+            ...effectInitial,
             expiration: { type: "DURATION", duration: 3, remaining: 3, rate: 1 },
             enabled: false,
         },
@@ -283,7 +286,7 @@ test("time advances independently of participation, publishes before active busi
                 return current;
             },
         },
-        { expiration: { type: "DEADLINE", tick: 100 }, enabled: false },
+        { ...effectInitial, expiration: { type: "DEADLINE", tick: 100 }, enabled: false },
     );
     const manual = effects.install(
         deadline.state,
@@ -303,7 +306,7 @@ test("time advances independently of participation, publishes before active busi
                 return current;
             },
         },
-        { expiration: { type: "DURATION", duration: 2, remaining: 2, rate: 0 } },
+        { ...effectInitial, expiration: { type: "DURATION", duration: 2, remaining: 2, rate: 0 } },
     );
     state = effects.advance({ ...manual.state, tick: 1 });
     assert.equal(duration.value.get(state).expiration.remaining, 2);
@@ -341,6 +344,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
     const owner = units.ref(get(state, 0));
     const source = units.ref(get(state, 1));
     const first = effects.install(state, owner, extend, {
+        ...effectInitial,
         source,
         scopes: [source],
         expiration: { type: "DURATION", duration: 3, remaining: 3, rate: 1 },
@@ -355,7 +359,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
             initialize: () => assert.fail("merged input must not initialize a temporary instance"),
             onInstall: () => assert.fail("merged input must not run installation business"),
         },
-        { expiration: { type: "DURATION", duration: 7, remaining: 7, rate: 1 } },
+        { ...effectInitial, expiration: { type: "DURATION", duration: 7, remaining: 7, rate: 1 } },
     );
     state = renewed.state;
     assert.equal(renewed.value, first.value);
@@ -371,7 +375,7 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
             id: "incompatible-default",
             group: { ...extend.group, type: "DEFAULT" },
             initialize: () => assert.fail("incompatible group must be detected before installation"),
-        }),
+        }, effectInitial),
         { name: "TypeError", message: /renewal/ },
     );
 
@@ -381,10 +385,12 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
         initialize: () => ({}),
     };
     const original = effects.install(state, owner, cumulative, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 3, remaining: 3, rate: 1 },
     });
     state = effects.advance({ ...original.state, tick: 2 });
     const extended = effects.install(state, owner, cumulative, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 4, remaining: 4, rate: 1 },
     });
     assert.equal(extended.value, original.value);
@@ -448,9 +454,11 @@ test("STACK separates effective output, manual consumption, and natural decay wh
     let state = battle([{ definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
     assert.throws(() => effects.install(state, owner, stacked, {
+        ...effectInitial,
         expiration: { type: "DEADLINE", tick: 10 },
     }), TypeError);
     const first = effects.install(state, owner, stacked, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 2, remaining: 2, rate: 1 },
     });
     assert.throws(() => effects.setExpiration(first.state, first.value, {
@@ -463,13 +471,16 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         group: { ...stacked.group, maxCount: 1, maxEffectiveCount: 1, refreshAtMax: false },
     };
     const second = effects.install(state, owner, incoming, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 5, remaining: 5, rate: 1 },
     });
     const third = effects.install(second.state, owner, stacked, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 2, remaining: 2, rate: 1 },
     });
     state = effects.advance({ ...third.state, tick: 2 });
     const full = effects.install(state, owner, incoming, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 6, remaining: 6, rate: 1 },
     });
     state = full.state;
@@ -516,6 +527,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         },
     };
     const endFirst = effects.install(state, owner, endTogether, {
+        ...effectInitial,
         expiration: { type: "DEADLINE", tick: 11 },
     });
     assert.throws(
@@ -523,18 +535,20 @@ test("STACK separates effective output, manual consumption, and natural decay wh
             ...endTogether,
             id: "incompatible-decay",
             group: { ...endTogether.group, expirationPolicy: "DECAY" },
-        }),
+        }, effectInitial),
         { name: "TypeError", message: /end-together/ },
     );
     const endSecond = effects.install(endFirst.state, owner, endTogether, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 1, remaining: 1, rate: 1 },
     });
     const capped = effects.install(endSecond.state, owner, endTogether, {
+        ...effectInitial,
         expiration: { type: "DURATION", duration: 10, remaining: 10, rate: 1 },
     });
     state = effects.advance({ ...capped.state, tick: 11 });
     assert.equal(endFirst.value.get(state), undefined);
-    const consumed = effects.install(state, owner, endTogether);
+    const consumed = effects.install(state, owner, endTogether, effectInitial);
     state = effects.decreaseStack(consumed.state, consumed.value, 1);
     assert.equal(consumed.value.get(state), undefined);
 });
@@ -553,7 +567,7 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
     const a = units.ref(get(state, 0));
     const b = units.ref(get(state, 1));
     const owner = units.ref(get(state, 2));
-    const first = effects.install(state, owner, definition, { source: a, enabled: false });
+    const first = effects.install(state, owner, definition, { ...effectInitial, source: a, enabled: false });
     const rejected = effects.install(
         first.state,
         owner,
@@ -562,22 +576,22 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
             initialize: () => assert.fail("rejected input must not initialize"),
             onInstall: () => assert.fail("rejected input must not install"),
         },
-        { source: a },
+        { ...effectInitial, source: a },
     );
     assert.equal(rejected.value, null);
-    const other = effects.install(rejected.state, owner, definition, { source: b });
-    const absent = effects.install(other.state, owner, definition);
+    const other = effects.install(rejected.state, owner, definition, { ...effectInitial, source: b });
+    const absent = effects.install(other.state, owner, definition, effectInitial);
     assert.notEqual(other.value, null);
     assert.notEqual(absent.value, null);
     const shared = {
         ...definition,
         group: { ...definition.group, independentSource: false },
     };
-    const unpartitioned = effects.install(absent.state, owner, shared, { source: a });
+    const unpartitioned = effects.install(absent.state, owner, shared, { ...effectInitial, source: a });
     assert.notEqual(unpartitioned.value, null);
     assert.equal(unpartitioned.value.get(unpartitioned.state).lifecycle, "ACTIVE");
     assert.equal(absent.value.get(unpartitioned.state).lifecycle, "ACTIVE");
-    assert.equal(effects.install(unpartitioned.state, owner, shared, { source: b }).value, null);
+    assert.equal(effects.install(unpartitioned.state, owner, shared, { ...effectInitial, source: b }).value, null);
     const bound = effects.install(
         unpartitioned.state,
         owner,
@@ -585,12 +599,12 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
             id: "bound",
             initialize: () => ({}),
         },
-        { source: a, scopes: [a] },
+        { ...effectInitial, source: a, scopes: [a] },
     );
     state = remove(bound.state, a, { reason: "SCRIPT" });
     assert.equal(bound.value.get(state), undefined);
     assert.equal(first.value.get(state).source, a);
-    assert.equal(effects.install(state, owner, definition, { source: a }).value, null);
+    assert.equal(effects.install(state, owner, definition, { ...effectInitial, source: a }).value, null);
     state = remove(state, owner, { reason: "SCRIPT" });
     assert.equal(first.value.get(state), undefined);
     assert.equal(other.value.get(state), undefined);
@@ -621,17 +635,17 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     };
     const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
     const firstSource = firstUnit.value.unit;
-    const installed = effects.install(firstUnit.state, owner, definition, { source: firstSource });
+    const installed = effects.install(firstUnit.state, owner, definition, { ...effectInitial, source: firstSource });
     state = deployment.retreat(installed.state, firstSource);
     assert.equal(firstSource.get(state), undefined);
-    assert.equal(effects.install(state, owner, definition, { source: firstSource }).value, null);
+    assert.equal(effects.install(state, owner, definition, { ...effectInitial, source: firstSource }).value, null);
     state = effects.remove(state, installed.value);
     const delayed = {
         ...definition,
         id: "delayed-card-source",
         group: { ...definition.group, id: "delayed-card-source" },
     };
-    const lateInstall = effects.install(state, owner, delayed, { source: firstSource });
+    const lateInstall = effects.install(state, owner, delayed, { ...effectInitial, source: firstSource });
     state = lateInstall.state;
     assert.notEqual(lateInstall.value, null);
     const redeployed = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
@@ -639,13 +653,14 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     assert.equal(redeployed.value.type, "DEPLOYED");
     const nextSource = redeployed.value.unit;
     assert.notEqual(nextSource, firstSource);
-    assert.equal(effects.install(state, owner, delayed, { source: nextSource }).value, null);
+    assert.equal(effects.install(state, owner, delayed, { ...effectInitial, source: nextSource }).value, null);
     const otherUnit = deployment.deploy(state, deployment.createRequest(state, b, [0, 1]));
     const other = effects.install(otherUnit.state, owner, delayed, {
+        ...effectInitial,
         source: otherUnit.value.unit,
     });
     assert.notEqual(other.value, null);
-    const unitSource = effects.install(other.state, owner, delayed, { source: owner });
+    const unitSource = effects.install(other.state, owner, delayed, { ...effectInitial, source: owner });
     assert.notEqual(unitSource.value, null);
     assert.equal(lateInstall.value.get(unitSource.state).source, firstSource);
 });

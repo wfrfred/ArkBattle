@@ -8,6 +8,7 @@ import { remove, update } from "../../dist/core/unit/operations.js";
 import * as hooks from "../../dist/core/hook.js";
 import * as effects from "../../dist/core/effect/index.js";
 import { entered as unitEntered, removed as unitRemoved, setHook, removeHook } from "../../dist/core/battle/unit-hook.js";
+import { effectInitial } from "../helpers/effect.js";
 
 test("Hook keys preserve identity and replacing an ID preserves its position", () => {
     const stage = key("test.stage");
@@ -83,6 +84,7 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
     const effect = { id: "global-effect", initialize: () => ({}) };
     const initial = battle([], {
         initialEffects: [{
+            initial: effectInitial,
             definition: {
                 id: "global-rule",
                 initialize: () => ({}),
@@ -92,7 +94,7 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
                         invoke(current, unit) {
                             const reference = units.ref(unit);
                             assert.equal(reference.get(current), unit);
-                            return { state: effects.install(current, reference, effect).state, value: undefined };
+                            return { state: effects.install(current, reference, effect, effectInitial).state, value: undefined };
                         },
                     });
                 },
@@ -176,7 +178,7 @@ test("Unit removing uses priority and removed uses the registrations captured be
                 },
             }));
         },
-    }).state;
+    }, effectInitial).state;
     state = update(state, subject, units.compose(
         units.setHook(units.removing, {
             id: "earlier-response", priority: 100,

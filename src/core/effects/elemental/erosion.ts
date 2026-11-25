@@ -64,7 +64,12 @@ export function createPhysical(parameters: Parameters): Definition {
                 return battle;
             }
             if (hasVitality(host)) {
-                battle = effects.install(battle, units.ref(host), defense).state;
+                battle = effects.install(battle, units.ref(host), defense, {
+                    source: null,
+                    scopes: [],
+                    expiration: { type: "INFINITE" },
+                    enabled: true,
+                }).state;
             }
 
             host = availableHost(battle, reference);
@@ -95,7 +100,12 @@ export function createElemental(parameters: Parameters): Definition {
                 return battle;
             }
             if (hasVitality(host)) {
-                battle = effects.install(battle, units.ref(host), defense).state;
+                battle = effects.install(battle, units.ref(host), defense, {
+                    source: null,
+                    scopes: [],
+                    expiration: { type: "INFINITE" },
+                    enabled: true,
+                }).state;
             }
 
             host = availableHost(battle, reference);

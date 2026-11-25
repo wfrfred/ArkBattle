@@ -16,6 +16,7 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import * as effects from "../../dist/core/effect/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import { healFree } from "../../dist/core/effects/protection.js";
+import { effectInitial } from "../helpers/effect.js";
 
 const damageRequest = (source, target, power) => ({
     source, killer: source, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true,
@@ -68,7 +69,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     const initialLoss = loss(60);
     state = hpDamage.applyDamage(initialLoss, hpDamage.calculateDamage(state, initialLoss)).state;
     assert.deepEqual(damageCommits, [[100, 40]]);
-    state = effects.install(state, target, healFree).state;
+    state = effects.install(state, target, healFree, effectInitial).state;
     state = effects.install(state, target, {
         id: "recovery-contributions", initialize: () => ({}),
         onTick(current, self) {
@@ -81,7 +82,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
                 }),
             ));
         },
-    }).state;
+    }, effectInitial).state;
     state = update(state, target, units.compose(
         presence.disappear(),
         units.setHook(hpHealing.receiving, { id: "receive", invoke: ordinaryHealing }),

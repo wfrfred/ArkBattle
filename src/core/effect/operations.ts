@@ -29,28 +29,27 @@ export function install<S extends object, H extends Lifetime | null>(
     definition: Definition<S, H> & {
         readonly group?: Group & { readonly type: "DEFAULT" | "UNIQUE" };
     },
-    initial?: Initial<NoInfer<S>>,
+    initial: Initial,
 ): Result<Ref<Effect<S, H>> | null>;
 export function install<S extends object, H extends Lifetime | null>(
     battle: BattleState,
     host: HostRef<H>,
     definition: StackDefinition<S, H>,
-    initial?: Initial<NoInfer<S>>,
+    initial: Initial,
 ): Result<Ref<StackEffect<object, H>> | null>;
 export function install<S extends object, H extends Lifetime | null>(
     battle: BattleState,
     host: HostRef<H>,
     definition: Definition<S, H> | StackDefinition<S, H>,
-    initial?: Initial<NoInfer<S>>,
+    initial: Initial,
 ): Result<Ref<Effect<object, H>> | null>;
 export function install(
     battle: BattleState,
     host: HostRef,
     definition: Definition<object, Lifetime | null, never>,
-    initial: Initial<object> = {},
+    initial: Initial,
 ): Result<Ref<Effect> | null> {
-    const scopes = initial.scopes ?? [];
-    const expiration = initial.expiration ?? { type: "INFINITE" };
+    const { source, scopes, expiration, enabled } = initial;
     const group = definition.group;
     validateExpiration(group, expiration);
 
@@ -61,7 +60,6 @@ export function install(
         return { state: battle, value: null };
     }
 
-    const source = initial.source ?? null;
     const groupSource = resolveGroupSource(battle, group, source);
 
     if (group !== undefined) {
@@ -108,11 +106,11 @@ export function install(
         ref: reference,
         config,
         definition,
-        state: initial.state ?? definition.initialize(),
+        state: definition.initialize(battle),
         source,
         groupSource,
         expiration,
-        enabled: initial.enabled ?? true,
+        enabled,
         lifecycle: "INSTALLING",
         ...(group?.type === "STACK" ? { stackCount: 1 } : {}),
     };

@@ -25,6 +25,7 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { setType } from "../../dist/core/unit/capability/layer/index.js";
 import { shiftable, unbalance } from "../../dist/core/unit/capability/shifting/index.js";
 import { create as createModifier } from "../../dist/core/common/modifier.js";
+import { effectInitial } from "../helpers/effect.js";
 
 const infectionParams = (damage = 80) => ({
     damage, attackBonusRatio: 0.2, attackSpeedBonus: 20, durationTicks: 65,
@@ -60,7 +61,7 @@ function setup(terrains, placements, definitions) {
     const controllers = definitions.map(definition => createTerrainEffect(definition));
     const battle = initialize({
         map: createMap(1, terrains.length, tiles),
-        initialEffects: controllers.map(definition => ({ definition })),
+        initialEffects: controllers.map(definition => ({ initial: effectInitial, definition })),
         initialUnits: placements,
         schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 7,
     });

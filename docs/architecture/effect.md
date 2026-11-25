@@ -7,7 +7,7 @@ Effect 拥有可附着或独立存在的运行实例、私有状态、生效竞�
 ## 关键语义
 
 - 安装、存在与实际生效分开。零时长仍执行安装业务，随后结束，不短暂启用。
-- 重复施加先决定新建、合并或拒绝；只有新建登记身份、Lifetime 并运行 onInstall，候补也不例外。
+- 重复施加先决定新建、合并或拒绝；只有新建初始化私有状态、登记身份和 Lifetime 并运行 onInstall，候补也不例外。
 - DEFAULT 整体覆写先选赢家再检查 enabled；禁用赢家不让弱者补位，赢家结束后候补才可能生效。其他组不参与优先级竞争。
 - source 记录来源，不自动建立依赖；宿主所有权与显式依赖决定随谁结束。
 - DURATION 在 ACTIVE／INACTIVE 都扣时，只有 ACTIVE 执行业务；最后一次业务先于到期，回调续期按最新状态生效。
@@ -23,7 +23,9 @@ Effect 拥有可附着或独立存在的运行实例、私有状态、生效竞�
 
 ## 2. Definition、实例与泛型
 
-Definition 是共享行为；实例保存稳定身份、实际来源、私有 state、expiration、enabled 与 lifecycle，Ref 携带可空的宿主引用。初始 state、来源、依赖引用、时间与启用许可属于本次安装输入，不覆写 Definition 的规则。有宿主的初始效果在宿主登记后正常安装，无宿主程序可以由 `initialEffects` 开场安装。
+Definition 是共享行为；实例保存稳定身份、实际来源、私有 state、expiration、enabled 与 lifecycle，Ref 携带可空的宿主引用。`Initial` 是非泛型的本次安装输入，包含四个必填字段：`source`（可空的来源 Unit Ref）、`scopes`（依赖 Ref 数组）、`expiration`（时间状态）及 `enabled`（启用许可）。没有来源、额外依赖或到期限制时，也分别显式提供 null、空数组和 INFINITE。
+
+私有 state 统一由 `Definition.initialize(battle): S` 构造，可以读取本次安装时的战斗事实。只有确定新建实例后才调用；合并或拒绝不初始化，也不从安装输入覆盖私有 state。有宿主的初始效果在宿主登记后正常安装，无宿主程序可以由 `initialEffects` 开场安装，每项均提供 Definition 与完整 Initial。
 
 `Effect<S, H>` 是基础实例；`StackEffect<S, H>` 继承它，增加 `stackCount` 和具体叠层定义。`S` 表达私有状态，`H extends Lifetime | null` 表达宿主要求，任意已登记且可用的 Lifetime 可作为宿主，`null` 表达无宿主。精确 Ref 保留具体私有状态、宿主和叠层实例类型；普通查询返回基础 `Effect`，通过 `hasStack` 收窄叠层实例。
 
@@ -41,7 +43,7 @@ Effect 的内部写回与注销直接使用 Store 的 `replace`、`remove`，遵
 
 ## 3. 生命周期约束
 
-安装要求存在的宿主及输入的依赖引用均通过 Lifetime 可用性检查。先发布 INSTALLING 实例并登记对宿主（如果有）与输入引用的依赖，再调用 onInstall。来源允许已经退场；确实需要随来源结束的内容另外绑定依赖。
+安装要求存在的宿主及输入的依赖引用均通过 Lifetime 可用性检查。决定新建后由 Definition 初始化私有 state，发布 INSTALLING 实例并登记对宿主（如果有）与输入引用的依赖，再调用 onInstall。来源允许已经退场；确实需要随来源结束的内容另外绑定依赖。
 
 Action 与 Skill 的依赖分别绑定本轮 Execution 和 Activation 的 Ref，Burst 使用 Effect Ref。任一上游结束都会以 `CANCELLED` 请求 Effect 结束，Effect 保有自己的时间轴。INSTALLING／INACTIVE Effect 仍可作为可用依赖，开始结束的上游拒绝新绑定。资格与请求完成规则见 [Lifetime](lifetime.md)。
 
@@ -100,7 +102,7 @@ onInstall 返回后重读实例与时间：仍 INSTALLING 才先结算到期，�
 
 ### 公开 API
 
-具体声明见[公共入口](../../src/core/effect/index.ts)。install 新建或合并成功返回所保留实例的 Ref，拒绝返回 null；回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，保留相同的宿主类型及实际可证明的实例类型，具体类型由 `effects.get(battle, reference, definition)` 按原 Definition 身份恢复。
+具体声明见[公共入口](../../src/core/effect/index.ts)。`install(battle, host, definition, initial)` 的四个参数均必填；新建或合并成功返回所保留实例的 Ref，拒绝返回 null。回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，保留相同的宿主类型及实际可证明的实例类型，具体类型由 `effects.get(battle, reference, definition)` 按原 Definition 身份恢复。
 
 setState 仅改私有数据，各 lifecycle 均可写入，不恢复实例或刷新静态输出；需要更新贡献的内容显式调用所属领域操作。setEnabled 完整结算启停。setExpiration 只替换合法时间状态，不立即推进、到期或改 Lifetime；remaining 写零仍由既定检查点结算。时间写回保留 Ref 已明确的时间类型（例如 Burst 的 DURATION），并在运行时拒绝 DECAY 叠层的 DEADLINE。
 

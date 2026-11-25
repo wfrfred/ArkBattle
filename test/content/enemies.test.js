@@ -36,6 +36,7 @@ import { advance as advanceCombat } from '../../dist/core/battle/steps/combat.js
 import { step } from '../../dist/core/battle/runtime.js';
 import { advance as advanceSchedule } from '../../dist/core/battle/schedule/index.js';
 import { battle as createBattle } from '../helpers/battle.js';
+import { effectInitial } from "../helpers/effect.js";
 
 const fixture = JSON.parse(readFileSync(new URL('../fixtures/arknights/main-mode-units.json', import.meta.url), 'utf8'));
 const timingData = JSON.parse(readFileSync(new URL('../fixtures/arknights/action_timing.json', import.meta.url), 'utf8'));
@@ -159,7 +160,7 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   const hit = advanceActionUntil(started.state, started.value, 18);
   assert.equal(getUnit(hit, 0).vitality.health.hp, 850);
 
-  const protectedState = install(before, unitRef(blocker), invincible).state;
+  const protectedState = install(before, unitRef(blocker), invincible, effectInitial).state;
   const protectedStart = startAction(protectedState, actionRef(hound.action.actions.get(action)));
   assert.notEqual(protectedStart.value, null);
   assert.equal(getUnit(advanceActionUntil(protectedStart.state, protectedStart.value, 18), 0).vitality.health.hp, 1000);
