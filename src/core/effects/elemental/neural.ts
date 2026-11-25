@@ -127,7 +127,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
             if (hasAction(host)) {
                 const existing = effects
                     .forHost(battle, units.ref(host))
-                    .map((effect) => battle.effects.get(ref(effect), paralysis))
+                    .map((effect) => effects.get(battle, ref(effect), paralysis))
                     .find((effect) => effect !== undefined && effect.lifecycle !== "ENDING");
                 battle =
                     existing === undefined

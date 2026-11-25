@@ -30,7 +30,7 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 
 ## 战斗状态的层级
 
-`BattleState` 持有 Tick、RNG、表现编号分配进度、Schedule、Deployment、Effect、Lifetime 与本 Tick 的 events。Battlefield 持有 Map、Unit、Projectile、Navigation 和 Occupancy 结构索引。
+`BattleState` 持有 Tick、RNG、实例编号分配进度、Schedule、Deployment、Effect Store、Lifetime 与本 Tick 的 events。Battlefield 持有 Map、Unit、Projectile、Navigation 和 Occupancy 结构索引。
 
 每项业务事实有唯一所属领域。索引随权威状态同步维护，不形成第二份 Unit；UI 事件只记录表现所需的瞬时事实，不作为结算命令重放。各领域的所有权见[专题文档](README.md)，不可变和状态接续规则见[函数式内核](functional-core.md)。
 

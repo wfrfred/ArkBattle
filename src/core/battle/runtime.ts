@@ -50,6 +50,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
             rngState: input.rngState,
             nextUnitId: 0,
             nextProjectileId: 0,
+            nextEffectId: 0,
         },
         0,
         initializeDeployment(input.deployment?.definition),

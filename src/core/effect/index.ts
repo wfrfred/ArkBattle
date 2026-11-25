@@ -13,7 +13,7 @@ export type {
 
 export { ref } from "./effect.js";
 
-export { all, forHost, hasStack, effectiveStackCount } from "./query.js";
+export { get, all, forHost, hasStack, effectiveStackCount } from "./query.js";
 
 export type { Initial } from "./operations.js";
 

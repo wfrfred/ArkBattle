@@ -95,7 +95,7 @@ export function install(
         }
     }
 
-    const id = battle.effects.nextId;
+    const id = battle.execution.nextEffectId;
     const reference = createEffectRef(host);
     const instance = {
         id,
@@ -110,7 +110,8 @@ export function install(
         lifecycle: "INSTALLING",
         ...(group?.type === "STACK" ? { stackCount: 1 } : {}),
     } as unknown as Effect;
-    battle = replaceIn(battle, ["effects"], battle.effects.add(instance));
+    battle = replaceIn(battle, ["execution", "nextEffectId"], id + 1);
+    battle = replaceIn(battle, ["effects"], battle.effects.add(reference, instance));
     battle = register(battle, reference, host === null ? scopes : [host, ...scopes]);
     battle = callbacks(instance.definition).onInstall?.(battle, instance) ?? battle;
 
@@ -272,7 +273,7 @@ function callbacks(definition: Effect["definition"]): Callbacks {
 }
 
 function replaceEffect(battle: BattleState, self: Effect<any, any>): BattleState {
-    return replaceIn(battle, ["effects"], battle.effects.replace(self));
+    return replaceIn(battle, ["effects"], battle.effects.replace(effectRef(self), self));
 }
 
 function resolveGroupSource(

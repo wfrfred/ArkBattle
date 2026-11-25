@@ -3,7 +3,18 @@ import type { Ref } from "../common/ref.js";
 import type { Query } from "../common/query.js";
 import type { Lifetime } from "../lifetime/index.js";
 import type { Effect } from "./effect.js";
-import type { ExpirationPolicy } from "./expiration.js";
+import type { Definition } from "./definition.js";
+import type { ExpirationPolicy, Policy } from "./expiration.js";
+
+export function get<S extends object, H extends Lifetime | null, P extends Policy = undefined>(
+    battle: BattleState,
+    reference: Ref<Effect<any, any>>,
+    definition: Definition<S, H, P>,
+): Effect<S, H, P> | undefined {
+    const self = reference.get(battle);
+
+    return self?.definition === definition ? (self as Effect<S, H, P>) : undefined;
+}
 
 export function all(battle: BattleState): Query<Effect> {
     return battle.effects.values();

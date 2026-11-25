@@ -15,7 +15,7 @@ Effect 拥有可附着或独立存在的运行实例、私有状态、生效竞�
 
 ## 1. 目录与职责
 
-`core/effect/` 提供通用实例、异构容器、安装与生命周期；`core/effects/` 提供标准规则成品；`content/` 提供具体角色的程序及标准成品的使用方式。
+`core/effect/` 提供通用实例、查询、安装与生命周期；`core/effects/` 提供标准规则成品；`content/` 提供具体角色的程序及标准成品的使用方式。
 
 `BattleState.effects` 统一保存全部 Effect 实例。有宿主时通过宿主 Ref 查询，Unit.hooks 继续保存本地 Hook 登记；属性与限制贡献归对应 Capability。Effect 不解释 HP／EP 的结算流程，完整资源协议由 [Resource](resource.md) 说明。
 
@@ -27,11 +27,13 @@ Definition 是共享行为；实例保存稳定身份、实际来源、私有 st
 
 `Policy` 为 `undefined | "END" | "DECAY"`。`Definition` 默认策略为 undefined，`Effect` 默认包含所有策略。非叠层使用 undefined，STACK 额外保存 stackCount，私有 state 不承担通用层数。统一的 `Expiration<P>` 对 undefined／END 允许全部三种形式，DECAY 仅允许 DURATION／INFINITE，不能使用缺少重启预算的 DEADLINE。这项配对贯穿安装、回调与时间写回；具体内容选定 END 或 DECAY 后取得准确上下文类型。
 
-### 不可变 Effects 容器
+### 存储与查询
 
-Effects 以 Ref 为键全局保存完整实例。安装时分配一次 Ref 和全场递增的数字 ID，数字 ID 用于生成独立的 Hook／Contribution 登记名及稳定排序。`all(battle)` 按登记顺序枚举，`forHost(battle, host)` 读取指定宿主的实例，`host = null` 读取无宿主实例。重新生效或修改 state 沿用同一个 Ref。Definition 查询按对象身份恢复具体类型。
+`BattleState.effects` 使用通用 `Store<Ref<Effect<any, any>>, Effect<any, any>>`，以 Ref 为键全局保存完整实例。安装新实例时分配一次 Ref，并从 `execution.nextEffectId` 取得全场递增的数字 ID，用于生成独立的 Hook／Contribution 登记名及稳定排序。合并与拒绝不分配新身份。
 
-容器只管理存储，不派发业务。旧版本保持可读。内容使用领域操作，不直接替换完整实例。
+`all(battle)` 按登记顺序枚举，`forHost(battle, host)` 读取指定宿主的实例，`host = null` 读取无宿主实例。已知精确 Ref 时直接调用 `reference.get(battle)`；已知 Definition 时使用 `effects.get(battle, reference, definition)` 按 Definition 对象身份恢复具体类型。重新生效或修改 state 沿用同一个 Ref。
+
+Effect 的内部写回与注销直接使用 Store 的 `replace`、`remove`，遵守通用 Store 契约。旧版本保持可读。内容使用领域操作，不直接替换完整实例。
 
 ## 3. 生命周期约束
 
@@ -94,7 +96,7 @@ onInstall 返回后重读实例与时间：仍 INSTALLING 才先结算到期，�
 
 ### 公开 API
 
-具体声明见[公共入口](../../src/core/effect/index.ts)。install 新建或合并成功返回所保留实例的 Ref，拒绝返回 null；回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，保留相同的宿主类型及实际可证明的普通／STACK 与到期政策，具体类型由原 Definition 身份恢复。
+具体声明见[公共入口](../../src/core/effect/index.ts)。install 新建或合并成功返回所保留实例的 Ref，拒绝返回 null；回调结束该实例不撤销创建／合并事实。可能合并的返回类型不能冒用传入 Definition 的私有状态，保留相同的宿主类型及实际可证明的普通／STACK 与到期政策，具体类型由 `effects.get(battle, reference, definition)` 按原 Definition 身份恢复。
 
 setState 仅改私有数据，各 lifecycle 均可写入，不恢复实例或刷新静态输出；需要更新贡献的内容显式调用所属领域操作。setEnabled 完整结算启停。setExpiration 只替换合法时间状态，不立即推进、到期或改 Lifetime；remaining 写零仍由既定检查点结算。时间写回保留 Ref 的普通／DECAY／Burst 约束。
 

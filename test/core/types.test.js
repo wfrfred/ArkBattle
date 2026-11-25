@@ -245,7 +245,7 @@ if (merged.value !== null) {
     effects.setExpiration(merged.state, merged.value, { type: 'DEADLINE', tick: 10 });
     // @ts-expect-error a retained Effect may have arrived with a different private definition.
     merged.value.get(merged.state)!.state.power;
-    const retained = merged.state.effects.get(merged.value, layered)!;
+    const retained = effects.get(merged.state, merged.value, layered)!;
     retained.state.power satisfies number;
     endLifetime(merged.state, effects.ref(retained), 'CANCELLED');
 }

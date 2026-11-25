@@ -1,5 +1,7 @@
 import type { State as BattlefieldState } from "../battlefield/state.js";
-import { Effects } from "../effect/effects.js";
+import type { Effect, Id as EffectId } from "../effect/effect.js";
+import { Store } from "../common/collection/store.js";
+import type { Ref } from "../common/ref.js";
 import { replaceIn } from "../common/object.js";
 import {
     initialize as initializeLifetime,
@@ -22,6 +24,7 @@ import {
 export interface BattleExecutionState {
     readonly rngState: Seed;
     readonly nextProjectileId: ProjectileId;
+    readonly nextEffectId: EffectId;
     readonly nextUnitId: UnitId;
 }
 
@@ -29,6 +32,7 @@ const defaultExecution: BattleExecutionState = {
     rngState: 0,
     nextUnitId: 0,
     nextProjectileId: 0,
+    nextEffectId: 0,
 };
 
 export const DEFAULT_PUSH_MULTIPLIER = 0.5;
@@ -41,7 +45,7 @@ const defaultDefinition: Definition = {
 export interface State {
     readonly definition: Definition;
     readonly battlefield: BattlefieldState;
-    readonly effects: Effects;
+    readonly effects: Store<Ref<Effect<any, any>>, Effect<any, any>>;
     readonly tick: number;
     readonly execution: BattleExecutionState;
     readonly deployment: DeploymentState;
@@ -67,7 +71,7 @@ export function createBattleState(
     return {
         definition,
         battlefield,
-        effects: Effects.empty(),
+        effects: Store.empty<Ref<Effect<any, any>>, Effect<any, any>>(),
         tick,
         execution,
         deployment,

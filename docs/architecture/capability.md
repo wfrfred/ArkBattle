@@ -1,6 +1,6 @@
 # Capability 的数据与操作契约
 
-Capability 拥有本领域的静态配置、当前状态、初始化与合法操作。基础 Unit 只提供身份、Definition、位置、生命周期、Hooks 与 Effects；内容明确选择能力，不把全部能力做成基础 Unit 可选字段。
+Capability 拥有本领域的静态配置、当前状态、初始化与合法操作。基础 Unit 只提供身份、Definition、位置、生命周期与 Hooks；内容明确选择能力，不把全部能力做成基础 Unit 可选字段。Effect 统一保存在 BattleState，不属于 Unit 的内部状态。
 
 ## 数据与类型
 
