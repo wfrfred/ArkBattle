@@ -35,13 +35,13 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     const operator = {
         id: "operator", presence: {},
         hooks: Hooks.empty().set(lifecycle.entered, {
-            id: "enter", invoke(state) { entries++; return { state, value: undefined }; },
+            id: "enter", priority: 0, invoke(state) { entries++; return { state, value: undefined }; },
         }).set(lifecycle.removed, {
-            id: "leave", invoke(state, departure) { departures.push(departure); return { state, value: undefined }; },
+            id: "leave", priority: 0, invoke(state, departure) { departures.push(departure); return { state, value: undefined }; },
         }),
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
-        blocker: { capacity: 2, layer: "GROUND", restrictions: [] },
+        blocker: { capacity: 2, layer: "GROUND", radius: null, restrictions: [] },
         action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [program, idle] },
     };
 
@@ -62,18 +62,19 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         blockable: { volume: 1, restrictions: [] }, layer: { type: "GROUND" },
     };
     let state = battle([
-        { definition: { id: "support", hooks: Hooks.empty(), occupancy: { slot: "SUPPORT" } }, position: [2, 1], initial: { occupancy: { tile: [1, 2] } } },
-        { definition: enemy, position: [2.1, 1] },
-        { definition: enemy, position: [2.2, 1] },
+        { definition: { id: "support", hooks: Hooks.empty(), occupancy: { slot: "SUPPORT" } }, hooks: Hooks.empty(), position: [2, 1], initial: { occupancy: { tile: [1, 2], direction: null } } },
+        { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.1, 1] },
+        { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.2, 1] },
     ], { deployment: {
         definition: {
+            costCeiling: 99,
             dp: { initial: 20, min: 0, max: 99, recoveryInterval: null },
             slot: { limit: 1 },
         },
         cards: [{ definition: cardDefinition, unitDefinition: operator }],
     } });
     const card = cards.ref([...cards.all(state)][0]);
-    const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2]));
+    const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
     assert.equal(deployed.value.type, "DEPLOYED");
     state = deployed.state;
     const owner = deployed.value.unit;
@@ -91,7 +92,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     for (const target of targets) state = blocking.acquire(state, owner, target);
     let notifications = 0;
     state = update(state, owner, units.compose(units.setHook(block.blockerReleased, {
-        id: "observe-published-restrictions",
+        id: "observe-published-restrictions", priority: 0,
         invoke(current) {
             notifications++;
             assert.equal(owner.get(current).presence.present, false);
@@ -117,7 +118,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     assert.ok(installed.value.get(state));
 
     state = step(state, []);
-    state = update(state, owner, actions.setRestriction({ id: "other-source", value: { allows: () => false } }));
+    state = update(state, owner, actions.setRestriction({ id: "other-source", group: null, value: { allows: () => false } }));
     state = update(state, owner, presence.appear([2, 1]));
     assert.equal(actions.start(state, actionRef).value, null);
     state = update(state, owner, actions.removeRestriction("other-source"));

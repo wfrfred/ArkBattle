@@ -22,7 +22,7 @@ function setup(targetHooks = Hooks.empty()) {
   } });
   const target = initialize({ id: 1, position: [1, 0], definition: { hooks: targetHooks,
     id: 'target', vitality: vitality(1000),
-    presence: {}, targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [{ id: 'hidden', value: {
+    presence: {}, targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [{ id: 'hidden', group: null, value: {
       allows: () => false,
     } }] },
   } });
@@ -92,6 +92,7 @@ test('an arrow cannot hit twice when its damage response stops the projectile', 
   let hits = 0;
   const fixture = setup(Hooks.empty().set(targetApplied, {
     id: 'stop-on-hit',
+    priority: 0,
     invoke(state) {
       hits++;
       return { state: projectiles.remove(state, arrow, 'EXPLICIT'), value: undefined };
@@ -110,6 +111,7 @@ test('tracking reads current source attack and falls back to its launch sample a
   const sources = [];
   const fixture = setup(Hooks.empty().set(targetApplied, {
     id: 'observe-source',
+    priority: 0,
     invoke(battle, context) {
       sources.push(context.request.source);
       return { state: battle, value: undefined };
@@ -117,7 +119,7 @@ test('tracking reads current source attack and falls back to its launch sample a
   }));
   const launched = launch(fixture.battle, { ...fixture.state, cachedAtk: 40 });
   const boosted = updateUnits(launched.state, ref(fixture.source), setAttackContribution({
-    id: 'after-launch', value: [modifier({ addition: 20 })],
+    id: 'after-launch', group: null, value: [modifier({ addition: 20 })],
   }));
   const withSource = step(boosted, 1);
   assert.equal(getUnit(withSource, 1).vitality.health.hp, 940);

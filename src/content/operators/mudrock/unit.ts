@@ -31,7 +31,15 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
     const skill = createSkill(parameters.s2Skill, normalAttack, action);
 
     const definition = {
-        elemental: createElemental({ receiver: "CHARACTER" }),
+        elemental: createElemental({
+            receiver: "CHARACTER",
+            boss: false,
+            maxEp: null,
+            recoveryPerSecond: 0,
+            elementResistance: 0,
+            damageResistance: 0,
+            burstRecoverySpeed: 1,
+        }),
         id: parameters.id,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
@@ -61,9 +69,10 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
         blocker: {
+            radius: null,
             capacity: attributes.blockCapacity,
             layer: "GROUND",
-            restrictions: [{ id: "blocking/sides", value: sides("ENEMY") }],
+            restrictions: [{ id: "blocking/sides", group: null, value: sides("ENEMY") }],
         },
         action: {
             speed: { default: attributes.attackSpeed, min: 20, max: null },
@@ -81,6 +90,7 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
         skill: { definition: skill },
         hooks: Hooks.empty().set(unitHooks.entered, {
             id: "mudrock/install-initial-effects",
+            priority: 0,
             invoke(state, self) {
                 if (!hasVitality(self) || !hasTargetable(self)) {
                     return { state, value: undefined };

@@ -15,7 +15,7 @@ export function add<U extends Unit>(battle: BattleState, unit: U): BattleState {
     const next = battlefield.add(battle.battlefield, unit);
     battle = replaceIn(battle, ["battlefield"], next);
     const reference = units.ref(unit);
-    battle = register(battle, reference);
+    battle = register(battle, reference, []);
 
     battle = observers.dispatch(
         battle,
@@ -68,6 +68,7 @@ export function replace<U extends Unit>(battle: BattleState, updates: readonly U
 
 export const config: Unit["config"] = {
     end: {
+        dependencyEnd: null,
         prepare: (battle, reference, initial, end) => {
             battle = replace(battle, [{ ...initial, lifecycle: "ENDING" }]);
 

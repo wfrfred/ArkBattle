@@ -18,7 +18,7 @@ Change 组合、单宿主发布与 Settlement 的详细契约以[接口约定](a
 
 Catalog 从 initializer 字典的函数签名派生配置、标准状态和 Initial，不维护第二份必需能力清单。initializer 接收当前 BattleState 与正在装配的 Unit，读取自身配置并补自身状态，保留已有字段与登记；有前置依赖时在输入类型中明确声明。
 
-具体 Definition 决定装配哪些能力；对应 initializer 的第三参数必填时，initial 对应键及顶层 initial 都必填。允许额外的已知 Initial，它们在未选能力时忽略，未知键和错误值仍被类型拒绝。Occupancy 必需 tile，Route 必需 Plan／offset，Facing 必需方向；调用者不能预装运行进度。以 Unit 为宿主的 Effect 在 Unit 登记后通过通用安装入口建立。
+具体 Definition 决定装配哪些能力；调用方总是显式提供 hooks 与顶层 initial；没有额外程序或能力输入时分别传 Hooks.empty() 与 {}。对应 initializer 的第三参数必填时，initial 对应键必填。允许额外的已知 Initial，它们在未选能力时忽略，未知键和错误值仍被类型拒绝。Occupancy 必需 tile 与可空 direction，Route 必需 Plan／offset，Facing 必需方向；调用者不能预装运行进度。以 Unit 为宿主的 Effect 在 Unit 登记后通过通用安装入口建立。
 
 `Unit.initialize` 创建稳定 Ref，将当前 BattleState 分配的表现编号保存在 `ref.id`，然后按 Catalog 顺序接续各 initializer。最后合并 Definition.hooks，同键同 ID 后者覆盖并保留位置。Occupancy 先于依赖它的 Deployable。初始化期间可以读取当前战场或消费 RNG，需要本次已装配的能力时直接读取输入 Unit。调用方接续返回的 State，可先登记本业务的事实，再用 `Unit.add` 发布实例并触发 entered。
 
@@ -109,7 +109,7 @@ Schedule 提供 RIGHT 初值，地面敌人的 entered 在 Route 首指令后按
 
 ## Blocking
 
-[Blocking](blocking.md)拥有两端共享 Relation、搜索／保持资格、容量裁撤与位置计划。Blocker 表达可阻挡目标层，不从自身 Layer 推导；默认 GROUND 半径 0.7071、AIR 半径 0.8944，Definition 显式 radius 在切层后仍覆盖默认。
+[Blocking](blocking.md)拥有两端共享 Relation、搜索／保持资格、容量裁撤与位置计划。Blocker 表达可阻挡目标层，不从自身 Layer 推导；默认 GROUND 半径 0.7071、AIR 半径 0.8944，Definition 必须提供 radius，null 表示随层使用默认半径，具体数值在切层后仍覆盖默认。
 
 capacity 与 volume 独立于重量；capacity 的 ADD／ZERO 和 volume 下限一属于项目协议。Restriction、容量／volume、切层分别有自己的 Settlement，不因任意字段更新自动全场维护。详细时序和未闭合特殊增容不在本页重复。
 

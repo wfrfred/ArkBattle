@@ -28,7 +28,7 @@ Battlefield 保存战场的空间事实，提供纯状态写回和只读查询�
 
 ## 地图与地块
 
-Map 保存矩形地块布局、标记和阻隔边。Tile 引用静态 Definition，并保存当前 State；Definition.initial 是初始地块事实，当前状态可以由地块操作替换。Terrain 的类型和参数随 Definition 提供，具体地形行为由 Content 的 Effect 表达。
+Map 保存矩形地块布局、标记和阻隔边；构造时必须明确提供标记和阻隔边列表，没有对应元素则传空数组。Tile 引用静态 Definition，并保存当前 State；Definition.initial 是初始地块事实，当前状态可以由地块操作替换。Terrain 的类型和参数随 Definition 提供，具体地形行为由 Content 的 Effect 表达。Tile.State 必须明确 collision；`null` 表示没有实体碰撞盒。
 
 数据解析与地图、地块构造入口建立尺寸、地块数量、坐标和通行代价等约束。地图和导航接受行、列均为安全整数且落在地图范围内的格子地址。内部投影与计算信任已构造的数据，不逐次重验地图、复制 Definition 或验证内容私有数据。
 
@@ -44,7 +44,7 @@ Content 提交 Capability Change 或调用完整领域操作。`unit.update` 组
 
 ## Navigation 与 Spatial
 
-地块按移动方式投影通行资格：WALK 使用当前 walkCost，FLY 的基础代价为 1；阻隔边按其适用的移动方式限制出口。Overlay 只能增加禁止或提高代价，撤销一项不会解除其他来源的限制。Navigation 返回追踪建议，实际位置推进由运动领域处理，详见 [Navigation](navigation.md#职责与状态归属)。
+地块按移动方式投影通行资格：WALK 使用当前 walkCost，FLY 的基础代价为 1；阻隔边按其适用的移动方式限制出口。Overlay 只能增加禁止或提高代价，必须指定 cost，1 表示不提高代价；撤销一项不会解除其他来源的限制。Navigation 返回追踪建议，实际位置推进由运动领域处理，详见 [Navigation](navigation.md#职责与状态归属)。
 
 Spatial 的 within 检查真实位置，overlap 检查 Hitbox 相交，sweep 返回首次几何接触及其比例。查询不按地图边界裁剪，不要求来源是 Unit，也不执行伤害或选择目标。返回 Ref 供后继操作读取最新对象，接触比例则保留当次查询的几何事实，详见 [Spatial](spatial.md)。
 

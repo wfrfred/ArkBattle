@@ -19,10 +19,10 @@ const tile = createTile({
     terrain: normal.create({}),
     initial: {
         elevation: "LOWLAND", placement: "ALL", passability: "ALL",
-        walkCost: 1, allowsBlocking: true, siteCondition: normalSite,
+        walkCost: 1, allowsBlocking: true, siteCondition: normalSite, collision: null,
     },
 });
-const map = createMap(1, 32, tileEntries(Array(32).fill(tile)));
+const map = createMap(1, 32, tileEntries(Array(32).fill(tile)), [], []);
 
 export function actionDefinition(power = 7, configuration = {}) {
     return createAttack(

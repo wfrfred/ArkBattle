@@ -19,7 +19,7 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     const definition = {
         id: "allied-unit",
         hooks: Hooks.empty().set(units.entered, {
-            id: "install-entry-effect",
+            id: "install-entry-effect", priority: 0,
             invoke(state, self) {
                 assert.ok(units.ref(self).get(state));
                 return { state: effects.install(state, units.ref(self), entryEffect, effectInitial).state, value: undefined };
@@ -29,13 +29,13 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     assert.throws(() => units.initialize(battle(), {
         position: [0, 0], definition: {
             id: "conflicting-roles", hooks: Hooks.empty(),
-            blocker: { capacity: 1, layer: "GROUND", restrictions: [] },
+            blocker: { capacity: 1, layer: "GROUND", radius: null, restrictions: [] },
             blockable: { volume: 1, restrictions: [] },
-        },
+        }, hooks: Hooks.empty(), initial: {},
     }), TypeError);
 
     const state = battle([{
-        definition, position: [0, 0], initial: { occupancy: { tile: [0, 0] } },
+        definition, hooks: Hooks.empty(), position: [0, 0], initial: { occupancy: { tile: [0, 0], direction: null } },
     }]);
     const current = units.all(state).find((unit) => unit.definition === definition);
     assert.equal(hasOccupancy(current), false);
@@ -43,14 +43,14 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
 });
 
 test("Unit construction requires unique restriction IDs within each capability list", () => {
-    const blocked = { id: "locked", value: { allows: () => false } };
-    const allowed = { id: "locked", value: { allows: () => true } };
+    const blocked = { id: "locked", group: null, value: { allows: () => false } };
+    const allowed = { id: "locked", group: null, value: { allows: () => true } };
     const definition = {
         id: "restricted", hooks: Hooks.empty(),
         facing: { restrictions: [blocked] },
         targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [blocked] },
     };
-    const input = { definition, position: [0, 0], initial: { facing: { direction: "RIGHT" } } };
+    const input = { definition, hooks: Hooks.empty(), position: [0, 0], initial: { facing: { direction: "RIGHT" } } };
     const initial = battle();
     for (const key of ["facing", "targetable"]) {
         const duplicate = {
@@ -73,10 +73,10 @@ test("Unit construction requires unique restriction IDs within each capability l
 test("initial and later Units share their instance identity allocator", () => {
     const starting = { id: "starting", hooks: Hooks.empty() };
     const summoned = { id: "summoned", hooks: Hooks.empty() };
-    const initial = battle([{ definition: starting, position: [1, 0] }]);
+    const initial = battle([{ definition: starting, hooks: Hooks.empty(), initial: {}, position: [1, 0] }]);
     const placed = units.all(initial).find((unit) => unit.definition === starting);
 
-    const created = units.initialize(initial, { definition: summoned, position: [0, 0] });
+    const created = units.initialize(initial, { definition: summoned, hooks: Hooks.empty(), initial: {}, position: [0, 0] });
     const reference = units.ref(created.value);
     assert.equal(reference.get(created.state), undefined);
     const registered = add(created.state, created.value);
@@ -87,13 +87,13 @@ test("initial and later Units share their instance identity allocator", () => {
 
     const index = new Map([[reference, summoned]]);
     const updated = update(registered, reference, units.setHook(units.tick, {
-        id: "update",
+        id: "update", priority: 0,
         invoke: state => ({ state, value: undefined }),
     }));
     assert.notEqual(reference.get(updated), created.value);
     assert.equal(index.get(units.ref(reference.get(updated))), summoned);
 
-    const alternative = units.initialize(initial, { definition: summoned, position: [0, 1] });
+    const alternative = units.initialize(initial, { definition: summoned, hooks: Hooks.empty(), initial: {}, position: [0, 1] });
     const branch = add(alternative.state, alternative.value);
     assert.equal(alternative.value.ref.id, reference.id);
     assert.equal(reference.get(branch), undefined);
@@ -107,7 +107,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
         vitality: defineVitality(40),
         hooks: Hooks.empty()
             .set(units.removing, {
-                id: "prepare",
+                id: "prepare", priority: 0,
                 invoke(state, departure) {
                     assert.equal(killer.get(state).skill.sp.value, 1);
                     assert.equal(victimEffect.get(state).lifecycle, "ACTIVE");
@@ -117,7 +117,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
                 },
             })
             .set(units.removed, {
-                id: "retain-departure",
+                id: "retain-departure", priority: 0,
                 invoke(state, departure) {
                     assert.deepEqual(departure, killedDeparture);
                     assert.equal(departure.unit, killedDeparture.unit);
@@ -133,11 +133,11 @@ test("Unit death preserves its attribution through Effect responses and the orig
         activation: null,
     };
     let state = battle([
-        { definition, position: [0, 0] },
+        { definition, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
         { definition: {
             id: "killer", hooks: Hooks.empty(),
             skill: { definition: rewardSkill },
-        }, position: [1, 0] },
+        }, hooks: Hooks.empty(), initial: {}, position: [1, 0] },
     ]);
     const current = units.all(state).find((unit) => unit.definition === definition);
     const victim = units.ref(current);
@@ -147,7 +147,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
         id: "death-response", group: null, initialize: () => ({}),
         onEnable(current, self) {
             return update(current, self.ref.host, units.setHook(hpDamage.targetKilled, {
-                id: "death-response",
+                id: "death-response", priority: 0,
                 invoke(state, departure) {
                     assert.equal(departure.reason, "DEATH");
                     assert.deepEqual(departure.killer, killer);
@@ -184,7 +184,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
         attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true,
         parameters: { type: "TRUE", attack: { power: 40, multiplier: 1, addition: 0 } },
     };
-    const ended = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
+    const ended = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request, null), null);
     assert.equal(ended.value.killed, true);
     assert.equal(killer.get(ended.state).skill.sp.value, 1);
     assert.deepEqual(observed, ["death-response", "victim-prepare", "effect-disabled", "effect-ended", "victim-removed"]);
@@ -194,7 +194,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
         definition: {
             ...definition, id: "instant-target",
             hooks: Hooks.empty().set(units.removing, {
-                id: "observe-direct-death",
+                id: "observe-direct-death", priority: 0,
                 invoke(current, departure) {
                     assert.equal(departure, killedDeparture);
                     assert.equal(departure.unit.vitality.health.hp, 40);
@@ -202,7 +202,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
                     return { state: current, value: undefined };
                 },
             }),
-        },
+        }, hooks: Hooks.empty(), initial: {},
     });
     const directTarget = units.ref(created.value);
     state = update(add(created.state, created.value), directTarget, units.setHook(units.removing, {

@@ -50,7 +50,7 @@ export function createRequest<T extends Card<any>>(
     battle: BattleState,
     reference: Ref<T>,
     tilePosition: TilePosition,
-    direction?: Direction,
+    direction: Direction | null,
 ): DeployRequest<T> | undefined {
     const self: Card | undefined = reference.get(battle);
     if (self === undefined) {
@@ -60,7 +60,7 @@ export function createRequest<T extends Card<any>>(
     return {
         card: reference,
         tilePosition,
-        ...(direction === undefined ? {} : { direction }),
+        direction,
         quote: {
             dp: resolveCost(battle, self),
             stock: 1,
@@ -76,6 +76,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         "COOLDOWN",
         {
             id: "@deployment/cooldown",
+            group: null,
             value: {
                 allows: (battle, { request }) => isReady(request.card.get(battle)!),
             },
@@ -85,6 +86,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         "ACTIVE_LIMIT",
         {
             id: "@deployment/active-limit",
+            group: null,
             value: {
                 allows: (battle, { request }) => {
                     const limit = resolveActiveLimit(request.card.get(battle)!);
@@ -98,6 +100,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         "SLOT_LIMIT",
         {
             id: "@deployment/slots",
+            group: null,
             value: {
                 allows: (battle, { request }) => {
                     const available = remaining(battle);
@@ -111,6 +114,7 @@ const defaults: readonly [Rejection, Contribution<Restriction>][] = [
         "RULE",
         {
             id: "@deployment/placement",
+            group: null,
             value: {
                 allows: (battle, { request }) =>
                     getTile(battle.battlefield.map, request.tilePosition)!.state.placement !==

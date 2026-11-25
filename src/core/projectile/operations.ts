@@ -13,7 +13,7 @@ export function add<S extends object, T extends object>(
 ): BattleState {
     const projectiles = battle.battlefield.projectiles.add(ref(self), self);
     battle = replaceIn(battle, ["battlefield", "projectiles"], projectiles);
-    battle = register(battle, ref(self));
+    battle = register(battle, ref(self), []);
 
     return self.definition.onEnter?.(battle, self) ?? battle;
 }
@@ -52,6 +52,7 @@ export function replace<P extends Projectile<object, any>>(
 
 export const config: Projectile["config"] = {
     end: {
+        dependencyEnd: null,
         prepare: (battle, reference, initial) =>
             replace(battle, reference, { ...initial, lifecycle: "ENDING" }),
         finalize: (battle, reference, _initial, reason) => {

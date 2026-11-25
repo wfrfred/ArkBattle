@@ -37,8 +37,8 @@ const sourceDefinition = {
 
 function setup(definition = targetDefinition, options) {
     const state = battle([
-        { definition, position: [1, 1] },
-        { definition: sourceDefinition, position: [0, 0] },
+        { definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] },
+        { definition: sourceDefinition, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
     ], options);
     return { state, host: units.ref(get(state, 0)), source: units.ref(get(state, 1)) };
 }
@@ -49,6 +49,7 @@ function fixedPull(source, position, options = {}) {
         point: { type: "FIXED", position },
         forceLevel: 0,
         nearStop: [],
+        brake: "ONCE",
         ...options,
     };
 }
@@ -68,25 +69,25 @@ test("push uses current grades and releases blocking before forced movement begi
             blockable: { volume: 1, restrictions: [] },
             shiftable: { ...targetDefinition.shiftable, massLevel: attribute(2.5) },
             hooks: Hooks.empty().set(blockableReleased, {
-                id: "observe-unbalance",
+                id: "observe-unbalance", priority: 0,
                 invoke(current) {
                     releases.push(shiftable.isUnbalanced(get(current, 0)));
                     return { state: current, value: undefined };
                 },
             }),
-        },
+        }, hooks: Hooks.empty(), initial: {},
         position: [1, 1],
     }, {
         definition: {
             ...sourceDefinition,
-            blocker: { capacity: 1, layer: "GROUND", restrictions: [] },
-        },
+            blocker: { capacity: 1, layer: "GROUND", radius: null, restrictions: [] },
+        }, hooks: Hooks.empty(), initial: {},
         position: [0.75, 1],
     }], { pushMultiplier: 0.25 });
     const host = units.ref(get(state, 0));
     const source = units.ref(get(state, 1));
     const strengthened = units.update(state, source, shifter.setBaseForceLevelContribution({
-        id: "extra-force", value: [modifier({ addition: 3.5 })],
+        id: "extra-force", group: null, value: [modifier({ addition: 3.5 })],
     }));
     const held = blocking.acquire(strengthened, source, host);
     const shifted = push(held, source, host, { forceLevel: 0, direction: [1, 0] });
@@ -113,10 +114,10 @@ test("a pull samples its force once and later pulls use the updated grades", () 
     const original = pull.apply(state, source, host, options);
     assert.ok(original.value);
     const stronger = units.update(original.state, source, shifter.setBaseForceLevelContribution({
-        id: "extra-force", value: [modifier({ addition: 2 })],
+        id: "extra-force", group: null, value: [modifier({ addition: 2 })],
     }));
     const changed = units.update(stronger, host, shiftable.setMassLevelContribution({
-        id: "extra-weight", value: [modifier({ addition: 4 })],
+        id: "extra-weight", group: null, value: [modifier({ addition: 4 })],
     }));
     assertPosition(step(changed, []), [1 + 40 / 900, 1]);
 
@@ -215,7 +216,7 @@ test("near braking follows displacement and leaves the pull active until explici
     const { state, host, source } = setup({
         ...targetDefinition,
         hooks: Hooks.empty().set(unbalance.forcedMoved, {
-            id: "observe-near-stop",
+            id: "observe-near-stop", priority: 0,
             invoke(current) {
                 const position = get(current, 0).position;
                 assert.ok(position[0] >= 1.8 && position[0] <= 2.2);
@@ -301,7 +302,7 @@ test("forced movement slides along a physical wall and publishes its committed c
     const { state, host } = setup({
         ...targetDefinition,
         hooks: Hooks.empty().set(unbalance.forcedMoved, {
-            id: "record-contact",
+            id: "record-contact", priority: 0,
             invoke(current, movement) {
                 assertPosition(current, [1.4, 1.5]);
                 contact = movement.contacts;

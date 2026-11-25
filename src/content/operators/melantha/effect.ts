@@ -18,6 +18,7 @@ export function createAttackBonus(id: string, amount: number): Definition<object
                 self.ref.host,
                 setAttackContribution({
                     id: `effect/${self.id}/attack`,
+                    group: null,
                     value: [modifier.create({ multiplier: amount })],
                 }),
             ),

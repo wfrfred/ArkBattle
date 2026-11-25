@@ -49,7 +49,7 @@ test("destination-cell reflection changes displacement without sweeping or a sec
 });
 
 test("movement passes intermediate tracking points and reaches the final goal with its history velocity", () => {
-    let state = battle([{ definition, position: [2, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [2, 1] }]);
     const host = ref(get(state, 0));
     state = advance(state, host, { nextPoint: [2, 2], goal: [2, 2] }, context);
     state = advance(state, host, { nextPoint: [2.05, 1.2], goal: [6, 1.2] }, context);
@@ -74,7 +74,7 @@ test("runtime advances a routeless unit under force and samples its committed po
                 restrictions: [],
                 body: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 0 },
             },
-        },
+        }, hooks: Hooks.empty(), initial: {},
     }]);
     const host = ref(get(state, 0));
     state = unbalance.applyImpulse(state, host, [0.25, 0]).state;
@@ -91,7 +91,7 @@ test("runtime advances a routeless unit under force and samples its committed po
 });
 
 test("movement uses current terrain and reflects displacement while retaining controller velocity", () => {
-    let state = battle([{ definition, position: [2, 1.4] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [2, 1.4] }]);
     const host = ref(get(state, 0));
     const target = { nextPoint: [6, 1.4], goal: [6, 1.4] };
     state = advance(state, host, target, context);

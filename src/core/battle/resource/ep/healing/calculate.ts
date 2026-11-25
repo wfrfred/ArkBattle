@@ -7,7 +7,7 @@ import { dispatch, sourceFormula, targetFormula, output } from "./hook.js";
 export function calculateHealing(
     battle: BattleState,
     request: Request,
-    options?: Options,
+    options: Options | null,
 ): Result<Calculated | undefined> {
     const unavailable = (current: BattleState) => {
         const target = request.target.get(current);

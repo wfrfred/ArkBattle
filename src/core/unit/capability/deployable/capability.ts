@@ -64,6 +64,7 @@ export function initialize<
             hooks: Hooks.empty()
                 .set(removed, {
                     id: "@deployable/settle-departure",
+                    priority: 0,
                     invoke: (current, departure) => {
                         const { deployable } = departure.unit as Unit & Deployable;
 

@@ -24,6 +24,7 @@ export function createCardDefinition({
         },
         deploymentRestrictions: [{
             id: "deployment/site",
+            group: null,
             value: { allows(battle, { request }) {
                 const tile = getTile(battle.battlefield.map, request.tilePosition);
                 return tile !== undefined && tile.state.placement !== "NONE" &&

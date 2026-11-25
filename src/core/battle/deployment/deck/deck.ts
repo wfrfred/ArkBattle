@@ -7,7 +7,7 @@ import type { Card } from "./card/card.js";
 import type { Ordering } from "./order.js";
 
 export interface Definition {
-    readonly costCeiling?: number;
+    readonly costCeiling: number;
 }
 
 export interface State {
@@ -17,8 +17,8 @@ export interface State {
     readonly costCeiling: number;
 }
 
-export function initialize(definition: Definition = {}): State {
-    const costCeiling = definition.costCeiling ?? 99;
+export function initialize(definition: Definition): State {
+    const { costCeiling } = definition;
     assertNonnegativeNumber(costCeiling, "deployment cost ceiling");
 
     return {

@@ -31,7 +31,7 @@ function creation(program, extra = {}) {
     return { definition: {
         id: "traveller", hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true },
         presence: {}, ...extra,
-    }, position: [0, 0], initial: { route: { plan: program, offset: [0, 0] } } };
+    }, hooks: Hooks.empty(), position: [0, 0], initial: { route: { plan: program, offset: [0, 0] } } };
 }
 const current = state => get(state, 0).route.main;
 function ticks(state, count) {
@@ -134,7 +134,7 @@ test("route waits continue through forced movement and steering resumes after th
     assert.ok(forcedPosition[0] > 0);
     assert.equal(forcedPosition[1], 0);
 
-    state = update(state, host, shiftable.setRestriction({ id: "immune", value: { allows: () => false } }));
+    state = update(state, host, shiftable.setRestriction({ id: "immune", group: null, value: { allows: () => false } }));
     state = step(state, []);
     assert.equal(shiftable.isUnbalanced(get(state, 0)), false);
     assert.deepEqual(get(state, 0).position, forcedPosition);
@@ -232,7 +232,7 @@ test("Main exit is independent of the selected Context and completes Unit lifeti
     let state = battle([creation(plan([{ type: "APPEAR", position: [0, 3], offset: [0, 0] }], {
         endPosition: [0, 3],
     }), { hooks: Hooks.empty().set(lifecycle.removed, {
-        id: "leave", invoke: state => { leaves++; return { state, value: undefined }; },
+        id: "leave", priority: 0, invoke: state => { leaves++; return { state, value: undefined }; },
     }) })]);
     const host = units.ref(get(state, 0));
     assert.equal(current(state).index, 1);
@@ -268,13 +268,13 @@ test("spatial instructions publish consumption before hooks and resume the lates
             }),
             { definition: { id: "blocker", hooks: Hooks.empty(),
                 blocker: { layer: "GROUND", capacity: 1, radius: 1, restrictions: [] },
-            }, position: [0, 0] },
+            }, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
         ]);
         const host = units.ref(get(state, 0));
         const replacement = plan([wait(9), move([0, 2])]);
         let released = 0;
         state = update(state, host, units.setHook(blockableReleased, {
-            id: "change-route", invoke: (state) => {
+            id: "change-route", priority: 0, invoke: (state) => {
                 released++;
                 assert.equal(current(state).index, 1);
                 assert.equal(current(state).current, null);

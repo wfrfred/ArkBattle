@@ -30,11 +30,11 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 
 ### Core 标准机制与 Content 共享工厂
 
-Core 定义战斗的标准语义。Action 的执行与冷却、Skill 的 SP 与激活、Effect 的实例与生命周期由对应 Core 领域处理。标准 Effect 实现位于 `core/effects/`，实例操作位于 `core/effect/`。实现标准眩晕等行为时，Content 调用对应的 Core 实现，并决定目标、时点、时长和专属后继。角色与敌人的默认元素配置调用共享的 Content 工厂。[标准 Effect](../../src/core/effects) · [Effect 实例操作](../../src/core/effect/index.ts) · [Elemental](elemental.md)
+Core 定义战斗的标准语义。Action 的执行与冷却、Skill 的 SP 与激活、Effect 的实例与生命周期由对应 Core 领域处理。标准 Effect 实现位于 `core/effects/`，实例操作位于 `core/effect/`。实现标准眩晕等行为时，Content 调用对应的 Core 实现，并决定目标、时点、时长和专属后继。角色与敌人的元素配置调用共享的 Content 工厂，显式提供 boss 身份、元素损伤回复速率、抗性和爆发回复速度；maxEp 为 null 时，依照接收身份计算普通单位 1000、BOSS 敌人 2000 的容量。[标准 Effect](../../src/core/effects) · [Effect 实例操作](../../src/core/effect/index.ts) · [Elemental](elemental.md)
 
 Content 共享的是可选工厂。`content/actions/attack.ts` 提供常见攻击的组装，特殊行动可以直接编写 Action Definition。共享工厂按产出的 Definition 归类。`content/actions/skill.ts` 复用攻击模板，产出由技能驱动的 Action。返回 Skill Definition 的共享工厂归 `content/skills/`。共用规则用普通函数组合，具体数值读取规范化数据。
 
-攻击 Operation 明确提供攻击类别与施加途径，HP 伤害另提供性质、HIT 许可和死亡归属，不由范围、距离、来源或技能状态猜测。共同输出协议见 [Resource](resource.md)。
+攻击工厂要求明确提供 followUps（无后继时为空数组），技能行动工厂要求明确提供每次输出消耗的 ammoPerAction。攻击 Operation 明确提供攻击类别与施加途径，HP 伤害另提供性质、HIT 许可和死亡归属，不由范围、距离、来源或技能状态猜测。共同输出协议见 [Resource](resource.md)。
 
 猎狗和弩手各自声明所需的 `Parameters`，由 `create(parameters)` 直接组装 Unit Definition。关卡接入处读取敌人属性和 Prefab，将结果与该敌人的攻击时序等参数一起交给工厂。两者各自校验 `WALK`、使用 Prefab 提供的路点策略，并明确登记共用的攻击停步与登场面向 Hook。弩手近远程独立冷却与主行动互斥属于其内容政策，场景负责选择内容和波次。[敌人数据接入](data.md#敌人静态资料) · [共用敌人 Hook](../../src/content/enemies/hook.ts)
 
@@ -99,7 +99,7 @@ type Device = Unit & Classification<"DEVICE">;
 
 ### 具体单位的写法
 
-干员通过 `create(configuration, tables)` 构造。配置使用 `operators/configuration.ts` 中的 `Configuration`，有技能的干员同时要求 `SkillSelection`。`tables` 是 Data 提供的完整原表。该干员的 `resolve(configuration, tables)` 选择自己使用的角色记录、技能等级和模组阶段，解释相应字段并返回属性、普攻、技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。常规养成、解锁和普通天赋候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
+干员通过 `create(configuration, tables)` 构造。配置使用 `operators/configuration.ts` 中的 `Configuration`，无模组时 module 为 null，有技能的干员同时要求 `SkillSelection`。`tables` 是 Data 提供的完整原表。该干员的 `resolve(configuration, tables)` 选择自己使用的角色记录、技能等级和模组阶段，解释相应字段并返回属性、普攻、技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。常规养成、解锁和普通天赋候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
 
 在 `content/operators/melantha/unit.ts` 中声明具体单位的能力组合，从该单位的 `definition` 推导完整配置类型，并用 `satisfies` 检查实际提供的配置。
 

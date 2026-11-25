@@ -9,16 +9,16 @@ export interface Config<T extends Lifetime, E> {
     readonly end: {
         readonly prepare: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
         readonly finalize: (battle: BattleState, ref: Ref<T>, initial: T, end: E) => BattleState;
-        readonly dependencyEnd?: E;
+        readonly dependencyEnd: E | null;
     };
 }
 
 export interface Node {
     readonly dependencies: readonly Ref<Lifetime>[];
-    readonly ending?: {
+    readonly ending: {
         readonly initial: Lifetime;
         readonly end: unknown;
-    };
+    } | null;
 }
 
 export interface State {
@@ -42,8 +42,7 @@ export function isAvailable(
     const node = nodes.get(reference);
 
     return (
-        node !== undefined &&
-        node.ending === undefined &&
+        node?.ending === null &&
         node.dependencies.every((dependency) => isAvailable(nodes, dependency))
     );
 }

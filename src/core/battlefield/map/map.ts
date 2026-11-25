@@ -60,8 +60,8 @@ export function create(
     rows: number,
     columns: number,
     tiles: Tiles,
-    markers: readonly Marker[] = [],
-    blockEdges: readonly BlockEdge[] = [],
+    markers: readonly Marker[],
+    blockEdges: readonly BlockEdge[],
 ): Map {
     assertPositiveSafeInteger(rows, "battlefield row count");
     assertPositiveSafeInteger(columns, "battlefield column count");

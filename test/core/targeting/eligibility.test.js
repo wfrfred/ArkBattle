@@ -35,21 +35,21 @@ function wound(state, target, power) {
         source: null, target,
         attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: { type: "TRUE", attack: { power, multiplier: 1, addition: 0 } },
     };
-    return hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request)).state;
+    return hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request, null), null).state;
 }
 function injure(state, target, power) {
     const request = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power } };
-    return epDamage.applyDamage(request, epDamage.calculateDamage(state, request));
+    return epDamage.applyDamage(request, epDamage.calculateDamage(state, request, null), null);
 }
 
 test("standard HP eligibility is independent of the chosen range origin and uses current spatial facts", () => {
     const hitbox = { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.7 } };
     let state = battle([
-        { definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] } }, position: [0, 0] },
-        { definition: { ...living, hitbox }, position: [2.6, 1] },
-        { definition: { ...living, hitbox }, position: [2.6, 1] },
-        { definition: { ...living, presence: {} }, position: [2.6, 1] },
-        { definition: { ...living, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] }, hitbox }, position: [1, 1] },
+        { hooks: Hooks.empty(), initial: {}, definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] } }, position: [0, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: { ...living, hitbox }, position: [2.6, 1] },
+        { hooks: Hooks.empty(), initial: {}, definition: { ...living, hitbox }, position: [2.6, 1] },
+        { hooks: Hooks.empty(), initial: {}, definition: { ...living, presence: {} }, position: [2.6, 1] },
+        { hooks: Hooks.empty(), initial: {}, definition: { ...living, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] }, hitbox }, position: [1, 1] },
     ]);
     state = update(state, units.ref(get(state, 2)), setType("AIR"));
     const source = get(state, 0);
@@ -72,11 +72,12 @@ test("standard HP eligibility is independent of the chosen range origin and uses
 
 test("a stored damage filter evaluates restrictions with the supplied battle state", () => {
     const initial = battle([
-        { definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] } }, position: [0, 0] },
-        { definition: living, position: [1, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] } }, position: [0, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: living, position: [1, 0] },
     ]);
     const enabledAt = initial.tick + 1;
     const launched = update(initial, units.ref(get(initial, 1)), targetable.setRestriction({
+        group: null,
         id: "delayed-selection", value: { allows: state => state.tick >= enabledAt },
     }));
     const eligible = targeting.damage(get(launched, 0));
@@ -89,20 +90,22 @@ test("a stored damage filter evaluates restrictions with the supplied battle sta
 test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker restricts HP selection", () => {
     const patient = {
         ...living, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        elemental: createElementalDefinition({ receiver: "ENEMY" }),
+        elemental: createElementalDefinition({ receiver: "ENEMY", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 }),
     };
     let state = battle([
-        ...[0, 1, 2, 3].map(x => ({ definition: patient, position: [x, 1] })),
-        { definition: { ...patient, vitality: { ...patient.vitality, maxHp: defineAttribute(10000, 1) } }, position: [4, 1] },
+        ...[0, 1, 2, 3].map(x => ({ hooks: Hooks.empty(), initial: {}, definition: patient, position: [x, 1] })),
+        { hooks: Hooks.empty(), initial: {}, definition: { ...patient, vitality: { ...patient.vitality, maxHp: defineAttribute(10000, 1) } }, position: [4, 1] },
     ]);
     const enlarged = units.ref(get(state, 1));
     state = update(state, enlarged, vitality.setMaxHpContribution({
+        group: null,
         id: "larger-hp", value: [modifier({ finalAddition: 300 })],
     }));
     state = wound(state, enlarged, 300);
     state = injure(state, units.ref(get(state, 2)), 200).state;
     state = injure(state, units.ref(get(state, 4)), 1000).state;
     state = update(state, enlarged, elemental.setRestriction("healingRestrictions", {
+        group: null,
         id: "no-ep-healing", value: { allows: () => false },
     }));
     const source = get(state, 0);
@@ -136,20 +139,22 @@ test("EP selection checks current resource eligibility without executing recepti
     const receiver = {
         id: "ep-receiver", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
         classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        elemental: createElementalDefinition({ receiver: "ENEMY" }),
+        elemental: createElementalDefinition({ receiver: "ENEMY", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 }),
     };
     let state = battle([
-        { definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ENEMY", filterTags: [], groupTags: [] } }, position: [0, 0] },
-        { definition: receiver, position: [1, 0] },
-        { definition: { ...receiver, classification: { type: "DEVICE", side: "NEUTRAL", filterTags: [], groupTags: [] } }, position: [2, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ENEMY", filterTags: [], groupTags: [] } }, position: [0, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: receiver, position: [1, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: { ...receiver, classification: { type: "DEVICE", side: "NEUTRAL", filterTags: [], groupTags: [] } }, position: [2, 0] },
     ]);
     const target = units.ref(get(state, 1));
     let damageChecks = 0;
     let healingChecks = 0;
     state = update(state, target, elemental.setRestriction("damageRestrictions", {
+        group: null,
         id: "receive-damage", value: { allows() { damageChecks++; return false; } },
     }));
     state = update(state, target, elemental.setRestriction("healingRestrictions", {
+        group: null,
         id: "receive-healing", value: { allows() { healingChecks++; return false; } },
     }));
     const damageCandidates = state => candidates(state).filter(targeting.elementDamage(get(state, 0))(state));

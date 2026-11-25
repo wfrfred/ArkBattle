@@ -17,16 +17,12 @@ export function key<H extends Entry, Owner extends object = object>(name: string
 export type Exclusion = readonly [key: Key<any, any>, id: string | null];
 
 export interface Options {
-    readonly exclude?: readonly Exclusion[];
+    readonly exclude: readonly Exclusion[];
 }
 
-export function excluded(
-    options: Options | undefined,
-    reference: Key<any, any>,
-    id: string,
-): boolean {
+export function excluded(options: Options | null, reference: Key<any, any>, id: string): boolean {
     return (
-        options?.exclude?.some(
+        options?.exclude.some(
             ([key, excludedId]) => key === reference && (excludedId === null || excludedId === id),
         ) ?? false
     );
@@ -103,7 +99,7 @@ export class Hooks {
 
 export interface Hook<C, T> {
     readonly id: string;
-    readonly priority?: number;
+    readonly priority: number;
     readonly accepts?: (battle: BattleState, context: C, current: T) => boolean;
     readonly invoke: (battle: BattleState, context: C, current: T) => Result<T>;
 }
@@ -122,7 +118,7 @@ export function dispatch<C, T>(
 ): Result<T> {
     let current = initial;
     const candidates = [...options.candidates(battle)]
-        .sort((left, right) => (right.priority ?? 0) - (left.priority ?? 0))
+        .sort((left, right) => right.priority - left.priority)
         .map(({ id }) => id);
 
     for (const id of candidates) {

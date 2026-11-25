@@ -70,7 +70,7 @@ function spRecovery(value: unknown): Recovery["type"] {
     }
 }
 
-export function parseArknightsSkillLevel(value: unknown, level = 1): SkillLevel {
+export function parseArknightsSkillLevel(value: unknown, level: number): SkillLevel {
     const skill = object(value, "skill record");
     if (typeof skill.skillId !== "string" || skill.skillId.length === 0) {
         throw new TypeError("skill record requires an identity");
@@ -147,6 +147,9 @@ export function parseArknightsSkillLevel(value: unknown, level = 1): SkillLevel 
             durationSeconds === -1 ? null : secondsToTicks(durationSeconds, "skill duration"),
         prefabId,
         rangeId,
-        blackboard: parseBlackboard(selected.blackboard, "skill blackboard"),
+        blackboard: parseBlackboard(selected.blackboard, "skill blackboard", {
+            allowEmptyKeys: false,
+            allowMissingValueStr: false,
+        }),
     };
 }

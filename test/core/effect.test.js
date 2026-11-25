@@ -47,6 +47,7 @@ test("unhosted and Card effects share the lifecycle and keep host groups indepen
         initialEffects: [{ initial: effectInitial, definition: controller }],
         deployment: {
             definition: {
+                costCeiling: 99,
                 dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
                 slot: { limit: 1 },
             },
@@ -102,6 +103,7 @@ test("installation, participation, and ending preserve completed business and cu
                 state,
                 self.ref.host,
                 offense.setAttackContribution({
+                    group: null,
                     id: "buff",
                     value: [modifier({ addition: 20 })],
                 }),
@@ -123,7 +125,7 @@ test("installation, participation, and ending preserve completed business and cu
             return state;
         },
     };
-    let state = battle([{ definition: operator, position: [1, 1] }]);
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
     const installed = effects.install(state, owner, definition, { ...effectInitial, enabled: false });
     state = installed.state;
@@ -198,6 +200,7 @@ test("DEFAULT retains candidates and installs them before priority and enabled d
                 state,
                 self.ref.host,
                 offense.setAttackContribution({
+                    group: null,
                     id: "overall",
                     value: [modifier({ addition: self.state.bonus })],
                 }),
@@ -212,7 +215,7 @@ test("DEFAULT retains candidates and installs them before priority and enabled d
         initialize: () => ({ bonus: 20 }),
     };
     const later = { ...strong, id: "later", initialize: () => ({ bonus: 30 }) };
-    let state = battle([{ definition: operator, position: [1, 1] }]);
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
     const low = effects.install(state, owner, weak, effectInitial);
     const high = effects.install(low.state, owner, strong, effectInitial);
@@ -235,7 +238,7 @@ test("time advances independently of participation, publishes before active busi
     const ended = [];
     const laterTicks = [];
     let renewed = false;
-    let state = battle([{ definition: operator, position: [1, 1] }]);
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
     const duration = effects.install(
         state,
@@ -344,8 +347,8 @@ test("EXTEND and EXTEND_TIME renew the retained instance without creating incomi
         },
     };
     let state = battle([
-        { definition: operator, position: [1, 1] },
-        { definition: operator, position: [0, 1] },
+        { hooks: Hooks.empty(), initial: {}, definition: operator, position: [1, 1] },
+        { hooks: Hooks.empty(), initial: {}, definition: operator, position: [0, 1] },
     ]);
     const owner = units.ref(get(state, 0));
     const source = units.ref(get(state, 1));
@@ -440,6 +443,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
                 state,
                 self.ref.host,
                 offense.setAttackContribution({
+                    group: null,
                     id: "stacked",
                     value: [modifier({ addition: 10 * effects.stacks(self) })],
                 }),
@@ -454,6 +458,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
                 state,
                 self.ref.host,
                 offense.setAttackContribution({
+                    group: null,
                     id: "stacked",
                     value: [modifier({ addition: 10 * effects.stacks(self) })],
                 }),
@@ -462,7 +467,7 @@ test("STACK separates effective output, manual consumption, and natural decay wh
         onDisable: (state, self) =>
             update(state, self.ref.host, offense.removeAttackContribution("stacked")),
     };
-    let state = battle([{ definition: operator, position: [1, 1] }]);
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: operator, position: [1, 1] }]);
     const owner = units.ref(get(state, 0));
     assert.throws(() => effects.install(state, owner, stacked, {
         ...effectInitial,
@@ -578,9 +583,9 @@ test("UNIQUE groups distinguish shared, Unit, and absent sources while source at
         group: { ...definition.group, partition: (_battle, source) => source },
     };
     let state = battle([
-        { definition: operator, position: [0, 0] },
-        { definition: operator, position: [0, 1] },
-        { definition: operator, position: [1, 1] },
+        { hooks: Hooks.empty(), initial: {}, definition: operator, position: [0, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: operator, position: [0, 1] },
+        { hooks: Hooks.empty(), initial: {}, definition: operator, position: [1, 1] },
     ]);
     const a = units.ref(get(state, 0));
     const b = units.ref(get(state, 1));
@@ -636,9 +641,10 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
         deployable: { retreatRestrictions: [], refund: null },
     };
     const card = { definition: createCardDefinition(), unitDefinition: deployable };
-    let state = battle([{ definition: operator, position: [1, 1] }], {
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: operator, position: [1, 1] }], {
         deployment: {
             definition: {
+                costCeiling: 99,
                 dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
                 slot: { limit: 2 },
             },
@@ -652,7 +658,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
         initialize: () => ({}),
         group: { type: "UNIQUE", id: "card-source", partition: deployment.sourceIdentity },
     };
-    const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
+    const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0], null));
     const firstSource = firstUnit.value.unit;
     const installed = effects.install(firstUnit.state, owner, definition, { ...effectInitial, source: firstSource });
     state = deployment.retreat(installed.state, firstSource);
@@ -667,13 +673,13 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const lateInstall = effects.install(state, owner, delayed, { ...effectInitial, source: firstSource });
     state = lateInstall.state;
     assert.notEqual(lateInstall.value, null);
-    const redeployed = deployment.deploy(state, deployment.createRequest(state, a, [0, 0]));
+    const redeployed = deployment.deploy(state, deployment.createRequest(state, a, [0, 0], null));
     state = redeployed.state;
     assert.equal(redeployed.value.type, "DEPLOYED");
     const nextSource = redeployed.value.unit;
     assert.notEqual(nextSource, firstSource);
     assert.equal(effects.install(state, owner, delayed, { ...effectInitial, source: nextSource }).value, null);
-    const otherUnit = deployment.deploy(state, deployment.createRequest(state, b, [0, 1]));
+    const otherUnit = deployment.deploy(state, deployment.createRequest(state, b, [0, 1], null));
     const other = effects.install(otherUnit.state, owner, delayed, {
         ...effectInitial,
         source: otherUnit.value.unit,

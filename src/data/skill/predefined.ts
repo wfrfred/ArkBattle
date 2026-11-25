@@ -76,7 +76,10 @@ export function resolvePredefinedSkillBlackboard(
 
     const blackboard = new Map<string, ArknightsBlackboardEntry>();
 
-    for (const entry of parseBlackboard(selectedLevel.blackboard, `${skillId} blackboard`)) {
+    for (const entry of parseBlackboard(selectedLevel.blackboard, `${skillId} blackboard`, {
+        allowEmptyKeys: false,
+        allowMissingValueStr: false,
+    })) {
         const key = entry.key.toLowerCase();
         if (blackboard.has(key)) {
             throw new TypeError(`${skillId} has duplicate blackboard key ${entry.key}`);

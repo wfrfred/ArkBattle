@@ -29,6 +29,7 @@ export function create({ cost, respawnTime }: Parameters): CardDefinition<object
         deploymentRestrictions: [
             {
                 id: "deployment/site",
+                group: null,
                 value: {
                     allows(battle, { request }) {
                         const tile = getTile(battle.battlefield.map, request.tilePosition);

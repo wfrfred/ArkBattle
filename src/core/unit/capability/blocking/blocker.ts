@@ -26,7 +26,7 @@ interface Restrictions {
 export interface Definition extends Restrictions {
     readonly capacity: number;
     readonly layer: Layer;
-    readonly radius?: number;
+    readonly radius: number | null;
 }
 
 export interface State extends Restrictions {

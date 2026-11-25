@@ -38,6 +38,7 @@ export function create(parameters: Parameters): Definition {
         hooks: Hooks.empty()
             .set(unitHooks.entered, {
                 id: "crate/apply-tile",
+                priority: 0,
                 invoke(battle, self) {
                     return {
                         state: hasOccupancy(self)
@@ -49,6 +50,7 @@ export function create(parameters: Parameters): Definition {
             })
             .set(unitHooks.removed, {
                 id: "crate/restore-tile",
+                priority: 0,
                 invoke(battle, { unit }) {
                     return {
                         state: hasOccupancy(unit)

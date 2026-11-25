@@ -9,8 +9,8 @@ import { update } from "../../dist/core/unit/operations.js";
 
 test("composition associates without commuting, publishes the final Unit and preserves nested settlements", () => {
     const before = battle([
-        { definition: { id: "first", hooks: Hooks.empty() }, position: [0, 0] },
-        { definition: { id: "second", hooks: Hooks.empty() }, position: [1, 0] },
+        { definition: { id: "first", hooks: Hooks.empty() }, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
+        { definition: { id: "second", hooks: Hooks.empty() }, hooks: Hooks.empty(), initial: {}, position: [1, 0] },
     ]);
     const [first, second] = units.all(before).map(units.ref).toArray();
     const order = [];

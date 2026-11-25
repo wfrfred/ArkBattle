@@ -9,7 +9,7 @@ export function dispatch<C, T>(
     key: hooks.Key<hooks.Hook<C, T>, any>,
     context: C,
     initial: T,
-    options?: hooks.Options,
+    options: hooks.Options | null,
     stop?: (battle: BattleState) => boolean,
 ): Result<T>;
 export function dispatch<C, T, H extends hooks.Hook<C, T>>(
@@ -18,7 +18,7 @@ export function dispatch<C, T, H extends hooks.Hook<C, T>>(
     key: hooks.Key<H, any>,
     context: C,
     initial: T,
-    options?: hooks.Options,
+    options: hooks.Options | null,
     stop?: (battle: BattleState) => boolean,
 ): Result<T>;
 export function dispatch<C, T, H extends hooks.Hook<C, T>>(
@@ -27,7 +27,7 @@ export function dispatch<C, T, H extends hooks.Hook<C, T>>(
     key: hooks.Key<H, any>,
     context: C,
     initial: T,
-    options?: hooks.Options,
+    options: hooks.Options | null,
     stop?: (battle: BattleState) => boolean,
 ): Result<T> {
     if (owner === null) {

@@ -18,16 +18,16 @@ const second = [1, 5];
 const deployable = createDeployable();
 function passenger(id = 10, tile = first, layer = "GROUND") {
     return initialize({
-        id, position: Tile.center(tile), initial: { occupancy: { tile } }, definition: {
+        id, position: Tile.center(tile), initial: { occupancy: { tile, direction: null } }, definition: {
             id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, presence: {},
             classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, vitality: vitality(100),
-            blocker: { layer, capacity: 1, restrictions: [{ id: "opposing-side", value: sides("ENEMY") }] },
+            blocker: { radius: null, layer, capacity: 1, restrictions: [{ id: "opposing-side", group: null, value: sides("ENEMY") }] },
         },
     });
 }
 function platform() {
     return initialize({
-        id: 30, position: Tile.center(first), initial: { occupancy: { tile: first } },
+        id: 30, position: Tile.center(first), initial: { occupancy: { tile: first, direction: null } },
         definition: createPlatform({
             id: "platform", vitality: vitality(100),
             classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },

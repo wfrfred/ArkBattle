@@ -110,7 +110,7 @@ MISS 是目标成功闪避，HIT_FAILED 是来源未命中，BLOCKED 是抵挡�
 | ApplyOptions.forbidden | HP Damage、EP Damage、HP Healing 的取消权限；Apply 一次建立 ReceivingContext.forbidden，接收／提交／Applied 共用，Hook 显式传给 cancel |
 | ApplyOptions.ignore | HP／EP Damage 的接收 Restriction 豁免；每次复检解析最新有效贡献，再豁免匹配定义，不恢复竞争落败项 |
 
-Calculate 与 Apply 分别接受 exclude；同键在本次多个宿主上使用时一致匹配。专属 Receiving 接续 Apply 的选项。Vitality 内部 damageCommitting／damageCommitted、EP 资源／Burst 通知与其它生命周期不自动继承它；HP targetKilled 是下节规定的显式转发。
+Calculate 与 Apply 分别接受必填的 Options 或 ApplyOptions；`null` 表示本次没有额外策略。非 null 选项必须显式提供 exclude（无排除为空数组）；适用的 ApplyOptions 也必须显式提供 forbidden（无禁止原因为空集合），ignore 回调仍可省略。同键在本次多个宿主上使用时一致匹配。专属 Receiving 接续 Apply 的选项。Vitality 内部 damageCommitting／damageCommitted、EP 资源／Burst 通知与其它生命周期不自动继承它；HP targetKilled 是下节规定的显式转发。
 
 ignore 不绕过 ACTIVE、存活、Burst 或中立默认前提。HP Restriction 接收实际 ReceivingContext，EP 接收 `{self, request, type}`，实际 type 来自 Calculated；不为索敌伪造计算结果。HP Healing 没有接收限制数组，EP Healing 保留自己的 healingRestrictions，均不增加本次 ignore；EP Healing 也没有 forbidden。
 

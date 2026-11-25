@@ -15,7 +15,7 @@ export function add<S extends object>(battle: BattleState, self: Card<S>): Battl
         order: [...deck.order, reference],
     });
 
-    return register(battle, reference);
+    return register(battle, reference, []);
 }
 
 export function replace<S extends object>(battle: BattleState, self: Card<S>): BattleState {

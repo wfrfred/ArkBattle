@@ -3,6 +3,7 @@ import { replaceIn } from "../../common/object.js";
 import { Vec2 } from "../../common/vector.js";
 import { ref, type Ref } from "../../common/ref.js";
 import { Tile, type WorldPosition } from "../../geometry/coordinate.js";
+import { Hooks } from "../../hook.js";
 import type { RemovedHook } from "../../unit/hook.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import type { Unit } from "../../unit/unit.js";
@@ -21,6 +22,7 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
     battle = replaceIn(battle, ["execution", "rngState"], rng.state());
     const created = initializeUnit(battle, {
         definition: entry.definition,
+        hooks: Hooks.empty(),
         position: Vec2.add(Tile.center(entry.plan.startPosition), offset),
         initial: {
             route: { plan: entry.plan, offset },
@@ -283,5 +285,6 @@ export function resolveUnits(battle: BattleState, removedUnits: readonly Ref<Uni
 
 export const removedHook: RemovedHook = {
     id: "@schedule/resolve-unit",
+    priority: 0,
     invoke: (battle, { unit }) => ({ state: resolveUnits(battle, [ref(unit)]), value: undefined }),
 };

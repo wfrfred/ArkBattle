@@ -4,7 +4,7 @@ import test from "node:test";
 import { resolve, resolveEntries } from "../../dist/core/common/contribution.js";
 
 test("contributions keep independent sources and select a group's highest priority with a stable tie", () => {
-    const independent = { id: "base", value: "independent" };
+    const independent = { id: "base", value: "independent", group: null };
     const first = { id: "a", value: "first", group: { id: "bonus", priority: 2 } };
     const tied = { id: "z", value: "tied", group: { id: "bonus", priority: 2 } };
     const winner = { id: "winner", value: "highest", group: { id: "bonus", priority: 3 } };

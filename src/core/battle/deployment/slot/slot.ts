@@ -21,7 +21,7 @@ export interface State {
     readonly pending: readonly Pending[];
 }
 
-export function initialize(definition: Definition = { limit: null }): State {
+export function initialize(definition: Definition): State {
     if (definition.limit !== null) {
         assertNonnegativeSafeInteger(definition.limit, "deployment slot limit");
     }

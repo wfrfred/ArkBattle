@@ -37,7 +37,7 @@ export function restore(
         ...(changes.passability === undefined ? {} : { passability: initial.passability }),
         ...(changes.walkCost === undefined ? {} : { walkCost: initial.walkCost }),
         ...(changes.allowsBlocking === undefined ? {} : { allowsBlocking: initial.allowsBlocking }),
-        ...(changes.collision === undefined ? {} : { collision: initial.collision ?? null }),
+        ...(changes.collision === undefined ? {} : { collision: initial.collision }),
         ...("siteCondition" in changes ? { siteCondition: initial.siteCondition } : {}),
     });
 }

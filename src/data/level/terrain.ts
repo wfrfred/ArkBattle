@@ -22,9 +22,10 @@ export function resolveTerrainControllers(
     controllers: readonly ArknightsTerrainController[],
 ): ArknightsTerrainResolution {
     const options: {
-        mire?: NonNullable<ArknightsMapOptions["mire"]>;
-        deepsea?: NonNullable<ArknightsMapOptions["deepsea"]>;
-    } = {};
+        mire: ArknightsMapOptions["mire"];
+        deepsea: ArknightsMapOptions["deepsea"];
+        tileDeploymentPrefabs: ArknightsMapOptions["tileDeploymentPrefabs"];
+    } = { mire: null, deepsea: null, tileDeploymentPrefabs: [] };
     const unappliedBlackboard: {
         controllerIndex: number;
         entry: ArknightsBlackboardEntry;
@@ -49,7 +50,7 @@ export function resolveTerrainControllers(
         }
 
         if (profile.terrain === "MIRE") {
-            if (options.mire !== undefined) {
+            if (options.mire !== null) {
                 throw new TypeError("multiple mire controllers are not supported");
             }
 
@@ -67,7 +68,7 @@ export function resolveTerrainControllers(
                 maxStacks,
             };
         } else {
-            if (options.deepsea !== undefined) {
+            if (options.deepsea !== null) {
                 throw new TypeError("multiple deepsea controllers are not supported");
             }
 

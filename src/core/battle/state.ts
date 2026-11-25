@@ -64,7 +64,7 @@ export function createBattleState(
     battlefield: BattlefieldState,
     execution: BattleExecutionState = defaultExecution,
     tick = 0,
-    deployment: DeploymentState = initializeDeployment(),
+    deployment: DeploymentState = initializeDeployment(null),
     schedule: ScheduleState = initializeSchedule({ waves: [], branches: {} }),
     definition: Definition = defaultDefinition,
 ): State {

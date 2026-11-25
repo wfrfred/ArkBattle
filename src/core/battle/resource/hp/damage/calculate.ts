@@ -15,7 +15,7 @@ import { dispatch, sourceFormula, targetFormula, output as outputKey } from "./h
 export function calculateDamage(
     battle: BattleState,
     request: Request,
-    options?: Options,
+    options: Options | null,
 ): Result<Calculated | undefined> {
     const unavailable = (current: BattleState) => {
         const target = request.target.get(current);

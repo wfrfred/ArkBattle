@@ -25,6 +25,7 @@ function definition(id, onEntered) {
             onEntered === undefined
                 ? Hooks.empty()
                 : Hooks.empty().set(lifecycle.entered, {
+                      priority: 0,
                       id: `content/${id}`,
                       invoke: (state, self) => ({ state: onEntered(state, self), value: undefined }),
                   }),
@@ -436,6 +437,7 @@ test("dynamic birth waits use the captured Wave and Fragment clocks", () => {
     ] };
     const branch = definition("branch", (state, self) => {
         const created = initialize(capture(state, self), {
+            hooks: Hooks.empty(),
             definition: follower, position: [1, 1],
             initial: { route: { plan: followerPlan, offset: [0, 0] } },
         });

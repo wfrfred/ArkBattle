@@ -97,6 +97,7 @@ export function initialize<U extends Unit & Pick<Route, "definition">>(
             ...unit,
             hooks: unit.hooks.set(lifecycle.entered, {
                 id: "@route/enter",
+                priority: 0,
                 invoke: (current, self) => ({
                     state: enter(current, ref((self as Unit & Route).route.main)),
                     value: undefined,

@@ -7,18 +7,17 @@ import {
     type Product,
 } from "./capability/catalog.js";
 import type { Unit, Definition } from "./unit.js";
-import { Hooks } from "../hook.js";
+import type { Hooks } from "../hook.js";
 import { replaceIn } from "../common/object.js";
 import { createRef, type Ref } from "../common/ref.js";
 import { config } from "./operations.js";
 
-export type Input<D extends Definition & Partial<Definitions> = Definition> = {
+export interface Input<D extends Definition & Partial<Definitions> = Definition> {
     readonly definition: D;
     readonly position: WorldPosition;
-    readonly hooks?: Hooks;
-} & (Partial<Initial<D>> extends Initial<D>
-    ? { readonly initial?: Initial<D> }
-    : { readonly initial: Initial<D> });
+    readonly hooks: Hooks;
+    readonly initial: Initial<D>;
+}
 
 export function initialize<D extends Definition & Partial<Definitions>>(
     battle: BattleState,
@@ -33,7 +32,7 @@ export function initialize(battle: BattleState, input: Input): Result<Unit> {
         config,
         lifecycle: "ACTIVE",
         definition: input.definition,
-        hooks: input.hooks ?? Hooks.empty(),
+        hooks: input.hooks,
         position: input.position,
     };
 
@@ -45,9 +44,9 @@ export function initialize(battle: BattleState, input: Input): Result<Unit> {
         const initializer = initializers[key] as (
             battle: BattleState,
             unit: Unit,
-            initial?: unknown,
+            initial: unknown,
         ) => Result<Unit>;
-        const initialized = initializer(battle, unit, input.initial?.[key]);
+        const initialized = initializer(battle, unit, input.initial[key]);
         battle = initialized.state;
         unit = initialized.value;
     }

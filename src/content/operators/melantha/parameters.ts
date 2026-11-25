@@ -25,7 +25,7 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
     if (configuration.skillIndex !== 0) {
         throw new TypeError("Melantha content requires her first skill");
     }
-    if (configuration.module !== undefined) {
+    if (configuration.module !== null) {
         throw new RangeError("selected module is unavailable for this operator");
     }
 
@@ -33,7 +33,7 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
     const progression = growth(character, tables.ranges, configuration);
     const { phase } = progression;
     const favor = favorFrame(tables.favor, configuration.trust);
-    const attributes = resolveAttributes(progression, configuration, undefined, favor);
+    const attributes = resolveAttributes(progression, configuration, null, favor);
     const { id, level } = selectSkill(character, tables, configuration);
     const { blackboard, cost, durationTicks, sp, trigger } = level;
     const attackBonus = blackboard.find((entry) => entry.key === "atk")?.value;
@@ -41,9 +41,10 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
         throw new TypeError("Melantha's first skill requires an attack bonus and a duration");
     }
 
-    const talentBonus = selectTalents(character, configuration, undefined)
-        .find((talent) => talent.key === "1")
-        ?.blackboard.find((entry) => entry.key === "atk")?.value;
+    const talentBonus =
+        selectTalents(character, configuration, null)
+            .find((talent) => talent.key === "1")
+            ?.blackboard.find((entry) => entry.key === "atk")?.value ?? null;
 
     return {
         id: operatorId,

@@ -41,7 +41,7 @@ test("capabilities initialize declared programs in order and carry their battle 
         action: actionCapability(first, second),
         skill: { definition: skill },
     };
-    const state = battle([{ definition, position: [1, 1] }], { rngState: seed });
+    const state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }], { rngState: seed });
     const host = units.ref(get(state, 0));
     const rng = createRng(seed);
 
@@ -93,7 +93,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
         hooks: Hooks.empty(),
         action: actionCapability(program),
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const reference = actions.ref(source.get(state).action.actions.get(program));
 
@@ -137,7 +137,7 @@ test("attribute changes preserve independent attack cooldown progress and leave 
     const fixed = { ...first, id: "fixed", period: { type: "FIXED", ticks: 20 } };
     let state = battle([{ definition: {
         id: "actor", hooks: Hooks.empty(), action: actionCapability(first, second, fixed),
-    }, position: [1, 1] }]);
+    }, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const references = [first, second, fixed].map(definition => actions.ref(source.get(state).action.actions.get(definition)));
     const startAt = (index, tick) => {
@@ -151,14 +151,14 @@ test("attribute changes preserve independent attack cooldown progress and leave 
     assert.deepEqual(ready(), [10, 12, 22]);
 
     state = update({ ...state, tick: 4 }, source, actions.setSpeedContribution({
-        id: "speed", value: [modifier({ addition: 100 })],
+        id: "speed", group: null, value: [modifier({ addition: 100 })],
     }));
     assert.deepEqual(ready(), [7, 8, 22]);
     state = update({ ...state, tick: 5 }, source, actions.removeSpeedContribution("speed"));
     assert.deepEqual(ready(), [9, 11, 22]);
     state = update(state, source, units.compose(
-        actions.setIntervalContribution({ id: "interval", value: [modifier({ addition: 10 })] }),
-        actions.setSpeedContribution({ id: "speed", value: [modifier({ addition: 100 })] }),
+        actions.setIntervalContribution({ id: "interval", group: null, value: [modifier({ addition: 10 })] }),
+        actions.setSpeedContribution({ id: "speed", group: null, value: [modifier({ addition: 100 })] }),
     ));
     assert.deepEqual(ready(), [9, 11, 22]);
 
@@ -178,6 +178,7 @@ test("interrupted attack, successful release, and damage output are separate bus
         period: { type: "FIXED", ticks: 10 },
         timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
         triggerBindingId: "target",
+        followUps: [],
         targetGroups: [
             {
                 id: "target",
@@ -218,13 +219,13 @@ test("interrupted attack, successful release, and damage output are separate bus
         vitality: vitality(100),
     };
     let state = battle([
-        { definition, position: [1, 1] },
-        { definition: target, position: [2, 1] },
+        { definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] },
+        { definition: target, hooks: Hooks.empty(), initial: {}, position: [2, 1] },
     ]);
     const source = units.ref(get(state, 0));
     const reference = actions.ref(source.get(state).action.actions.get(program));
     state = update(state, source, units.setHook(actions.beforeRelease, {
-            id: "interrupt",
+            id: "interrupt", priority: 0,
             invoke: (state) => ({ state, value: { type: "INTERRUPT", recoveryTicks: 2 } }),
         }));
     let started = actions.start(state, reference);
@@ -234,7 +235,7 @@ test("interrupted attack, successful release, and damage output are separate bus
 
     while (state.tick < 10) state = step(state, []);
     state = update(state, source, units.compose(units.removeHook(actions.beforeRelease, "interrupt"), units.setHook(actions.released, {
-            id: "hide-after-release",
+            id: "hide-after-release", priority: 0,
             invoke: (state, { execution }) => ({
                 state: update(state, execution.host, presence.disappear()),
                 value: undefined,
@@ -290,7 +291,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
         },
         skill: { definition: resource },
     };
-    const firstRun = step(battle([{ definition, position: [1, 1] }], { rngState: 42 }), []);
+    const firstRun = step(battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }], { rngState: 42 }), []);
     const reference = actions.ref(get(firstRun, 0).action.actions.get(program));
     assert.equal(reference.get(firstRun).state.completed, 1);
     assert.equal(get(firstRun, 0).skill.sp.value, 0);

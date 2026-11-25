@@ -1,3 +1,4 @@
+import { Hooks } from "../../core/hook.js";
 import {
     assertNonnegativeNumber,
     assertPositiveNumber,
@@ -190,7 +191,7 @@ export function parsePredefinedCreation(
         return {
             type: "EFFECT",
             definition: {
-                ...createTerrainEffect(profile.terrain === "MIRE" ? mire : deepsea),
+                ...createTerrainEffect(profile.terrain === "MIRE" ? mire : deepsea, null),
                 id: instance.inst.characterKey,
             },
             initial: {
@@ -206,6 +207,7 @@ export function parsePredefinedCreation(
         type: "UNIT",
         definition: unitDefinition(instance, phase, profile, parseGroupTags(characterValue)),
         position: Tile.center(instance.position),
-        initial: { occupancy: { tile: instance.position } },
+        hooks: Hooks.empty(),
+        initial: { occupancy: { tile: instance.position, direction: null } },
     };
 }

@@ -4,6 +4,8 @@ Data 按战斗需要的静态输入组织为 Unit、Skill、Action、Effect、Le
 
 Data 接收原始资料和本次静态配置，完成解析、校验、选择、覆写与单位换算。输出按实际对象组织，可以直接使用 Core 的 Plan、几何、Definition、初始地图及已有工厂，不另建统一中间协议。具体机制程序由 Core 的通用实现或 Content 的专属实现提供，Core 根据 Definition、Initial 创建并推进运行状态，见[项目分层](ARCHITECTURE.md#项目分层)。
 
+原始 JSON／Prefab 可以缺失字段，由解析器按资料语义转换；已解析配置用 null 表达无值、空集合表达无条目，而非省略字段。地图配置明确提供 mire、deepsea（无控制器时为 null）和 tileDeploymentPrefabs（无条目时为空数组）；黑板读取者明确提供是否允许空 key 或缺失 valueStr 的策略。TileDeploymentPrefab 明确提供 forceBoxCollider，缺失原始字段时解析为 false。
+
 ## 业务输入
 
 | 目录 | 静态输入职责 |

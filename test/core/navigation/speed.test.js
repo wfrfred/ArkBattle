@@ -16,19 +16,19 @@ test("current movement speed, its minimum and movement permission remain separat
         id: "mover", hooks: Hooks.empty(), presence: {},
         locomotion: { speed: { default: 0.2, min: 0.05, max: null }, halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
-    }, position: [0, 0] }]);
+    }, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
     const host = ref(get(state, 0));
     const move = (current, speedMultiplier = 1) => advance({ ...current, tick: current.tick + 1 }, host,
         { nextPoint: [5, 0], goal: [5, 0] }, { mode: "WALK", speedMultiplier });
     state = move(state);
     close(get(state, 0).position[0], 0.2);
     state = update(state, host, setSpeedContribution({
-        id: "slow", value: [create({ multiplier: -0.5 })],
+        id: "slow", group: null, value: [create({ multiplier: -0.5 })],
     }));
     state = move(state);
     close(get(state, 0).position[0], 0.3);
     state = update(state, host, setSpeedContribution({
-        id: "slow", value: [create({ multiplier: -2 })],
+        id: "slow", group: null, value: [create({ multiplier: -2 })],
     }));
     state = move(state);
     close(get(state, 0).position[0], 0.35);
@@ -41,7 +41,7 @@ test("current movement speed, its minimum and movement permission remain separat
     const velocity = get(state, 0).locomotion.velocity;
     state = move(state, 0);
     close(get(state, 0).position[0], 0.38);
-    state = update(state, host, setRestriction({ id: "stop", value: { allows: () => false } }));
+    state = update(state, host, setRestriction({ id: "stop", group: null, value: { allows: () => false } }));
     state = move(state);
     close(get(state, 0).position[0], 0.38);
     assert.deepEqual(get(state, 0).locomotion.velocity, velocity);

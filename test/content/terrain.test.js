@@ -47,23 +47,23 @@ const combat = {
 };
 const unit = (column, fields = {}) => ({
     definition: { id: "terrain-unit", hooks: Hooks.empty(), presence: {}, ...fields },
-    position: [column, 0],
+    position: [column, 0], hooks: Hooks.empty(), initial: {},
 });
 
 function setup(terrains, placements, definitions) {
     const initial = {
         elevation: "LOWLAND", placement: "ALL", passability: "ALL",
-        walkCost: 1, allowsBlocking: true, siteCondition: null,
+        walkCost: 1, allowsBlocking: true, siteCondition: null, collision: null,
     };
     const tiles = terrains.reduce(
         (tiles, terrain) => tiles.add(createTile({ terrain, initial })), Tiles.empty(),
     );
-    const controllers = definitions.map(definition => createTerrainEffect(definition));
+    const controllers = definitions.map(definition => createTerrainEffect(definition, null));
     const battle = initialize({
-        map: createMap(1, terrains.length, tiles),
+        map: createMap(1, terrains.length, tiles, [], []),
         initialEffects: controllers.map(definition => ({ initial: effectInitial, definition })),
         initialUnits: placements,
-        schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 7,
+        schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, pushMultiplier: 0.5, deployment: null, rngState: 7,
     });
     return {
         battle,
@@ -102,6 +102,7 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
         skill: { definition: resource },
         hooks: Hooks.empty().set(hpDamage.targetApplied, {
             id: "observe-environment-application",
+            priority: 0,
             invoke(state, { request, application }) {
                 assert.equal(request.nature, "ENVIRONMENT");
                 applications.push(application.hpLoss);
@@ -112,6 +113,7 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
     let battle = update(configured.battle, units.ref(current(configured.battle)),
         units.setHook(hpDamage.receiving, {
             id: "observe-environment-reception",
+            priority: 0,
             invoke(state, { request }, pending) {
                 assert.equal(request.nature, "ENVIRONMENT");
                 assert.equal(request.hitRecovery, false);
@@ -170,7 +172,7 @@ test("mire preserves its stacking clock across adjacent tiles and uses effective
         unit(0, enemy),
     ], [terrain.mire]);
     let battle = update(configured.battle, units.ref(current(configured.battle)), shiftable.setMassLevelContribution({
-        id: "extra-weight", value: [createModifier({ addition: 1 })],
+        id: "extra-weight", group: null, value: [createModifier({ addition: 1 })],
     }));
     battle = until(battle, 2);
     assert.deepEqual([0, 1].map(id => attackSpeed(battle, id)), [90, 95]);
@@ -202,6 +204,7 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
             },
             hooks: Hooks.empty().set(hpDamage.receiving, {
                 id: "observe-deepsea-nature",
+                priority: 0,
                 invoke(state, { request }, pending) {
                     natures.push(request.nature);
                     return { state, value: pending };

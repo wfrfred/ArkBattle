@@ -22,5 +22,5 @@ export function healSelf(state: BattleState, reference: Ref<Unit>, ratio: number
         parameters: { power: maxHp * ratio, multiplier: 1 },
     };
 
-    return applyHealing(request, calculateHealing(state, request)).state;
+    return applyHealing(request, calculateHealing(state, request, null), null).state;
 }

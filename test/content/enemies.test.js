@@ -58,10 +58,10 @@ function emptyBattle() {
     terrain: normal.create({}),
     initial: {
       elevation: "LOWLAND", placement: "ALL", passability: "ALL",
-      walkCost: 1, allowsBlocking: true, siteCondition: normalSite,
+      walkCost: 1, allowsBlocking: true, siteCondition: normalSite, collision: null,
     },
   });
-  return createBattleState(createBattlefield(createMap(5, 5, tileEntries(Array.from({ length: 25 }, () => tile)))));
+  return createBattleState(createBattlefield(createMap(5, 5, tileEntries(Array.from({ length: 25 }, () => tile)), [], [])));
 }
 
 function advanceCombatUntil(state, untilTick) {
@@ -78,7 +78,7 @@ function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
     id: 'test-guard', targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions }, vitality: vitality(1000, { defense: attribute(40) }), classification: { type: "OPERATOR", side: 'ALLY', profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
-    blocker: { layer: "GROUND", restrictions: [], capacity: blockCapacity },
+    blocker: { radius: null, layer: "GROUND", restrictions: [], capacity: blockCapacity },
   } });
 }
 
@@ -149,7 +149,7 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
     ...parameters('enemy_1000_gopro'), timing: houndTiming, hitRadius: 0.2, movement: houndMovement,
   });
   const [action] = definition.action.definitions;
-  const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', value: invisibleRestriction }]);
+  const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', group: null, value: invisibleRestriction }]);
   const hound = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
   assert.equal(getApplyWay(getUnit(before, 1)), "MELEE");
@@ -174,7 +174,7 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
     timing: crossbowTiming, hitRadius: 0.2, projectile, movement: crossbowMovement,
   });
   const [meleeAction, rangedAction] = definition.action.definitions;
-  const blocker = guard(0, [2, 2], 1, [{ id: 'innate', value: invisibleRestriction }]);
+  const blocker = guard(0, [2, 2], 1, [{ id: 'innate', group: null, value: invisibleRestriction }]);
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const initial = addUnit(addUnit(emptyBattle(), blocker), bow);
   const state = advanceBlocking(update(initial, unitRef(blocker), setCategory("DEVICE")));
@@ -193,7 +193,7 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   assert.deepEqual(definition.action.select(released, getUnit(released, 1)).value, []);
 
   const unblocked = addUnit(addUnit(emptyBattle(), guard(0, [2, 2.5], 0, [
-    { id: 'innate', value: invisibleRestriction },
+    { id: 'innate', group: null, value: invisibleRestriction },
   ])), bow);
   assert.deepEqual(blockingQueries.relations(unblocked).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), []);
   assert.equal(inRange(bow.position, narrow)(getUnit(unblocked, 0)), true);
@@ -215,8 +215,8 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
   const guardUnit = guard(0, [2, 2], 0);
   const select = attack.attack.targetGroups[0].select;
   const initial = createBattle([
-    { definition: guardUnit.definition, position: guardUnit.position },
-    { definition, position, initial: routeInitial(position, [3, 4]) },
+    { definition: guardUnit.definition, position: guardUnit.position, hooks: Hooks.empty(), initial: {} },
+    { definition, position, hooks: Hooks.empty(), initial: routeInitial(position, [3, 4]) },
   ], { rows: 5, columns: 5 });
   const target = unitRef(getUnit(initial, 0));
   const bow = getUnit(initial, 1);

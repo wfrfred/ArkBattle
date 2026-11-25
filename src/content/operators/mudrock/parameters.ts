@@ -40,7 +40,7 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
     if (configuration.skillIndex !== secondSkillIndex) {
         throw new TypeError("Mudrock content requires her second skill");
     }
-    if (configuration.module !== undefined && configuration.module.id !== moduleX) {
+    if (configuration.module !== null && configuration.module.id !== moduleX) {
         throw new TypeError("Mudrock content supports only module X");
     }
 

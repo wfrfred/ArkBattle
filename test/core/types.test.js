@@ -42,7 +42,7 @@ declare const battle: State;
 const effectInitial: effects.Initial = { source: null, scopes: [], expiration: { type: 'INFINITE' }, enabled: true };
 const attribute = (value: number) => ({ default: value, min: 0, max: null });
 const bare = initialize(battle, {
-    definition: { id: 'bare', hooks: Hooks.empty() }, position: [0, 0],
+    definition: { id: 'bare', hooks: Hooks.empty() }, position: [0, 0], hooks: Hooks.empty(), initial: {},
 }).value;
 
 // Host requirements are checked at assembly.
@@ -92,8 +92,8 @@ const wrongActionHost: actions.CapabilityDefinition<object>['definitions'] = [st
 // @ts-expect-error this host definition cannot supply the Skill's additional capabilities.
 const wrongSkillHost: skills.SkillCapability<object>['definition']['skill']['definition'] = skill;
 const armedInput = {
-    position: [0, 0], definition: armedDefinition,
-    initial: { occupancy: { tile: [0, 0] }, facing: { direction: 'RIGHT' } },
+    position: [0, 0], definition: armedDefinition, hooks: Hooks.empty(),
+    initial: { occupancy: { tile: [0, 0], direction: null }, facing: { direction: 'RIGHT' } },
 } satisfies UnitInput<typeof armedDefinition>;
 const armed: Armed = initialize(battle, armedInput).value;
 
@@ -103,7 +103,7 @@ initialize(battle, { ...armedInput, initial: { ...armedInput.initial, occupancy:
 declare const plan: Plan;
 const routeDefinition = { id: 'route', hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } };
 const routeInput = {
-    definition: routeDefinition, position: [0, 0], initial: { route: { plan, offset: [0, 0] } },
+    definition: routeDefinition, position: [0, 0], hooks: Hooks.empty(), initial: { route: { plan, offset: [0, 0] } },
 } satisfies UnitInput<typeof routeDefinition>;
 const withUnusedInitial = initialize(battle, { ...routeInput, definition: bare.definition }).value;
 // @ts-expect-error a known spare Initial does not create the associated capability.
@@ -132,8 +132,8 @@ for (const owner of candidates.filter(skills.hasSkill).filter(skills.hasSp)) {
 }
 // @ts-expect-error selecting Skill alone does not prove that it has SP.
 skills.resolveRecoverySpeed(battle, armed);
-const actionRestriction = actions.setRestriction({ id: 'ready', value: { allows: () => true } });
-const combined = compose(setAttackContribution({ id: 'bonus', value: [] }), actionRestriction);
+const actionRestriction = actions.setRestriction({ id: 'ready', group: null, value: { allows: () => true } });
+const combined = compose(setAttackContribution({ id: 'bonus', group: null, value: [] }), actionRestriction);
 combined(armed).next satisfies Armed;
 update(battle, ref(armed), combined);
 declare const offenseOnly: Ref<Unit & Offense>;
@@ -197,7 +197,7 @@ if (activated.value !== null) {
     active.state.remaining satisfies number;
     skillRef.get(activated.state)!.state.completed satisfies number;
     // @ts-expect-error an Activation Ref identifies one round rather than the persistent Skill.
-    skills.activate(activated.state, activated.value);
+    skills.activate(activated.state, activated.value, null);
 }
 // @ts-expect-error this call must specify both the gate and the payment.
 skills.activate(battle, skillRef, { requirement: 0 });
@@ -211,6 +211,7 @@ const attackInput = {
         const hits = self.execution?.state.data.hits ?? 0;
         return { type: 'FIXED', windupTicks: self.state.uses + hits, recoveryTicks: 0 };
     },
+    followUps: [],
     targetGroups: [{ id: 'primary', select: state => ({ state, value: [] }), operations: [] }],
 } satisfies StatefulDefinition<{ uses: number }, { hits: number }, object>;
 attack(attackInput);
@@ -219,7 +220,7 @@ attack({ ...attackInput, applyWay: 'RANGED' });
 // @ts-expect-error a custom output must independently declare its applyWay.
 attack({ ...attackInput, output: (state: State) => state });
 // @ts-expect-error a synchronous cooldown Change accepts static contribution values.
-actions.setSpeedContribution({ id: 'dynamic-speed', value: () => [] });
+actions.setSpeedContribution({ id: 'dynamic-speed', group: null, value: () => [] });
 declare const recoveryOnly: skills.RecoveryRestriction;
 // @ts-expect-error a recovery predicate cannot serve as an activation exemption.
 ({ ...skill.activation!, ignoreRestrictions: [recoveryOnly] }) satisfies NonNullable<typeof skill.activation>;
@@ -280,13 +281,13 @@ projectiles.remove(battle, projectiles.ref(ordinaryProjectile.value), 'ELIMINATE
 // Hook keys preserve both the callback contract and its required unit.
 const outputKey = key<Hook<{ amount: number }, number>>('output');
 const registered = Hooks.empty().set(outputKey, {
-    id: 'output', invoke: (state, context, current) => ({ state, value: current + context.amount }),
+    id: 'output', priority: 0, invoke: (state, context, current) => ({ state, value: current + context.amount }),
 });
 registered.get(outputKey)[0]!.invoke(battle, { amount: 1 }, 0) satisfies { state: State; value: number };
 // @ts-expect-error the registration cannot widen the key's callback payload.
-Hooks.empty().set(outputKey, { id: 'wrong', invoke: (state, context: { text: string }, current) => ({ state, value: current }) });
+Hooks.empty().set(outputKey, { id: 'wrong', priority: 0, invoke: (state, context: { text: string }, current) => ({ state, value: current }) });
 const guardHealth = setHook(vitality.damageCommitting, {
-    id: 'keep-alive',
+    id: 'keep-alive', priority: 0,
     invoke(state, _context, health) {
         return { state, value: { ...health, hp: Math.max(1, health.hp) } };
     },
@@ -294,25 +295,25 @@ const guardHealth = setHook(vitality.damageCommitting, {
 // @ts-expect-error the key's owning capability remains required through Change.
 update(battle, ref(bare), guardHealth);
 // @ts-expect-error the post-commit key only notifies, so it cannot replace committed health.
-Hooks.empty().set(vitality.damageCommitted, { id: 'rewrite', invoke: state => ({ state, value: { hp: 1, minusHp: 0 } }) });
+Hooks.empty().set(vitality.damageCommitted, { id: 'rewrite', priority: 0, invoke: state => ({ state, value: { hp: 1, minusHp: 0 } }) });
 declare const damageRestriction: elemental.DamageRestriction;
 // @ts-expect-error a restriction from the damage context cannot be installed in the healing context.
-elemental.setRestriction('healingRestrictions', { id: 'wrong-context', value: damageRestriction });
+elemental.setRestriction('healingRestrictions', { id: 'wrong-context', group: null, value: damageRestriction });
 
 // Resource phases cannot skip the request facts or undo a one-way transition.
 const damage = resource.hp.damage;
 const receiving = Hooks.empty().set(damage.receiving, {
-    id: 'evade', invoke: (state, context, current) => ({ state, value: damage.cancel(current, 'MISS', context.forbidden) }),
+    id: 'evade', priority: 0, invoke: (state, context, current) => ({ state, value: damage.cancel(current, 'MISS', context.forbidden) }),
 });
 declare const receivingContext: resource.hp.damage.ReceivingContext;
 declare const cancelled: resource.hp.damage.Pending<'MISS', 'CANCELLED'>;
 receiving.get(damage.receiving)[0]!.invoke(battle, receivingContext, cancelled).value.reason satisfies 'MISS';
 // @ts-expect-error a later receiver cannot restore a fixed value to NORMAL.
-Hooks.empty().set(damage.beforeReceive, { id: 'unfix', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
+Hooks.empty().set(damage.beforeReceive, { id: 'unfix', priority: 0, invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
 // @ts-expect-error a later receiver cannot restore an already cancelled hit, even to FIXED.
-Hooks.empty().set(damage.receiving, { id: 'revive', invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
+Hooks.empty().set(damage.receiving, { id: 'revive', priority: 0, invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
 // @ts-expect-error a later receiver cannot replace an established cancellation reason.
-Hooks.empty().set(damage.receiving, { id: 'rewrite', invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
+Hooks.empty().set(damage.receiving, { id: 'rewrite', priority: 0, invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
 // @ts-expect-error the sender must explicitly supply this settlement's cancellation permissions.
 damage.cancel(cancelled, 'BLOCKED');
 // @ts-expect-error an HP dodge reason is outside EP's cancellation protocol.
@@ -402,7 +403,7 @@ const named: effects.Definition<{ name: string }, null> = {
 const startup = {
     ...baseInput,
     deployment: {
-        definition: { dp: { initial: 0, min: 0, max: 99, recoveryInterval: null }, slot: { limit: null } },
+        definition: { costCeiling: 99, dp: { initial: 0, min: 0, max: 99, recoveryInterval: null }, slot: { limit: null } },
         cards: [countInput, { definition: nameCard, unitDefinition: cardUnit }],
     },
 } as const;

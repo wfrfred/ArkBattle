@@ -63,7 +63,12 @@ export function createSpDrain(parameters: SpDrainParameters): Definition {
         onTick: (battle, self) =>
             advance(battle, self, (current, host, reference) => {
                 if (hasSkill(host)) {
-                    current = modify(current, units.ref(host), -parameters.spDrainPerSecond).state;
+                    current = modify(
+                        current,
+                        units.ref(host),
+                        -parameters.spDrainPerSecond,
+                        false,
+                    ).state;
                 }
 
                 const unit = availableHost(current, reference);
@@ -94,6 +99,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                       units.ref(unit),
                       setAttackContribution({
                           id: `@effect/${self.id}/attack`,
+                          group: null,
                           value: [
                               modifier.create({
                                   finalScaler: 1 - parameters.attackReductionRatio,
@@ -139,6 +145,7 @@ export function createAttackReduction(parameters: AttackReductionParameters): De
                         units.ref(unit),
                         setAttackContribution({
                             id: `@effect/${self.id}/attack`,
+                            group: null,
                             value: [modifier.create({ finalScaler: scaler })],
                         }),
                     );

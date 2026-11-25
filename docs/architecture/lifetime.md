@@ -16,15 +16,15 @@ B 登记 A 的 Ref 就建立 B → A。一个节点可依赖多个目标，也�
 
 ## 静态析构适配
 
-Lifetime 配置提供 `end.prepare`、`end.finalize` 和可选的 `end.dependencyEnd`。`end(battle, reference, payload)` 从 Ref 的具体 `Config<T, E>` 约束结束输入。首次有效结束请求使用 `ref.get(battle)` 取得 `initial`，并固定当时接受的 `end`。通用调度在回调派发边界恢复实例始终持有的 Config 配对。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。需要清理过程产生的新事实时，回调使用 Ref 读取最新版本。
+Lifetime 配置提供 `end.prepare`、`end.finalize` 和必填的 `end.dependencyEnd: E | null`。`end(battle, reference, payload)` 从 Ref 的具体 `Config<T, E>` 约束结束输入。首次有效结束请求使用 `ref.get(battle)` 取得 `initial`，并固定当时接受的 `end`。通用调度在回调派发边界恢复实例始终持有的 Config 配对。领域的结束回调取得 `battle`、`ref`、`initial` 和 `end`。需要清理过程产生的新事实时，回调使用 Ref 读取最新版本。
 
-依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入。Action Execution 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 可以作为依赖目标，两者当前只接受显式的结束请求。Card 使用 `Config<Card, never>`，登记后可以作为依赖目标，静态类型禁止请求结束它。
+依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入；null 表示不允许成为依赖者。Action Execution 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 可以作为依赖目标，两者当前只接受显式的结束请求。Card 使用 `Config<Card, never>`，登记后可以作为依赖目标，静态类型禁止请求结束它。
 
 Unit 以 `End` 请求结束。Lifetime 固定 `initial` 与 `End`，Unit 据此为 removing／removed 构造 `Departure`。DEATH 的 killer 来自首次请求。注销时从最新 Unit 取 removed 候选与优先级，`UNIT_REMOVED` 也记录注销前的最新 Unit。离场 Hook 的 `Departure.unit` 始终是开始结束时的历史快照。 [死亡归属与击杀响应](resource.md#生命状态通知与离场)
 
 ## 状态归属与关系权威
 
-`BattleState.lifetime` 保存一张由 `nodes` 表示的 DAG、延后队列 `deferred` 和队列执行状态 `flushing`。节点保存直接依赖的 Ref，以及结束期间的 `ending` 数据。实例身份由 Map 的键表达，配置与实例数据仍存放在所属领域。Prepare 和 Finalize 都使用首次请求时的 `initial.config`。
+`BattleState.lifetime` 保存一张由 `nodes` 表示的 DAG、延后队列 `deferred` 和队列执行状态 `flushing`。节点保存直接依赖的 Ref，以及必填的 `ending` 字段（尚未结束时为 null）。实例身份由 Map 的键表达，配置与实例数据仍存放在所属领域。Prepare 和 Finalize 都使用首次请求时的 `initial.config`。
 
 领域在实例写入存储后、执行入场业务前通过 `register(battle, reference, scopes)` 登记节点，即使该节点没有依赖。Lifetime 在节点的整个 Finalize 返回后移除节点及其依赖边。领域存储已注销、通知仍在执行时，图中的节点依旧有效地约束上游的收尾顺序。
 

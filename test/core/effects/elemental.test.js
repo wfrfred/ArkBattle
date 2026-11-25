@@ -40,15 +40,15 @@ function definition(receiver = 'CHARACTER', overrides = {}) {
   return { hooks: Hooks.empty(), id: `element-${receiver}`,
     vitality: defineVitality(100000, { defense: defineAttribute(500), resistance: defineAttribute(50, 0, 100) }),
     offense: { attack: defineAttribute(100) },
-    elemental: createElementalDefinition({ receiver }), ...overrides };
+    elemental: createElementalDefinition({ boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1, receiver }), ...overrides };
 }
 
 function receiverBattle(receiver = 'CHARACTER', overrides = {}) {
-  return createBattle([{ position: [1, 0], definition: definition(receiver, overrides) }]);
+  return createBattle([{ hooks: Hooks.empty(), initial: {}, position: [1, 0], definition: definition(receiver, overrides) }]);
 }
 function element(work, type, tick = work.tick, power = 1000) {
   const request = { target: unitRef(getUnit(work, 0)), source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type, power } };
-  return epDamage.applyDamage(request, epDamage.calculateDamage({ ...work, tick }, request));
+  return epDamage.applyDamage(request, epDamage.calculateDamage({ ...work, tick }, request, null), null);
 }
 function advance(work, tick) {
   for (let next = work.tick + 1; next <= tick; next++) {
@@ -88,7 +88,7 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
   let work = receiverBattle('CHARACTER', { skill: { definition: skill } });
   work = element(work, 'NECROSIS').state;
   assert.equal(getUnit(work, 0).vitality.health.hp, 100000);
-  assert.equal(activateSkill(work, skillRef(getUnit(work, 0))).value, null);
+  assert.equal(activateSkill(work, skillRef(getUnit(work, 0)), null).value, null);
   work = recover(work, unitRef(getUnit(work, 0)), 'TIME', 3).state;
   assert.equal(getUnit(work, 0).skill.sp.value, 20);
   work = advance(work, 30);
@@ -101,7 +101,7 @@ test('elemental execution: character necrosis settles fifteen magical pulses, dr
   assert.equal(getUnit(work, 0).skill.sp.value, 5);
   work = recover(work, unitRef(getUnit(work, 0)), 'TIME', 3).state;
   assert.equal(getUnit(work, 0).skill.sp.value, 8);
-  assert.notEqual(activateSkill(work, skillRef(getUnit(work, 0))).value, null);
+  assert.notEqual(activateSkill(work, skillRef(getUnit(work, 0)), null).value, null);
 });
 
 test('elemental execution: necrosis shares its recovery budget with periodic damage and fading attack loss', () => {
@@ -112,6 +112,7 @@ test('elemental execution: necrosis shares its recovery budget with periodic dam
   assert.equal(getUnit(work, 0).vitality.health.hp, 96000);
 
   const speed = value => setContribution('burstRecoverySpeed', {
+    group: null,
     id: 'burst-speed', value: [modifier({ finalScaler: value })],
   });
   work = applyUnitChanges(work, unitRef(getUnit(work, 0)), speed(0));
@@ -148,9 +149,9 @@ function battle(receiver, type) {
     hitbox: { shape: hit }, action: actionCapability(attack),
   });
   return createBattle([
-    { definition: actor('ALLY', casterAttack), position: [0, 0] },
-    { definition: { ...actor('ENEMY', action()),
-      elemental: createElementalDefinition({ receiver }),
+    { hooks: Hooks.empty(), initial: {}, definition: actor('ALLY', casterAttack), position: [0, 0] },
+    { hooks: Hooks.empty(), initial: {}, definition: { ...actor('ENEMY', action()),
+      elemental: createElementalDefinition({ boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1, receiver }),
     }, position: [1, 0] },
   ], { rows: 1, columns: 8 });
 }
@@ -171,7 +172,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
   assert.equal(events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1).length, 1);
 
   const request = { target: unitRef(victim(runtime)), source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: 'NEURAL', power: 1000 } };
-  runtime = epDamage.applyDamage(request, epDamage.calculateDamage(runtime, request)).state;
+  runtime = epDamage.applyDamage(request, epDamage.calculateDamage(runtime, request, null), null).state;
   while (runtime.tick <= 365) events.push(...(runtime = stepBattle(runtime, [])).events);
   const cancelled = events.filter(event => event.type === 'ACTION_CANCELLED' && event.sourceUnitId === 1);
   assert.equal(cancelled.length, 4);
@@ -182,6 +183,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
 
 test('mania counts each released action once and each skill activation, caps self-damage and keeps its independent character program after recovery cancellation', () => {
   const attack = createAttack({
+    followUps: [],
     id: 'mania-attack', triggerBindingId: 'primary', period: { type: 'ATTACK_SPEED' }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
     targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
       operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }],
@@ -193,15 +195,16 @@ test('mania counts each released action once and each skill activation, caps sel
     sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
   });
   let work = createBattle([
-    { position: [0, 0], definition: definition('CHARACTER', {
+    { hooks: Hooks.empty(), initial: {}, position: [0, 0], definition: definition('CHARACTER', {
       classification: { type: "DEVICE", side: 'ALLY', filterTags: [], groupTags: [] }, action: { ...actionCapability(attack), interval: defineAttribute(30) },
       skill: { definition: skill },
     }) },
-    { position: [1, 0], definition: {
+    { hooks: Hooks.empty(), initial: {}, position: [1, 0], definition: {
       id: 'blocked-output', classification: { type: "DEVICE", side: 'ENEMY', filterTags: [], groupTags: [] },
       vitality: defineVitality(100000),
       targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] }, hitbox: { shape: hit },
       hooks: Hooks.empty().set(hpDamage.receiving, {
+        priority: 0,
         id: 'block-output',
         invoke: (state, context, pending) => ({
           state, value: hpDamage.cancel(pending, 'BLOCKED', context.forbidden),
@@ -225,7 +228,7 @@ test('mania counts each released action once and each skill activation, caps sel
   assert.equal(getUnit(work, 1).vitality.health.hp, 100000);
   assert.equal(getUnit(work, 0).skill.sp.value, 1);
 
-  const activated = activateSkill(work, skillRef(getUnit(work, 0)));
+  const activated = activateSkill(work, skillRef(getUnit(work, 0)), null);
   assert.notEqual(activated.value, null);
   work = activated.state;
   work = elemental.cancel(work, burst);
@@ -248,15 +251,15 @@ test('mania counts successful skill activations on a host without Action', () =>
   let work = element(receiverBattle('CHARACTER', {
     skill: { definition: skill },
   }), 'MANIA').state;
-  const first = activateSkill(work, skillRef(getUnit(work, 0)));
+  const first = activateSkill(work, skillRef(getUnit(work, 0)), null);
   assert.notEqual(first.value, null);
-  const rejected = activateSkill(first.state, skillRef(getUnit(first.state, 0)));
+  const rejected = activateSkill(first.state, skillRef(getUnit(first.state, 0)), null);
   assert.equal(rejected.value, null);
   work = advance(rejected.state, 30);
   assert.equal(getUnit(work, 0).vitality.health.hp, 99850);
 
   work = finishSkill(work, first.value);
-  const second = activateSkill(work, skillRef(getUnit(work, 0)));
+  const second = activateSkill(work, skillRef(getUnit(work, 0)), null);
   assert.notEqual(second.value, null);
   work = advance(second.state, 60);
   assert.equal(getUnit(work, 0).vitality.health.hp, 99650);
@@ -281,6 +284,7 @@ test('enemy mania ramps on its own Tick clock, stops with recovery and includes 
   assert.deepEqual(damage(work).map(event => [event.amount, event.damageType]), [[290, 'ELEMENTAL']]);
   const ep = getUnit(work, 0).elemental.ep;
   const recoverySpeed = value => setContribution('burstRecoverySpeed', {
+    group: null,
     id: 'mania-clock', value: [modifier({ finalScaler: value })],
   });
   work = applyUnitChanges(work, unitRef(getUnit(work, 0)), recoverySpeed(0));

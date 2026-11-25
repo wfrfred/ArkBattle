@@ -23,13 +23,13 @@ import {
 
 export interface ApplyOptions extends Options {
     readonly ignore?: (restriction: Restriction) => boolean;
-    readonly forbidden?: ReadonlySet<Reason>;
+    readonly forbidden: ReadonlySet<Reason>;
 }
 
 export function applyDamage(
     request: Request,
     calculated: Result<Calculated | undefined>,
-    options?: ApplyOptions,
+    options: ApplyOptions | null,
 ): Result<Outcome> {
     let battle = calculated.state;
     const calculation = calculated.value;
@@ -159,7 +159,7 @@ function complete(
     request: Request,
     calculated: Calculated | undefined,
     outcome: Outcome,
-    options?: Options,
+    options: Options | null,
 ): Result<Outcome> {
     if (outcome.type === "CANCELLED" && calculated !== undefined) {
         battle = appendEvents(battle, [

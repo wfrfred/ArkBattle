@@ -33,6 +33,7 @@ export const unbalanceImmunity: Definition<object, Unit & shiftable.Shiftable> =
             self.ref.host,
             shiftable.setRestriction({
                 id: `@effect/${self.id}/unbalance-immunity`,
+                group: null,
                 value: forceImmunity,
             }),
         );
@@ -57,7 +58,7 @@ export const invincible: Definition<object, Unit & targetable.Targetable> = {
             state,
             self.ref.host,
             compose(
-                targetable.setRestriction({ id, value: invincibleRestriction }),
+                targetable.setRestriction({ id, value: invincibleRestriction, group: null }),
                 receptionRestrictions(id, true),
             ),
         );
@@ -87,13 +88,14 @@ function receptionRestrictions(id: string, enabled: boolean): Change<Unit> {
                 ? elemental.setRestriction("damageRestrictions", {
                       id,
                       value: invincibleEpDamageRestriction,
+                      group: null,
                   })
                 : elemental.removeRestriction("damageRestrictions", id),
         ),
         optional(
             vitality.hasVitality,
             enabled
-                ? vitality.setRestriction({ id, value: invincibleHpDamageRestriction })
+                ? vitality.setRestriction({ id, value: invincibleHpDamageRestriction, group: null })
                 : vitality.removeRestriction(id),
         ),
     );

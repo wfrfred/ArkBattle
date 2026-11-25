@@ -293,7 +293,7 @@ function blackboard(value: unknown, name: string): readonly ArknightsBlackboardE
         return null;
     }
 
-    return parseBlackboard(value, name);
+    return parseBlackboard(value, name, { allowEmptyKeys: false, allowMissingValueStr: false });
 }
 
 function options(value: unknown): ArknightsLevelOptions {
@@ -703,7 +703,7 @@ export function parseLevelContent(value: unknown): ArknightsLevelContent {
 
 export function createLevelDefinition(
     content: ArknightsLevelContent,
-    mapOptions: ArknightsMapOptions = {},
+    mapOptions: ArknightsMapOptions,
 ): ArknightsLevelDefinition {
     const { mapData, ...level } = content;
 
@@ -716,7 +716,7 @@ export function createLevelDefinition(
 
 export function parseLevelDefinition(
     value: unknown,
-    mapOptions: ArknightsMapOptions = {},
+    mapOptions: ArknightsMapOptions,
 ): ArknightsLevelDefinition {
     return createLevelDefinition(parseLevelContent(value), mapOptions);
 }

@@ -36,11 +36,11 @@ Capability 装配时调用 `SkillDefinition.initialize(battle)`，建立私有�
 
 SP 的容量 capacity 与 Activation Definition 的发动门槛 requirement、支付额 cost 分开；requirement 与 cost 均须显式配置。发动须同时满足门槛与足额支付，特殊付款由具体程序使用资源操作完成。
 
-`activate(battle, reference, parameters?)` 接收 Skill Ref。Parameters 包含必填的 requirement 与 cost。未提供时使用 Definition 的整组静态值；提供时只用于本次资格检查和实际支付，不修改 Definition、SP 配置或后续普通启动。Fever 等内容可以显式传入 `{ requirement: 0, cost: 0 }`，其余启动限制和操作前提照常检查。
+`activate(battle, reference, parameters)` 接收 Skill Ref。Parameters 包含必填的 requirement 与 cost。传入 null 时使用 Definition 的整组静态值；提供时只用于本次资格检查和实际支付，不修改 Definition、SP 配置或后续普通启动。Fever 等内容可以显式传入 `{ requirement: 0, cost: 0 }`，其余启动限制和操作前提照常检查。
 
 recoverySpeed 与 recoveryMultiplier 均须显式提供 [Attribute](attribute.md) Definition，默认下限0。每次查询按当前贡献和范围取得连续值，再相乘得到自然回复速率。贡献或范围 Change 只发布属性；计时器在下一次 SP.advance 读取有效速率，不同步回复或重置余额。
 
-Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 检查来源与回复许可并限制到容量；pay 要求显式金额，足额支付或失败，不读取发动政策，也不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，forced 只绕过规定的回复限制。三者要求宿主 ACTIVE，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
+Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 要求显式 amount，null 表示使用来源的定义回复量（其他来源为 1）；检查来源与回复许可并限制到容量；pay 要求显式金额，足额支付或失败，不读取发动政策，也不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，调用方必须明确 forced，它只绕过规定的回复限制。三者要求宿主 ACTIVE，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
 
 TIME 配置只表示回复来源，周期由 `TICKS_PER_SECOND / 有效回复速率` 得到；速率非正时不计时。自然回复保留周期、余时和上次时刻：
 

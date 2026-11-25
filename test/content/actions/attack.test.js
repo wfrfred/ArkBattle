@@ -25,7 +25,7 @@ import { effectInitial } from "../../helpers/effect.js";
 function definition(groups, prepare = state => ({ state, value: {} })) {
     return createWithState({
         id: "random-attack", period: { type: "FIXED", ticks: 10 }, timing: { type: "FIXED", windupTicks: 3, recoveryTicks: 0 },
-        triggerBindingId: "primary", targetGroups: groups,
+        triggerBindingId: "primary", targetGroups: groups, followUps: [],
         initialize: state => ({ state, value: {} }), prepare,
     });
 }
@@ -50,7 +50,7 @@ function group(id, count = 1, accepts = () => true) {
 test("an attack turns once at its started program, before output, without turning again on release", () => {
     const program = create({
         id: "facing-attack", period: { type: "FIXED", ticks: 10 }, timing: { type: "FIXED", windupTicks: 2, recoveryTicks: 1 },
-        triggerBindingId: "primary", onStart: faceTarget,
+        triggerBindingId: "primary", onStart: faceTarget, followUps: [],
         targetGroups: [{
             id: "primary", operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
             select: state => ({ state, value: [units.ref(get(state, 1))] }),
@@ -59,10 +59,10 @@ test("an attack turns once at its started program, before output, without turnin
     let state = createBattle([
         { definition: { id: "attacker", hooks: Hooks.empty(), facing: { restrictions: [] },
             action: actionCapability(program),
-        }, position: [3, 1], initial: { facing: { direction: "RIGHT" } } },
+        }, position: [3, 1], hooks: Hooks.empty(), initial: { facing: { direction: "RIGHT" } } },
         { definition: { id: "target", hooks: Hooks.empty(),
             vitality: vitality(100),
-        }, position: [1, 1] },
+        }, position: [1, 1], hooks: Hooks.empty(), initial: {} },
     ]);
     const host = units.ref(get(state, 0));
     const started = actions.start(state, actions.ref(host.get(state).action.actions.get(program)));
@@ -73,7 +73,7 @@ test("an attack turns once at its started program, before output, without turnin
     assert.equal(get(state, 1).vitality.health.hp, 100);
 
     state = update({ ...state, tick: 1 }, host, setSpeedContribution({
-        id: "haste", value: [modifier({ addition: 100 })],
+        id: "haste", group: null, value: [modifier({ addition: 100 })],
     }));
     state = facing.turn(state, host, "RIGHT");
     state = actions.advance({ ...state, tick: 1 }, started.value);
@@ -152,9 +152,9 @@ test("bound healing keeps its receivers when a later selection restriction would
         { definition: {
             ...patient, id: "medic",
             action: actionCapability(program),
-        }, position: [1, 1] },
-        { definition: patient, position: [2, 1] },
-        { definition: patient, position: [3, 1] },
+        }, position: [1, 1], hooks: Hooks.empty(), initial: {} },
+        { definition: patient, position: [2, 1], hooks: Hooks.empty(), initial: {} },
+        { definition: patient, position: [3, 1], hooks: Hooks.empty(), initial: {} },
     ]);
     assert.equal(actions.getApplyWay(get(state, 0)), "NONE");
     assert.equal(actions.getApplyWay(get(state, 1)), "NONE");
@@ -163,7 +163,7 @@ test("bound healing keeps its receivers when a later selection restriction would
             source: null, target: units.ref(get(state, id)),
             attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
         };
-        state = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request)).state;
+        state = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request, null), null).state;
     }
     const source = units.ref(get(state, 0));
     [selected] = recipients(state, source).value;
@@ -179,7 +179,7 @@ test("bound healing keeps its receivers when a later selection restriction would
 function timedProgram(timing) {
     return create({
         id: "timed-attack", period: { type: "ATTACK_SPEED" }, timing,
-        triggerBindingId: "primary", targetGroups: [group("primary")],
+        triggerBindingId: "primary", targetGroups: [group("primary")], followUps: [],
     });
 }
 
@@ -228,7 +228,7 @@ test("speed changes update cooldown immediately while entered attack waits remai
     }));
     let state = runTo(started.state, started.execution, 5);
     state = update(state, started.source, setSpeedContribution({
-        id: "haste", value: [modifier({ addition: 100 })],
+        id: "haste", group: null, value: [modifier({ addition: 100 })],
     }));
     assert.equal(started.reference.get(state).cooldown.readyAtTick, 17.5);
     state = runTo(state, started.execution, 11);
@@ -263,7 +263,7 @@ test("Begin retains its entered wait and cached budget while the later main segm
         }));
         let state = runTo(started.state, started.execution, 5);
         state = update(state, started.source, setSpeedContribution({
-            id: "changed-speed", value: [modifier({ addition: speedChange })],
+            id: "changed-speed", group: null, value: [modifier({ addition: speedChange })],
         }));
         state = runTo(state, started.execution, release - 1);
         assert.equal(get(state, 1).vitality.health.hp, 100);

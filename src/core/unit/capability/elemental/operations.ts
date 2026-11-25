@@ -46,7 +46,7 @@ export function receiveDamage(
     battle: BattleState,
     context: ReceivingContext,
     pending: damage.Pending,
-    options?: hooks.Options,
+    options: hooks.Options | null,
 ): Result<damage.Pending> {
     const result = hooks.dispatch<ReceivingContext, damage.Pending>(battle, context, pending, {
         candidates: (current) =>

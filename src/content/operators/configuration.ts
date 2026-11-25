@@ -3,7 +3,7 @@ export interface Configuration {
     readonly level: number;
     readonly potential: 1 | 2 | 3 | 4 | 5 | 6;
     readonly trust: number;
-    readonly module?: { readonly id: string; readonly level: 1 | 2 | 3 };
+    readonly module: { readonly id: string; readonly level: 1 | 2 | 3 } | null;
 }
 
 export interface SkillSelection {

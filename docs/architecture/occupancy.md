@@ -8,7 +8,7 @@ OCCUPANT／SUPPORT 两槽可同格共存，同槽排他。登记格与身体位�
 
 ## 模型与构造
 
-静态 Definition 选择固定 Slot，SUPPORT 可提供乘员加入／移除程序。声明能力必须给 Initial.tile，方向可省略为 null；State 始终保留非空 tile，不占格的 Unit 不选择该能力。
+静态 Definition 选择固定 Slot，SUPPORT 可提供乘员加入／移除程序。声明能力必须给 Initial.tile 与 Initial.direction，无方向时传 null；State 始终保留非空 tile，不占格的 Unit 不选择该能力。
 
 Catalog 先 Occupancy 后 Deployable，能力自行登记 entered／removed，实际顺序遵守 [Hook](hook.md)，不增加专用能力阶段。setDirection 只改方向，不移动地块或通知配对；方向相关几何通过 hasDirection 取得有效值。
 

@@ -17,7 +17,7 @@ import { get } from "../../helpers/battle.js";
 const fixture = (name) => JSON.parse(readFileSync(new URL(`../../fixtures/arknights/${name}.json`, import.meta.url), "utf8"));
 
 function source() {
-    const level = parseLevelDefinition(fixture("level_act1autochess_01"));
+    const level = parseLevelDefinition(fixture("level_act1autochess_01"), { mire: null, deepsea: null, tileDeploymentPrefabs: [] });
     const original = level.waves[0].fragments[0].actions[0];
     const action = (key, group, weight, count = 1) => ({
         ...original, key, randomSpawnGroupKey: group, weight, count,
@@ -46,7 +46,7 @@ function source() {
 
 test("native routes compile patrol loops and retain wait anchors before birth", () => {
     const raw = fixture("level_act1autochess_h07_02");
-    const level = parseLevelDefinition(raw);
+    const level = parseLevelDefinition(raw, { mire: null, deepsea: null, tileDeploymentPrefabs: [] });
     assert.deepEqual(level.routes[6].plan.checkpoints.map(({ type }) => type), ["MOVE", "MOVE", "MOVE", "GOTO"]);
     assert.equal(level.routes[6].plan.checkpoints[3].index, 0);
 
@@ -62,8 +62,8 @@ test("native routes compile patrol loops and retain wait anchors before birth", 
 
 test("level push multiplier retains the configured value, including zero", () => {
     const raw = fixture("level_act1autochess_h07_02");
-    assert.equal(parseLevelDefinition(raw).pushMultiplier, 0.5);
-    const level = parseLevelDefinition({ ...raw, options: { ...raw.options, moveMultiplier: 0 } });
+    assert.equal(parseLevelDefinition(raw, { mire: null, deepsea: null, tileDeploymentPrefabs: [] }).pushMultiplier, 0.5);
+    const level = parseLevelDefinition({ ...raw, options: { ...raw.options, moveMultiplier: 0 } }, { mire: null, deepsea: null, tileDeploymentPrefabs: [] });
     assert.equal(level.pushMultiplier, 0);
 });
 
@@ -132,7 +132,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         [action.key]: fixture(`prefab_${action.key}`),
         [enemy]: fixture(`prefab_${enemy}`),
     };
-    const level = parseLevelDefinition(raw);
+    const level = parseLevelDefinition(raw, { mire: null, deepsea: null, tileDeploymentPrefabs: [] });
     const definition = {
         id: "scheduled-unit", hooks: Hooks.empty(),
         route: { alwaysCheckCurrentPoint: true },
@@ -154,7 +154,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     assert.deepEqual(compiled.schedule.waves[0].fragments[0].entries.map(({ wait }) => wait), ["NONE", "WAVE"]);
     let state = step(initialize({
         map: level.map, schedule: compiled.schedule, initialUnits: [], initialEffects: [],
-        routeMoveMultiplier: 1, pushMultiplier: level.pushMultiplier, rngState: compiled.rngState,
+        routeMoveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, rngState: compiled.rngState,
     }), []);
     const waiting = ref(get(state, 1));
     assert.deepEqual(state.schedule.waiting, { wave: [waiting], final: [waiting] });

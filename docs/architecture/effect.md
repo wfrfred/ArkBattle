@@ -77,11 +77,11 @@ decreaseStack 是完整减层操作：剩余层数先发布再通知，耗尽正
 
 ### 来源分组
 
-组身份由宿主 Ref、`group.id` 与本次采样的 `partition` 共同决定；所有无宿主实例共用 null 宿主空间。Group 可提供 `partition(battle, source: Ref<Unit> | null): Ref<Lifetime> | null`。Effect 在安装时调用一次并保存结果，实例的 `partition` 字段必填，类型为 `Ref<Lifetime> | null | undefined`。未提供分区函数时保存 undefined。
+组身份由宿主 Ref、`group.id` 与本次采样的 `partition` 共同决定；所有无宿主实例共用 null 宿主空间。Group 可提供 `partition(battle, source: Ref<Unit> | null): Ref<Lifetime> | null`。Effect 在安装时调用一次并保存结果，实例的 `partition` 字段必填，类型为 `Ref<Lifetime> | null | "SHARED"`。未提供分区函数时保存 "SHARED"。
 
 | 分区值 | 同宿主同 ID 下的含义 |
 | --- | --- |
-| undefined | 未配置分区，共享组。 |
+| SHARED | 未配置分区，共享组。 |
 | null | 显式无来源分区。 |
 | Lifetime Ref | 按 Ref 身份划分不同组。 |
 

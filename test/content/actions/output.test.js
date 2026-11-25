@@ -36,7 +36,7 @@ test("source attack samples current Offense separately for each target after nes
                 assert.equal(request.applyWay, "MELEE");
                 return {
                     state: applyUnitChanges(state, sourceRef, setAttackContribution({
-                            id: "reaction", value: [modifier({ addition: 15 })],
+                            id: "reaction", group: null, value: [modifier({ addition: 15 })],
                         })),
                     value: undefined,
                 };
@@ -61,7 +61,7 @@ test("fixed damage and healing do not require an Offense capability", () => {
         attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: { type: "TRUE", attack: { power: 50, multiplier: 1, addition: 0 } },
     };
     const initial = hpDamage.applyDamage(wound,
-        hpDamage.calculateDamage(battle(source, target), wound)).state;
+        hpDamage.calculateDamage(battle(source, target), wound, null), null).state;
     const result = actions.start(initial, actions.ref(sourceRef.get(initial).action.actions.get(definition)));
     const advanced = advance(result.state, result.value);
     assert.equal(sourceRef.get(advanced).vitality.health.hp, 55);

@@ -30,6 +30,7 @@ export function createMelee(timing: Timing): Attack {
         triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
         timing,
+        followUps: [],
         targetGroups: [
             {
                 id: "primary",
@@ -77,6 +78,7 @@ export function createRanged(rangeRadius: number, timing: Timing, projectile: Pr
         triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
         timing,
+        followUps: [],
         targetGroups: [
             {
                 id: "primary",

@@ -34,13 +34,13 @@ export function executionRefs(self: Unit & ActionCapability): readonly Execution
 export function hasExecution(
     battle: BattleState,
     source: Ref<Unit & ActionCapability>,
-    definitionId?: DefinitionId,
+    definitionId: DefinitionId | null,
 ): boolean {
     const unit = source.get(battle);
 
     return (
         unit !== undefined &&
-        (definitionId === undefined
+        (definitionId === null
             ? unit.action.actions.values().some((self) => self.execution !== null)
             : unit.action.actions.get(definitionId)?.execution != null)
     );

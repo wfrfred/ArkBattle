@@ -10,10 +10,10 @@ const tile = createTile({
     terrain: normal.create({}),
     initial: {
         elevation: "LOWLAND", placement: "ALL", passability: "ALL",
-        walkCost: 1, allowsBlocking: true, siteCondition: normalSite,
+        walkCost: 1, allowsBlocking: true, siteCondition: normalSite, collision: null,
     },
 });
-const defaultMap = createMap(1, 32, tileEntries(Array(32).fill(tile)));
+const defaultMap = createMap(1, 32, tileEntries(Array(32).fill(tile)), [], []);
 
 export function fixtureBattlefieldState(units) {
     return units.reduce((field, unit) => addUnit(field, unit), create(defaultMap));

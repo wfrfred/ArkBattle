@@ -34,9 +34,8 @@ export interface Input<
     EffectStates extends readonly object[] = readonly object[],
     UnitDefinitions extends readonly (UnitDefinition & Partial<CapabilityDefinitions>)[] =
         readonly (UnitDefinition & Partial<CapabilityDefinitions>)[],
-> extends Omit<Definition, "pushMultiplier"> {
-    readonly pushMultiplier?: number;
-    readonly deployment?: DeploymentInput<CardStates>;
+> extends Definition {
+    readonly deployment: DeploymentInput<CardStates> | null;
     readonly map: Map;
     readonly schedule: ScheduleDefinition;
     readonly initialEffects: {

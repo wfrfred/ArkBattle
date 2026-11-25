@@ -31,7 +31,7 @@ export type DeploymentCommand<T extends Card<any> = Card> =
           readonly type: "DEPLOY_UNIT";
           readonly ref: Ref<T>;
           readonly tilePosition: TilePosition;
-          readonly direction?: Direction;
+          readonly direction: Direction | null;
       }
     | { readonly type: "RETREAT_UNIT"; readonly ref: Ref<Unit & Deployable> };
 
@@ -68,12 +68,13 @@ export function deploy<T extends Card<any>>(
             facing: { direction: request.direction === "LEFT" ? "LEFT" : "RIGHT" },
             occupancy: {
                 tile: request.tilePosition,
-                ...(request.direction === undefined ? {} : { direction: request.direction }),
+                direction: request.direction,
             },
         },
         hooks: Hooks.empty()
             .set(lifecycle.entered, {
                 id: "@deployment/enter",
+                priority: 0,
                 invoke: (state, unit) => ({
                     state: notifyDeployed(state, {
                         unit: unit as Unit & Deployable,

@@ -128,10 +128,10 @@ export function receive(
     battle: BattleState,
     unit: Host,
     next: Unbalance,
-    traction?: {
+    traction: {
         readonly reference: Ref<pull.Pull>;
         readonly scopes: readonly Ref<lifetimes.Lifetime>[];
-    },
+    } | null,
 ): BattleState {
     const { shiftable } = unit;
     const previous = shiftable.unbalance;
@@ -157,7 +157,7 @@ export function receive(
         battle = replace(battle, unit, next);
     }
 
-    if (traction !== undefined) {
+    if (traction !== null) {
         battle = register(battle, traction.reference, [reference, ...traction.scopes]);
     }
 
@@ -183,7 +183,7 @@ export function applyImpulse(
     const { mass } = unit.definition.shiftable.body;
     const velocity = Vec2.add(next.velocity, Vec2.scale(impulse, 1 / (mass * TICKS_PER_SECOND)));
 
-    return { state: receive(battle, unit, { ...next, velocity }), value: ref(next) };
+    return { state: receive(battle, unit, { ...next, velocity }, null), value: ref(next) };
 }
 
 export function active(

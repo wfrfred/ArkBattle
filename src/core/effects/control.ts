@@ -61,6 +61,7 @@ export const silence: Definition<object, Unit> = {
                 skill.setRestriction("activationRestrictions", {
                     id: `@effect/${self.id}/silence`,
                     value: silenceRestriction,
+                    group: null,
                 }),
             ),
         );
@@ -90,6 +91,7 @@ export const blockSpRecovery: Definition<object, Unit> = {
                 skill.setRestriction("recoveryRestrictions", {
                     id: `@effect/${self.id}/sp-recovery`,
                     value: spRecoveryRestriction,
+                    group: null,
                 }),
             ),
         );
@@ -107,7 +109,7 @@ export const blockSpRecovery: Definition<object, Unit> = {
 };
 
 function restrictions(id: string, enabled: boolean): Change<Unit> {
-    const entry = { id, value: stunRestriction };
+    const entry = { id, value: stunRestriction, group: null };
 
     return [
         optional(

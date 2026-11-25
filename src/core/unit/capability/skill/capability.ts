@@ -54,6 +54,7 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
         recoveryRestrictions: [
             {
                 id: "@skill/active-recovery",
+                group: null,
                 value: activeRecoveryRestriction,
             },
         ],

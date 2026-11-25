@@ -31,11 +31,19 @@ export interface State {
     readonly hooks: Hooks;
 }
 
-export function initialize(definition?: Definition): State {
+const emptyDefinition: Definition = {
+    costCeiling: 99,
+    dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
+    slot: { limit: null },
+};
+
+export function initialize(definition: Definition | null): State {
+    const config = definition ?? emptyDefinition;
+
     return {
-        deck: deck.initialize(definition),
-        dp: dp.initialize(definition?.dp),
-        slot: slot.initialize(definition?.slot),
+        deck: deck.initialize(config),
+        dp: dp.initialize(config.dp),
+        slot: slot.initialize(config.slot),
         history: [],
         hooks: Hooks.empty(),
     };

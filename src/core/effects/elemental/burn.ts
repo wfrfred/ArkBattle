@@ -38,6 +38,7 @@ function resistanceReduction(amount: number): EffectDefinition<object, Unit & Vi
                 self.ref.host,
                 setContribution("resistance", {
                     id: `@effect/${self.id}/resistance`,
+                    group: null,
                     value: [modifier.create({ addition: -amount })],
                 }),
             ),

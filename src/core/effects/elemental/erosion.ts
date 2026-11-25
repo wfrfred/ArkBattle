@@ -38,6 +38,7 @@ function reduction(amount: number): EffectDefinition<object, Unit & Vitality> {
                 self.ref.host,
                 setContribution("defense", {
                     id: `@effect/${self.id}/defense`,
+                    group: null,
                     value: [modifier.create({ addition: -amount })],
                 }),
             ),

@@ -33,7 +33,7 @@ export interface ContactState {
 interface Behaviour<P extends object> {
     readonly id: string;
     readonly intervalTicks: number;
-    readonly retainOnLeave?: boolean;
+    readonly retainOnLeave: boolean;
     readonly accepts: (unit: Unit) => boolean;
     readonly enter: (
         battle: BattleState,
@@ -49,13 +49,13 @@ function onGround(unit: Unit): boolean {
 
 function create<P extends object>(
     definition: TerrainDefinition<P>,
-    indices: readonly number[] | undefined,
+    indices: readonly number[] | null,
     behaviour: Behaviour<P>,
 ): EffectDefinition<ContactState, null> {
     return {
         id: behaviour.id,
         group: null,
-        initialize: () => ({ indices: indices ?? null, scanTick: 0, contacts: new Map() }),
+        initialize: () => ({ indices, scanTick: 0, contacts: new Map() }),
         onTick(battle, self) {
             if (battle.tick < self.state.scanTick) {
                 return battle;
@@ -79,7 +79,7 @@ function create<P extends object>(
             function setContact(
                 state: BattleState,
                 unitRef: Ref<Unit>,
-                contact?: Contact,
+                contact: Contact | null,
             ): BattleState {
                 const current = reference.get(state);
                 if (current === undefined) {
@@ -88,7 +88,7 @@ function create<P extends object>(
 
                 const contacts = new Map(current.state.contacts);
 
-                if (contact === undefined) {
+                if (contact === null) {
                     contacts.delete(unitRef);
                 } else {
                     contacts.set(unitRef, contact);
@@ -123,7 +123,7 @@ function create<P extends object>(
                     contact !== undefined &&
                     (current === undefined || indexOf(current) === undefined)
                 ) {
-                    battle = setContact(battle, unitRef);
+                    battle = setContact(battle, unitRef, null);
 
                     if (!behaviour.retainOnLeave && contact.effect !== null) {
                         battle = effects.remove(battle, contact.effect, "LEFT_TERRAIN");
@@ -164,7 +164,7 @@ function create<P extends object>(
                         continue;
                     }
 
-                    battle = setContact(battle, candidateRef);
+                    battle = setContact(battle, candidateRef, null);
 
                     if (!behaviour.retainOnLeave && previous.effect !== null) {
                         battle = effects.remove(battle, previous.effect, "TERRAIN_CHANGED");
@@ -227,7 +227,7 @@ function create<P extends object>(
 
 export function createTerrainEffect(
     definition: Pick<TerrainDefinition, "id">,
-    indices?: readonly number[],
+    indices: readonly number[] | null,
 ): EffectDefinition<ContactState, null> {
     if (definition === terrain.infection) {
         return create(terrain.infection, indices, {
@@ -248,6 +248,7 @@ export function createTerrainEffect(
         return create(terrain.mire, indices, {
             id: "terrain/mire",
             intervalTicks: 3,
+            retainOnLeave: false,
             accepts: onGround,
             enter: (battle, unit, params, scopes) =>
                 effects.install(battle, units.ref(unit), createMireEffect(params), {
@@ -262,6 +263,7 @@ export function createTerrainEffect(
         return create(terrain.deepsea, indices, {
             id: "terrain/deepsea",
             intervalTicks: 6,
+            retainOnLeave: false,
             accepts: (unit) =>
                 onGround(unit) &&
                 hasClassification(unit) &&
@@ -281,6 +283,7 @@ export function createTerrainEffect(
         return create(terrain.smog, indices, {
             id: "terrain/smog",
             intervalTicks: 1,
+            retainOnLeave: false,
             accepts: (unit) =>
                 hasClassification(unit) &&
                 unit.definition.classification.side === "ALLY" &&
@@ -301,6 +304,7 @@ export function createTerrainEffect(
         return create(terrain.hole, indices, {
             id: "terrain/hole",
             intervalTicks: 1,
+            retainOnLeave: false,
             accepts: (unit) =>
                 onGround(unit) &&
                 hasClassification(unit) &&

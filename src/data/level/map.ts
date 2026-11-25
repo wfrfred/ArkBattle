@@ -36,9 +36,9 @@ export interface ArknightsTileContext {
 }
 
 export interface ArknightsMapOptions {
-    readonly mire?: MireParams;
-    readonly deepsea?: DeepseaParams;
-    readonly tileDeploymentPrefabs?: readonly TileDeploymentPrefab[];
+    readonly mire: MireParams | null;
+    readonly deepsea: DeepseaParams | null;
+    readonly tileDeploymentPrefabs: readonly TileDeploymentPrefab[];
     readonly consumeTileBlackboard?: (
         context: ArknightsTileContext,
         entry: ArknightsBlackboardEntry,
@@ -179,7 +179,7 @@ function parseTile(
             }
         }
 
-        const prefab = options.tileDeploymentPrefabs?.find((entry) => entry.prefabKey === tileKey);
+        const prefab = options.tileDeploymentPrefabs.find((entry) => entry.prefabKey === tileKey);
         const tile = createTile({
             terrain,
             initial: {
@@ -234,14 +234,14 @@ function parseTile(
         }
 
         case "tile_mire":
-            if (options.mire === undefined) {
+            if (options.mire === null) {
                 throw new TypeError("mire controller parameters must be supplied explicitly");
             }
 
             return finish(mire.create(options.mire));
 
         case "tile_deepsea":
-            if (options.deepsea === undefined) {
+            if (options.deepsea === null) {
                 throw new TypeError("deepsea controller parameters must be supplied explicitly");
             }
 
@@ -282,7 +282,7 @@ function parseBlockEdge(value: unknown): BlockEdge {
     };
 }
 
-export function parseBattlefieldMap(value: unknown, options: ArknightsMapOptions = {}): Map {
+export function parseBattlefieldMap(value: unknown, options: ArknightsMapOptions): Map {
     const source = record(value, "map data");
     requireKnownFields(
         source,

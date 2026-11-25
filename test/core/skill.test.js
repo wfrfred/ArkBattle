@@ -61,20 +61,20 @@ test("activation publishes payment before onStart and clears only the completed 
         presence: {},
         skill: { definition: program },
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source.get(state).skill);
     state = update(state, source, units.compose(units.setHook(skills.activationStarted, {
-            id: "hide-on-start",
+            id: "hide-on-start", priority: 0,
             invoke: (state, { host }) => ({ state: update(state, host, presence.disappear()), value: undefined }),
         }), units.compose(units.setHook(skills.spPaid, {
-            id: "observe-payment",
+            id: "observe-payment", priority: 0,
             invoke(state, { host, event }) {
                 payments.push([event.amount, event.previous, event.current, skills.activationRef(host.get(state).skill.activation)]);
                 return { state, value: undefined };
             },
         }), units.setHook(skills.activationEnded, {
-            id: "observe-end",
+            id: "observe-end", priority: 0,
             invoke(state, { host, event }) {
                 observed.push({
                     stage: "notified",
@@ -84,13 +84,13 @@ test("activation publishes payment before onStart and clears only the completed 
                 return { state, value: undefined };
             },
         }))));
-    const insufficient = skills.modify(state, source, -15).state;
-    const rejected = skills.activate(insufficient, reference);
+    const insufficient = skills.modify(state, source, -15, false).state;
+    const rejected = skills.activate(insufficient, reference, null);
     assert.equal(rejected.value, null);
     assert.equal(rejected.state, insufficient);
     assert.deepEqual(initializedAtSp, []);
     assert.deepEqual(payments, []);
-    const first = skills.activate(state, reference);
+    const first = skills.activate(state, reference, null);
     state = first.state;
     assert.deepEqual(initializedAtSp, [30]);
     assert.deepEqual(payments, [[10, 30, 20, first.value]]);
@@ -107,9 +107,9 @@ test("activation publishes payment before onStart and clears only the completed 
     assert.equal(reference.get(state).state.completed, 1);
     assert.throws(() => skills.setActivationState(state, first.value, { total: 0 }), RangeError);
 
-    assert.equal(skills.activate(state, reference).value, null);
+    assert.equal(skills.activate(state, reference, null).value, null);
     state = update(state, source, presence.appear([1, 1]));
-    const second = skills.activate(state, reference);
+    const second = skills.activate(state, reference, null);
     state = skills.finish(second.state, first.value);
     assert.equal(second.value.get(state).lifecycle, "ACTIVE");
     state = skills.cancel(state, second.value, "STOPPED");
@@ -119,7 +119,7 @@ test("activation publishes payment before onStart and clears only the completed 
         ["SKILL_ACTIVATED", "SKILL_ENDED", "SKILL_ACTIVATED", "SKILL_ENDED"],
     );
     assert.deepEqual(initializedAtSp, [30, 20]);
-    assert.equal(skills.activate(state, reference).value, null);
+    assert.equal(skills.activate(state, reference, null).value, null);
 });
 
 test("per-call activation parameters preserve ordinary policy and still require sufficient SP", () => {
@@ -134,7 +134,7 @@ test("per-call activation parameters preserve ordinary policy and still require 
     };
     const definition = {
         id: "operator", hooks: Hooks.empty().set(skills.spPaid, {
-            id: "observe-payment",
+            id: "observe-payment", priority: 0,
             invoke(state, { event }) {
                 payments.push([event.amount, event.previous, event.current]);
                 return { state, value: undefined };
@@ -142,10 +142,10 @@ test("per-call activation parameters preserve ordinary policy and still require 
         }),
         skill: { definition: program },
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source.get(state).skill);
-    assert.equal(skills.activate(state, reference).value, null);
+    assert.equal(skills.activate(state, reference, null).value, null);
     const belowRequirement = skills.activate(state, reference, { requirement: 4, cost: 0 });
     assert.equal(belowRequirement.value, null);
     assert.equal(belowRequirement.state, state);
@@ -163,9 +163,9 @@ test("per-call activation parameters preserve ordinary policy and still require 
     assert.equal(program.activation.requirement, 10);
     assert.equal(program.activation.cost, 7);
     state = skills.finish(state, free.value);
-    assert.equal(skills.activate(state, reference).value, null);
-    state = skills.modify(state, source, 7).state;
-    const ordinary = skills.activate(state, reference);
+    assert.equal(skills.activate(state, reference, null).value, null);
+    state = skills.modify(state, source, 7, false).state;
+    const ordinary = skills.activate(state, reference, null);
     assert.notEqual(ordinary.value, null);
     assert.equal(get(ordinary.state, 0).skill.sp.value, 3);
     assert.deepEqual(payments[1], [7, 10, 3]);
@@ -190,10 +190,10 @@ test("cancellation during payment notification retains payment and suppresses th
         hooks: Hooks.empty(),
         skill: { definition: program },
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     state = update(state, source, units.setHook(skills.spPaid, {
-            id: "stop",
+            id: "stop", priority: 0,
             invoke(state, { host }) {
                 const current = host.get(state).skill.activation;
                 return {
@@ -202,7 +202,7 @@ test("cancellation during payment notification retains payment and suppresses th
                 };
             },
         }));
-    const activated = skills.activate(state, skills.ref(source.get(state).skill));
+    const activated = skills.activate(state, skills.ref(source.get(state).skill), null);
     state = activated.state;
     assert.notEqual(activated.value, null);
     assert.equal(get(state, 0).skill.sp.value, 0);
@@ -244,11 +244,11 @@ test("active operations require a declared handler and current permission, while
             id: program.id,
             hooks: Hooks.empty(),
             skill: { definition: program },
-        },
+        }, hooks: Hooks.empty(), initial: {},
         position: [1, 1],
     })));
     const source = units.ref(get(state, 0));
-    const first = skills.activate(state, skills.ref(source.get(state).skill));
+    const first = skills.activate(state, skills.ref(source.get(state).skill), null);
     state = first.state;
     const unsupported = skills.operate(state, first.value, "STOP");
     assert.equal(unsupported.value, false);
@@ -257,9 +257,9 @@ test("active operations require a declared handler and current permission, while
     assert.equal(get(state, 0).skill.activation, null);
 
     const controlledSource = units.ref(get(state, 1));
-    const second = skills.activate(state, skills.ref(controlledSource.get(state).skill));
+    const second = skills.activate(state, skills.ref(controlledSource.get(state).skill), null);
     state = update(second.state, controlledSource, skills.setRestriction("operationRestrictions", {
-        id: "not-ready",
+        id: "not-ready", group: null,
         value: {
             allows: (_state, { self, operation }) =>
                 operation !== "STOP" || self.skill.activation.state.ready,
@@ -301,15 +301,15 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
         hooks: Hooks.empty(),
         skill: { definition: program },
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     for (let tick = 0; tick <= 5; tick++) state = skills.advance({ ...state, tick }, source);
-    state = update(state, source, skills.setRestriction("recoveryRestrictions", { id: "blocked", value: { allows: () => false } }));
+    state = update(state, source, skills.setRestriction("recoveryRestrictions", { id: "blocked", group: null, value: { allows: () => false } }));
     const payment = skills.pay(state, source, 2);
     state = payment.state;
     assert.deepEqual(payment.value, { type: "APPLIED", amount: 2 });
     assert.equal(skills.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
-    assert.equal(skills.modify(state, source, 1).value.type, "REJECTED");
+    assert.equal(skills.modify(state, source, 1, false).value.type, "REJECTED");
     for (let tick = 6; tick <= 10; tick++) state = skills.advance({ ...state, tick }, source);
     assert.equal(get(state, 0).skill.sp.value, 0);
     state = update(state, source, skills.removeRestriction("recoveryRestrictions", "blocked"));
@@ -317,7 +317,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     assert.equal(get(state, 0).skill.sp.value, 0);
 
     let stopped = update(state, source, skills.setSpContribution("recoverySpeed", {
-        id: "stopped", value: [modifier({ multiplier: -1 })],
+        id: "stopped", group: null, value: [modifier({ multiplier: -1 })],
     }));
     stopped = skills.advance({ ...stopped, tick: 14 }, source);
     let restarted = update(stopped, source, skills.removeSpContribution("recoverySpeed", "stopped"));
@@ -330,7 +330,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     assert.equal(get(state, 0).skill.sp.value, 1);
 
     state = update(state, source, skills.setSpContribution("recoverySpeed", {
-            id: "haste",
+            id: "haste", group: null,
             value: [modifier({ multiplier: 1 })],
         }));
     state = skills.advance({ ...state, tick: 15 }, source);
@@ -338,7 +338,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     state = skills.advance({ ...state, tick: 16 }, source);
     assert.equal(get(state, 0).skill.sp.value, 2);
     assert.equal(skills.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
-    state = skills.modify(state, source, -1).state;
+    state = skills.modify(state, source, -1, false).state;
     assert.equal(skills.recover(state, source, "EXTERNAL", 5).value.amount, 1);
 });
 
@@ -375,10 +375,10 @@ test("TIME extension stays in its round while persistent state selects a later I
         presence: {},
         skill: { definition: program },
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source.get(state).skill);
-    const first = skills.activate(state, reference);
+    const first = skills.activate(state, reference, null);
     state = skills.extendTime(step(step(first.state, []), []), first.value, 3);
     state = update(state, source, presence.disappear());
     while (state.tick <= 5) state = step(state, []);
@@ -387,7 +387,7 @@ test("TIME extension stays in its round while persistent state selects a later I
     while (state.tick <= 8) state = step(state, []);
     assert.equal(get(state, 0).skill.activation, null);
     state = update(state, source, presence.appear([1, 1]));
-    const second = skills.activate(state, reference);
+    const second = skills.activate(state, reference, null);
     state = second.state;
     while (state.tick <= 15) state = step(state, []);
     assert.deepEqual(second.value.get(state).duration, { type: "INFINITE" });
@@ -410,7 +410,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
         },
     };
     const attack = createSkillAttack({
-        id: "last-shot",
+        id: "last-shot", ammoPerAction: 1, followUps: [],
         period: { type: "FIXED", ticks: 1 },
         timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
         triggerBindingId: "self",
@@ -423,13 +423,13 @@ test("AMMO samples its charged base before payment and applies capacity, consump
                 return state;
             }
             state = skills.check(state, skills.activationRef(activation));
-            return skills.activate(state, skills.ref(source.get(state).skill)).state;
+            return skills.activate(state, skills.ref(source.get(state).skill), null).state;
         },
     });
     const definition = {
         id: "operator",
         hooks: Hooks.empty().set(skills.ammoReplenished, {
-            id: "observe-refill",
+            id: "observe-refill", priority: 0,
             invoke(state, { event }) {
                 replenishments.push(event);
                 assert.deepEqual(event.ref.get(state).duration, event.current);
@@ -442,14 +442,14 @@ test("AMMO samples its charged base before payment and applies capacity, consump
         },
         skill: { definition: program },
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source.get(state).skill);
     state = update(state, source, skills.setAmmoContribution({
-            id: "magazine",
+            id: "magazine", group: null,
             value: [{ addition: 2, ratio: 0.5 }],
         }));
-    const first = skills.activate(state, reference);
+    const first = skills.activate(state, reference, null);
     state = update(first.state, source, skills.removeAmmoContribution("magazine"));
     assert.equal(first.value.get(state).duration.initial, 32);
     assert.equal(first.value.get(state).state.charged, true);
@@ -500,18 +500,18 @@ test("Ammo contributions registered and withdrawn during TIME affect only later 
         id: "operator", hooks: Hooks.empty(),
         skill: { definition: program },
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
     const reference = skills.ref(source.get(state).skill);
-    const timed = skills.activate(state, reference);
+    const timed = skills.activate(state, reference, null);
     state = update(timed.state, source, units.compose(
-        skills.setAmmoContribution({ id: "kept", value: [{ addition: 0, ratio: 0.5 }] }),
-        skills.setAmmoContribution({ id: "withdrawn", value: [{ addition: 7, ratio: 0 }] }),
+        skills.setAmmoContribution({ id: "kept", group: null, value: [{ addition: 0, ratio: 0.5 }] }),
+        skills.setAmmoContribution({ id: "withdrawn", group: null, value: [{ addition: 7, ratio: 0 }] }),
     ));
     state = update(state, source, skills.removeAmmoContribution("withdrawn"));
     assert.deepEqual(timed.value.get(state).duration, { type: "TIME", endsAtTick: 5 });
     state = skills.finish(state, timed.value);
     state = skills.setState(state, reference, { ammo: true });
-    const ammo = skills.activate(state, reference);
+    const ammo = skills.activate(state, reference, null);
     assert.equal(ammo.value.get(ammo.state).duration.initial, 15);
 });

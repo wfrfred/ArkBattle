@@ -15,6 +15,7 @@ export function battle(initialUnits = [], { rows = 3, columns = 8, ...options } 
             walkCost: 1,
             allowsBlocking: true,
             siteCondition: null,
+            collision: null,
         },
     };
     const tiles = Array.from({ length: rows * columns }, () => createTile(definition)).reduce(
@@ -22,11 +23,13 @@ export function battle(initialUnits = [], { rows = 3, columns = 8, ...options } 
         Tiles.empty(),
     );
     return initialize({
-        map: createMap(rows, columns, tiles),
+        map: createMap(rows, columns, tiles, [], []),
         initialEffects: [],
         initialUnits,
         schedule: { waves: [], branches: {} },
         routeMoveMultiplier: 1,
+        pushMultiplier: 0.5,
+        deployment: null,
         rngState: 7,
         ...options,
     });

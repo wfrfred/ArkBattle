@@ -10,6 +10,7 @@ import type { Definition } from "./definition.js";
 
 const config: Card["config"] = {
     end: {
+        dependencyEnd: null,
         prepare: (battle) => battle,
         finalize: (battle) => battle,
     },

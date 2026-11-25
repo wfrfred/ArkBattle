@@ -83,7 +83,7 @@ export function shieldEffect({
                             state = healSelf(state, self.ref.host, healRatio);
                             const current = self.ref.host.get(state);
                             if (current !== undefined && hasSkill(current)) {
-                                state = modify(state, unitRef(current), extraSp).state;
+                                state = modify(state, unitRef(current), extraSp, false).state;
                             }
 
                             return {

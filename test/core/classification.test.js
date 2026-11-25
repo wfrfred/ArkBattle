@@ -16,7 +16,7 @@ import { battle, get } from "../helpers/battle.js";
 
 function creation(id, classification) {
     return {
-        definition: { id, hooks: Hooks.empty(), classification },
+        definition: { id, hooks: Hooks.empty(), classification }, hooks: Hooks.empty(), initial: {},
         position: [0, 0],
     };
 }

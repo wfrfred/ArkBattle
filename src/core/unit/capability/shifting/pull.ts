@@ -30,7 +30,7 @@ export interface Input {
     readonly point: Point;
     readonly forceLevel: number;
     readonly nearStop: readonly NearStop[];
-    readonly brake?: Brake;
+    readonly brake: Brake;
 }
 
 export interface Pull extends lifetimes.Lifetime<{
@@ -147,7 +147,7 @@ export function apply(
         maxForce,
         initialDistance: Vec2.length(Vec2.sub(point, unit.position)),
         nearStop: input.nearStop,
-        brake: input.brake ?? "ONCE",
+        brake: input.brake,
         braked: false,
     };
 

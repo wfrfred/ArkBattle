@@ -315,7 +315,7 @@ function addAttributes(attributes: Attributes, addition: Readonly<Partial<Attrib
 export function resolveAttributes(
     growth: Growth,
     configuration: Configuration,
-    module: Pick<ModuleStage, "attributes"> | undefined,
+    module: Pick<ModuleStage, "attributes"> | null,
     favor: FavorFrame,
 ): Attributes {
     const attributes = interpolate(growth.phase.frames, configuration.level);
@@ -331,7 +331,7 @@ export function resolveAttributes(
         addAttributes(attributes, addition);
     }
 
-    if (module !== undefined) {
+    if (module !== null) {
         addAttributes(attributes, module.attributes);
     }
 
@@ -393,10 +393,10 @@ export function selectModule(
     tables: Pick<Tables, "equipment" | "battleEquipment">,
     configuration: Configuration,
     favor: FavorFrame,
-): ModuleStage | undefined {
+): ModuleStage | null {
     const selection = configuration.module;
-    if (selection === undefined) {
-        return undefined;
+    if (selection === null) {
+        return null;
     }
 
     assertPositiveSafeInteger(selection.level, "module level");
@@ -434,7 +434,10 @@ export function selectModule(
     const stage = record(selected, "module phase");
     const attributes: Partial<Attributes> = {};
 
-    for (const entry of parseBlackboard(stage.attributeBlackboard, "module attributes")) {
+    for (const entry of parseBlackboard(stage.attributeBlackboard, "module attributes", {
+        allowEmptyKeys: false,
+        allowMissingValueStr: false,
+    })) {
         const key = Object.hasOwn(moduleAttributes, entry.key)
             ? moduleAttributes[entry.key]
             : undefined;
@@ -491,7 +494,10 @@ function selectCandidate(candidates: unknown, configuration: Configuration): Tab
 function readTalent(candidate: Table): Talent {
     return {
         key: text(candidate.prefabKey, "talent prefab key"),
-        blackboard: parseBlackboard(candidate.blackboard, "talent blackboard"),
+        blackboard: parseBlackboard(candidate.blackboard, "talent blackboard", {
+            allowEmptyKeys: false,
+            allowMissingValueStr: false,
+        }),
     };
 }
 
@@ -509,7 +515,7 @@ function ordinaryPart(value: unknown, target: "TRAIT" | "TALENT"): Table | undef
 export function selectTalents(
     character: Table,
     configuration: Configuration,
-    module: ModuleStage | undefined,
+    module: ModuleStage | null,
 ): readonly Talent[] {
     const slots = character.talents === null ? [] : array(character.talents, "operator talents");
     const talents = slots.map((value) =>
@@ -551,10 +557,7 @@ export function selectTalents(
     return talents.filter((talent) => talent !== undefined).map(readTalent);
 }
 
-export function selectTrait(
-    configuration: Configuration,
-    module: ModuleStage | undefined,
-): Blackboard {
+export function selectTrait(configuration: Configuration, module: ModuleStage | null): Blackboard {
     const trait = new Map<string, Blackboard[number]>();
 
     for (const value of module?.parts ?? []) {
@@ -566,7 +569,10 @@ export function selectTrait(
         const bundle = record(part.overrideTraitDataBundle, "module trait bundle");
         const candidate = selectCandidate(bundle.candidates, configuration);
         if (candidate !== undefined) {
-            for (const entry of parseBlackboard(candidate.blackboard, "module trait blackboard")) {
+            for (const entry of parseBlackboard(candidate.blackboard, "module trait blackboard", {
+                allowEmptyKeys: false,
+                allowMissingValueStr: false,
+            })) {
                 trait.set(entry.key, entry);
             }
         }

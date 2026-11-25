@@ -9,7 +9,7 @@ export interface ArknightsBlackboardEntry {
 export function parseBlackboard(
     value: unknown,
     name: string,
-    options: { readonly allowEmptyKeys?: boolean; readonly allowMissingValueStr?: boolean } = {},
+    options: { readonly allowEmptyKeys: boolean; readonly allowMissingValueStr: boolean },
 ): readonly ArknightsBlackboardEntry[] {
     if (!Array.isArray(value)) {
         throw new TypeError(`${name} must be an array`);
@@ -42,7 +42,7 @@ export function parseBlackboard(
         if (typeof key !== "string") {
             throw new TypeError(`${path}.key must be a string`);
         }
-        if (key.length === 0 && options.allowEmptyKeys !== true) {
+        if (key.length === 0 && !options.allowEmptyKeys) {
             throw new TypeError(`${path}.key must not be empty`);
         }
         if (keys.has(key)) {
@@ -56,9 +56,7 @@ export function parseBlackboard(
         assertFiniteNumber(number, `${path}.value`);
 
         const valueStr =
-            source.valueStr === undefined && options.allowMissingValueStr === true
-                ? null
-                : source.valueStr;
+            source.valueStr === undefined && options.allowMissingValueStr ? null : source.valueStr;
         if (valueStr !== null && typeof valueStr !== "string") {
             throw new TypeError(`${path}.valueStr must be a string or null`);
         }

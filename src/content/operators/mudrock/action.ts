@@ -162,6 +162,7 @@ export function createSkill({
 }: SkillActionParameters): Attack<object, SkillAttackState, AttackHost & SkillCapability> {
     return createSkillAttack<AttackHost>({
         id: "mudrock/s2",
+        ammoPerAction: 1,
         triggerBindingId: "primary",
         period: { type: "FIXED", ticks: 0 },
         timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
@@ -226,7 +227,7 @@ export function createSkill({
                         penetration: { fixed: 0, proportional: 0 },
                     },
                 };
-                state = applyDamage(request, calculateDamage(state, request)).state;
+                state = applyDamage(request, calculateDamage(state, request, null), null).state;
                 const rng = createRng(state.execution.rngState);
                 const applyStun = rng.chance(stunChance);
                 state = { ...state, execution: { ...state.execution, rngState: rng.state() } };

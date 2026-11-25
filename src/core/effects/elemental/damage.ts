@@ -34,5 +34,5 @@ export function hurt(
                 : { type, attack },
     };
 
-    return applyDamage(request, calculateDamage(battle, request)).state;
+    return applyDamage(request, calculateDamage(battle, request, null), null).state;
 }

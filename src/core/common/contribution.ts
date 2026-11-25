@@ -6,7 +6,7 @@ export interface Group {
 export interface Contribution<V> {
     readonly id: string;
     readonly value: V;
-    readonly group?: Group;
+    readonly group: Group | null;
 }
 
 export function resolveEntries<V>(entries: readonly Contribution<V>[]): readonly Contribution<V>[] {
@@ -20,7 +20,7 @@ export function resolveEntries<V>(entries: readonly Contribution<V>[]): readonly
     const winners = new Map<string, Contribution<V>>();
 
     for (const entry of ordered) {
-        if (entry.group === undefined) {
+        if (entry.group === null) {
             continue;
         }
 
@@ -30,9 +30,7 @@ export function resolveEntries<V>(entries: readonly Contribution<V>[]): readonly
         }
     }
 
-    return ordered.filter(
-        (entry) => entry.group === undefined || winners.get(entry.group.id) === entry,
-    );
+    return ordered.filter((entry) => entry.group === null || winners.get(entry.group.id) === entry);
 }
 
 export function resolve<V>(entries: readonly Contribution<V>[]): readonly V[] {

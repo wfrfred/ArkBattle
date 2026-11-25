@@ -46,7 +46,7 @@ export function install(
         return { state: battle, value: null };
     }
 
-    const partition = group?.partition?.(battle, source);
+    const partition = group?.partition === undefined ? "SHARED" : group.partition(battle, source);
 
     if (group !== null) {
         const [retained] = forGroup(battle, host, group.id, partition);

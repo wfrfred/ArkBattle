@@ -50,7 +50,7 @@ export function createArrow(): tracking.Definition<ArrowState> {
                 },
             };
 
-            return applyDamage(request, calculateDamage(state, request)).state;
+            return applyDamage(request, calculateDamage(state, request, null), null).state;
         });
 
     return {

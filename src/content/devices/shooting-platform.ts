@@ -70,6 +70,7 @@ export function create(parameters: Parameters): Definition {
                           unitRef(occupant),
                           setRestriction({
                               id: restrictionId,
+                              group: null,
                               value: groundBlockingRestriction,
                           }),
                       )
@@ -91,6 +92,7 @@ export function create(parameters: Parameters): Definition {
         hooks: Hooks.empty()
             .set(unitHooks.entered, {
                 id: "shooting-platform/apply-tile",
+                priority: 0,
                 invoke(battle, self) {
                     return {
                         state: hasOccupancy(self)
@@ -102,6 +104,7 @@ export function create(parameters: Parameters): Definition {
             })
             .set(unitHooks.removed, {
                 id: "shooting-platform/restore-tile",
+                priority: 0,
                 invoke(battle, { unit }) {
                     if (!hasOccupancy(unit)) {
                         return { state: battle, value: undefined };

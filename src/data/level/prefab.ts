@@ -7,7 +7,7 @@ import { parseSiteCondition } from "./site-condition.js";
 export interface TileDeploymentPrefab {
     readonly prefabKey: string;
     readonly siteCondition: SiteCondition | null;
-    readonly forceBoxCollider?: boolean;
+    readonly forceBoxCollider: boolean;
 }
 
 export type PredefinedPrefab =
@@ -77,9 +77,10 @@ export function parseTileDeploymentPrefab(value: unknown): TileDeploymentPrefab 
     return {
         prefabKey: source.prefabKey,
         siteCondition,
-        ...(forceBoxCollider === undefined
-            ? {}
-            : { forceBoxCollider: boolean(forceBoxCollider, "tile _forceBoxCollider") }),
+        forceBoxCollider:
+            forceBoxCollider === undefined
+                ? false
+                : boolean(forceBoxCollider, "tile _forceBoxCollider"),
     };
 }
 

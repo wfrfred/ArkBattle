@@ -11,7 +11,7 @@ import { hasRoute, movementTarget } from "../../core/unit/capability/route/index
 import { ref, update, type Unit } from "../../core/unit/index.js";
 
 const castingRestriction: Restriction = {
-    allows: (battle, { self }) => !hasAction(self) || !hasExecution(battle, ref(self)),
+    allows: (battle, { self }) => !hasAction(self) || !hasExecution(battle, ref(self), null),
 };
 
 export function restrictMovementDuringAction(battle: BattleState, self: Unit): Result<void> {
@@ -19,7 +19,7 @@ export function restrictMovementDuringAction(battle: BattleState, self: Unit): R
         battle = update(
             battle,
             ref(self),
-            setRestriction({ id: "attack-casting", value: castingRestriction }),
+            setRestriction({ id: "attack-casting", group: null, value: castingRestriction }),
         );
     }
 

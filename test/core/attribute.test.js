@@ -8,17 +8,17 @@ test("attributes clamp the base and modified result against their respective ran
     const definition = { default: 10, min: 0, max: 100 };
     let state = attribute.initialize(definition);
     state = attribute.setContribution(state, {
-        id: "bonus", value: [modifier.create({ addition: 2, finalScaler: 0.25 })],
+        id: "bonus", group: null, value: [modifier.create({ addition: 2, finalScaler: 0.25 })],
     });
     assert.equal(attribute.resolve(definition, state), 3);
     state = attribute.setRange(definition, state, { min: 6, max: 8 });
     assert.equal(attribute.resolve(definition, state), 6);
-    state = attribute.setContribution(state, { id: "bonus", value: [modifier.create({ addition: 100 })] });
+    state = attribute.setContribution(state, { id: "bonus", group: null, value: [modifier.create({ addition: 100 })] });
     assert.equal(attribute.resolve(definition, state), 8);
 
     const clampedBase = { default: 0, min: 1, max: null };
     let incremented = attribute.setContribution(attribute.initialize(clampedBase), {
-        id: "addition", value: [modifier.create({ addition: 1 })],
+        id: "addition", group: null, value: [modifier.create({ addition: 1 })],
     });
     incremented = attribute.setRange(clampedBase, incremented, { min: 0, max: 100 });
     assert.equal(attribute.resolve(clampedBase, incremented), 2);
@@ -27,7 +27,7 @@ test("attributes clamp the base and modified result against their respective ran
 test("range writes replace a single whole slot and clearing restores both definition bounds", () => {
     const definition = { default: 50, min: 20, max: 100 };
     const initial = attribute.initialize(definition);
-    const contributed = attribute.setContribution(initial, { id: "bonus", value: [modifier.create({ addition: 10 })] });
+    const contributed = attribute.setContribution(initial, { id: "bonus", group: null, value: [modifier.create({ addition: 10 })] });
     let state = attribute.setRange(definition, contributed, { min: 70, max: 80 });
     state = attribute.setRange(definition, state, { min: null, max: 90 });
     assert.deepEqual([state.min, state.max], [20, 90]);

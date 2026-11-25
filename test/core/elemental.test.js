@@ -25,13 +25,13 @@ import { create as createElementalDefinition } from "../../dist/content/elementa
 const elementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
     vitality: defineVitality(10000, { resistance: defineAttribute(50, 0, 100) }),
-    elemental: createElementalDefinition({ receiver: "CHARACTER" }),
+    elemental: createElementalDefinition({ receiver: "CHARACTER", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 }),
 };
 
 const recoveringElementalReceiver = {
     id: "ep-receiver", hooks: Hooks.empty(), presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
     targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
-    elemental: createElementalDefinition({ receiver: "CHARACTER", recoveryPerSecond: 15 }),
+    elemental: createElementalDefinition({ receiver: "CHARACTER", boss: false, maxEp: null, recoveryPerSecond: 15, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 }),
 };
 
 function injuryRequest(target, type, power, source = null) {
@@ -39,29 +39,29 @@ function injuryRequest(target, type, power, source = null) {
 }
 
 test("EP-03: Burst recovery continues while absent, refills EP with the current budget and releases its output", () => {
-    let state = battle([{ definition: elementalReceiver, position: [0, 0] }]);
+    let state = battle([{ definition: elementalReceiver, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     const incoming = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "BURN", power: 1000 } };
-    const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+    const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null);
     const burst = started.value.application.burst;
     state = started.state;
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 30);
-    assert.equal(epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).value.type, "REJECTED");
+    assert.equal(epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null).value.type, "REJECTED");
     const heal = { target, source: null, parameters: { power: 100 } };
-    assert.equal(epHealing.applyHealing(heal, epHealing.calculateHealing(state, heal)).value.type, "REJECTED");
+    assert.equal(epHealing.applyHealing(heal, epHealing.calculateHealing(state, heal, null), null).value.type, "REJECTED");
     state = update(state, target, presence.disappear());
     state = effects.advance({ ...state, tick: 1 });
     for (const value of Object.values(get(state, 0).elemental.ep)) {
         assert.ok(Math.abs(value - 1000 / 300) < 1e-8);
     }
     state = update(state, target, elemental.setContribution("burstRecoverySpeed", {
-        id: "clock", value: [modifier({ finalScaler: 0 })],
+        id: "clock", group: null, value: [modifier({ finalScaler: 0 })],
     }));
     for (let tick = 2; tick <= 4; tick++) {
         state = effects.advance({ ...state, tick });
     }
     state = update(state, target, units.compose(elemental.setContribution("burstRecoverySpeed", {
-            id: "clock", value: [modifier({ finalScaler: 2 })],
+            id: "clock", group: null, value: [modifier({ finalScaler: 2 })],
         }), elemental.setRange("maxEp", { min: 2000, max: null })));
     state = effects.advance({ ...state, tick: 5 });
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(20));
@@ -74,7 +74,7 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
     state = update(state, target, presence.appear([0, 0]));
     const restart = { ...incoming, parameters: { ...incoming.parameters, power: 2000 } };
-    const restarted = epDamage.applyDamage(restart, epDamage.calculateDamage(state, restart));
+    const restarted = epDamage.applyDamage(restart, epDamage.calculateDamage(state, restart, null), null);
     state = elemental.cancel(restarted.state, restarted.value.application.burst, "CONTENT");
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
@@ -88,13 +88,13 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
 test("EP-06: reducing recovery preserves elapsed time, immediately refills from current MaxEP and does not replay periodic output", () => {
     let healed = 0;
     const hooks = Hooks.empty().set(elemental.healed, {
-        id: "ordinary-healing",
+        id: "ordinary-healing", priority: 0,
         invoke(state) { healed++; return { state, value: undefined }; },
     });
-    let state = battle([{ definition: { ...elementalReceiver, hooks }, position: [0, 0] }]);
+    let state = battle([{ definition: { ...elementalReceiver, hooks }, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     const incoming = injuryRequest(target, "NECROSIS", 1000);
-    const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+    const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null);
     const burst = started.value.application.burst;
     state = started.state;
     for (let tick = 1; tick <= 30; tick++) {
@@ -105,7 +105,7 @@ test("EP-06: reducing recovery preserves elapsed time, immediately refills from 
     assert.equal(damageEvents.length, 1);
     assert.equal(effects.forHost(state, units.ref(get(state, 0))).some(effect => effect.definition === silence), true);
     state = update(state, target, elemental.setContribution("maxEp", {
-        id: "capacity", value: [modifier({ addition: 1000 })],
+        id: "capacity", group: null, value: [modifier({ addition: 1000 })],
     }));
 
     state = elemental.reduceDuration(state, burst, 150);
@@ -129,11 +129,11 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
     let original;
     let restarted;
     const hooks = Hooks.empty().set(elemental.burstEnded, {
-        id: "restart-recovery",
+        id: "restart-recovery", priority: 0,
         invoke(state, { event }) {
             if (effects.ref(event.burst) !== original) return { state, value: undefined };
             const incoming = injuryRequest(event.burst.ref.host, "BURN", 1000);
-            const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+            const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null);
             restarted = result.value.application.burst;
             return { state: result.state, value: undefined };
         },
@@ -145,10 +145,10 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
         },
     };
-    let state = battle([{ definition, position: [0, 0] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     const incoming = injuryRequest(target, "NEURAL", 1000);
-    const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+    const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null);
     original = started.value.application.burst;
     state = started.state;
     for (let tick = 1; tick <= 30; tick++) {
@@ -193,10 +193,10 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
             },
         },
     };
-    let state = battle([{ definition, position: [0, 0] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     const neural = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 1000 } };
-    const result = epDamage.applyDamage(neural, epDamage.calculateDamage(state, neural));
+    const result = epDamage.applyDamage(neural, epDamage.calculateDamage(state, neural, null), null);
     state = result.state;
     assert.equal(get(state, 0).vitality.health.hp, 9000);
     assert.equal(elemental.get(state, result.value.application.burst), undefined);
@@ -211,7 +211,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     assert.deepEqual(get(state, 0).position, goal.goal);
 
     const necrosis = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NECROSIS", power: 1000 } };
-    state = epDamage.applyDamage(necrosis, epDamage.calculateDamage(state, necrosis)).state;
+    state = epDamage.applyDamage(necrosis, epDamage.calculateDamage(state, necrosis, null), null).state;
     state = effects.advance({ ...state, tick: 750 });
     assert.equal(get(state, 0).vitality.health.hp, 9000);
     assert.equal(get(state, 0).elemental.burst, null);
@@ -222,38 +222,38 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     const order = [];
     const hooks = Hooks.empty()
         .set(hpDamage.beforeReceive, {
-            id: "standard-output", invoke: (current, _context, pending) => {
+            id: "standard-output", priority: 0, invoke: (current, _context, pending) => {
                 order.push("program");
                 return { state: current, value: pending };
             },
         })
         .set(epDamage.targetApplied, {
-            id: "applied", invoke: current => { order.push("applied"); return { state: current, value: undefined }; },
+            id: "applied", priority: 0, invoke: current => { order.push("applied"); return { state: current, value: undefined }; },
         });
     let state = battle([
         { definition: {
             ...elementalReceiver, hooks,
             vitality: defineVitality(10000, { resistance: defineAttribute(50, 0, 100) }),
-        }, position: [0, 0] },
-        { definition: { id: "source", hooks: Hooks.empty() }, position: [1, 0] },
+        }, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
+        { definition: { id: "source", hooks: Hooks.empty() }, hooks: Hooks.empty(), initial: {}, position: [1, 0] },
     ]);
     const target = units.ref(get(state, 0));
     const source = units.ref(get(state, 1));
     state = update(state, target, units.compose(units.setHook(elemental.burstStarted, {
-            id: "creation", invoke(current, { event }) {
+            id: "creation", priority: 0, invoke(current, { event }) {
                 order.push("started");
                 const reference = effects.ref(event);
                 assert.equal(get(current, 0).elemental.burst, reference);
                 return { state: current, value: undefined };
             },
         }), units.setHook(elemental.damaged, {
-            id: "loss", invoke(current) { order.push("damaged"); return { state: current, value: undefined }; },
+            id: "loss", priority: 0, invoke(current) { order.push("damaged"); return { state: current, value: undefined }; },
         })));
     const preceding = injuryRequest(target, "NEURAL", 200);
-    state = epDamage.applyDamage(preceding, epDamage.calculateDamage(state, preceding)).state;
+    state = epDamage.applyDamage(preceding, epDamage.calculateDamage(state, preceding, null), null).state;
     order.length = 0;
     const incoming = injuryRequest(target, "BURN", 1000, source);
-    const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+    const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null);
     assert.deepEqual(order, ["started", "program", "damaged", "applied"]);
     assert.deepEqual(get(result.state, 0).elemental.ep, elemental.elementValues(0));
     assert.equal(get(result.state, 0).vitality.health.hp, 9160);
@@ -266,34 +266,34 @@ test("EP-02: cancelling a newly registered Burst suppresses standard output with
     const order = [];
     const hooks = Hooks.empty()
         .set(hpDamage.beforeReceive, {
-            id: "standard-output", invoke: (current, _context, pending) => {
+            id: "standard-output", priority: 0, invoke: (current, _context, pending) => {
                 order.push("program"); return { state: current, value: pending };
             },
         })
         .set(epDamage.targetApplied, {
-            id: "applied", invoke: current => { order.push("applied"); return { state: current, value: undefined }; },
+            id: "applied", priority: 0, invoke: current => { order.push("applied"); return { state: current, value: undefined }; },
         });
     let state = battle([{ definition: {
         ...elementalReceiver, hooks,
         vitality: defineVitality(10000, { resistance: defineAttribute(50, 0, 100) }),
-    }, position: [0, 0] }]);
+    }, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     state = update(state, target, units.compose(units.compose(units.setHook(elemental.burstStarted, {
-            id: "cancel", invoke(current, { event }) {
+            id: "cancel", priority: 0, invoke(current, { event }) {
                 order.push("started");
                 return { state: elemental.cancel(current, effects.ref(event), "CONTENT"), value: undefined };
             },
         }), units.setHook(elemental.burstEnded, {
-            id: "end", invoke(current) { order.push("ended"); return { state: current, value: undefined }; },
+            id: "end", priority: 0, invoke(current) { order.push("ended"); return { state: current, value: undefined }; },
         })), units.setHook(elemental.damaged, {
-            id: "loss", invoke(current, { event }) {
+            id: "loss", priority: 0, invoke(current, { event }) {
                 order.push("damaged");
                 assert.equal(event.epLoss, 1000);
                 return { state: current, value: undefined };
             },
         })));
     const incoming = injuryRequest(target, "BURN", 1000);
-    const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming));
+    const result = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null);
     assert.deepEqual(order, ["started", "ended", "damaged", "applied"]);
     assert.equal(result.value.application.epAfter, 0);
     assert.deepEqual(get(result.state, 0).elemental.ep, elemental.elementValues(1000));
@@ -306,34 +306,34 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     let healingNotices = 0;
     let resourceNotices = 0;
     const hooks = Hooks.empty().set(epHealing.beforeReceive, {
-        id: "healing-reduction",
+        id: "healing-reduction", priority: 0,
         invoke(state, _context, pending) {
             return { state, value: { ...pending, amount: pending.amount - 100 } };
         },
     }).set(elemental.healed, {
-        id: "actual-recovery",
+        id: "actual-recovery", priority: 0,
         invoke(state) {
             resourceNotices++;
             return { state, value: undefined };
         },
     }).set(epHealing.targetApplied, {
-        id: "ordinary-healing",
+        id: "ordinary-healing", priority: 0,
         invoke(state) {
             healingNotices++;
             return { state, value: undefined };
         },
     });
-    let state = battle([{ definition: { ...recoveringElementalReceiver, hooks }, position: [0, 0] }]);
+    let state = battle([{ definition: { ...recoveringElementalReceiver, hooks }, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     for (const [type, power] of [["NEURAL", 200], ["EROSION", 80], ["BURN", 40]]) {
         const incoming = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type, power } };
-        state = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming)).state;
+        state = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null).state;
     }
     assert.deepEqual(get(state, 0).elemental.ep, {
         NEURAL: 800, EROSION: 920, BURN: 960, NECROSIS: 1000, MANIA: 1000,
     });
     const incoming = { target, source: null, parameters: { power: 200 } };
-    const restored = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
+    const restored = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming, null), null);
     assert.deepEqual(restored.value.received, { amount: 100, cancellation: null });
     assert.deepEqual(restored.value.application.epGain, {
         NEURAL: 100, EROSION: 80, BURN: 40, NECROSIS: 0, MANIA: 0,
@@ -344,8 +344,8 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.equal(resourceNotices, 1);
     assert.equal("vitality" in get(state, 0), false);
 
-    const toppedUp = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming));
-    const full = epHealing.applyHealing(incoming, epHealing.calculateHealing(toppedUp.state, incoming));
+    const toppedUp = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming, null), null);
+    const full = epHealing.applyHealing(incoming, epHealing.calculateHealing(toppedUp.state, incoming, null), null);
     assert.equal(full.value.type, "APPLIED");
     assert.deepEqual(full.value.application.epGain, elemental.elementValues(0));
     assert.equal(healingNotices, 3);
@@ -358,7 +358,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
         .toArray();
     assert.deepEqual(recipients(full.state), []);
     state = update(full.state, target, elemental.setContribution("maxEp", {
-        id: "larger-pool", value: [modifier({ multiplier: 1 })],
+        id: "larger-pool", group: null, value: [modifier({ multiplier: 1 })],
     }));
     const current = get(state, 0);
     const maximum = elemental.resolveMaxEp(state, current);
@@ -367,7 +367,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     assert.deepEqual(recipients(state).map(reference => reference.id), [0]);
 
     const reducedRequest = { target, source: null, parameters: { power: 50 } };
-    const reduced = epHealing.applyHealing(reducedRequest, epHealing.calculateHealing(state, reducedRequest));
+    const reduced = epHealing.applyHealing(reducedRequest, epHealing.calculateHealing(state, reducedRequest, null), null);
     assert.equal(reduced.value.type, "APPLIED");
     assert.deepEqual(reduced.value.received, { amount: 0, cancellation: null });
     assert.deepEqual(reduced.value.application.epGain, elemental.elementValues(0));
@@ -376,12 +376,12 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
 
     const smaller = update(full.state, target, elemental.setRange("maxEp", { min: null, max: 500 }));
     const zeroDamage = update(smaller, target, units.setHook(epDamage.receiving, {
-        id: "zero-reception",
+        id: "zero-reception", priority: 0,
         invoke: (state, _context, pending) => ({ state, value: { ...pending, amount: 0 } }),
     }));
     const injury = { target, source: null, attackType: "BUFF", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 1 } };
-    const damaged = epDamage.applyDamage(injury, epDamage.calculateDamage(zeroDamage, injury));
-    const healed = epHealing.applyHealing(incoming, epHealing.calculateHealing(smaller, incoming));
+    const damaged = epDamage.applyDamage(injury, epDamage.calculateDamage(zeroDamage, injury, null), null);
+    const healed = epHealing.applyHealing(incoming, epHealing.calculateHealing(smaller, incoming, null), null);
     assert.equal(damaged.value.type, "APPLIED");
     assert.equal(healed.value.type, "APPLIED");
     assert.equal(damaged.value.application.epAfter, 500);

@@ -39,9 +39,7 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
     } = resolve(configuration, tables);
     const skill = createSkill(s1);
     const talent =
-        talentBonus === undefined
-            ? undefined
-            : createAttackBonus("melantha/attack-talent", talentBonus);
+        talentBonus === null ? null : createAttackBonus("melantha/attack-talent", talentBonus);
     const attack = createAttack(attackParameters);
 
     const definition = {
@@ -54,7 +52,15 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
             restrictions: [],
         },
         deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
-        elemental: createElemental({ receiver: "CHARACTER" }),
+        elemental: createElemental({
+            receiver: "CHARACTER",
+            boss: false,
+            maxEp: null,
+            recoveryPerSecond: 0,
+            elementResistance: 0,
+            damageResistance: 0,
+            burstRecoverySpeed: 1,
+        }),
         vitality: {
             maxHp: { default: attributes.maxHp, min: 1, max: null },
             defense: { default: attributes.defense, min: 0, max: null },
@@ -75,9 +81,10 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
         blocker: {
+            radius: null,
             capacity: attributes.blockCapacity,
             layer: "GROUND",
-            restrictions: [{ id: "blocking/sides", value: sides("ENEMY") }],
+            restrictions: [{ id: "blocking/sides", group: null, value: sides("ENEMY") }],
         },
         action: {
             speed: { default: attributes.attackSpeed, min: 20, max: null },
@@ -106,10 +113,11 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
         skill: { definition: skill },
         hooks: Hooks.empty().set(unitHooks.entered, {
             id: "melantha/install-talent",
+            priority: 0,
             invoke(state, self) {
                 return {
                     state:
-                        talent !== undefined && hasOffense(self)
+                        talent !== null && hasOffense(self)
                             ? install(state, unitRef(self), talent, {
                                   source: null,
                                   scopes: [],

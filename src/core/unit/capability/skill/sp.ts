@@ -197,9 +197,9 @@ export function recover(
     battle: BattleState,
     ref: Ref<Unit & Skill>,
     source: Source,
-    amount?: number,
+    amount: number | null,
 ): Result<Outcome> {
-    if (amount !== undefined) {
+    if (amount !== null) {
         assertNonnegativeSafeInteger(amount, "skill SP recovery amount");
     }
 
@@ -285,7 +285,7 @@ export function modify(
     battle: BattleState,
     ref: Ref<Unit & Skill>,
     delta: number,
-    forced = false,
+    forced: boolean,
 ): Result<Outcome> {
     assertSafeInteger(delta, "skill SP modification");
 

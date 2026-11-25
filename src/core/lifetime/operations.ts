@@ -6,7 +6,7 @@ import { isAvailable, type Config, type Lifetime, type Node } from "./lifetime.j
 export function register(
     battle: BattleState,
     ref: Ref<Lifetime>,
-    scopes: readonly Ref<Lifetime>[] = [],
+    scopes: readonly Ref<Lifetime>[],
 ): BattleState {
     const nodes = battle.lifetime.nodes;
     if (nodes.has(ref)) {
@@ -14,14 +14,18 @@ export function register(
     }
 
     const dependencies = [...new Set(scopes)];
-    if (dependencies.length !== 0 && !("dependencyEnd" in configOf(ref.get(battle)!).end)) {
+    if (dependencies.length !== 0 && configOf(ref.get(battle)!).end.dependencyEnd === null) {
         throw new TypeError("this lifetime cannot depend on another lifetime");
     }
     if (!dependencies.every((dependency) => isAvailable(nodes, dependency))) {
         throw new TypeError("lifetime dependencies must be available");
     }
 
-    return replaceIn(battle, ["lifetime", "nodes"], new Map(nodes).set(ref, { dependencies }));
+    return replaceIn(
+        battle,
+        ["lifetime", "nodes"],
+        new Map(nodes).set(ref, { dependencies, ending: null }),
+    );
 }
 
 export function bind(
@@ -36,7 +40,7 @@ export function bind(
 
     const node = nodes.get(ref)!;
 
-    if (!("dependencyEnd" in configOf(ref.get(battle)!).end)) {
+    if (configOf(ref.get(battle)!).end.dependencyEnd === null) {
         throw new TypeError("this lifetime cannot depend on another lifetime");
     }
 
@@ -100,7 +104,7 @@ function wouldCycle(
 }
 
 function settling(battle: BattleState): boolean {
-    return [...battle.lifetime.nodes.values()].some((node) => node.ending !== undefined);
+    return [...battle.lifetime.nodes.values()].some((node) => node.ending !== null);
 }
 
 export function end<T extends Lifetime, E>(
@@ -120,7 +124,7 @@ function configOf(self: Lifetime): Config<Lifetime, unknown> {
 
 function request(battle: BattleState, reference: Ref<Lifetime>, end: unknown): BattleState {
     const node = battle.lifetime.nodes.get(reference);
-    if (node === undefined || node.ending !== undefined) {
+    if (node?.ending !== null) {
         return battle;
     }
 
@@ -132,7 +136,7 @@ function request(battle: BattleState, reference: Ref<Lifetime>, end: unknown): B
     battle = configOf(initial).end.prepare(battle, reference, initial, end);
 
     for (const [childKey, child] of battle.lifetime.nodes) {
-        if (child.ending === undefined && child.dependencies.includes(reference)) {
+        if (child.ending === null && child.dependencies.includes(reference)) {
             const dependent = childKey.get(battle)!;
             battle = request(battle, childKey, configOf(dependent).end.dependencyEnd);
         }
@@ -144,7 +148,7 @@ function request(battle: BattleState, reference: Ref<Lifetime>, end: unknown): B
 function drain(battle: BattleState): BattleState {
     while (true) {
         const nodes = [...battle.lifetime.nodes];
-        const ending = nodes.filter(([, node]) => node.ending !== undefined);
+        const ending = nodes.filter(([, node]) => node.ending !== null);
         if (ending.length === 0) {
             return battle;
         }

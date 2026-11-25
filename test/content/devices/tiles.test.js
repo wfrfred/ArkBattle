@@ -1,3 +1,4 @@
+import { Hooks } from "../../../dist/core/hook.js";
 import { vitality } from "../../helpers/attribute.js";
 // Contract: [terrain](../../../docs/architecture/terrain.md).
 import { test } from "node:test";
@@ -25,16 +26,16 @@ function battle(firstTerrain = normal, firstCost = 2000) {
             passability: "ALL",
             walkCost: index === 0 ? firstCost : 2000,
             allowsBlocking: true,
-            siteCondition: conditions.normal,
+            siteCondition: conditions.normal, collision: null,
         },
     })), Tiles.empty());
 
-    return createBattleState(createField(createMap(1, 3, tiles)));
+    return createBattleState(createField(createMap(1, 3, tiles, [], [])));
 }
 
 function place(battle, definition, tile, position = Tile.center(tile)) {
-    const initialized = initialize(battle, { definition, position, initial: {
-        occupancy: { tile },
+    const initialized = initialize(battle, { definition, position, hooks: Hooks.empty(), initial: {
+        occupancy: { tile, direction: null },
     } });
 
     return add(initialized.state, initialized.value);

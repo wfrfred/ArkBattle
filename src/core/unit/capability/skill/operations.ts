@@ -45,7 +45,7 @@ const hitRecovery: ReceivingHook = {
         return {
             state:
                 target !== undefined && hasSkill(target)
-                    ? sp.recover(battle, units.ref(target), "HIT").state
+                    ? sp.recover(battle, units.ref(target), "HIT", null).state
                     : battle,
             value: current,
         };
@@ -54,13 +54,14 @@ const hitRecovery: ReceivingHook = {
 
 const actionRecovery: ReleasedHook = {
     id: "@skill/action-recovery",
+    priority: 0,
     invoke: (battle, { source }) => {
         const unit = source.get(battle);
 
         return {
             state:
                 unit !== undefined && hasSkill(unit)
-                    ? sp.recover(battle, units.ref(unit), "ACTION").state
+                    ? sp.recover(battle, units.ref(unit), "ACTION", null).state
                     : battle,
             value: undefined,
         };
@@ -108,9 +109,9 @@ export function setActivationState<A extends object>(
 export function activate<S extends object, A extends object>(
     battle: BattleState,
     reference: Ref<Skill<S, A>>,
-    parameters?: ActivationParameters,
+    parameters: ActivationParameters | null,
 ): Result<Ref<Activation<A>> | null> {
-    if (parameters !== undefined) {
+    if (parameters !== null) {
         assertNonnegativeSafeInteger(parameters.requirement, "skill activation SP requirement");
         assertNonnegativeSafeInteger(parameters.cost, "skill activation SP cost");
     }
@@ -324,7 +325,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
         current.skill.activation === null &&
         (trigger === "AUTO" || trigger === "PASSIVE")
     ) {
-        battle = activate(battle, ref(current.skill)).state;
+        battle = activate(battle, ref(current.skill), null).state;
     }
 
     return battle;
@@ -332,6 +333,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
 
 export const entered: EnteredHook = {
     id: "@skill/enter",
+    priority: 0,
     invoke: (battle, self) => {
         const host = units.ref(self as Unit & SkillCapability);
         let unit = host.get(battle)!;
@@ -350,7 +352,7 @@ export const entered: EnteredHook = {
             current?.lifecycle === "ACTIVE" &&
             current.skill.definition.activation?.trigger === "PASSIVE"
         ) {
-            battle = activate(battle, ref(current.skill)).state;
+            battle = activate(battle, ref(current.skill), null).state;
         }
 
         return { state: battle, value: undefined };

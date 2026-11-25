@@ -19,6 +19,7 @@ function restriction(
                 self.ref.host,
                 targetable.setRestriction({
                     id: `@effect/${self.id}/targeting`,
+                    group: null,
                     value,
                 }),
             );

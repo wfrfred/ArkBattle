@@ -25,7 +25,7 @@ import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { Vec2 } from "../../../dist/core/common/vector.js";
 import { turn } from "../../../dist/core/unit/capability/facing/index.js";
 
-const base = { elite: 2, level: 90, potential: 1, skillIndex: 1, skillLevel: 7, trust: 100 };
+const base = { module: null, elite: 2, level: 90, potential: 1, skillIndex: 1, skillLevel: 7, trust: 100 };
 const moduleX = "uniequip_002_mudrok";
 const baseMaxHp = 4428;
 const moduleXMaxHp = 4828;
@@ -66,7 +66,7 @@ function readShield(battle, host) {
 function wound(battle) {
     battle = hit(battle, null, 1).state;
     battle = hit(battle, null, getUnit(battle, 0).vitality.health.hp - 1000).state;
-    return modify(battle, ref(getUnit(battle, 0)), -getUnit(battle, 0).skill.sp.value).state;
+    return modify(battle, ref(getUnit(battle, 0)), -getUnit(battle, 0).skill.sp.value, false).state;
 }
 const approximate = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, String(actual) + " != " + expected);
 function canMove(battle, unit) {
@@ -109,7 +109,7 @@ test("module X uses current max HP for shield healing and distinguishes blocked 
         enemy(3, [6, 0]),
     ]);
     let battle = update(fixture.battle, ref(fixture.unit), setMaxHpContribution({
-        id: "max-hp", value: [modifier({ addition: 1000 })],
+        id: "max-hp", group: null, value: [modifier({ addition: 1000 })],
     }));
     battle = advanceEffectsUntil(wound(battle), 270);
     const shielded = hit(battle);
@@ -142,7 +142,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
         source: ref(getUnit(battle, 1)), target: ref(getUnit(battle, 0)),
         attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: ref(getUnit(battle, 1)), parameters: parameters(100, "TRUE"),
     };
-    const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(battle, request), {
+    const accepted = hpDamage.applyDamage(request, hpDamage.calculateDamage(battle, request, null), { exclude: [],
         forbidden: new Set(["BLOCKED"]),
     });
     assert.equal(accepted.value.type, "APPLIED");
@@ -153,7 +153,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     assert.equal(readShield(accepted.state, ref(getUnit(accepted.state, 0))).layers, 1);
 
     const ordinary = update(battle, ref(fixture.unit), removeHook(hpDamage.beforeReceive, "fix-amount"));
-    const reduced = hpDamage.applyDamage(request, hpDamage.calculateDamage(ordinary, request), {
+    const reduced = hpDamage.applyDamage(request, hpDamage.calculateDamage(ordinary, request, null), { exclude: [],
         forbidden: new Set(["BLOCKED"]),
     });
     assert.equal(reduced.value.type, "APPLIED");
@@ -169,7 +169,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
             return { state, value: hpDamage.cancel(pending, "MISS", context.forbidden) };
         },
     }));
-    const cancelled = hpDamage.applyDamage(request, hpDamage.calculateDamage(missed, request));
+    const cancelled = hpDamage.applyDamage(request, hpDamage.calculateDamage(missed, request, null), null);
     assert.equal(cancelled.value.type, "CANCELLED");
     assert.equal(cancelled.value.received.reason, "MISS");
     assert.equal(getUnit(cancelled.state, 0).vitality.health.hp, 1000);
@@ -179,8 +179,8 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
 
 test("S2 waits for an eligible target without spending its SP", () => {
     const fixture = setup({}, [enemy(1, [5, 0])]);
-    const ready = modify(fixture.battle, ref(fixture.unit), 5).state;
-    const result = activate(ready, skillRef(getUnit(ready, 0)));
+    const ready = modify(fixture.battle, ref(fixture.unit), 5, false).state;
+    const result = activate(ready, skillRef(getUnit(ready, 0)), null);
     assert.equal(result.value, null);
     assert.equal(getUnit(result.state, 0).skill.sp.value, 5);
 });
@@ -196,9 +196,9 @@ test("S2 replaces normal recovery, heals once and revalidates its bound targets 
     for (let tick = 0; tick <= 19; tick++) battle = advanceAction({ ...battle, tick }, ordinary.value);
     assert.equal(getUnit(battle, 0).facing.direction, "RIGHT");
     assert.ok([1, 2].some(id => getUnit(battle, id).vitality.health.hp < 10000));
-    battle = modify(battle, ref(fixture.unit), 5).state;
+    battle = modify(battle, ref(fixture.unit), 5, false).state;
     battle = update(battle, ref(fixture.unit), setAttackContribution({
-        id: "attack", value: [modifier({ addition: 100 })],
+        id: "attack", group: null, value: [modifier({ addition: 100 })],
     }));
     const beforeFirst = getUnit(battle, 1).vitality.health.hp;
     const beforeSecond = getUnit(battle, 2).vitality.health.hp;
@@ -235,8 +235,8 @@ test("S2 interrupts an ordinary attack before its authored release and prevents 
     let battle = pending.state;
     for (let tick = 0; tick <= 5; tick++) battle = advanceAction({ ...battle, tick }, pending.value);
     assert.equal(getUnit(battle, 1).vitality.health.hp, 10000);
-    battle = modify(battle, host, 5 - getUnit(battle, 0).skill.sp.value).state;
-    const activated = activate(battle, skillRef(getUnit(battle, 0)));
+    battle = modify(battle, host, 5 - getUnit(battle, 0).skill.sp.value, false).state;
+    const activated = activate(battle, skillRef(getUnit(battle, 0)), null);
     assert.notEqual(activated.value, null);
     battle = activated.state;
     assert.equal(pending.value.get(battle), undefined);

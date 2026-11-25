@@ -19,6 +19,7 @@ import {
 
 export const removing: RemovingHook = {
     id: "@blocker/prepare",
+    priority: 0,
     invoke: (battle, { unit }) => ({
         state: releaseAll(battle, units.ref(unit as Unit & Blocker)),
         value: undefined,

@@ -37,7 +37,7 @@ export function forGroup(
     battle: BattleState,
     host: Ref<Lifetime> | null,
     id: string,
-    partition: Ref<Lifetime> | null | undefined,
+    partition: Effect["partition"],
 ): Query<Effect> {
     return forHost(battle, host).filter(
         (effect) =>

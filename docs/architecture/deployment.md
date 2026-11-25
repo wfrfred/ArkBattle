@@ -26,7 +26,7 @@ Deployment 完成部署资格、消费、实例创建与通知；Card 保存跨�
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
 
-`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史和通知。初始化配置由三个子域的 Definition 组合，`Deployment.Definition.dp` 和 `Deployment.Definition.slot` 分别提供账户和部署位的基础配置。`deck.costCeiling` 是 Card 费用计算的截断上限，DP 的有效上限约束账户余额。
+`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史和通知。初始化配置由三个子域的 Definition 组合，`Deployment.Definition.dp` 和 `Deployment.Definition.slot` 分别提供账户和部署位的基础配置。`Deployment.Definition.costCeiling` 必填，是 Card 费用计算的截断上限，DP 的有效上限约束账户余额。Battle Input 的 deployment 必填；`null` 表示没有部署输入，仍初始化空牌组、99 费用上限、零 DP（账户范围 0–99、无自然回复）及不限部署位。
 
 ## 静态内容与 Card
 
@@ -70,7 +70,7 @@ Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card。`s
 
 ## 请求与统一资格
 
-DeployRequest 明确 Card Ref、落点、可选方向、Quote、本次限制及 Hook。普通 Command 生成默认请求，Content 可以按本次业务提供报价和策略；显示／点选与部署 Context 各保留实际所需输入，不伪造落点。
+DeployRequest 明确 Card Ref、落点、方向（`null` 表示未指定）、Quote、本次限制及 Hook。普通 Command 与 createRequest 同样显式提供方向。普通 Command 生成默认请求，Content 可以按本次业务提供报价和策略；显示／点选与部署 Context 各保留实际所需输入，不伪造落点。
 
 Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表示正常零费；stock／slots 可为零。公开查询与执行共用请求校验，合法请求中的未知 Card 返回业务拒绝。
 
@@ -144,7 +144,7 @@ Deployment 的 deployed 与全局 Unit removed 分别存于所属 Battle Hooks �
 
 `dp.modify` 按有符号差值修改余额并应用有效上下限。余额已超上限时，正差值保持原余额，负差值按实际金额减少并仍受下限约束。`dp.pay` 按有效下限判断能否支付，成功时扣除准确金额，拒绝时返回原状态。支付零点合法，免支付的报价由 Deployment 跳过付款。支付、余额修改与资格查询都使用当前余额。
 
-提高有效下限时同步抬高低于下限的余额。设置上限贡献默认保留余额，传入 `clamp: true` 时将超出的余额截到新上限。移除上限贡献重新求值，保留余额。
+提高有效下限时同步抬高低于下限的余额。设置上限贡献必须指定 clamp：`false` 保留余额，`true` 将超出的余额截到新上限。移除上限贡献重新求值，保留余额。
 
 ## Slot
 

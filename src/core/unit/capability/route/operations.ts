@@ -176,7 +176,7 @@ export function skipWait(reference: Ref<Context>): Change<Unit & Route> {
                     ? context
                     : { ...context, index: context.index + 1, current: null },
             ),
-        (battle) => interpret(battle, reference),
+        (battle) => interpret(battle, reference, false),
     );
 }
 
@@ -228,7 +228,7 @@ export function enter(battle: BattleState, reference: Ref<Context>): BattleState
     return context?.current === null ? interpret(battle, reference, true) : battle;
 }
 
-function interpret(battle: BattleState, reference: Ref<Context>, enterFirst = false): BattleState {
+function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boolean): BattleState {
     const visited = new Set<number>();
     let plan: Plan | undefined;
 
@@ -382,7 +382,7 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
         battle = replaceUnit(battle, [{ ...self, route: { ...self.route, main, others } }]);
     }
 
-    battle = interpret(battle, ref(activeContext(self)));
+    battle = interpret(battle, ref(activeContext(self)), false);
     const latest = reference.get(battle);
     if (latest?.lifecycle !== "ACTIVE") {
         return battle;

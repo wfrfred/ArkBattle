@@ -12,6 +12,7 @@ import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import { effectInitial } from "../helpers/effect.js";
 
 const account = {
+    costCeiling: 99,
     dp: { initial: 20, min: 0, max: 99, recoveryInterval: null },
     slot: { limit: 1 },
 };
@@ -49,6 +50,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
         id: "scheduled",
         route: { alwaysCheckCurrentPoint: true },
         hooks: Hooks.empty().set(units.entered, {
+            priority: 0,
             id: "observe-birth",
             invoke(current, self) {
                 assert.equal(self.ref.get(current).definition.id, "scheduled");
@@ -61,6 +63,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
     const initial = {
         id: "initial",
         hooks: Hooks.empty().set(units.entered, {
+            priority: 0,
             id: "observe-initialization",
             invoke(current, self) {
                 assert.equal(current.schedule.definition.waves.length, 1);
@@ -76,6 +79,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
     const following = {
         id: "following",
         hooks: Hooks.empty().set(units.entered, {
+            priority: 0,
             id: "observe-previous-initial-unit",
             invoke(current, self) {
                 assert.equal(current.deployment.dp.balance, 22);
@@ -86,8 +90,8 @@ test("initial and scheduled entry see registered battle facts and preserve their
         }),
     };
     let state = battle([
-        { definition: initial, position: [0, 0] },
-        { definition: following, position: [1, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: initial, position: [0, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: following, position: [1, 0] },
     ], {
         deployment: { definition: account, cards: [{
             definition: cardDefinition,
@@ -121,6 +125,7 @@ test("Tick phases publish their resource operations and failures preserve the in
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRestrictions: [], refund: null },
         hooks: Hooks.empty().set(units.tick, {
+            priority: 0,
             id: "tick-resource",
             invoke(current) {
                 current = dp.modify(current, 2);
@@ -140,7 +145,7 @@ test("Tick phases publish their resource operations and failures preserve the in
     });
     const card = cards.ref([...cards.all(before)][0]);
     const commands = [
-        { type: "DEPLOY_UNIT", ref: card, tilePosition: [0, 1] },
+        { direction: null, type: "DEPLOY_UNIT", ref: card, tilePosition: [0, 1] },
     ];
     const completed = step(before, commands);
     assert.equal(completed.tick, 1);
@@ -178,6 +183,8 @@ test("manual commands preserve AUTO and PASSIVE scheduling while direct activati
         },
     }));
     let state = battle(programs.map(program => ({
+        hooks: Hooks.empty(),
+        initial: {},
         definition: {
             id: program.id, hooks: Hooks.empty(),
             skill: { definition: program },
@@ -189,11 +196,11 @@ test("manual commands preserve AUTO and PASSIVE scheduling while direct activati
     assert.deepEqual(starts(state), [0, 0, 1]);
     state = step(state, sources.map(ref => ({ type: "SKILL", ref, operation: "ACTIVATE" })));
     assert.deepEqual(starts(state), [1, 1, 1]);
-    const explicit = skills.activate(state, skills.ref(sources[1].get(state).skill));
+    const explicit = skills.activate(state, skills.ref(sources[1].get(state).skill), null);
     assert.notEqual(explicit.value, null);
     state = explicit.state;
     assert.deepEqual(starts(state), [1, 2, 1]);
-    const repeatedPassive = skills.activate(state, skills.ref(sources[2].get(state).skill));
+    const repeatedPassive = skills.activate(state, skills.ref(sources[2].get(state).skill), null);
     assert.equal(repeatedPassive.value, null);
     assert.equal(repeatedPassive.state, state);
     state = step(state, []);

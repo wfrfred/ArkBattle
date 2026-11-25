@@ -15,10 +15,10 @@ import { step } from "../../dist/core/battle/index.js";
 import { create as createElementalDefinition } from "../../dist/content/elemental.js";
 import { update } from "../../dist/core/unit/operations.js";
 
-const elemental = createElementalDefinition({ receiver: "CHARACTER" });
+const elemental = createElementalDefinition({ receiver: "CHARACTER", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 });
 
 test("EVENT-01: resource operations emit actual changes and only HP cancellations emit zero", () => {
-    let state = battle([{ definition: {
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: {
         id: "receiver", hooks: Hooks.empty(), elemental,
         vitality: defineVitality(1000),
     }, position: [1, 1] }]);
@@ -27,27 +27,29 @@ test("EVENT-01: resource operations emit actual changes and only HP cancellation
         source: null, target,
         attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: { type: "ELEMENTAL", attack: { power: 50, multiplier: 1, addition: 0 } },
     };
-    state = hpDamage.applyDamage(hp, hpDamage.calculateDamage(state, hp)).state;
+    state = hpDamage.applyDamage(hp, hpDamage.calculateDamage(state, hp, null), null).state;
     const elementalRecovery = { source: null, target, parameters: { power: 40 } };
     state = epHealing.applyHealing(
-        elementalRecovery, epHealing.calculateHealing(state, elementalRecovery),
+        elementalRecovery, epHealing.calculateHealing(state, elementalRecovery, null), null,
     ).state;
     const injury = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 100 } };
-    state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
-    state = epHealing.applyHealing(elementalRecovery, epHealing.calculateHealing(state, elementalRecovery)).state;
+    state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury, null), null).state;
+    state = epHealing.applyHealing(elementalRecovery, epHealing.calculateHealing(state, elementalRecovery, null), null).state;
     const recovery = { source: null, target, parameters: { power: 30, multiplier: 1 } };
-    state = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(state, recovery)).state;
+    state = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(state, recovery, null), null).state;
     state = update(state, target, units.setHook(epDamage.receiving, {
+        priority: 0,
         id: "reduction",
         invoke: (current, _context, pending) => ({
             state: current,
             value: { ...pending, amount: pending.amount - 200 },
         }),
     }));
-    state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
+    state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury, null), null).state;
 
     for (const operation of [hpDamage, hpHealing, epDamage]) {
         state = update(state, target, units.setHook(operation.beforeReceive, {
+            priority: 0,
             id: "cancel",
             invoke: (current, { forbidden }, pending) => ({
                 state: current,
@@ -55,9 +57,9 @@ test("EVENT-01: resource operations emit actual changes and only HP cancellation
             }),
         }));
     }
-    const cancelledDamage = hpDamage.applyDamage(hp, hpDamage.calculateDamage(state, hp));
-    const cancelledHealing = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(cancelledDamage.state, recovery));
-    const cancelledInjury = epDamage.applyDamage(injury, epDamage.calculateDamage(cancelledHealing.state, injury));
+    const cancelledDamage = hpDamage.applyDamage(hp, hpDamage.calculateDamage(state, hp, null), null);
+    const cancelledHealing = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(cancelledDamage.state, recovery, null), null);
+    const cancelledInjury = epDamage.applyDamage(injury, epDamage.calculateDamage(cancelledHealing.state, injury, null), null);
     assert.deepEqual(
         [cancelledDamage.value.type, cancelledHealing.value.type, cancelledInjury.value.type],
         ["CANCELLED", "CANCELLED", "CANCELLED"],
@@ -78,19 +80,19 @@ test("EVENT-01: resource operations emit actual changes and only HP cancellation
 });
 
 test("EVENT-02: a Burst keeps its original position through movement and death in the same Tick", () => {
-    let state = battle([{ definition: {
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: {
         id: "receiver", hooks: Hooks.empty(), elemental, presence: {},
         vitality: defineVitality(2000),
     }, position: [1, 1] }]);
     const target = units.ref(get(state, 0));
     const injury = { source: null, target, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "BURN", power: 1000 } };
-    state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury)).state;
+    state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury, null), null).state;
     state = update(state, target, presence.appear([4, 1]));
     const lethal = {
         source: null, target,
         attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", hitRecovery: true, killer: null, parameters: { type: "TRUE", attack: { power: 2000, multiplier: 1, addition: 0 } },
     };
-    state = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(state, lethal)).state;
+    state = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(state, lethal, null), null).state;
 
     assert.equal(get(state, 0), undefined);
     assert.deepEqual(state.events.map(({ type }) => type), [

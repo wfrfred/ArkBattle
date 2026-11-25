@@ -19,7 +19,7 @@ export interface State {
     readonly walkCost: number;
     readonly allowsBlocking: boolean;
     readonly siteCondition: SiteCondition | null;
-    readonly collision?: Collision | null;
+    readonly collision: Collision | null;
 }
 
 export interface Definition<P extends object = object> {
@@ -35,7 +35,7 @@ export interface Tile<P extends object = object> {
 export function validateState(state: State): void {
     assertPositiveSafeInteger(state.walkCost, "tile walk cost");
 
-    if (state.collision != null) {
+    if (state.collision !== null) {
         assert(["BOX"].includes(state.collision.type), "invalid tile collision box", TypeError);
         validateShape(state.collision);
     }

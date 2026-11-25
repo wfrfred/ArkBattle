@@ -30,7 +30,7 @@ function colliders(map: Map): Collider[] {
 
     for (const { state } of map.tiles.values()) {
         const box = state.collision;
-        if (box != null) {
+        if (box !== null) {
             const tile: TilePosition = [Math.floor(index / map.columns), index % map.columns];
             result.push({ tile, origin: Tile.center(tile), box });
         }

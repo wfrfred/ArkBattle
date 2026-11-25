@@ -93,7 +93,7 @@ export interface Configuration<
     readonly period: Period;
     readonly triggerBindingId: string;
     readonly targetGroups: readonly [TargetGroup<H>, ...TargetGroup<H>[]];
-    readonly followUps?: readonly FollowUp<H>[];
+    readonly followUps: readonly FollowUp<H>[];
     readonly timing:
         Timing | ((battle: BattleState, source: Source<H>, self: Action<P, State<E>>) => Timing);
 }
@@ -251,7 +251,7 @@ function apply<H extends object>(
                         : { type, attack },
             };
 
-            return applyDamage(request, calculateDamage(battle, request)).state;
+            return applyDamage(request, calculateDamage(battle, request, null), null).state;
         }
 
         case "HEAL": {
@@ -266,7 +266,7 @@ function apply<H extends object>(
                 parameters: { power: operation.power, multiplier: 1 },
             };
 
-            return applyHealing(request, calculateHealing(battle, request)).state;
+            return applyHealing(request, calculateHealing(battle, request, null), null).state;
         }
 
         case "ELEMENTAL_INJURY": {
@@ -284,7 +284,11 @@ function apply<H extends object>(
                 parameters: { type: operation.elementType, power: operation.power },
             };
 
-            return epDamage.applyDamage(request, epDamage.calculateDamage(battle, request)).state;
+            return epDamage.applyDamage(
+                request,
+                epDamage.calculateDamage(battle, request, null),
+                null,
+            ).state;
         }
 
         case "ELEMENTAL_INJURY_HEALED": {
@@ -299,8 +303,11 @@ function apply<H extends object>(
                 parameters: { power: operation.power },
             };
 
-            return epHealing.applyHealing(request, epHealing.calculateHealing(battle, request))
-                .state;
+            return epHealing.applyHealing(
+                request,
+                epHealing.calculateHealing(battle, request, null),
+                null,
+            ).state;
         }
     }
 }
@@ -339,7 +346,7 @@ export function createWithState<P extends object, E extends object, H extends ob
         throw new TypeError("attack target bindings must be unique and include its trigger");
     }
 
-    const followUps = definition.followUps ?? [];
+    const followUps = definition.followUps;
 
     for (const followUp of followUps) {
         if (followUp.receiver.type === "BINDING" && !ids.has(followUp.receiver.bindingId)) {
@@ -534,7 +541,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                             }
                         }
                     }
-                    for (const followUp of definition.followUps ?? []) {
+                    for (const followUp of definition.followUps) {
                         for (const target of followUp.receiver.type === "SOURCE"
                             ? [source]
                             : (output.state.bindings[followUp.receiver.bindingId] ?? [])) {

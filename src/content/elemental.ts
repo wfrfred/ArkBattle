@@ -22,12 +22,12 @@ export type Receiver = "CHARACTER" | "ENEMY";
 
 export interface Options {
     readonly receiver: Receiver;
-    readonly boss?: boolean;
-    readonly maxEp?: number;
-    readonly recoveryPerSecond?: number;
-    readonly elementResistance?: number;
-    readonly damageResistance?: number;
-    readonly burstRecoverySpeed?: number;
+    readonly boss: boolean;
+    readonly maxEp: number | null;
+    readonly recoveryPerSecond: number;
+    readonly elementResistance: number;
+    readonly damageResistance: number;
+    readonly burstRecoverySpeed: number;
 }
 
 const bursts: Readonly<Record<Receiver, ElementalDefinition["bursts"]>> = {
@@ -94,16 +94,14 @@ const bursts: Readonly<Record<Receiver, ElementalDefinition["bursts"]>> = {
 export function create(options: Options): ElementalDefinition {
     return {
         maxEp: {
-            default:
-                options.maxEp ??
-                (options.receiver === "ENEMY" && options.boss === true ? 2000 : 1000),
+            default: options.maxEp ?? (options.receiver === "ENEMY" && options.boss ? 2000 : 1000),
             min: 1,
             max: null,
         },
-        recoverySpeed: { default: options.recoveryPerSecond ?? 0, min: 0, max: null },
-        elementResistance: { default: options.elementResistance ?? 0, min: 0, max: 100 },
-        damageResistance: { default: options.damageResistance ?? 0, min: 0, max: 100 },
-        burstRecoverySpeed: { default: options.burstRecoverySpeed ?? 1, min: 0, max: null },
+        recoverySpeed: { default: options.recoveryPerSecond, min: 0, max: null },
+        elementResistance: { default: options.elementResistance, min: 0, max: 100 },
+        damageResistance: { default: options.damageResistance, min: 0, max: 100 },
+        burstRecoverySpeed: { default: options.burstRecoverySpeed, min: 0, max: null },
         bursts: bursts[options.receiver],
     };
 }

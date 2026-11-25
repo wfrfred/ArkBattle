@@ -75,7 +75,11 @@ function setSpeed(
         units.ref(host),
         amount === null
             ? removeSpeedContribution(key)
-            : setSpeedContribution({ id: key, value: [modifier.create({ addition: amount })] }),
+            : setSpeedContribution({
+                  id: key,
+                  value: [modifier.create({ addition: amount })],
+                  group: null,
+              }),
     );
 }
 
@@ -104,6 +108,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                         hasAction,
                         setHook(released, {
                             id: `@effect/${self.id}/mania`,
+                            priority: 0,
                             accepts(current, { execution }) {
                                 const active = reference.get(current);
 
@@ -134,6 +139,7 @@ export function createActionScaledDamage(parameters: ActionScaledDamageParameter
                         hasSkill,
                         setHook(activationStarted, {
                             id: `@effect/${self.id}/mania`,
+                            priority: 0,
                             accepts(current) {
                                 const active = reference.get(current);
 

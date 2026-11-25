@@ -20,13 +20,13 @@ export type Definition<H extends object = object> = AttackDefinition<
     State,
     H & SkillCapability
 > & {
-    readonly ammoPerAction?: number;
+    readonly ammoPerAction: number;
 };
 
 export function create<H extends object = object>(
     definition: Definition<H>,
 ): Attack<object, State, H & SkillCapability> {
-    const amount = definition.ammoPerAction ?? 1;
+    const amount = definition.ammoPerAction;
     const afterOutput = definition.afterOutput;
     assertPositiveSafeInteger(amount, "skill attack ammunition consumption");
 

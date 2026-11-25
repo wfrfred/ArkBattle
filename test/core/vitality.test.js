@@ -45,21 +45,21 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
             id: "recovering", presence: {},
             vitality: defineVitality(100, { recoverySpeed: defineAttribute(3), recoveryRatio: defineAttribute(0.03, 0, 1) }),
             hooks: Hooks.empty()
-                .set(hpHealing.targetFormula, { id: "formula", invoke: ordinaryHealing })
-                .set(hpHealing.beforeReceive, { id: "before", invoke: ordinaryHealing })
-                .set(hpHealing.targetApplied, { id: "applied", invoke: ordinaryHealing })
+                .set(hpHealing.targetFormula, { id: "formula", priority: 0, invoke: ordinaryHealing })
+                .set(hpHealing.beforeReceive, { id: "before", priority: 0, invoke: ordinaryHealing })
+                .set(hpHealing.targetApplied, { id: "applied", priority: 0, invoke: ordinaryHealing })
                 .set(vitality.damageCommitting, {
-                    id: "observe-damage-commit",
+                    id: "observe-damage-commit", priority: 0,
                     invoke(current, context, health) {
                         damageCommits.push([context.previous.hp, health.hp]);
                         return { state: current, value: health };
                     },
                 }),
-        }, position: [0, 0] },
+        }, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
         { definition: {
             id: "observer", hooks: Hooks.empty(),
             action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [observer] },
-        }, position: [1, 0] },
+        }, hooks: Hooks.empty(), initial: {}, position: [1, 0] },
     ]);
     const target = units.ref(get(state, 0));
     const loss = amount => ({
@@ -67,7 +67,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         parameters: { type: "TRUE", attack: { power: amount, multiplier: 1, addition: 0 } },
     });
     const initialLoss = loss(60);
-    state = hpDamage.applyDamage(initialLoss, hpDamage.calculateDamage(state, initialLoss)).state;
+    state = hpDamage.applyDamage(initialLoss, hpDamage.calculateDamage(state, initialLoss, null), null).state;
     assert.deepEqual(damageCommits, [[100, 40]]);
     state = effects.install(state, target, healFree, effectInitial).state;
     state = effects.install(state, target, {
@@ -75,17 +75,17 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         onTick(current, self) {
             return update(current, self.ref.host, units.compose(
                 vitality.setContribution("recoverySpeed", {
-                    id: "fixed", value: current => [modifier.create({ addition: current.tick * 3 })],
+                    id: "fixed", group: null, value: current => [modifier.create({ addition: current.tick * 3 })],
                 }),
                 vitality.setContribution("recoveryRatio", {
-                    id: "ratio", value: [modifier.create({ addition: 0.03 })],
+                    id: "ratio", group: null, value: [modifier.create({ addition: 0.03 })],
                 }),
             ));
         },
     }, effectInitial).state;
     state = update(state, target, units.compose(
         presence.disappear(),
-        units.setHook(hpHealing.receiving, { id: "receive", invoke: ordinaryHealing }),
+        units.setHook(hpHealing.receiving, { id: "receive", priority: 0, invoke: ordinaryHealing }),
     ));
     state = step(state, []);
     assert.equal(observed.length, 1);
@@ -93,7 +93,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     assert.equal(state.events.some(event => event.type === "HEAL"), false);
 
     state = update(state, target, vitality.setMaxHpContribution({
-        id: "larger-pool", value: [modifier.create({ multiplier: 1 })],
+        id: "larger-pool", group: null, value: [modifier.create({ multiplier: 1 })],
     }));
     state = step(state, []);
     assert.equal(vitality.resolveRecoverySpeed(state, get(state, 0)), 21);
@@ -102,11 +102,11 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     assert.equal(state.events.some(event => event.type === "HEAL"), false);
 
     state = update(state, target, vitality.setContribution("recoveryRatio", {
-        id: "ratio", value: [modifier.create({ addition: 2 })],
+        id: "ratio", group: null, value: [modifier.create({ addition: 2 })],
     }));
     assert.equal(vitality.resolveRecoverySpeed(state, get(state, 0)), 209);
     state = update(state, target, vitality.setContribution("recoverySpeed", {
-        id: "fixed", value: [modifier.create({ addition: 10000 })],
+        id: "fixed", group: null, value: [modifier.create({ addition: 10000 })],
     }));
     state = vitality.advance(state, target);
     assert.equal(get(state, 0).vitality.health.hp, 200);
@@ -114,7 +114,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     assert.deepEqual(damageCommits, [[100, 40]]);
 
     state = update(state, target, units.setHook(hpDamage.targetApplied, {
-        id: "zero-hp", invoke(current) {
+        id: "zero-hp", priority: 0, invoke(current) {
             assert.equal(get(current, 0).vitality.health.hp, 0);
             assert.equal(vitality.advance(current, target), current);
             const restored = vitality.increaseHp(current, target, 30);
@@ -124,7 +124,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
         },
     }));
     const lethal = loss(200);
-    state = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(state, lethal)).state;
+    state = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(state, lethal, null), null).state;
     assert.equal(get(state, 0), undefined);
 });
 
@@ -134,17 +134,17 @@ test("HP-08: Health protection commits before its consequences and preserves the
     let applied = 0;
     let observed;
     let state = battle([
-        { definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
+        { definition: { id: "source", hooks: Hooks.empty() }, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
         { definition: {
             id: "target",
             vitality: defineVitality(100),
             hooks: Hooks.empty()
                 .set(hpDamage.beforeReceive, {
-                    id: "fixed-reception",
+                    id: "fixed-reception", priority: 0,
                     invoke: (current, _context, pending) => ({ state: current, value: hpDamage.fix(pending) }),
                 })
                 .set(vitality.damageCommitting, {
-                    id: "last",
+                    id: "last", priority: 0,
                     invoke(current, context, health) {
                         calls.push("last");
                         assert.deepEqual(context.previous, { hp: 100, minusHp: 0 });
@@ -160,31 +160,31 @@ test("HP-08: Health protection commits before its consequences and preserves the
                         assert.deepEqual(health, { hp: 1, minusHp: 50 });
                         return {
                             state: update(current, context.request.target, vitality.setContribution("defense", {
-                                id: "armor", value: [modifier.create({ addition: 20 })],
+                                id: "armor", group: null, value: [modifier.create({ addition: 20 })],
                             })),
                             value: { ...health, minusHp: 10 },
                         };
                     },
                 })
                 .set(vitality.damageCommitted, {
-                    id: "commit-consequences",
+                    id: "commit-consequences", priority: 0,
                     invoke(current, { request, application }) {
                         calls.push("committed");
                         committed++;
                         observed = application;
                         assert.deepEqual(get(current, request.target.id).vitality.health, application.after);
                         current = update(current, request.target, vitality.setMaxHpContribution({
-                            id: "larger-pool", value: [modifier.create({ multiplier: 1 })],
+                            id: "larger-pool", group: null, value: [modifier.create({ multiplier: 1 })],
                         }));
                         const recovery = healingRequest(null, request.target, 10);
                         return {
-                            state: hpHealing.applyHealing(recovery, hpHealing.calculateHealing(current, recovery)).state,
+                            state: hpHealing.applyHealing(recovery, hpHealing.calculateHealing(current, recovery, null), null).state,
                             value: undefined,
                         };
                     },
                 })
                 .set(hpDamage.targetApplied, {
-                    id: "target-observer",
+                    id: "target-observer", priority: 0,
                     invoke(current, { request, application }) {
                         calls.push("targetApplied");
                         assert.equal(application, observed);
@@ -192,13 +192,13 @@ test("HP-08: Health protection commits before its consequences and preserves the
                         return { state: current, value: undefined };
                     },
                 }),
-        }, position: [1, 0] },
+        }, hooks: Hooks.empty(), initial: {}, position: [1, 0] },
     ]);
     const source = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
     state = update(state, target, vitality.setMaxMinusHpRatio(1));
     state = update(state, source, units.setHook(hpDamage.sourceApplied, {
-        id: "source-observer",
+        id: "source-observer", priority: 0,
         invoke(current, { application }) {
             calls.push("sourceApplied");
             applied++;
@@ -207,8 +207,8 @@ test("HP-08: Health protection commits before its consequences and preserves the
         },
     }));
     const request = damageRequest(source, target, 150);
-    const protectedHit = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request), {
-        exclude: [[vitality.damageCommitting, null], [vitality.damageCommitted, null]],
+    const protectedHit = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request, null), {
+        exclude: [[vitality.damageCommitting, null], [vitality.damageCommitted, null]], forbidden: new Set(),
     });
     assert.equal(protectedHit.value.type, "APPLIED");
     assert.deepEqual(protectedHit.value.received, { type: "FIXED", amount: 150 });
@@ -231,7 +231,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
             return { state: remove(current, context.request.target, { reason: "SCRIPT" }), value };
         },
     }));
-    const unavailable = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request));
+    const unavailable = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request, null), null);
     assert.deepEqual(unavailable.value, { type: "UNAVAILABLE", received: { type: "FIXED", amount: 150 } });
     assert.equal(get(unavailable.state, target.id), undefined);
     assert.equal(committed, 1);
@@ -250,49 +250,49 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
         vitality: defineVitality(100, { recoverySpeed: defineAttribute(TICKS_PER_SECOND) }),
         hooks: Hooks.empty()
             .set(vitality.damageCommitting, {
-                id: "observe-committing",
+                id: "observe-committing", priority: 0,
                 invoke(current, _context, health) {
                     committing++;
                     return { state: current, value: health };
                 },
             })
             .set(vitality.damageCommitted, {
-                id: "observe-committed",
+                id: "observe-committed", priority: 0,
                 invoke(current) {
                     committed++;
                     return { state: current, value: undefined };
                 },
             })
             .set(hpHealing.targetApplied, {
-                id: "observe-healing",
+                id: "observe-healing", priority: 0,
                 invoke(current) {
                     healing++;
                     return { state: current, value: undefined };
                 },
             }),
-    }, position: [0, 0] }, { definition: {
+    }, hooks: Hooks.empty(), initial: {}, position: [0, 0] }, { definition: {
         id: "recovery-source",
         hooks: Hooks.empty().set(hpHealing.sourceApplied, {
-            id: "observe-finished-recovery",
+            id: "observe-finished-recovery", priority: 0,
             invoke(current, { request, application }) {
                 assert.equal(get(current, request.target.id), undefined);
                 capacityReport = application;
                 return { state: current, value: undefined };
             },
         }),
-    }, position: [1, 0] }]);
+    }, hooks: Hooks.empty(), initial: {}, position: [1, 0] }]);
     const target = units.ref(get(state, 0));
     assert.equal(vitality.resolveMaxMinusHp(get(state, 0).definition.vitality, get(state, 0).vitality), 0);
     state = update(state, target, vitality.setMaxMinusHpRatio(1));
 
     const initial = damageRequest(null, target, 150);
-    const first = hpDamage.applyDamage(initial, hpDamage.calculateDamage(state, initial));
+    const first = hpDamage.applyDamage(initial, hpDamage.calculateDamage(state, initial, null), null);
     assert.deepEqual(first.value.application, {
         before: { hp: 100, minusHp: 0 }, after: { hp: 1, minusHp: 50 }, hpLoss: 99, minusHpGain: 50,
     });
     assert.equal(first.value.killed, false);
     const followUp = damageRequest(null, target, 30);
-    const second = hpDamage.applyDamage(followUp, hpDamage.calculateDamage(first.state, followUp));
+    const second = hpDamage.applyDamage(followUp, hpDamage.calculateDamage(first.state, followUp, null), null);
     assert.deepEqual(get(second.state, 0).vitality.health, { hp: 1, minusHp: 80 });
     assert.equal(second.value.application.hpLoss, 0);
     assert.equal(second.value.application.minusHpGain, 30);
@@ -300,7 +300,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.equal(vitality.hpRatio(get(second.state, 0)), 0.01);
 
     const directRecoveryState = update(second.state, target, units.setHook(hpHealing.receiving, {
-        id: "reject-ordinary-healing",
+        id: "reject-ordinary-healing", priority: 0,
         invoke: () => assert.fail("direct HP recovery must not enter Healing"),
     }));
     const directlyRecovered = vitality.increaseHp(directRecoveryState, target, 200);
@@ -314,7 +314,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.deepEqual(get(naturallyRecovered, 0).vitality.health, { hp: 1, minusHp: 79 });
     assert.equal(naturallyRecovered.events.some(event => event.type === "HEAL"), false);
     const enlarged = update(second.state, target, vitality.setMaxHpContribution({
-        id: "larger-pool", value: [modifier.create({ multiplier: 1 })],
+        id: "larger-pool", group: null, value: [modifier.create({ multiplier: 1 })],
     }));
     assert.deepEqual(get(enlarged, 0).vitality.health, { hp: 1, minusHp: 79 });
     assert.equal(vitality.resolveMaxMinusHp(get(enlarged, 0).definition.vitality, get(enlarged, 0).vitality), 200);
@@ -322,7 +322,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.deepEqual(get(lowerCapacity, 0).vitality.health, { hp: 1, minusHp: 80 });
     assert.equal(vitality.resolveMaxMinusHp(get(lowerCapacity, 0).definition.vitality, get(lowerCapacity, 0).vitality), 50);
     const pausedRecovery = update(lowerCapacity, target, vitality.setContribution("recoverySpeed", {
-        id: "pause-recovery", value: [modifier.create({ addition: -TICKS_PER_SECOND })],
+        id: "pause-recovery", group: null, value: [modifier.create({ addition: -TICKS_PER_SECOND })],
     }));
     assert.equal(vitality.advance(pausedRecovery, target), pausedRecovery);
     assert.equal(get(vitality.advance(lowerCapacity, target), 0), undefined);
@@ -330,7 +330,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
 
     const capacityRecovery = healingRequest(units.ref(get(lowerCapacity, 1)), target, 1);
     const departedRecovery = hpHealing.applyHealing(capacityRecovery,
-        hpHealing.calculateHealing(lowerCapacity, capacityRecovery));
+        hpHealing.calculateHealing(lowerCapacity, capacityRecovery, null), null);
     assert.equal(departedRecovery.value.type, "APPLIED");
     assert.equal(departedRecovery.value.application, capacityReport);
     assert.deepEqual(capacityReport.before, { hp: 1, minusHp: 80 });
@@ -341,18 +341,18 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.equal(recoveryEvents[0].amount, 0);
 
     const recovery = healingRequest(null, target, 100);
-    const restored = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(second.state, recovery));
+    const restored = hpHealing.applyHealing(recovery, hpHealing.calculateHealing(second.state, recovery, null), null);
     assert.deepEqual(restored.value.application, {
         before: { hp: 1, minusHp: 80 }, after: { hp: 21, minusHp: 0 }, hpGain: 20, minusHpLoss: 80, overflow: 0,
     });
     const excess = healingRequest(null, target, 200);
-    const overflowing = hpHealing.applyHealing(excess, hpHealing.calculateHealing(restored.state, excess));
+    const overflowing = hpHealing.applyHealing(excess, hpHealing.calculateHealing(restored.state, excess, null), null);
     assert.deepEqual(overflowing.value.application, {
         before: { hp: 21, minusHp: 0 }, after: { hp: 100, minusHp: 0 }, hpGain: 79, minusHpLoss: 0, overflow: 121,
     });
 
     const lethal = damageRequest(null, target, 20);
-    const ended = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(second.state, lethal));
+    const ended = hpDamage.applyDamage(lethal, hpDamage.calculateDamage(second.state, lethal, null), null);
     assert.deepEqual(ended.value.application, {
         before: { hp: 1, minusHp: 80 }, after: { hp: 0, minusHp: 100 }, hpLoss: 1, minusHpGain: 20,
     });

@@ -13,9 +13,9 @@ import { battle, get } from "../helpers/battle.js";
 test("Facing keeps an instance direction and checks current restrictions unless explicitly forced", () => {
     const definition = {
         id: "facing", hooks: Hooks.empty(),
-        facing: { restrictions: [{ id: "locked", value: { allows: current => current.tick >= 5 } }] },
+        facing: { restrictions: [{ id: "locked", group: null, value: { allows: current => current.tick >= 5 } }] },
     };
-    const initial = battle([{ definition, position: [3, 1],
+    const initial = battle([{ definition, hooks: Hooks.empty(), position: [3, 1],
         initial: { facing: { direction: "RIGHT" } },
     }]);
     const host = units.ref(get(initial, 0));
@@ -33,7 +33,7 @@ test("Facing keeps an instance direction and checks current restrictions unless 
     state = facing.turn(state, host, "RIGHT");
     assert.equal(get(state, 0).facing.direction, "RIGHT");
     assert.equal(facing.sign(get(state, 0).facing.direction), 1);
-    state = update(state, host, facing.setRestriction({ id: "fixed", value: { allows: () => false } }));
+    state = update(state, host, facing.setRestriction({ id: "fixed", group: null, value: { allows: () => false } }));
     assert.equal(facing.turn(state, host, "LEFT"), state);
     state = update(state, host, facing.removeRestriction("fixed"));
     state = facing.turn(state, host, "LEFT");
@@ -41,7 +41,7 @@ test("Facing keeps an instance direction and checks current restrictions unless 
 
     let departureDirection;
     state = update(state, host, units.setHook(units.removing, {
-        id: "try-forced-turn",
+        id: "try-forced-turn", priority: 0,
         invoke(current) {
             const attempted = facing.turn(current, host, "RIGHT", "FORCED");
             departureDirection = host.get(attempted).facing.direction;
@@ -58,17 +58,17 @@ test("eligible movement faces its navigation direction independently of velocity
         locomotion: { speed: defineAttribute(0.1), halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 0.01 } },
     };
-    let state = battle([{ definition, position: [3, 1],
+    let state = battle([{ definition, hooks: Hooks.empty(), position: [3, 1],
         initial: { facing: { direction: "RIGHT" } },
     }]);
     const host = units.ref(get(state, 0));
     const context = { mode: "WALK", speedMultiplier: 1 };
     const left = { nextPoint: [1, 1], goal: [1, 1] };
     const right = { nextPoint: [6, 1], goal: [6, 1] };
-    state = update(state, host, locomotion.setRestriction({ id: "casting", value: { allows: () => false } }));
+    state = update(state, host, locomotion.setRestriction({ id: "casting", group: null, value: { allows: () => false } }));
     assert.equal(locomotion.advance(state, host, left, context), state);
     state = update(state, host, locomotion.removeRestriction("casting"));
-    state = update(state, host, facing.setRestriction({ id: "fixed", value: { allows: () => false } }));
+    state = update(state, host, facing.setRestriction({ id: "fixed", group: null, value: { allows: () => false } }));
     for (let advance = 0; advance < 4; advance++) {
         state = locomotion.advance(state, host, right, context);
     }
@@ -80,7 +80,7 @@ test("eligible movement faces its navigation direction independently of velocity
 
     const beforeTurn = get(state, 0).position[0];
     state = update(state, host, facing.setRestriction({
-        id: "fixed", value: { allows: (current, { self }) =>
+        id: "fixed", group: null, value: { allows: (current, { self }) =>
             self.position[0] > beforeTurn && host.get(current) === self },
     }));
     state = locomotion.advance(state, host, left, context);

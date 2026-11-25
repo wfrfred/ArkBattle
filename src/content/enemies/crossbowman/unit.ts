@@ -75,13 +75,23 @@ export function create(parameters: Parameters) {
         hooks: Hooks.empty()
             .set(unitHooks.entered, {
                 id: "enemy/restrict-movement-during-action",
+                priority: 0,
                 invoke: restrictMovementDuringAction,
             })
             .set(unitHooks.entered, {
                 id: "enemy/face-route",
+                priority: 0,
                 invoke: faceRoute,
             }),
-        elemental: createElemental({ receiver: "ENEMY", boss: parameters.rank === "BOSS" }),
+        elemental: createElemental({
+            receiver: "ENEMY",
+            boss: parameters.rank === "BOSS",
+            maxEp: null,
+            recoveryPerSecond: 0,
+            elementResistance: 0,
+            damageResistance: 0,
+            burstRecoverySpeed: 1,
+        }),
         facing: { restrictions: [] },
         vitality: {
             maxHp: { default: parameters.maxHp, min: 1, max: null },
@@ -139,7 +149,7 @@ export function create(parameters: Parameters) {
             definitions: [melee, ranged],
             select: (battle, self) => ({
                 state: battle,
-                value: hasExecution(battle, ref(self))
+                value: hasExecution(battle, ref(self), null)
                     ? []
                     : [self.blockable.relation !== null ? melee.id : ranged.id],
             }),

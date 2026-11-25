@@ -65,7 +65,7 @@ export function appear(position: WorldPosition): Change<Unit & Presence> {
 }
 
 function restrictions(present: boolean): Change<Unit> {
-    const entry = { id: restrictionId, value: restriction };
+    const entry = { id: restrictionId, group: null, value: restriction };
 
     return [
         optional(
@@ -96,7 +96,7 @@ function restrictions(present: boolean): Change<Unit> {
             vitality.hasVitality,
             present
                 ? vitality.removeRestriction(restrictionId)
-                : vitality.setRestriction({ id: restrictionId, value: hpRestriction }),
+                : vitality.setRestriction({ id: restrictionId, group: null, value: hpRestriction }),
         ),
         optional(
             elemental.hasElemental,

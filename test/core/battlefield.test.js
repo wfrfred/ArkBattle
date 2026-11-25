@@ -22,6 +22,7 @@ test("a field batch publishes final occupancy without moving bodies or executing
         id,
         occupancy: { slot: "OCCUPANT" },
         hooks: Hooks.empty().set(unitLifecycle.entered, {
+                priority: 0,
                 id: "entry",
 
                 invoke: (state) => {
@@ -32,21 +33,23 @@ test("a field batch publishes final occupancy without moving bodies or executing
     });
     const state = battle([
         {
+            hooks: Hooks.empty(),
             definition: definition("first"),
             position: [0, 0],
-            initial: { occupancy: { tile: [0, 0] } },
+            initial: { occupancy: { direction: null, tile: [0, 0] } },
         },
         {
+            hooks: Hooks.empty(),
             definition: definition("second"),
             position: [1, 0],
-            initial: { occupancy: { tile: [0, 1] } },
+            initial: { occupancy: { direction: null, tile: [0, 1] } },
         },
     ]);
     const first = get(state, 0),
         second = get(state, 1);
     const next = updateUnits(state.battlefield, [
-        { ...first, occupancy: { ...first.occupancy, tile: [0, 1] } },
-        { ...second, occupancy: { ...second.occupancy, tile: [0, 0] } },
+        { ...first, occupancy: { direction: null, ...first.occupancy, tile: [0, 1] } },
+        { ...second, occupancy: { direction: null, ...second.occupancy, tile: [0, 0] } },
     ]);
 
     assert.equal(at(next, [0, 0]).occupant.id, 1);
@@ -64,12 +67,14 @@ test("fractional tile addresses cannot alias an integer tile", () => {
     assert.equal(getTile(state.battlefield.map, tile), undefined);
 
     assert.throws(() => battle([{
+        hooks: Hooks.empty(),
         definition: { id: "occupant", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" } },
         position: [0, 0],
-        initial: { occupancy: { tile } },
+        initial: { occupancy: { direction: null, tile } },
     }], dimensions), RangeError);
 
     const covered = overlays.create(state, "WALK", {
+        cost: 1,
         cells: [tile],
         denyPassage: true,
         denyDepartures: [],
@@ -80,7 +85,7 @@ test("fractional tile addresses cannot alias an integer tile", () => {
 test("navigation follows current tile costs, directional restrictions and independent overlays", () => {
     const original = battle([], { rows: 1, columns: 3 });
 
-    const blocked = { cells: [[0, 1]], denyPassage: true, denyDepartures: [] };
+    const blocked = { cost: 1, cells: [[0, 1]], denyPassage: true, denyDepartures: [] };
     const first = overlays.create(original, "WALK", blocked);
     const second = overlays.create(first.state, "WALK", { ...blocked, cost: 7 });
     assert.deepEqual(nextPoint(second.state.battlefield.navigation, "FLY", [0, 0], [2, 0]), [2, 0]);
@@ -89,6 +94,7 @@ test("navigation follows current tile costs, directional restrictions and indepe
     const covered = overlays.remove(flight.state, first.value);
     assert.equal(nextPoint(covered.battlefield.navigation, "WALK", [0, 0], [2, 0]), null);
     const direction = overlays.update(covered, second.value, {
+        cost: 1,
         cells: [[0, 0]],
         denyPassage: false,
         denyDepartures: ["RIGHT"],
@@ -137,9 +143,12 @@ test("spatial queries distinguish body position from hitboxes and return current
     const duringRemoval = [];
     const state = battle([
         {
+            hooks: Hooks.empty(),
+            initial: {},
             definition: {
                 id: "offset",
                 hooks: Hooks.empty().set(unitLifecycle.removing, {
+                    priority: 0,
                     id: "check-contact",
                     invoke(current, { unit }) {
                         duringRemoval.push({
@@ -153,8 +162,10 @@ test("spatial queries distinguish body position from hitboxes and return current
             },
             position: [0, 0],
         },
-        { definition: { id: "body", hooks: Hooks.empty() }, position: [2, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: { id: "body", hooks: Hooks.empty() }, position: [2, 0] },
         {
+            hooks: Hooks.empty(),
+            initial: {},
             definition: {
                 id: "near",
                 hooks: Hooks.empty(),

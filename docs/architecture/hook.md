@@ -16,7 +16,7 @@ Key 对象本身是运行身份，name 只用于诊断。同名新 Key 不能读
 
 ID 的范围是集合 × Key × ID。无登记返回空集合；同键同 ID 的 set 替换并保留位置，新 ID 追加，remove 只撤销该项。merge 按后者条目顺序应用同样规则。删除不会恢复以前被覆盖的固有登记。
 
-所有登记式 Hook 共用 `priority?: number`，默认 0，派发按降序、同级按登记顺序。存储顺序不变，不跨业务阶段重排。Definition 的单一程序没有 priority。
+所有登记式 Hook 共用 `priority: number`，普通优先级显式提供 0，派发按降序、同级按登记顺序。存储顺序不变，不跨业务阶段重排。Definition 的单一程序没有 priority。
 
 ## 固有声明与初始化
 

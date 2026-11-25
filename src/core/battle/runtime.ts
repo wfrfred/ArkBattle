@@ -1,4 +1,4 @@
-import { createBattleState, DEFAULT_PUSH_MULTIPLIER, type State } from "./state.js";
+import { createBattleState, type State } from "./state.js";
 import { advance as advanceEffects } from "../effect/operations.js";
 import { assert, assertNonnegativeNumber } from "../common/assert.js";
 import { replaceIn } from "../common/object.js";
@@ -34,7 +34,7 @@ export function initialize<
     UnitDefinitions extends readonly (UnitDefinition & Partial<CapabilityDefinitions>)[],
 >(input: Input<CardStates, EffectStates, UnitDefinitions>): State;
 export function initialize(input: Input<readonly any[], readonly any[]>): State {
-    const { pushMultiplier = DEFAULT_PUSH_MULTIPLIER } = input;
+    const { pushMultiplier } = input;
     assertNonnegativeNumber(input.routeMoveMultiplier, "routeMoveMultiplier");
     assertNonnegativeNumber(pushMultiplier, "pushMultiplier");
     assert(
@@ -53,7 +53,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
             nextEffectId: 0,
         },
         0,
-        initializeDeployment(input.deployment?.definition),
+        initializeDeployment(input.deployment === null ? null : input.deployment.definition),
         initializeSchedule(input.schedule),
         {
             routeMoveMultiplier: input.routeMoveMultiplier,

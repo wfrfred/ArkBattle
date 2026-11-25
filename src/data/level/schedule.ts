@@ -202,7 +202,7 @@ export function compileSpawnSchedule(
     level: ArknightsLevelDefinition,
     selection: ArknightsScheduleSelection,
     resolveEnemy: ArknightsEnemyResolver,
-    rngState: Seed = 0,
+    rngState: Seed,
 ): ArknightsScheduleCompilation {
     const selected = new Set<string>();
 

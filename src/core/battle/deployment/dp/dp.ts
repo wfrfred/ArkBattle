@@ -26,14 +26,7 @@ export interface State {
     readonly recoverySpeed: readonly Contribution<Modifier>[];
 }
 
-const emptyDefinition: Definition = {
-    initial: 0,
-    min: 0,
-    max: 99,
-    recoveryInterval: null,
-};
-
-export function initialize(definition: Definition = emptyDefinition): State {
+export function initialize(definition: Definition): State {
     const { initial, min, max, recoveryInterval } = definition;
     assertFiniteNumber(initial, "initial deployment points");
     assertFiniteNumber(min, "deployment point minimum");
@@ -94,7 +87,7 @@ export function removeMinContribution(battle: BattleState, id: string): BattleSt
 export function setMaxContribution(
     battle: BattleState,
     entry: Contribution<Modifier>,
-    clamp = false,
+    clamp: boolean,
 ): BattleState {
     const { dp } = battle.deployment;
     const next = replaceIn(dp, ["max"], entries.set(dp.max, entry));

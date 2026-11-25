@@ -45,12 +45,12 @@ test("real hidden devices preserve placement, static classification and target c
     assert.equal(platformData.instance.alias, "trap_1106_achplat#001");
     assert.equal(crateCreation.type, "UNIT");
     assert.equal(platformCreation.type, "UNIT");
-    const level = parseLevelDefinition(raw, {
+    const level = parseLevelDefinition(raw, { mire: null, deepsea: null, tileDeploymentPrefabs: [],
         consumeTileBlackboard: (_context, entry) => ["isValidHand", "previewNotAlloed"].includes(entry.key),
     });
     let battle = initialize({
         map: level.map, initialUnits: [], initialEffects: [],
-        schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, rngState: 123,
+        schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, pushMultiplier: 0.5, deployment: null, rngState: 123,
     });
     const initializedCrate = initializeUnit(battle, crateCreation);
     battle = add(initializedCrate.state, initializedCrate.value);

@@ -18,10 +18,10 @@ export function fixture(units = [], { rows = 3, columns = 12 } = {}) {
         terrain: normal.create({}),
         initial: {
             elevation: "LOWLAND", placement: "ALL", passability: "ALL",
-            walkCost: 1, allowsBlocking: true, siteCondition: normalSite,
+            walkCost: 1, allowsBlocking: true, siteCondition: normalSite, collision: null,
         },
     });
-    const map = createMap(rows, columns, tileEntries(Array(rows * columns).fill(tile)));
+    const map = createMap(rows, columns, tileEntries(Array(rows * columns).fill(tile)), [], []);
     let battle = createBattleState(create(map));
     for (const unit of units) battle = addUnit(battle, unit);
     return battle;
@@ -35,7 +35,7 @@ export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, l
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { classification: { type: "DEVICE", side, filterTags: [], groupTags: [] } }),
             presence: {}, vitality: vitality(100),
-            blocker: { layer, capacity, radius, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY") }] },
+            blocker: { layer, capacity, radius, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY"), group: null }] },
             ...definition,
         },
     });

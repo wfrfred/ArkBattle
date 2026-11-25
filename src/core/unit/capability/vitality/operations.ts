@@ -61,7 +61,7 @@ export function receiveDamage(
     battle: BattleState,
     context: damage.ReceivingContext,
     pending: damage.Pending,
-    options?: hooks.Options,
+    options: hooks.Options | null,
 ): Result<damage.Pending> {
     const result = dispatchHook(battle, context, pending, damageReceiving, options);
 
@@ -78,7 +78,7 @@ export function receiveHealing(
     battle: BattleState,
     context: healing.ReceivingContext,
     pending: healing.Pending,
-    options?: hooks.Options,
+    options: hooks.Options | null,
 ): Result<healing.Pending> {
     const result = dispatchHook(battle, context, pending, healingReceiving, options);
 
@@ -107,6 +107,7 @@ export function commitDamage(
             resolveMaxMinusHp(unit.definition.vitality, unit.vitality),
         ),
         damageCommitting,
+        null,
     );
     battle = committed.state;
     const current = target.get(battle);
@@ -148,6 +149,7 @@ export function commitDamage(
         { request: context.request, application },
         undefined,
         damageCommitted,
+        null,
     );
 
     return {
@@ -233,7 +235,7 @@ function dispatchHook<C extends damage.Context | healing.Context, T, H extends h
     context: C,
     initial: T,
     key: hooks.Key<H, Unit & Vitality>,
-    options?: hooks.Options,
+    options: hooks.Options | null,
 ): Result<T> {
     const target = context.request.target;
 

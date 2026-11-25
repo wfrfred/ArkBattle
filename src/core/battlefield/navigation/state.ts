@@ -18,10 +18,9 @@ export function create(baseline: Readonly<Record<MotionMode, Map>>): State {
 }
 
 export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): State {
-    if (overlay.cost !== undefined) {
-        assertPositiveSafeInteger(overlay.cost, "navigation overlay cost");
-    }
-    if (mode === "FLY" && overlay.cost !== undefined && overlay.cost !== 1) {
+    assertPositiveSafeInteger(overlay.cost, "navigation overlay cost");
+
+    if (mode === "FLY" && overlay.cost !== 1) {
         throw new RangeError("FLY navigation overlay cost must be 1");
     }
 

@@ -57,6 +57,11 @@ export function create(parameters: Parameters) {
     const elemental = createElemental({
         receiver: "ENEMY",
         boss: parameters.rank === "BOSS",
+        maxEp: null,
+        recoveryPerSecond: 0,
+        elementResistance: 0,
+        damageResistance: 0,
+        burstRecoverySpeed: 1,
     });
     const attack = createAttack(parameters.timing);
 
@@ -65,10 +70,12 @@ export function create(parameters: Parameters) {
         hooks: Hooks.empty()
             .set(unitHooks.entered, {
                 id: "enemy/restrict-movement-during-action",
+                priority: 0,
                 invoke: restrictMovementDuringAction,
             })
             .set(unitHooks.entered, {
                 id: "enemy/face-route",
+                priority: 0,
                 invoke: faceRoute,
             }),
         elemental,

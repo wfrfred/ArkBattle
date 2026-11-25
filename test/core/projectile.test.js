@@ -20,7 +20,7 @@ function create(battle, definition, state = {}) {
 
 function runtime(initialUnits) {
     return createBattle(initialUnits.map(self => ({
-        definition: self.definition, position: self.position,
+        definition: self.definition, hooks: Hooks.empty(), initial: {}, position: self.position,
     })), { rows: 1, columns: 8, rngState: 17 });
 }
 
@@ -103,9 +103,9 @@ test("Slowable projectiles compose the contributions of each source and remove t
     assert.equal(references[0], projectiles.ref(initialized.value));
     const [reference] = references;
 
-    let state = projectiles.setMoveContribution(ordinary.state, reference, { id: "a", value: 0.5 });
-    state = projectiles.setMoveContribution(state, reference, { id: "b", value: 0.25 });
-    state = projectiles.setMoveContribution(state, reference, { id: "b", value: 0.5 });
+    let state = projectiles.setMoveContribution(ordinary.state, reference, { id: "a", group: null, value: 0.5 });
+    state = projectiles.setMoveContribution(state, reference, { id: "b", group: null, value: 0.25 });
+    state = projectiles.setMoveContribution(state, reference, { id: "b", group: null, value: 0.5 });
     state = advance(state, candidates(state));
     assert.deepEqual(reference.get(state).position, [0.25, 0]);
 
@@ -122,7 +122,7 @@ test("Runtime freezes Projectile candidates before Unit callbacks and Action out
         return battle;
     } };
     const fromAction = { id: "action-child", onEnter(battle) { observed.push(["action-create", battle.tick]); return battle; }, onTick(battle, self) { observed.push([self.definition.id, battle.tick]); return battle; } };
-    const source = unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick",  invoke(battle) {
+    const source = unit(0, { hooks: Hooks.empty().set(unitLifecycle.tick, { id: "test/tick", priority: 0,  invoke(battle) {
         return { state: battle.tick === 0 ? create(battle, fromUnit).state : battle, value: undefined };
     } }), action: actionDefinition(0, { output: battle => create(battle, fromAction).state }) });
     let rt = runtime([source, unit(1)]);

@@ -25,9 +25,9 @@ import { TICKS_PER_SECOND } from "../../core/tick.js";
 import type { DeepseaParams, InfectionParams, MireParams } from "./definition.js";
 
 interface Modifiers {
-    readonly attack?: modifier.Modifier;
-    readonly attackSpeed?: modifier.Modifier;
-    readonly movementSpeed?: modifier.Modifier;
+    readonly attack: modifier.Modifier | null;
+    readonly attackSpeed: modifier.Modifier | null;
+    readonly movementSpeed: modifier.Modifier | null;
 }
 
 interface PeriodicState {
@@ -46,7 +46,7 @@ function changeModifiers(
     battle: BattleState,
     host: Ref<Unit>,
     id: string,
-    modifiers?: Modifiers,
+    modifiers: Modifiers,
 ): BattleState {
     return units.update(
         battle,
@@ -54,21 +54,29 @@ function changeModifiers(
         [
             units.optional(
                 offense.hasOffense,
-                modifiers?.attack === undefined
+                modifiers.attack === null
                     ? offense.removeAttackContribution(id)
-                    : offense.setAttackContribution({ id, value: [modifiers.attack] }),
+                    : offense.setAttackContribution({ id, group: null, value: [modifiers.attack] }),
             ),
             units.optional(
                 action.hasAction,
-                modifiers?.attackSpeed === undefined
+                modifiers.attackSpeed === null
                     ? action.removeSpeedContribution(id)
-                    : action.setSpeedContribution({ id, value: [modifiers.attackSpeed] }),
+                    : action.setSpeedContribution({
+                          id,
+                          group: null,
+                          value: [modifiers.attackSpeed],
+                      }),
             ),
             units.optional(
                 locomotion.hasLocomotion,
-                modifiers?.movementSpeed === undefined
+                modifiers.movementSpeed === null
                     ? locomotion.removeSpeedContribution(id)
-                    : locomotion.setSpeedContribution({ id, value: [modifiers.movementSpeed] }),
+                    : locomotion.setSpeedContribution({
+                          id,
+                          group: null,
+                          value: [modifiers.movementSpeed],
+                      }),
             ),
         ].reduce(units.compose),
     );
@@ -99,7 +107,7 @@ function damage(
         },
     };
 
-    return applyDamage(request, calculateDamage(battle, request)).state;
+    return applyDamage(request, calculateDamage(battle, request, null), null).state;
 }
 
 export function createInfectionEffect(params: InfectionParams): Definition<InfectionState, Unit> {
@@ -115,9 +123,15 @@ export function createInfectionEffect(params: InfectionParams): Definition<Infec
             return changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
                 attack: modifier.create({ multiplier: params.attackBonusRatio }),
                 attackSpeed: modifier.create({ addition: params.attackSpeedBonus }),
+                movementSpeed: null,
             });
         },
-        onDisable: (battle, self) => changeModifiers(battle, self.ref.host, `terrain/${self.id}`),
+        onDisable: (battle, self) =>
+            changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
+                attack: null,
+                attackSpeed: null,
+                movementSpeed: null,
+            }),
         onTick(battle, self) {
             const remainingTicks = self.state.remainingTicks - 1;
 
@@ -139,11 +153,17 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
         initialize: (battle) => ({ nextTick: battle.tick }),
         onEnable(battle, self) {
             return changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
+                attack: null,
                 attackSpeed: modifier.create({ multiplier: params.attackSpeedModifier }),
                 movementSpeed: modifier.create({ finalScaler: params.moveSpeedMultiplier }),
             });
         },
-        onDisable: (battle, self) => changeModifiers(battle, self.ref.host, `terrain/${self.id}`),
+        onDisable: (battle, self) =>
+            changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
+                attack: null,
+                attackSpeed: null,
+                movementSpeed: null,
+            }),
         onTick(battle, self) {
             if (battle.tick < self.state.nextTick) {
                 return battle;
@@ -162,14 +182,11 @@ export function createDeepseaEffect(params: DeepseaParams): Definition<PeriodicS
 export function createMireEffect(params: MireParams): Definition<MireState, Unit> {
     function stackModifiers(stacks: number, enemy: boolean): Modifiers {
         return {
+            attack: null,
             attackSpeed: modifier.create({ multiplier: stacks * params.attackSpeedPerStack }),
-            ...(enemy
-                ? {
-                      movementSpeed: modifier.create({
-                          multiplier: stacks * params.moveSpeedRatioPerStack,
-                      }),
-                  }
-                : {}),
+            movementSpeed: enemy
+                ? modifier.create({ multiplier: stacks * params.moveSpeedRatioPerStack })
+                : null,
         };
     }
 
@@ -224,6 +241,11 @@ export function createMireEffect(params: MireParams): Definition<MireState, Unit
                 stackModifiers(stacks, enemy),
             );
         },
-        onDisable: (battle, self) => changeModifiers(battle, self.ref.host, `terrain/${self.id}`),
+        onDisable: (battle, self) =>
+            changeModifiers(battle, self.ref.host, `terrain/${self.id}`, {
+                attack: null,
+                attackSpeed: null,
+                movementSpeed: null,
+            }),
     };
 }

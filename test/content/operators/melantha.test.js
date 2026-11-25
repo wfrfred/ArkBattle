@@ -21,7 +21,7 @@ import { install, remove as removeEffect } from "../../../dist/core/effect/index
 import { advance as advanceCombat } from "../../../dist/core/battle/steps/combat.js";
 import { effectInitial } from "../../helpers/effect.js";
 
-const configuration = { elite: 1, level: 55, potential: 6, skillIndex: 0, skillLevel: 7, trust: 100 };
+const configuration = { module: null, elite: 1, level: 55, potential: 6, skillIndex: 0, skillLevel: 7, trust: 100 };
 const receiver = (restrictions = []) => initialize({
     id: 1, position: [0.6, 0], definition: {
         id: "enemy", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions },
@@ -41,8 +41,8 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
     const base = (738 + 25 + 65) * 1.08;
     assert.equal(resolveAttack(battle, actor.ref.get(battle)), base);
 
-    battle = modify(battle, ref(actor), 40).state;
-    battle = activate(battle, skillRef(getUnit(battle, 0))).state;
+    battle = modify(battle, ref(actor), 40, false).state;
+    battle = activate(battle, skillRef(getUnit(battle, 0)), null).state;
     const attack = actor.action.actions.get("normal-attack").definition;
     const started = start(battle, actionRef(actor.action.actions.get(attack)));
     battle = started.state;
@@ -55,7 +55,7 @@ test("Melantha's talent and S1 affect real attacks, and the talent remains after
 
 test("Melantha's ordinary attack still requires a visible target while blocking it", () => {
     const actor = source();
-    const enemy = receiver([{ id: "hidden", value: invisibleRestriction }]);
+    const enemy = receiver([{ id: "hidden", group: null, value: invisibleRestriction }]);
     const battle = advanceBlocking(add(add(createBattleState(fixtureBattlefieldState([])), actor), enemy));
     assert.equal(relations(battle)[0].blocked, enemy.ref);
     const attack = actor.action.actions.get("normal-attack").definition;

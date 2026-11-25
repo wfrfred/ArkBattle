@@ -19,7 +19,7 @@ const mudrock = "char_311_mudrok";
 const melantha = "char_208_melan";
 const moduleX = "uniequip_002_mudrok";
 const moduleY = "uniequip_003_mudrok";
-const base = { elite: 2, level: 90, potential: 1, skillIndex: 1, skillLevel: 7, trust: 0 };
+const base = { module: null, elite: 2, level: 90, potential: 1, skillIndex: 1, skillLevel: 7, trust: 0 };
 
 function select(id = mudrock, configuration = base, source = tables) {
     const character = record(source.characters[id], "operator character record");
@@ -139,7 +139,7 @@ test("trust rounds its increment separately and saturates at 100 percent", () =>
     assert.equal(values[1].defense, 631);
     assert.deepEqual(values[2], values[3]);
     const interpolated = select(melantha, {
-        elite: 1, level: 28, potential: 1, skillIndex: 0, skillLevel: 7, trust: 10,
+        module: null, elite: 1, level: 28, potential: 1, skillIndex: 0, skillLevel: 7, trust: 10,
     });
     assert.equal(interpolated.attributes.attack, 666);
 });
@@ -158,7 +158,7 @@ test("selected skills enforce unlocks, mastery gates and matching data", () => {
 });
 
 test("same-phase talent upgrades remain separate from static attributes", () => {
-    const configuration = { elite: 1, level: 54, potential: 6, skillIndex: 0, skillLevel: 7, trust: 100 };
+    const configuration = { module: null, elite: 1, level: 54, potential: 6, skillIndex: 0, skillLevel: 7, trust: 100 };
     const lower = select(melantha, configuration);
     const maximum = select(melantha, { ...configuration, level: 55 });
     assert.equal(talent(lower, "1").atk, 0.04);

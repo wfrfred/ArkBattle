@@ -35,7 +35,7 @@ export interface State {
 
 export interface Initial {
     readonly tile: TilePosition;
-    readonly direction?: Direction;
+    readonly direction: Direction | null;
 }
 
 export interface Occupancy {
@@ -67,6 +67,7 @@ export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
             hooks: unit.hooks
                 .set(lifecycle.entered, {
                     id: "@occupancy/enter",
+                    priority: 0,
                     invoke: (current, self) => ({
                         state: enter(current, ref(self as Unit & Occupancy)),
                         value: undefined,
@@ -74,6 +75,7 @@ export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
                 })
                 .set(lifecycle.removed, {
                     id: "@occupancy/leave",
+                    priority: 0,
                     invoke: (current, departure) => ({
                         state: leave(current, departure.unit as Unit & Occupancy),
                         value: undefined,
@@ -81,7 +83,7 @@ export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
                 }),
             occupancy: {
                 tile: initial.tile,
-                direction: initial.direction ?? null,
+                direction: initial.direction,
                 pair: null,
             },
         },

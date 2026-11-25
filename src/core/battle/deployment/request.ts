@@ -19,7 +19,7 @@ export interface Quote {
 export interface DeployRequest<T extends Card<any> = Card> {
     readonly card: Ref<T>;
     readonly tilePosition: TilePosition;
-    readonly direction?: Direction;
+    readonly direction: Direction | null;
     readonly quote: Quote;
     readonly restrictions: readonly Contribution<Restriction>[];
     readonly hooks: Hooks;

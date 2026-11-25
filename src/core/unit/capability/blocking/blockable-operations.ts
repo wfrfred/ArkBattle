@@ -22,6 +22,7 @@ const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
 
 export const removing: RemovingHook = {
     id: "@blockable/prepare",
+    priority: 0,
     invoke: (battle, { unit }) => ({
         state: release(battle, units.ref(unit as Unit & Blockable)),
         value: undefined,

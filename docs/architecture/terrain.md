@@ -14,7 +14,7 @@ siteCondition 是单个条件身份或 null，null 不等于普通场地条件�
 
 ## 地形控制器
 
-控制器使用 `Definition<ContactState, null>` 表达独立的全场效果，开场通过 `initialEffects` 安装，运行中通过 `effect.install(battle, null, definition, initial)` 安装。两种入口均显式提供完整 Initial。Content 的 [地形控制器工厂](../../src/content/terrain/controller.ts) 提供具体程序。控制器沿用 [Effect](effect.md) 的登记、状态修改、启停、推进和移除，并可作为其他 Effect 的 Lifetime 依赖，不另建生命周期协议。
+控制器使用 `Definition<ContactState, null>` 表达独立的全场效果，开场通过 `initialEffects` 安装，运行中通过 `effect.install(battle, null, definition, initial)` 安装。两种入口均显式提供完整 Initial。Content 的 [地形控制器工厂](../../src/content/terrain/controller.ts) 提供具体程序；indices 为 null 时扫描全部对应地形，数组时仅扫描指定地块。各地形明确提供 retainOnLeave 策略；宿主修正中无对应修正的字段为 null。控制器沿用 [Effect](effect.md) 的登记、状态修改、启停、推进和移除，并可作为其他 Effect 的 Lifetime 依赖，不另建生命周期协议。
 
 ## 地形接触与调度
 

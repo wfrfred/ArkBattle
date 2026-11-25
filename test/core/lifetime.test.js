@@ -27,10 +27,11 @@ test("Skill and Burst end notifications observe their cleared state while the ow
     const definition = {
         id: "owner",
         vitality: defineVitality(10000),
-        elemental: createElementalDefinition({ receiver: "CHARACTER" }),
+        elemental: createElementalDefinition({ boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1, receiver: "CHARACTER" }),
         skill: { definition: program },
         hooks: Hooks.empty()
             .set(skills.activationEnded, {
+                priority: 0,
                 id: "activation-ended",
                 invoke(state, { host }) {
                     const current = host.get(state);
@@ -40,6 +41,7 @@ test("Skill and Burst end notifications observe their cleared state while the ow
                 },
             })
             .set(elemental.burstEnded, {
+                priority: 0,
                 id: "burst-ended",
                 invoke(state, { host }) {
                     const current = host.get(state);
@@ -49,12 +51,12 @@ test("Skill and Burst end notifications observe their cleared state while the ow
                 },
             }),
     };
-    let state = battle([{ definition, position: [1, 1] }]);
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition, position: [1, 1] }]);
     const owner = units.ref(units.all(state).find(() => true));
-    const activated = skills.activate(state, skills.ref(owner.get(state).skill));
+    const activated = skills.activate(state, skills.ref(owner.get(state).skill), null);
     assert.notEqual(activated.value, null);
     const request = { source: null, target: owner, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 1000 } };
-    const burst = epDamage.applyDamage(request, epDamage.calculateDamage(activated.state, request));
+    const burst = epDamage.applyDamage(request, epDamage.calculateDamage(activated.state, request, null), null);
     assert.notEqual(burst.value.application.burst, null);
     state = remove(burst.state, owner, { reason: "SCRIPT" });
     assert.equal(owner.get(state), undefined);
@@ -65,9 +67,12 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
     const calls = [];
     let state = battle([
         {
+            hooks: Hooks.empty(),
+            initial: {},
             definition: {
                 id: "owner",
                 hooks: Hooks.empty().set(unitLifecycle.removed, {
+                        priority: 0,
                         id: "observe-removal",
 
                         invoke(current, departure) {
@@ -140,7 +145,7 @@ test("a node waits for dependent finalizers and repeated requests preserve the f
 });
 
 test("defer executes immediately outside a settlement", () => {
-    const state = battle([{ definition: { id: "owner", hooks: Hooks.empty() }, position: [0, 0] }]);
+    const state = battle([{ hooks: Hooks.empty(), initial: {}, definition: { id: "owner", hooks: Hooks.empty() }, position: [0, 0] }]);
     const owner = units.ref(units.all(state).find(() => true));
 
     const result = lifetimes.defer(state, current => remove(current, owner, { reason: "SCRIPT" }));
@@ -152,9 +157,12 @@ test("defer waits for finalizers and flushes in registration order across new se
     const calls = [];
     const initial = battle([
         {
+            hooks: Hooks.empty(),
+            initial: {},
             definition: {
                 id: "owner",
                 hooks: Hooks.empty().set(unitLifecycle.removed, {
+                    priority: 0,
                     id: "defer-b",
                     invoke(current) {
                         calls.push("owner-removed");
@@ -172,9 +180,12 @@ test("defer waits for finalizers and flushes in registration order across new se
             position: [0, 0],
         },
         {
+            hooks: Hooks.empty(),
+            initial: {},
             definition: {
                 id: "nested",
                 hooks: Hooks.empty().set(unitLifecycle.removed, {
+                    priority: 0,
                     id: "defer-c",
                     invoke(current) {
                         calls.push("nested-removed");
@@ -191,7 +202,7 @@ test("defer waits for finalizers and flushes in registration order across new se
             },
             position: [1, 0],
         },
-        { definition: { id: "last", hooks: Hooks.empty() }, position: [2, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: { id: "last", hooks: Hooks.empty() }, position: [2, 0] },
     ]);
     const [owner, nested, last] = [...units.all(initial)].map(units.ref);
     const installed = effects.install(initial, owner, {
@@ -245,12 +256,15 @@ test("an ending ancestor freezes dependency edges before its active Action execu
     };
     let state = battle([
         {
+            hooks: Hooks.empty(),
+            initial: {},
             definition: {
                 id: "source",
                 action: { speed: defineAttribute(100, 20), interval: defineAttribute(10),
                     definitions: [program],
                 },
                 hooks: Hooks.empty().set(unitLifecycle.removing, {
+                        priority: 0,
                         id: "bind-during-departure",
 
                         invoke(current) {
@@ -278,7 +292,7 @@ test("an ending ancestor freezes dependency edges before its active Action execu
             },
             position: [0, 0],
         },
-        { definition: { id: "recipient", hooks: Hooks.empty() }, position: [1, 0] },
+        { hooks: Hooks.empty(), initial: {}, definition: { id: "recipient", hooks: Hooks.empty() }, position: [1, 0] },
     ]);
     const source = units.all(state).find((unit) => unit.definition.id === "source");
     const started = actions.start(state, actions.ref(source.action.actions.get(program)));

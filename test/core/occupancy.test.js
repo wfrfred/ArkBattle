@@ -19,6 +19,7 @@ const operator = {
 };
 const operatorCard = createCardDefinition({ policy: "DEFAULT", slots: 1 });
 const account = {
+    costCeiling: 99,
     dp: { initial: 50, min: 0, max: 99, recoveryInterval: null },
     slot: { limit: 3 },
 };
@@ -72,20 +73,20 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     const [supportCard, unitCard] = [...cards.all(state)].map(cards.ref);
     const placedSupport = deployment.deploy(
         state,
-        deployment.createRequest(state, supportCard, [1, 2]),
+        deployment.createRequest(state, supportCard, [1, 2], null),
     );
     state = placedSupport.state;
     let replacement;
-    const request = deployment.createRequest(state, unitCard, [1, 2]);
+    const request = deployment.createRequest(state, unitCard, [1, 2], null);
     const placedUnit = deployment.deploy(state, {
         ...request,
         hooks: Hooks.empty().set(unitLifecycle.removed, {
-                id: "replace-on-leave",
+                id: "replace-on-leave", priority: 0,
 
                 invoke: (current) => {
                     const result = deployment.deploy(
                         current,
-                        deployment.createRequest(current, unitCard, [1, 2]),
+                        deployment.createRequest(current, unitCard, [1, 2], null),
                     );
                     assert.equal(result.value.type, "DEPLOYED");
                     replacement = result.value.unit;
@@ -116,7 +117,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
 
     state = deployment.retreat(state, placedSupport.value.unit);
     assert.equal(replacement.get(state).occupancy.pair, null);
-    const returned = deployment.deploy(state, deployment.createRequest(state, supportCard, [1, 2]));
+    const returned = deployment.deploy(state, deployment.createRequest(state, supportCard, [1, 2], null));
     assert.equal(returned.value.type, "DEPLOYED");
     assert.notEqual(returned.value.unit, replacement);
     state = returned.state;

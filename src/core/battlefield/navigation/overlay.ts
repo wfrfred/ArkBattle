@@ -7,7 +7,7 @@ export interface Input {
     readonly cells: readonly TilePosition[];
     readonly denyPassage: boolean;
     readonly denyDepartures: readonly Direction[];
-    readonly cost?: number;
+    readonly cost: number;
 }
 
 export interface Overlay extends Identified<object>, Input {}
@@ -33,7 +33,7 @@ export function apply(base: Map, overlays: readonly Overlay[]): Map {
             }
 
             const passable = cell.passable && !overlay.denyPassage;
-            const cost = Math.max(cell.cost, overlay.cost ?? 1);
+            const cost = Math.max(cell.cost, overlay.cost);
             if (
                 passable !== cell.passable ||
                 cost !== cell.cost ||

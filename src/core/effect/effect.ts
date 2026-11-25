@@ -21,7 +21,7 @@ export interface Effect<
     readonly definition: Definition<S, H, never>;
     readonly state: S;
     readonly source: Ref<Unit> | null;
-    readonly partition: Ref<Lifetime> | null | undefined;
+    readonly partition: Ref<Lifetime> | null | "SHARED";
     readonly expiration: Expiration;
     readonly enabled: boolean;
     readonly lifecycle: Lifecycle;

@@ -77,6 +77,7 @@ export function createParalysis(parameters: ParalysisParameters): Definition {
                 self.ref.host,
                 setHook(beforeRelease, {
                     id: `@effect/${self.id}/paralysis`,
+                    priority: 0,
                     accepts(current) {
                         const active = reference.get(current);
 

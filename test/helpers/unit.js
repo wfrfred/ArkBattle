@@ -1,3 +1,4 @@
+import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from './tiles.js';
 import { normal } from '../../dist/content/terrain/definition.js';
 import { initialize as initializeUnit } from "../../dist/core/unit/index.js";
@@ -11,10 +12,10 @@ const tile = createTile({
     terrain: normal.create({}),
     initial: {
         elevation: "LOWLAND", placement: "ALL", passability: "ALL",
-        walkCost: 1, allowsBlocking: true, siteCondition: normalSite,
+        walkCost: 1, allowsBlocking: true, siteCondition: normalSite, collision: null,
     },
 });
-const map = createMap(1, 32, tileEntries(Array(32).fill(tile)));
+const map = createMap(1, 32, tileEntries(Array(32).fill(tile)), [], []);
 
 export function fixtureBattle(tick = 0) {
     return { ...createBattleState(create(map)), tick };
@@ -24,7 +25,7 @@ export function initialize({ id = 0, tick = 0, ...input }) {
     const battle = fixtureBattle(tick);
     const fixture = { ...battle, execution: { ...battle.execution, nextUnitId: id } };
 
-    return initializeUnit(fixture, input).value;
+    return initializeUnit(fixture, { hooks: Hooks.empty(), initial: {}, ...input }).value;
 }
 
 export function getUnit(battle, id) {

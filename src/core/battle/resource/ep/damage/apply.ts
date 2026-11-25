@@ -17,13 +17,13 @@ import {
 
 export interface ApplyOptions extends Options {
     readonly ignore?: (restriction: DamageRestriction) => boolean;
-    readonly forbidden?: ReadonlySet<Reason>;
+    readonly forbidden: ReadonlySet<Reason>;
 }
 
 export function applyDamage(
     request: Request,
     calculated: Result<Calculated | undefined>,
-    options?: ApplyOptions,
+    options: ApplyOptions | null,
 ): Result<Outcome> {
     let battle = calculated.state;
     const damage = calculated.value;

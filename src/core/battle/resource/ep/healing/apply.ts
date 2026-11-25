@@ -16,7 +16,7 @@ import {
 export function applyHealing(
     request: Request,
     calculated: Result<Calculated | undefined>,
-    options?: Options,
+    options: Options | null,
 ): Result<Outcome> {
     let battle = calculated.state;
     const healing = calculated.value;

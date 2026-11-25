@@ -87,7 +87,7 @@ export const receiving = hooks.key<ReceivingHook, Unit & Vitality>("resource.hp.
 export function dispatchTargetKilled(
     battle: BattleState,
     context: TargetKilledContext,
-    options?: hooks.Options,
+    options: hooks.Options | null,
 ): Result<void> {
     const killer = context.killer;
     if (killer === null) {

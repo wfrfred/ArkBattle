@@ -24,7 +24,7 @@ test("Hook keys preserve identity and replacing an ID preserves its position", (
 });
 
 test("Hook priority fixes this dispatch's order while replacement and nested dispatch read current registrations", () => {
-    let state = battle([{ definition: { id: "observed", hooks: Hooks.empty() }, position: [0, 0] }]);
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: { id: "observed", hooks: Hooks.empty() }, position: [0, 0] }]);
     const subject = units.all(state).find(() => true);
     const calls = [];
     let nested = false;
@@ -40,14 +40,14 @@ test("Hook priority fixes this dispatch's order while replacement and nested dis
             return { state: current, value: undefined };
         },
     });
-    state = setHook(state, unitRemoved, record("removed"));
+    state = setHook(state, unitRemoved, record("removed", 0));
     state = setHook(state, unitRemoved, {
         id: "replacement", priority: -10,
         invoke() {
             assert.fail("the old registration must not run");
         },
     });
-    state = setHook(state, unitRemoved, record("z-tie"));
+    state = setHook(state, unitRemoved, record("z-tie", 0));
     state = setHook(state, unitRemoved, record("a-tie", 0));
     state = setHook(state, unitRemoved, {
         id: "first",
@@ -91,6 +91,7 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
                 initialize: () => ({}),
                 onInstall(state) {
                     return setHook(state, unitEntered, {
+                        priority: 0,
                         id: "apply-global-effect",
                         invoke(current, unit) {
                             const reference = units.ref(unit);
@@ -104,10 +105,13 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
     });
     let localEntered = false;
     const created = units.initialize(initial, {
+        hooks: Hooks.empty(),
+        initial: {},
         position: [0, 0],
         definition: {
             id: "later-unit",
             hooks: Hooks.empty().set(units.entered, {
+                priority: 0,
                 id: "observe-global-effect",
                 invoke(current, self) {
                     assert.ok(effects.forHost(current, units.ref(self)).some((instance) => instance.definition === effect));
@@ -125,6 +129,7 @@ test("Battle entered applies a global Effect before the Unit runs its own entere
 
 test("An ended Unit skips the remaining Battle and local entered programs", () => {
     let state = setHook(battle(), unitEntered, {
+        priority: 0,
         id: "remove-on-entry",
         invoke: (current, unit) => ({
             state: units.remove(current, units.ref(unit), { reason: "SCRIPT" }),
@@ -132,14 +137,18 @@ test("An ended Unit skips the remaining Battle and local entered programs", () =
         }),
     });
     state = setHook(state, unitEntered, {
+        priority: 0,
         id: "remaining-observer",
         invoke: () => assert.fail("an ended Unit cannot run another Battle entered program"),
     });
     const created = units.initialize(state, {
+        hooks: Hooks.empty(),
+        initial: {},
         position: [0, 0],
         definition: {
             id: "ending-on-entry",
             hooks: Hooks.empty().set(units.entered, {
+                priority: 0,
                 id: "unit-entry",
                 invoke: () => assert.fail("an ended Unit cannot run its local entered program"),
             }),
@@ -151,12 +160,13 @@ test("An ended Unit skips the remaining Battle and local entered programs", () =
 
 test("Unit removing uses priority and removed uses the registrations captured before unlinking", () => {
     const calls = [];
-    let state = battle([{ definition: { id: "departing", hooks: Hooks.empty() }, position: [0, 0] }]);
+    let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: { id: "departing", hooks: Hooks.empty() }, position: [0, 0] }]);
     const subject = units.ref(units.all(state).find(() => true));
     state = effects.install(state, subject, {
         id: "death-response", group: null, initialize: () => ({}),
         onInstall(current, self) {
             return update(current, self.ref.host, units.setHook(units.removing, {
+                priority: 0,
                 id: "death-output",
                 invoke(next) {
                     assert.equal(subject.get(next).lifecycle, "ENDING");
