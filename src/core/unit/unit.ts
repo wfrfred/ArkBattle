@@ -26,7 +26,6 @@ export type Departure = End & {
 };
 
 export interface Unit extends Lifetime<{ readonly id: Id }> {
-    readonly id: Id;
     readonly config: Config<Unit, End>;
     readonly lifecycle: Lifecycle;
     readonly definition: Definition;

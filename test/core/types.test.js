@@ -116,7 +116,7 @@ declare const spawn: Spawn;
 ({ ...spawn, definition: { ...routeDefinition, occupancy: armedDefinition.occupancy } }) satisfies Spawn;
 
 // Capability proofs survive queries and Changes without being inferred from an ordinary filter.
-const ordinary: (unit: Unit) => boolean = unit => unit.id > 0;
+const ordinary: (unit: Unit) => boolean = unit => unit.ref.id > 0;
 // @ts-expect-error a boolean filter is not proof of a capability.
 allUnits(battle).filter(ordinary).find(() => true)!.action;
 // @ts-expect-error local queries require their declared capability.

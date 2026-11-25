@@ -94,7 +94,7 @@ test("initial and later Units share their instance identity allocator", () => {
 
     const alternative = units.initialize(initial, { definition: summoned, position: [0, 1] });
     const branch = add(alternative.state, alternative.value);
-    assert.equal(alternative.value.id, reference.id);
+    assert.equal(alternative.value.ref.id, reference.id);
     assert.equal(reference.get(branch), undefined);
     assert.equal(remove(branch, reference, { reason: "SCRIPT" }), branch);
 });

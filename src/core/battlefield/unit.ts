@@ -12,7 +12,7 @@ type Change =
 
 export function add(state: State, unit: Unit): State {
     if (state.units.has(ref(unit))) {
-        throw new RangeError(`duplicate unit: ${unit.id}`);
+        throw new RangeError(`duplicate unit: ${unit.ref.id}`);
     }
 
     return applyChanges(state, [{ type: "ADD", next: unit }]);
@@ -24,7 +24,7 @@ export function update(state: State, updates: readonly Unit[]): State {
     for (const unit of updates) {
         const previous = state.units.get(ref(unit));
         if (previous === undefined) {
-            throw new RangeError(`unknown unit: ${unit.id}`);
+            throw new RangeError(`unknown unit: ${unit.ref.id}`);
         }
         if (previous !== unit) {
             changes.push({ type: "UPDATE", previous, next: unit });

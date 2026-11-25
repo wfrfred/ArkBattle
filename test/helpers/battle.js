@@ -33,5 +33,5 @@ export function battle(initialUnits = [], { rows = 3, columns = 8, ...options } 
 }
 
 export function get(state, id) {
-    return all(state).find((unit) => unit.id === id);
+    return all(state).find((unit) => unit.ref.id === id);
 }

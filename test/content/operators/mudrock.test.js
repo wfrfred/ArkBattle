@@ -65,7 +65,7 @@ const approximate = (actual, expected) => assert.ok(Math.abs(actual - expected) 
 function canMove(battle, unit) {
     const goal = [unit.position[0] + 0.05, unit.position[1]];
     const moved = advanceLocomotion(battle, ref(unit), { nextPoint: goal, goal }, { mode: "WALK", speedMultiplier: 1 });
-    return !Vec2.equal(getUnit(moved, unit.id).position, unit.position);
+    return !Vec2.equal(unit.ref.get(moved).position, unit.position);
 }
 
 test("Mudrock's shield cancels environmental damage, self-heals and retains eligible HIT recovery", () => {

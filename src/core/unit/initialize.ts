@@ -30,7 +30,6 @@ export function initialize(battle: BattleState, input: Input): Result<Unit> {
     battle = replaceIn(battle, ["execution", "nextUnitId"], id + 1);
 
     let unit: Unit = {
-        id,
         ref: createRef<Unit>({ id }, getUnit),
         config,
         lifecycle: "ACTIVE",

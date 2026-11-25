@@ -49,7 +49,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
         hooks: Hooks.empty().set(units.entered, {
             id: "observe-birth",
             invoke(current, self) {
-                assert.equal(get(current, self.id).definition.id, "scheduled");
+                assert.equal(self.ref.get(current).definition.id, "scheduled");
                 assert.equal(current.deployment.dp.balance, 22);
                 entered.push(self.definition.id);
                 return { state: dp.modify(current, 3), value: undefined };
@@ -63,7 +63,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
             invoke(current, self) {
                 assert.equal(current.schedule.definition.waves.length, 1);
                 assert.equal(current.deployment.dp.balance, 20);
-                assert.equal(get(current, self.id).definition, initial);
+                assert.equal(self.ref.get(current).definition, initial);
                 const mechanism = mechanisms.all(current).find(({ definition }) => definition === controller);
                 assert.equal(mechanism?.lifecycle, "ACTIVE");
                 entered.push(self.definition.id);

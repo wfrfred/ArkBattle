@@ -191,7 +191,7 @@ test("wait policies publish before the entered hook and timeout leaves final wai
     const entries = [];
     const observe = (state, self) => {
         entries.push({
-            id: self.id,
+            id: self.ref.id,
             wave: state.schedule.waiting.wave.includes(ref(self)),
             final: state.schedule.waiting.final.includes(ref(self)),
         });
@@ -254,7 +254,7 @@ test("wait policies publish before the entered hook and timeout leaves final wai
     state = remove(state, ref(getUnit(state, 3)), { reason: "SCRIPT" });
     assert.equal(isCompleted(state.schedule), true);
     assert.deepEqual(
-        [...all(state)].map(({ id }) => id),
+        [...all(state)].map(unit => unit.ref.id),
         [0, 4],
     );
 });

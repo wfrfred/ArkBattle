@@ -62,7 +62,7 @@ export function create(parameters: Parameters): Definition {
         occupancy: {
             slot: "SUPPORT",
             onOccupantAdded(battle, { support, occupant }) {
-                const restrictionId = `shooting-platform/${support.id}/block-free`;
+                const restrictionId = `shooting-platform/${support.ref.id}/block-free`;
 
                 return hasBlocker(occupant)
                     ? update(
@@ -81,7 +81,7 @@ export function create(parameters: Parameters): Definition {
                     battle = update(
                         battle,
                         unitRef(current),
-                        removeRestriction(`shooting-platform/${support.id}/block-free`),
+                        removeRestriction(`shooting-platform/${support.ref.id}/block-free`),
                     );
                 }
 

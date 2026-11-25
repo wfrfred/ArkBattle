@@ -143,7 +143,7 @@ test("spatial queries distinguish body position from hitboxes and return current
                     id: "check-contact",
                     invoke(current, { unit }) {
                         duringRemoval.push({
-                            lifecycle: get(current, unit.id).lifecycle,
+                            lifecycle: unit.ref.get(current).lifecycle,
                             contacts: sweep(current.battlefield, circle(0.25), [-1, 0], [3, 0]),
                         });
                         return { state: current, value: undefined };

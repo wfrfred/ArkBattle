@@ -51,7 +51,7 @@ export function onInstall<S extends State>(
     battle = appendEvents(battle, [
         {
             type: "ELEMENTAL_BURST",
-            unitId: host.id,
+            unitId: host.ref.id,
             elementType: self.state.type,
             position: host.position,
             tick: battle.tick,

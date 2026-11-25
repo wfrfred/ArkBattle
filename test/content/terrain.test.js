@@ -70,7 +70,7 @@ function setup(terrains, placements, definitions) {
     };
 }
 
-const current = (battle, id = 0) => units.all(battle).find(self => self.id === id);
+const current = (battle, id = 0) => units.all(battle).find(self => self.ref.id === id);
 const attackSpeed = (battle, id = 0) => {
     const source = current(battle, id);
     return resolveSpeed(source);

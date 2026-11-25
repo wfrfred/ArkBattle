@@ -198,8 +198,8 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
     state = deployment.setHook(state, deployment.deployed, {
         id: "deployed",
         invoke(current, { unit, request }) {
-            assert.notEqual(get(current, unit.id), undefined);
-            deployments.push({ id: unit.id, tile: request.tilePosition });
+            assert.notEqual(unit.ref.get(current), undefined);
+            deployments.push({ id: unit.ref.id, tile: request.tilePosition });
             return { state: current, value: undefined };
         },
     });

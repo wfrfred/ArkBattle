@@ -28,5 +28,5 @@ export function initialize({ id = 0, tick = 0, ...input }) {
 }
 
 export function getUnit(battle, id) {
-    return [...battle.battlefield.units.values()].find((unit) => unit.id === id);
+    return [...battle.battlefield.units.values()].find((unit) => unit.ref.id === id);
 }

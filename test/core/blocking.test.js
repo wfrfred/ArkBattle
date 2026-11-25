@@ -52,7 +52,7 @@ test("HOOK-03: a relation fixes both sides' priority order before notifying eith
     state = unit.update(state, owner, units.setHook(capability.blockerAcquired, {
         id: "change-target-hooks",
         priority: -10,
-        accepts: (_current, { relation }) => relation.blocked.id === target.id,
+        accepts: (_current, { relation }) => relation.blocked === target,
         invoke(current) {
             calls.push("blocker");
             current = unit.update(current, owner, capability.setCapacityContribution({
@@ -80,11 +80,11 @@ test("HOOK-03: a relation fixes both sides' priority order before notifying eith
     }));
     state = unit.update(state, owner, units.setHook(capability.blockerAcquired, {
         id: "blocker-priority",
-        accepts: (_current, { relation }) => relation.blocked.id === target.id,
+        accepts: (_current, { relation }) => relation.blocked === target,
         invoke(current) { calls.push("blocker-priority"); return { state: current, value: undefined }; },
     }));
     state = blocking.search(state, owner);
-    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [target.id, get(state, 2).id]);
+    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [target.id, get(state, 2).ref.id]);
     assert.equal(blocking.blockerOf(state, units.ref(get(state, 3))), undefined);
     assert.deepEqual(calls, ["blocker-priority", "blocker", "target-priority", "replacement"]);
 });
@@ -237,7 +237,7 @@ test("layer settlements release current relations acquired by earlier settlement
             invoke(current, { relation }) {
                 released.push(relation.blocked.id);
                 return {
-                    state: relation.blocked.id === first.id
+                    state: relation.blocked === first
                         ? blocking.acquire(current, owner, next)
                         : current,
                     value: undefined,

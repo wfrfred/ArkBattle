@@ -399,7 +399,7 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
     }
 
     battle = appendEvents(battle, [
-        { type: "ROUTE_COMPLETED", unitId: latest.id, tick: battle.tick },
+        { type: "ROUTE_COMPLETED", unitId: latest.ref.id, tick: battle.tick },
     ]);
 
     return removeUnit(battle, reference, { reason: "SCRIPT" });

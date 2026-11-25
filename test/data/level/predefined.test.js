@@ -57,7 +57,7 @@ test("real hidden devices preserve placement, static classification and target c
     const [crate] = battle.battlefield.units.values();
     assert.deepEqual(crate.position, [4, 12]);
     assert.deepEqual(crate.occupancy.tile, [12, 4]);
-    assert.equal(occupancyAt(battle.battlefield, [12, 4]).occupant.id, crate.id);
+    assert.equal(occupancyAt(battle.battlefield, [12, 4]).occupant, crate.ref);
     assert.deepEqual(crate.definition.classification, {
         type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [],
     });
@@ -72,7 +72,7 @@ test("real hidden devices preserve placement, static classification and target c
     assert.equal(platform.targetable.category, "DEVICE");
     const candidates = all(battle).filter(hasTargetable);
     assert.deepEqual(Array.from(candidates.filter(inCategories(["DEFAULT"]))), []);
-    assert.deepEqual(Array.from(candidates.filter(inCategories(["DEFAULT", "DEVICE"])), unit => unit.id), [platform.id]);
+    assert.deepEqual(Array.from(candidates.filter(inCategories(["DEFAULT", "DEVICE"])), unit => unit.ref.id), [platform.ref.id]);
 
     const modifiedPrefab = fixture("prefab_trap_1106_achplat");
     const token = modifiedPrefab.components.find(component => "_rewriteTileOptions" in component.fields).fields;

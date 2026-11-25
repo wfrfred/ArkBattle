@@ -35,7 +35,7 @@ function group(id, count = 1, accepts = () => true) {
         select(state, source) {
             const rng = createRng(state.execution.rngState);
             const candidates = units.all(state).filter(hasTargetable)
-                .filter(target => target.id !== source.id && accepts(target));
+                .filter(target => target.ref !== source && accepts(target));
             const selected = rng.sample(candidates, count).map(units.ref);
             return {
                 state: { ...state, execution: { ...state.execution, rngState: rng.state() } },
@@ -133,7 +133,7 @@ test("bound healing keeps its receivers when a later selection restriction would
         state,
         value: topK(units.all(state).filter(hasTargetable)
             .filter(targeting.healing(source.get(state))(state))
-            .filter(target => target.id !== source.id), 1, targeting.hpRatio).map(units.ref),
+            .filter(target => target.ref !== source), 1, targeting.hpRatio).map(units.ref),
     });
     let selected;
     const program = createWithState({

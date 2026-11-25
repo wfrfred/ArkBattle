@@ -154,7 +154,7 @@ function battle(receiver, type) {
   ], { rows: 1, columns: 8 });
 }
 
-function victim(runtime) { return unitQueries.all(runtime).find(entry => entry.id === 1); }
+function victim(runtime) { return unitQueries.all(runtime).find(entry => entry.ref.id === 1); }
 
 test('elemental runtime: unused neural paralysis survives recovery and the next burst resets its remaining charges', () => {
   let runtime = battle('ENEMY', 'NEURAL');

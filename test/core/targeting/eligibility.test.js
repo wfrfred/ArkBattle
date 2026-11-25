@@ -27,7 +27,7 @@ const living = {
     vitality: defineVitality(100),
     classification: { type: "DEVICE", side: "ENEMY", filterTags: [], groupTags: [] }, layer: { type: "GROUND" },
 };
-const ids = candidates => Array.from(candidates, target => target.id);
+const ids = candidates => Array.from(candidates, target => target.ref.id);
 const candidates = state => units.all(state).filter(targetable.hasTargetable);
 function wound(state, target, power) {
     const request = {
