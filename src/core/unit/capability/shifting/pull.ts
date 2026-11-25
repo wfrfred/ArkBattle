@@ -26,7 +26,7 @@ export type NearStop = (battle: BattleState, self: Pull) => boolean;
 export type Brake = "ONCE" | "WHILE_NEAR";
 
 export interface Input {
-    readonly scope: lifetimes.Scope;
+    readonly scope: Ref<lifetimes.Lifetime>;
     readonly point: Point;
     readonly forceLevel: number;
     readonly nearStop: readonly NearStop[];
@@ -39,7 +39,7 @@ export interface Pull extends lifetimes.Lifetime<{
     readonly config: lifetimes.Config<Pull, string>;
     readonly unbalance: Ref<Unbalance>;
     readonly lifecycle: "ACTIVE" | "ENDING";
-    readonly scope: lifetimes.Scope;
+    readonly scope: Ref<lifetimes.Lifetime>;
     readonly point: Point;
     readonly maxForce: number;
     readonly initialDistance: number;

@@ -13,10 +13,8 @@ export interface Config<T extends Lifetime, E> {
     };
 }
 
-export type Scope = Ref<Lifetime>;
-
 export interface Node {
-    readonly dependencies: readonly Scope[];
+    readonly dependencies: readonly Ref<Lifetime>[];
     readonly ending?: {
         readonly initial: Lifetime;
         readonly end: unknown;
@@ -24,7 +22,7 @@ export interface Node {
 }
 
 export interface State {
-    readonly nodes: ReadonlyMap<Scope, Node>;
+    readonly nodes: ReadonlyMap<Ref<Lifetime>, Node>;
     readonly deferred: readonly ((battle: BattleState) => BattleState)[];
     readonly flushing: boolean;
 }
@@ -33,11 +31,14 @@ export function initialize(): State {
     return { nodes: new Map(), deferred: [], flushing: false };
 }
 
-export function available(battle: BattleState, target: Scope): boolean {
+export function available(battle: BattleState, target: Ref<Lifetime>): boolean {
     return isAvailable(battle.lifetime.nodes, target);
 }
 
-export function isAvailable(nodes: ReadonlyMap<Scope, Node>, reference: Scope): boolean {
+export function isAvailable(
+    nodes: ReadonlyMap<Ref<Lifetime>, Node>,
+    reference: Ref<Lifetime>,
+): boolean {
     const node = nodes.get(reference);
 
     return (

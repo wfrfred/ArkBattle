@@ -128,7 +128,10 @@ export function receive(
     battle: BattleState,
     unit: Host,
     next: Unbalance,
-    traction?: { readonly reference: Ref<pull.Pull>; readonly scopes: readonly lifetimes.Scope[] },
+    traction?: {
+        readonly reference: Ref<pull.Pull>;
+        readonly scopes: readonly Ref<lifetimes.Lifetime>[];
+    },
 ): BattleState {
     const { shiftable } = unit;
     const previous = shiftable.unbalance;

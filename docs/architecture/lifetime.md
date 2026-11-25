@@ -2,13 +2,13 @@
 
 Lifetime 统一结束请求、依赖传播与拓扑析构。领域负责创建实例、管理私有状态和存储，并通过 `remove`、`finish` 或 `cancel` 将本次结束输入交给 `Lifetime.end`。 [生命周期命名](api-conventions.md#生命周期命名)
 
-## 身份、Scope 与公共入口
+## 身份、依赖与公共入口
 
 [公共入口](../../src/core/lifetime/index.ts)提供 `end`、`available`、`bind`、`unbind` 和 `defer`。领域实例继承 `Lifetime<I>`，由 Identified 提供稳定 Ref，并保存实际领域类型的 `config: Config<T, E>`。同一领域的实例共享一份静态配置，配置常量使用实例的 `T["config"]` 标注。每个已登记的实例都在图中有自己的节点。
 
-DAG 直接使用 `Ref<Lifetime>` 对象作键，直接依赖亦保存该类型。具体实例的 Ref 可以用作通用 Scope，只有具备 Lifetime 能力的 Ref 才能声明依赖。
+DAG 直接使用 `Ref<Lifetime>` 对象作键，直接依赖亦保存该类型。只有具备 Lifetime 能力的 Ref 才能声明依赖。
 
-`Scope = Ref<Lifetime>`，直接使用目标实例的 Ref。B 登记 A 的 Scope 就建立 B → A。一个节点可依赖多个目标，也可供多个节点依赖，每条边的结束语义相同。普通来源、槽位与私有 Ref 仍由各领域解释。Burst 使用 Effect 的配置和节点。
+B 登记 A 的 Ref 就建立 B → A。一个节点可依赖多个目标，也可供多个节点依赖，每条边的结束语义相同。普通来源、槽位与私有 Ref 仍由各领域解释。Burst 使用 Effect 的配置和节点。
 
 `available` 要求节点及其所有上游都已登记且尚未开始结束。失效沿依赖链立即传递，即使某个依赖者的领域状态还未发布 `ENDING`。已登记的 INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可用。HP、空间存在与启停的业务资格由消费方判断。
 

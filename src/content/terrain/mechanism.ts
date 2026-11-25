@@ -1,5 +1,5 @@
 import type { Ref } from "../../core/common/ref.js";
-import type { Scope as LifetimeScope } from "../../core/lifetime/index.js";
+import type { Lifetime } from "../../core/lifetime/index.js";
 import type { State as BattleState, OperationResult as Result } from "../../core/battle/index.js";
 import * as mechanisms from "../../core/mechanism/index.js";
 import type { Definition as MechanismDefinition } from "../../core/mechanism/index.js";
@@ -41,7 +41,7 @@ interface Behaviour<P extends object> {
         battle: BattleState,
         unit: Unit,
         params: P,
-        scopes: readonly LifetimeScope[],
+        scopes: readonly Ref<Lifetime>[],
     ) => Result<Ref<Effect> | null>;
 }
 

@@ -1,12 +1,12 @@
 import type { Ref } from "../common/ref.js";
 import { replaceIn } from "../common/object.js";
 import type { State as BattleState, Result } from "../battle/state.js";
-import { isAvailable, type Config, type Lifetime, type Node, type Scope } from "./lifetime.js";
+import { isAvailable, type Config, type Lifetime, type Node } from "./lifetime.js";
 
 export function register(
     battle: BattleState,
-    ref: Scope,
-    scopes: readonly Scope[] = [],
+    ref: Ref<Lifetime>,
+    scopes: readonly Ref<Lifetime>[] = [],
 ): BattleState {
     const nodes = battle.lifetime.nodes;
     if (nodes.has(ref)) {
@@ -24,7 +24,11 @@ export function register(
     return replaceIn(battle, ["lifetime", "nodes"], new Map(nodes).set(ref, { dependencies }));
 }
 
-export function bind(battle: BattleState, ref: Scope, dependency: Scope): Result<boolean> {
+export function bind(
+    battle: BattleState,
+    ref: Ref<Lifetime>,
+    dependency: Ref<Lifetime>,
+): Result<boolean> {
     const nodes = battle.lifetime.nodes;
     if (!isAvailable(nodes, ref) || !isAvailable(nodes, dependency)) {
         return { state: battle, value: false };
@@ -51,7 +55,11 @@ export function bind(battle: BattleState, ref: Scope, dependency: Scope): Result
     return { state: replaceIn(battle, ["lifetime", "nodes"], next), value: true };
 }
 
-export function unbind(battle: BattleState, ref: Scope, dependency: Scope): BattleState {
+export function unbind(
+    battle: BattleState,
+    ref: Ref<Lifetime>,
+    dependency: Ref<Lifetime>,
+): BattleState {
     const nodes = battle.lifetime.nodes;
     if (!isAvailable(nodes, ref) || !isAvailable(nodes, dependency)) {
         return battle;
@@ -69,9 +77,13 @@ export function unbind(battle: BattleState, ref: Scope, dependency: Scope): Batt
           );
 }
 
-function wouldCycle(nodes: ReadonlyMap<Scope, Node>, reference: Scope, dependency: Scope): boolean {
+function wouldCycle(
+    nodes: ReadonlyMap<Ref<Lifetime>, Node>,
+    reference: Ref<Lifetime>,
+    dependency: Ref<Lifetime>,
+): boolean {
     const remaining = [dependency];
-    const visited = new Set<Scope>();
+    const visited = new Set<Ref<Lifetime>>();
 
     while (remaining.length > 0) {
         const current = remaining.pop()!;
@@ -106,7 +118,7 @@ function configOf(self: Lifetime): Config<Lifetime, unknown> {
     return self.config as Config<Lifetime, unknown>;
 }
 
-function request(battle: BattleState, reference: Scope, end: unknown): BattleState {
+function request(battle: BattleState, reference: Ref<Lifetime>, end: unknown): BattleState {
     const node = battle.lifetime.nodes.get(reference);
     if (node === undefined || node.ending !== undefined) {
         return battle;

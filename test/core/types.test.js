@@ -13,7 +13,7 @@ test("typed construction and identities retain private state and capability proo
     const source = `
 import type { Ref } from ${module("common/ref")};
 import type { State } from ${module("battle/state")};
-import { end as endLifetime, type Scope } from ${module("lifetime/index")};
+import { end as endLifetime, type Lifetime } from ${module("lifetime/index")};
 import { Hooks, key, type Hook } from ${module("hook")};
 import { initialize, ref, all as allUnits, compose, optional, setHook, type Unit, type Input as UnitInput } from ${module("unit/index")};
 import { update, remove } from ${module("unit/operations")};
@@ -355,10 +355,10 @@ const countCardRef = cards.ref(builtCard.value);
 const exactCard = countCardRef.get(builtCard.state)!;
 declare const mixedRef: typeof owner | typeof countCardRef;
 mixedRef.get(battle) satisfies typeof armed | typeof exactCard | undefined;
-const scopes: readonly Scope[] = [owner, countCardRef];
+const scopes: readonly Ref<Lifetime>[] = [owner, countCardRef];
 endLifetime(battle, owner, { reason: 'SCRIPT' });
 // @ts-expect-error a persistent Action does not have its own Lifetime.
-const invalidScope: Scope = actionRef;
+const invalidScope: Ref<Lifetime> = actionRef;
 // @ts-expect-error Card can be a dependency target but cannot be explicitly ended.
 endLifetime(battle, countCardRef, 'SCRIPT');
 const enqueued = cards.supply.enqueue(cards.supply.consume(exactCard));

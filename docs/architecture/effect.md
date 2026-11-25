@@ -9,7 +9,7 @@ Effect 拥有附着实例、私有状态、生效竞争、重复施加、时间�
 - 安装、存在与实际生效分开。零时长仍执行安装业务，随后结束，不短暂启用。
 - 重复施加先决定新建、合并或拒绝；只有新建登记身份、Lifetime 并运行 onInstall，候补也不例外。
 - 整体覆写先选赢家再检查 enabled；禁用赢家不让弱者补位，赢家结束后候补才可能生效。
-- source 记录来源，不自动建立依赖；宿主所有权与显式 Scope 决定随谁结束。
+- source 记录来源，不自动建立依赖；宿主所有权与显式依赖决定随谁结束。
 - DURATION 在 ACTIVE／INACTIVE 都扣时，只有 ACTIVE 执行业务；最后一次业务先于到期，回调续期按最新状态生效。
 - 层数变化先发布再通知；结束先撤销输出、等待依赖，再收尾移除。
 
@@ -21,7 +21,7 @@ Unit.effects 保存实例，Unit.hooks 保存登记；属性与限制贡献归�
 
 ## 2. Definition、实例与泛型
 
-Definition 是共享行为；实例保存稳定身份、宿主、实际来源、私有 state、expiration、enabled 与 lifecycle。初始 state、来源、Scope、时间与启用许可属于本次安装输入，不覆写 Definition 的规则。Unit 初始化为空 Effects，初始效果在宿主登记后的 `entered` Hook 中正常安装。
+Definition 是共享行为；实例保存稳定身份、宿主、实际来源、私有 state、expiration、enabled 与 lifecycle。初始 state、来源、依赖引用、时间与启用许可属于本次安装输入，不覆写 Definition 的规则。Unit 初始化为空 Effects，初始效果在宿主登记后的 `entered` Hook 中正常安装。
 
 私有状态类型与宿主能力要求由具体 Definition 配对，精确 Ref 保持它们。普通查询返回完整实体但不承诺未知私有形状；异构存储及调用自身 Definition 的边界集中擦除类型，内容不逐个断言私有 state。
 
@@ -35,9 +35,9 @@ Effects 以 Ref 为键保存完整实例。安装时分配一次 Ref，读取通
 
 ## 3. 生命周期约束
 
-安装要求宿主 ACTIVE、输入 Scope 可用。先发布 INSTALLING 实例并登记对宿主与输入 Scope 的依赖，再调用 onInstall。来源允许已经退场；确实需要随来源结束的内容另外绑定 Scope。
+安装要求宿主 ACTIVE、输入的依赖引用可用。先发布 INSTALLING 实例并登记对宿主与输入引用的依赖，再调用 onInstall。来源允许已经退场；确实需要随来源结束的内容另外绑定依赖。
 
-Action Scope 绑定本轮 Execution，Skill Scope 绑定本轮 Activation，Burst 本身使用 Effect Scope。任一上游结束都会以 `CANCELLED` 请求 Effect 结束，Effect 保有自己的时间轴。INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可作为可用依赖，开始结束的上游拒绝新绑定。资格与请求完成规则见 [Lifetime](lifetime.md)。
+Action 与 Skill 的依赖分别绑定本轮 Execution 和 Activation 的 Ref，Burst 使用 Effect Ref。任一上游结束都会以 `CANCELLED` 请求 Effect 结束，Effect 保有自己的时间轴。INSTALLING／INACTIVE Effect 与 INACTIVE Mechanism 仍可作为可用依赖，开始结束的上游拒绝新绑定。资格与请求完成规则见 [Lifetime](lifetime.md)。
 
 ## 4. 生效状态与覆写
 
@@ -136,7 +136,7 @@ Contribution 选择与计算见[属性与贡献](capability.md#属性与贡献)�
 
 Core 没有通用 Aura 成品，具体光环尚未完整接入。现有组合边界是：宿主 Effect 保存目标登记、精确子 Ref 和刷新进度，通过 Targeting 选择接收者并安装普通 Effect。进出、替换样本、停用及恢复是否保留身份由具体内容决定。
 
-子效果必须随 Aura 结束时绑定其 Effect Scope；允许残留时不绑定。Scope 负责生命周期，不代替具体刷新或残留政策。未实现范围集中见 [Tactical 语义](tactical-semantics.md)。
+子效果必须随 Aura 结束时绑定其 Effect Ref；允许残留时不绑定。依赖关系负责生命周期，不代替具体刷新或残留政策。未实现范围集中见 [Tactical 语义](tactical-semantics.md)。
 
 ## 9. 状态返回、可见性与不可变约定
 
@@ -154,7 +154,7 @@ self 是回调输入版本，跨 Tick 进度归实例 state，不是异步句柄
 
 异常免疫／组合免疫影响状态的有效性。已核实的反制可以拒绝含对应异常的整份 Buff，并结束已有的匹配实例。抵抗改变适用效果的时间。技能强启具有自己的许可与清理业务，位移、传送和失衡许可由相应空间操作处理。
 
-复合效果可由父 Effect 管理持续时间和重应用，子 Effect 各自执行标准眩晕、降攻等行为。已用现有接口验证，单独停用或恢复标准 `stun` 时降攻持续生效，父项到期会通过 Scope 清理两个子项。需要跟随父项启停时，由组合的启停回调显式控制子项。要求拒绝整份效果的反制在调用 `install` 前判断，提前解除整份效果时结束父项。
+复合效果可由父 Effect 管理持续时间和重应用，子 Effect 各自执行标准眩晕、降攻等行为。已用现有接口验证，单独停用或恢复标准 `stun` 时降攻持续生效，父项到期会通过依赖关系清理两个子项。需要跟随父项启停时，由组合的启停回调显式控制子项。要求拒绝整份效果的反制在调用 `install` 前判断，提前解除整份效果时结束父项。
 
 标准眩晕的共享免疫规则及具体反制、抵抗留到对应效果接入时处理。父子组合使用现有 Effect 接口。
 

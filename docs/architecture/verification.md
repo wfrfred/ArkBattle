@@ -20,7 +20,7 @@
 | [Projectile · 4. 创建、查询与内容更新](projectile.md#4-创建查询与内容更新)、[Projectile · 移除与消除](projectile.md#移除与消除) | [Projectile 创建必须装配回调声明的 Trait，普通弹道不暴露该字段。创建后的精确 Ref 保留 Definition 的消除资格，普通 Ref 不允许以消除原因移除。](../../test/core/types.test.js#L253) |
 | [Hook · 类型化键与集合](hook.md#类型化键与集合)、[Capability · 资格限制](capability.md#资格限制)、[Vitality · 伤害写入前后](vitality.md#伤害写入前后) | [Hook Key 决定载荷、可改工作值与所需宿主。提交后通知不能改已提交的生命报告。接收限制只有对应阶段可用，Elemental 的伤害限制不能用作治疗限制。](../../test/core/types.test.js#L279) |
 | [Resource · 请求分类](resource.md#请求分类)、[Resource · 接收工作值、数值固定与取消](resource.md#接收工作值数值固定与取消)、[Resource · 生命状态、通知与离场](resource.md#生命状态通知与离场) | [被固定和取消的工作值无法恢复，已有的取消原因不能改写。取消使用本次权限和所属领域的原因集。每笔伤害显式声明攻击方式与归属，离场请求也明确死亡归属，提交报告不提前暴露击杀结果。](../../test/core/types.test.js#L301) |
-| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card)、[Terrain · Mechanism 操作](terrain.md#mechanism-操作)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [精确 Card Ref 恢复私有状态及策略，Unit 与 Card 的联合 Ref 保留两种精确读取结果。Unit 和 Card Ref 都能作为 Scope，持久 Action 无独立 Lifetime，Card 的 never 结束参数拒绝显式结束。普通查询按策略收窄，只有 QUEUED 能入队。Runtime 接收同场多种 Card 与 Mechanism 状态，装配和登记拒绝 Definition 与状态错配。](../../test/core/types.test.js#L335) |
+| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card)、[Terrain · Mechanism 操作](terrain.md#mechanism-操作)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [精确 Card Ref 恢复私有状态及策略，Unit 与 Card 的联合 Ref 保留两种精确读取结果。Unit 和 Card Ref 都能作为依赖目标，持久 Action 无独立 Lifetime，Card 的 never 结束参数拒绝显式结束。普通查询按策略收窄，只有 QUEUED 能入队。Runtime 接收同场多种 Card 与 Mechanism 状态，装配和登记拒绝 Definition 与状态错配。](../../test/core/types.test.js#L335) |
 
 ## 通用数据与算法
 
@@ -66,8 +66,8 @@
 | [Skill · 4. Restriction、程序与 Hook](skill.md#4-restriction程序与-hook) | [只受理声明且当前获准的主动处理器，受理可保留当前激活，内部结束独立](../../test/core/skill.test.js#L214) |
 | [Skill · 5. 发动与完整结束](skill.md#5-发动与完整结束) | [拒绝不初始化不支付，支付与激活先发布，在启动通知导致暂时消失时仍可 onStart，结束只清原轮并在清槽后通知](../../test/core/skill.test.js#L16)<br>[支付通知中同步结束会保留已经支付的费用，继续旧 onStart 受重新读取后的激活资格约束](../../test/core/skill.test.js#L175) |
 | [Effect · 4. 生效状态与覆写](effect.md#4-生效状态与覆写) | [DEFAULT 保留已安装的候选，优先级及同级顺序决定参与，停用胜出者仍压制候补，移除后才切换](../../test/core/effect.test.js#L112) |
-| [Effect · 重复施加与叠层](effect.md#重复施加与叠层) | [EXTEND 更新剩余量，EXTEND_TIME 累加总量与余量，更新保留旧身份、内容及 Scope，拒绝不兼容的政策](../../test/core/effect.test.js#L256)<br>[STACK 区分层数和有效层数，满层续时、手动消耗和到期衰减各自结算，停用保存层数但不输出](../../test/core/effect.test.js#L332) |
-| [Effect · 来源分组](effect.md#来源分组) | [UNIQUE 按共享、Unit 或无来源分别去重，来源归属和显式 Scope 的结束分别处理](../../test/core/effect.test.js#L467)<br>[同一 Card 的历史及新 Unit 共享来源组，不同 Card 和无卡 Unit 各自独立](../../test/core/effect.test.js#L524) |
+| [Effect · 重复施加与叠层](effect.md#重复施加与叠层) | [EXTEND 更新剩余量，EXTEND_TIME 累加总量与余量，更新保留旧身份、内容及依赖关系，拒绝不兼容的政策](../../test/core/effect.test.js#L256)<br>[STACK 区分层数和有效层数，满层续时、手动消耗和到期衰减各自结算，停用保存层数但不输出](../../test/core/effect.test.js#L332) |
+| [Effect · 来源分组](effect.md#来源分组) | [UNIQUE 按共享、Unit 或无来源分别去重，来源归属和显式依赖的结束分别处理](../../test/core/effect.test.js#L467)<br>[同一 Card 的历史及新 Unit 共享来源组，不同 Card 和无卡 Unit 各自独立](../../test/core/effect.test.js#L524) |
 | [Effect · 5. 回调与同步操作](effect.md#5-回调与同步操作) | [安装中续期或结束采样当前实例，零期限不短暂生效，结束读取撤销输出后的最新私有状态](../../test/core/effect.test.js#L18) |
 | [Effect · 6. 时间推进](effect.md#6-时间推进) | [停用时仍扣时，只有 ACTIVE 执行业务，可手动推进和末次续期，新增实例不进本轮](../../test/core/effect.test.js#L159) |
 | [Effect · 支持范围](effect.md#支持范围) | [眩晕中断 Action 并限制受影响的能力，允许独立 SP 恢复，其他同类来源仍有效时撤掉一个来源不能恢复](../../test/core/effects/control.test.js#L48)<br>[关闭父项下的 SP 回复限制可恢复回复，沉默仍阻止技能发动。父项结束清理两个标准子效果](../../test/core/effects/control.test.js#L92)<br>[技能按定义豁免各来源的眩晕发动限制，沉默、SP 门槛及其他能力的眩晕限制仍生效](../../test/core/effects/control.test.js#L119) |
@@ -119,7 +119,7 @@
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
-| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card) | [初始化先保留互异 Card 身份，添加后才能查询、成为可用 Scope，且按登记顺序追加](../../test/core/deployment.test.js#L56) |
+| [Deployment · 静态内容与 Card](deployment.md#静态内容与-card) | [初始化先保留互异 Card 身份，添加后才能查询、成为可用的依赖目标，且按登记顺序追加](../../test/core/deployment.test.js#L56) |
 | [Deployment · 待部署区顺序](deployment.md#待部署区顺序) | [两个 Card 收费变化都参与当 Tick 排序，撤销规则保留已排顺序，显式排序可同步重排](../../test/core/deployment.test.js#L77) |
 | [Deployment · 部署历史](deployment.md#部署历史) | [多张不同价格的 Card 共用 Unit 蓝图，开场 Unit 无 Card，成功记录按实际顺序先于 entered 发布](../../test/core/deployment.test.js#L117) |
 | [Deployment · 请求与统一资格](deployment.md#请求与统一资格) | [策略覆盖不能豁免库存、支付、地图和占格固有前提，免支付及合法零支付均保有本次真实部署事实](../../test/core/deployment.test.js#L264)<br>[Card Definition 与 DeployRequest 各在本身入口拒绝同列表重复限制 ID](../../test/core/deployment.test.js#L303)<br>[分层按 ID 覆盖之后才求有效组贡献，并用稳定拒绝原因报告第一项失败](../../test/core/deployment.test.js#L325) |

@@ -5,7 +5,7 @@ import type { Unit } from "../unit.js";
 import type { Ref } from "../../common/ref.js";
 import { assertNonnegativeSafeInteger } from "../../common/assert.js";
 import * as units from "../query.js";
-import { available, end, type Scope as LifetimeScope } from "../../lifetime/index.js";
+import { available, end, type Lifetime } from "../../lifetime/index.js";
 import { register } from "../../lifetime/operations.js";
 import type {
     Definition,
@@ -28,7 +28,7 @@ import { hasStack } from "./query.js";
 
 export interface Initial<S extends object, E extends Expiration = Expiration> {
     readonly source?: Ref<Unit> | null;
-    readonly scopes?: readonly LifetimeScope[];
+    readonly scopes?: readonly Ref<Lifetime>[];
     readonly expiration?: E;
     readonly state?: S;
     readonly enabled?: boolean;
