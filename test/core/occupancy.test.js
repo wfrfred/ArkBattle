@@ -62,7 +62,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         },
     };
     let state = battle([], {
-        deployment: { ...account, slot: { limit: 1 } },
+        deployment: { ...account, slot: { limit: 2 } },
         initialCards: [
             { definition: supportDefinition, unitDefinition: support },
             { definition: summonDefinition, unitDefinition: operator },

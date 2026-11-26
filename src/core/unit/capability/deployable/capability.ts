@@ -6,7 +6,6 @@ import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Card } from "../../../battle/deployment/deck/card/card.js";
 import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
-import { Hooks } from "../../../hook.js";
 import { removed } from "../../hook.js";
 import { depart } from "../../../battle/deployment/deck/card/operations.js";
 import { release } from "../../../battle/deployment/slot/operations.js";
@@ -64,27 +63,25 @@ export function initialize<
         state: battle,
         value: {
             ...unit,
-            hooks: Hooks.empty()
-                .set(removed, {
-                    id: "@deployable/settle-departure",
-                    priority: 0,
-                    invoke: (current, departure) => {
-                        const unit = departure.unit as Unit & Deployable;
-                        const { card, slots } = unit.deployable;
-                        const { reason } = departure;
-                        current =
-                            reason === "DEATH"
-                                ? release(current, slots, TICKS_PER_SECOND)
-                                : release(current, slots);
+            hooks: unit.hooks.set(removed, {
+                id: "@deployable/settle-departure",
+                priority: 0,
+                invoke: (current, departure) => {
+                    const unit = departure.unit as Unit & Deployable;
+                    const { card, slots } = unit.deployable;
+                    const { reason } = departure;
+                    current =
+                        reason === "DEATH"
+                            ? release(current, slots, TICKS_PER_SECOND)
+                            : release(current, slots);
 
-                        if (card !== null) {
-                            current = depart(current, card, ref(unit), reason);
-                        }
+                    if (card !== null) {
+                        current = depart(current, card, ref(unit), reason);
+                    }
 
-                        return { state: current, value: undefined };
-                    },
-                })
-                .merge(unit.hooks),
+                    return { state: current, value: undefined };
+                },
+            }),
             deployable: {
                 card: null,
                 cost: 0,
