@@ -1,11 +1,14 @@
 import type { Ref } from "../../common/ref.js";
 import { replaceIn } from "../../common/object.js";
-import type { Unit } from "../../unit/unit.js";
+import type { Unit, EndReason } from "../../unit/unit.js";
 import { ref as unitRef } from "../../unit/query.js";
-import type { Deployable } from "../../unit/capability/deployable/capability.js";
-import { setDeployment, canRetreat, retreat } from "../../unit/capability/deployable/operations.js";
+import type {
+    Deployable,
+    State as DeployableState,
+} from "../../unit/capability/deployable/capability.js";
+import { setDeployment } from "../../unit/capability/deployable/operations.js";
 import type { Command } from "../contract.js";
-import { add } from "../../unit/operations.js";
+import { add, remove } from "../../unit/operations.js";
 import type { State as BattleState, Result } from "../state.js";
 import { initialize as initializeUnit } from "../../unit/initialize.js";
 import { Tile, type TilePosition } from "../../geometry/coordinate.js";
@@ -13,14 +16,13 @@ import type { Direction } from "../../geometry/direction.js";
 import { dispatch as prepareDeployment } from "./deck/card/hook.js";
 import type { Card } from "./deck/card/card.js";
 import { resolveBaseCost, resolveCost } from "./deck/card/dp/query.js";
-import { deploy as deployCard } from "./deck/card/operations.js";
+import { deploy as deployCard, recycle } from "./deck/card/operations.js";
 import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
 import * as slot from "./slot/operations.js";
-import { evaluate, createRequest } from "./query.js";
+import { evaluate, createRequest, canRetreat } from "./query.js";
 import type { DeployRequest } from "./request.js";
-
-export { canRetreat, retreat };
+import { TICKS_PER_SECOND } from "../../tick.js";
 
 export type DeploymentCommand<T extends Card<any> = Card> =
     | {
@@ -81,6 +83,46 @@ export function deploy<T extends Card<any>>(
         state: battle,
         value: unitRef(unit),
     };
+}
+
+export function retreat(battle: BattleState, reference: Ref<Unit & Deployable>): BattleState {
+    if (!canRetreat(battle, reference)) {
+        return battle;
+    }
+
+    const self = reference.get(battle)!;
+    const refund = self.deployable.refund;
+    if (refund !== null) {
+        const amount = Math.max(
+            0,
+            Math.floor(Math.min(self.deployable.cost * refund.rate, refund.limit)),
+        );
+        battle = dp.modify(battle, amount);
+    }
+
+    return remove(battle, reference, { reason: "RETREAT" });
+}
+
+export function settleDeparture(
+    battle: BattleState,
+    reason: EndReason,
+    { card, slots }: Pick<DeployableState, "card" | "slots">,
+): BattleState {
+    battle =
+        reason === "DEATH"
+            ? slot.release(battle, slots, TICKS_PER_SECOND)
+            : slot.release(battle, slots);
+
+    if (
+        card !== null &&
+        (reason === "RETREAT" || reason === "DEATH" || reason === "REDEPLOY_EXTERNAL")
+    ) {
+        const self = card.get(battle)!;
+
+        return deck.replace(battle, recycle(self));
+    }
+
+    return battle;
 }
 
 export function resolveDeploymentCommands(

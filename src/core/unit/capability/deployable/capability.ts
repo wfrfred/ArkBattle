@@ -8,7 +8,7 @@ import { validateRestrictions, type Restriction as BaseRestriction } from "../..
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
 import { removed } from "../../hook.js";
-import { settleDeparture } from "../../../battle/deployment/settlement.js";
+import { settleDeparture } from "../../../battle/deployment/operations.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export interface Definition extends Restrictions {

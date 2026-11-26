@@ -106,9 +106,9 @@ Deployable 单向依赖 Occupancy。初始来源为空，COST 与额度为零。
 
 ## 离场结算
 
-`retreat` 要求当前 ACTIVE 且撤退限制允许。返费按本次 COST 与返费倍率计算，并受实例上限约束。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
+`deployment.canRetreat` 查询当前 ACTIVE 与撤退限制；`deployment.retreat` 负责完整撤退业务。返费按本次 COST 与返费倍率计算，并受实例上限约束。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
-Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
+Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 内部的 `settleDeparture` 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
 
 DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，同卡在场计数仍按当前登记实例计算。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
 

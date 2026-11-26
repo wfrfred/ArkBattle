@@ -4,7 +4,8 @@ import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
 import { at } from "../../battlefield/occupancy.js";
 import { get as getTile } from "../../battlefield/map/map.js";
-import { hasDeployable } from "../../unit/capability/deployable/capability.js";
+import { hasDeployable, type Deployable } from "../../unit/capability/deployable/capability.js";
+import { allows } from "../../restriction.js";
 import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Card } from "./deck/card/card.js";
@@ -38,6 +39,15 @@ export function deployedCount<T extends Card<any>>(battle: BattleState, referenc
     }
 
     return count;
+}
+
+export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable>): boolean {
+    const self = reference.get(battle);
+
+    return (
+        self?.lifecycle === "ACTIVE" &&
+        allows(battle, { self }, self.deployable.retreatRestrictions)
+    );
 }
 
 export function createRequest<T extends Card<any>>(
