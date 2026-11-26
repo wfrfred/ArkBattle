@@ -1,5 +1,4 @@
 import type { Ref } from "../../../../common/ref.js";
-import type { Contribution } from "../../../../common/contribution.js";
 import { replaceIn } from "../../../../common/object.js";
 import type { State as BattleState, Result } from "../../../state.js";
 import type { Unit, EndReason } from "../../../../unit/unit.js";
@@ -12,8 +11,6 @@ import { Tile } from "../../../../geometry/coordinate.js";
 import { Hooks } from "../../../../hook.js";
 import { replace } from "../operations.js";
 import type { Card } from "./card.js";
-import { set, remove } from "../../../../common/collection/entries.js";
-import type { Restriction } from "./restriction.js";
 import { resolveBaseCost, resolveCost, resolveIncrease } from "./dp/query.js";
 import { consume, enqueue, recharge, setCooldown } from "./supply/operations.js";
 import { resolveCooldown } from "./supply/query.js";
@@ -160,26 +157,4 @@ export function advance(battle: BattleState, reference: Ref<Card>): BattleState 
             }
         ).onTick?.(battle, next) ?? battle
     );
-}
-
-export function setRestriction(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    entry: Contribution<Restriction>,
-): BattleState {
-    const self: Card = reference.get(battle)!;
-    const restrictions = set(self.restrictions, entry);
-
-    return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
-}
-
-export function removeRestriction(
-    battle: BattleState,
-    reference: Ref<Card<any>>,
-    id: string,
-): BattleState {
-    const self: Card = reference.get(battle)!;
-    const restrictions = remove(self.restrictions, id);
-
-    return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
 }

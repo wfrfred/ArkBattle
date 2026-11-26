@@ -6,7 +6,7 @@ export type { RestrictionContext, Restriction } from "./restriction.js";
 
 export type { Quote, DeployRequest } from "./request.js";
 
-export { ref } from "./card.js";
+export { ref, setRestriction, removeRestriction } from "./card.js";
 
 export { initialize, type Input } from "./initialize.js";
 
@@ -16,7 +16,7 @@ export { add } from "../operations.js";
 
 export { canDeploy, positions } from "./query.js";
 
-export { deploy, setState, setRestriction, removeRestriction } from "./operations.js";
+export { deploy, setState } from "./operations.js";
 
 export { beforeDeploy, setHook, removeHook, type BeforeDeployHook } from "./hook.js";
 

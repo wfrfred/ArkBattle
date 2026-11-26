@@ -1,3 +1,6 @@
+import { set, remove } from "../../../../common/collection/entries.js";
+import type { State as BattleState } from "../../../state.js";
+import { replace } from "../operations.js";
 import type { Config, Lifetime } from "../../../../lifetime/index.js";
 import type { Definition as BaseDefinition, Unit } from "../../../../unit/unit.js";
 import type {
@@ -39,3 +42,25 @@ export type Card<S extends object = object, P extends Policy = Policy> = {
 }[P];
 
 export { ref } from "../../../../common/ref.js";
+
+export function setRestriction(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    entry: Contribution<Restriction>,
+): BattleState {
+    const self: Card = reference.get(battle)!;
+    const restrictions = set(self.restrictions, entry);
+
+    return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
+}
+
+export function removeRestriction(
+    battle: BattleState,
+    reference: Ref<Card<any>>,
+    id: string,
+): BattleState {
+    const self: Card = reference.get(battle)!;
+    const restrictions = remove(self.restrictions, id);
+
+    return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
+}
