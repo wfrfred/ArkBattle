@@ -236,6 +236,8 @@ PRTS 的“可返费”记录新约能天使 S3 免费投递干员后仍可按�
 
 **N　思衡托离场前拒绝和离场后创建失败会走不同后继。** 弹道先检查目标格及占位者归属，拒绝时调用 `Suicide`。首轮通过后保存技能进度和待投放 Card，特殊离场会跳过普通退场的待投放清理。原 Card 创建失败时，原生清掉落点坐标和旧 HP 比例，保留技能恢复标记、剩余进度及待投放 Card 记录。下次部署从原 Card 读回这份数据，恢复计时。所查原生路径在接续计时结束时清除相关 Card／Deck Buff 和附加部署检查。PRTS 确认思衡托离场时友方 Card 被锁、再次部署后解锁。出生至解锁的间隔未实测。 [落点、失败返回和下一次部署的实际调用](../evidence/special-redeploy-failure-20261122/README.md) · [PRTS 破梏重生](https://prts.wiki/index.php?title=凯尔希·思衡托&oldid=448412#技能)
 
+**2026-11-26 复核证据边界。** 思衡托的初检在弹道抵达时而非锚点部署时进行；通过后，原 Card 的免费创建路径仍检查地块的 `CheckBuildable` 和 `OnEntityWillBuild`。免费创建的 `Card.CheckDrawable(freely)` 为 `isAvailable || freely`，且跳过 DP 支付，因此不能用普通库存、冷却或支付资格解释移动后的创建失败。现行 PRTS 技能备注仍区分两次检查失败的后继，但既有静态取证与社区记录均未给出锚点已部署、初检通过后实际触发第二次失败的具体作战情形。已确认的是拒绝路径及后继，并非该分支在支持玩法中的实际可达样本。 [创建入口](../evidence/card-source-identity-20261111/deployment/native/CreateCharacter-65677.asm#L180) · [免费资格](../evidence/deployment-exit-limits-20261122/native.json#L4944) · [现行 PRTS 技能备注](https://prts.wiki/w/凯尔希·思衡托#技能)
+
 乌尔比安与 Mon3tr 的技能根共用 `UlpiaS3CastSkill._RespawnToLocatedPos`。返回到不同格时会检查场上占位者及所属 Card，允许特定 Buff 豁免，返回条件失败时执行 `Suicide`。 [返回检查](../evidence/special-redeploy-failure-20261122/README.md)
 
 **N／P：部署通知与技能接续是两个事实。** 自身特殊移动跳过普通 DP 检查、扣费和旧实例的普通卡牌回收，落点再检查失败后默认模式会回收 Card。PRTS 记录移动后可再次触发部分部署效果，手动部署才计入的效果仍按自身条件判断，例如渡桥的泄压准备。思衡托的 `SkillProgressHooker.RestoreSkillProgress` 写回计时进度并安装恢复 Buff，普通技能发动和 SP 支付没有在这条入口重跑。恢复 Buff 有条件地请求 `RespawnBorn`。该能力是角色的公共 `EmptyAnimatedAbility`，若执行到标准 `SpellOn` 分支则派发自己的能力通知，编号为 `GENERAL` 的公共能力不计入标准狂躁的攻击／技能次数。其他技能接续和通知的过滤仍取决于各自实现。 [费用、回收与原生恢复程序](../evidence/special-redeploy-failure-20261122/README.md) · [泄压准备](https://prts.wiki/w/渡桥#天赋)
