@@ -4,6 +4,8 @@ import { ref, type Card } from "./card/card.js";
 import { advance as advanceCard } from "./card/operations.js";
 import { all } from "./deck.js";
 import { register } from "../../../lifetime/operations.js";
+import { sort as sortCards } from "../../../common/collection/order.js";
+import { ordered } from "./order.js";
 
 export function add<S extends object>(battle: BattleState, self: Card<S>): BattleState {
     const { deck } = battle.deployment;
@@ -40,9 +42,11 @@ export function sort(battle: BattleState): BattleState {
         return battle;
     }
 
-    const order = ordering(battle, previous);
+    const order = sortCards(ordered(battle), (left, right) => ordering(battle, left, right)).map(
+        ref,
+    );
 
-    return order.length === previous.length && order.every((ref, index) => ref === previous[index])
+    return order.every((ref, index) => ref === previous[index])
         ? battle
         : replaceIn(battle, ["deployment", "deck", "order"], order);
 }

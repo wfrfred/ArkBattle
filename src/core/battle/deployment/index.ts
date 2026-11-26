@@ -30,9 +30,3 @@ export { retreat, canRetreat } from "../../unit/capability/deployable/operations
 export * as dp from "./dp/index.js";
 
 export * as slot from "./slot/index.js";
-
-export type { Ordering } from "./deck/order.js";
-
-export { ordered, setOrdering } from "./deck/order.js";
-
-export { sort } from "./deck/operations.js";

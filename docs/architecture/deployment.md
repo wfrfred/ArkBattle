@@ -34,7 +34,7 @@ Deployment 完成部署资格、消费、构造前装配与实例创建；Card �
 
 Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Route 需要本次路线的 Plan 和 offset，因此带 Route 的蓝图在 Card 构造时由类型检查拒绝。
 
-`card.initialize(battle, { definition, unitDefinition })` 创建 Ref、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 将 `Card<S, P>` 按 Ref 登记，并把新卡追加到当前牌序末尾，同时登记 Lifetime。Card 使用 `Config<Card, never>`，能够作为依赖目标，结束输入在编译期被禁止。Deck 使用异构 Store 以 Ref 为键存放完整实例。`all(battle)` 与 `ordered(battle)` 返回默认 `Card`，精确引用通过 `ref.get(battle)` 取得对应的实例类型。
+`card.initialize(battle, { definition, unitDefinition })` 创建 Ref、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 将 `Card<S, P>` 按 Ref 登记，并把新卡追加到当前牌序末尾，同时登记 Lifetime。Card 使用 `Config<Card, never>`，能够作为依赖目标，结束输入在编译期被禁止。Deck 使用异构 Store 以 Ref 为键存放完整实例。`card.all(battle)` 与 `deck.ordered(battle)` 返回默认 `Card`，精确引用通过 `ref.get(battle)` 取得对应的实例类型。
 
 `Card<S, P>` 是按策略区分的判别联合，与 `Definition<S, P>` 共享私有状态类型 `S` 和策略类型 `P`。初始化从 `definition.policy` 设置实例顶层的 `card.policy`，它在卡牌生命周期内保持稳定。策略为 `DEFAULT`、`UNIQUE` 或 `QUEUED`。
 
@@ -58,9 +58,9 @@ Card 的 `dp.parameters` 必须提供数值费用。`card.dp.create` 补齐参�
 
 ## 待部署区顺序
 
-`ordered(battle)` 读取已保存的牌序。开场按传入顺序登记卡牌，卡牌写回和部署结算各自提交业务变化。`setOrdering(battle, rule)` 只设置后续使用的排序规则，传入 `null` 停止重排并保留当前顺序。
+`deck.ordered(battle)` 读取已保存的牌序。开场按传入顺序登记卡牌，卡牌写回和部署结算各自提交业务变化。`deck.setOrdering(battle, rule)` 接受比较器 `(battle, left: Card, right: Card) => number`，只设置后续使用的排序规则，传入 `null` 停止重排并保留当前顺序。
 
-Deck 每 Tick 推进所有 Card 后调用一次 `sort(battle)`。有排序规则时，按最新 BattleState 重排并保存结果。需要在同一次操作内按新牌序选目标时，例如凛御银灰 S2 减费后，内容可以显式调用 `sort(battle)` 再读取顺序。[原生排序样本](../research/cases/24-deployment-cost-and-supply.md#四手牌顺序与目标选择)
+Deck 每 Tick 推进所有 Card 后调用一次 `deck.sort(battle)`。有排序规则时，按最新 BattleState 稳定排序现有全部牌，同分保留原顺序，并保存结果。需要在同一次操作内按新牌序选目标时，例如凛御银灰 S2 减费后，内容可以显式调用 `deck.sort(battle)` 再读取顺序。[原生排序样本](../research/cases/24-deployment-cost-and-supply.md#四手牌顺序与目标选择)
 
 ## 部署历史
 

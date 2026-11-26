@@ -66,14 +66,14 @@ test("Card initialization reserves identity before Deck registration", () => {
     assert.equal(firstRef.get(second.state), undefined);
     assert.equal(available(second.state, firstRef), false);
     assert.equal(secondRef.get(second.state), undefined);
-    assert.deepEqual([...deployment.ordered(second.state)], []);
+    assert.deepEqual([...deck.ordered(second.state)], []);
 
     state = cards.add(second.state, first.value);
     state = cards.add(state, second.value);
     assert.strictEqual(firstRef.get(state), first.value);
     assert.equal(available(state, firstRef), true);
     assertRefOrder([...cards.all(state)].map(cards.ref), [firstRef, secondRef]);
-    assertRefOrder([...deployment.ordered(state)].map(cards.ref), [firstRef, secondRef]);
+    assertRefOrder([...deck.ordered(state)].map(cards.ref), [firstRef, secondRef]);
 });
 
 test("Deck uses the updated fees to sort and keeps the last order after the rule is cleared", () => {
@@ -91,16 +91,18 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
     };
     let state = battle([], { deployment: { definition: account, cards: [input(5, 2), input(10, -4)] } });
     const [first, second] = [...cards.all(state)].map(cards.ref);
-    const ordered = (state) => [...deployment.ordered(state)].map(cards.ref);
-    const ordering = (state, references) => {
-        const cost = (reference) => cards.dp.resolveCost(state, reference.get(state));
-        return references.toSorted((left, right) => cost(left) - cost(right));
-    };
+    const ordered = (state) => [...deck.ordered(state)].map(cards.ref);
+    const ordering = (state, left, right) =>
+        cards.dp.resolveCost(state, left) - cards.dp.resolveCost(state, right);
 
-    state = deployment.setOrdering(state, ordering);
+    state = deck.setOrdering(state, ordering);
     state = step(state, []);
     assertRefOrder(ordered(state), [second, first]);
     assertRefOrder([...cards.all(state)].map(cards.ref), [first, second]);
+
+    state = deck.sort(deck.setOrdering(state, () => 0));
+    assertRefOrder(ordered(state), [second, first]);
+    state = deck.setOrdering(state, ordering);
 
     const surcharged = cards.dp.setCostContribution(second.get(state), {
         group: null,
@@ -109,13 +111,13 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
     });
     state = deck.replace(state, surcharged);
     assertRefOrder(ordered(state), [second, first]);
-    state = deployment.setOrdering(state, null);
+    state = deck.setOrdering(state, null);
     state = step(state, []);
     assertRefOrder(ordered(state), [second, first]);
 
-    state = deployment.setOrdering(state, ordering);
+    state = deck.setOrdering(state, ordering);
     assertRefOrder(ordered(state), [second, first]);
-    state = deployment.sort(state);
+    state = deck.sort(state);
     assertRefOrder(ordered(state), [first, second]);
 });
 
