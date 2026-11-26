@@ -84,7 +84,5 @@ export function initialize<U extends Unit & Pick<Action, "definition">>(
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Action,
-    "action",
-    keyof Restrictions
->("action", "restrictions");
+    Unit & Action
+>()("action", "restrictions");

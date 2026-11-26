@@ -10,14 +10,14 @@ import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { Tile } from "../../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../helpers/deployable.js";
 import { calculateOffset } from "../../../dist/core/battle/blocking/index.js";
-import { sides, ground, air, setRule } from "../../../dist/core/unit/capability/blocking/index.js";
+import { sides, blocker } from "../../../dist/core/unit/capability/blocking/index.js";
 import { fixture as blockingFixture, holder, target, acquire, ownerId } from "../../helpers/blocking.js";
 import { getUnit, initialize } from "../../helpers/unit.js";
 
 const first = [1, 2];
 const second = [1, 5];
 const deployable = createDeployable();
-function passenger(id = 10, tile = first, rule = ground) {
+function passenger(id = 10, tile = first, rule = blocker.ground) {
     return initialize({
         id, position: Tile.center(tile), initial: { occupancy: { tile, direction: null } }, definition: {
             id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, presence: {},
@@ -54,11 +54,11 @@ test("a platform suppresses its ground passenger without disabling other blocker
 });
 
 test("a platform permits air blocking but forbids ground blocking independently of terrain exemption", () => {
-    let battle = acquire(fixture([platform(), passenger(10, first, { ...air, layers: ["GROUND", "AIR"] }),
+    let battle = acquire(fixture([platform(), passenger(10, first, { ...blocker.air, layers: ["GROUND", "AIR"] }),
         target(20, { layer: "AIR" }), target(21, { position: [2.1, 1] })]));
     assert.equal(ownerId(battle, 20), 10);
     assert.equal(ownerId(battle, 21), undefined);
-    battle = update(battle, ref(getUnit(battle, 10)), setRule({ ...ground, ignoreTerrain: true }));
+    battle = update(battle, ref(getUnit(battle, 10)), blocker.setRule({ ...blocker.ground, ignoreTerrain: true }));
     assert.equal(ownerId(battle, 20), undefined);
     battle = acquire(battle);
     assert.equal(ownerId(battle, 21), undefined);

@@ -10,12 +10,7 @@ import { hasOccupancy, type Occupancy } from "../../core/unit/capability/occupan
 import { hasLayer } from "../../core/unit/capability/layer/index.js";
 import type { Targetable } from "../../core/unit/capability/targetable/capability.js";
 import type { Vitality } from "../../core/unit/capability/vitality/index.js";
-import {
-    hasBlocker,
-    removeBlockerRestriction as removeRestriction,
-    setBlockerRestriction as setRestriction,
-    type Restriction,
-} from "../../core/unit/capability/blocking/index.js";
+import { blocker, type Restriction } from "../../core/unit/capability/blocking/index.js";
 import type { Device } from "./device.js";
 import { apply, restore } from "./tile.js";
 
@@ -65,11 +60,11 @@ export function create(parameters: Parameters): Definition {
             onOccupantAdded(battle, { support, occupant }) {
                 const restrictionId = `shooting-platform/${support.ref.id}/block-free`;
 
-                return hasBlocker(occupant)
+                return blocker.hasBlocker(occupant)
                     ? update(
                           battle,
                           unitRef(occupant),
-                          setRestriction({
+                          blocker.setRestriction({
                               id: restrictionId,
                               group: null,
                               value: groundBlockingRestriction,
@@ -79,11 +74,11 @@ export function create(parameters: Parameters): Definition {
             },
             onOccupantRemoved(battle, { support, occupant }) {
                 const current = unitRef(occupant).get(battle);
-                if (current !== undefined && hasBlocker(current)) {
+                if (current !== undefined && blocker.hasBlocker(current)) {
                     battle = update(
                         battle,
                         unitRef(current),
-                        removeRestriction(`shooting-platform/${support.ref.id}/block-free`),
+                        blocker.removeRestriction(`shooting-platform/${support.ref.id}/block-free`),
                     );
                 }
 

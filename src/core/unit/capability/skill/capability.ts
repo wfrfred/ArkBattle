@@ -1,14 +1,12 @@
 import type { Unit } from "../../unit.js";
 import { ref, type Ref } from "../../../common/ref.js";
 import type * as contribution from "../../../common/contribution.js";
-import * as entries from "../../../common/collection/entries.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import type { Skill as SkillState } from "./skill.js";
 import type { Definition as SkillDefinition } from "./definition.js";
 import { initialize as initializeSkill } from "./initialize.js";
 import type { Input as AmmoInput } from "./ammo.js";
 import type { RecoveryRestriction, Restrictions } from "./restriction.js";
-import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 import { entered } from "./operations.js";
 import { entered as enteredKey } from "../../hook.js";
@@ -66,26 +64,14 @@ export function initialize<U extends Unit & Pick<Skill, "definition">>(
     };
 }
 
-export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Skill,
+const registration = createRegistrationOperations<Unit & Skill>();
+
+export const { set: setRestriction, remove: removeRestriction } = registration<
     "skill",
     keyof Restrictions
 >("skill");
 
-export function setAmmoContribution(
-    entry: contribution.Contribution<AmmoInput>,
-): Change<Unit & Skill> {
-    return createChange<Unit & Skill>((self) => {
-        const ammo = entries.set(self.skill.ammo, entry);
-
-        return ammo === self.skill.ammo ? self : { ...self, skill: { ...self.skill, ammo } };
-    });
-}
-
-export function removeAmmoContribution(id: string): Change<Unit & Skill> {
-    return createChange<Unit & Skill>((self) => {
-        const ammo = entries.remove(self.skill.ammo, id);
-
-        return ammo === self.skill.ammo ? self : { ...self, skill: { ...self.skill, ammo } };
-    });
-}
+export const { set: setAmmoContribution, remove: removeAmmoContribution } = registration(
+    "skill",
+    "ammo",
+);

@@ -1,57 +1,11 @@
-export {
-    hasBlocker,
-    initialize as initializeBlocker,
-    resolveCapacity,
-    resolveRadius,
-    ground,
-    air,
-    setRadiusContribution,
-    removeRadiusContribution,
-    acquired as blockerAcquired,
-    released as blockerReleased,
-} from "./blocker.js";
+export * as blocker from "./blocker/index.js";
 
-export type {
-    Definition as BlockerDefinition,
-    State as BlockerState,
-    Blocker,
-    Rule,
-    Modifier,
-} from "./blocker.js";
+export * as blockable from "./blockable/index.js";
 
-export {
-    hasBlockable,
-    initialize as initializeBlockable,
-    resolveVolume,
-    acquired as blockableAcquired,
-    released as blockableReleased,
-} from "./blockable.js";
+export type { Blocker } from "./blocker/blocker.js";
 
-export type {
-    Definition as BlockableDefinition,
-    State as BlockableState,
-    Blockable,
-    BlockOffset,
-} from "./blockable.js";
+export type { Blockable, BlockOffset } from "./blockable/blockable.js";
 
 export { sides, type Restriction, type RestrictionContext } from "./restriction.js";
 
 export type { Relation, Context, Hook } from "./contract.js";
-
-export {
-    setRestriction as setBlockerRestriction,
-    removeRestriction as removeBlockerRestriction,
-    setCapacityContribution,
-    removeCapacityContribution,
-    setRule,
-    releaseAll,
-} from "./blocker-operations.js";
-
-export {
-    setRestriction as setBlockableRestriction,
-    removeRestriction as removeBlockableRestriction,
-    setVolumeContribution,
-    removeVolumeContribution,
-    release as releaseBlockable,
-    advanceOffset,
-} from "./blockable-operations.js";

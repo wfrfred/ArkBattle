@@ -9,10 +9,8 @@ import * as locomotion from "../locomotion/capability.js";
 import * as vitality from "../vitality/capability.js";
 import type { Restriction } from "../vitality/restriction.js";
 import * as elemental from "../elemental/capability.js";
-import { hasBlocker } from "../blocking/blocker.js";
-import { hasBlockable } from "../blocking/blockable.js";
-import * as blocker from "../blocking/blocker-operations.js";
-import * as blockable from "../blocking/blockable-operations.js";
+import * as blocker from "../blocking/blocker/index.js";
+import * as blockable from "../blocking/blockable/index.js";
 import type { Presence } from "./capability.js";
 
 const restrictionId = "@presence/absent";
@@ -27,9 +25,9 @@ export function disappear(): Change<Unit & Presence> {
     const presence = createChange<Unit & Presence>(
         (self) => ({ ...self, presence: { present: false } }),
         (battle, previous) => {
-            if (hasBlocker(previous)) {
+            if (blocker.hasBlocker(previous)) {
                 battle = blocker.releaseAll(battle, units.ref(previous));
-            } else if (hasBlockable(previous)) {
+            } else if (blockable.hasBlockable(previous)) {
                 battle = blockable.release(battle, units.ref(previous));
             }
 
@@ -48,10 +46,10 @@ export function appear(position: WorldPosition): Change<Unit & Presence> {
     const presence = createChange<Unit & Presence>(
         (self) => ({ ...self, position, presence: { present: true } }),
         (battle, previous) => {
-            if (hasBlocker(previous)) {
+            if (blocker.hasBlocker(previous)) {
                 return blocker.releaseAll(battle, units.ref(previous));
             }
-            if (hasBlockable(previous)) {
+            if (blockable.hasBlockable(previous)) {
                 return blockable.release(battle, units.ref(previous));
             }
 
@@ -85,11 +83,11 @@ function restrictions(present: boolean): Change<Unit> {
                 : locomotion.setRestriction(entry),
         ),
         optional(
-            hasBlocker,
+            blocker.hasBlocker,
             present ? blocker.removeRestriction(restrictionId) : blocker.setRestriction(entry),
         ),
         optional(
-            hasBlockable,
+            blockable.hasBlockable,
             present ? blockable.removeRestriction(restrictionId) : blockable.setRestriction(entry),
         ),
         optional(

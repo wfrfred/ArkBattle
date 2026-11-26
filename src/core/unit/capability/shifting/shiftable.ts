@@ -81,10 +81,8 @@ export function initialize<
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Shiftable,
-    "shiftable",
-    keyof Restrictions
->("shiftable", "restrictions");
+    Unit & Shiftable
+>()("shiftable", "restrictions");
 
 export function resolveMassLevel(battle: BattleState, self: Unit & Shiftable): number {
     return roundToEven(

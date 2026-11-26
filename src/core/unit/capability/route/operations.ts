@@ -17,10 +17,10 @@ import type { Unit } from "../../unit.js";
 import { createChange, type Change } from "../../change.js";
 import * as presence from "../presence/operations.js";
 import { hasPresence } from "../presence/capability.js";
-import { hasBlockable } from "../blocking/blockable.js";
-import { release } from "../blocking/blockable-operations.js";
-import { hasBlocker } from "../blocking/blocker.js";
-import { releaseAll } from "../blocking/blocker-operations.js";
+import { hasBlockable } from "../blocking/blockable/blockable.js";
+import { release } from "../blocking/blockable/operations.js";
+import { hasBlocker } from "../blocking/blocker/blocker.js";
+import { releaseAll } from "../blocking/blocker/operations.js";
 import {
     validatePlan,
     type Checkpoint,

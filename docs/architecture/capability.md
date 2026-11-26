@@ -76,7 +76,7 @@ Offense 保存 attack Attribute，默认下限为0；选择有效来源后按当
 
 ## Layer 与 Hitbox
 
-Unit.position 是身体坐标，Layer 是 GROUND／AIR，Route Plan.motionMode 是 WALK／FLY；它们互相独立。Layer.setType 主动脱离当前阻挡，同值也清理：先发布身份，Settlement 按能力调用 Blocker.releaseAll 或 Blockable.release，后者取消自身计划。它不改路径、自身阻挡规则或自动搜索；依据见[运动模式调查](../research/cases/15-locomotion-native-semantics.md)。
+Unit.position 是身体坐标，Layer 是 GROUND／AIR，Route Plan.motionMode 是 WALK／FLY；它们互相独立。Layer.setType 主动脱离当前阻挡，同值也清理：先发布身份，Settlement 按能力调用 `blocker.releaseAll` 或 `blockable.release`，后者取消自身计划。它不改路径、自身阻挡规则或自动搜索；依据见[运动模式调查](../research/cases/15-locomotion-native-semantics.md)。
 
 Hitbox Definition 保存单个静态 Shape，State 为空，不复制几何或提供运行时改形接口。它与阻挡半径、Locomotion 半身宽分别用于受击、接敌和避障，不能替代。[Spatial](spatial.md)提供战场几何查询。
 
@@ -119,4 +119,4 @@ capacity 与 volume 独立于重量；capacity 的 ADD／ZERO 和 volume 下限�
 
 ## 文件职责
 
-能力目录保留模型、初始化、守卫与所属 Change。Action 与 Skill 的宿主能力、运行实例及操作各自共用一个领域目录。独立实体领域保留其创建、私有状态和完整操作。文件按真实职责与规模划分，源码提供具体声明，文档记录所有权、边界和必要语义。
+能力目录保留模型、初始化、守卫与所属 Change；状态定义文件及完整操作的划分以[接口约定](api-conventions.md#模块与公共入口)为准。Action 与 Skill 的宿主能力、运行实例及操作各自共用一个领域目录。独立实体领域保留其创建、私有状态和完整操作。Blocking 按两端拆分为 blocker／blockable，各自管理能力状态及操作，双方关系由共同业务维护。文件按真实职责与规模划分，源码提供具体声明，文档记录所有权、边界和必要语义。

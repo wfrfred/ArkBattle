@@ -6,8 +6,8 @@ import {
     hasLocomotion,
     MOVE_SAMPLE_INTERVAL,
 } from "../../unit/capability/locomotion/capability.js";
-import { hasBlockable } from "../../unit/capability/blocking/blockable.js";
-import * as blockable from "../../unit/capability/blocking/blockable-operations.js";
+import { hasBlockable } from "../../unit/capability/blocking/blockable/blockable.js";
+import * as blockable from "../../unit/capability/blocking/blockable/operations.js";
 import * as locomotion from "../../unit/capability/locomotion/operations.js";
 import { hasShiftable } from "../../unit/capability/shifting/shiftable.js";
 import * as unbalance from "../../unit/capability/shifting/unbalance.js";

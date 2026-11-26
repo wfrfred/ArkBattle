@@ -5,7 +5,7 @@ import { create as createElemental } from "../../elemental.js";
 import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef } from "../../../core/unit/index.js";
 import { calculateOffset } from "../../../core/battle/blocking/index.js";
-import { ground, sides } from "../../../core/unit/capability/blocking/index.js";
+import { blocker, sides } from "../../../core/unit/capability/blocking/index.js";
 import type { SkillCapability } from "../../../core/unit/capability/skill/index.js";
 import { healFree } from "../../../core/effects/protection.js";
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
@@ -71,7 +71,7 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
         blocker: {
             calculateOffset,
             capacity: attributes.blockCapacity,
-            rule: ground,
+            rule: blocker.ground,
             restrictions: [{ id: "blocking/sides", group: null, value: sides("ENEMY") }],
         },
         action: {

@@ -8,7 +8,7 @@ import * as units from "../../dist/core/unit/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import * as unit from "../../dist/core/unit/operations.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
-import * as capability from "../../dist/core/unit/capability/blocking/index.js";
+import { blockable, blocker as blockerCapability, sides } from "../../dist/core/unit/capability/blocking/index.js";
 import * as layer from "../../dist/core/unit/capability/layer/index.js";
 import * as tiles from "../../dist/core/battle/tile.js";
 import * as maps from "../../dist/core/battlefield/map/map.js";
@@ -21,7 +21,7 @@ import { createRng } from "../../dist/core/common/rng.js";
 const blocker = {
     id: "guard",
     hooks: Hooks.empty(),
-    blocker: { calculateOffset: blocking.calculateOffset, capacity: 3, rule: capability.ground, restrictions: [] },
+    blocker: { calculateOffset: blocking.calculateOffset, capacity: 3, rule: blockerCapability.ground, restrictions: [] },
 };
 const enemy = {
     id: "enemy",
@@ -38,10 +38,10 @@ test("HOOK-03: a relation fixes both sides' priority order before notifying eith
         { definition: { ...blocker, blocker: { ...blocker.blocker, capacity: 1 } }, hooks: Hooks.empty(), initial: {}, position: [2, 1] },
         { definition: {
             ...enemy,
-            hooks: Hooks.empty().set(capability.blockableAcquired, {
+            hooks: Hooks.empty().set(blockable.acquired, {
                 id: "existing", priority: 0,
                 invoke: () => assert.fail("the replaced registration cannot run"),
-            }).set(capability.blockableAcquired, {
+            }).set(blockable.acquired, {
                 id: "target-priority",
                 priority: 10,
                 invoke(current) { calls.push("target-priority"); return { state: current, value: undefined }; },
@@ -51,13 +51,13 @@ test("HOOK-03: a relation fixes both sides' priority order before notifying eith
     ]);
     const owner = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
-    state = unit.update(state, owner, units.setHook(capability.blockerAcquired, {
+    state = unit.update(state, owner, units.setHook(blockerCapability.acquired, {
         id: "change-target-hooks",
         priority: -10,
         accepts: (_current, { relation }) => relation.blocked === target,
         invoke(current) {
             calls.push("blocker");
-            current = unit.update(current, owner, capability.setCapacityContribution({
+            current = unit.update(current, owner, blockerCapability.setCapacityContribution({
                 id: "additional-capacity", group: null,
                 value: [{ type: "ADD", value: 2 }],
             }));
@@ -65,12 +65,12 @@ test("HOOK-03: a relation fixes both sides' priority order before notifying eith
             current = units.add(entrant.state, entrant.value);
             return {
                 state: unit.update(current, target, compose(
-                    units.setHook(capability.blockableAcquired, {
+                    units.setHook(blockable.acquired, {
                         id: "existing",
                         priority: 100,
                         invoke(next) { calls.push("replacement"); return { state: next, value: undefined }; },
                     }),
-                    units.setHook(capability.blockableAcquired, {
+                    units.setHook(blockable.acquired, {
                         id: "late",
                         priority: 1000,
                         invoke(next) { calls.push("late"); return { state: next, value: undefined }; },
@@ -80,7 +80,7 @@ test("HOOK-03: a relation fixes both sides' priority order before notifying eith
             };
         },
     }));
-    state = unit.update(state, owner, units.setHook(capability.blockerAcquired, {
+    state = unit.update(state, owner, units.setHook(blockerCapability.acquired, {
         id: "blocker-priority", priority: 0,
         accepts: (_current, { relation }) => relation.blocked === target,
         invoke(current) { calls.push("blocker-priority"); return { state: current, value: undefined }; },
@@ -97,7 +97,7 @@ test("search and maintenance use effective pair restrictions, volume, layers and
             definition: {
                 ...blocker,
                 occupancy: { slot: "OCCUPANT" },
-                blocker: { calculateOffset: blocking.calculateOffset, capacity: 2, rule: capability.ground, restrictions: [{ id: "opposing-side", group: null, value: capability.sides("ENEMY") }] },
+                blocker: { calculateOffset: blocking.calculateOffset, capacity: 2, rule: blockerCapability.ground, restrictions: [{ id: "opposing-side", group: null, value: sides("ENEMY") }] },
             }, hooks: Hooks.empty(),
             position: [2, 1],
             initial: { occupancy: { tile: [0, 2], direction: null } },
@@ -123,7 +123,7 @@ test("search and maintenance use effective pair restrictions, volume, layers and
         [3],
     );
     assert.equal(blocking.usedCapacity(state, owner), 2);
-    state = unit.update(state, units.ref(get(state, 3)), capability.setVolumeContribution({
+    state = unit.update(state, units.ref(get(state, 3)), blockable.setVolumeContribution({
         id: "larger-target", group: null, value: 1,
     }));
     state = blocking.search(state, owner);
@@ -131,7 +131,7 @@ test("search and maintenance use effective pair restrictions, volume, layers and
     state = unit.update(
         state,
         units.ref(get(state, 4)),
-        capability.removeBlockableRestriction("cannot-be-held"),
+        blockable.removeRestriction("cannot-be-held"),
     );
     state = blocking.search(state, owner);
     assert.deepEqual(
@@ -146,30 +146,30 @@ test("search and maintenance use effective pair restrictions, volume, layers and
     state = tiles.update(state, [0, 2], { ...rootTile.state, allowsBlocking: false });
     state = blocking.search(state, owner);
     assert.deepEqual(blocking.blocked(state, owner), []);
-    state = unit.update(state, owner, capability.setRule(capability.air));
+    state = unit.update(state, owner, blockerCapability.setRule(blockerCapability.air));
     state = blocking.search(state, owner);
     assert.deepEqual(
         blocking.blocked(state, owner).map(({ id }) => id),
         [2],
     );
     const target = units.ref(get(state, 2));
-    state = unit.update(state, target, capability.setBlockableRestriction({
+    state = unit.update(state, target, blockable.setRestriction({
         id: "first-tick-only", group: null, value: { allows: (current) => current.tick === 0 },
     }));
     state = step(step(state, []), []);
     assert.deepEqual(blocking.blocked(state, owner), []);
 
-    state = unit.update(state, target, capability.removeBlockableRestriction("first-tick-only"));
+    state = unit.update(state, target, blockable.removeRestriction("first-tick-only"));
     state = blocking.search(state, owner);
     assert.equal(blocking.blockerOf(state, target).id, owner.id);
-    state = unit.update(state, target, capability.setBlockableRestriction({
+    state = unit.update(state, target, blockable.setRestriction({
         id: "cannot-be-held", group: null, value: { allows: () => false },
     }));
     assert.equal(blocking.blockerOf(state, target), undefined);
 
-    state = unit.update(state, target, capability.removeBlockableRestriction("cannot-be-held"));
-    state = unit.update(state, owner, capability.setRule({
-        ...capability.air, layers: ["GROUND", "AIR"],
+    state = unit.update(state, target, blockable.removeRestriction("cannot-be-held"));
+    state = unit.update(state, owner, blockerCapability.setRule({
+        ...blockerCapability.air, layers: ["GROUND", "AIR"],
     }));
     state = blocking.search(state, owner);
     assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [2, 4]);
@@ -186,13 +186,13 @@ test("radius contributions expand acquisition without releasing distant relation
 
     state = blocking.search(state, owner);
     assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [1]);
-    state = unit.update(state, owner, capability.setRadiusContribution({
+    state = unit.update(state, owner, blockerCapability.setRadiusContribution({
         id: "reach", group: null, value: createModifier({ addition: 0.3 }),
     }));
     state = blocking.search(state, owner);
     assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [1, 2]);
 
-    state = unit.update(state, owner, capability.removeRadiusContribution("reach"));
+    state = unit.update(state, owner, blockerCapability.removeRadiusContribution("reach"));
     state = blocking.maintainAll(state);
     assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [1, 2]);
     state = blocking.release(state, blocking.relations(state, distant));
@@ -210,27 +210,27 @@ test("capacity shrink releases the newest relation and observes callback changes
         state = blocking.acquire(state, owner, units.ref(get(state, id)));
     }
     const released = [];
-    state = unit.update(state, owner, compose(units.setHook(capability.blockerReleased, {
+    state = unit.update(state, owner, compose(units.setHook(blockerCapability.released, {
             id: "restore-one-slot", priority: 0,
             invoke: (current, { relation }) => {
                 released.push(relation.blocked.id);
                 assert.equal(blocking.usedCapacity(current, owner), 2);
                 assert.equal(
-                    capability.resolveCapacity(
+                    blockerCapability.resolveCapacity(
                         get(current, 0).definition.blocker,
                         get(current, 0).blocker,
                     ),
                     1,
                 );
                 return {
-                    state: unit.update(current, owner, capability.setCapacityContribution({
+                    state: unit.update(current, owner, blockerCapability.setCapacityContribution({
                             id: "capacity-change", group: null,
                             value: [{ type: "ADD", value: -1 }],
                         })),
                     value: undefined,
                 };
             },
-        }), capability.setCapacityContribution({
+        }), blockerCapability.setCapacityContribution({
             id: "capacity-change", group: null,
             value: [{ type: "ADD", value: -2 }],
         })));
@@ -240,22 +240,22 @@ test("capacity shrink releases the newest relation and observes callback changes
         [1, 2],
     );
     state = unit.update(state, owner, compose(
-        units.removeHook(capability.blockerReleased, "restore-one-slot"),
-        capability.setCapacityContribution({ id: "capacity-change", group: null, value: [{ type: "ZERO" }] }),
+        units.removeHook(blockerCapability.released, "restore-one-slot"),
+        blockerCapability.setCapacityContribution({ id: "capacity-change", group: null, value: [{ type: "ZERO" }] }),
     ));
     assert.deepEqual(blocking.blocked(state, owner), []);
-    assert.equal(capability.resolveCapacity(get(state, 0).definition.blocker, get(state, 0).blocker), 0);
+    assert.equal(blockerCapability.resolveCapacity(get(state, 0).definition.blocker, get(state, 0).blocker), 0);
 });
 
 test("layer and blocking rule settlements release current relations acquired by earlier settlements", () => {
     for (const [change, targetLayer] of [
         [layer.setType("GROUND"), "GROUND"],
-        [capability.setRule({ ...capability.air, radius: 1 }), "AIR"],
+        [blockerCapability.setRule({ ...blockerCapability.air, radius: 1 }), "AIR"],
     ]) {
         let state = battle([
             { definition: {
                 ...blocker,
-                blocker: { ...blocker.blocker, rule: { ...capability.ground, radius: 1 } },
+                blocker: { ...blocker.blocker, rule: { ...blockerCapability.ground, radius: 1 } },
                 layer: { type: "GROUND" },
             }, hooks: Hooks.empty(), initial: {}, position: [2, 1] },
             { definition: { ...enemy, classification: { type: "DEVICE", side: "NEUTRAL", filterTags: [], groupTags: [] } }, hooks: Hooks.empty(), initial: {}, position: [2.1, 1] },
@@ -266,7 +266,7 @@ test("layer and blocking rule settlements release current relations acquired by 
         const next = units.ref(get(state, 2));
         state = blocking.acquire(state, owner, first);
         const released = [];
-        state = unit.update(state, owner, units.setHook(capability.blockerReleased, {
+        state = unit.update(state, owner, units.setHook(blockerCapability.released, {
             id: "acquire-next", priority: 0,
             invoke(current, { relation }) {
                 released.push(relation.blocked.id);
@@ -280,7 +280,7 @@ test("layer and blocking rule settlements release current relations acquired by 
         }));
 
         state = unit.update(state, owner, compose(
-            capability.setBlockerRestriction({ id: "opposing-side", group: null, value: capability.sides("ENEMY") }),
+            blockerCapability.setRestriction({ id: "opposing-side", group: null, value: sides("ENEMY") }),
             change,
         ));
 
@@ -304,7 +304,7 @@ test("own layer requests release current relations before hooks, including same-
     assert.equal(get(state, original[0].blocked.id).blockable.relation, original[0]);
     assert.equal(blocking.relations(state, original[0].blocked)[0], original[0]);
     let notifications = 0;
-    state = unit.update(state, owner, units.setHook(capability.blockerReleased, {
+    state = unit.update(state, owner, units.setHook(blockerCapability.released, {
             id: "reacquire", priority: 0,
             invoke: (current, { relation }) => {
                 notifications++;
@@ -313,7 +313,7 @@ test("own layer requests release current relations before hooks, including same-
                 }
                 if (notifications === 1) {
                     assert.equal(get(current, 0).layer.type, "AIR");
-                    assert.equal(get(current, 0).blocker.rule, capability.ground);
+                    assert.equal(get(current, 0).blocker.rule, blockerCapability.ground);
                     assert.deepEqual(blocking.blocked(current, owner), []);
                     assert.ok(
                         targets.every(
@@ -346,7 +346,7 @@ test("own layer requests release current relations before hooks, including same-
     state = blocking.search(state, owner);
 
     let removedNotifications = 0;
-    state = unit.update(state, owner, units.setHook(capability.blockerReleased, {
+    state = unit.update(state, owner, units.setHook(blockerCapability.released, {
             id: "reacquire", priority: 0,
             invoke: (current) => {
                 removedNotifications++;
@@ -408,7 +408,7 @@ test("block offsets survive relation release while active departure and spatial 
     state = unit.update(state, departing, presence.appear([2.3, 1]));
     state = blocking.acquire(state, owner, departing);
     let observed = false;
-    state = unit.update(state, departing, units.setHook(capability.blockableReleased, {
+    state = unit.update(state, departing, units.setHook(blockable.released, {
             id: "observe-space-override", priority: 0,
             invoke(current) {
                 observed = true;

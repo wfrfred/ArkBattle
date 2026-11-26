@@ -10,7 +10,7 @@ import { create as createMap } from "../../dist/core/battlefield/map/map.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { normal as normalSite } from "../../dist/content/terrain/condition.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
-import * as blocker from "../../dist/core/unit/capability/blocking/index.js";
+import { blocker, sides } from "../../dist/core/unit/capability/blocking/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 
 export function fixture(units = [], { rows = 3, columns = 12 } = {}) {
@@ -35,7 +35,7 @@ export function holder(id = 10, { position = [2, 1], capacity = 1, rule = { ...b
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { classification: { type: "DEVICE", side, filterTags: [], groupTags: [] } }),
             presence: {}, vitality: vitality(100),
-            blocker: { calculateOffset: blocking.calculateOffset, rule, capacity, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY"), group: null }] },
+            blocker: { calculateOffset: blocking.calculateOffset, rule, capacity, restrictions: [{ id: "opposing-side", value: sides("ENEMY"), group: null }] },
             ...definition,
         },
     });

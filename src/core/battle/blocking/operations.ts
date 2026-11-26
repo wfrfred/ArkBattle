@@ -9,12 +9,12 @@ import {
     resolveCapacity,
     resolveRadius,
     type Blocker,
-} from "../../unit/capability/blocking/blocker.js";
+} from "../../unit/capability/blocking/blocker/blocker.js";
 import {
     hasBlockable,
     resolveVolume,
     type Blockable,
-} from "../../unit/capability/blocking/blockable.js";
+} from "../../unit/capability/blocking/blockable/blockable.js";
 import { hasLayer } from "../../unit/capability/layer/capability.js";
 import { isUnbalanced } from "../../unit/capability/shifting/shiftable.js";
 import { hasOccupancy } from "../../unit/capability/occupancy/capability.js";
@@ -142,6 +142,14 @@ export function maintain(battle: BattleState, relation: Relation): BattleState {
 
 export function maintainAll(battle: BattleState): BattleState {
     for (const relation of relations(battle)) {
+        battle = maintain(battle, relation);
+    }
+
+    return battle;
+}
+
+export function settleRestrictions(battle: BattleState, previous: Unit): BattleState {
+    for (const relation of relations(battle, units.ref(previous))) {
         battle = maintain(battle, relation);
     }
 

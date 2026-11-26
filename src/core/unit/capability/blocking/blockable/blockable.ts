@@ -1,14 +1,19 @@
-import type { State as BattleState, Result } from "../../../battle/state.js";
-import { assertPositiveSafeInteger } from "../../../common/assert.js";
-import * as contribution from "../../../common/contribution.js";
-import { validateRestrictions } from "../../../restriction.js";
-import type { Unit } from "../../unit.js";
-import type { Relation, Hook } from "./contract.js";
-import type { Restriction } from "./restriction.js";
-import type { WorldPosition } from "../../../geometry/coordinate.js";
-import { removing } from "./blockable-operations.js";
-import { Hooks as UnitHooks, key } from "../../../hook.js";
-import { removing as removingKey } from "../../hook.js";
+import type { State as BattleState, Result } from "../../../../battle/state.js";
+import { assertPositiveSafeInteger, assertSafeInteger } from "../../../../common/assert.js";
+import * as contribution from "../../../../common/contribution.js";
+import { validateRestrictions } from "../../../../restriction.js";
+import type { Unit } from "../../../unit.js";
+import type { Relation, Hook } from "../contract.js";
+import type { Restriction } from "../restriction.js";
+import { settleRestrictions } from "../../../../battle/blocking/operations.js";
+import type { WorldPosition } from "../../../../geometry/coordinate.js";
+import { removing } from "./operations.js";
+import { Hooks as UnitHooks, key } from "../../../../hook.js";
+import { removing as removingKey } from "../../../hook.js";
+import { createRegistrationOperations } from "../../../registration.js";
+import type { Change } from "../../../change.js";
+import { ref } from "../../../query.js";
+import { settleCapacity } from "../blocker/operations.js";
 
 interface Restrictions {
     readonly restrictions: readonly contribution.Contribution<Restriction>[];
@@ -76,3 +81,27 @@ export function resolveVolume(definition: Definition, state: State): number {
             .reduce((volume, addition) => volume + addition, definition.volume),
     );
 }
+
+const registration = createRegistrationOperations<Unit & Blockable>();
+
+export const { set: setRestriction, remove: removeRestriction } = registration(
+    "blockable",
+    "restrictions",
+    settleRestrictions,
+);
+
+const volume = registration("blockable", "volume", (battle, previous) => {
+    const owner = ref(previous).get(battle)?.blockable.relation?.blocker;
+
+    return owner == null ? battle : settleCapacity(battle, owner);
+});
+
+export function setVolumeContribution(
+    entry: contribution.Contribution<number>,
+): Change<Unit & Blockable> {
+    assertSafeInteger(entry.value, "blocking volume addition");
+
+    return volume.set(entry);
+}
+
+export const removeVolumeContribution = volume.remove;

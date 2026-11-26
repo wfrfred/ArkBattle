@@ -66,10 +66,8 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Targetable,
-    "targetable",
-    keyof Restrictions
->("targetable", "restrictions");
+    Unit & Targetable
+>()("targetable", "restrictions");
 
 export function setCategory(category: Category): Change<Unit & Targetable> {
     return createChange<Unit & Targetable>((self) =>

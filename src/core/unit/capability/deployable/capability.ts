@@ -92,7 +92,5 @@ export function hasDeployable<U extends Unit>(unit: U): unit is U & Deployable {
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Deployable,
-    "deployable",
-    keyof Restrictions
->("deployable", "retreatRestrictions");
+    Unit & Deployable
+>()("deployable", "retreatRestrictions");

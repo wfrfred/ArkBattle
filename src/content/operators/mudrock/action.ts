@@ -28,7 +28,7 @@ import {
 } from "../../../core/battle/resource/hp/damage/index.js";
 
 import * as targeting from "../../../core/battle/targeting/index.js";
-import { hasBlockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
+import { blockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
 import type { Occupancy } from "../../../core/unit/capability/occupancy/index.js";
 import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";
 import type { TilePosition } from "../../../core/geometry/coordinate.js";
@@ -124,7 +124,7 @@ export function createNormal({
                         .filter(
                             (target) =>
                                 (inDefaultCategory(target) && withinRange(target)) ||
-                                (hasBlockable(target) &&
+                                (blockable.hasBlockable(target) &&
                                     target.blockable.relation?.blocker === source),
                         );
                     const blockedFirst = targeting.blockedFirst(self);

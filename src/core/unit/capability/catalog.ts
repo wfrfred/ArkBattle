@@ -1,7 +1,7 @@
 import * as action from "./action/capability.js";
 import * as classification from "./classification/index.js";
-import * as blockable from "./blocking/blockable.js";
-import * as blocker from "./blocking/blocker.js";
+import * as blockable from "./blocking/blockable/blockable.js";
+import * as blocker from "./blocking/blocker/blocker.js";
 import * as deployable from "./deployable/capability.js";
 import * as elemental from "./elemental/capability.js";
 import * as facing from "./facing/capability.js";

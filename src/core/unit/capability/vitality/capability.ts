@@ -77,10 +77,8 @@ export function initialize<U extends Unit & Pick<Vitality, "definition">>(
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Vitality,
-    "vitality",
-    keyof Restrictions
->("vitality", "damageRestrictions");
+    Unit & Vitality
+>()("vitality", "damageRestrictions");
 
 function preserveHpRatio(
     health: Health,

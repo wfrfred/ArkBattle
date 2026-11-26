@@ -1,18 +1,24 @@
-import type { State as BattleState, Result } from "../../../battle/state.js";
-import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../../common/assert.js";
-import { roundToEven } from "../../../common/math.js";
-import * as contribution from "../../../common/contribution.js";
-import * as modifier from "../../../common/modifier.js";
-import { validateRestrictions } from "../../../restriction.js";
-import type { Unit } from "../../unit.js";
-import type { Blockable, BlockOffset } from "./blockable.js";
-import { createRegistrationOperations } from "../../registration.js";
-import type { Type as LayerType } from "../layer/capability.js";
-import type { Relation, Hook } from "./contract.js";
-import type { Restriction } from "./restriction.js";
-import { removing } from "./blocker-operations.js";
-import { Hooks as UnitHooks, key } from "../../../hook.js";
-import { removing as removingKey } from "../../hook.js";
+import type { State as BattleState, Result } from "../../../../battle/state.js";
+import {
+    assertNonnegativeNumber,
+    assertNonnegativeSafeInteger,
+} from "../../../../common/assert.js";
+import { roundToEven } from "../../../../common/math.js";
+import * as contribution from "../../../../common/contribution.js";
+import * as modifier from "../../../../common/modifier.js";
+import { validateRestrictions } from "../../../../restriction.js";
+import type { Unit } from "../../../unit.js";
+import type { Blockable, BlockOffset } from "../blockable/blockable.js";
+import { createRegistrationOperations } from "../../../registration.js";
+import { createChange, type Change } from "../../../change.js";
+import { ref } from "../../../query.js";
+import type { Type as LayerType } from "../../layer/capability.js";
+import type { Relation, Hook } from "../contract.js";
+import type { Restriction } from "../restriction.js";
+import { settleRestrictions } from "../../../../battle/blocking/operations.js";
+import { removing, releaseAll, settleCapacity } from "./operations.js";
+import { Hooks as UnitHooks, key } from "../../../../hook.js";
+import { removing as removingKey } from "../../../hook.js";
 
 export type Modifier = { readonly type: "ADD"; readonly value: number } | { readonly type: "ZERO" };
 
@@ -117,5 +123,31 @@ export function resolveRadius(state: State): number {
     return Math.max(0, modifier.apply(state.rule.radius, contribution.resolve(state.radius)));
 }
 
-export const { set: setRadiusContribution, remove: removeRadiusContribution } =
-    createRegistrationOperations<Unit & Blocker, "blocker", "radius">("blocker", "radius");
+const registration = createRegistrationOperations<Unit & Blocker>();
+
+export const { set: setRadiusContribution, remove: removeRadiusContribution } = registration(
+    "blocker",
+    "radius",
+);
+
+export const { set: setRestriction, remove: removeRestriction } = registration(
+    "blocker",
+    "restrictions",
+    settleRestrictions,
+);
+
+export const { set: setCapacityContribution, remove: removeCapacityContribution } = registration(
+    "blocker",
+    "capacity",
+    (battle, previous) => settleCapacity(battle, ref(previous)),
+);
+
+export function setRule(rule: Rule): Change<Unit & Blocker> {
+    assertNonnegativeNumber(rule.radius, "block radius");
+
+    return createChange<Unit & Blocker>(
+        (self) =>
+            self.blocker.rule === rule ? self : { ...self, blocker: { ...self.blocker, rule } },
+        (battle, previous) => releaseAll(battle, ref(previous)),
+    );
+}

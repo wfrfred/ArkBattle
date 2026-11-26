@@ -2,12 +2,12 @@ import type { Ref } from "../../common/ref.js";
 import type { State as BattleState } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
 import * as units from "../../unit/query.js";
-import { hasBlocker, type Blocker } from "../../unit/capability/blocking/blocker.js";
+import { hasBlocker, type Blocker } from "../../unit/capability/blocking/blocker/blocker.js";
 import {
     hasBlockable,
     resolveVolume,
     type Blockable,
-} from "../../unit/capability/blocking/blockable.js";
+} from "../../unit/capability/blocking/blockable/blockable.js";
 import type { Relation } from "../../unit/capability/blocking/contract.js";
 
 export function blockerOf(

@@ -1,6 +1,6 @@
 import { attribute, vitality } from "../helpers/attribute.js";
 // Contract: [content](../../docs/architecture/content.md).
-import { ground } from "../../dist/core/unit/capability/blocking/index.js";
+import { blocker } from "../../dist/core/unit/capability/blocking/index.js";
 import { World } from "../../dist/core/geometry/coordinate.js";
 import { Hooks } from "../../dist/core/hook.js";
 import { tiles as tileEntries } from '../helpers/tiles.js';
@@ -79,7 +79,7 @@ function guard(id, position, blockCapacity = 1, restrictions = []) {
   return initialize({ id, position, definition: { hooks: Hooks.empty(),
     id: 'test-guard', targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions }, vitality: vitality(1000, { defense: attribute(40) }), classification: { type: "OPERATOR", side: 'ALLY', profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, layer: { type: 'GROUND' },
     hitbox: { shape: { type: 'CIRCLE', offset: [0, 0], radius: 0.2 } },
-    blocker: { calculateOffset: blockingQueries.calculateOffset, capacity: blockCapacity, rule: ground, restrictions: [] },
+    blocker: { calculateOffset: blockingQueries.calculateOffset, capacity: blockCapacity, rule: blocker.ground, restrictions: [] },
   } });
 }
 

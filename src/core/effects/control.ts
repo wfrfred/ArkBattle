@@ -3,11 +3,7 @@ import type { Restriction } from "../restriction.js";
 
 import type { Definition } from "../effect/definition.js";
 import * as action from "../unit/capability/action/capability.js";
-import { hasBlocker } from "../unit/capability/blocking/blocker.js";
-import {
-    setRestriction as setBlockerRestriction,
-    removeRestriction as removeBlockerRestriction,
-} from "../unit/capability/blocking/blocker-operations.js";
+import * as blocker from "../unit/capability/blocking/blocker/blocker.js";
 import * as locomotion from "../unit/capability/locomotion/capability.js";
 import * as facing from "../unit/capability/facing/capability.js";
 
@@ -130,6 +126,9 @@ function restrictions(id: string, enabled: boolean): Change<Unit> {
                 ? skill.setRestriction("activationRestrictions", entry)
                 : skill.removeRestriction("activationRestrictions", id),
         ),
-        optional(hasBlocker, enabled ? setBlockerRestriction(entry) : removeBlockerRestriction(id)),
+        optional(
+            blocker.hasBlocker,
+            enabled ? blocker.setRestriction(entry) : blocker.removeRestriction(id),
+        ),
     ].reduce(compose);
 }

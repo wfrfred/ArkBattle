@@ -46,7 +46,9 @@ Restriction 只提供纯 `allows(battle, context)`，不携带登记身份。领
 
 文件组织应帮助读者从业务概念找到所属模块，并连贯理解实现。经常一起阅读、修改的内容尽量靠近；模型、初始化、查询和操作可以共同构成一个文件，形成独立主题后再拆分。相似领域采用容易预测的组织方式，同时允许实际复杂度带来差异，不以文件短小或目录整齐衡量效果。
 
-明确属于某领域的内容可由其他领域直接依赖；脱离具体领域仍成立的基础机制集中在 common，避免为共享而拆散完整概念。多个实现文件组成公共领域时，由 index 显式导出；不使用 export *，不为单一清晰入口强加 barrel。
+状态定义文件（如 `capability.ts` 或实体同名文件）负责 Definition／State、初始化、守卫和普通字段变更，包括 Restriction／Contribution 登记与撤销。返回 Unit Change 的字段变更即使带有 Settlement，仍归状态定义文件；Settlement 所委托的完整业务归所属操作。不将 Change 因其存在后继而移入 `operations.ts`。`operations.ts` 负责完整业务、实例生命周期和调度推进；`query.ts` 负责只读业务查询。小领域可以在一个文件内保留这些职责，按规模拆分，不要求每个领域都建立全部文件。
+
+明确属于某领域的内容可由其他领域直接依赖；脱离具体领域仍成立的基础机制集中在 common，避免为共享而拆散完整概念。多个实现文件组成公共领域时，由 index 显式导出；不使用无选择的 `export * from` 展平实现文件。独立子领域可以按具名命名空间导出其已明确的公共入口，不为单一清晰入口强加 barrel。
 
 Content／Data 默认从领域入口消费；Core 内部按实际依赖精确导入。实现文件的 export 不自动代表公共契约，公共导出也不改变调用权限：调度入口仍不能被 Content 任意推进。避免只缩短路径的转发层、重复模型和万能入口。
 
@@ -140,6 +142,20 @@ C 是最低宿主要求；compose 按顺序合并所需能力，满足结合律�
 内部 replace 只发布合法完整对象及索引，信任 Core 已建立的身份、Definition 和能力配对；不扫描能力、推导差异、维护 Lifetime 或补发业务通知。它不构成 Content 的原始状态写回入口。
 
 Unit 的 add／remove 与生命周期 Hook 见 [Capability](capability.md)和 [Hook](hook.md)；依赖清理见 [Lifetime](lifetime.md)。Unit 不识别每项能力后再扫描补救，能力通过合法装配与所属操作维护自己的业务。
+
+### 5.2 Unit 登记变更工厂
+
+[createRegistrationOperations](../../src/core/unit/registration.ts) 统一直接存放在能力状态中的登记列表（Restriction、Contribution 等）的 Change 构造。先固定最低宿主类型，再由能力属性、字段推导登记项类型：
+
+```typescript
+const registration = createRegistrationOperations<Unit & X>();
+const { set: setRestriction, remove: removeRestriction } =
+    registration("x", "restrictions", settle);
+```
+
+`settle` 可省略；需要后继时接收最新 BattleState 和本项变更的 previous。单字段入口保留 `set(entry)`／`remove(id)`；多字段入口以 `registration("x")` 取得 keyed `set(key, entry)`／`remove(key, id)`，必要时显式限制公开字段键集合，保持 key 与 entry 类型配对。领域公开名称、参数语义及校验不因使用工厂改变。
+
+工厂内部使用 `entries.set`／`entries.remove` 管理登记，以 `replaceIn` 写回路径，再由 `createChange` 构造 Change；无实际变更时保留原引用且不安排 Settlement。需要额外业务校验或不同状态结构的领域仍保留自己的入口，不为覆盖全部字段写入而扩大工厂协议。
 
 ## 6. Effect self 的身份与宿主约束
 

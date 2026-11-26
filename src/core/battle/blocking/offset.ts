@@ -1,8 +1,8 @@
 import { Vec2 } from "../../common/vector.js";
 import type { State as BattleState, Result } from "../state.js";
 import type { Unit } from "../../unit/unit.js";
-import type { Blocker } from "../../unit/capability/blocking/blocker.js";
-import type { Blockable, BlockOffset } from "../../unit/capability/blocking/blockable.js";
+import type { Blocker } from "../../unit/capability/blocking/blocker/blocker.js";
+import type { Blockable, BlockOffset } from "../../unit/capability/blocking/blockable/blockable.js";
 
 function normalize(vector: Vec2): Vec2 {
     const length = Vec2.length(vector);

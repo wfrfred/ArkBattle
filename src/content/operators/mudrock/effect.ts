@@ -5,7 +5,7 @@ import {
 } from "../../../core/unit/capability/classification/index.js";
 import { update as updateUnit, ref as unitRef, type Unit } from "../../../core/unit/index.js";
 import { blocked } from "../../../core/battle/blocking/index.js";
-import { hasBlocker } from "../../../core/unit/capability/blocking/index.js";
+import { blocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasSkill, modify } from "../../../core/unit/capability/skill/index.js";
 import type { Vitality } from "../../../core/unit/capability/vitality/index.js";
 import { cancel, receiving } from "../../../core/battle/resource/hp/damage/index.js";
@@ -103,7 +103,7 @@ export function shieldEffect({
                             : 1;
                         const blockingScale =
                             source !== null &&
-                            hasBlocker(host) &&
+                            blocker.hasBlocker(host) &&
                             blocked(state, unitRef(host)).some((ref) => ref === source)
                                 ? blockedDamageScale
                                 : 1;

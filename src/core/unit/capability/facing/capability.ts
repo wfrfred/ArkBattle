@@ -70,7 +70,5 @@ export function fromVector(vector: WorldPosition): Direction | null {
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Facing,
-    "facing",
-    keyof Restrictions
->("facing", "restrictions");
+    Unit & Facing
+>()("facing", "restrictions");

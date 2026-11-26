@@ -144,7 +144,5 @@ function updateAttribute(
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Elemental,
-    "elemental",
-    keyof Restrictions
->("elemental");
+    Unit & Elemental
+>()<"elemental", keyof Restrictions>("elemental");

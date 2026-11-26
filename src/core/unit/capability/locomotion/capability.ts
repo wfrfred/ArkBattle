@@ -83,10 +83,8 @@ export function initialize<U extends Unit & Pick<Locomotion, "definition">>(
 }
 
 export const { set: setRestriction, remove: removeRestriction } = createRegistrationOperations<
-    Unit & Locomotion,
-    "locomotion",
-    keyof Restrictions
->("locomotion", "restrictions");
+    Unit & Locomotion
+>()("locomotion", "restrictions");
 
 export function setSpeedContribution(
     entry: contribution.Contribution<Input>,

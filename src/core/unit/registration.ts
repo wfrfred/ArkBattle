@@ -1,12 +1,14 @@
-import { type Entry, set, remove } from "../common/collection/entries.js";
+import * as entries from "../common/collection/entries.js";
+import { replaceIn } from "../common/object.js";
+import type { State as BattleState } from "../battle/state.js";
 import { createChange, type Change } from "./change.js";
 import type { Unit } from "./unit.js";
 
 type RegistrationKey<S> = {
-    [K in keyof S]-?: S[K] extends readonly Entry[] ? K : never;
+    [K in keyof S]-?: S[K] extends readonly entries.Entry[] ? K : never;
 }[keyof S];
 
-type RegistrationEntry<T> = T extends readonly (infer E)[] ? E : never;
+type RegistrationEntry<T> = T extends readonly (infer E extends entries.Entry)[] ? E : never;
 
 type SetArguments<S, K extends RegistrationKey<S>> = {
     [P in K]: [key: P, entry: RegistrationEntry<S[P]>];
@@ -26,47 +28,53 @@ type FieldOperations<U extends Unit, P extends keyof U, K extends RegistrationKe
     };
 }[K];
 
-export function createRegistrationOperations<
-    U extends Unit,
-    P extends keyof U,
-    K extends RegistrationKey<U[P]>,
->(property: P, field: K): FieldOperations<U, P, K>;
-export function createRegistrationOperations<
-    U extends Unit,
-    P extends keyof U,
-    K extends RegistrationKey<U[P]>,
->(property: P): KeyedOperations<U, P, K>;
-export function createRegistrationOperations<
-    U extends Unit,
-    P extends keyof U,
-    K extends RegistrationKey<U[P]>,
->(property: P, field?: K): KeyedOperations<U, P, K> | FieldOperations<U, P, K> {
-    return {
-        set(...args: [K, Entry] | [Entry]) {
-            const key = (field ?? args[0]) as K;
-            const entry = (field === undefined ? args[1] : args[0]) as Entry;
+export function createRegistrationOperations<U extends Unit>() {
+    function registration<P extends keyof U, K extends RegistrationKey<U[P]>>(
+        property: P,
+        field: K,
+        settle?: (battle: BattleState, previous: U) => BattleState,
+    ): FieldOperations<U, P, K>;
+    function registration<P extends keyof U, K extends RegistrationKey<U[P]>>(
+        property: P,
+    ): KeyedOperations<U, P, K>;
+    function registration<P extends keyof U, K extends RegistrationKey<U[P]>>(
+        property: P,
+        field?: K,
+        settle?: (battle: BattleState, previous: U) => BattleState,
+    ) {
+        const replaceRegistration = replaceIn as <T extends U, Q extends K>(
+            self: T,
+            path: readonly [P, Q],
+            value: readonly RegistrationEntry<U[P][Q]>[],
+        ) => T;
 
+        function change<Q extends K>(
+            key: Q,
+            update: (
+                current: readonly RegistrationEntry<U[P][Q]>[],
+            ) => readonly RegistrationEntry<U[P][Q]>[],
+        ): Change<U> {
             return createChange<U>((self) => {
-                const state = self[property] as U[P] & Record<K, readonly Entry[]>;
-                const entries = set(state[key], entry);
+                const current = self[property][key] as readonly RegistrationEntry<U[P][Q]>[];
 
-                return entries === state[key]
-                    ? self
-                    : { ...self, [property]: { ...state, [key]: entries } };
-            });
-        },
-        remove(...args: [K, string] | [string]) {
-            const key = (field ?? args[0]) as K;
-            const id = (field === undefined ? args[1] : args[0]) as string;
+                return replaceRegistration(self, [property, key], update(current));
+            }, settle);
+        }
 
-            return createChange<U>((self) => {
-                const state = self[property] as U[P] & Record<K, readonly Entry[]>;
-                const entries = remove(state[key], id);
+        const set = <Q extends K>(key: Q, entry: RegistrationEntry<U[P][Q]>) =>
+            change(key, (current) => entries.set(current, entry));
+        const remove = (key: K, id: string) =>
+            change(key, (current) => entries.remove(current, id));
 
-                return entries === state[key]
-                    ? self
-                    : { ...self, [property]: { ...state, [key]: entries } };
-            });
-        },
-    } as KeyedOperations<U, P, K> | FieldOperations<U, P, K>;
+        if (field === undefined) {
+            return { set, remove };
+        }
+
+        return {
+            set: (entry: RegistrationEntry<U[P][K]>) => set(field, entry),
+            remove: (id: string) => remove(field, id),
+        };
+    }
+
+    return registration;
 }

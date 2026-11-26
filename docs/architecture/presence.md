@@ -24,7 +24,7 @@ Presence 组合各能力自己提供的限制 Change，恢复只移除自身登�
 
 空间变化先于所属能力限制的变换组合，完成全部应用后一次发布，再按 Change 顺序 Settlement，详细协议见[接口约定](api-conventions.md#51-unit-完整操作与批量变更)。ENDING 宿主不再产生空间变化。
 
-自身 Settlement 按稳定能力角色调用 Blockable.release 或 Blocker.releaseAll，由完整操作读取当前关系；Blockable 同时取消自身计划，Blocker 不接管目标计划。disappear 完成释放后委托 Action.cancelForUnit 从最新状态取消执行；appear 不取消执行。后续限制后继继续接续最新状态。
+自身 Settlement 按稳定能力角色调用 `blockable.release` 或 `blocker.releaseAll`，由完整操作读取当前关系；Blockable 同时取消自身计划，Blocker 不接管目标计划。disappear 完成释放后委托 Action.cancelForUnit 从最新状态取消执行；appear 不取消执行。后续限制后继继续接续最新状态。
 
 每次释放在自身首个 RELEASED 前完成入口集合的双端解除，回调可见已发布的最终空间事实与限制。通知中新建的关系不追溯删除；混合 Change 的较早 Settlement 仍按自己的顺序执行，不承诺全批事务。
 

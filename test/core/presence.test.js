@@ -9,7 +9,7 @@ import * as lifecycle from "../../dist/core/unit/hook.js";
 import { update } from "../../dist/core/unit/operations.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import * as blocking from "../../dist/core/battle/blocking/index.js";
-import * as block from "../../dist/core/unit/capability/blocking/index.js";
+import { blocker } from "../../dist/core/unit/capability/blocking/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as effects from "../../dist/core/effect/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
@@ -40,7 +40,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         }),
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
-        blocker: { calculateOffset: blocking.calculateOffset, capacity: 2, rule: block.ground, restrictions: [] },
+        blocker: { calculateOffset: blocking.calculateOffset, capacity: 2, rule: blocker.ground, restrictions: [] },
         action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [program, idle] },
     };
 
@@ -90,7 +90,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     state = installed.state;
     for (const target of targets) state = blocking.acquire(state, owner, target);
     let notifications = 0;
-    state = update(state, owner, units.compose(units.setHook(block.blockerReleased, {
+    state = update(state, owner, units.compose(units.setHook(blocker.released, {
         id: "observe-published-restrictions", priority: 0,
         invoke(current) {
             notifications++;

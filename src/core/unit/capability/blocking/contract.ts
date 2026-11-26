@@ -1,8 +1,8 @@
 import type { Ref } from "../../../common/ref.js";
 import type * as hooks from "../../../hook.js";
 import type { Unit } from "../../unit.js";
-import type { Blocker } from "./blocker.js";
-import type { Blockable } from "./blockable.js";
+import type { Blocker } from "./blocker/blocker.js";
+import type { Blockable } from "./blockable/blockable.js";
 
 export interface Relation {
     readonly blocker: Ref<Unit & Blocker>;

@@ -4,7 +4,7 @@ import { setState } from "../../../core/unit/capability/action/index.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
 import * as units from "../../../core/unit/index.js";
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import { hasBlockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
+import { blockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
 import type { Classification } from "../../../core/unit/capability/classification/index.js";
 import type { Occupancy } from "../../../core/unit/capability/occupancy/index.js";
 import type { Offense } from "../../../core/unit/capability/offense/index.js";
@@ -46,7 +46,7 @@ function candidates(
         .filter(
             (target) =>
                 (inDefaultCategory(target) && withinRange(target)) ||
-                (hasBlockable(target) && target.blockable.relation?.blocker === self.ref),
+                (blockable.hasBlockable(target) && target.blockable.relation?.blocker === self.ref),
         );
 }
 

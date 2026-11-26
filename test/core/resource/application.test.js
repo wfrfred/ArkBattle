@@ -3,7 +3,7 @@ import { attribute as defineAttribute, vitality as defineVitality } from "../../
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
-import { ground } from "../../../dist/core/unit/capability/blocking/index.js";
+import { blocker } from "../../../dist/core/unit/capability/blocking/index.js";
 import { Hooks, key } from "../../../dist/core/hook.js";
 import * as units from "../../../dist/core/unit/index.js";
 import { update, remove } from "../../../dist/core/unit/operations.js";
@@ -826,7 +826,7 @@ test("HP-03: Applied can recover zero HP and preserve blocking before death conf
         { hooks: Hooks.empty(), initial: {}, definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { hooks: Hooks.empty(), initial: {}, definition: {
             id: "guard", hooks: Hooks.empty(), vitality: defineVitality(40),
-            blocker: { calculateOffset: blocking.calculateOffset, capacity: 1, rule: ground, restrictions: [] },
+            blocker: { calculateOffset: blocking.calculateOffset, capacity: 1, rule: blocker.ground, restrictions: [] },
         }, position: [2, 1] },
         { hooks: Hooks.empty(), initial: {}, definition: { id: "enemy", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [2.2, 1] },
     ]);

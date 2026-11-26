@@ -3,7 +3,7 @@ import { attribute as defineAttribute } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
-import { ground } from "../../../dist/core/unit/capability/blocking/index.js";
+import { blocker } from "../../../dist/core/unit/capability/blocking/index.js";
 import { Hooks } from "../../../dist/core/hook.js";
 import * as units from "../../../dist/core/unit/index.js";
 import * as blocking from "../../../dist/core/battle/blocking/index.js";
@@ -33,7 +33,7 @@ function actor(ignoreRestrictions, onEnd = state => state) {
         id: "controlled", hooks: Hooks.empty(),
         action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [action] },
         skill: { definition: skill },
-        blocker: { calculateOffset: blocking.calculateOffset, capacity: 1, rule: { ...ground, radius: 2 }, restrictions: [] },
+        blocker: { calculateOffset: blocking.calculateOffset, capacity: 1, rule: { ...blocker.ground, radius: 2 }, restrictions: [] },
         facing: { restrictions: [] },
         locomotion: { halfBodyWidth: 0, speed: defineAttribute(1), steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
     };

@@ -1,6 +1,8 @@
 # Blocking 设计
 
-Blocking 拥有双端关系、取得／解除、资格维护、容量裁撤与阻挡偏移。Blockable 拥有自身的阻挡偏移状态。关系操作见 [battle/blocking](../../src/core/battle/blocking/index.ts)，能力配置、Change 和通知 Key 见 [capability/blocking](../../src/core/unit/capability/blocking/index.ts)。
+Blocking 拥有双端关系、取得／解除、资格维护、容量裁撤与阻挡偏移。Blockable 拥有自身的阻挡偏移状态。关系操作见 [battle/blocking](../../src/core/battle/blocking/index.ts)，能力公共入口见 [capability/blocking](../../src/core/unit/capability/blocking/index.ts)。
+
+能力按两端划分：`blocker/` 与 `blockable/` 各自以同名文件定义 Definition／State、初始化、守卫、通知 Key 和 Change，以 `operations.ts` 实现完整业务与推进，并由各自 `index.ts` 显式导出。双端共享 `contract.ts`（Relation、Context、Hook）和 `restriction.ts`（Restriction、RestrictionContext、sides）。总入口公开 `blocker`／`blockable` 命名空间，以及 Blocker、Blockable、BlockOffset 类型与共享契约；双方各有 `setRestriction`／`removeRestriction` 和 `acquired`／`released`，无需在总入口合并或重命名。跨双方取得、批量解除与复核仍归 battle/blocking。
 
 ## 关键语义
 
@@ -31,7 +33,7 @@ Blockable.offset 保存 BlockOffset（起点 from、终点 to 与开始 Tick sta
 
 ## 阻挡规则与有效半径
 
-Blocking.Rule 是一份完整规则：`layers: readonly Layer.Type[]`、`radius: number`、`ignoreTerrain: boolean`。标准 ground 只接受 GROUND，基础半径 0.7071，检查地块；标准 air 只接受 AIR，基础半径 0.8944，忽略地块。特殊规则可同时接受多个目标层，地块资格独立指定。
+`blocker.Rule` 是一份完整规则：`layers: readonly Layer.Type[]`、`radius: number`、`ignoreTerrain: boolean`。标准 ground 只接受 GROUND，基础半径 0.7071，检查地块；标准 air 只接受 AIR，基础半径 0.8944，忽略地块。特殊规则可同时接受多个目标层，地块资格独立指定。
 
 Blocker Definition.rule 保存初始规则，State.rule 保存当前规则；State.radius 保存独立的 `Contribution<common Modifier>[]`。resolveRadius(state) 以当前 rule.radius 为底值，使用有效贡献与 [common 数值修正公式](attribute.md) 得到有效半径。切换规则不撤销半径贡献。
 
@@ -54,15 +56,15 @@ Blocker Definition.rule 保存初始规则，State.rule 保存当前规则；Sta
 
 acquire 资格检查失败不发布关系；通过后调用定义中的 calculateOffset，以返回的 Battle State 为基础一次提交双端 Relation 与新 BlockOffset，再通知双方，最后只维护本次新 Relation。它不顺带复核其他关系或裁撤全组。
 
-release 接受原 Relation 集合，按入口当前有效对象去重并保留输入顺序；先发布整批双端解除，再逐条通知。它不取消目标偏移、搜索替代目标或维护无关关系。releaseAll 在操作入口取得当前 Blocker 的全部出向关系后使用同一批量协议。
+release 接受原 Relation 集合，按入口当前有效对象去重并保留输入顺序；先发布整批双端解除，再逐条通知。它不取消目标偏移、搜索替代目标或维护无关关系。`blocker.releaseAll` 在操作入口取得当前 Blocker 的全部出向关系后使用同一批量协议。
 
-Blockable.release（公共名 releaseBlockable）先取消自身偏移，再解除当前入向关系；两者之间无回调，首个 RELEASED 已可见两项结果。
+`blockable.release` 先取消自身偏移，再解除当前入向关系；两者之间无回调，首个 RELEASED 已可见两项结果。
 
-Blocker.setRule 的真实变化先发布完整规则，Settlement 再释放当时全部出向关系；同一规则请求无变更。setRadiusContribution／removeRadiusContribution 只修改有效半径，不解除关系或自动搜索；后续搜索和取得读取该半径。Unit 自身 Layer.setType 采用主动脱离政策，同值调用也清理关系，原生依据见[运动身份调查](../research/cases/15-locomotion-native-semantics.md)。自身 Layer 与 Rule 分别表达宿主身份和阻挡资格，不能混用。
+`blocker.setRule` 的真实变化先发布完整规则，Settlement 再释放当时全部出向关系；同一规则请求无变更。`blocker.setRadiusContribution`／`blocker.removeRadiusContribution` 只修改有效半径，不解除关系或自动搜索；后续搜索和取得读取该半径。Unit 自身 Layer.setType 采用主动脱离政策，同值调用也清理关系，原生依据见[运动身份调查](../research/cases/15-locomotion-native-semantics.md)。自身 Layer 与 Rule 分别表达宿主身份和阻挡资格，不能混用。
 
 ## 主动解除阻挡的空间操作
 
-[Presence](presence.md) 和 Route 主动覆盖位置先发布新空间事实，再按稳定能力角色调用 Blockable.release／Blocker.releaseAll。Blocker 不取消原目标的独立阻挡偏移。
+[Presence](presence.md) 和 Route 主动覆盖位置先发布新空间事实，再按稳定能力角色调用 `blockable.release`／`blocker.releaseAll`。Blocker 不取消原目标的独立阻挡偏移。
 
 组合 Change 统一发布最终字段，Settlement 仍按组合顺序执行。每次释放只承诺其操作入口固定集合在自身首个通知前清空，不承诺整个 Change 批次第一个 RELEASED 前全部旧关系已解除；较早容量后继仍可能先逐项裁撤。
 
@@ -113,13 +115,13 @@ Movement 先推进所有已有 Blockable 阻挡偏移，再推进 Route；根据
 
 ## 阻挡偏移
 
-阻挡偏移涵盖取得阻挡时确定偏移终点到随后逐 Tick 推进真实位置的过程。Blocker.Definition 必须配置 `calculateOffset(battle, blocker, target): Result<BlockOffset>`。计算函数只读取当前战场事实，可消耗 RNG 并返回相应 Battle State，不得执行关系变更、通知或其他业务性重入操作。普通阻挡使用 [battle/blocking](../../src/core/battle/blocking/index.ts) 导出的 `calculateOffset`；特殊内容可配置自己的计算函数，共享取得及后续推进协议。
+阻挡偏移涵盖取得阻挡时确定偏移终点到随后逐 Tick 推进真实位置的过程。`blocker.Definition` 必须配置 `calculateOffset(battle, blocker, target): Result<BlockOffset>`。计算函数只读取当前战场事实，可消耗 RNG 并返回相应 Battle State，不得执行关系变更、通知或其他业务性重入操作。普通阻挡使用 [battle/blocking](../../src/core/battle/blocking/index.ts) 导出的 `calculateOffset`；特殊内容可配置自己的计算函数，共享取得及后续推进协议。
 
 普通阻挡先以目标与 Blocker 的真实位置计算径向间距：不足 0.5 时推至最小间距，近零向量不制造方向。0.5 是站位间距，不是接敌半径或 Hitbox 尺寸。
 
 普通偏移计算对 Blocker 已有关系中的目标读取 `blockable.offset?.to ?? position` 作为稳定位置；不另设公共稳定位置查询。径向位置与已有点距离平方不足 0.01 时做分散：距离不足 0.1 使用相对阻挡者的顺时针垂线，0.1–0.4 使用分离方向加权贡献，达到 0.4 不贡献；最终以归一化分散方向的 0.2 修正方向并保留径向距离。
 
-普通计算以当前真实位置及当前 Tick 为起点。取得新关系时新偏移覆盖旧偏移，`advanceOffset` 按 0.2 秒（30 Hz 下六 Tick）线性推进；完成清除偏移，不改关系。Unit.position 是唯一真实坐标，不另存 Tween、位置进度或速度。普通释放、容量裁撤和 Blocker 离场保留目标偏移；目标自身主动脱离／覆盖位置／离场取消偏移。
+普通计算以当前真实位置及当前 Tick 为起点。取得新关系时新偏移覆盖旧偏移，`blockable.advanceOffset` 按 0.2 秒（30 Hz 下六 Tick）线性推进；完成清除偏移，不改关系。Unit.position 是唯一真实坐标，不另存 Tween、位置进度或速度。普通释放、容量裁撤和 Blocker 离场保留目标偏移；目标自身主动脱离／覆盖位置／离场取消偏移。
 
 Movement 两遍推进各项接续最新状态，不承诺所有偏移一次原子发布。即使没有 Route，Blockable 仍推进偏移；偏移完成本身不阻止随后按当前关系与移动资格推进。时序及取消依据见[位置修正研究](../research/cases/22-block-positioning-and-interruption.md)。
 
