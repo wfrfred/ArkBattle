@@ -46,20 +46,18 @@ test("unhosted and Card effects share the lifecycle and keep host groups indepen
     const initial = battle([], {
         initialEffects: [{ initial: effectInitial, definition: controller }],
         deployment: {
-            definition: {
-                costCeiling: 99,
-                dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
-                slot: { limit: 1 },
-            },
-            cards: [{
-                definition: createCardDefinition(),
-                unitDefinition: {
-                    ...operator,
-                    occupancy: { slot: "OCCUPANT" },
-                    deployable: { retreatRestrictions: [], refund: null },
-                },
-            }],
+            costCeiling: 99,
+            dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
+            slot: { limit: 1 },
         },
+        initialCards: [{
+            definition: createCardDefinition(),
+            unitDefinition: {
+                ...operator,
+                occupancy: { slot: "OCCUPANT" },
+                deployable: { retreatRestrictions: [], refund: null },
+            },
+        }],
     });
     const controllerRef = effects.ref(effects.forHost(initial, null).find(self =>
         self.definition === controller,
@@ -643,13 +641,11 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const card = { definition: createCardDefinition(), unitDefinition: deployable };
     let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: operator, position: [1, 1] }], {
         deployment: {
-            definition: {
-                costCeiling: 99,
-                dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
-                slot: { limit: 2 },
-            },
-            cards: [card, card],
+            costCeiling: 99,
+            dp: { initial: 0, min: 0, max: 99, recoveryInterval: null },
+            slot: { limit: 2 },
         },
+        initialCards: [card, card],
     });
     const owner = units.ref(get(state, 0));
     const [a, b] = [...cards.all(state)].map(cards.ref);

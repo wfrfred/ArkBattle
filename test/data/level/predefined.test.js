@@ -50,7 +50,7 @@ test("real hidden devices preserve placement, static classification and target c
     });
     let battle = initialize({
         map: level.map, initialUnits: [], initialEffects: [],
-        schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, pushMultiplier: 0.5, deployment: null, rngState: 123,
+        schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, pushMultiplier: 0.5, deployment: null, initialCards: [], rngState: 123,
     });
     const initializedCrate = initializeUnit(battle, crateCreation);
     battle = add(initializedCrate.state, initializedCrate.value);

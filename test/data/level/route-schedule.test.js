@@ -154,7 +154,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     assert.deepEqual(compiled.schedule.waves[0].fragments[0].entries.map(({ wait }) => wait), ["NONE", "WAVE"]);
     let state = step(initialize({
         map: level.map, schedule: compiled.schedule, initialUnits: [], initialEffects: [],
-        routeMoveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, rngState: compiled.rngState,
+        routeMoveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, initialCards: [], rngState: compiled.rngState,
     }), []);
     const waiting = ref(get(state, 1));
     assert.deepEqual(state.schedule.waiting, { wave: [waiting], final: [waiting] });

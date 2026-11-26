@@ -93,14 +93,14 @@ test("initial and scheduled entry see registered battle facts and preserve their
         { hooks: Hooks.empty(), initial: {}, definition: initial, position: [0, 0] },
         { hooks: Hooks.empty(), initial: {}, definition: following, position: [1, 0] },
     ], {
-        deployment: { definition: account, cards: [{
+        deployment: account, initialCards: [{
             definition: cardDefinition,
             unitDefinition: {
                 id: "reserve", hooks: Hooks.empty(),
                 occupancy: { slot: "OCCUPANT" },
                 deployable: { retreatRestrictions: [], refund: null },
             },
-        }] },
+        }],
         initialEffects: [{ initial: effectInitial, definition: controller }],
         schedule: { waves: [{
             preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
@@ -138,10 +138,8 @@ test("Tick phases publish their resource operations and failures preserve the in
         }),
     };
     const before = battle([], {
-        deployment: {
-            definition: account,
-            cards: [{ definition: cardDefinition, unitDefinition: operator }],
-        },
+        deployment: account,
+        initialCards: [{ definition: cardDefinition, unitDefinition: operator }],
     });
     const card = cards.ref([...cards.all(before)][0]);
     const commands = [

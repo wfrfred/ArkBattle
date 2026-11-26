@@ -26,9 +26,9 @@ Deployment 完成部署资格、消费、构造前装配与实例创建；Card �
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
 
-`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史。初始化配置由三个子域的 Definition 组合，`Deployment.Definition.dp` 和 `Deployment.Definition.slot` 分别提供账户和部署位的基础配置。`Deployment.Definition.costCeiling` 必填，是 Card 费用计算的截断上限，DP 的有效上限约束账户余额。Battle Input 的 deployment 必填；`null` 表示没有部署输入，仍初始化空牌组、99 费用上限、零 DP（账户范围 0–99、无自然回复）及不限部署位。
+`Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史。初始化配置由三个子域的 Definition 组合，`Deployment.Definition.dp` 和 `Deployment.Definition.slot` 分别提供账户和部署位的基础配置。`Deployment.Definition.costCeiling` 必填，是 Card 费用计算的截断上限，DP 的有效上限约束账户余额。Battle Input 的 deployment 为必填的 Deployment.Definition 或 null；null 使用 99 费用上限、零 DP（账户范围 0–99、无自然回复）及不限部署位的默认配置。
 
-BattleState 的基础构造使用空 Deployment State；`deployment.initialize(battle, input)` 消费完整的 Deployment.Input，先按 Definition 初始化三个子领域，再按输入顺序初始化并登记 Card。无部署输入时保留空状态。Battle 只负责在开场 Effect 和 Unit 装配前调用该入口。
+`deployment.initialize(definition)` 只构造三个子领域的 State 与空部署历史。初始 Card 列表由 Battle.Input.initialCards 提供，与 initialEffects、initialUnits 并列；Battle 按输入顺序使用 Card 自身的构造和登记操作，在开场 Effect 和 Unit 装配前完成手牌登记。
 
 ## 静态内容与 Card
 

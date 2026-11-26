@@ -65,14 +65,14 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         { definition: { id: "support", hooks: Hooks.empty(), occupancy: { slot: "SUPPORT" } }, hooks: Hooks.empty(), position: [2, 1], initial: { occupancy: { tile: [1, 2], direction: null } } },
         { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.1, 1] },
         { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.2, 1] },
-    ], { deployment: {
-        definition: {
+    ], {
+        deployment: {
             costCeiling: 99,
             dp: { initial: 20, min: 0, max: 99, recoveryInterval: null },
             slot: { limit: 1 },
         },
-        cards: [{ definition: cardDefinition, unitDefinition: operator }],
-    } });
+        initialCards: [{ definition: cardDefinition, unitDefinition: operator }],
+    });
     const card = cards.ref([...cards.all(state)][0]);
     const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
     assert.equal(deployed.value.type, "DEPLOYED");

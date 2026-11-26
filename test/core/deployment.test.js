@@ -56,7 +56,7 @@ function assertRefOrder(actual, expected) {
 }
 
 test("Card initialization reserves identity before Deck registration", () => {
-    let state = battle([], { deployment: { definition: account, cards: [] } });
+    let state = battle([], { deployment: account, initialCards: [] });
     const input = { definition: operatorCard, unitDefinition: operator };
     const first = cards.initialize(state, input);
     const second = cards.initialize(first.state, input);
@@ -89,7 +89,7 @@ test("Deck uses the updated fees to sort and keeps the last order after the rule
             unitDefinition: operator,
         };
     };
-    let state = battle([], { deployment: { definition: account, cards: [input(5, 2), input(10, -4)] } });
+    let state = battle([], { deployment: account, initialCards: [input(5, 2), input(10, -4)] });
     const [first, second] = [...cards.all(state)].map(cards.ref);
     const ordered = (state) => [...deck.ordered(state)].map(cards.ref);
     const ordering = (state, left, right) =>
@@ -129,13 +129,13 @@ test("different Card definitions can deploy the same Unit Definition used by an 
     };
     let state = battle([
         { hooks: Hooks.empty(), definition: operator, position: [7, 0], initial: { occupancy: { direction: null, tile: [0, 7] } } },
-    ], { deployment: {
-        definition: account,
-        cards: [
+    ], {
+        deployment: account,
+        initialCards: [
             { definition: operatorCard, unitDefinition: operator },
             { definition: discount, unitDefinition: operator },
         ],
-    } });
+    });
     const initial = get(state, 0);
     assert.equal(initial.deployable.card, null);
     assert.equal(deployment.cardForUnit(state, units.ref(initial)), null);
@@ -202,10 +202,10 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
         },
     };
     let state = battle([], {
-        deployment: { definition: account, cards: [
+        deployment: account, initialCards: [
             { definition: operatorCard, unitDefinition: definition },
             { definition: operatorCard, unitDefinition: definition },
-        ] },
+        ],
     });
     const [card, otherCard] = [...cards.all(state)].map(cards.ref);
     state = cards.setHook(state, otherCard, cards.beforeDeploy, {
@@ -305,10 +305,10 @@ test("preview, evaluation and deployment share a request, rejection spends nothi
 });
 
 test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prerequisites while zero quotes remain legal", () => {
-    let state = battle([], { deployment: {
-        definition: { ...account, dp: { ...account.dp, initial: 0, min: -5 }, slot: { limit: 0 } },
-        cards: [{ definition: operatorCard, unitDefinition: operator }],
-    } });
+    let state = battle([], {
+        deployment: { ...account, dp: { ...account.dp, initial: 0, min: -5 }, slot: { limit: 0 } },
+        initialCards: [{ definition: operatorCard, unitDefinition: operator }],
+    });
     const card = cards.ref([...cards.all(state)][0]);
     const permit = { allows: () => true };
     const request = {
@@ -349,10 +349,8 @@ test("Card Definition and DeployRequest each reject duplicate restriction IDs", 
         { group: null, id: "placement", value: { allows: () => true } },
     ];
     const state = battle([], {
-        deployment: {
-            definition: account,
-            cards: [{ definition: operatorCard, unitDefinition: operator }],
-        },
+        deployment: account,
+        initialCards: [{ definition: operatorCard, unitDefinition: operator }],
     });
 
     assert.throws(() => cards.initialize(state, {
@@ -368,15 +366,16 @@ test("Card Definition and DeployRequest each reject duplicate restriction IDs", 
 test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before group resolution and deterministic rejection", () => {
     const permit = { allows: () => true };
     const deny = { allows: () => false };
-    let state = battle([], { deployment: {
-        definition: { ...account, slot: { limit: 0 } }, cards: [{ unitDefinition: operator, definition: {
+    let state = battle([], {
+        deployment: { ...account, slot: { limit: 0 } },
+        initialCards: [{ unitDefinition: operator, definition: {
             ...operatorCard, supply: { ...operatorCard.supply, activeLimit: 0 },
             deploymentRestrictions: [
                 { group: null, id: "@deployment/cooldown", value: deny },
                 { id: "@deployment/active-limit", value: deny, group: { id: "permission", priority: 1 } },
             ],
         } }],
-    } });
+    });
     const card = cards.ref([...cards.all(state)][0]);
     state = deck.replace(state, cards.supply.setCooldown(card.get(state), 10));
     state = cards.setRestriction(state, card, { group: null, id: "@deployment/cooldown", value: permit });
@@ -402,50 +401,48 @@ test("retreat refunds before removal, and death delays global slot release indep
     const departures = [];
     const retreats = [];
     let state = battle([], {
-        deployment: {
-            definition: { ...account, slot: { limit: 1 } },
-            cards: [
-                {
-                    definition: operatorCard,
-                    unitDefinition: {
-                        ...operator,
-                        hooks: Hooks.empty()
-                            .set(unitLifecycle.removing, {
-                                priority: 0,
-                                id: "observe-retreat-refund",
-                                accepts: (_current, { reason }) => reason === "RETREAT",
-                                invoke: (current, { unit }) => {
-                                    const card = unit.deployable.card.get(current);
-                                    retreats.push({
-                                        dp: current.deployment.dp.balance,
-                                        stage: card.dp.stage,
-                                        stock: card.supply.stock,
-                                        cooldown: card.supply.cooldown,
-                                    });
-                                    return { state: current, value: undefined };
-                                },
-                            })
-                            .set(unitLifecycle.removed, {
-                                priority: -1,
-                                id: "observe-departure",
-                                invoke: (current, { unit, reason }) => {
-                                    const card = unit.deployable.card.get(current);
-                                    departures.push({
-                                        reason,
-                                        dp: current.deployment.dp.balance,
-                                        stage: card.dp.stage,
-                                        stock: card.supply.stock,
-                                        cooldown: card.supply.cooldown,
-                                        slots: current.deployment.slot.used,
-                                    });
-                                    return { state: current, value: undefined };
-                                },
-                            }),
-                    },
+        deployment: { ...account, slot: { limit: 1 } },
+        initialCards: [
+            {
+                definition: operatorCard,
+                unitDefinition: {
+                    ...operator,
+                    hooks: Hooks.empty()
+                        .set(unitLifecycle.removing, {
+                            priority: 0,
+                            id: "observe-retreat-refund",
+                            accepts: (_current, { reason }) => reason === "RETREAT",
+                            invoke: (current, { unit }) => {
+                                const card = unit.deployable.card.get(current);
+                                retreats.push({
+                                    dp: current.deployment.dp.balance,
+                                    stage: card.dp.stage,
+                                    stock: card.supply.stock,
+                                    cooldown: card.supply.cooldown,
+                                });
+                                return { state: current, value: undefined };
+                            },
+                        })
+                        .set(unitLifecycle.removed, {
+                            priority: -1,
+                            id: "observe-departure",
+                            invoke: (current, { unit, reason }) => {
+                                const card = unit.deployable.card.get(current);
+                                departures.push({
+                                    reason,
+                                    dp: current.deployment.dp.balance,
+                                    stage: card.dp.stage,
+                                    stock: card.supply.stock,
+                                    cooldown: card.supply.cooldown,
+                                    slots: current.deployment.slot.used,
+                                });
+                                return { state: current, value: undefined };
+                            },
+                        }),
                 },
-                { unitDefinition: operator, definition: operatorCard },
-            ],
-        },
+            },
+            { unitDefinition: operator, definition: operatorCard },
+        ],
     });
     const [card, nextCard] = [...cards.all(state)].map(cards.ref);
     const first = deployment.deploy(state, deployment.createRequest(state, card, tilePosition, null));
@@ -515,13 +512,11 @@ test("retreat refunds before removal, and death delays global slot release indep
 test("slot limit contributions affect new deployments without changing occupied slots", () => {
     const { slot } = deployment;
     let state = battle([], {
-        deployment: {
-            definition: { ...account, slot: { limit: 1 } },
-            cards: [1, 1, 1, 0].map(slots => ({
-                unitDefinition: operator,
-                definition: { ...operatorCard, slot: slots },
-            })),
-        },
+        deployment: { ...account, slot: { limit: 1 } },
+        initialCards: [1, 1, 1, 0].map(slots => ({
+            unitDefinition: operator,
+            definition: { ...operatorCard, slot: slots },
+        })),
     });
     const requests = [...cards.all(state)].map((card, index) =>
         deployment.createRequest(state, cards.ref(card), [1, index + 1], null),
@@ -551,10 +546,8 @@ test("slot limit contributions affect new deployments without changing occupied 
 test("an unlimited slot configuration remains unlimited with limit contributions", () => {
     const { slot } = deployment;
     const initial = battle([], {
-        deployment: {
-            definition: { ...account, slot: { limit: null } },
-            cards: [{ unitDefinition: operator, definition: operatorCard }],
-        },
+        deployment: { ...account, slot: { limit: null } },
+        initialCards: [{ unitDefinition: operator, definition: operatorCard }],
     });
     const state = slot.setLimitContribution(initial, {
         group: null,
@@ -572,10 +565,8 @@ test("an unlimited slot configuration remains unlimited with limit contributions
 test("only external movement recycles the card, and neither movement refunds DP", () => {
     for (const [reason, recycled] of [["REDEPLOY_SELF", false], ["REDEPLOY_EXTERNAL", true]]) {
         const initial = battle([], {
-            deployment: {
-                definition: account,
-                cards: [{ definition: operatorCard, unitDefinition: operator }],
-            },
+            deployment: account,
+            initialCards: [{ definition: operatorCard, unitDefinition: operator }],
         });
         const card = cards.ref([...cards.all(initial)][0]);
         const placed = deployment.deploy(initial, deployment.createRequest(initial, card, [1, 2], null));
@@ -592,17 +583,15 @@ test("only external movement recycles the card, and neither movement refunds DP"
 test("default cards start cooldown even without stock consumption and only explicit recharge restores stock", () => {
     for (const consumption of [1, 0]) {
         const initial = battle([], {
-            deployment: {
-                definition: account,
-                cards: [{
-                    unitDefinition: operator,
-                    definition: {
-                        ...commonCard,
-                        policy: "DEFAULT",
-                        supply: { ...commonCard.supply, consumption, stock: consumption, cooldown: 2 },
-                    },
-                }],
-            },
+            deployment: account,
+            initialCards: [{
+                unitDefinition: operator,
+                definition: {
+                    ...commonCard,
+                    policy: "DEFAULT",
+                    supply: { ...commonCard.supply, consumption, stock: consumption, cooldown: 2 },
+                },
+            }],
         });
         const card = cards.ref([...cards.all(initial)][0]);
         const request = deployment.createRequest(initial, card, [1, 2], null);
@@ -630,29 +619,27 @@ test("default cards start cooldown even without stock consumption and only expli
 test("queued recovery preserves the current interval and transfers at most one available share per Tick", () => {
     let observedStock;
     let state = battle([], {
-        deployment: {
-            definition: account,
-            cards: [{
-                unitDefinition: operator,
-                definition: {
-                    ...commonCard,
-                    policy: "QUEUED",
-                    supply: {
-                        ...commonCard.supply,
-                        pending: 0,
-                        stockLimit: 3,
-                        cooldown: 2,
-                    },
-                    onTick(current, self) {
-                        observedStock = {
-                            self: self.supply.stock,
-                            registered: cards.ref(self).get(current).supply.stock,
-                        };
-                        return current;
-                    },
+        deployment: account,
+        initialCards: [{
+            unitDefinition: operator,
+            definition: {
+                ...commonCard,
+                policy: "QUEUED",
+                supply: {
+                    ...commonCard.supply,
+                    pending: 0,
+                    stockLimit: 3,
+                    cooldown: 2,
                 },
-            }],
-        },
+                onTick(current, self) {
+                    observedStock = {
+                        self: self.supply.stock,
+                        registered: cards.ref(self).get(current).supply.stock,
+                    };
+                    return current;
+                },
+            },
+        }],
     });
     const card = cards.ref([...cards.all(state)][0]);
     const assertSupply = (expected) => {
@@ -706,21 +693,19 @@ test("queued recovery preserves the current interval and transfers at most one a
 
 test("stock limit includes pending recovery and active limit only gates new deployments", () => {
     let state = battle([], {
-        deployment: {
-            definition: account,
-            cards: [{
-                unitDefinition: operator,
-                definition: {
-                    ...commonCard,
-                    policy: "QUEUED",
-                    supply: {
-                        ...commonCard.supply,
-                        pending: 1,
-                        stockLimit: 2,
-                    },
+        deployment: account,
+        initialCards: [{
+            unitDefinition: operator,
+            definition: {
+                ...commonCard,
+                policy: "QUEUED",
+                supply: {
+                    ...commonCard.supply,
+                    pending: 1,
+                    stockLimit: 2,
                 },
-            }],
-        },
+            },
+        }],
     });
     const card = cards.ref([...cards.all(state)][0]);
     const first = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
@@ -764,16 +749,14 @@ test("stock limit includes pending recovery and active limit only gates new depl
 
 test("natural DP recovery can fund deployment during the same battle step", () => {
     const initial = battle([], {
-        deployment: {
-            definition: { ...account, dp: { initial: 0, min: 0, max: 10, recoveryInterval: 2 } },
-            cards: [{
-                definition: {
-                    ...operatorCard,
-                    dp: { ...operatorCard.dp, parameters: { ...operatorCard.dp.parameters, cost: 1 } },
-                },
-                unitDefinition: operator,
-            }],
-        },
+        deployment: { ...account, dp: { initial: 0, min: 0, max: 10, recoveryInterval: 2 } },
+        initialCards: [{
+            definition: {
+                ...operatorCard,
+                dp: { ...operatorCard.dp, parameters: { ...operatorCard.dp.parameters, cost: 1 } },
+            },
+            unitDefinition: operator,
+        }],
     });
     const state = step(initial, []);
     const card = cards.ref([...cards.all(state)][0]);
@@ -791,10 +774,8 @@ test("natural DP recovery can fund deployment during the same battle step", () =
 test("negative DP halves natural recovery, crossing zero keeps progress, and a full account banks none", () => {
     const { dp } = deployment;
     let state = battle([], {
-        deployment: {
-            definition: { ...account, dp: { initial: -2, min: -5, max: 3, recoveryInterval: 2 } },
-            cards: [],
-        },
+        deployment: { ...account, dp: { initial: -2, min: -5, max: 3, recoveryInterval: 2 } },
+        initialCards: [],
     });
     for (let tick = 0; tick < 3; tick++) {
         state = step(state, []);
@@ -823,10 +804,8 @@ test("negative DP halves natural recovery, crossing zero keeps progress, and a f
 test("DP limits preserve excess unless clamped and payments honor the effective minimum", () => {
     const { dp } = deployment;
     let state = battle([], {
-        deployment: {
-            definition: { ...account, dp: { initial: 8, min: 0, max: 10, recoveryInterval: 2 } },
-            cards: [],
-        },
+        deployment: { ...account, dp: { initial: 8, min: 0, max: 10, recoveryInterval: 2 } },
+        initialCards: [],
     });
     const lowerMax = { group: null, id: "lower-limit", value: modifier.create({ addition: -4 }) };
     state = dp.setMaxContribution(state, lowerMax, false);
@@ -875,10 +854,8 @@ test("DP limits preserve excess unless clamped and payments honor the effective 
 test("changing and removing DP recovery speed contributions preserves accrued progress", () => {
     const { dp } = deployment;
     let state = battle([], {
-        deployment: {
-            definition: { ...account, dp: { initial: 0, min: 0, max: 10, recoveryInterval: 4 } },
-            cards: [],
-        },
+        deployment: { ...account, dp: { initial: 0, min: 0, max: 10, recoveryInterval: 4 } },
+        initialCards: [],
     });
     const slow = { group: null, id: "slow-recovery", value: modifier.create({ multiplier: -0.5 }) };
     state = step(state, []);

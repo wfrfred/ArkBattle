@@ -335,7 +335,7 @@ if (result.type === 'APPLIED') {
 }
 
 // Independent constructors enforce pairing before heterogeneous storage.
-declare const baseInput: Omit<BattleInput, 'deployment' | 'initialUnits' | 'initialEffects'>;
+declare const baseInput: Omit<BattleInput, 'deployment' | 'initialCards' | 'initialUnits' | 'initialEffects'>;
 declare const cardUnit: cards.UnitDefinition;
 declare const cardDefaults: Omit<cards.Definition<object, 'DEFAULT'>, 'initialize' | 'onTick' | 'policy'>;
 const countCard: cards.Definition<{ count: number }, 'QUEUED'> = {
@@ -402,10 +402,8 @@ const named: effects.Definition<{ name: string }, null> = {
 };
 const startup = {
     ...baseInput,
-    deployment: {
-        definition: { costCeiling: 99, dp: { initial: 0, min: 0, max: 99, recoveryInterval: null }, slot: { limit: null } },
-        cards: [countInput, { definition: nameCard, unitDefinition: cardUnit }],
-    },
+    deployment: { costCeiling: 99, dp: { initial: 0, min: 0, max: 99, recoveryInterval: null }, slot: { limit: null } },
+    initialCards: [countInput, { definition: nameCard, unitDefinition: cardUnit }],
 } as const;
 runtime.initialize({
     ...startup, initialUnits: [armedInput, routeInput],

@@ -62,13 +62,11 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         },
     };
     let state = battle([], {
-        deployment: {
-            definition: { ...account, slot: { limit: 1 } },
-            cards: [
-                { definition: supportDefinition, unitDefinition: support },
-                { definition: summonDefinition, unitDefinition: operator },
-            ],
-        },
+        deployment: { ...account, slot: { limit: 1 } },
+        initialCards: [
+            { definition: supportDefinition, unitDefinition: support },
+            { definition: summonDefinition, unitDefinition: operator },
+        ],
     });
     const [supportCard, unitCard] = [...cards.all(state)].map(cards.ref);
     const placedSupport = deployment.deploy(

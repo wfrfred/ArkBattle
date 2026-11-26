@@ -9,7 +9,8 @@ import type { Definition as ScheduleDefinition } from "./schedule/definition.js"
 import type { Definition as UnitDefinition, Unit } from "../unit/unit.js";
 import type { Input as UnitInput } from "../unit/initialize.js";
 import type { Definitions as CapabilityDefinitions } from "../unit/capability/catalog.js";
-import type { Input as DeploymentInput } from "./deployment/deployment.js";
+import type { Definition as DeploymentDefinition } from "./deployment/deployment.js";
+import type { Input as CardInput } from "./deployment/deck/card/initialize.js";
 import type { Card } from "./deployment/deck/card/card.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
@@ -35,9 +36,12 @@ export interface Input<
     UnitDefinitions extends readonly (UnitDefinition & Partial<CapabilityDefinitions>)[] =
         readonly (UnitDefinition & Partial<CapabilityDefinitions>)[],
 > extends Definition {
-    readonly deployment: DeploymentInput<CardStates> | null;
+    readonly deployment: DeploymentDefinition | null;
     readonly map: Map;
     readonly schedule: ScheduleDefinition;
+    readonly initialCards: {
+        readonly [K in keyof CardStates]: CardInput<CardStates[K]>;
+    };
     readonly initialEffects: {
         readonly [K in keyof EffectStates]: InitialEffect<EffectStates[K]>;
     };

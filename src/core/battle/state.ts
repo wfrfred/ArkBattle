@@ -17,7 +17,7 @@ import type { Id as UnitId } from "../unit/unit.js";
 import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
 import { removedHook as scheduleRemovedHook } from "./schedule/runtime.js";
 import {
-    create as createDeployment,
+    initialize as initializeDeployment,
     type State as DeploymentState,
 } from "./deployment/deployment.js";
 
@@ -64,7 +64,7 @@ export function createBattleState(
     battlefield: BattlefieldState,
     execution: BattleExecutionState = defaultExecution,
     tick = 0,
-    deployment: DeploymentState = createDeployment(null),
+    deployment: DeploymentState = initializeDeployment(null),
     schedule: ScheduleState = initializeSchedule({ waves: [], branches: {} }),
     definition: Definition = defaultDefinition,
 ): State {

@@ -30,6 +30,7 @@ export function battle(initialUnits = [], { rows = 3, columns = 8, ...options } 
         routeMoveMultiplier: 1,
         pushMultiplier: 0.5,
         deployment: null,
+        initialCards: [],
         rngState: 7,
         ...options,
     });
