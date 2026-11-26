@@ -309,8 +309,7 @@ test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prer
     const request = {
         ...deployment.createRequest(state, card, [0, 2], null),
         restrictions: [
-            ...deployment.defaultRestrictions.map(({ id }) => ({ group: null, id, value: permit })),
-            ...["stock", "dp", "map", "occupancy"].map(name => ({ group: null, id: `@deployment/${name}`, value: permit })),
+            ...["cooldown", "active-limit", "slots", "placement", "stock", "dp", "map", "occupancy"].map(name => ({ group: null, id: `@deployment/${name}`, value: permit })),
         ],
     };
     const reject = candidate => assert.deepEqual(deployment.deploy(state, candidate), {

@@ -652,7 +652,10 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const definition = {
         id: "card-source",
         initialize: () => ({}),
-        group: { type: "UNIQUE", id: "card-source", partition: deployment.sourceIdentity },
+        group: {
+            type: "UNIQUE", id: "card-source",
+            partition: (battle, source) => source === null ? null : (deployment.cardForUnit(battle, source) ?? source),
+        },
     };
     const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0], null));
     const firstSource = firstUnit.value;

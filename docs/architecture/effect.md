@@ -87,7 +87,7 @@ decreaseStack 是完整减层操作：剩余层数先发布再通知，耗尽正
 
 比较的是分区采样结果，而不是分区函数本身的身份。共享组不匹配显式 null 分区；不同函数返回相同 Ref 时仍属于同组。保留实例的分区不随之后的战斗变化重新计算。分区不替换 `Effect.source`，也不成为 Lifetime 依赖。
 
-Effect 引擎不解释 Card 或 Unit 的部署归属。需要跨部署保持来源分组时，Content 可使用 [Deployment](deployment.md#部署历史) 的 `sourceIdentity` 作为 partition：有 Card 的来源按 Card Ref 分区，无 Card 的来源按自身 Unit Ref 分区，无来源返回 null。旧弹道及再部署因此仍可共享同一 Card 分区，不同 Card 不合并；无 Card 的预置对象按各自 Unit 区分。实际来源仍由具体机制决定，例如海嗣转发宿主浊心斯卡蒂的身份。
+Effect 引擎不解释 Card 或 Unit 的部署归属。需要跨部署保持来源分组时，Content 可以自行定义 partition，通过 [Deployment](deployment.md#部署历史) 的 `cardForUnit` 查询历史来源：有 Card 的来源按 Card Ref 分区，无 Card 的来源按自身 Unit Ref 分区，无来源返回 null。旧弹道及再部署因此仍可共享同一 Card 分区，不同 Card 不合并；无 Card 的预置对象按各自 Unit 区分。实际来源仍由具体机制决定，例如海嗣转发宿主浊心斯卡蒂的身份。
 
 这是明确的项目简化，不复刻原生匿名组迁移与 Character 前缀查找；实际内容影响见[来源分组调查](../research/cases/01-buff-installation-and-parent-scope.md#99-分组简化的实际内容影响)。
 

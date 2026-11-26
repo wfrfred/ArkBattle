@@ -68,7 +68,7 @@ Deck 每 Tick 推进所有 Card 后调用一次 `deck.sort(battle)`。有排序�
 
 `battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。`deploy` 成功时返回新 Unit Ref，失败时返回 null；Card 身份已由 Request 提供。
 
-Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card。`sourceIdentity(battle, source)` 将 null 保持为 null；有来源时优先返回其历史 Card Ref，否则返回原 Unit Ref。Content 可用此共享查询作为 [Effect 分区](effect.md#来源分组) 函数，Effect 本身不需要理解部署来源。`deployedCount` 统计当前仍登记的在场实例，包含 `ENDING`。
+Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card；具体 Content 可以用此事实决定 [Effect 来源分组](effect.md#来源分组)。`deployedCount` 统计当前仍登记的在场实例，包含 `ENDING`。
 
 ## 请求与统一资格
 
@@ -76,7 +76,7 @@ DeployRequest 明确 Card Ref、落点、方向（`null` 表示未指定）、Qu
 
 Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表示正常零费；stock／slots 可为零。普通 `createRequest` 从 Card 的 `supply.consumption` 与 `slot` 生成默认库存和额度消费；consumption 为必填非负安全整数，特殊部署仍可显式指定 quote.stock。公开查询与执行共用请求校验，合法请求中的未知 Card 不通过资格。
 
-固定前提由代码检查：Card 存在、资源足够、支付后不低于 DP 下限、落点合法、同 Slot 不冲突。不能用限制豁免保留无法履行的消费承诺。冷却、同卡在场上限、部署位上限及普通地块许可属于可配置限制。
+固定前提由代码检查：Card 存在、资源足够、支付后不低于 DP 下限、落点合法、同 Slot 不冲突。不能用限制豁免保留无法履行的消费承诺。冷却、同卡在场上限、部署位上限及普通地块许可属于可配置限制，其默认限制 ID 分别为 `@deployment/cooldown`、`@deployment/active-limit`、`@deployment/slots`、`@deployment/placement`。
 
 Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一。限制依次合并默认、Card 静态、Card 当前与 Request，不同列表的同 ID 后者覆盖。有效项按贡献政策选择，所有限制均允许才通过资格；不对具体拒绝分支建立公共原因分类。查询与执行都使用同一规则和资源事实。
 

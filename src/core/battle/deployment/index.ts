@@ -8,13 +8,11 @@ export type { Restriction, RestrictionContext } from "./restriction.js";
 
 export {
     cardForUnit,
-    sourceIdentity,
     deployedCount,
     createRequest,
     evaluate,
     canRetreat,
     positions,
-    defaultRestrictions,
 } from "./query.js";
 
 export type { DeploymentCommand } from "./operations.js";
