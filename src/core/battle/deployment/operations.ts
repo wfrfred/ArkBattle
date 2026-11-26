@@ -15,12 +15,12 @@ import { Tile, type TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
 import { dispatch as prepareDeployment } from "./deck/card/hook.js";
 import type { Card } from "./deck/card/card.js";
-import { resolveBaseCost } from "./deck/card/dp/query.js";
+import { resolveBaseCost, resolveCost } from "./deck/card/dp/query.js";
 import { deploy as deployCard, recycle } from "./deck/card/operations.js";
 import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
 import * as slot from "./slot/operations.js";
-import { evaluate, resolveQuote, canRetreat } from "./query.js";
+import { evaluate, canRetreat } from "./query.js";
 import { Hooks } from "../../hook.js";
 import type { DeployRequest } from "./request.js";
 import { TICKS_PER_SECOND } from "../../tick.js";
@@ -44,10 +44,13 @@ export function deploy<T extends Card<any>>(
 
     const input = request as object as DeployRequest;
     const self = input.card.get(battle)!;
-    const defaults = resolveQuote(battle, self);
-    const cost = defaults.dp;
+    const cost = resolveCost(battle, self);
     const baseCost = resolveBaseCost(self);
-    const quote = request.quote ?? defaults;
+    const quote = request.quote ?? {
+        dp: cost,
+        stock: self.definition.supply.consumption,
+        slots: self.definition.slot,
+    };
     const amount = quote.dp;
     if (amount !== null) {
         battle = dp.pay(battle, amount).state;

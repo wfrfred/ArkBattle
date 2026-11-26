@@ -41,14 +41,6 @@ export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable
     );
 }
 
-export function resolveQuote(battle: BattleState, self: Card) {
-    return {
-        dp: resolveCost(battle, self),
-        stock: self.definition.supply.consumption,
-        slots: self.definition.slot,
-    };
-}
-
 const defaultRestrictions: readonly Contribution<Restriction>[] = [
     {
         id: "@deployment/cooldown",
@@ -145,16 +137,22 @@ export function evaluate<T extends Card<any>>(
     validateRequest(input);
 
     const self = input.card.get(battle);
+    if (self === undefined) {
+        return false;
+    }
 
-    return (
-        self !== undefined &&
-        evaluateCurrent(
-            battle,
-            self,
-            input,
-            input.quote ?? resolveQuote(battle, self),
-            resolveRestrictions(self, input.restrictions),
-        )
+    const quote = input.quote ?? {
+        dp: resolveCost(battle, self),
+        stock: self.definition.supply.consumption,
+        slots: self.definition.slot,
+    };
+
+    return evaluateCurrent(
+        battle,
+        self,
+        input,
+        quote,
+        resolveRestrictions(self, input.restrictions),
     );
 }
 
@@ -170,7 +168,11 @@ export function positions<T extends Card<any>>(
     }
 
     const restrictions = resolveRestrictions(self, []);
-    const quote = resolveQuote(battle, self);
+    const quote: Quote = {
+        dp: resolveCost(battle, self),
+        stock: self.definition.supply.consumption,
+        slots: self.definition.slot,
+    };
     const { rows, columns } = battle.battlefield.map;
 
     for (let row = 0; row < rows; row++) {
