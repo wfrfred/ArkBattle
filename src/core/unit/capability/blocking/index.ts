@@ -2,6 +2,11 @@ export {
     hasBlocker,
     initialize as initializeBlocker,
     resolveCapacity,
+    resolveRadius,
+    ground,
+    air,
+    setRadiusContribution,
+    removeRadiusContribution,
     acquired as blockerAcquired,
     released as blockerReleased,
 } from "./blocker.js";
@@ -10,7 +15,7 @@ export type {
     Definition as BlockerDefinition,
     State as BlockerState,
     Blocker,
-    Layer,
+    Rule,
     Modifier,
 } from "./blocker.js";
 
@@ -39,7 +44,7 @@ export {
     removeRestriction as removeBlockerRestriction,
     setCapacityContribution,
     removeCapacityContribution,
-    setLayer,
+    setRule,
     releaseAll,
 } from "./blocker-operations.js";
 

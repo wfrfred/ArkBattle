@@ -91,7 +91,7 @@ type Enemy = Unit &
 type Device = Unit & Classification<"DEVICE">;
 ```
 
-普通原生角色默认具备阻挡能力，因此 `Blocker` 属于 `Operator` 的基础组合。零阻挡以容量 `0` 表达，高台等情况依照地块和阻挡层资格结算。[原生阻挡证据](../research/cases/23-blocker-and-blockable-roles.md) · [阻挡资格](blocking.md#关系资格与-restriction)
+普通原生角色默认具备阻挡能力，因此 `Blocker` 属于 `Operator` 的基础组合。零阻挡以容量 `0` 表达，高台等情况依照地块和阻挡规则资格结算。[原生阻挡证据](../research/cases/23-blocker-and-blockable-roles.md) · [阻挡资格](blocking.md#关系资格与-restriction)
 
 普通干员和敌人都具备 `Elemental` 和用于空间命中的 `Hitbox`。具体 Definition 绑定角色或敌人的元素接收规则，并配置命中体形状。元素免疫由接收限制表达。[元素接收](elemental.md#1-能力与定义) · [空间查询](spatial.md)
 

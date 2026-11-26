@@ -29,18 +29,24 @@ Blockable.adjustment 保存起点、终点与开始 Tick；无关系而仍有计
 
 容量贡献使用 ADD／ZERO：先选有效来源，任一有效 ZERO 将容量归零，否则基础容量累加 ADD、取偶舍入并截到非负。未胜出来源的 ZERO 无效。volume 为整数追加、下限一。这是项目的数值协议，不声称覆盖全部原生特殊容量规则。
 
+## 阻挡规则与有效半径
+
+Blocking.Rule 是一份完整规则：`layers: readonly Layer.Type[]`、`radius: number`、`ignoreTerrain: boolean`。标准 ground 只接受 GROUND，基础半径 0.7071，检查地块；标准 air 只接受 AIR，基础半径 0.8944，忽略地块。特殊规则可同时接受多个目标层，地块资格独立指定。
+
+Blocker Definition.rule 保存初始规则，State.rule 保存当前规则；State.radius 保存独立的 `Contribution<common Modifier>[]`。resolveRadius(state) 以当前 rule.radius 为底值，使用有效贡献与 [common 数值修正公式](attribute.md) 得到有效半径。切换规则不撤销半径贡献。
+
 ## 关系资格与 Restriction
 
 双方限制使用同一二元 Context `{ blocker, blockable }`，分别解析有效贡献后 AND 判断。限制是纯资格查询，登记所有者不改变两端角色。可选 sides 限制检查目标 Classification 的 side，不要求阻挡者具有 Classification；未登记时没有隐含敌对条件。
 
 | 判断 | 范围 |
 | --- | --- |
-| 搜索入口 | 阻挡者 ACTIVE，有 Vitality 时要求存活；GROUND 根格允许阻挡，AIR 豁免地块条件。 |
-| 保持关系 | 双方 ACTIVE、阻挡层匹配目标 Layer、双方限制允许；GROUND 根格仍允许阻挡。临时零 HP 不默认打断旧关系。 |
-| 新取得 | 另要求双方有 Vitality 时活着、目标无归属、在接敌距离内且容量足够。 |
+| 搜索入口 | 阻挡者 ACTIVE，有 Vitality 时要求存活；当前规则忽略地块，或根格允许阻挡。 |
+| 保持关系 | 双方 ACTIVE、当前规则 layers 包含目标 Layer、双方限制允许；当前规则忽略地块，或根格仍允许阻挡。临时零 HP 不默认打断旧关系。 |
+| 新取得 | 另要求双方有 Vitality 时活着、目标无归属、在当前有效接敌半径内且容量足够。 |
 | 容量裁撤 | 比较总占用与容量，从关系末尾逐项解除。 |
 
-距离只约束新取得，移动超出接敌半径不解除旧关系。没有 Layer 的 Blockable 不参与普通空地匹配。Presence 通过双方限制及主动释放表达消失，Blocking 不直接读取 Presence。
+距离与有效接敌半径只约束新取得；移动超出半径或半径缩小不自动解除旧关系。这是项目政策，不表示已确认全部原生重验行为。没有 Layer 的 Blockable 不符合规则的目标层资格。Presence 通过双方限制及主动释放表达消失，Blocking 不直接读取 Presence。
 
 普通伤害完成 Applied 后才确认真实死亡；资源写入不自动维护关系，见 [Resource](resource.md)。
 
@@ -52,7 +58,7 @@ release 接受原 Relation 集合，按入口当前有效对象去重并保留�
 
 Blockable.release（公共名 releaseBlockable）先取消自身计划，再解除当前入向关系；两者之间无回调，首个 RELEASED 已可见两项结果。
 
-Blocker.setLayer 的真实变化先发布 layer／radius，Settlement 再释放当时全部出向关系；同层请求无变更。Unit 自身 Layer.setType 采用主动脱离政策，同值调用也清理关系，原生依据见[运动身份调查](../research/cases/15-locomotion-native-semantics.md)。两种层分别表达宿主身份与可阻挡目标，不能混用。
+Blocker.setRule 的真实变化先发布完整规则，Settlement 再释放当时全部出向关系；同一规则请求无变更。setRadiusContribution／removeRadiusContribution 只修改有效半径，不解除关系或自动搜索；后续搜索和取得读取该半径。Unit 自身 Layer.setType 采用主动脱离政策，同值调用也清理关系，原生依据见[运动身份调查](../research/cases/15-locomotion-native-semantics.md)。自身 Layer 与 Rule 分别表达宿主身份和阻挡资格，不能混用。
 
 ## 主动解除阻挡的空间操作
 
@@ -65,6 +71,8 @@ Blocker.setLayer 的真实变化先发布 layer／radius，Settlement 再释放�
 | 来源 | 同步后继 |
 | --- | --- |
 | 双方 Restriction Change | 固定自身当前关系，逐条检查保持资格。 |
+| Blocker 规则 Change | 真实变化时释放全部当前出向关系。 |
+| Blocker 半径贡献 Change | 无关系维护后继；仅后续搜索及新取得读取有效半径。 |
 | Blocker 容量 Change | 对当前组按尾部裁撤，不替代资格维护。 |
 | Blockable volume Change | 结算执行时当前 owner 的容量，不在通知后追随新 owner。 |
 | acquire | 通知后仅复核本次关系。 |
@@ -91,17 +99,17 @@ Movement 先推进所有已有 Blockable 计划，再推进 Route；根据当前
 
 ## 地块阻挡资格
 
-GROUND 只使用一个根格：有 Occupancy 时取登记格，否则取身体所在格，再读取当前 allowsBlocking。AIR 豁免该地块条件；显式允许阻挡的高地不能被 elevation 硬判断否决。完整地块更新在发布后同步复核旧关系。
+规则 ignoreTerrain 为 false 时只使用一个根格：有 Occupancy 时取登记格，否则取身体所在格，再读取当前 allowsBlocking。为 true 时豁免该地块条件；显式允许阻挡的高地不能被 elevation 硬判断否决。完整地块更新在发布后同步复核旧关系。
 
 原生搜索使用 Entity.rootTile 与 Tile.isMeleeBlockable；后者先看显式 tile_blockable，无配置才按高度回退。项目以 Occupancy 表达登记角色根格，无登记对象回退身体格，并将地块条件用于关系保持；后两者属于项目政策。原件见[阻挡调查](../research/evidence/blocking-native-20261023/report.txt)。
 
-射击台的禁挡来自具体内容：Support 配对时向乘员登记平台独占限制，仅禁止 GROUND；解除配对只移除自身登记，不改变地块 allowsBlocking。AIR 继续由其他规则判断，见 [Occupancy](occupancy.md)。
+射击台的禁挡来自具体内容：Support 配对时向乘员登记平台独占限制，仅允许阻挡 AIR 目标，与规则是否豁免地块无关；解除配对只移除自身登记，不改变地块 allowsBlocking。标准 ground 被禁止，标准 air 继续由其他资格判断，见 [Occupancy](occupancy.md)。
 
 ## 阻挡层与其他领域的边界
 
-目标 Layer 表示当前空地身份，blocker.layer 表示可阻挡目标层；Route Plan.motionMode 表示寻路方式；禁挡由二元限制表达。它们不互相推导，详见[原生模式调查](../research/evidence/blocking-native-20261023/modes/report.txt)。
+目标 Layer 表示当前空地身份，blocker.rule.layers 表示可阻挡目标层集合；Route Plan.motionMode 表示寻路方式；禁挡由二元限制表达。它们不互相推导，详见[原生模式调查](../research/evidence/blocking-native-20261023/modes/report.txt)。
 
-[蒂比与空中阻挡研究](../research/cases/21-tippi-air-blocking.md)确认自身 WALK、阻挡 AIR、对地规避可以独立存在。普通空中阻挡默认半径 0.8944，可由 Definition 显式覆盖；角色起降及运行时半径倍率仍按实际内容接入。
+[蒂比与空中阻挡研究](../research/cases/21-tippi-air-blocking.md)确认自身 WALK、阻挡 AIR、对地规避可以独立存在。Core 已支持跨层规则及运行时半径修正；角色起降及具体半径倍率来源仍按实际内容接入。
 
 ## 站位计算与位置推进
 
@@ -115,7 +123,7 @@ Movement 两遍推进各项接续最新状态，不承诺所有偏移一次原�
 
 ## 支持边界
 
-特殊层豁免、运行时半径倍率、Trap／GiantTrap 特殊几何与浮空区块内容尚未完整接入。当前接口和已有 Definition 覆盖不表示这些真实机制已完成，统一缺口见 [Tactical 语义](tactical-semantics.md)。
+跨层阻挡及动态半径具备 Core 表达。迷狂牢笼的特殊站位、Trap／GiantTrap 特殊几何与浮空区块内容尚未完整接入。当前接口不表示这些真实内容已完成，统一缺口见 [Tactical 语义](tactical-semantics.md)。
 
 ## 与原生的差异及对照验收
 

@@ -10,9 +10,7 @@
 
 | 状态 | 事项 | 剩下的问题 |
 | --- | --- | --- |
-| 待接入 | 跨层阻挡（G04） | 迷狂牢笼同时维持地面与空中关系，自身受击资格也读取这些关系。当前获取要求双方同层，切层会解除原有关系。 [实际配置](../research/evidence/resource-mechanisms-20261114/life/content.json#L136150) · [当前资格检查](../../src/core/battle/blocking/operations.ts#L51) |
-| 待接入 | 动态空中阻挡半径（U022） | 凯尔希·思衡托 S1 让在场干员拦截原半径外的空中目标。当前 Restriction 只能筛除固定搜索范围内的候选。 [实际规则](../research/cases/21-tippi-air-blocking.md#L96) · [当前搜索](../../src/core/battle/blocking/operations.ts#L183) |
-| 待接入 | 迷狂牢笼的阻挡站位 | 牢笼保留距离 0.2 格内目标的位置，较远目标向中心聚拢。当前取得关系会向外推开近处目标，探针中距离 0.1 格的目标被推入邻格。 [站位依据](../research/evidence/cage-block-position-20261122/README.md) · [当前取得流程](../../src/core/battle/blocking/operations.ts#L150) |
+| 待接入 | 迷狂牢笼的阻挡站位 | 牢笼保留距离 0.2 格内目标的位置，较远目标向中心聚拢。当前取得关系会向外推开近处目标，探针中距离 0.1 格的目标被推入邻格。 [站位依据](../research/evidence/cage-block-position-20261122/README.md) · [当前取得流程](../../src/core/battle/blocking/operations.ts#L153) |
 
 ## Navigation / Route / Locomotion / Shifting
 

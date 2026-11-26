@@ -9,19 +9,19 @@ import { add, remove, update } from "../../../dist/core/unit/operations.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { Tile } from "../../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../helpers/deployable.js";
-import { sides, setLayer } from "../../../dist/core/unit/capability/blocking/index.js";
+import { sides, ground, air, setRule } from "../../../dist/core/unit/capability/blocking/index.js";
 import { fixture as blockingFixture, holder, target, acquire, ownerId } from "../../helpers/blocking.js";
 import { getUnit, initialize } from "../../helpers/unit.js";
 
 const first = [1, 2];
 const second = [1, 5];
 const deployable = createDeployable();
-function passenger(id = 10, tile = first, layer = "GROUND") {
+function passenger(id = 10, tile = first, rule = ground) {
     return initialize({
         id, position: Tile.center(tile), initial: { occupancy: { tile, direction: null } }, definition: {
             id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, presence: {},
             classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, vitality: vitality(100),
-            blocker: { radius: null, layer, capacity: 1, restrictions: [{ id: "opposing-side", group: null, value: sides("ENEMY") }] },
+            blocker: { rule, capacity: 1, restrictions: [{ id: "opposing-side", group: null, value: sides("ENEMY") }] },
         },
     });
 }
@@ -52,12 +52,12 @@ test("a platform suppresses its ground passenger without disabling other blocker
     assert.equal(ownerId(battle), 11);
 });
 
-test("an airborne passenger can block from a platform, and landing restores its restriction", () => {
-    let battle = acquire(fixture([platform(), passenger(10, first, "AIR"),
-        target(20, { layer: "AIR" }), target(21)]));
+test("a platform permits air blocking but forbids ground blocking independently of terrain exemption", () => {
+    let battle = acquire(fixture([platform(), passenger(10, first, { ...air, layers: ["GROUND", "AIR"] }),
+        target(20, { layer: "AIR" }), target(21, { position: [2.1, 1] })]));
     assert.equal(ownerId(battle, 20), 10);
     assert.equal(ownerId(battle, 21), undefined);
-    battle = update(battle, ref(getUnit(battle, 10)), setLayer("GROUND"));
+    battle = update(battle, ref(getUnit(battle, 10)), setRule({ ...ground, ignoreTerrain: true }));
     assert.equal(ownerId(battle, 20), undefined);
     battle = acquire(battle);
     assert.equal(ownerId(battle, 21), undefined);

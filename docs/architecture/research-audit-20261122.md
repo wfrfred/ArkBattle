@@ -8,8 +8,6 @@
 
 | 事项 | 当前状态 | 领域与依据 |
 | --- | --- | --- |
-| 跨层阻挡（G04） | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
-| 动态空中阻挡半径（U022） | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
 | 迷狂牢笼的阻挡站位 | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
 | 出口资格与离场原因（G08） | 待接入 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
 | 跨格路点偏移（U006） | 待定 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
@@ -41,7 +39,7 @@
 | 编号 | 缺口 | 实际机制 | 盘点时的 Core 边界 | 当前状态 | 依据 |
 | --- | --- | --- | --- | --- | --- |
 | G02 | 全局效果同步覆盖后来出生者 | 普通 GlobalBuff 在登记时施加到符合资格的新单位。后兽的实际 GlobalAura 同时安装到现有和后来出生的目标。 | Unit.add 只派发本地 entered。Mechanism 定时扫描无法让嵌套创建或入场后的业务同步看到本次安装。 | **已完成。** Unit 和占格登记后同步派发 `battle.unit.entered`，随后用最新 Unit 派发本地 `entered`。测试验证本地程序能观察到全局 Hook 安装的 Effect。 | [原生依据](../research/03-space-units-and-mechanisms.md#L285) · [Core](../../src/core/unit/operations.ts#L14) · [测试](../../test/core/hook.test.js#L83) · [后兽实例](../research/cases/31-route-operations-and-state.md#L127) |
-| G04 | 阻挡目标的运动层资格 | 酒神的迷狂牢笼在实际阻挡分支使用目标运动层豁免。 | 阻挡资格硬编码两侧层相等，Content 的限制只能进一步缩小集合。阻挡者的地块判断还需要自己的阻挡层。 | 待接入。 | [原生依据](../research/evidence/resource-mechanisms-20261114/life/content.json#L136150) · [Core](../../src/core/battle/blocking/operations.ts#L51) · [原生资格检查](../research/evidence/blocking-native-20261023/modes/report.txt#L11) |
+| G04 | 阻挡目标的运动层资格 | 酒神的迷狂牢笼在实际阻挡分支使用目标运动层豁免。 | 阻挡资格硬编码两侧层相等，Content 的限制只能进一步缩小集合。阻挡者的地块判断还需要自己的阻挡层。 | **Core 已接入。** 完整 Rule 独立指定目标层集合、基础半径及地块豁免，可同时取得及保持地面、空中关系；牢笼特殊站位仍缺失。 | [原生依据](../research/evidence/resource-mechanisms-20261114/life/content.json#L136150) · [Blocking](blocking.md#阻挡规则与有效半径) · [原生资格检查](../research/evidence/blocking-native-20261023/modes/report.txt#L11) |
 | G05 | 战中修改 DP 上限 | 诺伯特平民确认身份后进入保护区会增加我方费用上限。 | Core 提供动态下限。自然回复、余额修改及边界截断读取静态 Definition.maxDp。 | **已完成。** `dp.setMaxContribution` 和 `dp.removeMaxContribution` 支持战中调整有效上限。自然回费和余额修改读取该上限，Deck 独立计算卡牌费用截断。 | [原生依据](../research/cases/20-norport-civilian-allegiance-and-blocking.md#L22) · [DP 契约](deployment.md#dp) |
 | G06 | 本次部署参与初始化的 Card 效果 | 松桐 S2 的 DeckBuff 在读取本次出生 HP 前参与 MaxHP 计算。 | 部署入口以固定蓝图完成 Unit.initialize，卡牌通过 Hook 装配入场业务。 | **已结案，现有接口可表达。** Card Effect 保存下次部署的附加数据，通过 `card.beforeDeploy` 在成功资格与资源结算后、Unit.initialize 前修改本次 Unit.Input；参与初始 HP 的配置可直接在构造前确定，其他入场业务可注入本次 Unit Hook。 | [原生依据](../research/cases/24-deployment-cost-and-supply.md#普通-native-分支的阶段区别) · [本次构造干预](deployment.md#部署观察) |
 | G07 | 同一 Card 的特殊部署 | 卫戍初始布阵保留卡牌身份，免初始费用，预放召唤物免库存。初查记录了部分效果跳过开场部署的说法。 | 走 deploy 可以留 Card 的关联历史，但固定派发普通部署通知。直接 Unit 初始化即使设置 Deployable.card，也不能用公开操作登记供 cardForUnit 读取的同一卡来源历史。 | **已结案，现有接口可表达。** 开场的免费和免库存由 `Quote` 表达，实际部署写入历史。入场效果按各自生效条件核对。 | [开场入场效果](../research/cases/24-deployment-cost-and-supply.md#开场实际部署的入场效果) · [报价契约](deployment.md#请求与统一资格) |
@@ -69,7 +67,6 @@
 | --- | --- | --- | --- |
 | U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | **待定。** 跨格偏移引起下一移动目标差异已核实。Plan 已保存两项输入，待确定构场使用的格。 | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
 | U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **待接入。** 重艇和凶豕兽需要自主运动资格，受力位移或残留速度不能代替。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
-| U022 | 是否有实际内容修改 BLOCK_RADIUS_SCALE 并改变飞行阻挡半径 | **待接入。** 凯尔希·思衡托 S1 的空中阻挡半径修正已核实，当前搜索仍限于固定半径。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L94) |
 | U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
 | U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **待接入。** 已确认动态出生要登记当前波次、终局或两处等待，缺少普通动态创建后的登记入口。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
 
@@ -85,6 +82,7 @@
 | U013 | 原始路线 motionMode 为 E_NUM 时，是否允许实际执行以及如何决议运动方式 | Data 待核对。E_NUM 有配置和出生引用，所查普通实例为占位或停用条目，实际行走未证。 | [Case 14](../research/cases/14-route-definition-fields.md#L43) |
 | U015 | 支持范围内是否有实际内容启用 SeparateMoveController 的邻居分离力 | 未证实 Core 缺口。已见邻居分离绑定来自对战或特殊玩法，支持范围内未取得实例。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L194) |
 | U021 | 支持范围内是否有实际 GiantTrap 配置，需要一个阻挡者从多个位置搜索目标 | 未证实 Core 缺口。已核非零 GiantTrap 阻挡配置来自生息演算，支持范围缺多原点正例。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L92) |
+| U022 | 是否有实际内容修改 BLOCK_RADIUS_SCALE 并改变飞行阻挡半径 | **Core 已接入。** 凯尔希·思衡托 S1 的空中阻挡半径修正可通过独立数值贡献表达，搜索及新取得使用有效半径；原生既有关系重验细节未据此认定，当前项目不因半径变化自动解除。 [Blocking](blocking.md#阻挡规则与有效半径) | [Case 21](../research/cases/21-tippi-air-blocking.md#L94) |
 | U023 | 费用汇总的倍率上限与取整 | **已完成。** Card 费用贡献可修正再部署倍率上限，算价依次执行原始费用与后段倍率取整，再加固定值。 | [实际叠加顺序](../research/cases/24-deployment-cost-and-supply.md#凛御银灰-x3-与野鬃) · [算价契约](deployment.md#卡牌费用) |
 | U024 | MAX_COST_CEIL 的配置来源及与 MAX_COST 的动态同步条件 | **已完成，归入 G05。** DP 上限可在战中修改，Deck 独立持有卡价截断上限。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L53) |
 | U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | Core 已接入。自身／外部移动使用统一 `deployable.redeploy`，含离场、免费新建及失败后的 Card 账务接续；具体 HP、技能、待投放及其他 Content 消费者尚未实现。见 [Deployment](deployment.md#特殊移动)。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#特殊移动的结束原因) |

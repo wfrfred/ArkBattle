@@ -15,11 +15,12 @@ import * as maps from "../../dist/core/battlefield/map/map.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import { Vec2 } from "../../dist/core/common/vector.js";
+import { create as createModifier } from "../../dist/core/common/modifier.js";
 
 const blocker = {
     id: "guard",
     hooks: Hooks.empty(),
-    blocker: { capacity: 3, layer: "GROUND", radius: null, restrictions: [] },
+    blocker: { capacity: 3, rule: capability.ground, restrictions: [] },
 };
 const enemy = {
     id: "enemy",
@@ -95,7 +96,7 @@ test("search and maintenance use effective pair restrictions, volume, layers and
             definition: {
                 ...blocker,
                 occupancy: { slot: "OCCUPANT" },
-                blocker: { capacity: 2, layer: "GROUND", radius: null, restrictions: [{ id: "opposing-side", group: null, value: capability.sides("ENEMY") }] },
+                blocker: { capacity: 2, rule: capability.ground, restrictions: [{ id: "opposing-side", group: null, value: capability.sides("ENEMY") }] },
             }, hooks: Hooks.empty(),
             position: [2, 1],
             initial: { occupancy: { tile: [0, 2], direction: null } },
@@ -144,7 +145,7 @@ test("search and maintenance use effective pair restrictions, volume, layers and
     state = tiles.update(state, [0, 2], { ...rootTile.state, allowsBlocking: false });
     state = blocking.search(state, owner);
     assert.deepEqual(blocking.blocked(state, owner), []);
-    state = unit.update(state, owner, capability.setLayer("AIR"));
+    state = unit.update(state, owner, capability.setRule(capability.air));
     state = blocking.search(state, owner);
     assert.deepEqual(
         blocking.blocked(state, owner).map(({ id }) => id),
@@ -164,6 +165,38 @@ test("search and maintenance use effective pair restrictions, volume, layers and
         id: "cannot-be-held", group: null, value: { allows: () => false },
     }));
     assert.equal(blocking.blockerOf(state, target), undefined);
+
+    state = unit.update(state, target, capability.removeBlockableRestriction("cannot-be-held"));
+    state = unit.update(state, owner, capability.setRule({
+        ...capability.air, layers: ["GROUND", "AIR"],
+    }));
+    state = blocking.search(state, owner);
+    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [2, 4]);
+});
+
+test("radius contributions expand acquisition without releasing distant relations when removed", () => {
+    let state = battle([
+        { definition: blocker, hooks: Hooks.empty(), initial: {}, position: [2, 1] },
+        { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.6, 1] },
+        { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.9, 1] },
+    ]);
+    const owner = units.ref(get(state, 0));
+    const distant = units.ref(get(state, 2));
+
+    state = blocking.search(state, owner);
+    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [1]);
+    state = unit.update(state, owner, capability.setRadiusContribution({
+        id: "reach", group: null, value: createModifier({ addition: 0.3 }),
+    }));
+    state = blocking.search(state, owner);
+    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [1, 2]);
+
+    state = unit.update(state, owner, capability.removeRadiusContribution("reach"));
+    state = blocking.maintainAll(state);
+    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [1, 2]);
+    state = blocking.release(state, blocking.relations(state, distant));
+    state = blocking.search(state, owner);
+    assert.deepEqual(blocking.blocked(state, owner).map(({ id }) => id), [1]);
 });
 
 test("capacity shrink releases the newest relation and observes callback changes before continuing", () => {
@@ -213,15 +246,15 @@ test("capacity shrink releases the newest relation and observes callback changes
     assert.equal(capability.resolveCapacity(get(state, 0).definition.blocker, get(state, 0).blocker), 0);
 });
 
-test("layer settlements release current relations acquired by earlier settlements", () => {
+test("layer and blocking rule settlements release current relations acquired by earlier settlements", () => {
     for (const [change, targetLayer] of [
         [layer.setType("GROUND"), "GROUND"],
-        [capability.setLayer("AIR"), "AIR"],
+        [capability.setRule({ ...capability.air, radius: 1 }), "AIR"],
     ]) {
         let state = battle([
             { definition: {
                 ...blocker,
-                blocker: { ...blocker.blocker, radius: 1 },
+                blocker: { ...blocker.blocker, rule: { ...capability.ground, radius: 1 } },
                 layer: { type: "GROUND" },
             }, hooks: Hooks.empty(), initial: {}, position: [2, 1] },
             { definition: { ...enemy, classification: { type: "DEVICE", side: "NEUTRAL", filterTags: [], groupTags: [] } }, hooks: Hooks.empty(), initial: {}, position: [2.1, 1] },
@@ -279,7 +312,7 @@ test("own layer requests release current relations before hooks, including same-
                 }
                 if (notifications === 1) {
                     assert.equal(get(current, 0).layer.type, "AIR");
-                    assert.equal(get(current, 0).blocker.layer, "GROUND");
+                    assert.equal(get(current, 0).blocker.rule, capability.ground);
                     assert.deepEqual(blocking.blocked(current, owner), []);
                     assert.ok(
                         targets.every(

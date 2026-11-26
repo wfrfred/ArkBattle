@@ -2,6 +2,7 @@ import * as blocking from "../../../battle/blocking/operations.js";
 import { relations, usedCapacity } from "../../../battle/blocking/query.js";
 import type { State as BattleState } from "../../../battle/state.js";
 import * as entries from "../../../common/collection/entries.js";
+import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type * as contribution from "../../../common/contribution.js";
 import { createChange, type Change } from "../../change.js";
 import type { Ref } from "../../../common/ref.js";
@@ -9,13 +10,7 @@ import type { Unit } from "../../unit.js";
 import type { RemovingHook } from "../../hook.js";
 import * as units from "../../query.js";
 import type { Restriction } from "./restriction.js";
-import {
-    DEFAULT_RADIUS,
-    resolveCapacity,
-    type Blocker,
-    type Layer,
-    type Modifier,
-} from "./blocker.js";
+import { resolveCapacity, type Blocker, type Rule, type Modifier } from "./blocker.js";
 
 export const removing: RemovingHook = {
     id: "@blocker/prepare",
@@ -119,17 +114,18 @@ export function removeCapacityContribution(id: string): Change<Unit & Blocker> {
     );
 }
 
-export function setLayer(layer: Layer): Change<Unit & Blocker> {
+export function setRule(rule: Rule): Change<Unit & Blocker> {
+    assertNonnegativeNumber(rule.radius, "block radius");
+
     return createChange<Unit & Blocker>(
         (self) =>
-            self.blocker.layer === layer
+            self.blocker.rule === rule
                 ? self
                 : {
                       ...self,
                       blocker: {
                           ...self.blocker,
-                          layer,
-                          radius: self.definition.blocker.radius ?? DEFAULT_RADIUS[layer],
+                          rule,
                       },
                   },
         (battle, previous) => releaseAll(battle, units.ref(previous)),

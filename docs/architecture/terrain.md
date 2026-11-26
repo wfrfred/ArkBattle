@@ -26,7 +26,7 @@ Runtime 统一在 Effect 阶段推进所有 Effect，该阶段早于 Movement；
 
 ## Content 行为
 
-装置按 Occupancy 登记格改写地块，离场仅恢复自己拥有的字段至 initial，保留其他当前字段；没有通用撤销栈。射击台在 Support 配对中登记乘员的 GROUND 禁挡，不改 allowsBlocking，详见 [Occupancy](occupancy.md)。
+装置按 Occupancy 登记格改写地块，离场仅恢复自己拥有的字段至 initial，保留其他当前字段；没有通用撤销栈。射击台在 Support 配对中登记乘员的阻挡限制，禁止阻挡 GROUND 目标，不改 allowsBlocking，详见 [Occupancy](occupancy.md)。
 
 walkCost 是最终有效代价。普通装置阻碍为 1000，真实地穴固定 1,000,000，不用任意 max 叠加或 hole-like 状态替代地穴身份；导航与部署统一消费当前属性。原件和推导见[地形研究](../research/03-space-units-and-mechanisms.md)。
 

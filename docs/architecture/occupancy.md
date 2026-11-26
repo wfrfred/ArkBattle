@@ -32,7 +32,7 @@ Pair 保存 tile 及建立时的双方快照，两端引用同一对象。建立
 
 Card 部署提供落点与本次方向，Support 配对由 Unit 的本地 entered 程序完成。Card 的构造前 Hook 在提交消费后、Unit.initialize 前派发，已确认的落点不属于修改职责，见 [Deployment](deployment.md)。
 
-Blocking 对占格 Unit 使用登记根格，无占格则身体格；平台限制不从高度自动推断。射击台加入配对时只禁止乘员 GROUND 阻挡，解除只撤销自身来源。
+Blocking 对占格 Unit 使用登记根格，无占格则身体格；平台限制不从高度自动推断。射击台加入配对时禁止乘员阻挡 GROUND 目标，与地块豁免无关（标准 ground 被禁止，标准 air 仍可接敌），解除只撤销自身来源。
 
 设施销毁击倒乘员、改格和恢复由内容查询当前对象并调用完整操作；不直接删存储，不建立通用覆写栈。具体地块业务见 [Terrain](terrain.md)。
 

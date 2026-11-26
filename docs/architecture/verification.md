@@ -40,9 +40,9 @@
 
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
-| [Capability · 初始化与装配](capability.md#初始化与装配)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [互斥阻挡角色拒绝装配，无该能力的额外已知 Initial 不创建能力，入场 Effect 附在已登记 Unit](../../test/core/unit.test.js#L17)<br>[开场和后续单位共用身份分配，未登记时不可查，同一实例跨版本可用原 Ref 作 Map 键，同 ID 的另一分支无法读取或结束它](../../test/core/unit.test.js#L73) |
-| [Capability · 资格限制](capability.md#资格限制) | [各限制列表只拒绝自身重复 ID，同名跨能力独立，运行替换只改所属列表](../../test/core/unit.test.js#L45) |
-| [Resource · 直接致死的调用者组合](resource.md#直接致死的调用者组合) | [伤害和直接致死先通知击杀方再清受害者依赖，沿用首份 Departure，调用者组合直接致死也只奖励一次](../../test/core/unit.test.js#L103) |
+| [Capability · 初始化与装配](capability.md#初始化与装配)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [互斥阻挡角色拒绝装配，无该能力的额外已知 Initial 不创建能力，入场 Effect 附在已登记 Unit](../../test/core/unit.test.js#L18)<br>[开场和后续单位共用身份分配，未登记时不可查，同一实例跨版本可用原 Ref 作 Map 键，同 ID 的另一分支无法读取或结束它](../../test/core/unit.test.js#L74) |
+| [Capability · 资格限制](capability.md#资格限制) | [各限制列表只拒绝自身重复 ID，同名跨能力独立，运行替换只改所属列表](../../test/core/unit.test.js#L46) |
+| [Resource · 直接致死的调用者组合](resource.md#直接致死的调用者组合) | [伤害和直接致死先通知击杀方再清受害者依赖，沿用首份 Departure，调用者组合直接致死也只奖励一次](../../test/core/unit.test.js#L104) |
 | [接口约定 · 5.1 Unit 完整操作与批量变更](api-conventions.md#51-unit-完整操作与批量变更) | [组合依序读取先前结果并一次发布最终值，嵌套结算先完成，最终回原值仍执行前项已登记的结算](../../test/core/change.test.js#L10) |
 | [Capability · Classification](capability.md#classification) | [类别与 Side 独立，敌对关系取决于恰有一方为 ENEMY](../../test/core/classification.test.js#L24)<br>[战斗标签与组织标签各按类别提供，缺少对应字段时匹配失败](../../test/core/classification.test.js#L65)<br>[按请求考虑额外职业，召唤复用子职业而没有常规职业，等级只匹配 ENEMY](../../test/core/classification.test.js#L111) |
 | [Attribute](attribute.md#attribute) | [底值按定义边界规范化，修改后数值再按当前范围限幅](../../test/core/attribute.test.js#L7)<br>[后写替换整个区间，未提供一侧恢复该默认边界，清范围与移除数值来源彼此独立](../../test/core/attribute.test.js#L27)<br>[只求值竞争胜出的动态来源，每次读取调用者当前事实](../../test/core/attribute.test.js#L44) |
@@ -71,7 +71,7 @@
 | [Effect · 来源分组](effect.md#来源分组) | [UNIQUE 按未配置、Unit Ref 或显式 null 的分区结果分别去重，不同分区函数返回同一 Ref 时匹配，来源注销后仍按安装时的采样分区匹配；拒绝重复安装不运行初始化，来源归属和显式依赖的结束分别处理](../../test/core/effect.test.js#L571)<br>[按 Card 历史来源分区时，同一 Card 的历史及新 Unit 共享来源组，不同 Card 和无卡 Unit 各自独立](../../test/core/effect.test.js#L636) |
 | [Effect · 5. 回调与同步操作](effect.md#5-回调与同步操作) | [安装中续期或结束采样当前实例，零期限不短暂生效，结束读取撤销输出后的最新私有状态](../../test/core/effect.test.js#L89) |
 | [Effect · 6. 时间推进](effect.md#6-时间推进) | [停用时仍扣时，只有 ACTIVE 执行业务，可手动推进和末次续期，新增实例不进本轮](../../test/core/effect.test.js#L235) |
-| [Effect · 支持范围](effect.md#支持范围) | [眩晕中断 Action 并限制受影响的能力，允许独立 SP 恢复，其他同类来源仍有效时撤掉一个来源不能恢复](../../test/core/effects/control.test.js#L49)<br>[关闭父项下的 SP 回复限制可恢复回复，沉默仍阻止技能发动。父项结束清理两个标准子效果](../../test/core/effects/control.test.js#L93)<br>[技能按定义豁免各来源的眩晕发动限制，沉默、SP 门槛及其他能力的眩晕限制仍生效](../../test/core/effects/control.test.js#L120) |
+| [Effect · 支持范围](effect.md#支持范围) | [眩晕中断 Action 并限制受影响的能力，允许独立 SP 恢复，其他同类来源仍有效时撤掉一个来源不能恢复](../../test/core/effects/control.test.js#L50)<br>[关闭父项下的 SP 回复限制可恢复回复，沉默仍阻止技能发动。父项结束清理两个标准子效果](../../test/core/effects/control.test.js#L94)<br>[技能按定义豁免各来源的眩晕发动限制，沉默、SP 门槛及其他能力的眩晕限制仍生效](../../test/core/effects/control.test.js#L121) |
 
 ## Battlefield、空间与调度
 
@@ -81,12 +81,13 @@
 | [Battlefield · 地图与地块](battlefield.md#地图与地块) | [非整数地址不能命中已有格，也不能登记占格或将覆盖误投到整数格](../../test/core/battlefield.test.js#L60) |
 | [Navigation · Overlay 登记](navigation.md#overlay-登记) | [独立覆盖可以按身份撤销，有向出口和地块代价改变导航的实际路径，旧覆盖引用无法误删新限制，更新失效引用报告错误](../../test/core/battlefield.test.js#L80) |
 | [Spatial · 数据归属与查询入口](spatial.md#数据归属与查询入口) | [身体原点与偏移命中体分开选中，扫掠按接触比例排列且排除消失和仍登记的 ENDING 对象](../../test/core/battlefield.test.js#L135) |
-| [Blocking · 关系资格与 Restriction](blocking.md#关系资格与-restriction) | [双方有效限制、阵营、层、目标占量及地块根格共同决定能否取得或维持阻挡](../../test/core/blocking.test.js#L92) |
-| [Blocking · 已确定的操作接口](blocking.md#已确定的操作接口) | [同值自身切层仍清理，整批双端先释放再通知，旧关系不能解除同双方后来重建的关系](../../test/core/blocking.test.js#L259) |
-| [Blocking · 主动解除阻挡的空间操作](blocking.md#主动解除阻挡的空间操作) | [后执行的切层结算解除较早结算期间取得的当前关系，涵盖自身层与阻挡目标层](../../test/core/blocking.test.js#L216) |
-| [Blocking · 显式关系操作与同步维护](blocking.md#显式关系操作与同步维护) | [缩容先裁最新关系，收到释放回调产生的新容量后决定是否继续裁撤](../../test/core/blocking.test.js#L169) |
-| [Blocking · 两侧通知顺序](blocking.md#两侧通知顺序) | [关系通知先固定双方优先级却读取更新登记，本次搜索因回调增容可接住已有后继候选，不接住新出生单位](../../test/core/blocking.test.js#L33) |
-| [Blocking · 站位计算与位置推进](blocking.md#站位计算与位置推进) | [近身站位分散并独立推进，普通解除或阻挡者离场保留计划，目标主动脱离和空间覆盖取消计划](../../test/core/blocking.test.js#L332) |
+| [Blocking · 关系资格与 Restriction](blocking.md#关系资格与-restriction) | [双方有效限制、阵营、当前规则的目标层集合、目标占量及地块根格共同决定能否取得或维持阻挡，可同时保持地面和空中关系](../../test/core/blocking.test.js#L93) |
+| [Blocking · 阻挡规则与有效半径](blocking.md#阻挡规则与有效半径) | [半径贡献扩大接敌范围；撤销贡献仍保持既有远距关系，但已解除的远距目标无法重新取得](../../test/core/blocking.test.js#L177) |
+| [Blocking · 已确定的操作接口](blocking.md#已确定的操作接口) | [同值自身切层仍清理，整批双端先释放再通知，旧关系不能解除同双方后来重建的关系](../../test/core/blocking.test.js#L292) |
+| [Blocking · 主动解除阻挡的空间操作](blocking.md#主动解除阻挡的空间操作) | [后执行的自身切层或阻挡规则切换结算解除较早结算期间取得的当前关系](../../test/core/blocking.test.js#L249) |
+| [Blocking · 显式关系操作与同步维护](blocking.md#显式关系操作与同步维护) | [缩容先裁最新关系，收到释放回调产生的新容量后决定是否继续裁撤](../../test/core/blocking.test.js#L202) |
+| [Blocking · 两侧通知顺序](blocking.md#两侧通知顺序) | [关系通知先固定双方优先级却读取更新登记，本次搜索因回调增容可接住已有后继候选，不接住新出生单位](../../test/core/blocking.test.js#L34) |
+| [Blocking · 站位计算与位置推进](blocking.md#站位计算与位置推进) | [近身站位分散并独立推进，普通解除或阻挡者离场保留计划，目标主动脱离和空间覆盖取消计划](../../test/core/blocking.test.js#L365) |
 | [Capability · Facing](capability.md#facing) | [实例拥有左右方向，普通转向服从当前限制，强制转向可绕过转向限制，仍不能改变 ENDING 宿主](../../test/core/facing.test.js#L13) |
 | [Capability · 触发与跨领域交互](capability.md#触发与跨领域交互) | [有效自主移动按导航方向而非历史速度朝向，拒绝转向不撤回位移，纯纵向或过近目标保留原朝向](../../test/core/facing.test.js#L55) |
 | [Occupancy · 已通知的业务配对](occupancy.md#已通知的业务配对) | [双槽共存且同槽排他，Pair 先向双方发布再通知，旧 Pair 先解除再通知，撤退中重建的配对留存，下一次登记继续分配不同身份，摆放方向变化不移动占格或重建 Pair](../../test/core/occupancy.test.js#L27) |
@@ -142,9 +143,9 @@
 | [Projectile · 6. 终止请求与 Finalize](projectile.md#6-终止请求与-finalize) | [登记期间当场结束可进入结束程序，回调看到 ENDING 与指定原因，随后注销](../../test/core/projectile.test.js#L55) |
 | [Projectile · 移除与消除](projectile.md#移除与消除) | [普通停止可对当前原目标结算保底，可消除弹道收到 ELIMINATED 则跳过保底](../../test/content/projectiles/arrow.test.js#L75) |
 | [Projectile · 7. 命中与内容状态](projectile.md#7-命中与内容状态) | [目标暂时消失仍使用实时位置，几何抵达尝试原目标但接收可拒绝，正常拥有延迟终止](../../test/content/projectiles/arrow.test.js#L50)<br>[伤害同步回调停止弹道时已发布的命中记录防止结算第二次](../../test/content/projectiles/arrow.test.js#L90)<br>[箭从在场来源读最新攻击力，来源注销后维持弹道并使用发射样本](../../test/content/projectiles/arrow.test.js#L109)<br>[目标注销后仍朝最后记忆位置飞行，到达不会改为命中该处新对象](../../test/content/projectiles/arrow.test.js#L130) |
-| [Occupancy · 与其他领域协作](occupancy.md#与其他领域协作) | [平台立即释放其地面乘员的阻挡，地块普通阻挡权仍可由其他单位使用](../../test/content/devices/shooting-platform.test.js#L45)<br>[平台乘员可用空中阻挡，切回地面退出原关系且不能重新接敌](../../test/content/devices/shooting-platform.test.js#L55)<br>[平台移除完整击倒自己的乘员且保留别格单位，同时恢复本格地形](../../test/content/devices/shooting-platform.test.js#L66) |
-| [Terrain · Content 行为](terrain.md#content-行为) | [箱体改的是登记格，普通阻碍成本为 1000 而地穴固定成本不变，离场只恢复自己负责的属性](../../test/content/devices/tiles.test.js#L43)<br>[源石分格入场并独立保留期限，覆盖暂停弱效果周期后延续，离格和控制器实际停用后按自身期限结束，ENVIRONMENT 正常接收而不授 HIT](../../test/content/terrain.test.js#L86)<br>[沼泽相邻格保留叠层周期，本步有效重量分辨单双层，停用撤销修正，重新启用恢复已积层数且计时不变，离开撤销效果](../../test/content/terrain.test.js#L153)<br>[深水只影响地面敌人，地穴检查强制移动落点及空地变化，移除符合资格的单位](../../test/content/terrain.test.js#L192)<br>[烟雾按我方 DEFAULT 资格接纳地面及空中，建立阻挡不破隐，离开取消](../../test/content/terrain.test.js#L231) |
-| [Terrain · 地形接触与调度](terrain.md#地形接触与调度) | [Runtime 在统一 Effect 阶段扫描当前实际位置，移动后的落点由下一次扫描接纳](../../test/content/terrain.test.js#L257) |
+| [Occupancy · 与其他领域协作](occupancy.md#与其他领域协作) | [平台立即释放其地面乘员的阻挡，地块普通阻挡权仍可由其他单位使用](../../test/content/devices/shooting-platform.test.js#L45)<br>[平台禁止地面阻挡、允许空中阻挡，地块豁免不影响平台自身限制](../../test/content/devices/shooting-platform.test.js#L55)<br>[平台移除完整击倒自己的乘员且保留别格单位，同时恢复本格地形](../../test/content/devices/shooting-platform.test.js#L66) |
+| [Terrain · Content 行为](terrain.md#content-行为) | [箱体改的是登记格，普通阻碍成本为 1000 而地穴固定成本不变，离场只恢复自己负责的属性](../../test/content/devices/tiles.test.js#L43)<br>[源石分格入场并独立保留期限，覆盖暂停弱效果周期后延续，离格和控制器实际停用后按自身期限结束，ENVIRONMENT 正常接收而不授 HIT](../../test/content/terrain.test.js#L87)<br>[沼泽相邻格保留叠层周期，本步有效重量分辨单双层，停用撤销修正，重新启用恢复已积层数且计时不变，离开撤销效果](../../test/content/terrain.test.js#L156)<br>[深水只影响地面敌人，地穴检查强制移动落点及空地变化，移除符合资格的单位](../../test/content/terrain.test.js#L195)<br>[烟雾按我方 DEFAULT 资格接纳地面及空中，建立阻挡不破隐，离开取消](../../test/content/terrain.test.js#L235) |
+| [Terrain · 地形接触与调度](terrain.md#地形接触与调度) | [Runtime 在统一 Effect 阶段扫描当前实际位置，移动后的落点由下一次扫描接纳](../../test/content/terrain.test.js#L261) |
 
 ## Hook 与伤害／治疗的回归语义
 
@@ -159,14 +160,14 @@
 | [Elemental · 6. 时间推进](elemental.md#6-时间推进) | [敌方凋亡依消耗的恢复预算推进元素伤害及攻击衰减，停钟无输出、变速仍走完同一周期](../../test/core/effects/elemental.test.js#L107)<br>[爆发期间拒收普通 EP，消失仍按当前速度和 MaxEP 推进，完成或取消后撤销根依赖输出](../../test/core/elemental.test.js#L41)<br>[缩短恢复保留已推进量，耗尽可直接以最新 MaxEP 回填，清理根附属且不补发输出和治疗](../../test/core/elemental.test.js#L88)<br>[零恢复预算仍可保留安装时业务及独立眩晕，不执行后续周期](../../test/core/elemental.test.js#L180) |
 | [Elemental · 2. Burst Effect 与标准规则](elemental.md#2-burst-effect-与标准规则) | [敌我侵蚀的减防都在恢复后保留，再次爆发叠加且触发本次伤害](../../test/core/effects/elemental.test.js#L68)<br>[角色凋亡结算十五次法术脉冲和扣 SP，根存续封住发动及回复并在结束后恢复](../../test/core/effects/elemental.test.js#L82)<br>[未消耗的神经麻痹在根结束后仍中止行动，续爆重置剩余层数](../../test/core/effects/elemental.test.js#L160) |
 | [Elemental · 狂躁的行动与时间累加](elemental.md#狂躁的行动与时间累加) | [角色狂躁同一执行只计其首次释放，技能单独累加，伤害封顶并允许 HIT，结束恢复根后独立程序仍持续](../../test/core/effects/elemental.test.js#L183)<br>[只有 Skill 的角色也监听成功激活，激活被拒绝不累加](../../test/core/effects/elemental.test.js#L243)<br>[敌方狂躁用独立 ACTIVE Tick 计数，不随恢复变速，不给 HIT，保留最后一次脉冲](../../test/core/effects/elemental.test.js#L265) |
-| [Resource · Calculate 与 Apply 的语义边界](resource.md#calculate-与-apply-的语义边界) | [接收和提交前 Hook 的资源改写作为当前结算基线，Applied 中发生的变化不能重写本笔报告](../../test/core/resource/application.test.js#L297)<br>[HP 计算输出零拒绝，正输出接收为零仍提交，提交后目标离场跳过剩余目标通知，来源继续读取已固定报告](../../test/core/resource/application.test.js#L536)<br>[满血治疗仍能产生溢出，自疗分别通知双 Applied 但只一次 Completed，消失目标可受实际治疗不能受普通 HP 或 EP 损伤](../../test/core/resource/application.test.js#L1000)<br>[以 EP 治疗验证公式可修正负输入，最终负输出归零且不执行 Apply 接收](../../test/core/resource/calculation.test.js#L231) |
-| [Resource · 请求分类](resource.md#请求分类) | [前置取消跨准入保留且阻止 HIT，但准入通过仍可通知接收，解除保护后才恢复受伤及 HIT](../../test/core/resource/application.test.js#L154)<br>[LOSS 可穿过不在场及无敌限制，仍接续普通损伤流程，但本笔不给 HIT](../../test/core/resource/application.test.js#L637)<br>[环境 EP 用同一抗性和接收流程，基于 Nature 的取消可由本次调用豁免](../../test/core/resource/application.test.js#L717) |
+| [Resource · Calculate 与 Apply 的语义边界](resource.md#calculate-与-apply-的语义边界) | [接收和提交前 Hook 的资源改写作为当前结算基线，Applied 中发生的变化不能重写本笔报告](../../test/core/resource/application.test.js#L316)<br>[HP 计算输出零拒绝，正输出接收为零仍提交，提交后目标离场跳过剩余目标通知，来源继续读取已固定报告](../../test/core/resource/application.test.js#L567)<br>[满血治疗仍能产生溢出，自疗分别通知双 Applied 但只一次 Completed，消失目标可受实际治疗不能受普通 HP 或 EP 损伤](../../test/core/resource/application.test.js#L1059)<br>[以 EP 治疗验证公式可修正负输入，最终负输出归零且不执行 Apply 接收](../../test/core/resource/calculation.test.js#L231) |
+| [Resource · 请求分类](resource.md#请求分类) | [前置取消跨准入保留且阻止 HIT，但准入通过仍可通知接收，解除保护后才恢复受伤及 HIT](../../test/core/resource/application.test.js#L166)<br>[LOSS 可穿过不在场及无敌限制，仍接续普通损伤流程，但本笔不给 HIT](../../test/core/resource/application.test.js#L675)<br>[环境 EP 用同一抗性和接收流程，基于 Nature 的取消可由本次调用豁免](../../test/core/resource/application.test.js#L760) |
 | [Resource · 基础公式与弱点选择](resource.md#基础公式与弱点选择) | [计算采用最终伤害类型与采样防御，Apply 接续已采样数额，计算不启动接收](../../test/core/resource/calculation.test.js#L43)<br>[EP 抗性与 HP 元素抗性独立，基础保底可被 Output 继续降低，已计算 EP 输出不受后续抗性变化重算](../../test/core/resource/calculation.test.js#L180) |
 | [Resource · 弱点伤害的项目规则](resource.md#弱点伤害的项目规则) | [各 Calculate 从同一原版本独立结算嵌套业务，只发布所选分支的状态和一次 Apply](../../test/core/resource/calculation.test.js#L137) |
-| [Resource · 接收工作值、数值固定与取消](resource.md#接收工作值数值固定与取消) | [禁用取消理由及固定量约束工作值单向演进，提前完成的治疗、恢复及反伤不回滚](../../test/core/resource/application.test.js#L402) |
-| [Resource · 本次 Hook 排除、取消权限与接收豁免](resource.md#本次-hook-排除取消权限与接收豁免) | [排除按 Key 或 ID 作用于本次各宿主，Calculate、Apply 和嵌套业务独立，同名不同 Key 不受影响](../../test/core/resource/application.test.js#L38)<br>[同一次豁免按最新有效限制复检，不传给没有明确选项的嵌套伤害](../../test/core/resource/application.test.js#L248) |
-| [Resource · 生命状态、通知与离场](resource.md#生命状态通知与离场) | [零 HP 直到 Applied 后才确认离场，正常治疗拒绝，直接恢复可保留原阻挡，未恢复才清理](../../test/core/resource/application.test.js#L776) |
-| [Resource · 单笔击杀结果与 targetKilled](resource.md#单笔击杀结果与-targetkilled) | [嵌套损伤首次获确认，不因延迟注销而重复归属，仍登记的 ENDING 击杀者可异于请求来源](../../test/core/resource/application.test.js#L878)<br>[Completed 启动的致死后继不能改写已经固定的外层击杀结果](../../test/core/resource/application.test.js#L970) |
+| [Resource · 接收工作值、数值固定与取消](resource.md#接收工作值数值固定与取消) | [禁用取消理由及固定量约束工作值单向演进，提前完成的治疗、恢复及反伤不回滚](../../test/core/resource/application.test.js#L428) |
+| [Resource · 本次 Hook 排除、取消权限与接收豁免](resource.md#本次-hook-排除取消权限与接收豁免) | [排除按 Key 或 ID 作用于本次各宿主，Calculate、Apply 和嵌套业务独立，同名不同 Key 不受影响](../../test/core/resource/application.test.js#L39)<br>[同一次豁免按最新有效限制复检，不传给没有明确选项的嵌套伤害](../../test/core/resource/application.test.js#L265) |
+| [Resource · 生命状态、通知与离场](resource.md#生命状态通知与离场) | [零 HP 直到 Applied 后才确认离场，正常治疗拒绝，直接恢复可保留原阻挡，未恢复才清理](../../test/core/resource/application.test.js#L823) |
+| [Resource · 单笔击杀结果与 targetKilled](resource.md#单笔击杀结果与-targetkilled) | [嵌套损伤首次获确认，不因延迟注销而重复归属，仍登记的 ENDING 击杀者可异于请求来源](../../test/core/resource/application.test.js#L931)<br>[Completed 启动的致死后继不能改写已经固定的外层击杀结果](../../test/core/resource/application.test.js#L1028) |
 
 ## Event 的回归语义
 
@@ -182,7 +183,7 @@
 | [Data · 业务输入](data.md#业务输入) | [实际场景中的沼泽与深水控制器被绑定为无宿主 Effect，所选真实技能黑板提供各自地形参数](../../test/data/level/predefined.test.js#L96) |
 | [Data · 共享读取与换算](data.md#共享读取与换算) | [作者帧换算保留 Begin 与连续小数，负上限按无限制规范化](../../test/data/action/timing.test.js#L12)<br>[预置个体指定技能级别并覆盖黑板时，实际场景参数使用覆盖值](../../test/data/level/predefined.test.js#L115) |
 | [Data · 干员静态资料](data.md#干员静态资料) | [按角色身份连接组织标签、养成、范围与选定技能数据，转换范围并保留技能费用和黑板](../../test/data/unit/operator.test.js#L42)<br>[完整原表保留未消费原始行和模式候选，常规内容只解释本次选中数据](../../test/data/unit/operator.test.js#L66)<br>[阶段成长保留连续基础间隔，只对整数属性舍入，并拒绝越过定级上限](../../test/data/unit/operator.test.js#L111)<br>[界面潜能映射累积原表等级，同一份潜能同时影响基础修正与可用天赋候选](../../test/data/unit/operator.test.js#L119)<br>[信赖独立插值和舍入后叠加，超过 100% 与 100% 战斗属性一致](../../test/data/unit/operator.test.js#L133)<br>[实际技能按解锁与专精门槛选择，校验跨表身份，专精后读取新的费用和倍率](../../test/data/unit/operator.test.js#L147)<br>[同个精英阶段内可以跨级更换天赋候选，天赋额外攻击不写进基础攻击属性](../../test/data/unit/operator.test.js#L160)<br>[模组各阶段用各自总属性并检查信赖、等级、归属，替换候选仍受潜能和所选模组身份约束](../../test/data/unit/operator.test.js#L169)<br>[模组的纯数据槽覆盖或追加天赋时保留原生身份和字符串黑板](../../test/data/unit/operator.test.js#L191) |
-| [Data · 敌人静态资料](data.md#敌人静态资料) | [关卡覆写最终 Prefab 后读取该 Prefab 的运动配置，敌人属性进入回血、等级和元素绑定，未支持免疫明确拒绝](../../test/content/enemies.test.js#L85)<br>[等级继承与关卡覆盖逐字段依 m_defined 合并，显式零及标签、位阶、回血规范化](../../test/data/unit/enemy.test.js#L14)<br>[基础、选中等级和关卡原始层分别保留技能、天赋及共享 SP，同层普通属性仍正常读取](../../test/data/unit/enemy.test.js#L43) |
+| [Data · 敌人静态资料](data.md#敌人静态资料) | [关卡覆写最终 Prefab 后读取该 Prefab 的运动配置，敌人属性进入回血、等级和元素绑定，未支持免疫明确拒绝](../../test/content/enemies.test.js#L86)<br>[等级继承与关卡覆盖逐字段依 m_defined 合并，显式零及标签、位阶、回血规范化](../../test/data/unit/enemy.test.js#L14)<br>[基础、选中等级和关卡原始层分别保留技能、天赋及共享 SP，同层普通属性仍正常读取](../../test/data/unit/enemy.test.js#L43) |
 | [Data · 静态配置与数值](data.md#静态配置与数值) | [真实预置保留别名、隐藏和登记坐标，Prefab 阵营/筛选标签与角色组织标签独立于装置固定受选类别](../../test/data/level/predefined.test.js#L34)<br>[未选中潜能的未支持公式不影响通常装配，选中才在内容配置入口拒绝](../../test/data/unit/operator.test.js#L211)<br>[标签转换保留大小写和首次出现顺序，重复项去除，缺源和无效成员在入口拒绝](../../test/data/unit/tags.test.js#L6) |
 | [Data · 当前支持边界](data.md#当前支持边界) | [原生叠层解析分别保存总层上限、生效层、满层续期、到期清理和样本选项](../../test/data/effect.test.js#L19)<br>[修正公式、属性标识规范化，仍保留黑板和原属性延后采样标记](../../test/data/effect.test.js#L41) |
 | [Elemental · 1. 能力与定义](elemental.md#1-能力与定义) | [原生字符串 ANGER 与数值 5 都规范成统一运行类型 MANIA](../../test/data/effect.test.js#L14) |
@@ -191,7 +192,7 @@
 | [Schedule · 静态计划](schedule.md#静态计划) | [主线加权组先选 Action，按原顺序展开唯一选中组的 count/interval，预处理拒绝不支持的 Pack](../../test/data/level/route-schedule.test.js#L70) |
 | [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [Branch 保持完整候选组和来源顺序，把抽选和随机状态消耗留给 Runtime](../../test/data/level/route-schedule.test.js#L93) |
 | [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [关卡 Action 与敌人数据库的统计豁免传入调度，仍在场的单位不阻塞 Wave 或完成](../../test/data/level/route-schedule.test.js#L106) |
-| [Action · 8. 普通攻击、释放 Hook 与移动](action.md#8-普通攻击释放-hook-与移动) | [真实弩手按事件释放、弹箭到达才造成伤害、恢复期间继续停步并在结束后恢复路线，注册攻击方式汇总 ALL](../../test/content/enemies.test.js#L205)<br>[首次攻击等待 Begin，连续攻击跳过，目标间断或中止后的下一轮恢复 Begin](../../test/content/operators/melantha.test.js#L65) |
-| [Content · Core 标准机制与 Content 共享工厂](content.md#core-标准机制与-content-共享工厂) | [登场面向读取首检查点执行完的最新位置及后继移动目标](../../test/content/enemies.test.js#L117)<br>[真实弩手近远模式切换不覆盖对方冷却，分别按自己 ready 时间再次输出](../../test/content/enemies.test.js#L248) |
-| [Targeting · 调用业务](targeting.md#调用业务) | [猎狗可攻击真正阻挡自己的隐匿目标，命中仍尊重无敌](../../test/content/enemies.test.js#L147)<br>[弩手近战绑定实际阻挡关系，未阻挡时使用远程选择且仍受远程默认限制](../../test/content/enemies.test.js#L169)<br>[玫兰莎即使建立阻挡也保持普通攻击的隐匿资格](../../test/content/operators/melantha.test.js#L56) |
+| [Action · 8. 普通攻击、释放 Hook 与移动](action.md#8-普通攻击释放-hook-与移动) | [真实弩手按事件释放、弹箭到达才造成伤害、恢复期间继续停步并在结束后恢复路线，注册攻击方式汇总 ALL](../../test/content/enemies.test.js#L206)<br>[首次攻击等待 Begin，连续攻击跳过，目标间断或中止后的下一轮恢复 Begin](../../test/content/operators/melantha.test.js#L65) |
+| [Content · Core 标准机制与 Content 共享工厂](content.md#core-标准机制与-content-共享工厂) | [登场面向读取首检查点执行完的最新位置及后继移动目标](../../test/content/enemies.test.js#L118)<br>[真实弩手近远模式切换不覆盖对方冷却，分别按自己 ready 时间再次输出](../../test/content/enemies.test.js#L249) |
+| [Targeting · 调用业务](targeting.md#调用业务) | [猎狗可攻击真正阻挡自己的隐匿目标，命中仍尊重无敌](../../test/content/enemies.test.js#L148)<br>[弩手近战绑定实际阻挡关系，未阻挡时使用远程选择且仍受远程默认限制](../../test/content/enemies.test.js#L170)<br>[玫兰莎即使建立阻挡也保持普通攻击的隐匿资格](../../test/content/operators/melantha.test.js#L56) |
 | [Content · 语义证据与项目政策](content.md#语义证据与项目政策) | [固定配置使天赋与 S1 同时作用于实际攻击，技能到期后保留永久天赋](../../test/content/operators/melantha.test.js#L38)<br>[环境伤害可被盾抵挡并触发自疗，已满足本笔资格的普通 HIT 回复不回滚](../../test/content/operators/mudrock.test.js#L78)<br>[护盾满层继续推进充能，清空后按此前周期准时获得盾，有效时实际抵挡](../../test/content/operators/mudrock.test.js#L93)<br>[X 模组用当前 MaxHP 计算盾疗，普通伤害按萨卡兹与实际阻挡关系区分减伤](../../test/content/operators/mudrock.test.js#L105)<br>[成功 BLOCKED 才耗盾、自疗、额外授 SP，权限禁止或已取消时保留盾，FIXED 与 NORMAL 各守数值规则](../../test/content/operators/mudrock.test.js#L123)<br>[S2 缺适格目标时不激活也不支付已满足的费用](../../test/content/operators/mudrock.test.js#L180)<br>[S2 可取代已释放普攻的恢复，清冷却后按绑定目标重验而不补选，单次自疗并在规定时刻解除目标控制](../../test/content/operators/mudrock.test.js#L188)<br>[S2 可截断未释放的普攻，推进过本应命中的时刻仍只有技能伤害](../../test/content/operators/mudrock.test.js#L230)<br>[实际内容工厂明确拒绝 Y 模组，防止套用 X 的已实现行为](../../test/content/operators/mudrock.test.js#L253) |

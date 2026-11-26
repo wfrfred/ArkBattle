@@ -7,6 +7,7 @@ import { at as occupancyAt } from "../../core/battlefield/occupancy.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import type { Deployable } from "../../core/unit/capability/deployable/index.js";
 import { hasOccupancy, type Occupancy } from "../../core/unit/capability/occupancy/index.js";
+import { hasLayer } from "../../core/unit/capability/layer/index.js";
 import type { Targetable } from "../../core/unit/capability/targetable/capability.js";
 import type { Vitality } from "../../core/unit/capability/vitality/index.js";
 import {
@@ -31,7 +32,7 @@ export interface Parameters extends Pick<
 }
 
 const groundBlockingRestriction: Restriction = {
-    allows: (_battle, { blocker }) => blocker.blocker.layer === "AIR",
+    allows: (_battle, { blockable }) => hasLayer(blockable) && blockable.layer.type === "AIR",
 };
 
 function clearOccupant(battle: BattleState, position: TilePosition): BattleState {

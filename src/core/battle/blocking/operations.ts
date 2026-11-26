@@ -7,6 +7,7 @@ import { get as getTile } from "../../battlefield/map/map.js";
 import {
     hasBlocker,
     resolveCapacity,
+    resolveRadius,
     type Blocker,
 } from "../../unit/capability/blocking/blocker.js";
 import {
@@ -29,7 +30,7 @@ import { relations, usedCapacity } from "./query.js";
 import { calculate as calculatePosition } from "./position.js";
 
 function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
-    if (unit.blocker.layer === "AIR") {
+    if (unit.blocker.rule.ignoreTerrain) {
         return true;
     }
 
@@ -60,7 +61,7 @@ function canRetain(
         !isUnbalanced(target) &&
         allowsTile(battle, blocker) &&
         hasLayer(target) &&
-        blocker.blocker.layer === target.layer.type &&
+        blocker.blocker.rule.layers.includes(target.layer.type) &&
         allows(battle, { blocker, blockable: target }, blocker.blocker.restrictions) &&
         allows(battle, { blocker, blockable: target }, target.blockable.restrictions)
     );
@@ -80,7 +81,7 @@ function canAcquire(
     }
 
     const distance = Vec2.distanceSquared(blocker.position, target.position);
-    const radius = blocker.blocker.radius;
+    const radius = resolveRadius(blocker.blocker);
     const capacity = resolveCapacity(blocker.definition.blocker, blocker.blocker);
     const volume = resolveVolume(target.definition.blockable, target.blockable);
 
@@ -196,7 +197,7 @@ export function search(battle: BattleState, reference: Ref<Unit & Blocker>): Bat
         return battle;
     }
 
-    const radius = blocker.blocker.radius;
+    const radius = resolveRadius(blocker.blocker);
     const candidates = [
         ...units
             .all(battle)

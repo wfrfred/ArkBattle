@@ -2,6 +2,7 @@ import { attribute, vitality as vitalityDefinition } from "../helpers/attribute.
 // Contract: [terrain](../../docs/architecture/terrain.md).
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { ground } from "../../dist/core/unit/capability/blocking/index.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as terrain from "../../dist/content/terrain/definition.js";
 import { createTerrainEffect } from "../../dist/content/terrain/controller.js";
@@ -234,7 +235,7 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
 test("smog keeps allied ground and airborne units invisible through blocking until they leave", () => {
     const configured = setup([terrain.smog.create({}), terrain.normal.create({})], [
         unit(0, { vitality: combat.vitality, classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] },
-            blocker: { layer: "GROUND", restrictions: [], capacity: 1, radius: 0.7 } }),
+            blocker: { capacity: 1, rule: { ...ground, radius: 0.7 }, restrictions: [] } }),
         unit(0, { classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }),
         unit(0, { vitality: combat.vitality, classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] },
             layer: { type: "AIR" }, targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] } }),

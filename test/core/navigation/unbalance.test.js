@@ -5,7 +5,7 @@ import { battle, get } from "../../helpers/battle.js";
 import { attribute } from "../../helpers/attribute.js";
 import { step } from "../../../dist/core/battle/runtime.js";
 import * as blocking from "../../../dist/core/battle/blocking/index.js";
-import { blockableReleased } from "../../../dist/core/unit/capability/blocking/index.js";
+import { blockableReleased, ground } from "../../../dist/core/unit/capability/blocking/index.js";
 import { update as updateTile } from "../../../dist/core/battle/tile.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";
@@ -80,7 +80,7 @@ test("push uses current grades and releases blocking before forced movement begi
     }, {
         definition: {
             ...sourceDefinition,
-            blocker: { capacity: 1, layer: "GROUND", radius: null, restrictions: [] },
+            blocker: { capacity: 1, rule: ground, restrictions: [] },
         }, hooks: Hooks.empty(), initial: {},
         position: [0.75, 1],
     }], { pushMultiplier: 0.25 });

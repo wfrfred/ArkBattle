@@ -76,7 +76,7 @@ Offense 保存 attack Attribute，默认下限为0；选择有效来源后按当
 
 ## Layer 与 Hitbox
 
-Unit.position 是身体坐标，Layer 是 GROUND／AIR，Route Plan.motionMode 是 WALK／FLY；它们互相独立。Layer.setType 主动脱离当前阻挡，同值也清理：先发布身份，Settlement 按能力调用 Blocker.releaseAll 或 Blockable.release，后者取消自身计划。它不改路径、自身阻挡层或自动搜索；依据见[运动模式调查](../research/cases/15-locomotion-native-semantics.md)。
+Unit.position 是身体坐标，Layer 是 GROUND／AIR，Route Plan.motionMode 是 WALK／FLY；它们互相独立。Layer.setType 主动脱离当前阻挡，同值也清理：先发布身份，Settlement 按能力调用 Blocker.releaseAll 或 Blockable.release，后者取消自身计划。它不改路径、自身阻挡规则或自动搜索；依据见[运动模式调查](../research/cases/15-locomotion-native-semantics.md)。
 
 Hitbox Definition 保存单个静态 Shape，State 为空，不复制几何或提供运行时改形接口。它与阻挡半径、Locomotion 半身宽分别用于受击、接敌和避障，不能替代。[Spatial](spatial.md)提供战场几何查询。
 
@@ -109,9 +109,9 @@ Schedule 提供 RIGHT 初值，地面敌人的 entered 在 Route 首指令后按
 
 ## Blocking
 
-[Blocking](blocking.md)拥有两端共享 Relation、搜索／保持资格、容量裁撤与位置计划。Blocker 表达可阻挡目标层，不从自身 Layer 推导；默认 GROUND 半径 0.7071、AIR 半径 0.8944，Definition 必须提供 radius，null 表示随层使用默认半径，具体数值在切层后仍覆盖默认。
+[Blocking](blocking.md)拥有两端共享 Relation、搜索／保持资格、容量裁撤与位置计划。Blocker Definition.rule 与 State.rule 分别表达初始及当前完整阻挡规则（目标层集合、基础半径、地块豁免）；不从自身 Layer 推导。标准 ground 与 air 为完整规则。State.radius 保存数值修正贡献，有效半径只约束新取得。
 
-capacity 与 volume 独立于重量；capacity 的 ADD／ZERO 和 volume 下限一属于项目协议。Restriction、容量／volume、切层分别有自己的 Settlement，不因任意字段更新自动全场维护。详细时序和未闭合特殊增容不在本页重复。
+capacity 与 volume 独立于重量；capacity 的 ADD／ZERO 和 volume 下限一属于项目协议。Restriction、容量／volume、规则切换分别有自己的 Settlement，不因任意字段更新自动全场维护。详细时序和未闭合特殊增容不在本页重复。
 
 ## 事件与结果
 

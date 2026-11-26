@@ -27,7 +27,7 @@ export function fixture(units = [], { rows = 3, columns = 12 } = {}) {
     return battle;
 }
 
-export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, layer = "GROUND", side = "ALLY", definition = {} } = {}) {
+export function holder(id = 10, { position = [2, 1], capacity = 1, rule = { ...blocker.ground, radius: 1 }, side = "ALLY", definition = {} } = {}) {
     return initialize({
         id, position,
         definition: {
@@ -35,7 +35,7 @@ export function holder(id = 10, { position = [2, 1], capacity = 1, radius = 1, l
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { classification: { type: "DEVICE", side, filterTags: [], groupTags: [] } }),
             presence: {}, vitality: vitality(100),
-            blocker: { layer, capacity, radius, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY"), group: null }] },
+            blocker: { rule, capacity, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY"), group: null }] },
             ...definition,
         },
     });
