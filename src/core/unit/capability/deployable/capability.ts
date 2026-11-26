@@ -7,10 +7,8 @@ import type { Card } from "../../../battle/deployment/deck/card/card.js";
 import { validateRestrictions, type Restriction as BaseRestriction } from "../../../restriction.js";
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { removed } from "../../hook.js";
-import { depart } from "../../../battle/deployment/deck/card/operations.js";
 import { release } from "../../../battle/deployment/slot/operations.js";
 import { TICKS_PER_SECOND } from "../../../tick.js";
-import { ref } from "../../query.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export interface Definition extends Restrictions {
@@ -64,20 +62,16 @@ export function initialize<
         value: {
             ...unit,
             hooks: unit.hooks.set(removed, {
-                id: "@deployable/settle-departure",
+                id: "@deployable/release-slot",
                 priority: 0,
                 invoke: (current, departure) => {
                     const unit = departure.unit as Unit & Deployable;
-                    const { card, slots } = unit.deployable;
+                    const { slots } = unit.deployable;
                     const { reason } = departure;
                     current =
                         reason === "DEATH"
                             ? release(current, slots, TICKS_PER_SECOND)
                             : release(current, slots);
-
-                    if (card !== null) {
-                        current = depart(current, card, ref(unit), reason);
-                    }
 
                     return { state: current, value: undefined };
                 },

@@ -7,7 +7,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
-import { retreat } from "../../dist/core/unit/capability/deployable/index.js";
+import { redeploy, retreat } from "../../dist/core/unit/capability/deployable/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import * as deck from "../../dist/core/battle/deployment/deck/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
@@ -556,8 +556,109 @@ test("an unlimited slot configuration remains unlimited with limit contributions
     assert.equal(deployed.state.deployment.slot.used, 1);
 });
 
-test("self movement, scripts, and expiry unlink without recycling; external movement recycles without refund", () => {
-    for (const [reason, recycled] of [["REDEPLOY_SELF", false], ["REDEPLOY_EXTERNAL", true], ["SCRIPT", false], ["EXPIRED", false]]) {
+test("special movement replaces the Unit on the same Card using current deployment facts and normal entered notifications", () => {
+    const entered = [];
+    const departures = [];
+    let state = battle([], {
+        deployment: { ...account, slot: { limit: 2 } },
+        initialCards: [{
+            definition: operatorCard,
+            unitDefinition: {
+                ...operator,
+                hooks: Hooks.empty().set(unitLifecycle.removed, {
+                    priority: 0,
+                    id: "observe-movement",
+                    invoke(current, { unit, reason }) {
+                        departures.push({ unit: unit.ref, reason });
+                        return { state: current, value: undefined };
+                    },
+                }),
+            },
+        }],
+    });
+    const card = cards.ref([...cards.all(state)][0]);
+    state = unitObservers.setHook(state, unitObservers.entered, {
+        priority: 0,
+        id: "observe-redeployment",
+        invoke(current, unit) {
+            assertRefOrder(card.get(current).units, [unit.ref]);
+            assert.equal(current.deployment.history.at(-1).unit, unit.ref);
+            entered.push(unit.ref);
+            return { state: current, value: undefined };
+        },
+    });
+    const placed = cards.deploy(state, {
+        card, tilePosition: [1, 2], direction: "LEFT",
+        quote: { dp: 8, stock: 1, slots: 2 }, restrictions: [],
+    });
+    const original = placed.value;
+    assert.equal(original.get(placed.state).deployable.cost, 10);
+    state = deck.replace(placed.state, cards.dp.setCostContribution(card.get(placed.state), {
+        group: null, id: "new-cost", value: cards.dp.create({ baseAddition: 8 }),
+    }));
+    const moved = redeploy(state, original, [1, 3], null, "SELF");
+    assert.notEqual(moved.value, null);
+    assert.notEqual(moved.value, original);
+    state = moved.state;
+    assert.equal(original.get(state), undefined);
+    assert.equal(at(state.battlefield, [1, 2])?.occupant ?? null, null);
+    assert.deepEqual(moved.value.get(state).occupancy.tile, [1, 3]);
+    assert.equal(moved.value.get(state).occupancy.direction, "LEFT");
+    assert.equal(moved.value.get(state).deployable.cost, 18);
+    assert.equal(moved.value.get(state).deployable.refund.limit, 18);
+    assert.equal(moved.value.get(state).deployable.slots, 1);
+    assert.deepEqual([card.get(state).dp.stage, card.get(state).supply.stock, card.get(state).supply.cooldown], [0, 0, 0]);
+
+    const movedAgain = redeploy(state, moved.value, [1, 4], "RIGHT", "EXTERNAL");
+    assert.notEqual(movedAgain.value, null);
+    assert.notEqual(movedAgain.value, moved.value);
+    state = movedAgain.state;
+    assert.equal(moved.value.get(state), undefined);
+    assert.equal(at(state.battlefield, [1, 3])?.occupant ?? null, null);
+    assert.deepEqual(movedAgain.value.get(state).occupancy.tile, [1, 4]);
+    assert.equal(movedAgain.value.get(state).occupancy.direction, "RIGHT");
+    assert.equal(movedAgain.value.get(state).deployable.cost, 27);
+    assert.equal(state.deployment.dp.balance, 42);
+    assert.equal(state.deployment.slot.used, 1);
+    assert.deepEqual(state.deployment.slot.pending, []);
+    assert.deepEqual([card.get(state).dp.stage, card.get(state).supply.stock, card.get(state).supply.cooldown], [1, 1, 10]);
+    assert.deepEqual(departures.map(({ reason }) => reason), ["REDEPLOY_SELF", "REDEPLOY_EXTERNAL"]);
+    assertRefOrder(departures.map(({ unit }) => unit), [original, moved.value]);
+    assertRefOrder(entered, [original, moved.value, movedAgain.value]);
+    assertRefOrder(state.deployment.history.map(({ unit }) => unit), entered);
+    assertRefOrder(state.deployment.history.map(({ card }) => card), [card, card, card]);
+    assert.deepEqual(redeploy(state, original, [1, 2], null, "SELF"), { state, value: null });
+});
+
+test("rejected movement ends the old Unit and recycles its Card exactly once without refund", () => {
+    for (const [kind, tilePosition] of [["SELF", [1, 3]], ["EXTERNAL", [-1, 2]]]) {
+        const initial = battle([
+            { hooks: Hooks.empty(), definition: operator, position: [3, 1], initial: { occupancy: { direction: null, tile: [1, 3] } } },
+        ], {
+            deployment: { ...account, slot: { limit: 1 } },
+            initialCards: [{ definition: operatorCard, unitDefinition: operator }],
+        });
+        const blocker = get(initial, 0).ref;
+        assert.deepEqual(redeploy(initial, blocker, [1, 4], null, kind), { state: initial, value: null });
+        const card = cards.ref([...cards.all(initial)][0]);
+        const placed = cards.deploy(initial, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
+        const moved = redeploy(placed.state, placed.value, tilePosition, null, kind);
+        assert.equal(moved.value, null);
+        const state = moved.state;
+        assert.equal(placed.value.get(state), undefined);
+        assert.notEqual(blocker.get(state), undefined);
+        assert.equal(at(state.battlefield, [1, 2])?.occupant ?? null, null);
+        assert.deepEqual(card.get(state).units, []);
+        assert.deepEqual([card.get(state).dp.stage, card.get(state).supply.stock, card.get(state).supply.cooldown], [1, 1, 10]);
+        assert.equal(state.deployment.dp.balance, 40);
+        assert.equal(state.deployment.slot.used, 0);
+        assert.deepEqual(state.deployment.slot.pending, []);
+        assertRefOrder(state.deployment.history.map(({ unit }) => unit), [placed.value]);
+    }
+});
+
+test("scripts and expiry unlink without recycling or refund", () => {
+    for (const reason of ["SCRIPT", "EXPIRED"]) {
         const initial = battle([], {
             deployment: account,
             initialCards: [{ definition: operatorCard, unitDefinition: operator }],
@@ -568,9 +669,9 @@ test("self movement, scripts, and expiry unlink without recycling; external move
         const removed = units.remove(placed.state, unit, { reason });
         const current = card.get(removed);
         assert.deepEqual(current.units, []);
-        assert.equal(current.dp.stage, recycled ? 1 : 0);
-        assert.equal(current.supply.stock, recycled ? 1 : 0);
-        assert.equal(current.supply.cooldown, recycled ? 10 : 0);
+        assert.equal(current.dp.stage, 0);
+        assert.equal(current.supply.stock, 0);
+        assert.equal(current.supply.cooldown, 0);
         assert.equal(removed.deployment.dp.balance, 40);
     }
 });

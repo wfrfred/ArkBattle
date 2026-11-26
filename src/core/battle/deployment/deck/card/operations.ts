@@ -1,9 +1,10 @@
 import type { Ref } from "../../../../common/ref.js";
 import { replaceIn } from "../../../../common/object.js";
 import type { State as BattleState, Result } from "../../../state.js";
-import type { Unit, EndReason } from "../../../../unit/unit.js";
+import type { Unit } from "../../../../unit/unit.js";
 import type { Deployable } from "../../../../unit/capability/deployable/capability.js";
 import { ref as unitRef } from "../../../../unit/query.js";
+import { removed } from "../../../../unit/hook.js";
 import { setDeployment } from "../../../../unit/capability/deployable/operations.js";
 import { add } from "../../../../unit/operations.js";
 import { initialize as initializeUnit } from "../../../../unit/initialize.js";
@@ -70,7 +71,29 @@ export function deploy<T extends Card<any>>(
         },
         hooks: Hooks.empty(),
     });
-    const initialized = initializeUnit(prepared.state, prepared.value);
+    const card = input.card;
+    const initialized = initializeUnit(prepared.state, {
+        ...prepared.value,
+        hooks: prepared.value.hooks.set(removed, {
+            id: "@card/settle-departure",
+            priority: 0,
+            invoke: (battle, departure) => {
+                const unit = unitRef(departure.unit);
+                const current = card.get(battle)!;
+                let next = replaceIn(
+                    current,
+                    ["units"],
+                    current.units.filter((candidate) => candidate !== unit),
+                );
+                const { reason } = departure;
+                if (reason === "RETREAT" || reason === "DEATH" || reason === "REDEPLOY_EXTERNAL") {
+                    next = recycle(next);
+                }
+
+                return { state: replace(battle, next), value: undefined };
+            },
+        }),
+    });
     const unit = setDeployment(initialized.value, {
         card: input.card,
         cost,
@@ -91,39 +114,21 @@ export function deploy<T extends Card<any>>(
     return { state: battle, value: reference };
 }
 
-export function depart(
-    battle: BattleState,
-    reference: Ref<Card>,
-    unit: Ref<Unit & Deployable>,
-    reason: EndReason,
-): BattleState {
-    let self = reference.get(battle)!;
-    self = replaceIn(
-        self,
-        ["units"],
-        self.units.filter((candidate) => candidate !== unit),
-    );
+export function recycle(card: Card): Card {
+    switch (card.policy) {
+        case "DEFAULT":
+            return card;
 
-    if (reason === "RETREAT" || reason === "DEATH" || reason === "REDEPLOY_EXTERNAL") {
-        switch (self.policy) {
-            case "DEFAULT":
-                break;
+        case "UNIQUE":
+            if (resolveIncrease(card)) {
+                card = replaceIn(card, ["dp", "stage"], card.dp.stage + 1);
+            }
 
-            case "UNIQUE":
-                if (resolveIncrease(self)) {
-                    self = replaceIn(self, ["dp", "stage"], self.dp.stage + 1);
-                }
+            return setCooldown(recharge(card, 1), resolveCooldown(card));
 
-                self = setCooldown(recharge(self, 1), resolveCooldown(self));
-                break;
-
-            case "QUEUED":
-                self = enqueue(self);
-                break;
-        }
+        case "QUEUED":
+            return enqueue(card);
     }
-
-    return replace(battle, self);
 }
 
 export function advance(battle: BattleState, reference: Ref<Card>): BattleState {

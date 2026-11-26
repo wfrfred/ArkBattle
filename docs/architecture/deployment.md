@@ -1,12 +1,12 @@
 # Deployment、Card 与 Unit 生命周期
 
-Deployment 聚合资源、部署历史及调度；Card 完成部署资格、消费、构造前装配与实例创建，并保存跨部署资源和当前关联 Unit；Deployable 保存本次场上部署事实并负责撤退及离场结算，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、主动撤退及被动死亡。
+Deployment 聚合资源、部署历史及调度；Card 完成部署资格、消费、构造前装配与实例创建，并保存跨部署资源和当前关联 Unit；Deployable 保存本次场上部署事实并负责撤退及离场结算，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、特殊移动、主动撤退及被动死亡。
 
 ## 关键语义
 
 - 预览与执行使用同一请求、报价契约和资格流程；拒绝不消费，成功先支付再构造与入场。
 - 本次来源 Card、COST、退款依据与额度在登记前由 Deployable 构造，账户仍归 Deployment。
-- 主动撤退在请求离场前返还 DP。Card 回收统一由 `removed` 结算。
+- 主动撤退在请求离场前返还 DP。Card 常规离场回收由自身装配的 `removed` 结算；自身特殊移动失败另行回收。
 - Unit 注销及结构占格释放先于本地 removed，再全局 removed；各集合内部遵守公共 priority。
 - 死亡时立即清格及回收 Card，全局部署位从 `removed` 起占用 1 战斗秒。
 - 部署间隔与逐份恢复独立，暂停保留余时，不把满额等待补发为资源。
@@ -68,7 +68,7 @@ Deck 每 Tick 推进所有 Card 后调用一次 `deck.sort(battle)`。有排序�
 
 `battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`card.deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。`card.deploy` 成功时返回新 Unit Ref，失败时返回 null；Card 身份已由 Request 提供。
 
-Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card；具体 Content 可以用此事实决定 [Effect 来源分组](effect.md#来源分组)。Card 的 `units: readonly Ref<Unit & Deployable>[]` 初始为空，每次部署成功构造 Unit 后、登记并派发 `entered` 前先追加新 Ref；在 Deployable 的 `removed` 结算时，无论离场原因，都解除该关联。该列表含 `ENDING`，与仅记录历史的 Deployment 不同。局部 removed 中先于 Deployable 结算的 Hook 可能看到已经注销但尚未解除关联的实例。
+Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card；具体 Content 可以用此事实决定 [Effect 来源分组](effect.md#来源分组)。Card 的 `units: readonly Ref<Unit & Deployable>[]` 初始为空，每次部署成功构造 Unit 后、登记并派发 `entered` 前先追加新 Ref；在 Card 装配的 `removed` 结算时，无论离场原因，都解除该关联。该列表含 `ENDING`，与仅记录历史的 Deployment 不同。局部 removed 中先于 Card 关联结算的 Hook 可能看到已经注销但尚未解除关联的实例。
 
 ## 请求与统一资格
 
@@ -88,7 +88,7 @@ Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一�
 
 付款使用当前 DP 余额。落点与方向通过 Occupancy Initial 提供；Card 不直接重建 Deployable State。
 
-Unit 构造从本次调整后的 Unit.Input 装配输入 Hook、Capability 和 Unit Definition 的程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Unit.add 完成登记、全场及本地 entered，Occupancy 配对由其本地程序处理。
+Card 在构造前 Hook 完成后将自己的离场关联结算 Hook 追加至本次 Unit.Input.hooks。Unit 构造从调整后的 Unit.Input 装配输入 Hook、Capability 和 Unit Definition 的程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Unit.add 完成登记、全场及本地 entered，Occupancy 配对由其本地程序处理。
 
 ## 开场 Unit
 
@@ -108,19 +108,29 @@ Deployable 单向依赖 Occupancy。初始来源为空，COST 与额度为零。
 
 `deployable.canRetreat` 查询当前 ACTIVE 与撤退限制；`deployable.retreat` 负责完整撤退业务。返费按本次 COST 与返费倍率计算，并受实例上限约束。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
-Unit 注销后，Deployable 的 `removed` 直接通过 Slot 归还实际占位，再由 Card 解除本次 Unit 关联并按离场原因决定是否回收。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
+Unit 注销后，Deployable 固定 `removed` 通过 Slot 归还实际占位；Card 自己装配的独立 `removed` Hook 解除本次 Unit 关联并按离场原因决定是否回收。两者各以普通 priority 0 结算，不承诺在同一回调内执行。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
 
-DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，Card.units 则在上述 Deployable removed 结算时更新。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
+DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，Card.units 则在 Card 自身的 removed Hook 中更新。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
+
+## 特殊移动
+
+`deployable.redeploy(battle, reference: Ref<Unit & Deployable>, tilePosition: TilePosition, direction: Direction | null, kind: "SELF" | "EXTERNAL")` 返回 `Result<Ref<Unit & Deployable> | null>`。Unit 不存在、已进入 ENDING 或无来源 Card 时返回原状态及 null。direction 为 null 时沿用旧实例的 occupancy.direction。
+
+先完整结束旧 Unit（SELF 对应 REDEPLOY_SELF，EXTERNAL 对应 REDEPLOY_EXTERNAL），两种原因均立即归还旧部署位，不返还 DP。旧 Unit 离场后，使用原 Card 执行正常 `card.deploy`，本次报价为 `{ dp: null, stock: 0, slots: card.definition.slot }`，本次覆盖冷却限制，其他普通部署资格仍然有效。落点资格在旧 Unit 离场后判定，原地部署也不额外豁免地块限制。
+
+成功使用当前 Card 基础费用、COST、Unit 的返费配置和本次额度，生成新 Unit 身份、关联和历史记录，正常派发 entered；不复制旧实例的部署事实。失败不恢复旧 Unit，SELF 补做一次 Card 回收，EXTERNAL 已在旧 Unit 离场时回收，不重复执行。HP、SP 和技能状态等具体接续由 Content 通过离场和部署流程处理。
+
+这是同步完整操作。若调用处正在 Lifetime 析构中，应由调用者以 [defer](lifetime.md#析构后执行操作) 延后整次操作，确保旧 Unit 完整注销后才开始新部署。若结束请求返回时旧 Unit 仍登记，则抛出同步入口契约错误，而不是继续部署。
 
 ## 离场清理的偏序
 
 公共阶段为：发布 ENDING／派发 removing → 真实依赖完整结束 → 捕获当前 removed 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 removed → 全局 removed。
 
-本地默认同级装配顺序为 Unit.Input Hook、Capability 程序（包含 Deployable 离场结算与 Occupancy 配对清理）、Unit Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
+本地默认同级装配顺序为 Unit.Input Hook（包含 Card 追加的关联结算）、Capability 程序（包含 Deployable 额度归还与 Occupancy 配对清理）、Unit Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
 
 removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
-`slot.used` 在 `removing`、依赖结束和死亡延迟期间仍计入本次份额。预置份额为零。部署历史用于来源反查；`card.units.length` 用于当前同卡在场限制，包含尚未完成 Deployable removed 结算的 Unit。与此前按登记 Unit 扫描计数不同，较早的 removed Hook 可能看到尚未解除的关联；其他资源结算时序不变。
+`slot.used` 在 `removing`、依赖结束和死亡延迟期间仍计入本次份额。预置份额为零。部署历史用于来源反查；`card.units.length` 用于当前同卡在场限制，包含尚未完成 Card removed 结算的 Unit。与此前按登记 Unit 扫描计数不同，较早的 removed Hook 可能看到尚未解除的关联；Card 关联结算和 Slot 归还可以分别观察，不建立额外的共同完成阶段。
 
 ## 构造前 Hook
 
@@ -156,7 +166,7 @@ removing 和依赖收尾期间的 removed 登记变化进入注销前快照；�
 
 ## 支持范围
 
-特殊移动需要独立的 `deployable.redeploy` 操作，目前仍待接入。原生正常路径沿用 Card 并更换 Unit，具体的账务、失败后续和通知边界见 [Core 缺口 U028](research-necessity-20261122.md#deployment--card--dp)。
+特殊移动的 Core 操作已接入，具体 Content 的 HP／技能接续、待投放及特殊消费者仍未实现。机制依据见[特殊移动的结果与实际消费者](../research/cases/24-deployment-cost-and-supply.md#特殊移动的结束原因)。
 
 待部署区成员模型尚待调整；手牌重排竞争、隐藏／锁定和特殊回收仍未完整实现。卫戍倒地、自动部署与经济政策由外部机制／Meta 组合。再部署时间的多来源公式仍待核对。
 

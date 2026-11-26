@@ -10,4 +10,4 @@ export type {
 
 export { canRetreat } from "./query.js";
 
-export { setDeployment, retreat } from "./operations.js";
+export { setDeployment, retreat, redeploy } from "./operations.js";
