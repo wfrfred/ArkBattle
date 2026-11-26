@@ -6,14 +6,7 @@ export type { Quote, DeployRequest } from "./request.js";
 
 export type { Restriction, RestrictionContext } from "./restriction.js";
 
-export {
-    cardForUnit,
-    deployedCount,
-    createRequest,
-    evaluate,
-    canRetreat,
-    positions,
-} from "./query.js";
+export { cardForUnit, deployedCount, evaluate, canRetreat, positions } from "./query.js";
 
 export type { DeploymentCommand } from "./operations.js";
 

@@ -156,7 +156,7 @@ test("different Card definitions can deploy the same Unit Definition used by an 
 
     for (const [card, tile] of [[discounted, [1, 2]], [regular, [0, 2]]]) {
         const reference = cards.ref(card);
-        const result = deployment.deploy(state, deployment.createRequest(state, reference, tile, null));
+        const result = deployment.deploy(state, { card: reference, tilePosition: tile, direction: null, quote: null, restrictions: [] });
         assert.notEqual(result.value, null);
         state = result.state;
         const unit = result.value.get(state);
@@ -230,6 +230,17 @@ test("evaluation and deployment share a request, rejection spends nothing, and C
                     ...input,
                     hooks: input.hooks.set(unitLifecycle.entered, {
                         priority: 0,
+                        id: "observe-consumption",
+                        invoke: (current, self) => {
+                            entered = true;
+                            assert.equal(current.deployment.dp.balance, 40);
+                            assert.equal(card.get(current).supply.stock, 0);
+                            assert.equal(current.deployment.slot.used, 1);
+                            assert.equal(units.ref(self).get(current).deployable.card, card);
+                            return { state: current, value: undefined };
+                        },
+                    }).set(unitLifecycle.entered, {
+                        priority: 0,
                         id: "observe-prepared-unit",
                         invoke(current, unit) {
                             assert.notEqual(unit.ref.get(current), undefined);
@@ -241,8 +252,8 @@ test("evaluation and deployment share a request, rejection spends nothing, and C
             };
         },
     });
-    const request = deployment.createRequest(state, card, [1, 2], "LEFT");
-    const invalid = { ...request, quote: { ...request.quote, dp: -1 } };
+    const request = { card, tilePosition: [1, 2], direction: "LEFT", quote: null, restrictions: [] };
+    const invalid = { ...request, quote: { dp: -1, stock: 1, slots: 1 } };
     for (const operation of [deployment.evaluate, deployment.deploy]) {
         assert.throws(() => operation(state, invalid), RangeError);
     }
@@ -267,23 +278,10 @@ test("evaluation and deployment share a request, rejection spends nothing, and C
     const allowed = {
         ...rejected,
         tilePosition: [0, 2],
-        hooks: Hooks.empty().set(unitLifecycle.entered, {
-                priority: 0,
-                id: "observe-consumption",
-
-                invoke: (current, self) => {
-                    entered = true;
-                    assert.equal(current.deployment.dp.balance, 40);
-                    assert.equal(card.get(current).supply.stock, 0);
-                    assert.equal(current.deployment.slot.used, 1);
-                    assert.equal(units.ref(self).get(current).deployable.card, card);
-                    return { state: current, value: undefined };
-                },
-            }),
     };
     assert.equal(deployment.evaluate(state, allowed), true);
-    const positions = deployment.positions(state, allowed);
-    assert.ok(positions.every(([row]) => row === 0));
+    const positions = deployment.positions(state, card);
+    assert.ok(positions.some(([row]) => row !== 0));
     assert.ok(positions.some(([row, column]) => row === 0 && column === 2));
     assert.deepEqual(preparations, []);
     assert.deepEqual(constructions, []);
@@ -307,7 +305,7 @@ test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prer
     const card = cards.ref([...cards.all(state)][0]);
     const permit = { allows: () => true };
     const request = {
-        ...deployment.createRequest(state, card, [0, 2], null),
+        card, tilePosition: [0, 2], direction: null, quote: null,
         restrictions: [
             ...["cooldown", "active-limit", "slots", "placement", "stock", "dp", "map", "occupancy"].map(name => ({ group: null, id: `@deployment/${name}`, value: permit })),
         ],
@@ -317,7 +315,7 @@ test("DEPLOY-RESTRICTION-01: policy overrides retain resource and occupancy prer
     });
     const unavailable = { ...request, quote: { dp: null, stock: 2, slots: 0 } };
     reject(unavailable);
-    assert.deepEqual(deployment.positions(state, unavailable), []);
+    assert.equal(deployment.evaluate(state, unavailable), false);
     reject({ ...request, quote: { dp: 6, stock: 0, slots: 0 } });
     reject({ ...request, quote: { dp: null, stock: 0, slots: 0 }, tilePosition: [-1, 2] });
 
@@ -353,7 +351,7 @@ test("Card Definition and DeployRequest each reject duplicate restriction IDs", 
     }), /duplicate restriction identity/);
 
     const card = cards.ref([...cards.all(state)][0]);
-    const request = { ...deployment.createRequest(state, card, [0, 2], null), restrictions };
+    const request = { card, tilePosition: [0, 2], direction: null, quote: null, restrictions };
     assert.throws(() => deployment.deploy(state, request), /duplicate restriction identity/);
 });
 
@@ -376,7 +374,7 @@ test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before gro
     state = cards.setRestriction(state, card, {
         id: "@deployment/slots", value: deny, group: { id: "permission", priority: 2 },
     });
-    const request = deployment.createRequest(state, card, [0, 2], null);
+    const request = { card, tilePosition: [0, 2], direction: null, quote: null, restrictions: [] };
     assert.equal(deployment.evaluate(state, request), false);
     const allowed = { ...request, restrictions: [
         { id: "@deployment/slots", value: permit, group: { id: "permission", priority: 2 } },
@@ -438,7 +436,7 @@ test("retreat refunds before removal, and death delays global slot release indep
         ],
     });
     const [card, nextCard] = [...cards.all(state)].map(cards.ref);
-    const first = deployment.deploy(state, deployment.createRequest(state, card, tilePosition, null));
+    const first = deployment.deploy(state, { card, tilePosition, direction: null, quote: null, restrictions: [] });
     const firstUnit = first.value;
     state = deployment.retreat(first.state, firstUnit);
     assert.equal(first.value.get(state), undefined);
@@ -448,7 +446,7 @@ test("retreat refunds before removal, and death delays global slot release indep
         { reason: "RETREAT", dp: 45, stage: 1, stock: 1, cooldown: 10, slots: 0 },
     ]);
 
-    const returning = deployment.createRequest(state, card, tilePosition, null);
+    const returning = { card, tilePosition, direction: null, quote: null, restrictions: [] };
     assert.equal(deployment.evaluate(state, returning), false);
     for (let elapsed = 0; elapsed < 10; elapsed++) {
         state = step(state, []);
@@ -475,26 +473,27 @@ test("retreat refunds before removal, and death delays global slot release indep
         reason: "DEATH", dp: 30, stage: 2, stock: 1, cooldown: 10, slots: 1,
     });
 
-    const adjusted = cards.dp.setCostContribution(card.get(state), {
+    const releasedAt = state.tick + TICKS_PER_SECOND;
+    while (state.tick < releasedAt) {
+        state = step(state, []);
+    }
+    const next = { card: nextCard, tilePosition, direction: null, quote: null, restrictions: [] };
+    assert.deepEqual(deployment.deploy(state, next), {
+        state, value: null,
+    });
+
+    const released = step(state, []);
+    const adjusted = cards.dp.setCostContribution(card.get(released), {
         group: null,
         id: "next-deployment-cost",
         value: cards.dp.create({
             cost: 17, baseAddition: 4, maxMultiplier: -0.25, costScale: 0.75, finalAddition: -2,
         }),
     });
-    state = deck.replace(state, adjusted);
-    assert.equal(deployment.createRequest(state, card, tilePosition, null).quote.dp, 19);
-    state = deck.replace(state, cards.dp.removeCostContribution(adjusted, "next-deployment-cost"));
-    assert.equal(deployment.createRequest(state, card, tilePosition, null).quote.dp, 20);
-
-    const releasedAt = state.tick + TICKS_PER_SECOND;
-    while (state.tick < releasedAt) {
-        state = step(state, []);
-    }
-    const next = deployment.createRequest(state, nextCard, tilePosition, null);
-    assert.deepEqual(deployment.deploy(state, next), {
-        state, value: null,
-    });
+    const surcharged = deck.replace(released, adjusted);
+    assert.equal(deployment.deploy(surcharged, returning).state.deployment.dp.balance, 11);
+    const restored = deck.replace(surcharged, cards.dp.removeCostContribution(adjusted, "next-deployment-cost"));
+    assert.equal(deployment.deploy(restored, returning).state.deployment.dp.balance, 10);
 
     const placedOnRelease = step(state, [{ direction: null, type: "DEPLOY_UNIT", ref: nextCard, tilePosition }]);
     assert.equal(placedOnRelease.deployment.history.at(-1)?.card, nextCard);
@@ -511,9 +510,9 @@ test("slot limit contributions affect new deployments without changing occupied 
             definition: { ...operatorCard, slot: slots },
         })),
     });
-    const requests = [...cards.all(state)].map((card, index) =>
-        deployment.createRequest(state, cards.ref(card), [1, index + 1], null),
-    );
+    const requests = [...cards.all(state)].map((card, index) => ({
+        card: cards.ref(card), tilePosition: [1, index + 1], direction: null, quote: null, restrictions: [],
+    }));
     const [first, second, third, free] = requests;
     const occupied = deployment.deploy(state, first);
     assert.notEqual(occupied.value, null);
@@ -549,7 +548,7 @@ test("an unlimited slot configuration remains unlimited with limit contributions
     assert.equal(slot.resolveLimit(state), null);
     assert.equal(slot.remaining(state), null);
     const card = cards.ref([...cards.all(state)][0]);
-    const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
+    const deployed = deployment.deploy(state, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
     assert.notEqual(deployed.value, null);
     assert.equal(deployed.state.deployment.slot.used, 1);
 });
@@ -561,7 +560,7 @@ test("only external movement recycles the card, and neither movement refunds DP"
             initialCards: [{ definition: operatorCard, unitDefinition: operator }],
         });
         const card = cards.ref([...cards.all(initial)][0]);
-        const placed = deployment.deploy(initial, deployment.createRequest(initial, card, [1, 2], null));
+        const placed = deployment.deploy(initial, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
         const unit = placed.value;
         const removed = units.remove(placed.state, unit, { reason });
         const current = card.get(removed);
@@ -586,8 +585,7 @@ test("default cards start cooldown even without stock consumption and only expli
             }],
         });
         const card = cards.ref([...cards.all(initial)][0]);
-        const request = deployment.createRequest(initial, card, [1, 2], null);
-        assert.equal(request.quote.stock, consumption);
+        const request = { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] };
         const deployed = deployment.deploy(initial, request);
         assert.notEqual(deployed.value, null);
         const reference = deployed.value;
@@ -601,7 +599,7 @@ test("default cards start cooldown even without stock consumption and only expli
         }
         assert.equal(deployment.evaluate(state, request), false);
         state = step(state, []);
-        const redeployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
+        const redeployed = deployment.deploy(state, request);
         assert.notEqual(redeployed.value, null);
         assert.equal(card.get(redeployed.state).supply.stock, 0);
         assert.equal(card.get(redeployed.state).supply.cooldown, 2);
@@ -639,7 +637,7 @@ test("queued recovery preserves the current interval and transfers at most one a
         const { stock, pending, cooldown } = card.get(state).supply;
         assert.deepEqual({ stock, pending, cooldown }, expected);
     };
-    const first = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
+    const first = deployment.deploy(state, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
     assert.notEqual(first.value, null);
     state = deployment.retreat(first.state, first.value);
     assertSupply({ stock: 0, pending: 1, cooldown: 2 });
@@ -661,7 +659,7 @@ test("queued recovery preserves the current interval and transfers at most one a
     assertSupply({ stock: 1, pending: 2, cooldown: 4 });
     assert.deepEqual(observedStock, { self: 1, registered: 1 });
 
-    const next = deployment.createRequest(state, card, [1, 2], null);
+    const next = { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] };
     const deployed = deployment.deploy(state, next);
     assert.notEqual(deployed.value, null);
     state = deployed.state;
@@ -701,7 +699,7 @@ test("stock limit includes pending recovery and active limit only gates new depl
         }],
     });
     const card = cards.ref([...cards.all(state)][0]);
-    const first = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
+    const first = deployment.deploy(state, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
     assert.notEqual(first.value, null);
     state = first.state;
     const stockBonus = { group: null, id: "extra-stock", value: modifier.create({ addition: 2 }) };
@@ -726,7 +724,7 @@ test("stock limit includes pending recovery and active limit only gates new depl
         [0, 0, 0, false],
     );
 
-    const request = deployment.createRequest(state, card, [1, 3], null);
+    const request = { card, tilePosition: [1, 3], direction: null, quote: null, restrictions: [] };
     assert.equal(deployment.evaluate(state, request), false);
     const activeBonus = { group: null, id: "extra-active", value: modifier.create({ addition: 1 }) };
     const withActiveBonus = cards.supply.setActiveLimitContribution(card.get(state), activeBonus);
@@ -736,7 +734,7 @@ test("stock limit includes pending recovery and active limit only gates new depl
     const restored = cards.supply.removeActiveLimitContribution(card.get(extra.state), activeBonus.id);
     state = deck.replace(extra.state, cards.supply.recharge(restored, 1));
     assert.equal(deployment.deployedCount(state, card), 2);
-    const third = deployment.createRequest(state, card, [1, 4], null);
+    const third = { card, tilePosition: [1, 4], direction: null, quote: null, restrictions: [] };
     assert.equal(deployment.evaluate(state, third), false);
 });
 
@@ -754,7 +752,7 @@ test("natural DP recovery can fund deployment during the same battle step", () =
     const state = step(initial, []);
     const card = cards.ref([...cards.all(state)][0]);
     const tilePosition = [1, 2];
-    const request = deployment.createRequest(state, card, tilePosition, null);
+    const request = { card, tilePosition, direction: null, quote: null, restrictions: [] };
     assert.deepEqual(deployment.deploy(state, request), {
         state, value: null,
     });

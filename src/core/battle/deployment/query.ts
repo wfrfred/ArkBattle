@@ -1,6 +1,5 @@
 import { resolveEntries, type Contribution } from "../../common/contribution.js";
 import type { Ref } from "../../common/ref.js";
-import type { Direction } from "../../geometry/direction.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
 import { at } from "../../battlefield/occupancy.js";
 import { get as getTile } from "../../battlefield/map/map.js";
@@ -13,10 +12,9 @@ import { resolveCost } from "./deck/card/dp/query.js";
 import { isReady, resolveActiveLimit } from "./deck/card/supply/query.js";
 import type { Restriction as CardRestriction } from "./deck/card/restriction.js";
 import type { Restriction } from "./restriction.js";
-import { validateRequest, type DeployRequest } from "./request.js";
+import { validateRequest, type DeployRequest, type Quote } from "./request.js";
 import { canPay } from "./dp/query.js";
 import { remaining } from "./slot/query.js";
-import { Hooks } from "../../hook.js";
 
 export function cardForUnit(battle: BattleState, reference: Ref<Unit>): Ref<Card> | null {
     return battle.deployment.history.find(({ unit }) => unit === reference)?.card ?? null;
@@ -43,28 +41,11 @@ export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable
     );
 }
 
-export function createRequest<T extends Card<any>>(
-    battle: BattleState,
-    reference: Ref<T>,
-    tilePosition: TilePosition,
-    direction: Direction | null,
-): DeployRequest<T> | undefined {
-    const self: Card | undefined = reference.get(battle);
-    if (self === undefined) {
-        return undefined;
-    }
-
+export function resolveQuote(battle: BattleState, self: Card) {
     return {
-        card: reference,
-        tilePosition,
-        direction,
-        quote: {
-            dp: resolveCost(battle, self),
-            stock: self.definition.supply.consumption,
-            slots: self.definition.slot,
-        },
-        restrictions: [],
-        hooks: Hooks.empty(),
+        dp: resolveCost(battle, self),
+        stock: self.definition.supply.consumption,
+        slots: self.definition.slot,
     };
 }
 
@@ -93,8 +74,9 @@ const defaultRestrictions: readonly Contribution<Restriction>[] = [
         value: {
             allows: (battle, { request }) => {
                 const available = remaining(battle);
+                const slots = request.quote?.slots ?? request.card.get(battle)!.definition.slot;
 
-                return available === null || request.quote.slots <= available;
+                return available === null || slots <= available;
             },
         },
     },
@@ -110,7 +92,7 @@ const defaultRestrictions: readonly Contribution<Restriction>[] = [
 
 function resolveRestrictions(
     self: Card,
-    request: DeployRequest,
+    entries: readonly Contribution<Restriction>[],
 ): readonly Contribution<Restriction | CardRestriction>[] {
     const restrictions = new Map<string, Contribution<Restriction | CardRestriction>>();
 
@@ -118,7 +100,7 @@ function resolveRestrictions(
         ...defaultRestrictions,
         ...self.definition.deploymentRestrictions,
         ...self.restrictions,
-        ...request.restrictions,
+        ...entries,
     ]) {
         restrictions.set(entry.id, entry);
     }
@@ -130,12 +112,13 @@ function evaluateCurrent(
     battle: BattleState,
     self: Card,
     request: DeployRequest,
+    quote: Quote,
     restrictions: readonly Contribution<Restriction | CardRestriction>[],
 ): boolean {
-    if (self.supply.stock < request.quote.stock) {
+    if (self.supply.stock < quote.stock) {
         return false;
     }
-    if (request.quote.dp !== null && !canPay(battle.deployment.dp, request.quote.dp)) {
+    if (quote.dp !== null && !canPay(battle.deployment.dp, quote.dp)) {
         return false;
     }
 
@@ -164,30 +147,43 @@ export function evaluate<T extends Card<any>>(
     const self = input.card.get(battle);
 
     return (
-        self !== undefined && evaluateCurrent(battle, self, input, resolveRestrictions(self, input))
+        self !== undefined &&
+        evaluateCurrent(
+            battle,
+            self,
+            input,
+            input.quote ?? resolveQuote(battle, self),
+            resolveRestrictions(self, input.restrictions),
+        )
     );
 }
 
 export function positions<T extends Card<any>>(
     battle: BattleState,
-    request: DeployRequest<T>,
+    reference: Ref<T>,
 ): readonly TilePosition[] {
-    const input = request as object as DeployRequest;
-    validateRequest(input);
-
     const result: TilePosition[] = [];
-    const self = input.card.get(battle);
+    const card = reference as object as Ref<Card>;
+    const self = card.get(battle);
     if (self === undefined) {
         return result;
     }
 
-    const restrictions = resolveRestrictions(self, input);
+    const restrictions = resolveRestrictions(self, []);
+    const quote = resolveQuote(battle, self);
     const { rows, columns } = battle.battlefield.map;
 
     for (let row = 0; row < rows; row++) {
         for (let column = 0; column < columns; column++) {
             const tilePosition: TilePosition = [row, column];
-            if (evaluateCurrent(battle, self, { ...input, tilePosition }, restrictions)) {
+            const request: DeployRequest = {
+                card,
+                tilePosition,
+                direction: null,
+                quote: null,
+                restrictions: [],
+            };
+            if (evaluateCurrent(battle, self, request, quote, restrictions)) {
                 result.push(tilePosition);
             }
         }

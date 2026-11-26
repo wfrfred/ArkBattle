@@ -71,31 +71,36 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     const [supportCard, unitCard] = [...cards.all(state)].map(cards.ref);
     const placedSupport = deployment.deploy(
         state,
-        deployment.createRequest(state, supportCard, [1, 2], null),
+        { card: supportCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] },
     );
     state = placedSupport.state;
     let replacement;
-    const request = deployment.createRequest(state, unitCard, [1, 2], null);
-    const placedUnit = deployment.deploy(state, {
-        ...request,
-        hooks: Hooks.empty().set(unitLifecycle.removed, {
-                id: "replace-on-leave", priority: 0,
-
-                invoke: (current) => {
-                    const result = deployment.deploy(
-                        current,
-                        deployment.createRequest(current, unitCard, [1, 2], null),
-                    );
-                    assert.notEqual(result.value, null);
-                    replacement = result.value;
-                    return { state: result.state, value: undefined };
+    const request = { card: unitCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] };
+    state = cards.setHook(state, unitCard, cards.beforeDeploy, {
+        id: "replace-on-leave", priority: 0,
+        invoke(current, _request, input) {
+            return {
+                state: cards.removeHook(current, unitCard, cards.beforeDeploy, "replace-on-leave"),
+                value: {
+                    ...input,
+                    hooks: input.hooks.set(unitLifecycle.removed, {
+                        id: "replace-on-leave", priority: 0,
+                        invoke: (current) => {
+                            const result = deployment.deploy(current, request);
+                            assert.notEqual(result.value, null);
+                            replacement = result.value;
+                            return { state: result.state, value: undefined };
+                        },
+                    }),
                 },
-            }),
+            };
+        },
     });
+    const placedUnit = deployment.deploy(state, request);
     state = placedUnit.state;
     const denied = deployment.deploy(state, {
         ...request,
-        quote: { ...request.quote, slots: 0 },
+        quote: { dp: 0, stock: 1, slots: 0 },
     });
     assert.equal(denied.value, null);
     state = deployment.retreat(state, placedUnit.value);
@@ -115,7 +120,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
 
     state = deployment.retreat(state, placedSupport.value);
     assert.equal(replacement.get(state).occupancy.pair, null);
-    const returned = deployment.deploy(state, deployment.createRequest(state, supportCard, [1, 2], null));
+    const returned = deployment.deploy(state, { card: supportCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
     assert.notEqual(returned.value, null);
     assert.notEqual(returned.value, replacement);
     state = returned.state;

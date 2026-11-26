@@ -72,15 +72,15 @@ Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card；�
 
 ## 请求与统一资格
 
-DeployRequest 明确 Card Ref、落点、方向（`null` 表示未指定）、Quote、本次限制及 Hook。普通 Command 与 createRequest 同样显式提供方向。普通 Command 生成默认请求，Content 可以按本次业务提供报价和策略；显示／点选与部署 Context 各保留实际所需输入，不伪造落点。
+DeployRequest 明确 Card Ref、落点、方向（`null` 表示未指定）、报价选择及本次限制。普通 Command 同样显式提供方向，生成默认请求；Content 可以直接构造请求并提供本次业务的报价和策略。
 
-Quote 承诺 DP、库存和额度消费：dp 为 null 表示不支付，零表示正常零费；stock／slots 可为零。普通 `createRequest` 从 Card 的 `supply.consumption` 与 `slot` 生成默认库存和额度消费；consumption 为必填非负安全整数，特殊部署仍可显式指定 quote.stock。公开查询与执行共用请求校验，合法请求中的未知 Card 不通过资格。
+`quote` 为必填字段，取值为 `Quote | null`。null 表示在查询或执行时从当前 Card 读取有效 DP 费用、`supply.consumption` 与 `slot`；非 null 则完整指定本次 DP、库存和额度消费。Quote 中的 dp 为 null 表示不支付，零表示正常零费；stock／slots 可为零。consumption 为必填非负安全整数。公开请求查询与执行共用请求校验，合法请求中的未知 Card 不通过资格。
 
 固定前提由代码检查：Card 存在、资源足够、支付后不低于 DP 下限、落点合法、同 Slot 不冲突。不能用限制豁免保留无法履行的消费承诺。冷却、同卡在场上限、部署位上限及普通地块许可属于可配置限制，其默认限制 ID 分别为 `@deployment/cooldown`、`@deployment/active-limit`、`@deployment/slots`、`@deployment/placement`。
 
 Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一。限制依次合并默认、Card 静态、Card 当前与 Request，不同列表的同 ID 后者覆盖。有效项按贡献政策选择，所有限制均允许才通过资格；不对具体拒绝分支建立公共原因分类。查询与执行都使用同一规则和资源事实。
 
-部署资格读取传入的 BattleState。`evaluate` 返回本次请求是否满足全部资格，`positions` 保留报价和限制逐格判断。调度器先推进部署领域，再处理本 Tick 的部署命令。
+部署资格读取传入的 BattleState。`evaluate` 返回本次请求是否满足全部资格；`positions(battle, cardRef)` 查询普通 Card 当前可部署的全部地块，使用未指定方向、默认报价及空的本次限制列表。特殊请求需要逐格调用 `evaluate`。限制的 Context 保留原始 DeployRequest（quote 可为 null）。调度器先推进部署领域，再处理本 Tick 的部署命令。
 
 ## 普通部署流程
 
@@ -124,7 +124,7 @@ removing 和依赖收尾期间的 removed 登记变化进入注销前快照；�
 
 ## 构造前 Hook
 
-`type BeforeDeployHook = Hook<DeployRequest, UnitInput<UnitDefinition>>`。资格通过并提交 DP、部署位、库存和部署间隔之后，`Unit.initialize` 之前，直接从本次 Card 的 Hooks 同步派发 `card.beforeDeploy`；拒绝部署不派发。Context 固定为 DeployRequest，工作值为本次 Unit.Input。内容可以调整本次 Unit 的 definition、initial 和 hooks，已确认的落点及支付事实不属于修改职责。Card 的 Hooks 不复制给 Unit，不提前保存一组 Unit 程序。
+`type BeforeDeployHook = Hook<DeployRequest, UnitInput<UnitDefinition>>`。资格通过并提交 DP、部署位、库存和部署间隔之后，`Unit.initialize` 之前，直接从本次 Card 的 Hooks 同步派发 `card.beforeDeploy`；拒绝部署不派发。Context 固定为原始 DeployRequest（quote 可为 null），工作值为本次 Unit.Input，初始 hooks 为 `Hooks.empty()`。内容可以调整本次 Unit 的 definition、initial 和 hooks，已确认的落点及支付事实不属于修改职责。Card 的 Hooks 不复制给 Unit，不提前保存一组 Unit 程序。
 
 公共候选、priority、替换和嵌套派发见 [Hook](hook.md)。多卡共享的效果通过同一个 Effect Ref 读取最新状态，并在可能重入的操作前先发布机会消耗。构造前时点本身不保证重入安全；同组优惠或报价等更早使用的机会仍须在可能重入的操作前消费，不用 Event 执行业务。全场观察者通过 `battle.unit.entered` 及 Deployable 的 Card 关联区分部署入场；不提供额外的 Card 后置通知或全局 deployed Hook。
 

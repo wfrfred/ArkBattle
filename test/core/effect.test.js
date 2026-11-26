@@ -657,7 +657,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
             partition: (battle, source) => source === null ? null : (deployment.cardForUnit(battle, source) ?? source),
         },
     };
-    const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0], null));
+    const firstUnit = deployment.deploy(state, { card: a, tilePosition: [0, 0], direction: null, quote: null, restrictions: [] });
     const firstSource = firstUnit.value;
     const installed = effects.install(firstUnit.state, owner, definition, { ...effectInitial, source: firstSource });
     state = deployment.retreat(installed.state, firstSource);
@@ -672,13 +672,13 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const lateInstall = effects.install(state, owner, delayed, { ...effectInitial, source: firstSource });
     state = lateInstall.state;
     assert.notEqual(lateInstall.value, null);
-    const redeployed = deployment.deploy(state, deployment.createRequest(state, a, [0, 0], null));
+    const redeployed = deployment.deploy(state, { card: a, tilePosition: [0, 0], direction: null, quote: null, restrictions: [] });
     state = redeployed.state;
     assert.notEqual(redeployed.value, null);
     const nextSource = redeployed.value;
     assert.notEqual(nextSource, firstSource);
     assert.equal(effects.install(state, owner, delayed, { ...effectInitial, source: nextSource }).value, null);
-    const otherUnit = deployment.deploy(state, deployment.createRequest(state, b, [0, 1], null));
+    const otherUnit = deployment.deploy(state, { card: b, tilePosition: [0, 1], direction: null, quote: null, restrictions: [] });
     const other = effects.install(otherUnit.state, owner, delayed, {
         ...effectInitial,
         source: otherUnit.value,

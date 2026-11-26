@@ -74,7 +74,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         initialCards: [{ definition: cardDefinition, unitDefinition: operator }],
     });
     const card = cards.ref([...cards.all(state)][0]);
-    const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
+    const deployed = deployment.deploy(state, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
     assert.notEqual(deployed.value, null);
     state = deployed.state;
     const owner = deployed.value;
