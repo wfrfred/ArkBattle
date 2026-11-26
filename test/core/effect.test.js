@@ -655,7 +655,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
         group: { type: "UNIQUE", id: "card-source", partition: deployment.sourceIdentity },
     };
     const firstUnit = deployment.deploy(state, deployment.createRequest(state, a, [0, 0], null));
-    const firstSource = firstUnit.value.unit;
+    const firstSource = firstUnit.value;
     const installed = effects.install(firstUnit.state, owner, definition, { ...effectInitial, source: firstSource });
     state = deployment.retreat(installed.state, firstSource);
     assert.equal(firstSource.get(state), undefined);
@@ -671,14 +671,14 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     assert.notEqual(lateInstall.value, null);
     const redeployed = deployment.deploy(state, deployment.createRequest(state, a, [0, 0], null));
     state = redeployed.state;
-    assert.equal(redeployed.value.type, "DEPLOYED");
-    const nextSource = redeployed.value.unit;
+    assert.notEqual(redeployed.value, null);
+    const nextSource = redeployed.value;
     assert.notEqual(nextSource, firstSource);
     assert.equal(effects.install(state, owner, delayed, { ...effectInitial, source: nextSource }).value, null);
     const otherUnit = deployment.deploy(state, deployment.createRequest(state, b, [0, 1], null));
     const other = effects.install(otherUnit.state, owner, delayed, {
         ...effectInitial,
-        source: otherUnit.value.unit,
+        source: otherUnit.value,
     });
     assert.notEqual(other.value, null);
     const unitSource = effects.install(other.state, owner, delayed, { ...effectInitial, source: owner });

@@ -17,12 +17,10 @@ import { deploy as deployCard } from "./deck/card/operations.js";
 import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
 import * as slot from "./slot/operations.js";
-import { evaluateCurrent, resolveRestrictions, createRequest } from "./query.js";
-import { validateRequest, type DeployRequest, type DeployOutcome } from "./request.js";
+import { evaluate, createRequest } from "./query.js";
+import type { DeployRequest } from "./request.js";
 
 export { canRetreat, retreat };
-
-export type { DeployRequest, DeployOutcome, Rejection } from "./request.js";
 
 export type DeploymentCommand<T extends Card<any> = Card> =
     | {
@@ -36,20 +34,13 @@ export type DeploymentCommand<T extends Card<any> = Card> =
 export function deploy<T extends Card<any>>(
     battle: BattleState,
     request: DeployRequest<T>,
-): Result<DeployOutcome> {
+): Result<Ref<Unit & Deployable> | null> {
+    if (!evaluate(battle, request)) {
+        return { state: battle, value: null };
+    }
+
     const input = request as object as DeployRequest;
-    validateRequest(input);
-
-    const self = input.card.get(battle);
-    if (self === undefined) {
-        return { state: battle, value: { type: "REJECTED", reason: "UNKNOWN_CARD" } };
-    }
-
-    const rejected = evaluateCurrent(battle, input, resolveRestrictions(self, input));
-    if (rejected !== null) {
-        return { state: battle, value: rejected };
-    }
-
+    const self = input.card.get(battle)!;
     const cost = resolveCost(battle, self);
     const baseCost = resolveBaseCost(self);
     const amount = request.quote.dp;
@@ -88,7 +79,7 @@ export function deploy<T extends Card<any>>(
 
     return {
         state: battle,
-        value: { type: "DEPLOYED", card: input.card, unit: unitRef(unit) },
+        value: unitRef(unit),
     };
 }
 

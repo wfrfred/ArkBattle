@@ -75,9 +75,9 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
     });
     const card = cards.ref([...cards.all(state)][0]);
     const deployed = deployment.deploy(state, deployment.createRequest(state, card, [1, 2], null));
-    assert.equal(deployed.value.type, "DEPLOYED");
+    assert.notEqual(deployed.value, null);
     state = deployed.state;
-    const owner = deployed.value.unit;
+    const owner = deployed.value;
     const targets = [1, 2].map((id) => units.ref(get(state, id)));
     const pair = owner.get(state).occupancy.pair;
     assert.ok(pair);

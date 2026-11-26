@@ -6,7 +6,7 @@ export type { Card } from "./deck/card/card.js";
 
 export { resolveCooldown } from "./deck/card/supply/query.js";
 
-export type { Quote, DeployRequest, DeployOutcome, Rejection, Rejected } from "./request.js";
+export type { Quote, DeployRequest } from "./request.js";
 
 export type { Restriction, RestrictionContext } from "./restriction.js";
 
@@ -16,7 +16,6 @@ export {
     deployedCount,
     createRequest,
     evaluate,
-    preview,
     positions,
     defaultRestrictions,
 } from "./query.js";
