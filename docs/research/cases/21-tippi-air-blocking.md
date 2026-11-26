@@ -100,3 +100,15 @@ S1／S2 起飞模式 Attack 对象上的 BuffToOwner
 **D：** 固定镜像 `17759cc8cdf37388414145d16262a3a06f3ab25e` 中，`char_1052_kalts2` 的第一天赋“遗尘守望”在 `/char_1052_kalts2/talents/0/candidates/*/blackboard/3` 写有 `block_radius_scale=0.23`。同角色 S1 `skchr_kalts2_1` 的各技能等级在 `/skchr_kalts2_1/levels/*/blackboard/1` 写有 `attack@block_radius_scale=0.23`，持续时间均为 35 秒。 [角色表](../../../assets/arknights-game-data/zh_CN/gamedata/excel/character_table.json) · [技能表](../../../assets/arknights-game-data/zh_CN/gamedata/excel/skill_table.json)
 
 **P：** 社区条目将天赋的范围变化记为自身的阻挡半径倍率，S1 则提高其他持有对地规避的友方干员的倍率。S1 开启和结束能改变已在场受益者的有效范围，范围内外的飞行单位取得阻挡关系的结果会不同。第 6 节的原生半径读取证明普通飞行阻挡消费 `BLOCK_RADIUS_SCALE`，普通地面阻挡不消费该属性。本次没有重新提取新版 Buff 模板或运行客户端验证倍率叠加。 [PRTS 天赋与技能](https://prts.wiki/w/凯尔希·思衡托#技能) · [半径读取原件](../evidence/air-blocking-radius-20261029/selected-witnesses.json)
+
+## 7. 2026-11-26 汇总：阻挡模式、目标资格、半径与站位
+
+这几项原生规则应分别理解：
+
+- **阻挡模式与目标匹配。** 普通阻挡者当前有效 `blockMode` 决定 WALK／FLY 模式，Character 的根格动态覆盖可改变该值；它不等同于阻挡者自身的运动身份。`_CheckMotionModeBlockable` 比较目标当前运动身份，`ignoreBlockMode` 仅跳过这一匹配。普通搜索的地块资格另行检查（FLY 绕过地面阻挡限制）。[模式与地块取证](../evidence/blocking-native-20261023/modes/report.txt)
+- **跨层的实际样本。** 迷狂牢笼的组件为 `_motionMode=0`、`_blockMode=0`、`_ignoreBlockMode=1`，仍持有地面阻挡模式。旧版本专属搜索入口避开普通搜索的部分前提，但它的候选检查仍调用 Enemy 的接敌范围及资格判断；不可由运动层豁免推出所有对象均豁免地块或使用全格搜索。新版已核实组件与站位覆盖，未完整复核专属过滤调用链。[实际组件](../evidence/resource-mechanisms-20261114/life/content.json#L136150) · [特殊搜索](../evidence/blocking-timing-native-20261023/frequency/report.txt#L132) · [旧候选检查](../evidence/blocking-native-20261023/modes/77294.asm) · [PRTS 迷狂牢笼](https://prts.wiki/w/迷狂牢笼)
+- **接敌半径。** 普通 WALK 使用 0.7071，FLY 使用 0.8944 乘当前有效 `BLOCK_RADIUS_SCALE`（基础倍率 1）。接敌距离按双方位置计算，与 Hitbox、取得后的最小站位间距无关。一个 +0.23 的独立倍率贡献在基础倍率为 1 时令普通 FLY 有效半径约为 1.1 格；多来源叠加未在本轮重新验证。
+- **取得与保持的区别。** 普通既有关系不因中心距离超出接敌半径而逐 Tick 自动解除；有效阻挡模式改变有清除出向关系的后继。飞行半径属性变化另有 `RevalidateBlockees` 入口，其静态回退会重新调用包含已有归属拒绝的检查，不能据此断言实战仅释放半径外目标。[关系保持与重验](../evidence/blocking-native-20261023/retention/report.txt)
+- **取得后的站位。** 普通取得将过近目标沿相对方向推至最小间距 0.5 格，另计算已有目标造成的分散，不主动拉近较远目标。迷狂牢笼覆盖这一结果：0.2 格内保留原位，超过时沿原方向将距离缩为随机的 0 至 0.2 格。二者都与接敌半径独立，覆盖的是站位终点而不是插值算法。[普通站位](../evidence/blocking-native-20261023/geometry/report.txt) · [迷狂牢笼与插值](22-block-positioning-and-interruption.md#L73)
+
+本节汇总既有静态客户端、配置与社区证据，不将原生字段直接确定为项目模型，也不将未验证的重验行为视为实战定论。
