@@ -81,13 +81,13 @@
 | [Battlefield · 地图与地块](battlefield.md#地图与地块) | [非整数地址不能命中已有格，也不能登记占格或将覆盖误投到整数格](../../test/core/battlefield.test.js#L60) |
 | [Navigation · Overlay 登记](navigation.md#overlay-登记) | [独立覆盖可以按身份撤销，有向出口和地块代价改变导航的实际路径，旧覆盖引用无法误删新限制，更新失效引用报告错误](../../test/core/battlefield.test.js#L80) |
 | [Spatial · 数据归属与查询入口](spatial.md#数据归属与查询入口) | [身体原点与偏移命中体分开选中，扫掠按接触比例排列且排除消失和仍登记的 ENDING 对象](../../test/core/battlefield.test.js#L135) |
-| [Blocking · 关系资格与 Restriction](blocking.md#关系资格与-restriction) | [双方有效限制、阵营、当前规则的目标层集合、目标占量及地块根格共同决定能否取得或维持阻挡，可同时保持地面和空中关系](../../test/core/blocking.test.js#L93) |
-| [Blocking · 阻挡规则与有效半径](blocking.md#阻挡规则与有效半径) | [半径贡献扩大接敌范围；撤销贡献仍保持既有远距关系，但已解除的远距目标无法重新取得](../../test/core/blocking.test.js#L177) |
-| [Blocking · 已确定的操作接口](blocking.md#已确定的操作接口) | [同值自身切层仍清理，整批双端先释放再通知，旧关系不能解除同双方后来重建的关系](../../test/core/blocking.test.js#L292) |
-| [Blocking · 主动解除阻挡的空间操作](blocking.md#主动解除阻挡的空间操作) | [后执行的自身切层或阻挡规则切换结算解除较早结算期间取得的当前关系](../../test/core/blocking.test.js#L249) |
-| [Blocking · 显式关系操作与同步维护](blocking.md#显式关系操作与同步维护) | [缩容先裁最新关系，收到释放回调产生的新容量后决定是否继续裁撤](../../test/core/blocking.test.js#L202) |
-| [Blocking · 两侧通知顺序](blocking.md#两侧通知顺序) | [关系通知先固定双方优先级却读取更新登记，本次搜索因回调增容可接住已有后继候选，不接住新出生单位](../../test/core/blocking.test.js#L34) |
-| [Blocking · 站位计算与位置推进](blocking.md#站位计算与位置推进) | [近身站位分散并独立推进，普通解除或阻挡者离场保留计划，目标主动脱离和空间覆盖取消计划](../../test/core/blocking.test.js#L365) |
+| [Blocking · 关系资格与 Restriction](blocking.md#关系资格与-restriction) | [双方有效限制、阵营、当前规则的目标层集合、目标占量及地块根格共同决定能否取得或维持阻挡，可同时保持地面和空中关系](../../test/core/blocking.test.js#L94) |
+| [Blocking · 阻挡规则与有效半径](blocking.md#阻挡规则与有效半径) | [半径贡献扩大接敌范围；撤销贡献仍保持既有远距关系，但已解除的远距目标无法重新取得](../../test/core/blocking.test.js#L178) |
+| [Blocking · 已确定的操作接口](blocking.md#已确定的操作接口) | [同值自身切层仍清理，整批双端先释放再通知，旧关系不能解除同双方后来重建的关系](../../test/core/blocking.test.js#L293) |
+| [Blocking · 主动解除阻挡的空间操作](blocking.md#主动解除阻挡的空间操作) | [后执行的自身切层或阻挡规则切换结算解除较早结算期间取得的当前关系](../../test/core/blocking.test.js#L250) |
+| [Blocking · 显式关系操作与同步维护](blocking.md#显式关系操作与同步维护) | [缩容先裁最新关系，收到释放回调产生的新容量后决定是否继续裁撤](../../test/core/blocking.test.js#L203) |
+| [Blocking · 两侧通知顺序](blocking.md#两侧通知顺序) | [关系通知先固定双方优先级却读取更新登记，本次搜索因回调增容可接住已有后继候选，不接住新出生单位](../../test/core/blocking.test.js#L35) |
+| [Blocking · 阻挡偏移](blocking.md#阻挡偏移) | [普通近身偏移分散并独立推进，普通解除或阻挡者离场保留偏移，目标主动脱离和空间覆盖取消偏移](../../test/core/blocking.test.js#L366)；[阻挡者自定义偏移接续 RNG 状态并决定 Movement 的中间位置与最终位置](../../test/core/blocking.test.js#L427) |
 | [Capability · Facing](capability.md#facing) | [实例拥有左右方向，普通转向服从当前限制，强制转向可绕过转向限制，仍不能改变 ENDING 宿主](../../test/core/facing.test.js#L13) |
 | [Capability · 触发与跨领域交互](capability.md#触发与跨领域交互) | [有效自主移动按导航方向而非历史速度朝向，拒绝转向不撤回位移，纯纵向或过近目标保留原朝向](../../test/core/facing.test.js#L55) |
 | [Occupancy · 已通知的业务配对](occupancy.md#已通知的业务配对) | [双槽共存且同槽排他，Pair 先向双方发布再通知，旧 Pair 先解除再通知，撤退中重建的配对留存，下一次登记继续分配不同身份，摆放方向变化不移动占格或重建 Pair](../../test/core/occupancy.test.js#L27) |

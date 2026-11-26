@@ -6,12 +6,6 @@
 
 本轮取证已更新各项状态。待查证指可能影响 Core 的具体组合或分支，待定指已有证据、仍需项目作设计取舍，待接入指已有语义缺少对应的 Core 表达。
 
-## Blocking
-
-| 状态 | 事项 | 剩下的问题 |
-| --- | --- | --- |
-| 待接入 | 迷狂牢笼的阻挡站位 | 牢笼保留距离 0.2 格内目标的位置，较远目标向中心聚拢。当前取得关系会向外推开近处目标，探针中距离 0.1 格的目标被推入邻格。 [站位依据](../research/evidence/cage-block-position-20261122/README.md) · [当前取得流程](../../src/core/battle/blocking/operations.ts#L153) |
-
 ## Navigation / Route / Locomotion / Shifting
 
 | 状态 | 事项 | 剩下的问题 |

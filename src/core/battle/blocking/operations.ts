@@ -13,7 +13,6 @@ import {
 import {
     hasBlockable,
     resolveVolume,
-    stableBlockPosition,
     type Blockable,
 } from "../../unit/capability/blocking/blockable.js";
 import { hasLayer } from "../../unit/capability/layer/capability.js";
@@ -27,7 +26,6 @@ import type { State as BattleState } from "../state.js";
 import type { Relation } from "../../unit/capability/blocking/contract.js";
 import * as hooks from "./hook.js";
 import { relations, usedCapacity } from "./query.js";
-import { calculate as calculatePosition } from "./position.js";
 
 function allowsTile(battle: BattleState, unit: Unit & Blocker): boolean {
     if (unit.blocker.rule.ignoreTerrain) {
@@ -166,13 +164,13 @@ export function acquire(
     }
 
     const relation: Relation = { blocker: units.ref(blocker), blocked: units.ref(target) };
-    const to = calculatePosition(
-        blocker.position,
-        target.position,
-        blocker.blocker.relations.map((entry) => stableBlockPosition(entry.blocked.get(battle)!)),
+    const { state, value: offset } = blocker.definition.blocker.calculateOffset(
+        battle,
+        blocker,
+        target,
     );
 
-    battle = replace(battle, [
+    battle = replace(state, [
         {
             ...blocker,
             blocker: { ...blocker.blocker, relations: [...blocker.blocker.relations, relation] },
@@ -182,7 +180,7 @@ export function acquire(
             blockable: {
                 ...target.blockable,
                 relation,
-                adjustment: { from: target.position, to, startTick: battle.tick },
+                offset,
             },
         },
     ]);

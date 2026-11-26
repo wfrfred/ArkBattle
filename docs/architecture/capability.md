@@ -109,7 +109,7 @@ Schedule 提供 RIGHT 初值，地面敌人的 entered 在 Route 首指令后按
 
 ## Blocking
 
-[Blocking](blocking.md)拥有两端共享 Relation、搜索／保持资格、容量裁撤与位置计划。Blocker Definition.rule 与 State.rule 分别表达初始及当前完整阻挡规则（目标层集合、基础半径、地块豁免）；不从自身 Layer 推导。标准 ground 与 air 为完整规则。State.radius 保存数值修正贡献，有效半径只约束新取得。
+[Blocking](blocking.md)拥有两端共享 Relation、搜索／保持资格、容量裁撤与阻挡偏移。Blocker Definition.rule 与 State.rule 分别表达初始及当前完整阻挡规则（目标层集合、基础半径、地块豁免）；不从自身 Layer 推导。标准 ground 与 air 为完整规则。State.radius 保存数值修正贡献，有效半径只约束新取得。Blocker Definition.calculateOffset 必填，提供取得时的阻挡偏移计算；Blockable State.offset 保存当前偏移。
 
 capacity 与 volume 独立于重量；capacity 的 ADD／ZERO 和 volume 下限一属于项目协议。Restriction、容量／volume、规则切换分别有自己的 Settlement，不因任意字段更新自动全场维护。详细时序和未闭合特殊增容不在本页重复。
 

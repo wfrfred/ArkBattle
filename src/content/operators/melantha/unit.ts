@@ -10,6 +10,7 @@ import { ref as unitRef } from "../../../core/unit/index.js";
 
 import type { SkillCapability } from "../../../core/unit/capability/skill/index.js";
 
+import { calculateOffset } from "../../../core/battle/blocking/index.js";
 import { ground, sides } from "../../../core/unit/capability/blocking/index.js";
 import { hasOffense } from "../../../core/unit/capability/offense/index.js";
 import { install } from "../../../core/effect/index.js";
@@ -81,6 +82,7 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
         blocker: {
+            calculateOffset,
             capacity: attributes.blockCapacity,
             rule: ground,
             restrictions: [{ id: "blocking/sides", group: null, value: sides("ENEMY") }],

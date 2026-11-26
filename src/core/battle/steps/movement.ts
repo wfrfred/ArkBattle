@@ -22,7 +22,7 @@ export function advanceMovement(
     const candidates = units.all(battle);
 
     for (const unit of candidates.filter(hasBlockable)) {
-        battle = blockable.advancePosition(battle, units.ref(unit));
+        battle = blockable.advanceOffset(battle, units.ref(unit));
     }
 
     for (const initial of candidates) {

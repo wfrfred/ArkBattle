@@ -23,7 +23,6 @@ export {
     hasBlockable,
     initialize as initializeBlockable,
     resolveVolume,
-    stableBlockPosition,
     acquired as blockableAcquired,
     released as blockableReleased,
 } from "./blockable.js";
@@ -32,7 +31,7 @@ export type {
     Definition as BlockableDefinition,
     State as BlockableState,
     Blockable,
-    PositionAdjustment,
+    BlockOffset,
 } from "./blockable.js";
 
 export { sides, type Restriction, type RestrictionContext } from "./restriction.js";
@@ -54,5 +53,5 @@ export {
     setVolumeContribution,
     removeVolumeContribution,
     release as releaseBlockable,
-    advancePosition,
+    advanceOffset,
 } from "./blockable-operations.js";

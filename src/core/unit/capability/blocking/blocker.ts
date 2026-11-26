@@ -5,6 +5,7 @@ import * as contribution from "../../../common/contribution.js";
 import * as modifier from "../../../common/modifier.js";
 import { validateRestrictions } from "../../../restriction.js";
 import type { Unit } from "../../unit.js";
+import type { Blockable, BlockOffset } from "./blockable.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Type as LayerType } from "../layer/capability.js";
 import type { Relation, Hook } from "./contract.js";
@@ -40,6 +41,11 @@ interface Restrictions {
 export interface Definition extends Restrictions {
     readonly capacity: number;
     readonly rule: Rule;
+    readonly calculateOffset: (
+        battle: BattleState,
+        blocker: Unit & Blocker,
+        target: Unit & Blockable,
+    ) => Result<BlockOffset>;
 }
 
 export interface State extends Restrictions {

@@ -40,7 +40,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         }),
         occupancy: { slot: "OCCUPANT" },
         deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
-        blocker: { capacity: 2, rule: block.ground, restrictions: [] },
+        blocker: { calculateOffset: blocking.calculateOffset, capacity: 2, rule: block.ground, restrictions: [] },
         action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [program, idle] },
     };
 

@@ -826,7 +826,7 @@ test("HP-03: Applied can recover zero HP and preserve blocking before death conf
         { hooks: Hooks.empty(), initial: {}, definition: { id: "source", hooks: Hooks.empty() }, position: [0, 0] },
         { hooks: Hooks.empty(), initial: {}, definition: {
             id: "guard", hooks: Hooks.empty(), vitality: defineVitality(40),
-            blocker: { capacity: 1, rule: ground, restrictions: [] },
+            blocker: { calculateOffset: blocking.calculateOffset, capacity: 1, rule: ground, restrictions: [] },
         }, position: [2, 1] },
         { hooks: Hooks.empty(), initial: {}, definition: { id: "enemy", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [2.2, 1] },
     ]);

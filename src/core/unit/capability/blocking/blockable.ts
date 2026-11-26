@@ -18,7 +18,7 @@ export interface Definition extends Restrictions {
     readonly volume: number;
 }
 
-export interface PositionAdjustment {
+export interface BlockOffset {
     readonly from: WorldPosition;
     readonly to: WorldPosition;
     readonly startTick: number;
@@ -26,7 +26,7 @@ export interface PositionAdjustment {
 
 export interface State extends Restrictions {
     readonly relation: Relation | null;
-    readonly adjustment: PositionAdjustment | null;
+    readonly offset: BlockOffset | null;
     readonly volume: readonly contribution.Contribution<number>[];
 }
 
@@ -60,18 +60,12 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
             hooks: UnitHooks.empty().set(removingKey, removing).merge(unit.hooks),
             blockable: {
                 relation: null,
-                adjustment: null,
+                offset: null,
                 volume: [],
                 restrictions,
             },
         },
     };
-}
-
-export function stableBlockPosition(unit: Unit & Blockable): WorldPosition {
-    return unit.blockable.relation === null
-        ? unit.position
-        : (unit.blockable.adjustment?.to ?? unit.position);
 }
 
 export function resolveVolume(definition: Definition, state: State): number {

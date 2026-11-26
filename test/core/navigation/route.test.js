@@ -11,7 +11,7 @@ import { update } from "../../../dist/core/unit/operations.js";
 import { step } from "../../../dist/core/battle/runtime.js";
 import { appear } from "../../../dist/core/unit/capability/presence/index.js";
 import { shiftable, unbalance } from "../../../dist/core/unit/capability/shifting/index.js";
-import { search } from "../../../dist/core/battle/blocking/index.js";
+import { calculateOffset, search } from "../../../dist/core/battle/blocking/index.js";
 import { blockableReleased, ground } from "../../../dist/core/unit/capability/blocking/index.js";
 import * as navigation from "../../../dist/core/battlefield/navigation/state.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
@@ -267,7 +267,7 @@ test("spatial instructions publish consumption before hooks and resume the lates
                 layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] },
             }),
             { definition: { id: "blocker", hooks: Hooks.empty(),
-                blocker: { capacity: 1, rule: { ...ground, radius: 1 }, restrictions: [] },
+                blocker: { calculateOffset, capacity: 1, rule: { ...ground, radius: 1 }, restrictions: [] },
             }, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
         ]);
         const host = units.ref(get(state, 0));

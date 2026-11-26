@@ -9,6 +9,7 @@ import { add, remove, update } from "../../../dist/core/unit/operations.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { Tile } from "../../../dist/core/geometry/coordinate.js";
 import { createDefinition as createDeployable } from "../../helpers/deployable.js";
+import { calculateOffset } from "../../../dist/core/battle/blocking/index.js";
 import { sides, ground, air, setRule } from "../../../dist/core/unit/capability/blocking/index.js";
 import { fixture as blockingFixture, holder, target, acquire, ownerId } from "../../helpers/blocking.js";
 import { getUnit, initialize } from "../../helpers/unit.js";
@@ -21,7 +22,7 @@ function passenger(id = 10, tile = first, rule = ground) {
         id, position: Tile.center(tile), initial: { occupancy: { tile, direction: null } }, definition: {
             id: "passenger", hooks: Hooks.empty(), occupancy: { slot: "OCCUPANT" }, presence: {},
             classification: { type: "OPERATOR", side: "ALLY", profession: "WARRIOR", subProfession: "FEARLESS", extraProfessions: [], groupTags: [] }, vitality: vitality(100),
-            blocker: { rule, capacity: 1, restrictions: [{ id: "opposing-side", group: null, value: sides("ENEMY") }] },
+            blocker: { calculateOffset, rule, capacity: 1, restrictions: [{ id: "opposing-side", group: null, value: sides("ENEMY") }] },
         },
     });
 }

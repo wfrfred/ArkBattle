@@ -138,7 +138,7 @@ Movement 将本步的路线目标或空值传给 Locomotion。没有目标时，
 
 仅在位移跨格且目的格不可通时反射整次位移，不做整段扫掠或反射后二次检查；高代价不等于不可通，反射不改积分所得 velocity。运动结束后可通过 [Facing](capability.md#facing)接续转向。
 
-项目每次积分重算局部避障。Presence 通过限制禁自主移动，Blocking 在 Movement 入口通过当前关系限制它。位置计划、Route 等待与强制空间操作各自独立。
+项目每次积分重算局部避障。Presence 通过限制禁自主移动，Blocking 在 Movement 入口通过当前关系限制它。阻挡偏移、Route 等待与强制空间操作各自独立。
 
 ## 强制位移
 

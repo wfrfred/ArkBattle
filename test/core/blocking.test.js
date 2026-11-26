@@ -16,11 +16,12 @@ import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { advanceMovement } from "../../dist/core/battle/steps/movement.js";
 import { Vec2 } from "../../dist/core/common/vector.js";
 import { create as createModifier } from "../../dist/core/common/modifier.js";
+import { createRng } from "../../dist/core/common/rng.js";
 
 const blocker = {
     id: "guard",
     hooks: Hooks.empty(),
-    blocker: { capacity: 3, rule: capability.ground, restrictions: [] },
+    blocker: { calculateOffset: blocking.calculateOffset, capacity: 3, rule: capability.ground, restrictions: [] },
 };
 const enemy = {
     id: "enemy",
@@ -96,7 +97,7 @@ test("search and maintenance use effective pair restrictions, volume, layers and
             definition: {
                 ...blocker,
                 occupancy: { slot: "OCCUPANT" },
-                blocker: { capacity: 2, rule: capability.ground, restrictions: [{ id: "opposing-side", group: null, value: capability.sides("ENEMY") }] },
+                blocker: { calculateOffset: blocking.calculateOffset, capacity: 2, rule: capability.ground, restrictions: [{ id: "opposing-side", group: null, value: capability.sides("ENEMY") }] },
             }, hooks: Hooks.empty(),
             position: [2, 1],
             initial: { occupancy: { tile: [0, 2], direction: null } },
@@ -362,7 +363,7 @@ test("own layer requests release current relations before hooks, including same-
     assert.ok(targets.every((target) => blocking.blockerOf(state, target) === undefined));
 });
 
-test("position plans survive relation release while active departure and spatial overrides cancel them", () => {
+test("block offsets survive relation release while active departure and spatial overrides cancel them", () => {
     let state = battle([
         { definition: { ...blocker, presence: {} }, hooks: Hooks.empty(), initial: {}, position: [2, 1] },
         { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.2, 1] },
@@ -371,38 +372,38 @@ test("position plans survive relation release while active departure and spatial
     const owner = units.ref(get(state, 0));
     const target = units.ref(get(state, 1));
     state = blocking.acquire(state, owner, target);
-    assert.deepEqual(get(state, 1).blockable.adjustment.to, [2.5, 1]);
+    assert.deepEqual(get(state, 1).blockable.offset.to, [2.5, 1]);
 
     const departing = units.ref(get(state, 2));
     state = blocking.acquire(state, owner, departing);
-    const separated = get(state, 2).blockable.adjustment.to;
+    const separated = get(state, 2).blockable.offset.to;
     assert.deepEqual(get(state, 1).position, [2.2, 1]);
     assert.deepEqual(get(state, 2).position, [2.3, 1]);
-    assert.notDeepEqual(separated, get(state, 1).blockable.adjustment.to);
+    assert.notDeepEqual(separated, get(state, 1).blockable.offset.to);
     assert.ok(Math.abs(Vec2.distanceSquared(separated, get(state, 0).position) - 0.25) < 1e-12);
     state = unit.update(state, departing, layer.setType("AIR"));
     assert.equal(blocking.blockerOf(state, departing), undefined);
-    assert.equal(get(state, 2).blockable.adjustment, null);
+    assert.equal(get(state, 2).blockable.offset, null);
 
     state = advanceMovement({ ...state, tick: 3 }, { routeMoveMultiplier: 1 });
     assert.ok(Math.abs(get(state, 1).position[0] - 2.35) < 1e-12);
     state = blocking.release(state, blocking.relations(state, target));
-    assert.notEqual(get(state, 1).blockable.adjustment, null);
+    assert.notEqual(get(state, 1).blockable.offset, null);
     state = advanceMovement({ ...state, tick: 6 }, { routeMoveMultiplier: 1 });
     assert.deepEqual(get(state, 1).position, [2.5, 1]);
-    assert.equal(get(state, 1).blockable.adjustment, null);
+    assert.equal(get(state, 1).blockable.offset, null);
 
     state = unit.update(state, departing, layer.setType("GROUND"));
     state = blocking.acquire(state, owner, departing);
-    assert.notEqual(get(state, 2).blockable.adjustment, null);
-    const independentPlan = get(state, 2).blockable.adjustment;
+    assert.notEqual(get(state, 2).blockable.offset, null);
+    const independentPlan = get(state, 2).blockable.offset;
     state = unit.update(state, owner, presence.disappear());
     assert.equal(blocking.blockerOf(state, departing), undefined);
-    assert.deepEqual(get(state, 2).blockable.adjustment, independentPlan);
+    assert.deepEqual(get(state, 2).blockable.offset, independentPlan);
     state = advanceMovement({ ...state, tick: 9 }, { routeMoveMultiplier: 1 });
     assert.notDeepEqual(get(state, 2).position, independentPlan.from);
     state = unit.update(state, departing, presence.disappear());
-    assert.equal(get(state, 2).blockable.adjustment, null);
+    assert.equal(get(state, 2).blockable.offset, null);
     state = unit.update(state, owner, presence.appear([2, 1]));
     state = unit.update(state, departing, presence.appear([2.3, 1]));
     state = blocking.acquire(state, owner, departing);
@@ -413,7 +414,7 @@ test("position plans survive relation release while active departure and spatial
                 observed = true;
                 assert.deepEqual(get(current, 2).position, [5, 1]);
                 assert.equal(get(current, 2).presence.present, true);
-                assert.equal(get(current, 2).blockable.adjustment, null);
+                assert.equal(get(current, 2).blockable.offset, null);
                 assert.equal(blocking.blockerOf(current, departing), undefined);
                 assert.deepEqual(blocking.blocked(current, owner), []);
                 return { state: current, value: undefined };
@@ -421,4 +422,40 @@ test("position plans survive relation release while active departure and spatial
         }));
     state = unit.update(state, departing, presence.appear([5, 1]));
     assert.equal(observed, true);
+});
+
+test("a blocker-defined offset determines the destination reached by Movement", () => {
+    let state = battle([
+        {
+            definition: {
+                ...blocker,
+                blocker: {
+                    ...blocker.blocker,
+                    calculateOffset(current, owner, target) {
+                        const rng = createRng(current.execution.rngState);
+                        const to = [owner.position[0] + rng.next() * 0.2, owner.position[1]];
+                        return {
+                            state: { ...current, execution: { ...current.execution, rngState: rng.state() } },
+                            value: {
+                                from: target.position,
+                                to,
+                                startTick: current.tick,
+                            },
+                        };
+                    },
+                },
+            }, hooks: Hooks.empty(), initial: {}, position: [2, 1],
+        },
+        { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.25, 1] },
+    ]);
+    const rng = createRng(state.execution.rngState);
+    const to = 2 + rng.next() * 0.2;
+    state = blocking.acquire(state, units.ref(get(state, 0)), units.ref(get(state, 1)));
+    assert.deepEqual(get(state, 1).position, [2.25, 1]);
+    assert.equal(state.execution.rngState, rng.state());
+
+    state = advanceMovement({ ...state, tick: 3 }, { routeMoveMultiplier: 1 });
+    assert.deepEqual(get(state, 1).position, [(2.25 + to) / 2, 1]);
+    state = advanceMovement({ ...state, tick: 6 }, { routeMoveMultiplier: 1 });
+    assert.deepEqual(get(state, 1).position, [to, 1]);
 });

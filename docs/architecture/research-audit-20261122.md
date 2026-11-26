@@ -8,7 +8,6 @@
 
 | 事项 | 当前状态 | 领域与依据 |
 | --- | --- | --- |
-| 迷狂牢笼的阻挡站位 | 待接入 | [Blocking](research-necessity-20261122.md#blocking) |
 | 出口资格与离场原因（G08） | 待接入 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
 | 跨格路点偏移（U006） | 待定 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
 | 自主运动的冲撞资格（U019） | 待接入 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
@@ -39,7 +38,7 @@
 | 编号 | 缺口 | 实际机制 | 盘点时的 Core 边界 | 当前状态 | 依据 |
 | --- | --- | --- | --- | --- | --- |
 | G02 | 全局效果同步覆盖后来出生者 | 普通 GlobalBuff 在登记时施加到符合资格的新单位。后兽的实际 GlobalAura 同时安装到现有和后来出生的目标。 | Unit.add 只派发本地 entered。Mechanism 定时扫描无法让嵌套创建或入场后的业务同步看到本次安装。 | **已完成。** Unit 和占格登记后同步派发 `battle.unit.entered`，随后用最新 Unit 派发本地 `entered`。测试验证本地程序能观察到全局 Hook 安装的 Effect。 | [原生依据](../research/03-space-units-and-mechanisms.md#L285) · [Core](../../src/core/unit/operations.ts#L14) · [测试](../../test/core/hook.test.js#L83) · [后兽实例](../research/cases/31-route-operations-and-state.md#L127) |
-| G04 | 阻挡目标的运动层资格 | 酒神的迷狂牢笼在实际阻挡分支使用目标运动层豁免。 | 阻挡资格硬编码两侧层相等，Content 的限制只能进一步缩小集合。阻挡者的地块判断还需要自己的阻挡层。 | **Core 已接入。** 完整 Rule 独立指定目标层集合、基础半径及地块豁免，可同时取得及保持地面、空中关系；牢笼特殊站位仍缺失。 | [原生依据](../research/evidence/resource-mechanisms-20261114/life/content.json#L136150) · [Blocking](blocking.md#阻挡规则与有效半径) · [原生资格检查](../research/evidence/blocking-native-20261023/modes/report.txt#L11) |
+| G04 | 阻挡目标的运动层资格 | 酒神的迷狂牢笼在实际阻挡分支使用目标运动层豁免。 | 阻挡资格硬编码两侧层相等，Content 的限制只能进一步缩小集合。阻挡者的地块判断还需要自己的阻挡层。 | **Core 已接入。** 完整 Rule 独立指定目标层集合、基础半径及地块豁免，可同时取得及保持地面、空中关系；自定义阻挡偏移亦具备 Core 表达，牢笼的具体偏移计算留给 Content。 | [原生依据](../research/evidence/resource-mechanisms-20261114/life/content.json#L136150) · [Blocking](blocking.md#阻挡规则与有效半径) · [原生资格检查](../research/evidence/blocking-native-20261023/modes/report.txt#L11) |
 | G05 | 战中修改 DP 上限 | 诺伯特平民确认身份后进入保护区会增加我方费用上限。 | Core 提供动态下限。自然回复、余额修改及边界截断读取静态 Definition.maxDp。 | **已完成。** `dp.setMaxContribution` 和 `dp.removeMaxContribution` 支持战中调整有效上限。自然回费和余额修改读取该上限，Deck 独立计算卡牌费用截断。 | [原生依据](../research/cases/20-norport-civilian-allegiance-and-blocking.md#L22) · [DP 契约](deployment.md#dp) |
 | G06 | 本次部署参与初始化的 Card 效果 | 松桐 S2 的 DeckBuff 在读取本次出生 HP 前参与 MaxHP 计算。 | 部署入口以固定蓝图完成 Unit.initialize，卡牌通过 Hook 装配入场业务。 | **已结案，现有接口可表达。** Card Effect 保存下次部署的附加数据，通过 `card.beforeDeploy` 在成功资格与资源结算后、Unit.initialize 前修改本次 Unit.Input；参与初始 HP 的配置可直接在构造前确定，其他入场业务可注入本次 Unit Hook。 | [原生依据](../research/cases/24-deployment-cost-and-supply.md#普通-native-分支的阶段区别) · [本次构造干预](deployment.md#部署观察) |
 | G07 | 同一 Card 的特殊部署 | 卫戍初始布阵保留卡牌身份，免初始费用，预放召唤物免库存。初查记录了部分效果跳过开场部署的说法。 | 走 deploy 可以留 Card 的关联历史，但固定派发普通部署通知。直接 Unit 初始化即使设置 Deployable.card，也不能用公开操作登记供 cardForUnit 读取的同一卡来源历史。 | **已结案，现有接口可表达。** 开场的免费和免库存由 `Quote` 表达，实际部署写入历史。入场效果按各自生效条件核对。 | [开场入场效果](../research/cases/24-deployment-cost-and-supply.md#开场实际部署的入场效果) · [报价契约](deployment.md#请求与统一资格) |

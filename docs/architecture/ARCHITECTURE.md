@@ -49,7 +49,7 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 | 6 | Vitality 自然 HP 回复，再 Elemental 自然 EP 回复 |
 | 7 | Skill，再 Combat |
 | 8 | 开帧候选中的 Projectile |
-| 9 | Movement：站位计划、Route 与 Locomotion |
+| 9 | Movement：阻挡偏移、Route 与 Locomotion |
 | 10 | Blocking：维护旧关系，再搜索新关系 |
 | 收帧 | Tick 加一并返回 |
 
@@ -77,7 +77,7 @@ Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Init
 | [Targeting](targeting.md) | 目标资格谓词与比较器，直接组合 Query |
 | [Projectile](projectile.md) | 独立弹道实例及其内容程序 |
 | [Navigation／Route／Locomotion](navigation.md) | 导航、路线解释与实际自主运动 |
-| [Blocking](blocking.md)、[Occupancy](occupancy.md) | 阻挡关系与站位计划、双槽占格与配对 |
+| [Blocking](blocking.md)、[Occupancy](occupancy.md) | 阻挡关系与阻挡偏移、双槽占格与配对 |
 | [Presence](presence.md) | 暂时消失及适用的持续限制、主动清理 |
 | [Schedule](schedule.md)、[Deployment](deployment.md) | 出生与等待，Card、部署资源与部署业务 |
 | [Terrain](terrain.md) | 地块内容、接触控制器与接触结算 |

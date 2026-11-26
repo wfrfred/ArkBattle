@@ -18,7 +18,7 @@ import { Vec2 } from "../../../common/vector.js";
 import { settleCapacity } from "./blocker-operations.js";
 import { replaceIn } from "../../../common/object.js";
 
-const POSITION_ADJUSTMENT_TICKS = 0.2 * TICKS_PER_SECOND;
+const BLOCK_OFFSET_TICKS = 0.2 * TICKS_PER_SECOND;
 
 export const removing: RemovingHook = {
     id: "@blockable/prepare",
@@ -43,8 +43,8 @@ export function release(battle: BattleState, reference: Ref<Unit & Blockable>): 
         return battle;
     }
 
-    if (self.blockable.adjustment !== null) {
-        battle = replace(battle, [replaceIn(self, ["blockable", "adjustment"], null)]);
+    if (self.blockable.offset !== null) {
+        battle = replace(battle, [replaceIn(self, ["blockable", "offset"], null)]);
     }
 
     const relation = self.blockable.relation;
@@ -52,29 +52,26 @@ export function release(battle: BattleState, reference: Ref<Unit & Blockable>): 
     return relation === null ? battle : blocking.release(battle, [relation]);
 }
 
-export function advancePosition(
-    battle: BattleState,
-    reference: Ref<Unit & Blockable>,
-): BattleState {
+export function advanceOffset(battle: BattleState, reference: Ref<Unit & Blockable>): BattleState {
     const self = reference.get(battle);
     if (self?.lifecycle !== "ACTIVE") {
         return battle;
     }
 
-    const adjustment = self.blockable.adjustment;
-    if (adjustment === null) {
+    const offset = self.blockable.offset;
+    if (offset === null) {
         return battle;
     }
 
-    const progress = Math.min(1, (battle.tick - adjustment.startTick) / POSITION_ADJUSTMENT_TICKS);
+    const progress = Math.min(1, (battle.tick - offset.startTick) / BLOCK_OFFSET_TICKS);
     let position: WorldPosition =
-        progress === 1 ? adjustment.to : Vec2.lerp(adjustment.from, adjustment.to, progress);
+        progress === 1 ? offset.to : Vec2.lerp(offset.from, offset.to, progress);
     if (Vec2.equal(position, self.position)) {
         position = self.position;
     }
 
-    const nextAdjustment = progress === 1 ? null : adjustment;
-    if (position === self.position && nextAdjustment === adjustment) {
+    const nextOffset = progress === 1 ? null : offset;
+    if (position === self.position && nextOffset === offset) {
         return battle;
     }
 
@@ -83,9 +80,7 @@ export function advancePosition(
             ...self,
             position,
             blockable:
-                nextAdjustment === adjustment
-                    ? self.blockable
-                    : { ...self.blockable, adjustment: nextAdjustment },
+                nextOffset === offset ? self.blockable : { ...self.blockable, offset: nextOffset },
         },
     ]);
 }

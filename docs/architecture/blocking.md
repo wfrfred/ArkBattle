@@ -1,14 +1,14 @@
 # Blocking 设计
 
-Blocking 拥有双端关系、取得／解除、资格维护、容量裁撤与取得站位。Blockable 拥有自己的位置修正计划。关系操作见 [battle/blocking](../../src/core/battle/blocking/index.ts)，能力配置、Change 和通知 Key 见 [capability/blocking](../../src/core/unit/capability/blocking/index.ts)。
+Blocking 拥有双端关系、取得／解除、资格维护、容量裁撤与阻挡偏移。Blockable 拥有自身的阻挡偏移状态。关系操作见 [battle/blocking](../../src/core/battle/blocking/index.ts)，能力配置、Change 和通知 Key 见 [capability/blocking](../../src/core/unit/capability/blocking/index.ts)。
 
 ## 关键语义
 
-- 每个目标至多一个阻挡者；双端共享同一 Relation，取得关系与位置计划在通知前一起发布。
+- 每个目标至多一个阻挡者；双端共享同一 Relation，取得关系与阻挡偏移在通知前一起发布。
 - 旧 Relation 不能解除后来重建的同双方关系。
 - 容量不足从建立顺序末尾逐项裁撤，每项通知后使用最新容量。
 - 批量解除先发布全部双端结果再通知；通知中建立的新关系不追溯清理，不自动补搜索。
-- 关系与偏移计划独立：普通释放保留计划，目标主动脱离或覆盖位置才取消自身计划。
+- 关系与阻挡偏移独立：普通释放保留偏移，目标主动脱离或覆盖位置才取消自身偏移。
 - 保持关系不因 Applied 前后短暂零 HP 提前解除；新取得仍要求正生命。
 
 ## 职责与调度政策
@@ -25,7 +25,7 @@ Change 的局部后继在操作返回前完成；读取任意 Battle 事实的 R
 
 Blocker 按建立顺序保存 relations，Blockable 保存唯一 relation。每次取得创建一个不可变 Relation，含两端 Typed Ref，两端及查询／Hook 共享该对象；解除重建产生新对象。旧候选按对象身份确认，不重建端点投影充当关系。
 
-Blockable.adjustment 保存起点、终点与开始 Tick；无关系而仍有计划是合法状态。关系和计划只能由所属完整操作修改，普通 Unit 发布不补齐双端或派发通知。
+Blockable.offset 保存 BlockOffset（起点 from、终点 to 与开始 Tick startTick）；无关系而仍有偏移是合法状态。关系和偏移只能由所属完整操作修改，普通 Unit 发布不补齐双端或派发通知。
 
 容量贡献使用 ADD／ZERO：先选有效来源，任一有效 ZERO 将容量归零，否则基础容量累加 ADD、取偶舍入并截到非负。未胜出来源的 ZERO 无效。volume 为整数追加、下限一。这是项目的数值协议，不声称覆盖全部原生特殊容量规则。
 
@@ -52,17 +52,17 @@ Blocker Definition.rule 保存初始规则，State.rule 保存当前规则；Sta
 
 ## 已确定的操作接口
 
-acquire 失败不发布关系；成功先发布双端与新位置计划，再通知双方，最后只维护本次新 Relation。它不顺带复核其他关系或裁撤全组。
+acquire 资格检查失败不发布关系；通过后调用定义中的 calculateOffset，以返回的 Battle State 为基础一次提交双端 Relation 与新 BlockOffset，再通知双方，最后只维护本次新 Relation。它不顺带复核其他关系或裁撤全组。
 
-release 接受原 Relation 集合，按入口当前有效对象去重并保留输入顺序；先发布整批双端解除，再逐条通知。它不取消目标计划、搜索替代目标或维护无关关系。releaseAll 在操作入口取得当前 Blocker 的全部出向关系后使用同一批量协议。
+release 接受原 Relation 集合，按入口当前有效对象去重并保留输入顺序；先发布整批双端解除，再逐条通知。它不取消目标偏移、搜索替代目标或维护无关关系。releaseAll 在操作入口取得当前 Blocker 的全部出向关系后使用同一批量协议。
 
-Blockable.release（公共名 releaseBlockable）先取消自身计划，再解除当前入向关系；两者之间无回调，首个 RELEASED 已可见两项结果。
+Blockable.release（公共名 releaseBlockable）先取消自身偏移，再解除当前入向关系；两者之间无回调，首个 RELEASED 已可见两项结果。
 
 Blocker.setRule 的真实变化先发布完整规则，Settlement 再释放当时全部出向关系；同一规则请求无变更。setRadiusContribution／removeRadiusContribution 只修改有效半径，不解除关系或自动搜索；后续搜索和取得读取该半径。Unit 自身 Layer.setType 采用主动脱离政策，同值调用也清理关系，原生依据见[运动身份调查](../research/cases/15-locomotion-native-semantics.md)。自身 Layer 与 Rule 分别表达宿主身份和阻挡资格，不能混用。
 
 ## 主动解除阻挡的空间操作
 
-[Presence](presence.md) 和 Route 主动覆盖位置先发布新空间事实，再按稳定能力角色调用 Blockable.release／Blocker.releaseAll。Blocker 不取消原目标的独立位置计划。
+[Presence](presence.md) 和 Route 主动覆盖位置先发布新空间事实，再按稳定能力角色调用 Blockable.release／Blocker.releaseAll。Blocker 不取消原目标的独立阻挡偏移。
 
 组合 Change 统一发布最终字段，Settlement 仍按组合顺序执行。每次释放只承诺其操作入口固定集合在自身首个通知前清空，不承诺整个 Change 批次第一个 RELEASED 前全部旧关系已解除；较早容量后继仍可能先逐项裁撤。
 
@@ -77,13 +77,13 @@ Blocker.setRule 的真实变化先发布完整规则，Settlement 再释放当�
 | Blockable volume Change | 结算执行时当前 owner 的容量，不在通知后追随新 owner。 |
 | acquire | 通知后仅复核本次关系。 |
 | maintainAll／完整地块更新 | 固定入口关系，按既定顺序各检查一次资格，不裁容量。 |
-| 普通位置／偏移提交 | 只改位置和计划；资格在关系检查点读取。 |
+| 普通位置／偏移提交 | 只改位置和偏移；资格在关系检查点读取。 |
 
 maintain 先确认同一个 Relation 仍存在，再检查当前双方；失效才释放。Hook 登记、私有状态写回和通用 Unit.replace 不自动维护 Blocking。
 
 ## 取得归属与通知时点
 
-两端关系和站位计划在首个可重入回调前提交。其他阻挡者在 Hook 中尝试取得同一目标时读取当前归属，不需要锁或 ACQUIRING 阶段。
+两端关系和阻挡偏移在首个可重入回调前提交。其他阻挡者在 Hook 中尝试取得同一目标时读取当前归属，不需要锁或 ACQUIRING 阶段。
 
 ## 两侧通知顺序
 
@@ -95,7 +95,7 @@ RELEASED 是解除后的历史通知，不要求旧关系仍存在，允许仍�
 
 关系查询直接返回两端保存的原对象。局部查询不扫描全场；全场查询按 Unit 和关系建立顺序汇集。端点查询返回 Typed Ref，引用不充当关系轮次身份。
 
-Movement 先推进所有已有 Blockable 计划，再推进 Route；根据当前关系决定是否执行自主 Locomotion。阻挡不停止路线等待、即时指令或强制空间操作。真实离场、依赖保护与最终注销统一遵守 [Lifetime](lifetime.md)。
+Movement 先推进所有已有 Blockable 阻挡偏移，再推进 Route；根据当前关系决定是否执行自主 Locomotion。阻挡不停止路线等待、即时指令或强制空间操作。真实离场、依赖保护与最终注销统一遵守 [Lifetime](lifetime.md)。
 
 ## 地块阻挡资格
 
@@ -111,25 +111,27 @@ Movement 先推进所有已有 Blockable 计划，再推进 Route；根据当前
 
 [蒂比与空中阻挡研究](../research/cases/21-tippi-air-blocking.md)确认自身 WALK、阻挡 AIR、对地规避可以独立存在。Core 已支持跨层规则及运行时半径修正；角色起降及具体半径倍率来源仍按实际内容接入。
 
-## 站位计算与位置推进
+## 阻挡偏移
 
-取得站位先以目标与 Blocker 的真实位置计算径向间距：不足 0.5 时推至最小间距，近零向量不制造方向。0.5 是站位间距，不是接敌半径或 Hitbox 尺寸。
+阻挡偏移涵盖取得阻挡时确定偏移终点到随后逐 Tick 推进真实位置的过程。Blocker.Definition 必须配置 `calculateOffset(battle, blocker, target): Result<BlockOffset>`。计算函数只读取当前战场事实，可消耗 RNG 并返回相应 Battle State，不得执行关系变更、通知或其他业务性重入操作。普通阻挡使用 [battle/blocking](../../src/core/battle/blocking/index.ts) 导出的 `calculateOffset`；特殊内容可配置自己的计算函数，共享取得及后续推进协议。
 
-前序目标使用仍有关系时的 `adjustment.to ?? position` 稳定位置。径向位置与已有点距离平方不足 0.01 时做分散：距离不足 0.1 使用相对阻挡者的顺时针垂线，0.1–0.4 使用分离方向加权贡献，达到 0.4 不贡献；最终以归一化分散方向的 0.2 修正方向并保留径向距离。
+普通阻挡先以目标与 Blocker 的真实位置计算径向间距：不足 0.5 时推至最小间距，近零向量不制造方向。0.5 是站位间距，不是接敌半径或 Hitbox 尺寸。
 
-新计划从当前真实位置建立并覆盖旧计划，按 0.2 秒（30 Hz 下六 Tick）线性推进；完成清除计划，不改关系。Unit.position 是唯一真实坐标，不另存 Tween、位置进度或速度。普通释放、容量裁撤和 Blocker 离场保留目标计划；目标自身主动脱离／覆盖位置／离场取消计划。
+普通偏移计算对 Blocker 已有关系中的目标读取 `blockable.offset?.to ?? position` 作为稳定位置；不另设公共稳定位置查询。径向位置与已有点距离平方不足 0.01 时做分散：距离不足 0.1 使用相对阻挡者的顺时针垂线，0.1–0.4 使用分离方向加权贡献，达到 0.4 不贡献；最终以归一化分散方向的 0.2 修正方向并保留径向距离。
 
-Movement 两遍推进各项接续最新状态，不承诺所有偏移一次原子发布。即使没有 Route，Blockable 仍推进计划；计划完成本身不阻止随后按当前关系与移动资格推进。时序及取消依据见[位置修正研究](../research/cases/22-block-positioning-and-interruption.md)。
+普通计算以当前真实位置及当前 Tick 为起点。取得新关系时新偏移覆盖旧偏移，`advanceOffset` 按 0.2 秒（30 Hz 下六 Tick）线性推进；完成清除偏移，不改关系。Unit.position 是唯一真实坐标，不另存 Tween、位置进度或速度。普通释放、容量裁撤和 Blocker 离场保留目标偏移；目标自身主动脱离／覆盖位置／离场取消偏移。
+
+Movement 两遍推进各项接续最新状态，不承诺所有偏移一次原子发布。即使没有 Route，Blockable 仍推进偏移；偏移完成本身不阻止随后按当前关系与移动资格推进。时序及取消依据见[位置修正研究](../research/cases/22-block-positioning-and-interruption.md)。
 
 ## 支持边界
 
-跨层阻挡及动态半径具备 Core 表达。迷狂牢笼的特殊站位、Trap／GiantTrap 特殊几何与浮空区块内容尚未完整接入。当前接口不表示这些真实内容已完成，统一缺口见 [Tactical 语义](tactical-semantics.md)。
+跨层阻挡、动态半径及自定义阻挡偏移具备 Core 表达。迷狂牢笼的具体偏移计算留给 Content，其原生依据见[牢笼阻挡站位研究](../research/evidence/cage-block-position-20261122/README.md)；Trap／GiantTrap 特殊几何与浮空区块内容尚未完整接入。当前接口不表示这些真实内容已完成，统一缺口见 [Tactical 语义](tactical-semantics.md)。
 
 ## 与原生的差异及对照验收
 
 原生普通搜索按起始容量预选名单，并与对象移动交错；项目采用 Movement 后固定阶段、固定候选和逐次当前容量。增容可能更早接敌，也可能改变归属、攻击机会与漏怪，不预先断言只是微小帧差。该阶段与容量政策是明确项目选择，见[原生时序](../research/evidence/blocking-timing-native-20261023/report.txt)。
 
-验收按[统一清单](verification.md)覆盖双端发布、旧身份、批量释放、容量裁撤、站位与独立计划，不按每个回调排列建立矩阵。
+验收按[统一清单](verification.md)覆盖双端发布、旧身份、批量释放、容量裁撤、普通与自定义阻挡偏移、偏移与关系的独立性，不按每个回调排列建立矩阵。
 
 ## 满阻挡筛选与关系引起的容量变化
 

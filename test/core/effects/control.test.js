@@ -33,7 +33,7 @@ function actor(ignoreRestrictions, onEnd = state => state) {
         id: "controlled", hooks: Hooks.empty(),
         action: { speed: defineAttribute(100, 20), interval: defineAttribute(10), definitions: [action] },
         skill: { definition: skill },
-        blocker: { capacity: 1, rule: { ...ground, radius: 2 }, restrictions: [] },
+        blocker: { calculateOffset: blocking.calculateOffset, capacity: 1, rule: { ...ground, radius: 2 }, restrictions: [] },
         facing: { restrictions: [] },
         locomotion: { halfBodyWidth: 0, speed: defineAttribute(1), steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 } },
     };

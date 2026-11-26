@@ -80,7 +80,7 @@ test("push uses current grades and releases blocking before forced movement begi
     }, {
         definition: {
             ...sourceDefinition,
-            blocker: { capacity: 1, rule: ground, restrictions: [] },
+            blocker: { calculateOffset: blocking.calculateOffset, capacity: 1, rule: ground, restrictions: [] },
         }, hooks: Hooks.empty(), initial: {},
         position: [0.75, 1],
     }], { pushMultiplier: 0.25 });

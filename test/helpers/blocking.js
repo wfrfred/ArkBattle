@@ -35,7 +35,7 @@ export function holder(id = 10, { position = [2, 1], capacity = 1, rule = { ...b
             hooks: Hooks.empty(),
             ...(side === undefined ? {} : { classification: { type: "DEVICE", side, filterTags: [], groupTags: [] } }),
             presence: {}, vitality: vitality(100),
-            blocker: { rule, capacity, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY"), group: null }] },
+            blocker: { calculateOffset: blocking.calculateOffset, rule, capacity, restrictions: [{ id: "opposing-side", value: blocker.sides("ENEMY"), group: null }] },
             ...definition,
         },
     });

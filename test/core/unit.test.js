@@ -3,6 +3,7 @@ import { attribute as defineAttribute, vitality as defineVitality } from "../hel
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle } from "../helpers/battle.js";
+import { calculateOffset } from "../../dist/core/battle/blocking/index.js";
 import { ground } from "../../dist/core/unit/capability/blocking/index.js";
 import { Hooks, dispatch } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
@@ -30,7 +31,7 @@ test("Unit construction rejects conflicting roles and installs entry effects on 
     assert.throws(() => units.initialize(battle(), {
         position: [0, 0], definition: {
             id: "conflicting-roles", hooks: Hooks.empty(),
-            blocker: { capacity: 1, rule: ground, restrictions: [] },
+            blocker: { calculateOffset, capacity: 1, rule: ground, restrictions: [] },
             blockable: { volume: 1, restrictions: [] },
         }, hooks: Hooks.empty(), initial: {},
     }), TypeError);
