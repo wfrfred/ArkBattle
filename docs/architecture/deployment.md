@@ -28,6 +28,8 @@ Deployment 完成部署资格、消费、构造前装配与实例创建；Card �
 
 `Deployment.State` 聚合 `deck`、`dp`、`slot` 与部署历史。初始化配置由三个子域的 Definition 组合，`Deployment.Definition.dp` 和 `Deployment.Definition.slot` 分别提供账户和部署位的基础配置。`Deployment.Definition.costCeiling` 必填，是 Card 费用计算的截断上限，DP 的有效上限约束账户余额。Battle Input 的 deployment 必填；`null` 表示没有部署输入，仍初始化空牌组、99 费用上限、零 DP（账户范围 0–99、无自然回复）及不限部署位。
 
+BattleState 的基础构造使用空 Deployment State；`deployment.initialize(battle, input)` 消费完整的 Deployment.Input，先按 Definition 初始化三个子领域，再按输入顺序初始化并登记 Card。无部署输入时保留空状态。Battle 只负责在开场 Effect 和 Unit 装配前调用该入口。
+
 ## 静态内容与 Card
 
 开场手牌的每一项绑定一份 `definition` 和一份 `unitDefinition`。Card Definition 描述卡牌政策和程序。Unit Definition 描述场上单位，并提供卡牌部署所需的 `occupancy` 和 `deployable`。部署时默认复用该 Unit Definition，可由本次构造前 Hook 调整。多张 Card 可以共用一份 Unit Definition，各有独立身份和资源。

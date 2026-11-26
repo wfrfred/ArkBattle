@@ -22,9 +22,11 @@ import { advanceSkills } from "./steps/skills.js";
 import { initialize as initializeSchedule } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
 import * as unit from "../unit/operations.js";
-import * as cards from "./deployment/deck/card/index.js";
 import type { Card } from "./deployment/deck/card/card.js";
-import { initialize as initializeDeployment } from "./deployment/deployment.js";
+import {
+    create as createDeployment,
+    initialize as initializeDeployment,
+} from "./deployment/deployment.js";
 
 export type { Input, Command, Event } from "./contract.js";
 
@@ -44,7 +46,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
     );
 
     const battlefield = createBattlefield(input.map);
-    let initial = createBattleState(
+    const initial = createBattleState(
         battlefield,
         {
             rngState: input.rngState,
@@ -53,7 +55,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
             nextEffectId: 0,
         },
         0,
-        initializeDeployment(input.deployment === null ? null : input.deployment.definition),
+        createDeployment(null),
         initializeSchedule(input.schedule),
         {
             routeMoveMultiplier: input.routeMoveMultiplier,
@@ -61,12 +63,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
         },
     );
 
-    for (const card of input.deployment?.cards ?? []) {
-        const initialized = cards.initialize(initial, card);
-        initial = cards.add(initialized.state, initialized.value);
-    }
-
-    return initializeBattlefield(initial, input);
+    return initializeBattlefield(initializeDeployment(initial, input.deployment), input);
 }
 
 export function step(battle: State, commands: readonly Command<Card<any>>[]): State {
