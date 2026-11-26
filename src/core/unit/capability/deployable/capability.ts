@@ -8,7 +8,10 @@ import { validateRestrictions, type Restriction as BaseRestriction } from "../..
 import { hasOccupancy, type Occupancy } from "../occupancy/capability.js";
 import { Hooks } from "../../../hook.js";
 import { removed } from "../../hook.js";
-import { settleDeparture } from "../../../battle/deployment/operations.js";
+import { depart } from "../../../battle/deployment/deck/card/operations.js";
+import { release } from "../../../battle/deployment/slot/operations.js";
+import { TICKS_PER_SECOND } from "../../../tick.js";
+import { ref } from "../../query.js";
 import { createRegistrationOperations } from "../../registration.js";
 
 export interface Definition extends Restrictions {
@@ -66,12 +69,19 @@ export function initialize<
                     id: "@deployable/settle-departure",
                     priority: 0,
                     invoke: (current, departure) => {
-                        const { deployable } = departure.unit as Unit & Deployable;
+                        const unit = departure.unit as Unit & Deployable;
+                        const { card, slots } = unit.deployable;
+                        const { reason } = departure;
+                        current =
+                            reason === "DEATH"
+                                ? release(current, slots, TICKS_PER_SECOND)
+                                : release(current, slots);
 
-                        return {
-                            state: settleDeparture(current, departure.reason, deployable),
-                            value: undefined,
-                        };
+                        if (card !== null) {
+                            current = depart(current, card, ref(unit), reason);
+                        }
+
+                        return { state: current, value: undefined };
                     },
                 })
                 .merge(unit.hooks),

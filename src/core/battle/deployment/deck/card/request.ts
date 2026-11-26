@@ -1,10 +1,13 @@
-import type { Contribution } from "../../common/contribution.js";
-import type { Ref } from "../../common/ref.js";
-import { assertNonnegativeNumber, assertNonnegativeSafeInteger } from "../../common/assert.js";
-import type { Direction } from "../../geometry/direction.js";
-import type { TilePosition } from "../../geometry/coordinate.js";
-import { validateRestrictions } from "../../restriction.js";
-import type { Card } from "./deck/card/card.js";
+import type { Contribution } from "../../../../common/contribution.js";
+import type { Ref } from "../../../../common/ref.js";
+import {
+    assertNonnegativeNumber,
+    assertNonnegativeSafeInteger,
+} from "../../../../common/assert.js";
+import type { Direction } from "../../../../geometry/direction.js";
+import type { TilePosition } from "../../../../geometry/coordinate.js";
+import { validateRestrictions } from "../../../../restriction.js";
+import type { Card } from "./card.js";
 import type { Restriction } from "./restriction.js";
 
 export interface Quote {

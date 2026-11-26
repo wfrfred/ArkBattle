@@ -3,7 +3,7 @@ import type { Ref } from "../../../../common/ref.js";
 import * as hooks from "../../../../hook.js";
 import type { Input as UnitInput } from "../../../../unit/initialize.js";
 import type { Result, State as BattleState } from "../../../state.js";
-import type { DeployRequest } from "../../request.js";
+import type { DeployRequest } from "./request.js";
 import { replace } from "../operations.js";
 import type { Card, UnitDefinition } from "./card.js";
 

@@ -11,7 +11,7 @@ export function createCardDefinition({
     cost = 0, redeployTicks = 0, slots = 0,
     consumption = 1, stock = 1, stockLimit = 1, activeLimit = 1,
     policy = "UNIQUE", increase = true,
-    placement = "ALL", allowedSiteConditions = [conditions.normal], deploymentRestrictions = [], hooks = Hooks.empty(),
+    placement = "ALL", allowedSiteConditions = [conditions.normal], restrictions = [], hooks = Hooks.empty(),
     initialize = battle => ({ state: battle, value: {} }),
     ...rest
 } = {}) {
@@ -22,7 +22,7 @@ export function createCardDefinition({
         supply: {
             consumption, stock, stockLimit, activeLimit, cooldown: redeployTicks,
         },
-        deploymentRestrictions: [{
+        restrictions: [{
             id: "deployment/site",
             group: null,
             value: { allows(battle, { request }) {
@@ -31,7 +31,7 @@ export function createCardDefinition({
                     (placement === "ALL" || tile.state.placement === "ALL" || tile.state.placement === placement) &&
                     (tile.state.siteCondition === null || allowedSiteConditions.includes(tile.state.siteCondition));
             } },
-        }, ...deploymentRestrictions],
+        }, ...restrictions],
         hooks, initialize, ...rest,
     };
 }

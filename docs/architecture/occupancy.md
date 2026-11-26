@@ -30,7 +30,7 @@ Pair 保存 tile 及建立时的双方快照，两端引用同一对象。建立
 
 ## 与其他领域协作
 
-Deployment 提供落点与本次方向，Support 配对由 Unit 的本地 entered 程序完成。Card 的构造前 Hook 在提交消费后、Unit.initialize 前派发，已确认的落点不属于修改职责，见 [Deployment](deployment.md)。
+Card 部署提供落点与本次方向，Support 配对由 Unit 的本地 entered 程序完成。Card 的构造前 Hook 在提交消费后、Unit.initialize 前派发，已确认的落点不属于修改职责，见 [Deployment](deployment.md)。
 
 Blocking 对占格 Unit 使用登记根格，无占格则身体格；平台限制不从高度自动推断。射击台加入配对时只禁止乘员 GROUND 阻挡，解除只撤销自身来源。
 

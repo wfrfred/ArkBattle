@@ -55,7 +55,7 @@ export function initialize<
         throw new RangeError("card stock exceeds the limit");
     }
 
-    validateRestrictions(definition.deploymentRestrictions);
+    validateRestrictions(definition.restrictions);
 
     const initialized = definition.initialize(battle);
 
@@ -79,6 +79,7 @@ export function initialize<
             ...(policy === "QUEUED" ? { pending } : {}),
         },
         unitDefinition,
+        units: [],
         hooks: definition.hooks,
         restrictions: [],
         state: initialized.value,

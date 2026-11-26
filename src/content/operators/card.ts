@@ -27,7 +27,7 @@ export function create({ cost, respawnTime }: Parameters): CardDefinition<object
             activeLimit: 1,
             cooldown: secondsToTicks(respawnTime),
         },
-        deploymentRestrictions: [
+        restrictions: [
             {
                 id: "deployment/site",
                 group: null,

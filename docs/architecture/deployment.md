@@ -1,6 +1,6 @@
 # Deployment、Card 与 Unit 生命周期
 
-Deployment 完成部署资格、消费、构造前装配与实例创建；Card 保存跨部署资源，Deployable 保存本次场上部署事实，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、主动撤退及被动死亡。
+Deployment 聚合资源、部署历史及调度；Card 完成部署资格、消费、构造前装配与实例创建，并保存跨部署资源和当前关联 Unit；Deployable 保存本次场上部署事实并负责撤退及离场结算，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、主动撤退及被动死亡。
 
 ## 关键语义
 
@@ -21,7 +21,7 @@ Deployment 完成部署资格、消费、构造前装配与实例创建；Card �
 | Card 集合、排序、费用截断上限 | Deck |
 | DP 余额、上下限和自然回复 | DP |
 | 全局部署位上限、占用和待归还份额 | Slot |
-| 单卡库存、费用阶段、时钟、构造前 Hook 和私有 state | Card |
+| 单卡库存、费用阶段、时钟、部署限制、当前关联 Unit、构造前 Hook 和私有 state | Card |
 | 默认返费规则、本次 Card／COST／额度／退款与撤退限制 | Deployable |
 
 各领域通过自身操作维护状态，不借通用 Unit 更新推断账务。具体声明见 [deployment/index.ts](../../src/core/battle/deployment/index.ts)。
@@ -40,9 +40,9 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 `Card<S, P>` 是按策略区分的判别联合，与 `Definition<S, P>` 共享私有状态类型 `S` 和策略类型 `P`。初始化从 `definition.policy` 设置实例顶层的 `card.policy`，它在卡牌生命周期内保持稳定。策略为 `DEFAULT`、`UNIQUE` 或 `QUEUED`。
 
-`dp` 配置基础费用和涨费，`Supply.Definition<P>` 配置初始库存、普通部署的库存消耗量 `consumption`、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。部署限制在 Card 外层，参与整次部署的资格判断。
+`dp` 配置基础费用和涨费，`Supply.Definition<P>` 配置初始库存、普通部署的库存消耗量 `consumption`、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。`Card.Definition.restrictions` 声明静态部署限制，运行时 Card 保存后续登记的限制；两者均参与整次部署的资格判断。
 
-Card 的 `deploy`、`recycle` 根据策略算出扣库、回收和冷却后的 `Card<S, P>`，由部署或离场结算一次写回。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
+Card 根据策略结算本次扣库、回收和冷却，并写回 Deck。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
 
 Supply 的库存、计时和 Contribution 操作保留 `Card<S, P>` 的私有状态和策略类型。调用者可以组合多项修改，再通过 `deck.replace(battle, card)` 按 Ref 写回。如果中途有其他操作更新了同一张卡，从最新 BattleState 重新取卡后再修改。[Supply 操作](../../src/core/battle/deployment/deck/card/supply/operations.ts) · [Deck 写回](../../src/core/battle/deployment/deck/operations.ts)
 
@@ -66,27 +66,27 @@ Deck 每 Tick 推进所有 Card 后调用一次 `deck.sort(battle)`。有排序�
 
 ## 部署历史
 
-`battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。`deploy` 成功时返回新 Unit Ref，失败时返回 null；Card 身份已由 Request 提供。
+`battle.deployment.history` 是本场成功 Card 部署的只读序列，每条保存 `card: Ref<Card>` 和 `unit: Ref<Unit & Deployable>`。`card.deploy` 按实际部署顺序追加，在 Unit 初始化后、任何 `entered` 前发布记录。拒绝部署和无 Card 的直接 Unit 登记不产生记录。`card.deploy` 成功时返回新 Unit Ref，失败时返回 null；Card 身份已由 Request 提供。
 
-Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card；具体 Content 可以用此事实决定 [Effect 来源分组](effect.md#来源分组)。`deployedCount` 统计当前仍登记的在场实例，包含 `ENDING`。
+Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card；具体 Content 可以用此事实决定 [Effect 来源分组](effect.md#来源分组)。Card 的 `units: readonly Ref<Unit & Deployable>[]` 初始为空，每次部署成功构造 Unit 后、登记并派发 `entered` 前先追加新 Ref；在 Deployable 的 `removed` 结算时，无论离场原因，都解除该关联。该列表含 `ENDING`，与仅记录历史的 Deployment 不同。局部 removed 中先于 Deployable 结算的 Hook 可能看到已经注销但尚未解除关联的实例。
 
 ## 请求与统一资格
 
-DeployRequest 明确 Card Ref、落点、方向（`null` 表示未指定）、报价选择及本次限制。普通 Command 同样显式提供方向，生成默认请求；Content 可以直接构造请求并提供本次业务的报价和策略。
+`Card.DeployRequest` 明确 Card Ref、落点、方向（`null` 表示未指定）、报价选择及本次限制。普通 Command 同样显式提供方向，生成默认请求；Content 可以直接构造请求并提供本次业务的报价和策略。
 
-`quote` 为必填字段，取值为 `Quote | null`。null 表示在查询或执行时从当前 Card 读取有效 DP 费用、`supply.consumption` 与 `slot`；非 null 则完整指定本次 DP、库存和额度消费。Quote 中的 dp 为 null 表示不支付，零表示正常零费；stock／slots 可为零。consumption 为必填非负安全整数。公开请求查询与执行共用请求校验，合法请求中的未知 Card 不通过资格。
+`quote` 为必填字段，取值为 `Card.Quote | null`。null 表示在查询或执行时从当前 Card 读取有效 DP 费用、`supply.consumption` 与 `slot`；非 null 则完整指定本次 DP、库存和额度消费。Quote 中的 dp 为 null 表示不支付，零表示正常零费；stock／slots 可为零。consumption 为必填非负安全整数。公开请求查询与执行共用请求校验，合法请求中的未知 Card 不通过资格。
 
 固定前提由代码检查：Card 存在、资源足够、支付后不低于 DP 下限、落点合法、同 Slot 不冲突。不能用限制豁免保留无法履行的消费承诺。冷却、同卡在场上限、部署位上限及普通地块许可属于可配置限制，其默认限制 ID 分别为 `@deployment/cooldown`、`@deployment/active-limit`、`@deployment/slots`、`@deployment/placement`。
 
 Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一。限制依次合并默认、Card 静态、Card 当前与 Request，不同列表的同 ID 后者覆盖。有效项按贡献政策选择，所有限制均允许才通过资格；不对具体拒绝分支建立公共原因分类。查询与执行都使用同一规则和资源事实。
 
-部署资格读取传入的 BattleState。`evaluate` 返回本次请求是否满足全部资格；`positions(battle, cardRef)` 查询普通 Card 当前可部署的全部地块，使用未指定方向、默认报价及空的本次限制列表。特殊请求需要逐格调用 `evaluate`。限制的 Context 保留原始 DeployRequest（quote 可为 null）。调度器先推进部署领域，再处理本 Tick 的部署命令。
+部署资格读取传入的 BattleState。`card.canDeploy(battle, request)` 返回本次请求是否满足全部资格；`card.positions(battle, cardRef)` 查询普通 Card 当前可部署的全部地块，使用未指定方向、默认报价及空的本次限制列表。特殊请求需要逐格调用 `card.canDeploy`。`Card.Restriction` 的 Context 为 `Card.RestrictionContext`，仅包含原始 `request: DeployRequest`（quote 可为 null）。调度器先推进部署领域，再处理本 Tick 的部署命令。
 
 ## 普通部署流程
 
-合并并判定资格 → 采样基础费用与本次 COST → 提交 DP、部署位、库存及部署间隔 → 同步派发本次 Card 的 `card.beforeDeploy` → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
+合并并判定资格 → 采样基础费用与本次 COST → 提交 DP、部署位、库存及部署间隔 → 同步派发本次 Card 的 `card.beforeDeploy` → `Unit.initialize` 分配身份并装配 → Deployable.setDeployment 写入本次事实 → 追加 Card.units 关联及部署记录 → 登记 Unit／占格 → 派发 Battle 级和 Unit 本地 `entered`。
 
-付款使用当前 DP 余额。落点与方向通过 Occupancy Initial 提供；Deployment 不直接重建 Deployable State。
+付款使用当前 DP 余额。落点与方向通过 Occupancy Initial 提供；Card 不直接重建 Deployable State。
 
 Unit 构造从本次调整后的 Unit.Input 装配输入 Hook、Capability 和 Unit Definition 的程序；公共 priority 可调整同一集合，默认同级保持装配顺序。Unit.add 完成登记、全场及本地 entered，Occupancy 配对由其本地程序处理。
 
@@ -106,21 +106,21 @@ Deployable 单向依赖 Occupancy。初始来源为空，COST 与额度为零。
 
 ## 离场结算
 
-`deployment.canRetreat` 查询当前 ACTIVE 与撤退限制；`deployment.retreat` 负责完整撤退业务。返费按本次 COST 与返费倍率计算，并受实例上限约束。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
+`deployable.canRetreat` 查询当前 ACTIVE 与撤退限制；`deployable.retreat` 负责完整撤退业务。返费按本次 COST 与返费倍率计算，并受实例上限约束。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
-Unit 注销后，Deployable 的 `removed` 将离场原因、原 Card 与占位数交给 Deployment 内部的 `settleDeparture` 结算。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
+Unit 注销后，Deployable 的 `removed` 直接通过 Slot 归还实际占位，再由 Card 解除本次 Unit 关联并按离场原因决定是否回收。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
 
-DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，同卡在场计数仍按当前登记实例计算。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
+DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，Card.units 则在上述 Deployable removed 结算时更新。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
 
 ## 离场清理的偏序
 
 公共阶段为：发布 ENDING／派发 removing → 真实依赖完整结束 → 捕获当前 removed 登记快照 → 注销 Unit 与结构占格、记录移除 → 本地 removed → 全局 removed。
 
-本地默认同级装配顺序为 Unit.Input Hook、Capability 程序（包含 Deployment 离场结算与 Occupancy 配对清理）、Unit Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
+本地默认同级装配顺序为 Unit.Input Hook、Capability 程序（包含 Deployable 离场结算与 Occupancy 配对清理）、Unit Definition Hook。显式 priority 可改变本地顺序，不能跨公共阶段。高优先级内容不能假设尚未执行的账务已经完成。
 
 removing 和依赖收尾期间的 removed 登记变化进入注销前快照；固定 Departure 仍代表离场开始时的历史。所有本地 removed 都看到 Unit 与结构已注销，旧配对不清掉同格替代实例的新绑定。
 
-`slot.used` 在 `removing`、依赖结束和死亡延迟期间仍计入本次份额。预置份额为零。部署历史用于来源反查，`deployedCount` 用于当前在场统计。
+`slot.used` 在 `removing`、依赖结束和死亡延迟期间仍计入本次份额。预置份额为零。部署历史用于来源反查；`card.units.length` 用于当前同卡在场限制，包含尚未完成 Deployable removed 结算的 Unit。与此前按登记 Unit 扫描计数不同，较早的 removed Hook 可能看到尚未解除的关联；其他资源结算时序不变。
 
 ## 构造前 Hook
 
@@ -144,7 +144,7 @@ removing 和依赖收尾期间的 removed 登记变化进入注销前快照；�
 
 调度器每 Tick 调用一次 DP 推进。自然回复的基础速率为每 Tick `1 / recoveryInterval` 点 DP，周期为 `null` 时关闭自然回复。`progress` 以基础回复速度对应的 Tick 数累计。每次推进按有效速率累积，负余额时额外乘 0.5。跨零或变更回复速度保留已有进度，达到或超过有效上限时停止累积并清空进度。
 
-`dp.modify` 按有符号差值修改余额并应用有效上下限。余额已超上限时，正差值保持原余额，负差值按实际金额减少并仍受下限约束。`dp.pay` 按有效下限判断能否支付，成功时扣除准确金额，拒绝时返回原状态。支付零点合法，免支付的报价由 Deployment 跳过付款。支付、余额修改与资格查询都使用当前余额。
+`dp.modify` 按有符号差值修改余额并应用有效上下限。余额已超上限时，正差值保持原余额，负差值按实际金额减少并仍受下限约束。`dp.pay` 按有效下限判断能否支付，成功时扣除准确金额，拒绝时返回原状态。支付零点合法，免支付的报价由 Card 跳过付款。支付、余额修改与资格查询都使用当前余额。
 
 提高有效下限时同步抬高低于下限的余额。设置上限贡献必须指定 clamp：`false` 保留余额，`true` 将超出的余额截到新上限。移除上限贡献重新求值，保留余额。
 
@@ -156,8 +156,8 @@ removing 和依赖收尾期间的 removed 登记变化进入注销前快照；�
 
 ## 支持范围
 
-特殊移动需要独立的 `deployment.redeploy` 操作，目前仍待接入。原生正常路径沿用 Card 并更换 Unit，具体的账务、失败后续和通知边界见 [Core 缺口 U028](research-necessity-20261122.md#deployment--card--dp)。
+特殊移动需要独立的 `deployable.redeploy` 操作，目前仍待接入。原生正常路径沿用 Card 并更换 Unit，具体的账务、失败后续和通知边界见 [Core 缺口 U028](research-necessity-20261122.md#deployment--card--dp)。
 
-手牌重排竞争、隐藏／锁定和特殊回收仍未完整实现。卫戍倒地、自动部署与经济政策由外部机制／Meta 组合。再部署时间的多来源公式仍待核对。
+待部署区成员模型尚待调整；手牌重排竞争、隐藏／锁定和特殊回收仍未完整实现。卫戍倒地、自动部署与经济政策由外部机制／Meta 组合。再部署时间的多来源公式仍待核对。
 
 机制依据见[部署与供给研究](../research/cases/24-deployment-cost-and-supply.md)，必要验收和未闭合范围分别集中于 [Verification](verification.md)与 [Tactical 语义](tactical-semantics.md)。

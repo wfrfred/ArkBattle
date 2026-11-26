@@ -46,7 +46,7 @@ accepts 只读。通知使用 void；取消、固定数值等工作值转换由�
 | --- | --- |
 | Battle unit entered | Unit 与占格登记后、Unit 本地 `entered` 前同步派发 `battle.unit.entered`。Unit 进入 ENDING 或注销后停止剩余入场通知。 |
 | Unit entered／tick | 固定候选，每项前要求当前宿主 ACTIVE |
-| Card beforeDeploy | 资格通过并提交本次消费后、Unit.initialize 前，同步从本次 Card 派发 `card.beforeDeploy`；固定 DeployRequest，接续 Unit.Input 工作值，拒绝不派发 |
+| Card beforeDeploy | 资格通过并提交本次消费后、Unit.initialize 前，同步从本次 Card 派发 `card.beforeDeploy`；固定 Card.DeployRequest，接续 Unit.Input 工作值，拒绝不派发 |
 | Unit removing | 使用首次结束快照与输入构造 Departure，在发布 ENDING 后执行，早于 Lifetime 自动请求依赖者结束 |
 | Unit removed | 注销前捕获最新 Hook 对象及 priority 快照，注销后执行，Departure 沿用首次结束的快照与输入 |
 | Battle unit removed | `battle.unit.removed` 在 Unit 本地 `removed` 后派发 |

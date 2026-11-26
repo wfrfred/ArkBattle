@@ -97,7 +97,7 @@ turn 是完整操作，要求当前 ACTIVE；NORMAL 检查本次方向限制，F
 
 ### 初始化
 
-Schedule 提供 RIGHT 初值，地面敌人的 entered 在 Route 首指令后按当前导航尝试强制转向。Deployment 的 LEFT 摆放选左，其他或未指定选右；直接创建／预置明确提供初值。上述默认与同步政策属于项目选择，依据见[面向调查](../research/cases/35-facing-and-turning-conditions.md)。
+Schedule 提供 RIGHT 初值，地面敌人的 entered 在 Route 首指令后按当前导航尝试强制转向。Card 部署的 LEFT 摆放选左，其他或未指定选右；直接创建／预置明确提供初值。上述默认与同步政策属于项目选择，依据见[面向调查](../research/cases/35-facing-and-turning-conditions.md)。
 
 ### 必要回归语义
 

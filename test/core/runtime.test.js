@@ -23,7 +23,7 @@ const cardDefinition = {
     supply: {
         consumption: 1, stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 0,
     },
-    deploymentRestrictions: [], hooks: Hooks.empty(),
+    restrictions: [], hooks: Hooks.empty(),
     initialize: (current) => ({ state: current, value: {} }),
 };
 

@@ -9,6 +9,7 @@ import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/effect/index.js";
 import * as offense from "../../dist/core/unit/capability/offense/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
+import { retreat } from "../../dist/core/unit/capability/deployable/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update, remove } from "../../dist/core/unit/operations.js";
@@ -657,10 +658,10 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
             partition: (battle, source) => source === null ? null : (deployment.cardForUnit(battle, source) ?? source),
         },
     };
-    const firstUnit = deployment.deploy(state, { card: a, tilePosition: [0, 0], direction: null, quote: null, restrictions: [] });
+    const firstUnit = cards.deploy(state, { card: a, tilePosition: [0, 0], direction: null, quote: null, restrictions: [] });
     const firstSource = firstUnit.value;
     const installed = effects.install(firstUnit.state, owner, definition, { ...effectInitial, source: firstSource });
-    state = deployment.retreat(installed.state, firstSource);
+    state = retreat(installed.state, firstSource);
     assert.equal(firstSource.get(state), undefined);
     assert.equal(effects.install(state, owner, definition, { ...effectInitial, source: firstSource }).value, null);
     state = effects.remove(state, installed.value);
@@ -672,13 +673,13 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const lateInstall = effects.install(state, owner, delayed, { ...effectInitial, source: firstSource });
     state = lateInstall.state;
     assert.notEqual(lateInstall.value, null);
-    const redeployed = deployment.deploy(state, { card: a, tilePosition: [0, 0], direction: null, quote: null, restrictions: [] });
+    const redeployed = cards.deploy(state, { card: a, tilePosition: [0, 0], direction: null, quote: null, restrictions: [] });
     state = redeployed.state;
     assert.notEqual(redeployed.value, null);
     const nextSource = redeployed.value;
     assert.notEqual(nextSource, firstSource);
     assert.equal(effects.install(state, owner, delayed, { ...effectInitial, source: nextSource }).value, null);
-    const otherUnit = deployment.deploy(state, { card: b, tilePosition: [0, 1], direction: null, quote: null, restrictions: [] });
+    const otherUnit = cards.deploy(state, { card: b, tilePosition: [0, 1], direction: null, quote: null, restrictions: [] });
     const other = effects.install(otherUnit.state, owner, delayed, {
         ...effectInitial,
         source: otherUnit.value,

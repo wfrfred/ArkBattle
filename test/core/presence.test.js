@@ -12,7 +12,6 @@ import * as blocking from "../../dist/core/battle/blocking/index.js";
 import * as block from "../../dist/core/unit/capability/blocking/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as effects from "../../dist/core/effect/index.js";
-import * as deployment from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { effectInitial } from "../helpers/effect.js";
@@ -54,7 +53,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         supply: {
             consumption: 1, stock: 1, stockLimit: 1, activeLimit: 1, cooldown: 10,
         },
-        deploymentRestrictions: [], hooks: Hooks.empty(),
+        restrictions: [], hooks: Hooks.empty(),
         initialize: (state) => ({ state, value: {} }),
     };
     const enemy = {
@@ -74,7 +73,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         initialCards: [{ definition: cardDefinition, unitDefinition: operator }],
     });
     const card = cards.ref([...cards.all(state)][0]);
-    const deployed = deployment.deploy(state, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
+    const deployed = cards.deploy(state, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
     assert.notEqual(deployed.value, null);
     state = deployed.state;
     const owner = deployed.value;

@@ -5,7 +5,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle } from "../helpers/battle.js";
 import { createCardDefinition } from "../helpers/deployable.js";
-import * as deployment from "../../dist/core/battle/deployment/index.js";
+import { retreat } from "../../dist/core/unit/capability/deployable/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { setDirection } from "../../dist/core/unit/capability/occupancy/index.js";
 import { update } from "../../dist/core/unit/operations.js";
@@ -69,7 +69,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         ],
     });
     const [supportCard, unitCard] = [...cards.all(state)].map(cards.ref);
-    const placedSupport = deployment.deploy(
+    const placedSupport = cards.deploy(
         state,
         { card: supportCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] },
     );
@@ -86,7 +86,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
                     hooks: input.hooks.set(unitLifecycle.removed, {
                         id: "replace-on-leave", priority: 0,
                         invoke: (current) => {
-                            const result = deployment.deploy(current, request);
+                            const result = cards.deploy(current, request);
                             assert.notEqual(result.value, null);
                             replacement = result.value;
                             return { state: result.state, value: undefined };
@@ -96,17 +96,18 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
             };
         },
     });
-    const placedUnit = deployment.deploy(state, request);
+    const placedUnit = cards.deploy(state, request);
     state = placedUnit.state;
-    const denied = deployment.deploy(state, {
+    const denied = cards.deploy(state, {
         ...request,
         quote: { dp: 0, stock: 1, slots: 0 },
     });
     assert.equal(denied.value, null);
-    state = deployment.retreat(state, placedUnit.value);
+    state = retreat(state, placedUnit.value);
     const pair = placedSupport.value.get(state).occupancy.pair;
     assert.notEqual(replacement, placedUnit.value);
     assert.equal(units.ref(pair.occupant), replacement);
+    assert.deepEqual(unitCard.get(state).units, [replacement]);
     state = update(state, replacement, setDirection("UP"));
     const occupancy = replacement.get(state).occupancy;
     assert.equal(occupancy.direction, "UP");
@@ -118,9 +119,9 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
         ["occupantAdded", replacement],
     ]);
 
-    state = deployment.retreat(state, placedSupport.value);
+    state = retreat(state, placedSupport.value);
     assert.equal(replacement.get(state).occupancy.pair, null);
-    const returned = deployment.deploy(state, { card: supportCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
+    const returned = cards.deploy(state, { card: supportCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
     assert.notEqual(returned.value, null);
     assert.notEqual(returned.value, replacement);
     state = returned.state;

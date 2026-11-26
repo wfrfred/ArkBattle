@@ -1,14 +1,14 @@
 import type { Contribution } from "../../../../common/contribution.js";
 import type { Result, State as BattleState } from "../../../state.js";
 import type { Card, Policy } from "./card.js";
-import type { Restriction } from "../../restriction.js";
+import type { Restriction } from "./restriction.js";
 import type { Hooks } from "../../../../hook.js";
 import type * as dp from "./dp/index.js";
 import type * as supply from "./supply/supply.js";
 
 export type Definition<S extends object = object, P extends Policy = Policy> = {
     readonly slot: number;
-    readonly deploymentRestrictions: readonly Contribution<Restriction>[];
+    readonly restrictions: readonly Contribution<Restriction>[];
     readonly hooks: Hooks;
     readonly initialize: (battle: BattleState) => Result<S>;
 } & {

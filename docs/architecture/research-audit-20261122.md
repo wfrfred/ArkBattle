@@ -71,7 +71,7 @@
 | U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | **待定。** 跨格偏移引起下一移动目标差异已核实。Plan 已保存两项输入，待确定构场使用的格。 | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
 | U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **待接入。** 重艇和凶豕兽需要自主运动资格，受力位移或残留速度不能代替。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
 | U022 | 是否有实际内容修改 BLOCK_RADIUS_SCALE 并改变飞行阻挡半径 | **待接入。** 凯尔希·思衡托 S1 的空中阻挡半径修正已核实，当前搜索仍限于固定半径。 | [Case 21](../research/cases/21-tippi-air-blocking.md#L94) |
-| U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | **待接入。** 自身与外部的移动部署已核对，缺统一 `deployment.redeploy` 及正常离场后的 Card 账务接续。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L181) |
+| U028 | 特殊移动的 HP／技能继承、失败后继、返费、库存、计时与通知，含凯尔希·思衡托待投放解除 | **待接入。** 自身与外部的移动部署已核对，缺统一 `deployable.redeploy` 入口及特殊移动后续的 Card 账务接续。 | [Case 24](../research/cases/24-deployment-cost-and-supply.md#L181) |
 | U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
 | U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **待接入。** 已确认动态出生要登记当前波次、终局或两处等待，缺少普通动态创建后的登记入口。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
 
