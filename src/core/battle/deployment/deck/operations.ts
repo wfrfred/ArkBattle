@@ -1,17 +1,13 @@
 import { replaceIn } from "../../../common/object.js";
 import type { State as BattleState } from "../../state.js";
 import { ref, type Card } from "./card/card.js";
-import type { Definition } from "./card/definition.js";
 import { advance as advanceCard } from "./card/operations.js";
 import { all } from "./deck.js";
 import { register } from "../../../lifetime/operations.js";
 import { sort as sortCards } from "../../../common/collection/order.js";
 import { ordered } from "./order.js";
 
-export function add<S extends object>(
-    battle: BattleState,
-    self: Card<NoInfer<S>> & { readonly definition: Definition<S> },
-): BattleState {
+export function add(battle: BattleState, self: Card): BattleState {
     const { deck } = battle.deployment;
     const reference = ref(self);
 

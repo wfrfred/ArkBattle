@@ -269,10 +269,11 @@ projectiles.remove(fired, restored, 'ELIMINATED');
 const ordinaryProjectile = projectiles.initialize(battle, {
     ...shot, definition: { id: 'ordinary' } satisfies projectiles.Definition,
 });
+const ordinaryBattle = projectiles.add(ordinaryProjectile.state, ordinaryProjectile.value);
 // @ts-expect-error the base entity does not declare a movement trait.
 ordinaryProjectile.value.move;
 // @ts-expect-error a plain reference gives no elimination eligibility.
-projectiles.remove(battle, projectiles.ref(ordinaryProjectile.value), 'ELIMINATED');
+projectiles.remove(ordinaryBattle, projectiles.ref(ordinaryProjectile.value), 'ELIMINATED');
 
 // Hook keys preserve both the callback contract and its required unit.
 const outputKey = key<Hook<{ amount: number }, number>>('output');
@@ -350,7 +351,7 @@ const nameCard: cards.Definition<{ name: string }, 'UNIQUE'> = {
 const countInput = { definition: countCard, unitDefinition: cardUnit };
 const builtCard = cards.initialize(battle, countInput);
 const countCardRef = cards.ref(builtCard.value);
-const exactCard = countCardRef.get(builtCard.state)!;
+const exactCard = countCardRef.get(cards.add(builtCard.state, builtCard.value))!;
 const cardEffect = {
     id: 'card-effect',
     group: null,
@@ -387,8 +388,8 @@ for (const card of cards.all(battle)) {
 }
 // @ts-expect-error a deployable unit cannot own Locomotion and Route.
 cards.initialize(battle, { ...countInput, unitDefinition: { ...cardUnit, route: routeDefinition.route, locomotion: routeDefinition.locomotion } });
-// @ts-expect-error registration must reject state that does not match its own Definition.
-cards.add(builtCard.state, { ...builtCard.value, state: { count: 'wrong' } });
+// @ts-expect-error construction must pair the initialized state and Definition callbacks.
+cards.initialize(battle, { ...countInput, definition: { ...countCard, initialize: state => ({ state, value: { count: 'wrong' } }) } });
 const counter: effects.Definition<{ count: number }, null> = {
     id: 'counter', group: null, initialize: () => ({ count: 0 }),
     onTick: (state, self) => effects.setState(state, effects.ref(self), { count: self.state.count + 1 }),

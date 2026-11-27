@@ -7,15 +7,12 @@ import { ref } from "./query.js";
 import { end, register } from "../lifetime/operations.js";
 import type { State as BattleState } from "../battle/state.js";
 
-export function add<S extends object, T extends object>(
-    battle: BattleState,
-    self: Projectile<NoInfer<S>, T> & NoInfer<T> & { readonly definition: Definition<S, T> },
-): BattleState {
+export function add(battle: BattleState, self: Projectile): BattleState {
     const projectiles = battle.battlefield.projectiles.add(ref(self), self);
     battle = replaceIn(battle, ["battlefield", "projectiles"], projectiles);
     battle = register(battle, ref(self), []);
 
-    return self.definition.onEnter?.(battle, self) ?? battle;
+    return (self.definition as Definition).onEnter?.(battle, self) ?? battle;
 }
 
 export function update<S extends object, T extends object>(

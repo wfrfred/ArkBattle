@@ -48,7 +48,7 @@ export interface Definition<S extends object = object, T extends object = object
 
 创建分为 `initialize` 和 `add`，与 Unit 的流程一致。调用方传入 Definition、阵营、位置、私有状态及 Definition 要求的额外字段。`initialize(battle, input)` 分配 Ref 及表现 ID，将实例设为 ACTIVE，并返回 `Result<Projectile<S, T> & T & { readonly definition: D }>`。`D` 保留传入 Definition 的具体类型。调用方接续返回的战斗状态，并可从该实例取得保留具体类型的 Ref。
 
-`add(battle, self)` 以原始 Definition 检查私有状态和额外装配字段的配对。它先登记 ACTIVE 实例和 Lifetime 节点，随后执行 `onEnter` 并返回 `BattleState`。Projectile 直接调用 Definition 回调，Unit 则通过 `entered` 键派发已登记的 Hook。`onEnter` 可以立即结束弹道，调用方取得的 Ref 仍表示这次分配的身份。 [Unit 登记](../../src/core/unit/operations.ts)
+`initialize` 检查原始 Definition 与私有状态及额外装配字段的配对。`add(battle, self)` 接收已合法构造的 `Projectile`，不重复检查原始 Definition。它先登记 ACTIVE 实例和 Lifetime 节点，随后执行 `onEnter` 并返回 `BattleState`。Projectile 在派发处恢复已配对的 Definition 并调用回调，Unit 则通过 `entered` 键派发已登记的 Hook。`onEnter` 可以立即结束弹道，调用方取得的 Ref 仍表示这次分配的身份。 [Unit 登记](../../src/core/unit/operations.ts)
 
 弹道 Ref 在指定版本中读取完整实例，包括尚未注销的 ENDING 实例。update 只设置位置及私有 state，保留身份、Definition 与生命周期；ENDING 也可提交命中／清理进度，不因普通写回恢复实例。
 

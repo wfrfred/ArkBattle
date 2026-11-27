@@ -36,7 +36,7 @@ Deployment 聚合资源、部署历史及调度；Card 完成部署资格、消�
 
 Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Deployable 和 Locomotion 互斥；Route 依赖 Locomotion，因此 Card 绑定的蓝图既不含 Route，也不含 Locomotion，无需新增 Card Initial。这是基于现有研究范围的项目构造约束；部署单位仍可通过明确的位置变更和特殊重部署完成内容移动，不依赖自主积分。依据见[部署单位与自主运动调查](../research/evidence/deployable-motion-20261127/README.md)。
 
-`card.initialize(battle, { definition, unitDefinition })` 创建 Ref、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 检查原始 Definition 与私有状态和策略的配对，将完整实例按 Ref 登记，并把新卡追加到当前牌序末尾，同时登记 Lifetime。Card 使用 `Config<Card, never>`，能够作为依赖目标，结束输入在编译期被禁止。Deck 使用异构 Store 以 Ref 为键存放完整实例。`card.all(battle)` 与 `deck.ordered(battle)` 返回默认 `Card`，精确引用通过 `ref.get(battle)` 取得对应的实例类型。
+`card.initialize(battle, { definition, unitDefinition })` 检查 Definition 与私有状态和策略的配对，创建 Ref、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 接收已合法构造的 `Card`，将完整实例按 Ref 登记，并把新卡追加到当前牌序末尾，同时登记 Lifetime。Card 使用 `Config<Card, never>`，能够作为依赖目标，结束输入在编译期被禁止。Deck 使用异构 Store 以 Ref 为键存放完整实例。`card.all(battle)` 与 `deck.ordered(battle)` 返回默认 `Card`，精确引用通过 `ref.get(battle)` 取得对应的实例类型。
 
 `Card<S, P>` 是按策略区分的判别联合，与原始 `Definition<S, P>` 共享私有状态类型 `S` 和策略类型 `P`。实例持有以公共 `EraseCallbacks` 擦除输入的 Definition；精确 Card Ref 可向默认 `Ref<Card>` 泛化，部署请求只需要该公共 Ref，不携带私有状态泛型。初始化从 `definition.policy` 设置实例顶层的 `card.policy`，它在卡牌生命周期内保持稳定。策略为 `DEFAULT`、`UNIQUE` 或 `QUEUED`。
 
