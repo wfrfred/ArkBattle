@@ -181,6 +181,8 @@ SetHpSameToSource读取 `source.hp−target.hp`，零差直接返回；非零用
 
 淬羽赫默 Y2／Y3 的屏障天赋实际装配了 `ON_APPLYING_SKIPPED_MODIFIER`。它能读取这类负差值，在预测目标将跌破 50% 时标记资格并授予屏障。通过两份配置和客户端分支得出，实际魔王重分配满足该天赋接收条件时仍可触发屏障，全关普通受伤 Hook 的探针只能验证所选 HP 结果。变形者集群的同比例同步配置仍使用普通接收，两者分别处理。 [赫默模组配置、Prefab 和具体数值推导](../evidence/signed-hp-adjustment-20261122/README.md#真的会读取跳过分支的保护)
 
+2026-11-27 补核：完整基础 Holder 的 9,054 个模板中，27 个订阅特殊接收事件 41。6 个也订阅普通 Applying 事件 6；其余 21 个全部订阅普通 TakeDamage 事件 10，并各有明确的资源引用。未在该范围发现仅订阅 41、既不订阅 6 也不订阅 10 的模板。普通与特殊路径的处理可以不同：刺胄之弹普通受伤时取消并另造特殊伤害，特殊接收只检查来源并取消，不再重造伤害。区分两条路径具有实际语义，但此证据本身不要求项目复制两套 Hook。详见[事件程序、实际绑定与范围](../evidence/skipped-reception-20261127/README.md)。
+
 ## 9. 剩余证据边界
 
 - ElementHealViaMaxHpRatio有完整native，但1180包与9054Holder没有找到引用；普通EP自然回复另有余的实际天赋，见[案例25](25-elemental-burst-recovery-timing.md#8-自然ep回复的实际非零配置)。没有据零命中批准弃用。
