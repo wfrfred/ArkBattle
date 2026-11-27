@@ -20,16 +20,11 @@
 | 实例与 Definition 类型擦除 | Card、Action 等使用宽化补丁、不变性或 Identity 视图；回调参数契约分散 | [公共 EraseCallbacks](../../src/core/common/callback.ts) 选择性擦除回调输入，构造保留原始 Definition 检查，普通访问默认 object；移除 Execution／Activation Identity 和无实际配对职责的部署请求泛型，Effect 子类型 Burst 与爆发表同步迁移。统一同义 Callback 声明、宿主参数和结束回调参数顺序。 |
 | Blocking 固有 removing | 通过前置集合合并改变同级执行及同 ID 覆盖顺序 | 两侧固有 Hook 统一使用普通 set、priority 1000；击杀通知先于解除阻挡，普通离场程序读取解除后的实时关系。历史事实来自 Departure 快照。[Blocking 顺序](blocking.md#两侧通知顺序) |
 | 完整操作与 Change 的归属 | Presence、Route 的部分完整业务返回 Change，易与普通字段变更混淆 | 文件归属按业务语义确定；[Presence](../../src/core/unit/capability/presence/operations.ts) 与 [Route](../../src/core/unit/capability/route/operations.ts) 的完整操作保留在 operations，Contribution／Restriction 与普通字段变更仍归模型文件，即使附带 Settlement。现有代码符合约定，无需迁移。 |
+| Unit 活性与领域准入 | 多领域重复 ACTIVE、可选 Vitality 与 HP 的判断 | 各领域保持自己的实际资格判定，不新增公共谓词、不将基础 Unit 与 Vitality 耦合；同一布尔表达式不是独立的共享业务概念。`elemental.available` 仅为内部资格辅助，不再公开；保留 `canReceiveDamage`／`canReceiveHealing` 等完整领域查询。 |
 
 相关[接口约定](api-conventions.md)与领域文档已迁移。不为这些等价迁移新增长期测试用例。
 
 ## 待取舍
-
-### 4. 基础 Unit 活性与领域准入
-
-Elemental 的 available、SP 私有 available、Action 启动及 Skill 发动等多处重复「ACTIVE 且有 Vitality 时 HP>0」，HP 资源也检查这两项。[Elemental query](../../src/core/unit/capability/elemental/query.ts) · [SP](../../src/core/unit/capability/skill/sp.ts) · [Action operations](../../src/core/unit/capability/action/operations.ts) · [Skill operations](../../src/core/unit/capability/skill/operations.ts)
-
-可提供 Unit 层共同活性谓词，但须区分 `vitality.isAlive`（只读 HP）、没有 Vitality 的 Unit、仅要求 ACTIVE 的持续执行，以及 Lifetime.available（依赖资格）。**新增共同语义和名字仍待定**，不扩大任何业务资格、不删除同步重入后的复查。
 
 ### 5. SP 状态变更的最低宿主类型
 
