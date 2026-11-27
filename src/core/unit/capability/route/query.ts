@@ -31,19 +31,27 @@ export function activeContext(self: Unit & Route): Context {
     return contextFor(self, self.route.active)!;
 }
 
-export function target(context: Context): WorldPosition | null {
+export function target(context: Context): navigation.Target | null {
     const current = context.current;
     if (current?.type === "MOVE") {
-        return Vec2.add(Tile.center(current.position), current.offset);
+        return {
+            tile: current.position,
+            position: Vec2.add(Tile.center(current.position), current.offset),
+        };
     }
     if (current?.type === "TRACE") {
-        return current.reached ? null : Tile.center(current.position);
+        return current.reached
+            ? null
+            : { tile: current.position, position: Tile.center(current.position) };
     }
 
     return current === null &&
         context.index === context.plan.checkpoints.length &&
         context.plan.destination !== null
-        ? Tile.center(context.plan.destination.position)
+        ? {
+              tile: context.plan.destination.position,
+              position: Tile.center(context.plan.destination.position),
+          }
         : null;
 }
 
@@ -56,10 +64,11 @@ export function remainingDistance(
     const mode = context.plan.motionMode;
     let position = Vec2.sub(self.position, context.offset);
     if (context.current?.type === "TRACE") {
-        const goal = Tile.center(context.current.position);
+        const tile = context.current.position;
+        const goal = Tile.center(tile);
 
         return (
-            navigation.distance(state, mode, position, goal) ??
+            navigation.distance(state, mode, position, { tile, position: goal }) ??
             Vec2.length(Vec2.sub(goal, position))
         );
     }
@@ -70,17 +79,17 @@ export function remainingDistance(
     let remaining = 0;
     let fallback: number | undefined;
 
-    const move = (goal: WorldPosition): void => {
+    const move = (goal: navigation.Target): void => {
         if (fallback === undefined) {
             const distance = navigation.distance(state, mode, position, goal);
             if (distance === null) {
-                fallback = remaining + Vec2.length(Vec2.sub(goal, position));
+                fallback = remaining + Vec2.length(Vec2.sub(goal.position, position));
             } else {
                 remaining += distance;
             }
         }
 
-        position = goal;
+        position = goal.position;
     };
 
     const visited = new Set<number>();
@@ -98,11 +107,13 @@ export function remainingDistance(
         switch (checkpoint.type) {
             case "MOVE": {
                 const center = Tile.center(checkpoint.position);
-                move(
-                    entered || !checkpoint.randomizeOffset
-                        ? Vec2.add(center, checkpoint.offset)
-                        : center,
-                );
+                move({
+                    tile: checkpoint.position,
+                    position:
+                        entered || !checkpoint.randomizeOffset
+                            ? Vec2.add(center, checkpoint.offset)
+                            : center,
+                });
                 break;
             }
 
@@ -128,7 +139,10 @@ export function remainingDistance(
         index++;
     }
 
-    move(Tile.center(context.plan.destination.position));
+    move({
+        tile: context.plan.destination.position,
+        position: Tile.center(context.plan.destination.position),
+    });
 
     return fallback ?? remaining;
 }
@@ -184,6 +198,6 @@ export function movementTarget(
         ? null
         : {
               nextPoint: Vec2.add(point, context.offset),
-              goal: Vec2.add(goal, context.offset),
+              goal: Vec2.add(goal.position, context.offset),
           };
 }

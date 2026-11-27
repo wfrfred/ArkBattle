@@ -305,7 +305,7 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boo
             }
         } else if (current.type === "MOVE") {
             const goal = target(context)!;
-            if (!atTarget(self, context, goal)) {
+            if (!atTarget(self, context, goal.position)) {
                 const locator = Vec2.sub(self.position, context.offset);
                 const state = battle.battlefield.navigation;
                 const map = effectiveMap(state, plan.motionMode);

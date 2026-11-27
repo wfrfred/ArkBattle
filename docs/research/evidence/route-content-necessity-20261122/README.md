@@ -8,6 +8,8 @@
 
 从仓库根目录复跑，临时结果写到指定文件。
 
+复跑脚本已适配新版 Navigation 并传入当前 Data 的地图解析选项；未提供专用地形控制器参数或地块部署 Prefab。当前解析成功数及比较结果可能与上述历史版本不同，原始记录不随脚本更新。
+
 ```sh
 batch=docs/research/evidence/route-content-necessity-20261122
 npm run build

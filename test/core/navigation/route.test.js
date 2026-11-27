@@ -61,8 +61,39 @@ test("remaining route distance follows navigation geometry and excludes teleport
         ...getTile(state.battlefield.map, [0, 0]).state, walkCost: 20,
     });
     const self = get(state, 0);
-    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 0], [4, 2]), 6);
+    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 0], { tile: [2, 4], position: [4, 2] }), 6);
     assert.equal(route.remainingDistance(state, self, self.route.main), 7);
+});
+
+test("a MOVE across a tile boundary navigates to its registered tile with the actual offset endpoint", () => {
+    const checkpoint = { ...move([1, 1]), offset: [0, 0.75] };
+    const program = plan([checkpoint], { startPosition: [1, 0], destination: { type: "MOVE", position: [2, 1] } });
+    const traveller = creation(program, { route: { alwaysCheckCurrentPoint: false } });
+    let state = battle([{ ...traveller, position: [0, 1] }]);
+    state = updateTile(state, [2, 0], {
+        ...getTile(state.battlefield.map, [2, 0]).state,
+        passability: "NONE",
+    });
+    const host = units.ref(get(state, 0));
+    const goal = [1, 1.75];
+    const target = { tile: checkpoint.position, position: goal };
+
+    // The offset endpoint is in [2, 1], which would require a turn around [2, 0].
+    assert.deepEqual(route.movementTarget(state, host), { nextPoint: goal, goal });
+    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 1], target), 1.25);
+    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0.375, 1], { tile: [1, 1], position: [0.125, 1] }), 0.25);
+    assert.equal(route.remainingDistance(state, get(state, 0), current(state)), 1.5);
+
+    state = updateTile(state, checkpoint.position, {
+        ...getTile(state.battlefield.map, checkpoint.position).state,
+        passability: "NONE",
+    });
+    assert.equal(route.movementTarget(state, host), null);
+    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 1], target), null);
+    assert.equal(route.remainingDistance(state, get(state, 0), current(state)), 1.25);
+    // An unreachable MOVE is skipped when checking the current point is optional.
+    state = route.advance(state, host);
+    assert.equal(current(state).index, 1);
 });
 
 test("distance observes the requested Main or TRACE rather than temporary movement control", () => {

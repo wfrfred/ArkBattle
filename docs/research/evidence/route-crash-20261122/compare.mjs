@@ -13,7 +13,9 @@ const level = JSON.parse(raw);
 const action = level.waves[0].fragments[4].actions[5];
 const previous = level.routes[action.routeIndex].checkpoints[2];
 const current = level.routes[action.routeIndex].checkpoints[3];
-const state = battlefield.create(parseBattlefieldMap(level.mapData)).navigation;
+const state = battlefield.create(parseBattlefieldMap(level.mapData, {
+    mire: null, deepsea: null, tileDeploymentPrefabs: [],
+})).navigation;
 const position = [
     previous.position.col + previous.reachOffset.x,
     previous.position.row + previous.reachOffset.y,
@@ -25,12 +27,8 @@ const reachPosition = [
     originalCenter[1] + current.reachOffset.y,
 ];
 const roundedTile = World.toTile(reachPosition);
-const fromOriginalGrid = navigation.nextPoint(state, "WALK", position, originalCenter);
-const fromRoundedGrid = navigation.nextPoint(state, "WALK", position, reachPosition);
-const fromOriginalGridWithOffset =
-    fromOriginalGrid?.every((component, index) => component === originalCenter[index])
-        ? reachPosition
-        : fromOriginalGrid;
+const fromOriginalGridWithOffset = navigation.nextPoint(state, "WALK", position, { tile: originalTile, position: reachPosition });
+const fromRoundedGrid = navigation.nextPoint(state, "WALK", position, { tile: roundedTile, position: reachPosition });
 
 deepEqual([originalTile, roundedTile], [[1, 4], [2, 4]]);
 deepEqual([fromOriginalGridWithOffset, fromRoundedGrid], [[4.25, 1.5], [4, 1]]);

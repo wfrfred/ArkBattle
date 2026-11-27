@@ -6,7 +6,7 @@ Navigation 提供确定的导航建议，Route 解释路线，Locomotion 执行�
 
 Battlefield 将当前地块投影为 WALK／FLY 基础 Map，并持有 Navigation State。State 只保存基础图与 Overlay；有效图和 Field 是可重建派生值。Route Context 保存程序进度，Locomotion 保存历史速度，位置只归 Unit.position。
 
-Navigation 接收精确世界目标；Field 按目标所在格构建，末段仍使用精确目标。缓存可以内部可变，但不进入 BattleState，也不能改变领域结果。
+Navigation 接收明确分离的目标格和精确世界目标；Field 按显式目标格构建，末段使用精确目标。缓存可以内部可变，但不进入 BattleState，也不能改变领域结果。
 
 ### Navigation 的关键语义
 
@@ -28,13 +28,13 @@ Navigation 按运动方式保存覆盖，校验代价并投影到有效图。FLY
 
 ### nextPoint
 
-当前位置或目标越界、目标不可通、当前位置不可达时返回 null。若已位于目标格或后继是目标格，返回精确目标；否则返回后继格中心。
+`nextPoint` 与 `distance` 的第四参均为 `Navigation.Target`（`{ tile: TilePosition; position: WorldPosition }`）。`tile` 决定构场、通行资格与后继判断，`position` 为实际抵达坐标；即使两者跨格，也不再从精确坐标反推目标格。当前位置所在格或目标格越界、目标格不可通、当前位置不可达时返回 null。若已位于显式目标格或后继是该格，返回精确目标；否则返回后继格中心。
 
 查询直接消费 Field 后继，不附加整段射线筛选，也不把 null 当到达。建议点不保证从偏离格心的实际位置可直线到达，局部避障归 Locomotion。
 
 ### distance
 
-估计路程沿导航后继累加几何段长，并将身体相对格心的偏移投影到前进方向修正；同格使用至精确目标的距离。越界或不可达返回 null。
+估计路程沿导航后继累加几何段长，并将身体相对格心的偏移投影到前进方向修正；若当前格为显式目标格或下一建议点已是实际目标，则直接使用身体至精确目标的距离。其他情况沿该目标格的 Field，最后一段使用精确坐标。显式目标格或当前格越界、目标不可通或当前位置不可达返回 null。
 
 Field 的 distance 是搜索代价，不是实际路程；高代价格权重不能当作行走长度。
 
@@ -114,9 +114,9 @@ reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索�
 
 movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRACE；指令耗尽后可追踪 MOVE 或 EXIT 的 destination.position。MOVE 终点持续有效，抵达后仍留场，身体偏离后可恢复追踪。destination 为 null 时没有固定的最终目标。等待或无目标返回空，空目标不表示 Main 完成。
 
-导航先从身体位置减去 Context.offset，得到建议点后加回偏移。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
+导航先从身体位置减去 Context.offset，得到建议点后加回偏移。MOVE 使用路点原格作为导航目标格，局部偏移只应用于精确抵达坐标，不改变构场、不可达判断或剩余距离的目标格。整体 Context.offset 与 MOVE 局部偏移独立。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
 
-remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。它累计当前与后续 MOVE／终点的导航几何路程，WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，未来随机目标按格心估计且不消费 RNG。
+remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。它累计当前与后续 MOVE／终点的导航几何路程，WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，当前 MOVE 使用已进入的样本，未来固定 MOVE 使用配置偏移，未来随机目标按原格格心估计且不消费 RNG。
 
 当前 TRACE 查询最后目标格的距离；没有可确定有限终点的无终点路线、循环或未来持续 TRACE 返回 undefined。MOVE 和 EXIT 都提供有效终点。有限路线的当前段越界或不可达时只给该段直线回退，不继续叠加后续段，也不用回退掩盖无有限终点。
 

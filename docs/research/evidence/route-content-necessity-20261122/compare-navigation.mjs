@@ -25,7 +25,9 @@ for (const [file, pointer, s] of scan.samples.crossing) {
     const route = d[field][+routeId];
     let state;
     try {
-        state = navState.create(game.parseBattlefieldMap(d.mapData)).navigation;
+        state = navState.create(game.parseBattlefieldMap(d.mapData, {
+            mire: null, deepsea: null, tileDeploymentPrefabs: [],
+        })).navigation;
     } catch (e) {
         fail++;
         continue;
@@ -44,9 +46,8 @@ for (const [file, pointer, s] of scan.samples.crossing) {
         : [route.startPosition.col, route.startPosition.row];
     const [row, col] = s.original;
     const target = [col + s.offset.x, row + s.offset.y];
-    const fixed = nav.nextPoint(state, s.mode, start, [col, row]);
-    const a = fixed?.[0] === col && fixed?.[1] === row ? target : fixed;
-    const b = nav.nextPoint(state, s.mode, start, target);
+    const a = nav.nextPoint(state, s.mode, start, { tile: [row, col], position: target });
+    const b = nav.nextPoint(state, s.mode, start, { tile: coords.World.toTile(target), position: target });
     if ((a?.[0] !== b?.[0] || a?.[1] !== b?.[1]) && (!previous || !previous.randomizeReachOffset)) {
         diff.push({
             file,

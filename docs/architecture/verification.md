@@ -78,9 +78,9 @@
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
 | [Battlefield · 关键语义](battlefield.md#关键语义) | [批量交换按最终布局占格，保留旧版本和身体位置，结构写回不派发生命周期通知](../../test/core/battlefield.test.js#L19) |
-| [Battlefield · 地图与地块](battlefield.md#地图与地块) | [非整数地址不能命中已有格，也不能登记占格或将覆盖误投到整数格](../../test/core/battlefield.test.js#L60) |
-| [Navigation · Overlay 登记](navigation.md#overlay-登记) | [独立覆盖可以按身份撤销，有向出口和地块代价改变导航的实际路径，旧覆盖引用无法误删新限制，更新失效引用报告错误](../../test/core/battlefield.test.js#L80) |
-| [Spatial · 数据归属与查询入口](spatial.md#数据归属与查询入口) | [身体原点与偏移命中体分开选中，扫掠按接触比例排列且排除消失和仍登记的 ENDING 对象](../../test/core/battlefield.test.js#L135) |
+| [Battlefield · 地图与地块](battlefield.md#地图与地块) | [非整数地址不能命中已有格，也不能登记占格或将覆盖误投到整数格](../../test/core/battlefield.test.js#L63) |
+| [Navigation · Overlay 登记](navigation.md#overlay-登记) | [独立覆盖可以按身份撤销，有向出口和地块代价改变导航的实际路径，旧覆盖引用无法误删新限制，更新失效引用报告错误](../../test/core/battlefield.test.js#L85) |
+| [Spatial · 数据归属与查询入口](spatial.md#数据归属与查询入口) | [身体原点与偏移命中体分开选中，扫掠按接触比例排列且排除消失和仍登记的 ENDING 对象](../../test/core/battlefield.test.js#L143) |
 | [Blocking · 关系资格与 Restriction](blocking.md#关系资格与-restriction) | [双方有效限制、阵营、当前规则的目标层集合、目标占量及地块根格共同决定能否取得或维持阻挡，可同时保持地面和空中关系](../../test/core/blocking.test.js#L94) |
 | [Blocking · 阻挡规则与有效半径](blocking.md#阻挡规则与有效半径) | [半径贡献扩大接敌范围；撤销贡献仍保持既有远距关系，但已解除的远距目标无法重新取得](../../test/core/blocking.test.js#L178) |
 | [Blocking · 已确定的操作接口](blocking.md#已确定的操作接口) | [同值自身切层仍清理，整批双端先释放再通知，旧关系不能解除同双方后来重建的关系](../../test/core/blocking.test.js#L293) |
@@ -100,14 +100,15 @@
 | [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [已抽中的 Branch 操作可保留到过期后，使用实际出现的新目标完成该实例](../../test/core/schedule.test.js#L148)<br>[Branch 在 entered 中触发后继 Phase 能读到已发布索引，外层旧 Phase 后继保留](../../test/core/schedule.test.js#L328)<br>[循环重入时重新抽选并在 entered 前发布 RNG，各次实例保存自己已选择的后续条目](../../test/core/schedule.test.js#L369) |
 | [Schedule · Route 的主流程时间上下文](schedule.md#route-的主流程时间上下文) | [动态出生取得主线 Wave 和 Fragment 时基快照，之后 Route 的绝对等待按其出生时基推进](../../test/core/schedule.test.js#L420) |
 | [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [出生的等待先于 entered 可见，Wave 超时只清前进等待，最终等待在对应 Unit 完成离场后解除](../../test/core/schedule.test.js#L190)<br>[活 Unit 可只撤销自身 Wave 等待，操作本身不推进，也保留实例和最终等待](../../test/core/schedule.test.js#L262) |
+| [Navigation · nextPoint](navigation.md#nextpoint) | [跨格 MOVE 用原格决定后继与不可达，末段仍为实际偏移目标；导航路程和路线剩余距离保留该区分](../../test/core/navigation/route.test.js#L68) |
 | [Navigation · distance](navigation.md#distance) | [路线剩余距离使用导航几何长度且排除瞬移路段，不用搜索代价](../../test/core/navigation/route.test.js#L42) |
-| [Navigation · Route／Locomotion 的交互约束](navigation.md#routelocomotion-的交互约束) | [受力时路线等待继续经过，控制权在外力运动完成后恢复自主推进](../../test/core/navigation/route.test.js#L120)<br>[所在格变为不可通时能移向邻格恢复，当前 MOVE 不因无导航建议而被消费](../../test/core/navigation/route.test.js#L145) |
-| [Navigation · 类型与身份](navigation.md#类型与身份) | [指定 Context 的距离查询不随另一个路线取得当前控制权而改变](../../test/core/navigation/route.test.js#L68) |
-| [Navigation · 控制选择与计时](navigation.md#控制选择与计时) | [Context 控制权和计时独立，ENTER 可暂停，绝对等待仍沿出生时钟推进](../../test/core/navigation/route.test.js#L89) |
-| [Navigation · Checkpoint 与进入](navigation.md#checkpoint-与进入) | [MOVE 仅在进入时采样，读取不重抽，循环再进入才产生新样本](../../test/core/navigation/route.test.js#L190)<br>[TRACE 到达仍保留目标格和控制权，只有显式重启或移除会结束当前保留状态](../../test/core/navigation/route.test.js#L202) |
-| [Navigation · 推进与同步操作](navigation.md#推进与同步操作) | [长即时无环链可以一次完成，当前即时循环让出而不阻塞 Tick](../../test/core/navigation/route.test.js#L179)<br>[APPEAR 等空间指令先发布消费结果再触发回调，继续时使用最新 Context](../../test/core/navigation/route.test.js#L279) |
-| [Navigation · 公开操作](navigation.md#公开操作) | [路线重指派重建当前已进入指令，skipWait 只跳过允许跳过的相对等待](../../test/core/navigation/route.test.js#L165) |
-| [Navigation · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [Main EXIT 检查独立于临时 Context 控制及 Main 计时，自然出口与无终点强制出口均通过全局 removed 提供 EXIT，一次完整离场只产生一次 EXIT 原因的 UNIT_REMOVED；requireFinish 决定是否允许未完成指令时退出，MOVE 到位仍留场且剩余距离为零，null 无固定终点](../../test/core/navigation/route.test.js#L230) |
+| [Navigation · Route／Locomotion 的交互约束](navigation.md#routelocomotion-的交互约束) | [受力时路线等待继续经过，控制权在外力运动完成后恢复自主推进](../../test/core/navigation/route.test.js#L151)<br>[所在格变为不可通时能移向邻格恢复，当前 MOVE 不因无导航建议而被消费](../../test/core/navigation/route.test.js#L176) |
+| [Navigation · 类型与身份](navigation.md#类型与身份) | [指定 Context 的距离查询不随另一个路线取得当前控制权而改变](../../test/core/navigation/route.test.js#L99) |
+| [Navigation · 控制选择与计时](navigation.md#控制选择与计时) | [Context 控制权和计时独立，ENTER 可暂停，绝对等待仍沿出生时钟推进](../../test/core/navigation/route.test.js#L120) |
+| [Navigation · Checkpoint 与进入](navigation.md#checkpoint-与进入) | [MOVE 仅在进入时采样，读取不重抽，循环再进入才产生新样本](../../test/core/navigation/route.test.js#L221)<br>[TRACE 到达仍保留目标格和控制权，只有显式重启或移除会结束当前保留状态](../../test/core/navigation/route.test.js#L233) |
+| [Navigation · 推进与同步操作](navigation.md#推进与同步操作) | [长即时无环链可以一次完成，当前即时循环让出而不阻塞 Tick](../../test/core/navigation/route.test.js#L210)<br>[APPEAR 等空间指令先发布消费结果再触发回调，继续时使用最新 Context](../../test/core/navigation/route.test.js#L310) |
+| [Navigation · 公开操作](navigation.md#公开操作) | [路线重指派重建当前已进入指令，skipWait 只跳过允许跳过的相对等待](../../test/core/navigation/route.test.js#L196) |
+| [Navigation · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [Main EXIT 检查独立于临时 Context 控制及 Main 计时，自然出口与无终点强制出口均通过全局 removed 提供 EXIT，一次完整离场只产生一次 EXIT 原因的 UNIT_REMOVED；requireFinish 决定是否允许未完成指令时退出，MOVE 到位仍留场且剩余距离为零，null 无固定终点](../../test/core/navigation/route.test.js#L261) |
 | [Navigation · Locomotion](navigation.md#locomotion) | [身体半宽只延伸水平方向障碍接触范围，不能被当作圆半径](../../test/core/navigation/avoidance.test.js#L23)<br>[仅同时跨越两轴的斜角参与避障，多个穿入量先汇总再决定合力方向](../../test/core/navigation/avoidance.test.js#L30)<br>[WALK 避开超高费用格，FLY 只避开硬障碍](../../test/core/navigation/avoidance.test.js#L38)<br>[避障剔除当前行进方向分量，余量按历史速度缩放](../../test/core/navigation/avoidance.test.js#L45)<br>[不可通当前格选择最近的可通邻格恢复，允许斜向高代价格作为有效逃逸](../../test/core/navigation/avoidance.test.js#L55)<br>[驱动力与避障先合并并限力，随后积分速度并限速](../../test/core/navigation/locomotion.test.js#L25)<br>[落脚格反射只修改本次位移，不沿途扫掠或迭代反射](../../test/core/navigation/locomotion.test.js#L39)<br>[经过中间建议点不吸附，到精确终点可以吸附且保留历史速度](../../test/core/navigation/locomotion.test.js#L51)<br>[无 Route 的 Unit 仍经 Runtime 推进受力运动，距离里程按实际已提交位移采样](../../test/core/navigation/locomotion.test.js#L66)<br>[普通运动读取当前地块，遇阻反射本次位移而保留控制器速度](../../test/core/navigation/locomotion.test.js#L93)<br>[运动速度、速度最小值和允许自行移动是三个事实，禁止移动不等同于擦掉有效数值](../../test/core/navigation/speed.test.js#L14) |
 | [Navigation · 施力入口](navigation.md#施力入口) | [推击使用当前施力等级、加成与重量，开始运动前释放阻挡](../../test/core/navigation/unbalance.test.js#L62)<br>[零拉力查表结果或已注销施力者拒绝建立牵引](../../test/core/navigation/unbalance.test.js#L100)<br>[受力免疫既能拒绝创建，也能在现有失衡位移前终止该段](../../test/core/navigation/unbalance.test.js#L248) |
 | [Navigation · 牵引的身份、近停和结束](navigation.md#牵引的身份近停和结束) | [已创建牵引保留采样后的力，改变施力和重量仅影响下一次创建](../../test/core/navigation/unbalance.test.js#L110)<br>[同一来源能建立多条独立牵引，只有唯一有效牵引可清共享速度](../../test/core/navigation/unbalance.test.js#L128)<br>[动态拉点可离开近停后恢复有效受力，移除其来源结束牵引而保留动量](../../test/core/navigation/unbalance.test.js#L152)<br>[默认 ONCE 不重复刹车，WHILE_NEAR 在再次受力后仍可重新清速](../../test/core/navigation/unbalance.test.js#L190)<br>[结束旧失衡段完成其牵引依赖，嵌套启动的新段及其身份继续有效](../../test/core/navigation/unbalance.test.js#L321) |
