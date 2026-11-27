@@ -164,7 +164,9 @@ return withinDistance(locator, sampledTarget, reachDistance);
 
 DefaultGameMode.DestroyEntity 对 REACH_EXIT 使用 RecycleSelfWithDelay，逻辑结束不等于立即完成资源回收。Finished／Killed 计数与 Scheduler 等待集合分别依既有资格和销毁／回收通知处理，复用[案例 30 的生命周期结论](30-scheduler-action-data-fields.md#5-四个争议字段与退出账务)，本轮不扩展全部通知与回收链。
 
-requireAllCheckpoints=false 说明终点资格不只取决于指令索引；上述路径不保存独立 completed，不能为项目锁存标记或 Blocking 门槛背书。项目终点操作见 [Navigation／Route](../../architecture/navigation.md#运动目标与-main-出口)。
+visitEveryCheckPoint=false 说明终点资格不只取决于指令索引；上述路径不保存独立 completed，不能为项目锁存标记或 Blocking 门槛背书。项目终点操作见 [Navigation／Route](../../architecture/navigation.md#运动目标与-main-出口)。
+
+**2026-11-27 复核既有卫戍证据。** `AutoChessGameManager.OnEnemyRegistered` 在 Boss 战状态且 `IsBossEnemy` 成立的分支中调用 `Enemy.SetCanNotExit(true)`（`0x180bd65c2`）。这是登记阶段根据玩法设置退出行为的正例；未据此确认已经行动的单位需要在战斗中反复切换退出资格。 [既有原生消费者](../evidence/scheduler-general-20261107/preprocess/autochess-meta-consumers.json#L1668)
 
 **2026-11-22 补核，内容可以直接请求出口结算。** 实际 OR-7（Act40Side_07）出生的思旧在默认模式用吸收光环为无谓／饮啄安装 `enemy_cjstel_absorb`。开始动作对被拾取者调用 `InstantKill`，实际配置为 `_markReachExit=true` 和 `_switchState=true`。普通 native 体 #99235 在 `0x181102858` 读取前者，进入 `0x18110287d..0x1811028b3`，把后者传给虚槽 95 的 `FinishWithReachExit`。Enemy 覆盖 #77832 切换到对应状态后，在 `0x180abbf26` 把 `REACH_EXIT=1` 传给 FinishMe。这条入口没有先查询被拾取者的几何终点。受害者的到达响应以及关卡扣血资格按各自消费者决定，常规完成／击杀／波次等待的区别仍见案例 30 和 39。此为实际配置和已存普通静态分支的交叉核对。 [绑定](31-route-operations-and-state.md#4-内容证据与可执行条件) · [模板](../evidence/route-operations-20261107/content/route-templates.json#L2589) · [InstantKill 原体](../evidence/resource-mechanisms-20261114/death-attributes/source-writers.json) · [FinishWithReachExit 原体](../evidence/route-exit-20261108/entry.json#L3241) · [PRTS 思旧](https://prts.wiki/w/思旧)
 

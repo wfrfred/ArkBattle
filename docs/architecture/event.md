@@ -10,11 +10,10 @@ UI 的实际需要决定输出哪些事实与字段。领域操作没有记录�
 
 | 定义归属 | 保留输出 |
 | --- | --- |
-| Unit | `UNIT_REMOVED`：身份、原因和注销时的 Unit 历史事实，支持最终 State 已没有对象时的离场表现。 |
+| Unit | `UNIT_REMOVED`：身份、原因和注销时的 Unit 历史事实，支持最终 State 已没有对象时的离场表现，`EXIT` 原因统一表达自然或强制出口。 |
 | Action | `ATTACK_STARTED`：攻击模板首次推进时的有目标攻击表现提示；`ACTION_RELEASED`、`ACTION_FINISHED`、`ACTION_CANCELLED`：行动释放、完成与取消的动画时点。 |
 | Skill | `SKILL_ACTIVATED` 表示发动，`SKILL_ENDED` 表示正常完成或取消后清空了本轮激活。 |
 | Elemental | `ELEMENTAL_BURST`：发生爆发的 Unit、元素类型与当时位置。 |
-| Route | `ROUTE_COMPLETED`：路线完成后的漏怪表现，由 Route 确认 Main 终点离场时追加。 |
 | HP Damage | `DAMAGE`：目标、伤害类型和实际 HP 损失；取消时输出零值。 |
 | EP Damage | `ELEMENTAL_INJURY`：目标、元素类型和实际 EP 损失。 |
 | HP Healing | `HEAL`：目标和实际 HP 回复；取消时输出零值。 |
@@ -34,7 +33,7 @@ Event 按事实发生时点追加，嵌套操作产生的输出保留其先后�
 
 Tick 开始清空上一 Tick 的临时输出；保留旧 BattleState 仍可读取其原输出。初始化操作产生的输出也属于其返回状态。
 
-Schedule 通过 Unit 全局离场 Hook 同步解除等待，不读取表现事件。Route 输出不承担全局计数或终局裁决。
+Schedule 通过 Unit 全局离场 Hook 同步解除等待，不读取表现事件。出口表现由 Unit 的 EXIT 离场事件提供，不承担全局计数或终局裁决；业务规则使用离场 Hook 而不是表现事件。
 
 Blocking 关系、Route 中间检查点、Projectile 到达／命中／停止、出生、部署与部署拒绝，以及元素自然恢复完成／爆发结束不输出 UI Event；对应业务事实通过领域状态、返回结果与 Hook 提供。
 

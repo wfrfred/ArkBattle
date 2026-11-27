@@ -108,10 +108,10 @@ test('hound content binds configured regeneration and rejects unimplemented stun
   assert.throws(() => createHound({ ...configured, stunImmune: true }), /stun immunity/);
 });
 
-function routeInitial(position, endPosition = null) {
+function routeInitial(position, destination = null) {
   return { facing: { direction: 'RIGHT' }, route: { plan: {
-    motionMode: 'WALK', startPosition: World.toTile(position), endPosition,
-    checkpoints: [], requireAllCheckpoints: true,
+    motionMode: 'WALK', startPosition: World.toTile(position), destination,
+    checkpoints: [],
   }, offset: [0, 0] } };
 }
 
@@ -120,12 +120,11 @@ test('scheduled hound faces its route after the first checkpoint has changed its
     ...parameters('enemy_1000_gopro'), timing: houndTiming, hitRadius: 0.2, movement: houndMovement,
   });
   const plan = {
-    motionMode: 'WALK', startPosition: [1, 1], endPosition: null,
+    motionMode: 'WALK', startPosition: [1, 1], destination: null,
     checkpoints: [
       { type: 'APPEAR', position: [1, 5], offset: [0, 0] },
       { type: 'MOVE', position: [1, 3], offset: [0, 0], randomizeOffset: false },
     ],
-    requireAllCheckpoints: true,
   };
   const state = advanceSchedule(createBattle([], { schedule: {
     waves: [{ preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
@@ -217,7 +216,7 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
   const select = attack.attack.targetGroups[0].select;
   const initial = createBattle([
     { definition: guardUnit.definition, position: guardUnit.position, hooks: Hooks.empty(), initial: {} },
-    { definition, position, hooks: Hooks.empty(), initial: routeInitial(position, [3, 4]) },
+    { definition, position, hooks: Hooks.empty(), initial: routeInitial(position, { type: 'MOVE', position: [3, 4] }) },
   ], { rows: 5, columns: 5 });
   const target = unitRef(getUnit(initial, 0));
   const bow = getUnit(initial, 1);

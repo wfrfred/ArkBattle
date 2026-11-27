@@ -20,7 +20,7 @@ Lifetime 配置提供 `end.prepare`、`end.finalize` 和必填的 `end.dependenc
 
 依赖者配置 `dependencyEnd` 来描述自己在任一上游结束时接受的输入；null 表示不允许成为依赖者。Action Execution 因宿主结束接收 `SOURCE_ABSENT` 取消，依附这轮 Action 的 Effect 接收自身配置的 `CANCELLED`。上游结束原因保留在上游业务。Unit、Projectile 可以作为依赖目标，两者当前只接受显式的结束请求。Card 使用 `Config<Card, never>`，登记后可以作为依赖目标，静态类型禁止请求结束它。
 
-Unit 以 `End` 请求结束。Lifetime 固定 `initial` 与 `End`，Unit 据此为 removing／removed 构造 `Departure`。DEATH 的 killer 来自首次请求。注销时从最新 Unit 取 removed 候选与优先级，`UNIT_REMOVED` 也记录注销前的最新 Unit。离场 Hook 的 `Departure.unit` 始终是开始结束时的历史快照。 [死亡归属与击杀响应](resource.md#生命状态通知与离场)
+Unit 以 `End` 请求结束。Lifetime 固定 `initial` 与 `End`，Unit 据此为 removing／removed 构造 `Departure`。DEATH 的 killer 来自首次请求。EXIT 表示自然路线出口或内容触发的强制出口，两者均使用 Unit.remove 的同一生命周期；SCRIPT 表示其他脚本清除。注销时从最新 Unit 取 removed 候选与优先级，`UNIT_REMOVED` 也记录注销前的最新 Unit。离场 Hook 的 `Departure.unit` 始终是开始结束时的历史快照。 [死亡归属与击杀响应](resource.md#生命状态通知与离场)
 
 ## 状态归属与关系权威
 

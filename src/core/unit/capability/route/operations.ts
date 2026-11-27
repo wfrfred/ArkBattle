@@ -3,7 +3,7 @@ import { assert, assertNonnegativeSafeInteger } from "../../../common/assert.js"
 import { createRng } from "../../../common/rng.js";
 import { remove as removeUnit, replace as replaceUnit, update } from "../../operations.js";
 import type { Ref } from "../../../common/ref.js";
-import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
+import type { State as BattleState, Result } from "../../../battle/state.js";
 import { effectiveMap } from "../../../battlefield/navigation/cache.js";
 import * as navigation from "../../../battlefield/navigation/state.js";
 import {
@@ -389,18 +389,15 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
     }
 
     const route = latest.route.main;
+    const destination = route.plan.destination;
     if (
-        route.plan.endPosition === null ||
-        (route.plan.requireAllCheckpoints &&
+        destination?.type !== "EXIT" ||
+        (destination.requireFinish &&
             (route.current !== null || route.index !== route.plan.checkpoints.length)) ||
-        !atTarget(latest, route, Tile.center(route.plan.endPosition))
+        !atTarget(latest, route, Tile.center(destination.position))
     ) {
         return battle;
     }
 
-    battle = appendEvents(battle, [
-        { type: "ROUTE_COMPLETED", unitId: latest.ref.id, tick: battle.tick },
-    ]);
-
-    return removeUnit(battle, reference, { reason: "SCRIPT" });
+    return removeUnit(battle, reference, { reason: "EXIT" });
 }

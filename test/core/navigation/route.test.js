@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
 import { Hooks } from "../../../dist/core/hook.js";
-import * as lifecycle from "../../../dist/core/unit/hook.js";
+import { removed as unitRemoved, setHook } from "../../../dist/core/battle/unit-hook.js";
 import * as route from "../../../dist/core/unit/capability/route/index.js";
 import * as units from "../../../dist/core/unit/index.js";
 import { update } from "../../../dist/core/unit/operations.js";
@@ -18,8 +18,8 @@ import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { update as updateTile } from "../../../dist/core/battle/tile.js";
 
 const plan = (checkpoints = [], extra = {}) => ({
-    motionMode: "WALK", startPosition: [0, 0], endPosition: null,
-    checkpoints, requireAllCheckpoints: true, ...extra,
+    motionMode: "WALK", startPosition: [0, 0], destination: null,
+    checkpoints, ...extra,
 });
 const wait = (tick, anchor = "ENTER") => ({ type: "WAIT", anchor, tick, timer: null });
 const move = position => ({ type: "MOVE", position, offset: [0, 0], randomizeOffset: false });
@@ -44,7 +44,7 @@ test("remaining route distance follows navigation geometry and excludes teleport
         move([2, 4]),
         { type: "APPEAR", position: [0, 6], offset: [0, 0] },
         move([0, 7]),
-    ], { endPosition: [0, 7] });
+    ], { destination: { type: "MOVE", position: [0, 7] } });
     let state = battle([creation(program)]);
     const corridor = new Set(["0:0", "0:1", "0:2", "1:2", "2:2", "2:3", "2:4", "0:6", "0:7"]);
     for (let row = 0; row < 3; row++) {
@@ -66,7 +66,7 @@ test("remaining route distance follows navigation geometry and excludes teleport
 });
 
 test("distance observes the requested Main or TRACE rather than temporary movement control", () => {
-    let state = battle([creation(plan([wait(999)], { endPosition: [0, 5] }))]);
+    let state = battle([creation(plan([wait(999)], { destination: { type: "EXIT", position: [0, 5], requireFinish: true } }))]);
     const host = units.ref(get(state, 0));
     const fear = route.createContext(state, host, {
         plan: plan([move([0, 1])]), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
@@ -227,13 +227,16 @@ test("TRACE holds its registered tile and control after arrival until explicitly
     assert.equal(get(state, 0).route.active, route.ref(current(state)));
 });
 
-test("Main exit is independent of the selected Context and completes Unit lifetime once", () => {
-    let leaves = 0;
+test("Main MOVE destination keeps the Unit present and EXIT ends its lifetime once independently of the selected Context", () => {
+    const exits = [];
+    const observeExit = {
+        id: "exit", priority: 0,
+        invoke: (current, departure) => { exits.push(departure.reason); return { state: current, value: undefined }; },
+    };
     let state = battle([creation(plan([{ type: "APPEAR", position: [0, 3], offset: [0, 0] }], {
-        endPosition: [0, 3],
-    }), { hooks: Hooks.empty().set(lifecycle.removed, {
-        id: "leave", priority: 0, invoke: state => { leaves++; return { state, value: undefined }; },
-    }) })]);
+        destination: { type: "EXIT", position: [0, 3], requireFinish: true },
+    }))]);
+    state = setHook(state, unitRemoved, observeExit);
     const host = units.ref(get(state, 0));
     assert.equal(current(state).index, 1);
     assert.deepEqual(get(state, 0).position, [3, 0]);
@@ -247,17 +250,30 @@ test("Main exit is independent of the selected Context and completes Unit lifeti
     const exitTick = state.tick;
     state = step(state, []);
     assert.equal(get(state, 0), undefined);
-    assert.deepEqual(state.events.filter(event => event.type === "ROUTE_COMPLETED"), [
-        { type: "ROUTE_COMPLETED", unitId: host.id, tick: exitTick },
+    assert.deepEqual(state.events.filter(event => event.type === "UNIT_REMOVED")
+        .map(({ type, unitId, tick, reason }) => ({ type, unitId, tick, reason })), [
+        { type: "UNIT_REMOVED", unitId: host.id, tick: exitTick, reason: "EXIT" },
     ]);
     state = step(state, []);
-    assert.equal(state.events.some(event => event.type === "ROUTE_COMPLETED"), false);
-    assert.equal(leaves, 1);
-    assert.notEqual(get(ticks(battle([creation(plan())]), 3), 0), undefined);
-    const waitingAtExit = plan([wait(999)], { endPosition: [0, 0] });
+    assert.equal(state.events.some(event => event.type === "UNIT_REMOVED" && event.reason === "EXIT"), false);
+    assert.deepEqual(exits, ["EXIT"]);
+    let forced = ticks(battle([creation(plan())]), 3);
+    assert.notEqual(get(forced, 0), undefined);
+    forced = setHook(forced, unitRemoved, observeExit);
+    forced = units.remove(forced, units.ref(get(forced, 0)), { reason: "EXIT" });
+    assert.equal(get(forced, 0), undefined);
+    assert.deepEqual(exits, ["EXIT", "EXIT"]);
+    const waitingAtExit = plan([wait(999)], { destination: { type: "EXIT", position: [0, 0], requireFinish: true } });
     assert.ok(get(step(battle([creation(waitingAtExit)]), []), 0));
-    const earlyExit = { ...waitingAtExit, requireAllCheckpoints: false };
+    const earlyExit = { ...waitingAtExit, destination: { ...waitingAtExit.destination, requireFinish: false } };
     assert.equal(get(step(battle([creation(earlyExit)]), []), 0), undefined);
+
+    let stay = battle([creation(plan([], { destination: { type: "MOVE", position: [0, 3] } }), { locomotion: movement })]);
+    assert.equal(route.remainingDistance(stay, get(stay, 0), current(stay)), 3);
+    stay = ticks(stay, 5);
+    assert.deepEqual(get(stay, 0).position, [3, 0]);
+    assert.equal(route.remainingDistance(stay, get(stay, 0), current(stay)), 0);
+    assert.equal(stay.events.some(event => event.type === "UNIT_REMOVED"), false);
 });
 
 test("spatial instructions publish consumption before hooks and resume the latest Context", () => {

@@ -52,9 +52,16 @@ test("native routes compile patrol loops and retain wait anchors before birth", 
 
     const route = parseRouteDefinition({
         ...raw.routes[0],
+        visitEveryCheckPoint: true,
         checkpoints: ["WAIT_FOR_SECONDS", "WAIT_FOR_PLAY_TIME", "WAIT_CURRENT_WAVE_TIME", "WAIT_CURRENT_FRAGMENT_TIME"]
             .map((type) => ({ type, time: 1 })),
     });
+    assert.deepEqual(route.plan.destination, {
+        type: "EXIT", position: [raw.routes[0].endPosition.row, raw.routes[0].endPosition.col],
+        requireFinish: true,
+    });
+    assert.equal(level.routes[0].plan.destination.requireFinish, false);
+    assert.equal(parseRouteDefinition({ ...raw.routes[0], endPosition: null }).plan.destination, null);
     assert.deepEqual(route.plan.checkpoints.map(({ anchor, tick }) => [anchor, tick]), [
         ["ENTER", 30], ["BATTLE", 30], ["WAVE", 30], ["FRAGMENT", 30],
     ]);

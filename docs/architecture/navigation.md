@@ -50,7 +50,15 @@ Route 是统一的路线解释器。Main 与其他 Context 使用相同 Plan 和
 
 ### 类型与身份
 
-Definition 保存初始执行政策 alwaysCheckCurrentPoint；Plan 保存运动方式、出生起点、可空最终终点、指令序列和 requireAllCheckpoints。Plan 不属于共享 UnitDefinition；创建时必需 Initial 提供本次 Plan 与 offset。
+Definition 保存初始执行政策 alwaysCheckCurrentPoint；Plan 保存运动方式、出生起点、指令序列和 `destination: Destination | null`。Plan 不属于共享 UnitDefinition；创建时必需 Initial 提供本次 Plan 与 offset。
+
+```typescript
+type Destination =
+    | { readonly type: "MOVE"; readonly position: TilePosition }
+    | { readonly type: "EXIT"; readonly position: TilePosition; readonly requireFinish: boolean };
+```
+
+MOVE 表达抵达后留场的持续路线终点；EXIT 表达 Main 的自然出口；null 表达没有固定的最终目标。Data 将普通原始路线转换为 EXIT，Content／Meta 按实际内容与模式构造 MOVE 或无固定终点的 Plan。卫戍登记时禁止自然退出的路线使用 MOVE，不另建运行期 canExit。关卡通用 END Marker 不赋予 Unit 退出资格。
 
 Context 保存 Plan、offset、index、已进入的 current、有效的不可达政策和 ticking。Main 与其他 Context 各有独立 Ref，Ref 持有宿主引用，并在宿主中按 Ref 对象身份读取对应 Context。路线切换、更新和移除使用对应 Context 的 Ref。
 
@@ -104,15 +112,15 @@ reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索�
 
 ### 运动目标与 Main 出口
 
-movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRACE；指令耗尽后可追踪最终终点。等待或无目标返回空，空目标不表示 Main 完成。
+movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRACE；指令耗尽后可追踪 MOVE 或 EXIT 的 destination.position。MOVE 终点持续有效，抵达后仍留场，身体偏离后可恢复追踪。destination 为 null 时没有固定的最终目标。等待或无目标返回空，空目标不表示 Main 完成。
 
 导航先从身体位置减去 Context.offset，得到建议点后加回偏移。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
 
 remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。它累计当前与后续 MOVE／终点的导航几何路程，WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，未来随机目标按格心估计且不消费 RNG。
 
-当前 TRACE 查询最后目标格的距离；没有可确定有限出口的无终点路线、循环或未来持续 TRACE 返回 undefined。有限路线的当前段越界或不可达时只给该段直线回退，不继续叠加后续段，也不用回退掩盖无有限出口。
+当前 TRACE 查询最后目标格的距离；没有可确定有限终点的无终点路线、循环或未来持续 TRACE 返回 undefined。MOVE 和 EXIT 都提供有效终点。有限路线的当前段越界或不可达时只给该段直线回退，不继续叠加后续段，也不用回退掩盖无有限终点。
 
-Main 必须有最终终点、实际到达，且满足 requireAllCheckpoints；要求全部指令时必须耗尽，否则允许提前退出。其他 Context 到达不产生 Main 退出。Route 在 advance 末尾记录 ROUTE_COMPLETED，按 SCRIPT 请求完整 Unit 离场，不负责统计、扣血或胜负；调度随后重读 Unit 决定是否移动。
+Main 的 destination 必须为 EXIT 且实际抵达其位置（含 Main.offset）。requireFinish 为 true 时还须完成全部指令，为 false 时允许提前退出。每 Tick 在 advance 末尾独立检查 Main，不受其他 Context 控制、计时或是否到达自身终点影响；其他 Context 自身的 EXIT 不触发离场。Route 用 `unit.remove(..., { reason: "EXIT" })` 请求完整 Unit 离场，Content 可以用同一操作主动触发强制出口。两者通过相同 Lifetime 生命周期向本地与全局 Hook 发布离场原因，由 UNIT_REMOVED 表达 UI 离场表现，不另发 Route 事件。Route 不负责统计、扣血或胜负；运动阶段随后重读 Unit 决定是否继续移动。
 
 ### 初始化
 

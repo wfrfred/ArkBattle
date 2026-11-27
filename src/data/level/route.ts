@@ -189,14 +189,21 @@ export function parseRouteDefinition(value: unknown): Route {
         throw new RangeError("route.spawnRandomRange must be nonnegative");
     }
 
+    const requireFinish = boolean(data.visitEveryCheckPoint, "route.visitEveryCheckPoint");
+
     return {
         plan: {
             motionMode,
             startPosition: position(data.startPosition, "route.startPosition"),
-            endPosition:
-                data.endPosition === null ? null : position(data.endPosition, "route.endPosition"),
+            destination:
+                data.endPosition === null
+                    ? null
+                    : {
+                          type: "EXIT",
+                          position: position(data.endPosition, "route.endPosition"),
+                          requireFinish,
+                      },
             checkpoints: compileCheckpoints(checkpoints),
-            requireAllCheckpoints: boolean(data.visitEveryCheckPoint, "route.visitEveryCheckPoint"),
         },
         spawnOffset: offset(data.spawnOffset, "route.spawnOffset"),
         spawnRandomRange,

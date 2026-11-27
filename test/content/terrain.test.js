@@ -267,9 +267,9 @@ test("terrain contact is detected from the actual route position", () => {
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     });
     traveller.initial = { route: {
-        plan: { motionMode: "WALK", startPosition: [0, 0], endPosition: null,
+        plan: { motionMode: "WALK", startPosition: [0, 0], destination: null,
             checkpoints: [{ type: "MOVE", position: [0, 1], offset: [0, 0], randomizeOffset: false }],
-            requireAllCheckpoints: true }, offset: [0, 0],
+        }, offset: [0, 0],
     } };
     const configured = setup([
         terrain.normal.create({}), terrain.infection.create(infectionParams()),

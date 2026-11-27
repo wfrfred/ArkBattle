@@ -3,6 +3,7 @@ export { hasRoute, initialize } from "./capability.js";
 export type {
     Definition,
     Plan,
+    Destination,
     Initial,
     Checkpoint,
     Context,
@@ -10,8 +11,6 @@ export type {
     State,
     Route,
 } from "./capability.js";
-
-export type { Event } from "./event.js";
 
 export {
     createContext,

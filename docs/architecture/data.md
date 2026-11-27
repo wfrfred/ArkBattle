@@ -55,6 +55,10 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 `readEnemyMovementPrefab()` 用最终的 `prefabKey` 选择已提取的组件记录，提供转向、避让宽度、路点策略和出生延迟。关卡接入处把运动参数交给敌人工厂，把出生延迟和计数资格交给调度。[Prefab 读取](../../src/data/unit/prefab.ts) · [路点策略依据](../research/cases/13-route-and-movement-timing.md)
 
+## 路线静态资料
+
+普通原始路线转换为 `Plan.destination` 的 EXIT 分支，保留原终点位置与是否必须完成全部路点的配置（requireFinish）。不根据通用关卡 END Marker 推导退出资格；具体 Content／Meta 按本次单位和玩法的实际路线语义选择 MOVE 或 EXIT，MOVE 保留终点而不自然退出。无固定目标以 null 表达，详见 [Route](navigation.md#类型与身份)。
+
 ## 静态配置与数值
 
 `m_defined`、潜能的零基 rank、原表天赋候选和模组数据槽等原始表示不进入 Core。标签、免疫和关联资源应有明确的转换结果。原始敌人资料的 `applyWay` 随记录保留，查询以实际登记的 [Action](action.md#攻击方式) 为准。

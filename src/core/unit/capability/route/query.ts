@@ -42,8 +42,8 @@ export function target(context: Context): WorldPosition | null {
 
     return current === null &&
         context.index === context.plan.checkpoints.length &&
-        context.plan.endPosition !== null
-        ? Tile.center(context.plan.endPosition)
+        context.plan.destination !== null
+        ? Tile.center(context.plan.destination.position)
         : null;
 }
 
@@ -63,7 +63,7 @@ export function remainingDistance(
             Vec2.length(Vec2.sub(goal, position))
         );
     }
-    if (context.plan.endPosition === null) {
+    if (context.plan.destination === null) {
         return undefined;
     }
 
@@ -128,7 +128,7 @@ export function remainingDistance(
         index++;
     }
 
-    move(Tile.center(context.plan.endPosition));
+    move(Tile.center(context.plan.destination.position));
 
     return fallback ?? remaining;
 }

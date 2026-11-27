@@ -11,7 +11,10 @@ export type Lifecycle = "ACTIVE" | "ENDING";
 
 export type End =
     | { readonly reason: "DEATH"; readonly killer: Ref<Unit> | null }
-    | { readonly reason: "RETREAT" | "EXPIRED" | "SCRIPT" | "REDEPLOY_SELF" | "REDEPLOY_EXTERNAL" };
+    | {
+          readonly reason:
+              "RETREAT" | "EXPIRED" | "SCRIPT" | "EXIT" | "REDEPLOY_SELF" | "REDEPLOY_EXTERNAL";
+      };
 
 export type EndReason = End["reason"];
 

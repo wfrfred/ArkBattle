@@ -42,9 +42,8 @@ test("initial and scheduled entry see registered battle facts and preserve their
     const plan = {
         motionMode: "WALK",
         startPosition: [0, 5],
-        endPosition: [0, 6],
+        destination: { type: "EXIT", position: [0, 6], requireFinish: true },
         checkpoints: [{ type: "WAIT", anchor: "ENTER", tick: 30, timer: null }],
-        requireAllCheckpoints: true,
     };
     const scheduled = {
         id: "scheduled",

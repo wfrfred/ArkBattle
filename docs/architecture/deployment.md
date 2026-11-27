@@ -108,7 +108,7 @@ Deployable 单向依赖 Occupancy。初始来源为空，COST 与额度为零。
 
 `deployable.canRetreat` 查询当前 ACTIVE 与撤退限制；`deployable.retreat` 负责完整撤退业务。返费按本次 COST 与返费倍率计算，并受实例上限约束。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
-Unit 注销后，Deployable 固定 `removed` 通过 Slot 归还实际占位；Card 自己装配的独立 `removed` Hook 解除本次 Unit 关联并按离场原因决定是否回收。两者各以普通 priority 0 结算，不承诺在同一回调内执行。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED 跳过回收。
+Unit 注销后，Deployable 固定 `removed` 通过 Slot 归还实际占位；Card 自己装配的独立 `removed` Hook 解除本次 Unit 关联并按离场原因决定是否回收。两者各以普通 priority 0 结算，不承诺在同一回调内执行。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED、EXIT 跳过回收。
 
 DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占位。Unit 与格子在离场时立即注销，Card.units 则在 Card 自身的 removed Hook 中更新。 [原生退出与延迟](../research/evidence/deployment-exit-limits-20261122/README.md#退出与延迟)
 

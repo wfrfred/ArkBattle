@@ -13,9 +13,8 @@ import { battle, get as getUnit } from "../helpers/battle.js";
 const plan = {
     motionMode: "WALK",
     startPosition: [1, 1],
-    endPosition: null,
+    destination: null,
     checkpoints: [{ type: "WAIT", anchor: "ENTER", tick: 1000, timer: null }],
-    requireAllCheckpoints: true,
 };
 
 function definition(id, onEntered) {

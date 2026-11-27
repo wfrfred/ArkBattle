@@ -17,10 +17,20 @@ export interface Definition {
 export interface Plan {
     readonly motionMode: MotionMode;
     readonly startPosition: TilePosition;
-    readonly endPosition: TilePosition | null;
     readonly checkpoints: readonly Checkpoint[];
-    readonly requireAllCheckpoints: boolean;
+    readonly destination: Destination | null;
 }
+
+export type Destination =
+    | {
+          readonly type: "MOVE";
+          readonly position: TilePosition;
+      }
+    | {
+          readonly type: "EXIT";
+          readonly position: TilePosition;
+          readonly requireFinish: boolean;
+      };
 
 export interface Initial {
     readonly plan: Plan;
