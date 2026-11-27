@@ -1,7 +1,7 @@
 import type { Options } from "../../../../hook.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
-import * as vitality from "../../../../unit/capability/vitality/operations.js";
+import { canReceiveHp } from "../../../../unit/capability/vitality/query.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
 import { increase } from "../apply.js";
@@ -31,7 +31,7 @@ export function applyHealing(
     if (
         calculation === undefined ||
         calculation.amount === 0 ||
-        !vitality.canReceiveHp(battle, request.target)
+        !canReceiveHp(battle, request.target)
     ) {
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
@@ -51,7 +51,7 @@ export function applyHealing(
     );
     battle = before.state;
 
-    if (!vitality.canReceiveHp(battle, request.target)) {
+    if (!canReceiveHp(battle, request.target)) {
         return complete(
             battle,
             request,

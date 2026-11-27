@@ -25,7 +25,7 @@ import { add as addUnit, update } from '../../dist/core/unit/operations.js';
 import { getUnit } from '../helpers/unit.js';
 import { create as createBattlefield } from '../../dist/core/battlefield/state.js';
 import { create as createMap } from '../../dist/core/battlefield/map/map.js';
-import { start as startAction, ref as actionRef, getApplyWay } from '../../dist/core/unit/capability/action/index.js';
+import { start as startAction, ref as actionRef, resolveApplyWay } from '../../dist/core/unit/capability/action/index.js';
 import { ref as unitRef } from '../../dist/core/unit/index.js';
 import { allowsRestrictions, setCategory } from '../../dist/core/unit/capability/targetable/capability.js';
 import { invisibleRestriction } from '../../dist/core/effects/visibility.js';
@@ -152,7 +152,7 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   const blocker = guard(0, [2, 2], 1, [{ id: 'hidden', group: null, value: invisibleRestriction }]);
   const hound = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
-  assert.equal(getApplyWay(getUnit(before, 1)), "MELEE");
+  assert.equal(resolveApplyWay(getUnit(before, 1)), "MELEE");
   const selectTargets = action.attack.targetGroups[0].select;
   assert.equal(allowsRestrictions(before, hound)(getUnit(before, 0)), false);
   assert.deepEqual(selectTargets(before, unitRef(hound)).value.map(ref => ref.id), [0]);
@@ -220,7 +220,7 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
   ], { rows: 5, columns: 5 });
   const target = unitRef(getUnit(initial, 0));
   const bow = getUnit(initial, 1);
-  assert.equal(getApplyWay(getUnit(initial, 1)), "ALL");
+  assert.equal(resolveApplyWay(getUnit(initial, 1)), "ALL");
   assert.deepEqual(select(initial, unitRef(bow)).value, [target]);
   const device = update(initial, target, setCategory("DEVICE"));
   assert.deepEqual(select(device, unitRef(bow)).value, []);
@@ -228,7 +228,7 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
   assert.deepEqual(select(before, unitRef(bow)).value, [target]);
   const started = startAction(before, actionRef(bow.action.actions.get(attack)));
   let state = started.state;
-  assert.equal(getApplyWay(getUnit(state, 1)), "ALL");
+  assert.equal(resolveApplyWay(getUnit(state, 1)), "ALL");
   assert.equal(state.battlefield.projectiles.size, 0);
   assert.equal(getUnit(state, 0).vitality.health.hp, 1000);
   while (state.tick < 16) state = step(state, []);

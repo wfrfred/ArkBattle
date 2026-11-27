@@ -1,6 +1,6 @@
 import type { Offense } from "../../../core/unit/capability/offense/index.js";
 import {
-    activationRef,
+    ref as activationRef,
     type Definition,
     type SpDefinition,
     type Trigger,

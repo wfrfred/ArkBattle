@@ -10,7 +10,7 @@
 
 | 状态 | 事项 | 剩下的问题 |
 | --- | --- | --- |
-| 待定 | 波次和终局等待的释放时点（U047） | 主线 0-1 的普通敌人死亡时释放波次等待，之后回收才释放终局等待。当前 `resolveUnits` 同时解除两者。探针要为每次死亡另发一条延迟 Branch 才能保留结果。需决定项目是否区分这两个时点，再确定由 Schedule 还是终局规则持有这段等待。 [普通关卡配置和释放链](../research/evidence/scheduler-recycle-config-20261122/README.md) · [当前等待释放](../../src/core/battle/schedule/runtime.ts#L276) |
+| 待定 | 波次和终局等待的释放时点（U047） | 主线 0-1 的普通敌人死亡时释放波次等待，之后回收才释放终局等待。当前 `resolveUnits` 同时解除两者。探针要为每次死亡另发一条延迟 Branch 才能保留结果。需决定项目是否区分这两个时点，再确定由 Schedule 还是终局规则持有这段等待。 [普通关卡配置和释放链](../research/evidence/scheduler-recycle-config-20261122/README.md) · [当前等待释放](../../src/core/battle/schedule/operations.ts#L276) |
 
 ## Battle / 关卡结算
 

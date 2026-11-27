@@ -9,7 +9,7 @@ import {
     create as createSkillAttack,
     type State as SkillAttackState,
 } from "../../actions/skill.js";
-import { executionRef } from "../../../core/unit/capability/action/index.js";
+import { ref as executionRef } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef, all as allUnits, type Unit } from "../../../core/unit/index.js";
 import {
     hasTargetable,

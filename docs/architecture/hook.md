@@ -20,7 +20,7 @@ ID 的范围是集合 × Key × ID。无登记返回空集合；同键同 ID 的
 
 ## 固有声明与初始化
 
-Definition、创建输入与 Unit 使用同一种 Hooks 集合，无登记使用 Hooks.empty()。初始化从输入集合开始，按 Capability initializer 顺序装配，最后合并 Definition.hooks；全部固有登记在 add 与 entered 之前就绪。
+Definition、创建输入与 Unit 使用同一种 Hooks 集合，无登记使用 Hooks.empty()。初始化从输入集合开始，按 Capability initializer 顺序装配，最后合并 Definition.hooks；全部固有登记在 add 与 entered 之前就绪。当前 Blocker／Blockable 的 removing 固有登记先于输入集合合并，存在同级顺序及同 ID 覆盖例外；此差异见[一致性审查](consistency-audit-20261127.md#待取舍)，尚不将其定为通用规则。
 
 固有 Hook 可以直接声明，不必包装 Effect。Card 持有自身的 Hooks，从 Definition.hooks 装配，通过 `card.beforeDeploy` 调整本次 Unit.Input；工作值可调整 definition、initial 和 hooks，不复制 Card 的 Hooks，也不提前保存一组 Unit 程序。
 

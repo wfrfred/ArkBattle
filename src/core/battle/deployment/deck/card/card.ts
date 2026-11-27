@@ -1,4 +1,5 @@
 import { set, remove } from "../../../../common/collection/entries.js";
+import { replaceIn } from "../../../../common/object.js";
 import type { State as BattleState } from "../../../state.js";
 import { replace } from "../operations.js";
 import type { Config, Lifetime } from "../../../../lifetime/index.js";
@@ -50,9 +51,9 @@ export function setRestriction(
     entry: Contribution<Restriction>,
 ): BattleState {
     const self: Card = reference.get(battle)!;
-    const restrictions = set(self.restrictions, entry);
+    const next = replaceIn(self, ["restrictions"], set(self.restrictions, entry));
 
-    return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
+    return next === self ? battle : replace(battle, next);
 }
 
 export function removeRestriction(
@@ -61,7 +62,7 @@ export function removeRestriction(
     id: string,
 ): BattleState {
     const self: Card = reference.get(battle)!;
-    const restrictions = remove(self.restrictions, id);
+    const next = replaceIn(self, ["restrictions"], remove(self.restrictions, id));
 
-    return restrictions === self.restrictions ? battle : replace(battle, { ...self, restrictions });
+    return next === self ? battle : replace(battle, next);
 }

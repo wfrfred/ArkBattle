@@ -1,5 +1,6 @@
 import type { Entry } from "../../../../common/collection/entries.js";
 import type { Ref } from "../../../../common/ref.js";
+import { replaceIn } from "../../../../common/object.js";
 import * as hooks from "../../../../hook.js";
 import type { Input as UnitInput } from "../../../../unit/initialize.js";
 import type { Result, State as BattleState } from "../../../state.js";
@@ -18,9 +19,9 @@ export function setHook<H extends Entry>(
     entry: NoInfer<H>,
 ): BattleState {
     const self: Card = reference.get(battle)!;
-    const next = self.hooks.set(key, entry);
+    const next = replaceIn(self, ["hooks"], self.hooks.set(key, entry));
 
-    return next === self.hooks ? battle : replace(battle, { ...self, hooks: next });
+    return next === self ? battle : replace(battle, next);
 }
 
 export function removeHook<H extends Entry>(
@@ -30,9 +31,9 @@ export function removeHook<H extends Entry>(
     id: string,
 ): BattleState {
     const self: Card = reference.get(battle)!;
-    const next = self.hooks.remove(key, id);
+    const next = replaceIn(self, ["hooks"], self.hooks.remove(key, id));
 
-    return next === self.hooks ? battle : replace(battle, { ...self, hooks: next });
+    return next === self ? battle : replace(battle, next);
 }
 
 export function dispatch(

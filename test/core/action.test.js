@@ -67,12 +67,12 @@ test("prepare can reject without allocating a round; ending preserves the latest
         },
         onTick(state, source, self) {
             const advances = self.state.advances + 1;
-            const reference = actions.executionRef(self);
+            const reference = actions.ref(self);
             state = actions.setExecutionState(state, reference, { advances });
             return advances === 2 ? actions.finish(state, reference) : state;
         },
         onEnd(state, source, self, end, action) {
-            const reference = actions.executionRef(self);
+            const reference = actions.ref(self);
             state = actions.setExecutionState(state, reference, {
                 ...self.state,
                 cleaned: true,
@@ -131,7 +131,7 @@ test("attribute changes preserve independent attack cooldown progress and leave 
         id: "first", applyWay: "NONE", period: { type: "ATTACK_SPEED" },
         initialize: state => ({ state, value: {} }),
         prepare: state => ({ state, value: {} }),
-        onTick: (state, source, self) => actions.finish(state, actions.executionRef(self)),
+        onTick: (state, source, self) => actions.finish(state, actions.ref(self)),
     };
     const second = { ...first, id: "second" };
     const fixed = { ...first, id: "fixed", period: { type: "FIXED", ticks: 20 } };
@@ -269,7 +269,7 @@ test("Combat advances an instantaneous action once per Tick and skips selection 
             state = actions.setState(state, action, {
                 completed: action.get(state).state.completed + 1,
             });
-            return actions.finish(state, actions.executionRef(self));
+            return actions.finish(state, actions.ref(self));
         },
     };
     const resource = {

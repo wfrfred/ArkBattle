@@ -184,7 +184,7 @@ export function reduceDuration(
     }
 
     const host = reference.host.get(battle);
-    const self = query.get(battle, reference);
+    const self = query.getCurrentBurst(battle, reference);
     if (
         host === undefined ||
         !query.available(host) ||

@@ -1,3 +1,9 @@
+import { createChange, type Change } from "../../change.js";
+import { ref } from "../../query.js";
+import { hasBlocker } from "../blocking/blocker/blocker.js";
+import { releaseAll } from "../blocking/blocker/operations.js";
+import { hasBlockable } from "../blocking/blockable/blockable.js";
+import { release } from "../blocking/blockable/operations.js";
 import type { Unit } from "../../unit.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 
@@ -25,4 +31,20 @@ export function initialize<U extends Unit & Pick<Layer, "definition">>(
     unit: U,
 ): Result<U & Layer> {
     return { state: battle, value: { ...unit, layer: { type: unit.definition.layer.type } } };
+}
+
+export function setType(type: Type): Change<Unit & Layer> {
+    return createChange<Unit & Layer>(
+        (unit) => ({ ...unit, layer: { type } }),
+        (battle, previous) => {
+            if (hasBlocker(previous)) {
+                return releaseAll(battle, ref(previous));
+            }
+            if (hasBlockable(previous)) {
+                return release(battle, ref(previous));
+            }
+
+            return battle;
+        },
+    );
 }

@@ -187,7 +187,7 @@ test('mania counts each released action once and each skill activation, caps sel
     id: 'mania-attack', triggerBindingId: 'primary', period: { type: 'ATTACK_SPEED' }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
     targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
       operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }],
-    afterOutput: (work, source, self) => dispatchReleased(work, actions.executionRef(self)),
+    afterOutput: (work, source, self) => dispatchReleased(work, actions.ref(self)),
   });
   const skill = createSkillDefinition({
     id: 'mania-hit',

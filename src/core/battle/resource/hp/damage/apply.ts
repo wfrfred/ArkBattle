@@ -2,8 +2,7 @@ import type { Options } from "../../../../hook.js";
 import type { Restriction } from "../../../../unit/capability/vitality/restriction.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
-import * as vitality from "../../../../unit/capability/vitality/operations.js";
-import { isAlive } from "../../../../unit/capability/vitality/query.js";
+import { isAlive, canReceiveDamage } from "../../../../unit/capability/vitality/query.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
 import { decrease, confirmDeath } from "../apply.js";
@@ -56,7 +55,7 @@ export function applyDamage(
     );
     battle = before.state;
 
-    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
+    if (!canReceiveDamage(battle, context, options?.ignore)) {
         return complete(
             battle,
             request,

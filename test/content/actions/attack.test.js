@@ -156,8 +156,8 @@ test("bound healing keeps its receivers when a later selection restriction would
         { definition: patient, position: [2, 1], hooks: Hooks.empty(), initial: {} },
         { definition: patient, position: [3, 1], hooks: Hooks.empty(), initial: {} },
     ]);
-    assert.equal(actions.getApplyWay(get(state, 0)), "NONE");
-    assert.equal(actions.getApplyWay(get(state, 1)), "NONE");
+    assert.equal(actions.resolveApplyWay(get(state, 0)), "NONE");
+    assert.equal(actions.resolveApplyWay(get(state, 1)), "NONE");
     for (const [id, amount] of [[1, 70], [2, 60]]) {
         const request = {
             source: null, target: units.ref(get(state, id)),

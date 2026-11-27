@@ -3,19 +3,9 @@ import type { Ref } from "../../../common/ref.js";
 import * as units from "../../query.js";
 import { replace } from "../../operations.js";
 import type { State } from "../../../battle/state.js";
-import type { Direction } from "../../../geometry/direction.js";
-import { createChange, type Change } from "../../change.js";
 import type { Unit } from "../../unit.js";
 import type { Occupancy, Pair } from "./capability.js";
 import { replaceIn } from "../../../common/object.js";
-
-export function setDirection(direction: Direction): Change<Unit & Occupancy> {
-    return createChange<Unit & Occupancy>((unit) =>
-        unit.occupancy.direction === direction
-            ? unit
-            : { ...unit, occupancy: { ...unit.occupancy, direction } },
-    );
-}
 
 export function enter(battle: State, reference: Ref<Unit & Occupancy>): State {
     const self = reference.get(battle);

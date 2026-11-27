@@ -16,7 +16,7 @@ Calculate 计算一笔输出；Apply 让目标接收该输出并完成资源与�
 → Receiving（HP 按方向共享，EP Damage 专属，EP Healing 不执行）→ 取消与资格确认
 → 来源 BeforeCommit → 最新接收资格
 → 所属能力提交 → targetApplied → sourceApplied
-→ HP Damage 确认死亡 → Completed → Outcome
+→ HP Damage 确认死亡 → HP Damage／Healing Completed → Outcome
 ```
 
 基础目标必须仍登记且 ACTIVE，HP 业务还要求 HP>0；EP 的 Burst 等固有前提由 Elemental 定义。BeforeReceive 位于接收 Restriction 前，能改变数值与准入状态；它不绕过基础前提。三次接收复检分别位于 BeforeReceive、Receiving、BeforeCommit 之后，读取最新有效规则。没有同步业务的连续步骤不重复校验。
@@ -35,7 +35,7 @@ Request 保存来源、目标、初始 parameters 及发起时确定的事实。
 
 Formula 以原始 Parameters 为初值逐项接续。当前参数可改变伤害类型；基础公式、OutputContext.type 与 Calculated.type 使用改变后的实际类型，不重新读取 Request.parameters.type。防御与抗性在 Formula 后采样，Apply 不因之后属性变化自动重算。
 
-Context 只保留本阶段所需的固定事实：基础为 request，普通业务接收增加 calculated 及本次取消权限，提交增加 received，Applied 增加固定 application，Completed 保存同一最终 outcome。目标从 request.target 取得。Calculated 不复制来源、目标或实时 HP／Effect；弹道和跨阶段业务所需样本由具体内容明确保存，不能用命中时查询来源冒充发射时采样。
+Context 只保留本阶段所需的固定事实：基础为 request，普通业务接收增加 calculated 及本次取消权限，提交增加 received，Applied 增加固定 application，HP 的 Completed 保存同一最终 outcome。目标从 request.target 取得。Calculated 不复制来源、目标或实时 HP／Effect；弹道和跨阶段业务所需样本由具体内容明确保存，不能用命中时查询来源冒充发射时采样。
 
 ### 请求分类
 
@@ -80,7 +80,7 @@ HP Damage 使用 `p=max(0, power×multiplier+addition)`。power 不必来自 ATK
 
 ## 接收工作值、数值固定与取消
 
-HP Damage／Healing 保留各自的 beforeReceive；准入后的目标 receiving 和来源 beforeCommit 分别归 hp.decrease／hp.increase。同一方向共享 Reason、Pending、Next、fix、cancel；共享 Context 以 type 区分 DAMAGE／ADJUSTMENT 或 HEALING／ADJUSTMENT。普通 HP beforeReceive 接续同方向 Pending，但保留普通业务的 Context。内容按实际适用性判断 type 和普通请求分类，不将所有减少视为伤害或所有增加视为治疗。EP Damage 的 beforeReceive 与 receiving 仍使用同一业务 ReceivingHook、不同键；EP Healing 只有 beforeReceive 和简单 Pending，没有准入后的 receiving 或取消协议。
+HP Damage／Healing 保留各自的 beforeReceive；准入后的目标 receiving 和来源 beforeCommit 分别归 hp.decrease／hp.increase。同一方向共享 Reason、Pending、Next、fix、cancel；共享 Context 以 type 区分 DAMAGE／ADJUSTMENT 或 HEALING／ADJUSTMENT。普通 HP beforeReceive 接续同方向 Pending，但保留普通业务的 Context。内容按实际适用性判断 type 和普通请求分类，不将所有减少视为伤害或所有增加视为治疗。EP Damage 的 beforeReceive 与 receiving 仍使用同一业务 ReceivingHook、不同键；EP Healing 只有 beforeReceive，Pending 仅含 amount，没有准入后的 receiving 或取消协议。
 
 | 当前 Pending | 可返回的后继 | 数值约束 |
 | --- | --- | --- |
@@ -114,7 +114,7 @@ Calculate 与 Apply 分别接受必填的 Options 或 ApplyOptions；`null` 表�
 
 ignore 不绕过 ACTIVE、存活、Burst 或中立默认前提。HP Restriction 接收实际 ReceivingContext，EP 接收 `{self, request, type}`，实际 type 来自 Calculated；不为索敌伪造计算结果。HP Healing 没有接收限制数组，EP Healing 保留自己的 healingRestrictions，均不增加本次 ignore；EP Healing 也没有 forbidden。
 
-Hook 的固定 Context、priority、候选快照与重入资格只在 [Hook](hook.md) 定义。sourceFormula／targetFormula、targetApplied／sourceApplied 是不同角色；同一 Unit 承担两个角色仍分别 Applied，Completed 对同一宿主只通知一次。
+Hook 的固定 Context、priority、候选快照与重入资格只在 [Hook](hook.md) 定义。sourceFormula／targetFormula、targetApplied／sourceApplied 是不同角色；同一 Unit 承担两个角色仍分别 Applied，HP Damage／Healing 的 Completed 对同一宿主只通知一次；当前 EP Damage／Healing 不派发 Completed。是否需要 EP 的完成通知见[一致性审查](consistency-audit-20261127.md#待取舍)。
 
 ## 有符号 HP 调整
 

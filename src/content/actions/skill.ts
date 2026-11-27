@@ -1,8 +1,8 @@
 import { assertPositiveSafeInteger } from "../../core/common/assert.js";
 
-import { executionRef } from "../../core/unit/capability/action/index.js";
+import { ref as executionRef } from "../../core/unit/capability/action/index.js";
 import {
-    activationRef,
+    ref as activationRef,
     type ActivationRef,
     consume,
     check,

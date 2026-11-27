@@ -37,7 +37,6 @@ export interface Pull extends lifetimes.Lifetime<{
     readonly unbalance: Ref<Unbalance>;
 }> {
     readonly config: lifetimes.Config<Pull, string>;
-    readonly unbalance: Ref<Unbalance>;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly scope: Ref<lifetimes.Lifetime>;
     readonly point: Point;
@@ -91,7 +90,7 @@ export function withinRadius(radius: number): NearStop {
     const radiusSquared = radius ** 2;
 
     return (battle, self) => {
-        const target = self.unbalance.host.get(battle);
+        const target = self.ref.unbalance.host.get(battle);
         const point = position(battle, self.point);
 
         return (
@@ -135,10 +134,8 @@ export function apply(
         return { state: battle, value: null };
     }
 
-    const identity = { unbalance: unbalance.ref(next) };
-    const reference = createRef<Pull>(identity, getPull);
+    const reference = createRef<Pull>({ unbalance: unbalance.ref(next) }, getPull);
     const item: Pull = {
-        ...identity,
         ref: reference,
         config,
         lifecycle: "ACTIVE",

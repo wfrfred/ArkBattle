@@ -15,7 +15,7 @@ import type { Id as ProjectileId } from "../projectile/projectile.js";
 import type { Seed } from "../common/rng.js";
 import type { Id as UnitId } from "../unit/unit.js";
 import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
-import { removedHook as scheduleRemovedHook } from "./schedule/runtime.js";
+import { removedHook as scheduleRemovedHook } from "./schedule/operations.js";
 import {
     initialize as initializeDeployment,
     type State as DeploymentState,

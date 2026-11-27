@@ -37,11 +37,11 @@ export {
     resolveDefense,
     resolveResistance,
     resolveRecoverySpeed,
+    canReceiveDamage,
+    canReceiveHp,
 } from "./query.js";
 
 export {
-    canReceiveDamage,
-    canReceiveHp,
     receiveDecrease,
     receiveIncrease,
     commitDecrease,

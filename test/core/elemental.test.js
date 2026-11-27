@@ -70,7 +70,7 @@ test("EP-03: Burst recovery continues while absent, refills EP with the current 
     }
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
     assert.equal(get(state, 0).elemental.burst, null);
-    assert.equal(elemental.get(state, burst), undefined);
+    assert.equal(elemental.getCurrentBurst(state, burst), undefined);
     assert.equal(vitality.resolveResistance(state, get(state, 0)), 50);
     state = update(state, target, presence.appear([0, 0]));
     const restart = { ...incoming, parameters: { ...incoming.parameters, power: 2000 } };
@@ -109,14 +109,14 @@ test("EP-06: reducing recovery preserves elapsed time, immediately refills from 
     }));
 
     state = elemental.reduceDuration(state, burst, 150);
-    assert.deepEqual(elemental.get(state, burst).expiration, {
+    assert.deepEqual(elemental.getCurrentBurst(state, burst).expiration, {
         type: "DURATION", duration: 300, remaining: 270, rate: 0,
     });
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(200));
 
     state = elemental.reduceDuration(state, burst, 270);
     assert.equal(get(state, 0).elemental.burst, null);
-    assert.equal(elemental.get(state, burst), undefined);
+    assert.equal(elemental.getCurrentBurst(state, burst), undefined);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(2000));
     assert.equal(effects.forHost(state, units.ref(get(state, 0))).some(effect =>
         effect.definition === silence || effect.definition === blockSpRecovery), false);
@@ -156,11 +156,11 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
     }
 
     state = elemental.reduceDuration(state, original, 270);
-    assert.equal(elemental.get(state, original), undefined);
+    assert.equal(elemental.getCurrentBurst(state, original), undefined);
     assert.notEqual(restarted, original);
     assert.deepEqual(get(state, 0).elemental.burst, restarted);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(0));
-    assert.deepEqual(elemental.get(state, restarted).expiration, {
+    assert.deepEqual(elemental.getCurrentBurst(state, restarted).expiration, {
         type: "DURATION", duration: 300, remaining: 300, rate: 0,
     });
     assert.equal(elemental.reduceDuration(state, original, 1), state);
@@ -199,7 +199,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     const result = epDamage.applyDamage(neural, epDamage.calculateDamage(state, neural, null), null);
     state = result.state;
     assert.equal(get(state, 0).vitality.health.hp, 9000);
-    assert.equal(elemental.get(state, result.value.application.burst), undefined);
+    assert.equal(elemental.getCurrentBurst(state, result.value.application.burst), undefined);
     assert.equal(get(state, 0).elemental.burst, null);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(1000));
     const goal = { nextPoint: [0.5, 0], goal: [0.5, 0] };
@@ -258,7 +258,7 @@ test("EP-02: depletion registers the Burst and completes standard output before 
     assert.deepEqual(get(result.state, 0).elemental.ep, elemental.elementValues(0));
     assert.equal(get(result.state, 0).vitality.health.hp, 9160);
     assert.equal(vitality.resolveResistance(result.state, get(result.state, 0)), 30);
-    assert.deepEqual(elemental.get(result.state, result.value.application.burst).source, source);
+    assert.deepEqual(elemental.getCurrentBurst(result.state, result.value.application.burst).source, source);
 
 });
 
@@ -334,7 +334,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     });
     const incoming = { target, source: null, parameters: { power: 200 } };
     const restored = epHealing.applyHealing(incoming, epHealing.calculateHealing(state, incoming, null), null);
-    assert.deepEqual(restored.value.received, { amount: 100, cancellation: null });
+    assert.deepEqual(restored.value.received, { amount: 100 });
     assert.deepEqual(restored.value.application.epGain, {
         NEURAL: 100, EROSION: 80, BURN: 40, NECROSIS: 0, MANIA: 0,
     });
@@ -369,7 +369,7 @@ test("EP-01/03: losses stay per element, healing gives every bar the full amount
     const reducedRequest = { target, source: null, parameters: { power: 50 } };
     const reduced = epHealing.applyHealing(reducedRequest, epHealing.calculateHealing(state, reducedRequest, null), null);
     assert.equal(reduced.value.type, "APPLIED");
-    assert.deepEqual(reduced.value.received, { amount: 0, cancellation: null });
+    assert.deepEqual(reduced.value.received, { amount: 0 });
     assert.deepEqual(reduced.value.application.epGain, elemental.elementValues(0));
     assert.deepEqual(get(reduced.state, 0).elemental.ep, current.elemental.ep);
     assert.equal(resourceNotices, 2);

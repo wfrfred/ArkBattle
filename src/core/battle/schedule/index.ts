@@ -23,6 +23,6 @@ export {
     releaseFromWave,
     resolveUnits,
     removedHook,
-} from "./runtime.js";
+} from "./operations.js";
 
 export { isCompleted, timing } from "./query.js";

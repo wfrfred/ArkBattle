@@ -59,7 +59,7 @@ export function initialize<U extends Unit & Pick<Targetable, "definition">>(
             targetable: {
                 category: definition.category,
                 taunt: attribute.initialize<Input>(definition.taunt),
-                restrictions: [...definition.restrictions],
+                restrictions: definition.restrictions,
             },
         },
     };

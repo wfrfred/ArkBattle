@@ -2,7 +2,9 @@
 
 本文统一接口职责、命名、类型边界和写回方式。具体领域的业务顺序归专题文档；Hook、Lifetime、资源结算分别见[Hook](hook.md)、[Lifetime](lifetime.md)、[Resource](resource.md)。
 
-同类概念应遵循相同规律。命名、字段、签名或实现出现特例必须追查；只有真实领域语义差异才能说明特例必要，历史写法或现有测试不能作为理由。
+同类概念应遵循相同规律。命名、字段、签名或实现出现特例必须追查；只有真实领域语义差异才能说明特例必要，历史写法、现有文档或测试不能作为理由。改变共同约定时，追查并迁移同类概念在整个项目内的实现与调用点；保留的差异须有独立语义依据。
+
+当前实现与共同约定的未决差异见[全项目一致性审查](consistency-audit-20261127.md#待取舍)；其中待取舍的方案不构成既定规范。
 
 ## 1. 基本分类
 
@@ -15,7 +17,7 @@
 | 调度推进 | BattleState、实例或候选 → State | 由调度器在所属阶段调用 |
 | Definition 程序 | BattleState、已配对的 self、业务输入 → State／Result | 执行所属内容，不重新传入重复身份或 Definition |
 
-无单个主要对象的批量操作可以省略 Ref。函数所在目录、名字及是否返回 State，不决定它属于哪类。私有 setter 接收计算完成的结果值；只写状态的操作直接返回 State，有调用者实际消费的结果时才使用 Result 或 Outcome。
+无单个主要对象的批量操作可以省略 Ref。函数所在目录、名字及是否返回 State，不决定它属于哪类。私有 setter 接收计算完成的结果值；只写状态的操作直接返回 State，有调用者实际消费的结果时才使用 Result 或 Outcome。通用 Result 使用同一名称，不为领域另造同义类型别名。
 
 实例生命周期阶段统一叫 `lifecycle`，两态生命周期使用 `ACTIVE`／`ENDING`。私有业务数据叫 `state`。Effect.enabled 表达启用意图，Lifetime 节点的 `ending` 保存首次结束数据。Definition 描述配置和程序，Initial 提供本次构造事实；不为普通定义另造 Runtime、Compiled、Program 等别名。
 
@@ -46,7 +48,7 @@ Restriction 只提供纯 `allows(battle, context)`，不携带登记身份。领
 
 文件组织应帮助读者从业务概念找到所属模块，并连贯理解实现。经常一起阅读、修改的内容尽量靠近；模型、初始化、查询和操作可以共同构成一个文件，形成独立主题后再拆分。相似领域采用容易预测的组织方式，同时允许实际复杂度带来差异，不以文件短小或目录整齐衡量效果。
 
-状态定义文件（如 `capability.ts` 或实体同名文件）负责 Definition／State、初始化、守卫和普通字段变更，包括 Restriction／Contribution 登记与撤销。返回 Unit Change 的字段变更即使带有 Settlement，仍归状态定义文件；Settlement 所委托的完整业务归所属操作。不将 Change 因其存在后继而移入 `operations.ts`。`operations.ts` 负责完整业务、实例生命周期和调度推进；`query.ts` 负责只读业务查询。小领域可以在一个文件内保留这些职责，按规模拆分，不要求每个领域都建立全部文件。
+状态定义文件（如 `capability.ts` 或实体同名文件）负责 Definition／State、初始化、守卫和普通字段变更，包括 Restriction／Contribution 登记与撤销。返回 Unit Change 的字段变更即使带有 Settlement，仍归状态定义文件；Settlement 所委托的完整业务归所属操作。不将 Change 因其存在后继而移入 `operations.ts`。`operations.ts` 负责完整业务、实例生命周期和调度推进；`query.ts` 负责只读业务查询。`battle/runtime.ts` 负责跨领域战斗协调，领域自己的推进归 `operations.ts`，不另建同义 runtime 文件。小领域可以在一个文件内保留这些职责，按规模拆分，不要求每个领域都建立全部文件。
 
 明确属于某领域的内容可由其他领域直接依赖；脱离具体领域仍成立的基础机制集中在 common，避免为共享而拆散完整概念。多个实现文件组成公共领域时，由 index 显式导出；不使用无选择的 `export * from` 展平实现文件。独立子领域可以按具名命名空间导出其已明确的公共入口，不为单一清晰入口强加 barrel。
 
@@ -58,7 +60,7 @@ Unit／Projectile 的模型、查询与完整登记、更新、结束归自身�
 
 ## 2. 参数与职责
 
-要求某项 Capability 的接口必须在类型上表达，不能因内部可以返回 false 或跳过就放宽宿主。已经取得的实体直接参与局部计算；完整操作用 Typed Ref 定位，不额外转传 self、id 或 Definition 的同一事实。
+要求某项 Capability 的接口必须在类型上表达，不能因内部可以返回 false 或跳过就放宽宿主。已经取得的实体直接参与局部计算；完整操作用 Typed Ref 定位，不额外转传 self、id 或 Definition 的同一事实。`get` 读取已有值或按身份获取实例；`resolve` 计算有效值或归并配置。具有额外查询资格的读取应以名称说明其实际业务语义。
 
 Context 只保存本次业务所需的输入和明确样本，不把 `request.target` 再复制成 target，或用动态 getter 假装实时。可以直接从既有参数取得的事实不另建协议。创建时对象尚不存在，接收 Definition、宿主身份与 Initial，不要求不存在的 self。
 
@@ -72,7 +74,7 @@ Ref 对目标类型协变，每个运行实例在创建时分配一次 Ref，各
 
 `reference.get(battle)` 在传入版本中按 Ref 对象身份读取对应实体。同一状态分出的两条分支各自创建的实例可以复用数字 ID，各自有独立的 Ref。签名 `(this: object, battle: BattleState) => T | undefined` 要求通过引用调用，同样适用于不同领域的联合 Ref。
 
-`Identified<I>` 用可选类型标记描述 Ref 所需的附加信息 `I`，并要求实例保存公共身份类型的 `ref`。各领域在创建时调用 `createRef` 配对附加信息与共享读取函数。调用方通过 `ref(self)` 取得同一个 Ref，并保留当前已知的实体类型。带 Definition 的查询按 Definition 身份恢复私有类型。
+`Identified<I>` 用可选类型标记描述 Ref 所需的附加信息 `I`，并要求实例保存公共身份类型的 `ref`。各领域在创建时调用 `createRef` 配对附加信息与共享读取函数。调用方通过 `ref(self)` 取得同一个 Ref，并保留当前已知的实体类型；各领域不为相同的 Ref 读取器提供另一套公开名称，需要区分局部变量或导入时在调用点命名。带 Definition 的查询按 Definition 身份恢复私有类型。
 
 能力组成在同一实例身份下稳定，泛型类型守卫保留输入已有的完整类型。动态 HP、位置、生命周期等谓词只证明当前版本的事实，不能据此建立跨状态更新仍有效的类型保证。
 

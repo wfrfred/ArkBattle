@@ -1,6 +1,6 @@
 export type { Definition } from "./definition.js";
 
-export { ref, ref as activationRef } from "../../../common/ref.js";
+export { ref } from "../../../common/ref.js";
 
 export type { Skill } from "./skill.js";
 

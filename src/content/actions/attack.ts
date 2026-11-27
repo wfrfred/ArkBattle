@@ -1,17 +1,12 @@
 import type { Ref } from "../../core/common/ref.js";
 import { Vec2 } from "../../core/common/vector.js";
 import { assertNonnegativeNumber } from "../../core/common/assert.js";
-import {
-    appendEvents,
-    type State as BattleState,
-    type OperationResult as Result,
-} from "../../core/battle/index.js";
+import { appendEvents, type State as BattleState, type Result } from "../../core/battle/index.js";
 import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
 
 import {
     ref,
-    executionRef,
     resolveAttackPeriod,
     dispatchBeforeRelease,
     dispatchReleased,
@@ -422,7 +417,7 @@ export function createWithState<P extends object, E extends object, H extends ob
             };
         },
         onTick(battle, source, self, action) {
-            const identity = executionRef(self);
+            const identity = ref(self);
 
             if (!self.state.cooldownAdjusted) {
                 const overdue = self.startedAtTick - self.state.previousReadyAtTick;

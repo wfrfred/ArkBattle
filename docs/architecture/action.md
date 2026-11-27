@@ -36,7 +36,7 @@ prepare 检查本次内容条件、初始化执行数据并采样；返回 null 
 
 行动以 Ref 为容器键登记，重复配置 ID 在创建边界拒绝。异构容器内部擦除 `P/E`，私有状态在普通容器视图中是 `object`。Battle 按配置 ID 选择并启动行动，按执行引用推进。Action Ref 读取持久 Action，Execution Ref 读取指定轮次。两种精确 Ref 都从 `ref.get(battle)` 恢复各自的私有类型。
 
-持久 Action Ref 在装配时分配，跨多轮有效。每个 Execution 在启动时分配自己的 Ref。`ref(action)` 和 `executionRef(execution)` 取得已保存的对象，精度来自传入的实例。已知 Definition 时可用 Action 容器的 `get(definition)` 查找并恢复 `P/E`；已知 Ref 时直接以该 Ref 查询。`H` 由 Content 装配约束校验。`forUnit`、释放通知和取消命令使用擦除私有状态类型的 `ExecutionRef`，只凭该引用可以推进或结束指定轮次。旧引用只定位原轮次，执行 ID 由宿主单调分配以保留本宿主的启动顺序。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立；查询时显式给出 Definition ID，传 null 表示查询任意行动。
+持久 Action Ref 在装配时分配，跨多轮有效。每个 Execution 在启动时分配自己的 Ref。`ref(action)` 和 `ref(execution)` 取得已保存的对象，精度来自传入的实例。已知 Definition 时可用 Action 容器的 `get(definition)` 查找并恢复 `P/E`；已知 Ref 时直接以该 Ref 查询。`H` 由 Content 装配约束校验。`forUnit`、释放通知和取消命令使用擦除私有状态类型的 `ExecutionRef`，只凭该引用可以推进或结束指定轮次。旧引用只定位原轮次，执行 ID 由宿主单调分配以保留本宿主的启动顺序。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立；查询时显式给出 Definition ID，传 null 表示查询任意行动。
 
 配置登记顺序用于默认候选，本宿主已有执行按启动顺序枚举。
 
@@ -58,7 +58,7 @@ reset 从当前时刻开始完整周期，clear 立即就绪。成功启动开�
 
 Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤操作合并方式，纯治疗生成 `NONE`。自定义输出显式提供自身方式，并供实际输出复用。伤害请求的 `applyWay` 表达该笔输出。
 
-`getApplyWay(unit)` 合并单位所有已注册 Action 的 Definition，同一方式重复计入仍保持该值，近战和远程合并为 `ALL`，空集合为 `NONE`。普通单位和 Enemy 都按这一规则，空闲、冷却和当前 Execution 不影响结果。弩手注册近战与远程，因而得到 `ALL`。这是项目选择，原生模式汇总与敌人资料查询见[攻击方式调查](../research/cases/36-unit-classification-and-combat-tags.md#23-守林人目标的攻击方式)。
+`resolveApplyWay(unit)` 合并单位所有已注册 Action 的 Definition，同一方式重复计入仍保持该值，近战和远程合并为 `ALL`，空集合为 `NONE`。普通单位和 Enemy 都按这一规则，空闲、冷却和当前 Execution 不影响结果。弩手注册近战与远程，因而得到 `ALL`。这是项目选择，原生模式汇总与敌人资料查询见[攻击方式调查](../research/cases/36-unit-classification-and-combat-tags.md#23-守林人目标的攻击方式)。
 
 ## 6. 完整启动、写回与终止
 

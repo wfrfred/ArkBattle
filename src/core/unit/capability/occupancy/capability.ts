@@ -1,6 +1,7 @@
 import type { TilePosition } from "../../../geometry/coordinate.js";
 import type { Direction } from "../../../geometry/direction.js";
 import type { Unit } from "../../unit.js";
+import { createChange, type Change } from "../../change.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { enter, leave } from "./operations.js";
 import { ref } from "../../query.js";
@@ -88,4 +89,12 @@ export function initialize<U extends Unit & Pick<Occupancy, "definition">>(
             },
         },
     };
+}
+
+export function setDirection(direction: Direction): Change<Unit & Occupancy> {
+    return createChange<Unit & Occupancy>((unit) =>
+        unit.occupancy.direction === direction
+            ? unit
+            : { ...unit, occupancy: { ...unit.occupancy, direction } },
+    );
 }

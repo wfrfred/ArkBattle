@@ -1,7 +1,6 @@
 import {
     clearCooldown,
     cancel as cancelAction,
-    executionRef,
     ref as actionRef,
     type ActionCapability,
 } from "../../../core/unit/capability/action/index.js";
@@ -54,7 +53,7 @@ export function create(
 
                 const normal = unit.action.actions.get(normalAttack);
                 if (normal?.execution != null) {
-                    state = cancelAction(state, executionRef(normal.execution), "INTERRUPTED");
+                    state = cancelAction(state, actionRef(normal.execution), "INTERRUPTED");
                 }
 
                 const current = host.get(state);

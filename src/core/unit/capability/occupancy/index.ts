@@ -1,4 +1,4 @@
-export { hasOccupancy, hasDirection, initialize } from "./capability.js";
+export { hasOccupancy, hasDirection, initialize, setDirection } from "./capability.js";
 
 export type {
     Slot,
@@ -9,5 +9,3 @@ export type {
     Directional,
     Pair,
 } from "./capability.js";
-
-export { setDirection } from "./operations.js";

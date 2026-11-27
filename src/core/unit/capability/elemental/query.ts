@@ -12,7 +12,7 @@ import type { Request as HealingRequest } from "../../../battle/resource/ep/heal
 import { allows } from "../../../restriction.js";
 import type { DamageRestriction } from "./restriction.js";
 
-export function get(battle: BattleState, reference: Ref<Burst>): Burst | undefined {
+export function getCurrentBurst(battle: BattleState, reference: Ref<Burst>): Burst | undefined {
     const host = reference.host.get(battle);
 
     return host?.elemental.burst === reference ? reference.get(battle) : undefined;

@@ -1,6 +1,6 @@
 import type { Ref } from "../../core/common/ref.js";
 import type { Lifetime } from "../../core/lifetime/index.js";
-import type { State as BattleState, OperationResult as Result } from "../../core/battle/index.js";
+import type { State as BattleState, Result } from "../../core/battle/index.js";
 import type { Definition as TerrainDefinition } from "../../core/battlefield/map/terrain.js";
 import { contains } from "../../core/battlefield/map/map.js";
 import { World } from "../../core/geometry/coordinate.js";

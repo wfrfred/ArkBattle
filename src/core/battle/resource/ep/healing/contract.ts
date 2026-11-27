@@ -26,7 +26,6 @@ export interface Calculated {
 
 export interface Pending {
     readonly amount: number;
-    readonly cancellation: null;
 }
 
 export type Application = HealingApplication;

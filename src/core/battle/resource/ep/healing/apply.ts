@@ -36,7 +36,7 @@ export function applyHealing(
         request.target,
         beforeReceive,
         context,
-        { amount: healing.amount, cancellation: null },
+        { amount: healing.amount },
         options,
     );
     battle = before.state;
@@ -45,7 +45,7 @@ export function applyHealing(
         return { state: battle, value: { type: "REJECTED" } };
     }
 
-    const received: Pending = { ...before.value, amount: Math.max(0, before.value.amount) };
+    const received: Pending = { amount: Math.max(0, before.value.amount) };
     const commit = { ...context, received };
     battle = dispatch(battle, request.source, beforeCommit, commit, undefined, options).state;
 

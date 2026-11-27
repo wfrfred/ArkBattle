@@ -33,14 +33,14 @@ test("activation publishes payment before onStart and clears only the completed 
                 observed.push({
                     stage: "start",
                     sp: source.get(state).skill.sp.value,
-                    current: skills.activationRef(self).get(state).ref,
+                    current: skills.ref(self).get(state).ref,
                 });
-                return skills.setActivationState(state, skills.activationRef(self), {
+                return skills.setActivationState(state, skills.ref(self), {
                     total: 7,
                 });
             },
             onEnd(state, source, self, end, skill) {
-                const reference = skills.activationRef(self);
+                const reference = skills.ref(self);
                 state = skills.setActivationState(state, reference, {
                     ...self.state,
                     cleaned: true,
@@ -70,7 +70,7 @@ test("activation publishes payment before onStart and clears only the completed 
         }), units.compose(units.setHook(skills.spPaid, {
             id: "observe-payment", priority: 0,
             invoke(state, { host, event }) {
-                payments.push([event.amount, event.previous, event.current, skills.activationRef(host.get(state).skill.activation)]);
+                payments.push([event.amount, event.previous, event.current, skills.ref(host.get(state).skill.activation)]);
                 return { state, value: undefined };
             },
         }), units.setHook(skills.activationEnded, {
@@ -197,7 +197,7 @@ test("cancellation during payment notification retains payment and suppresses th
             invoke(state, { host }) {
                 const current = host.get(state).skill.activation;
                 return {
-                    state: skills.cancel(state, skills.activationRef(current), "STOPPED"),
+                    state: skills.cancel(state, skills.ref(current), "STOPPED"),
                     value: undefined,
                 };
             },
@@ -229,12 +229,12 @@ test("active operations require a declared handler and current permission, while
             ...ordinary.activation,
             operations: {
                 RETRIGGER(state, source, self) {
-                    return skills.setActivationState(state, skills.activationRef(self), {
+                    return skills.setActivationState(state, skills.ref(self), {
                         ready: true,
                     });
                 },
                 STOP(state, source, self) {
-                    return skills.finish(state, skills.activationRef(self));
+                    return skills.finish(state, skills.ref(self));
                 },
             },
         },
@@ -358,7 +358,7 @@ test("TIME extension stays in its round while persistent state selects a later I
                     : { type: "INFINITE" },
             }),
             onTick(state, source, self) {
-                return skills.setActivationState(state, skills.activationRef(self), {
+                return skills.setActivationState(state, skills.ref(self), {
                     ticks: self.state.ticks + 1,
                 });
             },
@@ -422,7 +422,7 @@ test("AMMO samples its charged base before payment and applies capacity, consump
             if (activation.duration.remaining > 0) {
                 return state;
             }
-            state = skills.check(state, skills.activationRef(activation));
+            state = skills.check(state, skills.ref(activation));
             return skills.activate(state, skills.ref(source.get(state).skill), null).state;
         },
     });

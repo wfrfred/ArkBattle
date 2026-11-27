@@ -5,14 +5,11 @@ import { appendEvents, type State as BattleState, type Result } from "../../../b
 import { remove, replace } from "../../operations.js";
 import type { Unit } from "../../unit.js";
 import * as hooks from "../../../hook.js";
-import type * as damage from "../../../battle/resource/hp/damage/index.js";
 import * as decrease from "../../../battle/resource/hp/decrease.js";
 import * as increase from "../../../battle/resource/hp/increase.js";
 import type { Pending } from "../../../battle/resource/receiving.js";
 import { resolveMaxHp, resolveMaxMinusHp, type Vitality } from "./capability.js";
 import { isAlive, resolveRecoverySpeed } from "./query.js";
-import { allows } from "../../../restriction.js";
-import type { Restriction } from "./restriction.js";
 import {
     lossCommitting,
     lossCommitted,
@@ -35,26 +32,6 @@ export interface IncreaseApplication {
     readonly hpGain: number;
     readonly minusHpLoss: number;
     readonly overflow: number;
-}
-
-export function canReceiveDamage(
-    battle: BattleState,
-    context: damage.ReceivingContext,
-    ignore?: (restriction: Restriction) => boolean,
-): boolean {
-    const target = context.request.target.get(battle);
-
-    return (
-        target?.lifecycle === "ACTIVE" &&
-        isAlive(target) &&
-        allows(battle, context, target.vitality.damageRestrictions, ignore)
-    );
-}
-
-export function canReceiveHp(battle: BattleState, target: Ref<Unit & Vitality>): boolean {
-    const unit = target.get(battle);
-
-    return unit?.lifecycle === "ACTIVE" && isAlive(unit);
 }
 
 export function receiveDecrease(

@@ -24,7 +24,7 @@ Catalog 从 initializer 字典的函数签名派生配置、标准状态和 Init
 
 Action 的 `definitions` 声明所选行动，Skill 的 `definition` 声明所选技能。各 Capability initializer 负责组装实例，逐次接续具体 Definition 的私有状态初始化结果。
 
-能力可在装配时登记 entered／removing／removed 等 Hook。固有登记在完整 add 和任何 entered 前就绪；同级保留默认装配顺序，实际执行按[公共 Hook 优先级](hook.md)。通用装配和 Unit 生命周期不按具体能力建立额外阶段。初始 Effect 在登记后的 entered 正常安装。
+能力可在装配时登记 entered／removing／removed 等 Hook。固有登记在完整 add 和任何 entered 前就绪；同级保留实际登记顺序，执行按[公共 Hook 优先级](hook.md)；Blocking 的装配特例仍待取舍。通用装配和 Unit 生命周期不按具体能力建立额外阶段。初始 Effect 在登记后的 entered 正常安装。
 
 Unit 在 `entered` 前完成战场和 Lifetime 节点登记。entered 和 tick 要求宿主仍为 ACTIVE。removing 在 Lifetime 自动请求依赖者结束之前派发。removed 在注销前从最新 Unit 捕获候选与优先级，在注销后派发。两次离场通知的 Departure 都使用 Lifetime 固定的首次结束快照和输入。 [Lifetime](lifetime.md) · [死亡归属与来源响应](resource.md)
 

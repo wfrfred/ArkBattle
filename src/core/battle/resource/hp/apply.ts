@@ -4,7 +4,11 @@ import type { Ref } from "../../../common/ref.js";
 import type { Result, State as BattleState } from "../../state.js";
 import { removing, setHook } from "../../../unit/hook.js";
 import { remove, update } from "../../../unit/operations.js";
-import { isAlive } from "../../../unit/capability/vitality/query.js";
+import {
+    isAlive,
+    canReceiveDamage,
+    canReceiveHp,
+} from "../../../unit/capability/vitality/query.js";
 import type { Vitality } from "../../../unit/capability/vitality/capability.js";
 import * as vitality from "../../../unit/capability/vitality/operations.js";
 import * as decreaseProtocol from "./decrease.js";
@@ -33,8 +37,8 @@ export function decrease(
 
     const canReceive = (current: BattleState): boolean =>
         context.type === "DAMAGE"
-            ? vitality.canReceiveDamage(current, context, options?.ignore)
-            : vitality.canReceiveHp(current, context.request.target);
+            ? canReceiveDamage(current, context, options?.ignore)
+            : canReceiveHp(current, context.request.target);
     if (!canReceive(battle)) {
         return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
@@ -76,7 +80,7 @@ export function increase(
     if (received.type === "CANCELLED") {
         return { state: battle, value: { type: "CANCELLED", received } };
     }
-    if (!vitality.canReceiveHp(battle, context.request.target)) {
+    if (!canReceiveHp(battle, context.request.target)) {
         return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
 
@@ -90,7 +94,7 @@ export function increase(
         options,
     ).state;
 
-    if (!vitality.canReceiveHp(battle, context.request.target)) {
+    if (!canReceiveHp(battle, context.request.target)) {
         return { state: battle, value: { type: "UNAVAILABLE", received } };
     }
 

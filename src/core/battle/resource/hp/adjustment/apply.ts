@@ -1,6 +1,6 @@
 import { assertFiniteNumber } from "../../../../common/assert.js";
 import type { Result, State as BattleState } from "../../../state.js";
-import { canReceiveHp } from "../../../../unit/capability/vitality/operations.js";
+import { canReceiveHp } from "../../../../unit/capability/vitality/query.js";
 import * as apply from "../apply.js";
 import type { Outcome, Request } from "./contract.js";
 

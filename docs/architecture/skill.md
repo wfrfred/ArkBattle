@@ -28,7 +28,7 @@ Capability 装配时调用 `SkillDefinition.initialize(battle)`，建立私有�
 
 ### 引用、查询与写回
 
-每个宿主只有一个 Skill，装配时分配持久 Ref。每个 Activation 在发动时分配自己的 Ref。`skill.ref(skill)` 和 `activationRef(activation)` 取得已保存的对象，并保留调用方掌握的实例类型。两种引用分别读取对应的持久实例和本轮实例，旧激活 Ref 只定位原有轮次。宿主约束 `H` 由 Content 装配校验。
+每个宿主只有一个 Skill，装配时分配持久 Ref。每个 Activation 在发动时分配自己的 Ref。`skill.ref(skill)` 和 `skill.ref(activation)` 取得已保存的对象，并保留调用方掌握的实例类型。两种引用分别读取对应的持久实例和本轮实例，旧激活 Ref 只定位原有轮次。宿主约束 `H` 由 Content 装配校验。
 
 持久与本轮状态有各自写回操作，仅更新对应字段。写入本轮私有状态使用精确 Activation Ref。通知、弹药和结束操作可使用擦除私有状态类型的 `ActivationRef`。结束程序可以更新持久状态和仍登记的本轮私有状态，写回保留激活身份和 ENDING。跨完整业务后接续最新状态。通用类型、错误和不可变约定见[接口约定](api-conventions.md)。
 

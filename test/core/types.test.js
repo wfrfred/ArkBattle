@@ -55,7 +55,7 @@ const strike: actions.Definition<{ uses: number }, { hits: number }, Armed> = {
     onTick(state, source, self, action) {
         const attack = resolveAttack(state, source.get(state)!);
         state = actions.setState(state, action, { uses: action.get(state)!.state.uses + 1 });
-        return actions.setExecutionState(state, actions.executionRef(self), {
+        return actions.setExecutionState(state, actions.ref(self), {
             hits: self.state.hits + attack,
         });
     },
@@ -74,7 +74,7 @@ const skill: skills.Definition<{ completed: number }, { remaining: number }, Arm
         operations: {
             STOP(state, source, self, skillRef) {
                 state = skills.setState(state, skillRef, { completed: skillRef.get(state)!.state.completed + 1 });
-                return skills.setActivationState(state, skills.activationRef(self), {
+                return skills.setActivationState(state, skills.ref(self), {
                     remaining: self.state.remaining - 1,
                 });
             },

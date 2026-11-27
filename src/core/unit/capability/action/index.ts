@@ -1,4 +1,4 @@
-export { ref, ref as executionRef } from "../../../common/ref.js";
+export { ref } from "../../../common/ref.js";
 
 export type { Action } from "./action.js";
 
@@ -8,7 +8,7 @@ export type { Definition, Period } from "./definition.js";
 
 export type { Event } from "./event.js";
 
-export { forUnit, getApplyWay, hasExecution } from "./query.js";
+export { forUnit, resolveApplyWay, hasExecution } from "./query.js";
 
 export {
     start,

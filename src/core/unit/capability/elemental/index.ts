@@ -33,7 +33,7 @@ export type { DamageApplication, HealingApplication } from "./operations.js";
 export type { Event } from "./event.js";
 
 export {
-    get,
+    getCurrentBurst,
     available,
     resolveMaxEp,
     resolveRecoverySpeed,

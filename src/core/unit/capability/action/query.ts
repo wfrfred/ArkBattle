@@ -7,7 +7,7 @@ import { hasAction, type Action as ActionCapability } from "./capability.js";
 import type { ExecutionRef } from "./execution.js";
 import type { Id as DefinitionId } from "./definition.js";
 
-export function getApplyWay(unit: Unit): ApplyWay {
+export function resolveApplyWay(unit: Unit): ApplyWay {
     return hasAction(unit)
         ? mergeApplyWays(unit.action.actions.values().map(({ definition }) => definition.applyWay))
         : "NONE";

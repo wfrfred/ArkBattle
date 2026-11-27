@@ -31,7 +31,6 @@ type Host = Unit & Shiftable;
 
 export interface Unbalance extends lifetimes.Lifetime<{ readonly host: Ref<Host> }> {
     readonly config: lifetimes.Config<Unbalance, End>;
-    readonly host: Ref<Host>;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly velocity: Vec2;
     readonly protectedUntil: number;
@@ -110,11 +109,8 @@ export function prepare(battle: BattleState, unit: Host): Unbalance | null {
         return { ...active, protectedUntil };
     }
 
-    const identity = { host: units.ref(unit) };
-
     return {
-        ...identity,
-        ref: createRef<Unbalance>(identity, getUnbalance),
+        ref: createRef<Unbalance>({ host: units.ref(unit) }, getUnbalance),
         config,
         lifecycle: "ACTIVE",
         velocity: ZERO,
@@ -152,7 +148,7 @@ export function receive(
                 },
             },
         ]);
-        battle = register(battle, reference, [next.host]);
+        battle = register(battle, reference, [reference.host]);
     } else {
         battle = replace(battle, unit, next);
     }

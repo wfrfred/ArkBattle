@@ -7,7 +7,7 @@ import type { Input, Command } from "./contract.js";
 import type { Definition as UnitDefinition } from "../unit/unit.js";
 import type { Definitions as CapabilityDefinitions } from "../unit/capability/catalog.js";
 import { prepare as prepareCombat, advance as advanceCombat } from "./steps/combat.js";
-import { advance as advanceSchedule } from "./schedule/runtime.js";
+import { advance as advanceSchedule } from "./schedule/operations.js";
 import {
     advance as advanceDeployment,
     resolveDeploymentCommands,
@@ -25,8 +25,6 @@ import * as unit from "../unit/operations.js";
 import type { Card } from "./deployment/deck/card/card.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
 import * as cards from "./deployment/deck/card/index.js";
-
-export type { Input, Command, Event } from "./contract.js";
 
 export function initialize<
     CardStates extends readonly object[],

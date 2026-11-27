@@ -20,7 +20,7 @@ import { update } from "../../dist/core/unit/operations.js";
 import { initialize, step } from "../../dist/core/battle/index.js";
 import { update as updateTile } from "../../dist/core/battle/tile.js";
 import { actionCapability } from "../helpers/actions.js";
-import { executionRef, finish } from "../../dist/core/unit/capability/action/index.js";
+import { ref as executionRef, finish } from "../../dist/core/unit/capability/action/index.js";
 import { resolveAttack } from "../../dist/core/unit/capability/offense/index.js";
 import { resolveSpeed } from "../../dist/core/unit/capability/action/timing.js";
 import { damage } from "../../dist/core/battle/targeting/index.js";
