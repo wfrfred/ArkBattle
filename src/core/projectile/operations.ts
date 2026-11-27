@@ -15,9 +15,9 @@ export function add(battle: BattleState, self: Projectile): BattleState {
     return (self.definition as Definition).onEnter?.(battle, self) ?? battle;
 }
 
-export function update<S extends object, T extends object>(
+export function update<S extends object>(
     battle: BattleState,
-    reference: Ref<Projectile<S, T>>,
+    reference: Ref<Projectile<S>>,
     changes: {
         readonly position?: WorldPosition;
         readonly state?: NoInfer<S>;

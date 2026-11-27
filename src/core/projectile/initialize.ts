@@ -17,7 +17,7 @@ export type Input<S extends object, T extends object = object> = {
 export function initialize<S extends object, T extends object, const D extends Definition<S, T>>(
     battle: BattleState,
     input: Input<S, T> & { readonly definition: D },
-): Result<Projectile<S, T> & T & { readonly definition: D }> {
+): Result<Projectile<S> & T & { readonly definition: D }> {
     const id = battle.execution.nextProjectileId;
 
     return {

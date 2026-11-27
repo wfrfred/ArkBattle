@@ -39,10 +39,7 @@ export interface Presentation {
     readonly launchedAtTick: number;
 }
 
-export function project<S extends object, T extends object>(
-    battle: BattleState,
-    reference: Ref<Projectile<S, T>>,
-): Presentation | undefined {
+export function project(battle: BattleState, reference: Ref<Projectile>): Presentation | undefined {
     const self = reference.get(battle);
     if (
         self === undefined ||
@@ -65,12 +62,8 @@ export function project<S extends object, T extends object>(
 
 export function hit<S extends State, T extends object>(
     battle: BattleState,
-    self: Projectile<S, T> & T,
-    invoke: (
-        battle: BattleState,
-        self: Projectile<S, T> & T,
-        target: Unit & Vitality,
-    ) => BattleState,
+    self: Projectile<S> & T,
+    invoke: (battle: BattleState, self: Projectile<S> & T, target: Unit & Vitality) => BattleState,
 ): BattleState {
     const reference = projectiles.ref(self);
     const current = reference.get(battle);
@@ -92,9 +85,9 @@ export function hit<S extends State, T extends object>(
 
 export function advance<S extends State, T extends object>(
     battle: BattleState,
-    self: Projectile<S, T> & T,
+    self: Projectile<S> & T,
     deltaTicks: number,
-    onReached: (battle: BattleState, self: Projectile<S, T> & T) => BattleState,
+    onReached: (battle: BattleState, self: Projectile<S> & T) => BattleState,
 ): BattleState {
     const reference = projectiles.ref(self);
 

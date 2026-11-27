@@ -5,7 +5,7 @@ export type EndReason = "ARRIVED" | "EXPIRED" | "EXPLICIT" | "SOURCE_UNAVAILABLE
 
 type Callback<S extends object, T extends object> = (
     battle: BattleState,
-    self: Projectile<S, T> & T,
+    self: Projectile<S> & T,
 ) => BattleState;
 
 export interface Definition<S extends object = object, T extends object = object> {
@@ -14,7 +14,7 @@ export interface Definition<S extends object = object, T extends object = object
     readonly onTick?: Callback<S, T>;
     readonly onEnd?: (
         battle: BattleState,
-        self: Projectile<S, T> & T,
+        self: Projectile<S> & T,
         reason: EndReason,
     ) => BattleState;
 }

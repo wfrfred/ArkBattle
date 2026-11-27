@@ -8,10 +8,10 @@ export type Id = number;
 
 export type Lifecycle = "ACTIVE" | "ENDING";
 
-export interface Projectile<S extends object = object, T extends object = object> extends Lifetime {
+export interface Projectile<S extends object = object> extends Lifetime {
     readonly id: Id;
     readonly config: Config<Projectile, EndReason>;
-    readonly definition: EraseCallbacks<Definition<S, T>>;
+    readonly definition: EraseCallbacks<Definition>;
     readonly side: Side;
     readonly lifecycle: Lifecycle;
     readonly position: WorldPosition;
