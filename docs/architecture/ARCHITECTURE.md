@@ -69,7 +69,7 @@ Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Init
 
 | 领域 | 负责的事实与操作 |
 | --- | --- |
-| [Resource](resource.md) | HP／EP Damage、Healing 的 Calculate／Apply 与本次结算结果 |
+| [Resource](resource.md) | HP／EP Damage、Healing 的 Calculate／Apply、有符号 HP Adjustment 与本次结算结果 |
 | [Vitality](vitality.md)、[Elemental](elemental.md) | 各自资源、属性与提交；Elemental 另负责 Burst |
 | [Action](action.md)、[Skill](skill.md) | 行动执行、冷却，以及技能资源和 Activation |
 | [Effect](effect.md) | 有宿主或无宿主的运行实例、重复施加、竞争、启停与到期 |

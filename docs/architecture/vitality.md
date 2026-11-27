@@ -1,6 +1,6 @@
 # Vitality
 
-Vitality 拥有普通 HP、负生命债务、容量、防御、抗性、自然回复和 HP 接收许可。Damage／Healing 的请求、计算、接收、排除和死亡通知由 [Resource](resource.md) 统一定义；本页只规定 HP 的资源规则与提交扩展点。公开入口为 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts)。
+Vitality 拥有普通 HP、负生命债务、容量、防御、抗性、自然回复和 HP 接收许可。Damage／Healing／Adjustment 的请求、接收、排除和死亡通知由 [Resource](resource.md) 统一定义；本页只规定 HP 的资源规则与提交扩展点。公开入口为 [vitality/index.ts](../../src/core/unit/capability/vitality/index.ts)。
 
 原生资源与保护依据见[案例11](../research/cases/11-damage-apply-and-hp-application.md)，恢复见[案例29](../research/cases/29-hp-and-ep-healing-settlement.md)，属性范围与 MaxHP 变更见[案例39](../research/cases/39-death-attribution-and-attribute-ranges.md)。已提供的资源能力、具体内容尚未接入、尚未闭合的表达需求分别判断，不以一份 Hook 或调查记录代替完整内容支持。
 
@@ -43,24 +43,24 @@ Runtime 在 Effect 后、Elemental 资源推进前调用 Vitality.advance，之�
 
 逐 Tick 小数回复是明确的项目选择，区别于[原生每次增加 1 HP 的脉冲计时器](../research/cases/29-hp-and-ep-healing-settlement.md#自然-hp-回复的完整普通路径)，不保存脉冲进度，允许启停或变速时的脉冲细节不同。
 
-increaseHp 是公开直接恢复：目标必须仍为 ACTIVE，缺失或 ENDING 抛出 RangeError；恢复前 HP 可为零，恢复量必须有限非负。它从最新 Health 先偿债再增 HP，按当前容量裁切并返回固定恢复报告；不构造 Healing Request、不经过普通治疗或伤害提交 Hook、不输出 HEAL。生命复原、复活恢复及 HP 同步由 Content 选择合适的直接恢复或 Damage，不提供任意 HP 赋值接口。
+increaseHp 是公开直接恢复：目标必须仍为 ACTIVE，缺失或 ENDING 抛出 RangeError；恢复前 HP 可为零，恢复量必须有限非负。它从最新 Health 先偿债再增 HP，按当前容量裁切并返回固定恢复报告；不构造 Healing Request、不经过普通治疗或伤害提交 Hook、不输出 HEAL。生命复原与复活恢复可使用此直接恢复；需要方向接收的 HP 同步通过 [Adjustment](resource.md#有符号-hp-调整) 或普通伤疗表达，不提供任意 HP 赋值接口。
 
-普通 Healing、自然回复和直接恢复共享同一资源分配规则。普通治疗遵循 [Resource](resource.md) 的接收与存活门控。自然回复检查存活与零速，直接恢复允许对仍处于 ACTIVE 的零 HP 单位执行。
+普通 Healing、正向 Adjustment、自然回复和直接恢复共享同一资源分配规则。普通治疗遵循 [Resource](resource.md) 的接收与存活门控。自然回复检查存活与零速，直接恢复允许对仍处于 ACTIVE 的零 HP 单位执行。
 
-## 伤害写入前后
+## HP 减少提交前后
 
-所有 HP Nature 共用同一提交。Vitality 先按当前 Health 和 received.amount 分配伤害，damageCommitting 接续待写入的绝对 Health；写入并固定报告后，damageCommitted 接续 void。两者只服务伤害提交，治疗、自然回复、初始化与 MaxHP Change 不派发。
+普通 HP Damage 的所有 Nature 与负向 Adjustment 共用 commitDecrease。Vitality 先按当前 Health 和 received.amount 分配减少量，lossCommitting 接续待写入的绝对 Health；写入并固定报告后，lossCommitted 接续 void。两者按共享方向 Context 的 type 区分 DAMAGE 与 ADJUSTMENT；正向调整、治疗、自然回复、初始化与 MaxHP Change 不派发。普通治疗与正向调整使用 commitIncrease；普通伤疗的资源写入与相应 Event 同一提交，调整不写伤疗 Event。
 
 | 扩展点 | 固定事实 | 工作值与时点 |
 | --- | --- | --- |
-| damageCommitting | request、入口 previous:Health | 待写 Health；尚未截到最终资源范围 |
-| damageCommitted | request、固定 application | void。资源与 DAMAGE Event 已发布，随后才执行普通 Applied。 |
+| lossCommitting | 方向事实、入口 previous:Health | 待写 Health；尚未截到最终资源范围 |
+| lossCommitted | 方向事实、固定 application | void。资源及普通伤害的 DAMAGE Event 已发布；随后普通伤害执行 Applied，负向调整直接确认死亡。 |
 
 例如没有债务时，100 HP 接收 150 的候选 hp 为 −50；保护程序可以同时调整普通 HP 与债务。它不改变 received 或取消原因，FIXED 接收量也进入此干预。内部两个键不继承 Apply 的 exclude、ignore 或 forbidden；排序与同步候选遵守 [Hook](hook.md)。
 
-damageCommitting 返回后，重新读取当前宿主、生命与容量。目标缺失、ENDING 或已归零时返回 null，由 Apply 形成 UNAVAILABLE，回调已完成的业务保留，不发本笔成功 Event／Applied。仍可写时只修改最新 Unit 的 Health；候选保持绝对值含义，不自动对回调后的生命再加减一次。
+lossCommitting 返回后，重新读取当前宿主、生命与容量。目标缺失、ENDING 或已归零时返回 null，由 Apply 形成 UNAVAILABLE，回调已完成的业务保留，不发本笔成功 Event／Applied。仍可写时只修改最新 Unit 的 Health；候选保持绝对值含义，不自动对回调后的生命再加减一次。
 
-Application.before 在实际写点取得，after 为最终提交值。成功包括零实际变化，均同步执行 damageCommitted；失败不执行。后继修改 MaxHP、恢复生命或结束宿主不会重写原报告、将成功改成失败或被旧候选覆盖。独立嵌套修改同一生命时，内容自行接续必要候选，公共提交不合并变化量。
+Application.before 在实际写点取得，after 为最终提交值。减少提交成功包括零实际变化，均同步执行 lossCommitted；失败不执行。后继修改 MaxHP、恢复生命或结束宿主不会重写原报告、将成功改成失败或被旧候选覆盖。独立嵌套修改同一生命时，内容自行接续必要候选，公共提交不合并变化量。
 
 ## 负生命与资源分配
 
@@ -74,11 +74,11 @@ h > 1：新债务 = d - h
 h ≤ 1：新债务 = m + d
 ```
 
-容量未耗尽时普通 HP 至少为 1；债务达到容量时形成 HP0。不能先截 q，也不能统一为每击只计算超过 HP−1 的部分。例如容量100时，HP100受150→HP1／债50，再受30→债80。damageCommitting 仍可干预两项资源，最后走普通 HP 死亡确认，不新增负生命离场流程。
+容量未耗尽时普通 HP 至少为 1；债务达到容量时形成 HP0。不能先截 q，也不能统一为每击只计算超过 HP−1 的部分。例如容量100时，HP100受150→HP1／债50，再受30→债80。lossCommitting 仍可干预两项资源，最后走普通 HP 死亡确认，不新增负生命离场流程。
 
 正向恢复先抵债，余额再增普通 HP，MaxHP 比例变化的正向部分也适用。例如 HP1／债80恢复100→HP21／债0。最终普通 HP 限制在有效上限内，债务保持非负，启用容量时限制到当前容量；未耗尽债务保留普通生命，满债使 HP0。
 
-容量降低后，恢复结算的债务余额仍可能达到新容量。恢复前 HP 大于零且本次写入将 HP 降至零时，恢复以 killer:null 请求正常 DEATH。普通 Healing 先发布 HEAL，再请求离场，并保留 APPLIED 和适用的来源后继。恢复前已为零时，可以通过直接恢复救回单位。仍为零时由原业务确认死亡。零速自然回复跳过资源结算。以上规定动态容量的 Core 行为，具体角色接入按对应内容验证。
+容量降低后，恢复结算的债务余额仍可能达到新容量。恢复前 HP 大于零且本次写入将 HP 降至零时，恢复以 killer:null 请求正常 DEATH。普通 Healing 先发布 HEAL，再请求离场，并保留 APPLIED 和适用的来源后继；正向 Adjustment 同样处理容量死亡，但不产生 HEAL 或普通伤疗后继。恢复前已为零时，可以通过直接恢复救回单位。仍为零时由原业务确认死亡。零速自然回复跳过资源结算。以上规定动态容量的 Core 行为，具体角色接入按对应内容验证。
 
 ## 提交报告与特殊恢复
 
@@ -86,8 +86,9 @@ h ≤ 1：新债务 = m + d
 
 | 报告 | 实际变化量 |
 | --- | --- |
-| DamageApplication | `hpLoss=max(0,before.hp-after.hp)`；`minusHpGain=max(0,after.minusHp-before.minusHp)` |
-| HealingApplication | `hpGain=max(0,after.hp-before.hp)`；`minusHpLoss=max(0,before.minusHp-after.minusHp)`；`overflow=max(0,本次恢复量-minusHpLoss-hpGain)` |
+| DecreaseApplication | `hpLoss=max(0,before.hp-after.hp)`；`minusHpGain=max(0,after.minusHp-before.minusHp)` |
+| Adjustment.Application | 仅保存实际提交的 before／after，不生成普通伤疗报告。 |
+| IncreaseApplication | `hpGain=max(0,after.hp-before.hp)`；`minusHpLoss=max(0,before.minusHp-after.minusHp)`；`overflow=max(0,本次恢复量-minusHpLoss-hpGain)` |
 
 偿债不属于可转换溢出。UI 的 DAMAGE／HEAL amount 仍只使用 hpLoss／hpGain，债务信息从报告读取。过量转屏障可在 Applied 消费 overflow；屏障额度属于 Effect 私有状态，Core 不增加 ES 或 maxEsRatio 中转。实际 ES 来源和债务交互见[案例29](../research/cases/29-hp-and-ep-healing-settlement.md#7-溢出治疗es与屏障的真实交接)，项目按上述资源报告与 Effect 组合表达。
 
@@ -95,9 +96,9 @@ h ≤ 1：新债务 = m + d
 
 非致命、不死、免死、替身、形态切换和复活的具体内容尚未全部接入；已提供的 Health 与 Hook 不能代替各个完整程序的验证，也不预设必须新增 Core 状态机。
 
-- 非致命由 Effect 在 damageCommitting 按来源／具体请求调整 Health，不增加 Damage 分类；嵯峨本笔保护、应用后重伤与明确处决是不同业务。
+- 非致命由 Effect 在 lossCommitting 按来源／具体请求调整 Health，不增加 Damage 分类；嵯峨本笔保护、应用后重伤与明确处决是不同业务。
 - 普通免死的成功竞争由内容限定，不把不死、替身或形态切换放进一个通用 handled／protected 开关。若叶睦已有不死仍可触发切换，不能因候选已被保护就一律跳过其它程序。
-- 号角、斯卡蒂模组等可由自身 Effect 保存本次成功事实，在 damageCommitted 更替效果、改变 MaxHP 和恢复；Core 不保存成功者 Effect。
+- 号角、斯卡蒂模组等可由自身 Effect 保存本次成功事实，在 lossCommitted 更替效果、改变 MaxHP 和恢复；Core 不保存成功者 Effect。
 - 当前 Health、拟写候选、是否消费保护和默认变化是否已由内容接管分别处理；后续 Hook 能继续独立业务，不能仅凭回调后 HP>0 认定本笔已完成。
 - 同实例假死由内容在致命提交时保留 1 HP，复活等待 Effect 管理复活次数、等待条件、行动与受选限制、阻挡解除和需保留的效果。等待复活时维持原 Unit Ref；渐进和最终恢复使用 increaseHp，阶段与动作按内容接续。2026-11-16 的探针验证了这一组合。恰在主路线终点时的退出时序差异已接受。原生等待期间的实际 0 HP 只有在证实会改变支持范围内的玩法结果时才重新评估。
 

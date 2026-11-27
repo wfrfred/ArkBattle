@@ -9,7 +9,9 @@ import { update, remove } from "../../dist/core/unit/operations.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { TICKS_PER_SECOND } from "../../dist/core/tick.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
+import * as hpDecrease from "../../dist/core/battle/resource/hp/decrease.js";
 import * as hpHealing from "../../dist/core/battle/resource/hp/healing/index.js";
+import * as hpIncrease from "../../dist/core/battle/resource/hp/increase.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as modifier from "../../dist/core/common/modifier.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
@@ -48,7 +50,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
                 .set(hpHealing.targetFormula, { id: "formula", priority: 0, invoke: ordinaryHealing })
                 .set(hpHealing.beforeReceive, { id: "before", priority: 0, invoke: ordinaryHealing })
                 .set(hpHealing.targetApplied, { id: "applied", priority: 0, invoke: ordinaryHealing })
-                .set(vitality.damageCommitting, {
+                .set(vitality.lossCommitting, {
                     id: "observe-damage-commit", priority: 0,
                     invoke(current, context, health) {
                         damageCommits.push([context.previous.hp, health.hp]);
@@ -85,7 +87,7 @@ test("HP-07: natural recovery samples current attributes after Effects and befor
     }, effectInitial).state;
     state = update(state, target, units.compose(
         presence.disappear(),
-        units.setHook(hpHealing.receiving, { id: "receive", priority: 0, invoke: ordinaryHealing }),
+        units.setHook(hpIncrease.receiving, { id: "receive", priority: 0, invoke: ordinaryHealing }),
     ));
     state = step(state, []);
     assert.equal(observed.length, 1);
@@ -141,9 +143,9 @@ test("HP-08: Health protection commits before its consequences and preserves the
             hooks: Hooks.empty()
                 .set(hpDamage.beforeReceive, {
                     id: "fixed-reception", priority: 0,
-                    invoke: (current, _context, pending) => ({ state: current, value: hpDamage.fix(pending) }),
+                    invoke: (current, _context, pending) => ({ state: current, value: hpDecrease.fix(pending) }),
                 })
-                .set(vitality.damageCommitting, {
+                .set(vitality.lossCommitting, {
                     id: "last", priority: 0,
                     invoke(current, context, health) {
                         calls.push("last");
@@ -152,7 +154,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
                         return { state: current, value: { hp: 10, minusHp: 0 } };
                     },
                 })
-                .set(vitality.damageCommitting, {
+                .set(vitality.lossCommitting, {
                     id: "first", priority: 10,
                     invoke(current, context, health) {
                         calls.push("first");
@@ -166,7 +168,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
                         };
                     },
                 })
-                .set(vitality.damageCommitted, {
+                .set(vitality.lossCommitted, {
                     id: "commit-consequences", priority: 0,
                     invoke(current, { request, application }) {
                         calls.push("committed");
@@ -208,7 +210,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
     }));
     const request = damageRequest(source, target, 150);
     const protectedHit = hpDamage.applyDamage(request, hpDamage.calculateDamage(state, request, null), {
-        exclude: [[vitality.damageCommitting, null], [vitality.damageCommitted, null]], forbidden: new Set(),
+        exclude: [[vitality.lossCommitting, null], [vitality.lossCommitted, null]], forbidden: new Set(),
     });
     assert.equal(protectedHit.value.type, "APPLIED");
     assert.deepEqual(protectedHit.value.received, { type: "FIXED", amount: 150 });
@@ -225,7 +227,7 @@ test("HP-08: Health protection commits before its consequences and preserves the
     assert.equal(committed, 1);
     assert.equal(applied, 1);
 
-    state = update(protectedHit.state, target, units.setHook(vitality.damageCommitting, {
+    state = update(protectedHit.state, target, units.setHook(vitality.lossCommitting, {
         id: "remove-host", priority: 10000,
         invoke(current, context, value) {
             return { state: remove(current, context.request.target, { reason: "SCRIPT" }), value };
@@ -249,14 +251,14 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
         id: "life-debt",
         vitality: defineVitality(100, { recoverySpeed: defineAttribute(TICKS_PER_SECOND) }),
         hooks: Hooks.empty()
-            .set(vitality.damageCommitting, {
+            .set(vitality.lossCommitting, {
                 id: "observe-committing", priority: 0,
                 invoke(current, _context, health) {
                     committing++;
                     return { state: current, value: health };
                 },
             })
-            .set(vitality.damageCommitted, {
+            .set(vitality.lossCommitted, {
                 id: "observe-committed", priority: 0,
                 invoke(current) {
                     committed++;
@@ -299,7 +301,7 @@ test("HP-09: Vitality settles life debt across damage, recovery and MaxHP change
     assert.equal(vitality.isAlive(get(second.state, 0)), true);
     assert.equal(vitality.hpRatio(get(second.state, 0)), 0.01);
 
-    const directRecoveryState = update(second.state, target, units.setHook(hpHealing.receiving, {
+    const directRecoveryState = update(second.state, target, units.setHook(hpIncrease.receiving, {
         id: "reject-ordinary-healing", priority: 0,
         invoke: () => assert.fail("direct HP recovery must not enter Healing"),
     }));

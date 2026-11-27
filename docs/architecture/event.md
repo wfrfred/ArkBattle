@@ -21,7 +21,7 @@ UI 的实际需要决定输出哪些事实与字段。领域操作没有记录�
 
 以上输出包含发生 Tick。元素损伤对应 Elemental Injury，元素 HP 伤害对应 Elemental Damage；后者仍是 `DAMAGE` 的 `ELEMENTAL` 伤害类型，两者不得混用。
 
-四种伤害与治疗在成功提交时均输出对应 Event，实际资源变化为零也记录 amount 为零。零计算输出在 Apply 入口拒绝，不产生成功输出。HP 伤害与治疗取消时输出零值 Event；EP 损伤取消不输出 Event，EP 治疗没有取消分支。Elemental 的 damaged／healed 只通知实际变化大于零的业务，与 UI Event 的成功输出条件分开。
+四种普通伤害与治疗在成功提交时均输出对应 Event，实际资源变化为零也记录 amount 为零。零计算输出在 Apply 入口拒绝，不产生成功输出。HP 伤害与治疗取消时输出零值 Event；EP 损伤取消不输出 Event，EP 治疗没有取消分支。HP Adjustment 不输出普通 DAMAGE／HEAL，包含死亡时仍保留正常离场事实。Elemental 的 damaged／healed 只通知实际变化大于零的业务，与 UI Event 的成功输出条件分开。
 
 伤害与治疗 Event 不复制接收量、取消报告或提交后的资源值。Burst Event 不携带整个运行实例，使用发生时采样的位置，避免 UI 查询最终 State 得到移动后的位置或找不到同 Tick 已注销的宿主。
 
@@ -29,7 +29,7 @@ UI 的实际需要决定输出哪些事实与字段。领域操作没有记录�
 
 ## 输出时点与业务独立
 
-Event 按事实发生时点追加，嵌套操作产生的输出保留其先后关系。HP 伤害写入后先输出 DAMAGE，再派发 damageCommitted。普通治疗写入后先输出 HEAL，再处理本次恢复触发的离场。EP 损伤先输出本次实际损失，再输出由其触发的爆发，之后才运行对应 Hook／内容程序。Unit 在物理注销时追加离场事实，随后派发 removed。Tick 结束时直接使用该事件队列及其顺序。
+Event 按事实发生时点追加，嵌套操作产生的输出保留其先后关系。普通 HP 伤害的 Health 与 DAMAGE Event 同一提交，再派发 lossCommitted；负向调整同样派发 lossCommitted，但不产生 DAMAGE。普通治疗写入后先输出 HEAL，再处理本次恢复触发的离场。EP 损伤先输出本次实际损失，再输出由其触发的爆发，之后才运行对应 Hook／内容程序。Unit 在物理注销时追加离场事实，随后派发 removed。Tick 结束时直接使用该事件队列及其顺序。
 
 Tick 开始清空上一 Tick 的临时输出；保留旧 BattleState 仍可读取其原输出。初始化操作产生的输出也属于其返回状态。
 

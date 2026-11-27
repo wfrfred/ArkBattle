@@ -8,7 +8,7 @@ import { blocked } from "../../../core/battle/blocking/index.js";
 import { blocker } from "../../../core/unit/capability/blocking/index.js";
 import { hasSkill, modify } from "../../../core/unit/capability/skill/index.js";
 import type { Vitality } from "../../../core/unit/capability/vitality/index.js";
-import { cancel, receiving } from "../../../core/battle/resource/hp/damage/index.js";
+import { cancel, receiving } from "../../../core/battle/resource/hp/decrease.js";
 import {
     type Definition as EffectDefinition,
     ref as effectRef,
@@ -60,7 +60,8 @@ export function shieldEffect({
                 unitHooks.setHook(receiving, {
                     id: `${SHIELD_ID}/${self.id}`,
                     priority: 100,
-                    accepts: (_battle, { request }) => request.nature !== "LOSS",
+                    accepts: (_battle, context) =>
+                        context.type === "DAMAGE" && context.request.nature !== "LOSS",
                     invoke(state, context, pending) {
                         const shield = ref.get(state);
                         if (

@@ -1,26 +1,22 @@
-import type { Context as DamageContext } from "../../../battle/resource/hp/damage/hook.js";
+import type { CommitContext as DecreaseContext } from "../../../battle/resource/hp/decrease.js";
 import { key, type Hook } from "../../../hook.js";
 import type { Unit } from "../../unit.js";
 import type { Vitality } from "./capability.js";
 import type { Health } from "./health.js";
-import type { DamageApplication } from "./operations.js";
+import type { DecreaseApplication } from "./operations.js";
 
-export interface DamageCommittingContext extends DamageContext {
+export type LossCommittingContext = DecreaseContext & {
     readonly previous: Health;
-}
+};
 
-export type DamageCommittingHook = Hook<DamageCommittingContext, Health>;
+export type LossCommittingHook = Hook<LossCommittingContext, Health>;
 
-export const damageCommitting = key<DamageCommittingHook, Unit & Vitality>(
-    "vitality.damageCommitting",
-);
+export const lossCommitting = key<LossCommittingHook, Unit & Vitality>("vitality.lossCommitting");
 
-export interface DamageCommittedContext extends DamageContext {
-    readonly application: DamageApplication;
-}
+export type LossCommittedContext = DecreaseContext & {
+    readonly application: DecreaseApplication;
+};
 
-export type DamageCommittedHook = Hook<DamageCommittedContext, void>;
+export type LossCommittedHook = Hook<LossCommittedContext, void>;
 
-export const damageCommitted = key<DamageCommittedHook, Unit & Vitality>(
-    "vitality.damageCommitted",
-);
+export const lossCommitted = key<LossCommittedHook, Unit & Vitality>("vitality.lossCommitted");

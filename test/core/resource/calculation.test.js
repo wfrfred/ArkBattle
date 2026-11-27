@@ -7,6 +7,7 @@ import { Hooks } from "../../../dist/core/hook.js";
 import * as units from "../../../dist/core/unit/index.js";
 import { update } from "../../../dist/core/unit/operations.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
+import * as hpDecrease from "../../../dist/core/battle/resource/hp/decrease.js";
 import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";
 import * as hpHealing from "../../../dist/core/battle/resource/hp/healing/index.js";
 import * as epHealing from "../../../dist/core/battle/resource/ep/healing/index.js";
@@ -105,7 +106,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
                         },
                     }),
                 }),
-                units.setHook(hpDamage.receiving, {
+                units.setHook(hpDecrease.receiving, {
                     priority: 0,
                     id: "receive",
                     invoke(current, _context, pending) {
@@ -164,7 +165,7 @@ test("HP-02: independent Calculate results retain their own business state and o
     const preparation = damageRequest(null, source, 100);
     state = hpDamage.applyDamage(preparation, hpDamage.calculateDamage(state, preparation, null), null).state;
     let receptions = 0;
-    state = update(state, target, units.setHook(hpDamage.receiving, {
+    state = update(state, target, units.setHook(hpDecrease.receiving, {
         priority: 0,
         id: "count-receptions",
         invoke(current, _context, pending) { receptions++; return { state: current, value: pending }; },

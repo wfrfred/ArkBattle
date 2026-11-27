@@ -23,7 +23,7 @@ import { elementValues, setContribution } from "../../../dist/core/unit/capabili
 import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
 import { stun } from "../../../dist/core/effects/control.js";
 import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";
-import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
+import * as hpDecrease from "../../../dist/core/battle/resource/hp/decrease.js";
 import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import { dispatchReleased } from "../../../dist/core/unit/capability/action/release.js";
 import { resolveSpeed } from "../../../dist/core/unit/capability/action/timing.js";
@@ -203,11 +203,11 @@ test('mania counts each released action once and each skill activation, caps sel
       id: 'blocked-output', classification: { type: "DEVICE", side: 'ENEMY', filterTags: [], groupTags: [] },
       vitality: defineVitality(100000),
       targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] }, hitbox: { shape: hit },
-      hooks: Hooks.empty().set(hpDamage.receiving, {
+      hooks: Hooks.empty().set(hpDecrease.receiving, {
         priority: 0,
         id: 'block-output',
         invoke: (state, context, pending) => ({
-          state, value: hpDamage.cancel(pending, 'BLOCKED', context.forbidden),
+          state, value: hpDecrease.cancel(pending, 'BLOCKED', context.forbidden),
         }),
       }),
     } },

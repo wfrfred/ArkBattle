@@ -12,7 +12,7 @@ import { hasVitality } from "../vitality/capability.js";
 import { isAlive } from "../vitality/query.js";
 import { hasAction } from "../action/capability.js";
 import { released, type ReleasedHook } from "../action/release.js";
-import { receiving, type ReceivingHook } from "../../../battle/resource/hp/damage/hook.js";
+import { receiving, type ReceivingHook } from "../../../battle/resource/hp/decrease.js";
 import { hasSkill, type Skill as SkillCapability } from "./capability.js";
 import {
     create as createActivation,
@@ -34,11 +34,12 @@ import { replaceIn } from "../../../common/object.js";
 const hitRecovery: ReceivingHook = {
     id: "@skill/hit-recovery",
     priority: 10000,
-    accepts: (_battle, { request }, current) =>
+    accepts: (_battle, context, current) =>
+        context.type === "DAMAGE" &&
         current.type !== "CANCELLED" &&
         current.amount > 0 &&
-        request.nature !== "LOSS" &&
-        request.hitRecovery,
+        context.request.nature !== "LOSS" &&
+        context.request.hitRecovery,
     invoke: (battle, { request }, current) => {
         const target = request.target.get(battle);
 

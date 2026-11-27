@@ -3,14 +3,15 @@ import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
-import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
+import type { Calculated, Outcome, Request } from "./contract.js";
+import { increase } from "../apply.js";
+import type { Pending, Reason } from "../increase.js";
 import {
     type CommitContext,
     type ReceivingContext,
     type ReceivingHook,
     dispatch,
     beforeReceive,
-    beforeCommit,
     targetApplied,
     sourceApplied,
     completed,
@@ -30,7 +31,7 @@ export function applyHealing(
     if (
         calculation === undefined ||
         calculation.amount === 0 ||
-        !vitality.canReceiveHealing(battle, request.target)
+        !vitality.canReceiveHp(battle, request.target)
     ) {
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }
@@ -50,7 +51,7 @@ export function applyHealing(
     );
     battle = before.state;
 
-    if (!vitality.canReceiveHealing(battle, request.target)) {
+    if (!vitality.canReceiveHp(battle, request.target)) {
         return complete(
             battle,
             request,
@@ -62,34 +63,16 @@ export function applyHealing(
         );
     }
 
-    const receiving = vitality.receiveHealing(battle, context, before.value, options);
-    battle = receiving.state;
-    const received = receiving.value;
-    if (received.type === "CANCELLED") {
-        return complete(battle, request, calculation, { type: "CANCELLED", received }, options);
-    }
-    if (!vitality.canReceiveHealing(battle, request.target)) {
-        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
-    }
-
-    const commitContext: CommitContext = { ...context, received };
-    battle = dispatch(
-        battle,
-        request.source,
-        beforeCommit,
-        commitContext,
-        undefined,
-        options,
-    ).state;
-
-    if (!vitality.canReceiveHealing(battle, request.target)) {
-        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
-    }
-
-    const committed = vitality.commitHealing(battle, commitContext);
+    const receivingContext = { ...context, type: "HEALING" as const };
+    const committed = increase(battle, receivingContext, before.value, options);
     battle = committed.state;
-    const application = committed.value;
+    const outcome = committed.value;
+    if (outcome.type !== "APPLIED") {
+        return complete(battle, request, calculation, outcome, options);
+    }
 
+    const { received, application } = outcome;
+    const commitContext: CommitContext = { ...context, received };
     const appliedContext = { ...commitContext, application };
     battle = dispatch(
         battle,

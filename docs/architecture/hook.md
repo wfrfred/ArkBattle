@@ -59,9 +59,9 @@ Unit 本地 `entered` 从 Battle 级入场程序完成后的最新 Unit 采样�
 
 一批关系逐条开始时取各自候选，不提前冻结整批登记。同一 Unit 承担来源和目标等不同角色时，仍按不同 Key 分别通知。历史载荷不随实时查询改变，见[状态接续](functional-core.md#状态接续后的读取与续执行)。
 
-普通 HIT 回复与伤判共用 HP Damage.receiving；HIT 约定采用 10000 量级高优先级并原样返回工作值，普通伤判通常为 0。数值是内容顺序约定，不建立强制分区或额外派发轮次。beforeReceive 与 receiving 使用同一业务 Hook 类型、不同 Key，保留各自时点。
+普通 HIT 回复与伤判共用 hp.decrease.receiving；HIT 约定采用 10000 量级高优先级并原样返回工作值，普通伤判通常为 0。数值是内容顺序约定，不建立强制分区或额外派发轮次。HP 的普通 beforeReceive 保留业务专属 Key，准入后的 receiving 与来源 beforeCommit 按 HP 减少／增加方向共享；方向 Context 的 type 区分普通伤疗及 Adjustment，内容自行判断适用性。
 
-HP Damage 的临时 removing Hook 与 targetKilled 顺序由 [Resource](resource.md)规定；公共 Hook 不自动添加击杀程序。
+HP decrease 的临时 removing Hook 与 targetKilled 顺序由 [Resource](resource.md)规定；公共 Hook 不自动添加击杀程序。
 
 ## 本次调用的 Hook 排除
 

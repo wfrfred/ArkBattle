@@ -1,6 +1,6 @@
 # Damage 与 Healing 结算
 
-本页是 HP／EP 四类资源业务的公共契约。HP 状态、债务和提交干预见 [Vitality](vitality.md)，EP 状态与爆发见 [Elemental](elemental.md)；登记、优先级与同步候选见 [Hook](hook.md)，结束偏序见 [Lifetime](lifetime.md)。具体公开类型由 [resource/index.ts](../../src/core/battle/resource/index.ts) 下的四个业务入口提供，保留各自 Request、Context、Reason 和报告，不建立联合请求或中央事件目录。
+本页规定 HP／EP Damage、Healing 与有符号 HP Adjustment 的结算契约。HP 状态、债务和提交干预见 [Vitality](vitality.md)，EP 状态与爆发见 [Elemental](elemental.md)；登记、优先级与同步候选见 [Hook](hook.md)，结束偏序见 [Lifetime](lifetime.md)。具体公开类型由 [resource/index.ts](../../src/core/battle/resource/index.ts) 提供。普通 Damage／Healing 保留各自的 Request、计算与业务通知；HP 按减少、增加方向共享接收与提交前协议，不建立中央事件目录。
 
 原生依据集中在[公式与概率](../research/cases/10-weak-damage-and-critical.md)、[生命应用](../research/cases/11-damage-apply-and-hp-application.md)、[接收阶段](../research/cases/28-damage-hooks-and-event-granularity.md)、[治疗](../research/cases/29-hp-and-ep-healing-settlement.md)、[分类与权限](../research/cases/38-damage-classification-and-permissions.md)及[死亡归属](../research/cases/39-death-attribution-and-attribute-ranges.md)。Calculate／Apply 的划分及下述明确标出的规则是项目选择，不要求逐步复刻原生 Modifier。
 
@@ -13,7 +13,7 @@ Calculate 计算一笔输出；Apply 让目标接收该输出并完成资源与�
 
 非零计算输出与基础目标资格
 → BeforeReceive → 最新接收资格
-→ Receiving（该业务具有时）→ 取消与资格确认
+→ Receiving（HP 按方向共享，EP Damage 专属，EP Healing 不执行）→ 取消与资格确认
 → 来源 BeforeCommit → 最新接收资格
 → 所属能力提交 → targetApplied → sourceApplied
 → HP Damage 确认死亡 → Completed → Outcome
@@ -25,7 +25,7 @@ Calculate 计算一笔输出；Apply 让目标接收该输出并完成资源与�
 
 - 全部 Output 完成后以 `max(0, output)` 形成 Calculated；负值不反转方向。零计算输出由 Apply 拒绝，已完成的计算状态仍保留。
 - 接收中不逐项截零，全部接收完成后才将未取消的 amount 截为非负。正数计算输出接收为零，或实际变化为零，仍可成功。
-- 资源报告在写点固定，后续嵌套恢复、伤害、属性变化或离场不重算；Applied 只通知成功提交。UI 仅消费实际变化，成功零变化仍有对应零值 Event，参见 [Event](event.md)。
+- 资源报告在写点固定，后续嵌套恢复、伤害、属性变化或离场不重算；Applied 只通知成功提交。UI 仅消费实际变化，普通伤疗成功零变化仍有对应零值 Event，参见 [Event](event.md)。
 
 Outcome 使用 type 判别：REJECTED 表示未获受理，CANCELLED 保留取消工作值，UNAVAILABLE 表示接收后失去继续提交资格，APPLIED 携带 received 与 Application。EP Healing 没有取消协议，因而没有 CANCELLED。Calculate 无法继续时返回 undefined 并保留已完成状态。
 
@@ -35,7 +35,7 @@ Request 保存来源、目标、初始 parameters 及发起时确定的事实。
 
 Formula 以原始 Parameters 为初值逐项接续。当前参数可改变伤害类型；基础公式、OutputContext.type 与 Calculated.type 使用改变后的实际类型，不重新读取 Request.parameters.type。防御与抗性在 Formula 后采样，Apply 不因之后属性变化自动重算。
 
-Context 只保留本阶段所需的固定事实：基础为 request，接收增加 calculated 及本次取消权限，提交增加 received，Applied 增加固定 application，Completed 保存同一最终 outcome。目标从 request.target 取得。Calculated 不复制来源、目标或实时 HP／Effect；弹道和跨阶段业务所需样本由具体内容明确保存，不能用命中时查询来源冒充发射时采样。
+Context 只保留本阶段所需的固定事实：基础为 request，普通业务接收增加 calculated 及本次取消权限，提交增加 received，Applied 增加固定 application，Completed 保存同一最终 outcome。目标从 request.target 取得。Calculated 不复制来源、目标或实时 HP／Effect；弹道和跨阶段业务所需样本由具体内容明确保存，不能用命中时查询来源冒充发射时采样。
 
 ### 请求分类
 
@@ -54,9 +54,9 @@ HP／EP Damage 顶层必填单值 `attackType`、`applyWay` 与 `nature`：
 
 HP 的三种 Nature、EP 的两种 Nature 分别使用各自同一管线。ENVIRONMENT 标签本身不跳过 Hook、固定数值或改变公式；source、HP hitRecovery 与本次 exclude 分别控制来源、HIT 许可与响应排除。EP 的限制与接收 Hook 通过 request.nature 实现环境免疫，取消权限仍遵守 Receiving 契约，排除 Hook 不删除登记。原生深水损伤来源与齐尔查克条件光环依据见[案例38](../research/cases/38-damage-classification-and-permissions.md#3-shared-flags-完整清单)。
 
-普通无敌和 Presence 的 HP 接收规则只允许 LOSS；流失仍计算防御并进入提交和死亡后继。具体护盾、闪避、减伤或受伤机制按自身资格处理，泥岩接受 nature!==LOSS。活性源石为 ENVIRONMENT，敌方深水与标准爆发 HP 输出为 DAMAGE。角色狂躁周期明确允许 HIT；其它标准爆发、活性源石与敌方深水不允许，见 [Elemental](elemental.md#狂躁的行动与时间累加)。
+普通无敌和 Presence 的 HP 接收规则只允许 LOSS；流失仍计算防御并进入提交和死亡后继。具体护盾、闪避、减伤或受伤机制按自身资格处理，泥岩只接受 type 为 DAMAGE 且 nature!==LOSS。活性源石为 ENVIRONMENT，敌方深水与标准爆发 HP 输出为 DAMAGE。角色狂躁周期明确允许 HIT；其它标准爆发、活性源石与敌方深水不允许，见 [Elemental](elemental.md#狂躁的行动与时间累加)。
 
-普通 HIT 回复与伤判共用 HP Damage.receiving，Skill 的监听约定 priority=10000，普通伤判通常为 0。它仅接受未取消、amount>0、nature!==LOSS 且 hitRecovery=true 的工作值，回复后原样返回；前置取消或归零不授予 HIT，后续抵挡或闪避不回滚已完成回复。实际回复仍受 SP 自身资格与容量限制，详见 [Skill](skill.md)。
+普通 HIT 回复与伤判共用 hp.decrease.receiving，Skill 的监听约定 priority=10000，普通伤判通常为 0。HIT 仅接受 type 为 DAMAGE、未取消、amount>0、nature!==LOSS 且 hitRecovery=true 的工作值，回复后原样返回；前置取消或归零不授予 HIT，后续抵挡或闪避不回滚已完成回复。实际回复仍受 SP 自身资格与容量限制，详见 [Skill](skill.md)。
 
 ## 基础公式与弱点选择
 
@@ -80,7 +80,7 @@ HP Damage 使用 `p=max(0, power×multiplier+addition)`。power 不必来自 ATK
 
 ## 接收工作值、数值固定与取消
 
-HP Damage、EP Damage、HP Healing 的 beforeReceive 与 receiving 使用同一业务 ReceivingHook、不同键，接续同一 Pending；EP Healing 只有 beforeReceive 和简单 Pending，没有准入后的 receiving 或取消协议。
+HP Damage／Healing 保留各自的 beforeReceive；准入后的目标 receiving 和来源 beforeCommit 分别归 hp.decrease／hp.increase。同一方向共享 Reason、Pending、Next、fix、cancel；共享 Context 以 type 区分 DAMAGE／ADJUSTMENT 或 HEALING／ADJUSTMENT。普通 HP beforeReceive 接续同方向 Pending，但保留普通业务的 Context。内容按实际适用性判断 type 和普通请求分类，不将所有减少视为伤害或所有增加视为治疗。EP Damage 的 beforeReceive 与 receiving 仍使用同一业务 ReceivingHook、不同键；EP Healing 只有 beforeReceive 和简单 Pending，没有准入后的 receiving 或取消协议。
 
 | 当前 Pending | 可返回的后继 | 数值约束 |
 | --- | --- | --- |
@@ -94,9 +94,9 @@ fix 固定 NORMAL，其他状态保留。`cancel(current, reason, forbidden)` �
 
 | 业务 | 取消原因 |
 | --- | --- |
-| HP Damage | UNSPECIFIED、UNHURTABLE、MISS、BLOCKED、HIT_FAILED、INTERRUPT |
+| HP decrease | UNSPECIFIED、UNHURTABLE、MISS、BLOCKED、HIT_FAILED、INTERRUPT |
 | EP Damage | UNSPECIFIED、UNHURTABLE、INTERRUPT |
-| HP Healing | UNSPECIFIED |
+| HP increase | UNSPECIFIED |
 
 MISS 是目标成功闪避，HIT_FAILED 是来源未命中，BLOCKED 是抵挡；原因不使用内容自造字符串。INTERRUPT 只表示本笔取消，不恢复原生特定时点的早退规则。成功闪避的通用后继用目标侧 Completed 观察最终 CANCELLED／MISS，在剩余 Receiving 后、同次 Apply 返回前执行；须确认自身为目标。这是项目时点选择，原生在 Evade 成功节点立即通知。
 
@@ -110,21 +110,31 @@ MISS 是目标成功闪避，HIT_FAILED 是来源未命中，BLOCKED 是抵挡�
 | ApplyOptions.forbidden | HP Damage、EP Damage、HP Healing 的取消权限；Apply 一次建立 ReceivingContext.forbidden，接收／提交／Applied 共用，Hook 显式传给 cancel |
 | ApplyOptions.ignore | HP／EP Damage 的接收 Restriction 豁免；每次复检解析最新有效贡献，再豁免匹配定义，不恢复竞争落败项 |
 
-Calculate 与 Apply 分别接受必填的 Options 或 ApplyOptions；`null` 表示本次没有额外策略。非 null 选项必须显式提供 exclude（无排除为空数组）；适用的 ApplyOptions 也必须显式提供 forbidden（无禁止原因为空集合），ignore 回调仍可省略。同键在本次多个宿主上使用时一致匹配。专属 Receiving 接续 Apply 的选项。Vitality 内部 damageCommitting／damageCommitted、EP 资源／Burst 通知与其它生命周期不自动继承它；HP targetKilled 是下节规定的显式转发。
+Calculate 与 Apply 分别接受必填的 Options 或 ApplyOptions；`null` 表示本次没有额外策略。非 null 选项必须显式提供 exclude（无排除为空数组）；适用的 ApplyOptions 也必须显式提供 forbidden（无禁止原因为空集合），ignore 回调仍可省略。同键在本次多个宿主上使用时一致匹配。普通 HP 的方向 Receiving 接续 Apply 的选项。Vitality 内部 lossCommitting／lossCommitted、EP 资源／Burst 通知与其它生命周期不自动继承它；HP targetKilled 是下节规定的显式转发。
 
 ignore 不绕过 ACTIVE、存活、Burst 或中立默认前提。HP Restriction 接收实际 ReceivingContext，EP 接收 `{self, request, type}`，实际 type 来自 Calculated；不为索敌伪造计算结果。HP Healing 没有接收限制数组，EP Healing 保留自己的 healingRestrictions，均不增加本次 ignore；EP Healing 也没有 forbidden。
 
 Hook 的固定 Context、priority、候选快照与重入资格只在 [Hook](hook.md) 定义。sourceFormula／targetFormula、targetApplied／sourceApplied 是不同角色；同一 Unit 承担两个角色仍分别 Applied，Completed 对同一宿主只通知一次。
 
+## 有符号 HP 调整
+
+`hp.adjustment.applyAdjustment(battle, {source,target,killer,delta})` 处理独立的生命增减业务；调用者计算有符号 delta，例如生命比例同步产生的差额。delta 必须有限、非零；目标必须仍登记、ACTIVE 且 HP>0。方向由 delta 的符号固定，接收的初始 amount 为其绝对值；接收中的负工作量不反转方向。
+
+调整不执行伤疗公式、普通 beforeReceive 或普通伤疗接收资格（如伤害 Restriction），直接进入对应方向的目标 receiving。接续未取消的非负量，检查最新基础资格，执行来源 beforeCommit 并复检后，由 Vitality 的 commitDecrease／commitIncrease 完成同一资源分配。负向提交派发 lossCommitting／lossCommitted，之后确认死亡；正向提交保留恢复容量导致离场的 killer:null 规则。source 与 killer 的作用独立；没有 Options／ApplyOptions 豁免入口。
+
+Adjustment.Outcome 以 type 区分 REJECTED、CANCELLED、UNAVAILABLE、APPLIED；成功携带 received、`application:{before,after}` 与 killed。成功零变化与取消不同。调整不输出普通 DAMAGE／HEAL Event，不执行普通 targetApplied、sourceApplied 或 Completed；但负向死亡仍使用共同击杀通知与正常 Unit 离场。LOSS 仍属普通 Damage，不是调整的替代入口；需要普通伤疗响应的机制继续使用普通业务。
+
+原生依据见[有符号调整及实际接收者](../research/cases/29-hp-and-ep-healing-settlement.md#有符号调整保留特定接收与生命归零程序)。魔王和「岁」的调整保留方向接收，变形者的同比例同步仍使用普通接收；这些具体内容不因 Core 接口可用而自动视为已接入。
+
 ## 生命状态、通知与离场
 
-HP 资源提交及 damageCommitted 完成后，依次执行目标与来源 Applied，再读取目标：仍为 ACTIVE 且 HP≤0 才确认本笔死亡。此前零 HP 不等于已离场，不提前清掉 Blocking；恢复后可保留旧关系。普通 Healing 不恢复零 HP，明确的保护或复活恢复使用 [Vitality](vitality.md#自然-hp-回复) 的直接操作。Combat 不扫描 HP 或代为判死。
+普通 HP 伤害提交及 lossCommitted 完成后，依次执行目标与来源 Applied，再读取目标：仍为 ACTIVE 且 HP≤0 才确认本笔死亡。此前零 HP 不等于已离场，不提前清掉 Blocking；恢复后可保留旧关系。普通 Healing 不恢复零 HP，明确的保护或复活恢复使用 [Vitality](vitality.md#自然-hp-回复) 的直接操作。Combat 不扫描 HP 或代为判死。
 
-HP Damage.Request.killer 必填，由调用者给定；无伤害 source 也可有 killer，无归属则为 null。Core 不从当前世界猜测，也不因来源注销而重判。Unit.End 的 DEATH 分支必须携带 killer。Lifetime 在首次有效请求时固定结束输入与 Unit 快照，Unit 据此构造离场通知的 Departure。`removing` 只派发一次。
+HP Damage.Request.killer 与 HP Adjustment.Request.killer 均必填，由调用者给定；无伤害 source 也可有 killer，无归属则为 null。Core 不从当前世界猜测，也不因来源注销而重判。Unit.End 的 DEATH 分支必须携带 killer。Lifetime 在首次有效请求时固定结束输入与 Unit 快照，Unit 据此构造离场通知的 Departure。`removing` 只派发一次。
 
 ### 单笔击杀结果与 targetKilled
 
-仅在本笔确认死亡且 killer 非 null 时，HP Apply 给目标临时登记 priority=10000 的 Unit.removing Hook，然后调用 Unit.remove(DEATH,killer)。Unit 发布 ENDING 后，临时 Hook 以当前 State 和传入的死亡 Departure 派发击杀者本地 targetKilled。目标的普通 removing Hook 优先级约定低于 10000。更高优先级或同级先登记项仍服从公共排序，没有强制分区。
+普通伤害及负向调整共用 hp.decrease.confirmDeath。仅在本笔确认死亡且 killer 非 null 时，给目标临时登记 priority=10000 的 Unit.removing Hook，然后调用 Unit.remove(DEATH,killer)。Unit 发布 ENDING 后，临时 Hook 以当前 State 和传入的死亡 Departure 派发击杀者本地 hp.decrease.targetKilled。目标的普通 removing Hook 优先级约定低于 10000。更高优先级或同级先登记项仍服从公共排序，没有强制分区。
 
 `TargetKilledContext = Extract<Departure, {reason:"DEATH"}>`，工作值为 void，typed Key 要求 Unit。它只携带受害者 unit、reason 和 killer，不复制 Request 或资源报告。仍登记的 ENDING 击杀者可响应，已注销或 null 时跳过；每项 Effect 的实际资格仍由自身 Hook 判断。Apply.exclude 显式用于该键／ID，排除不影响临时 removing Hook 本身、目标死亡或其它生命周期，也不传播到嵌套伤害。
 

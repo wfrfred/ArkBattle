@@ -2,23 +2,21 @@ import type { Options } from "../../../../hook.js";
 import type { Restriction } from "../../../../unit/capability/vitality/restriction.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
-import { removing, setHook } from "../../../../unit/hook.js";
 import * as vitality from "../../../../unit/capability/vitality/operations.js";
 import { isAlive } from "../../../../unit/capability/vitality/query.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
-import { remove, update } from "../../../../unit/operations.js";
-import type { Calculated, Outcome, Pending, Reason, Request } from "./contract.js";
+import type { Calculated, Outcome, Request } from "./contract.js";
+import { decrease, confirmDeath } from "../apply.js";
+import type { Pending, Reason } from "../decrease.js";
 import {
     type CommitContext,
     type ReceivingContext,
     type ReceivingHook,
     dispatch,
     beforeReceive,
-    beforeCommit,
     targetApplied,
     sourceApplied,
     completed,
-    dispatchTargetKilled,
 } from "./hook.js";
 
 export interface ApplyOptions extends Options {
@@ -70,37 +68,16 @@ export function applyDamage(
         );
     }
 
-    const receiving = vitality.receiveDamage(battle, context, before.value, options);
-    battle = receiving.state;
-    const received = receiving.value;
-    if (received.type === "CANCELLED") {
-        return complete(battle, request, calculation, { type: "CANCELLED", received }, options);
-    }
-    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
-        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
-    }
-
-    const commitContext: CommitContext = { ...context, received };
-    battle = dispatch(
-        battle,
-        request.source,
-        beforeCommit,
-        commitContext,
-        undefined,
-        options,
-    ).state;
-
-    if (!vitality.canReceiveDamage(battle, context, options?.ignore)) {
-        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
-    }
-
-    const committed = vitality.commitDamage(battle, commitContext);
+    const receivingContext = { ...context, type: "DAMAGE" as const };
+    const committed = decrease(battle, receivingContext, before.value, options);
     battle = committed.state;
-    const application = committed.value;
-    if (application === null) {
-        return complete(battle, request, calculation, { type: "UNAVAILABLE", received }, options);
+    const outcome = committed.value;
+    if (outcome.type !== "APPLIED") {
+        return complete(battle, request, calculation, outcome, options);
     }
 
+    const { received, application } = outcome;
+    const commitContext: CommitContext = { ...context, received };
     const appliedContext = { ...commitContext, application };
     battle = dispatch(
         battle,
@@ -119,36 +96,17 @@ export function applyDamage(
         options,
     ).state;
 
-    const current = request.target.get(battle);
-    const killed = current?.lifecycle === "ACTIVE" && !isAlive(current);
-    if (killed) {
-        if (request.killer !== null) {
-            battle = update(
-                battle,
-                request.target,
-                setHook(removing, {
-                    id: "@damage/targetKilled",
-                    priority: 10000,
-                    invoke: (state, departure) =>
-                        departure.reason === "DEATH"
-                            ? dispatchTargetKilled(state, departure, options)
-                            : { state, value: undefined },
-                }),
-            );
-        }
-
-        battle = remove(battle, request.target, { reason: "DEATH", killer: request.killer });
-    }
+    const death = confirmDeath(battle, request.target, request.killer, options);
 
     return complete(
-        battle,
+        death.state,
         request,
         calculation,
         {
             type: "APPLIED",
             received,
             application,
-            killed,
+            killed: death.value,
         },
         options,
     );

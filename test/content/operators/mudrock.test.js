@@ -12,6 +12,7 @@ import { createBattleState } from "../../../dist/core/battle/state.js";
 import { add, update } from "../../../dist/core/unit/operations.js";
 import { ref, setHook, removeHook } from "../../../dist/core/unit/index.js";
 import * as hpDamage from "../../../dist/core/battle/resource/hp/damage/index.js";
+import * as hpDecrease from "../../../dist/core/battle/resource/hp/decrease.js";
 import { advance as advanceBlocking } from "../../../dist/core/battle/blocking/index.js";
 import { advance as advanceEffects, forHost } from "../../../dist/core/effect/index.js";
 import { advance as advanceSkill, activate, modify } from "../../../dist/core/unit/capability/skill/index.js";
@@ -127,7 +128,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     const ready = advanceEffectsUntil(wound(fixture.battle), 270);
     const battle = update(ready, ref(fixture.unit), setHook(hpDamage.beforeReceive, {
         id: "fix-amount", priority: 200,
-        invoke: (state, _context, pending) => ({ state, value: hpDamage.fix(pending) }),
+        invoke: (state, _context, pending) => ({ state, value: hpDecrease.fix(pending) }),
     }));
 
     const shielded = hit(battle, 1);
@@ -166,7 +167,7 @@ test("APPLY-03: Mudrock requires a successful block for shield costs and benefit
     const missed = update(ordinary, ref(fixture.unit), setHook(hpDamage.beforeReceive, {
         id: "evade", priority: 200,
         invoke(state, context, pending) {
-            return { state, value: hpDamage.cancel(pending, "MISS", context.forbidden) };
+            return { state, value: hpDecrease.cancel(pending, "MISS", context.forbidden) };
         },
     }));
     const cancelled = hpDamage.applyDamage(request, hpDamage.calculateDamage(missed, request, null), null);

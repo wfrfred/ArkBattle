@@ -1,6 +1,6 @@
-import * as receiving from "../../receiving.js";
+import type { Pending } from "../decrease.js";
 import type { AttackType, ApplyWay } from "../../damage.js";
-import type { DamageApplication } from "../../../../unit/capability/vitality/operations.js";
+import type { DecreaseApplication } from "../../../../unit/capability/vitality/operations.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit, Id } from "../../../../unit/unit.js";
 import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
@@ -55,20 +55,7 @@ export interface Calculated {
     readonly amount: number;
 }
 
-export type Reason = "UNSPECIFIED" | "UNHURTABLE" | "MISS" | "BLOCKED" | "HIT_FAILED" | "INTERRUPT";
-
-export type Pending<
-    R extends Reason = Reason,
-    T extends receiving.State = receiving.State,
-> = receiving.Pending<R, T>;
-
-export type Next<T extends receiving.State, R extends Reason> = receiving.Next<T, R, Reason>;
-
-export const fix: receiving.Fix<Reason> = receiving.fix;
-
-export const cancel: receiving.Cancel<Reason> = receiving.cancel;
-
-export type Application = DamageApplication;
+export type Application = DecreaseApplication;
 
 export type Outcome =
     | { readonly type: "REJECTED" }

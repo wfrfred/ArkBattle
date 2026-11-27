@@ -50,7 +50,7 @@ TIME 配置只表示回复来源，周期由 `TICKS_PER_SECOND / 有效回复速
 
 默认激活阻回由一项可移除的 recoveryRestriction 表达，资源操作不硬编码“激活必然禁止回复”。
 
-ACTION 回复监听成功释放；普通 Action 的启动或结束不自动授予 SP。HIT 回复由 Skill 入场时登记到 HP Damage.receiving，使用 10000 量级优先级：工作值未取消且为正、nature 非 LOSS、hitRecovery 为 true 时尝试回复。前置取消／归零不授予 HIT，后续抵挡／闪避不回滚已完成回复。回复仍受当前 Skill 许可与容量约束，Damage 不依赖 Skill；公共伤害阶段见[Resource](resource.md)。
+ACTION 回复监听成功释放；普通 Action 的启动或结束不自动授予 SP。HIT 回复由 Skill 入场时登记到 hp.decrease.receiving，使用 10000 量级优先级：Context.type 为 DAMAGE、工作值未取消且为正、nature 非 LOSS、hitRecovery 为 true 时尝试回复。前置取消／归零不授予 HIT，后续抵挡／闪避不回滚已完成回复。回复仍受当前 Skill 许可与容量约束，Damage 不依赖 Skill；公共伤害阶段见[Resource](resource.md)。
 
 ## 3. Duration 与弹药
 

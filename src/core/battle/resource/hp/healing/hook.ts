@@ -1,16 +1,9 @@
+import type { Pending, Reason } from "../increase.js";
 import type * as receivingProtocol from "../../receiving.js";
 import type { Unit } from "../../../../unit/unit.js";
 import type { Vitality } from "../../../../unit/capability/vitality/capability.js";
 import * as hooks from "../../../../hook.js";
-import type {
-    Application,
-    Calculated,
-    Outcome,
-    Parameters,
-    Pending,
-    Reason,
-    Request,
-} from "./contract.js";
+import type { Application, Calculated, Outcome, Parameters, Request } from "./contract.js";
 
 export interface Context {
     readonly request: Request;
@@ -40,8 +33,6 @@ export type TargetFormulaHook = hooks.Hook<Context, Parameters>;
 
 export type OutputHook = hooks.Hook<Context, number>;
 
-export type BeforeCommitHook = hooks.Hook<CommitContext, void>;
-
 export type AppliedHook = hooks.Hook<AppliedContext, void>;
 
 export type CompletedHook = hooks.Hook<CompletedContext, void>;
@@ -62,8 +53,6 @@ export const beforeReceive = hooks.key<ReceivingHook, Unit & Vitality>(
     "resource.hp.healing.beforeReceive",
 );
 
-export const beforeCommit = hooks.key<BeforeCommitHook, Unit>("resource.hp.healing.beforeCommit");
-
 export const targetApplied = hooks.key<AppliedHook, Unit & Vitality>(
     "resource.hp.healing.targetApplied",
 );
@@ -71,7 +60,5 @@ export const targetApplied = hooks.key<AppliedHook, Unit & Vitality>(
 export const sourceApplied = hooks.key<AppliedHook, Unit>("resource.hp.healing.sourceApplied");
 
 export const completed = hooks.key<CompletedHook, Unit>("resource.hp.healing.completed");
-
-export const receiving = hooks.key<ReceivingHook, Unit & Vitality>("resource.hp.healing.receiving");
 
 export { dispatch } from "../../hook.js";

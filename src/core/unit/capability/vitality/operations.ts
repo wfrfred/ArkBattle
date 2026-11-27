@@ -6,30 +6,30 @@ import { remove, replace } from "../../operations.js";
 import type { Unit } from "../../unit.js";
 import * as hooks from "../../../hook.js";
 import type * as damage from "../../../battle/resource/hp/damage/index.js";
-import type * as healing from "../../../battle/resource/hp/healing/index.js";
-import { receiving as damageReceiving } from "../../../battle/resource/hp/damage/hook.js";
-import { receiving as healingReceiving } from "../../../battle/resource/hp/healing/hook.js";
+import * as decrease from "../../../battle/resource/hp/decrease.js";
+import * as increase from "../../../battle/resource/hp/increase.js";
+import type { Pending } from "../../../battle/resource/receiving.js";
 import { resolveMaxHp, resolveMaxMinusHp, type Vitality } from "./capability.js";
 import { isAlive, resolveRecoverySpeed } from "./query.js";
 import { allows } from "../../../restriction.js";
 import type { Restriction } from "./restriction.js";
 import {
-    damageCommitting,
-    damageCommitted,
-    type DamageCommittedContext,
-    type DamageCommittedHook,
+    lossCommitting,
+    lossCommitted,
+    type LossCommittedContext,
+    type LossCommittedHook,
 } from "./hook.js";
 import { change, normalize, type Health } from "./health.js";
 import { replaceIn } from "../../../common/object.js";
 
-export interface DamageApplication {
+export interface DecreaseApplication {
     readonly before: Health;
     readonly after: Health;
     readonly hpLoss: number;
     readonly minusHpGain: number;
 }
 
-export interface HealingApplication {
+export interface IncreaseApplication {
     readonly before: Health;
     readonly after: Health;
     readonly hpGain: number;
@@ -51,19 +51,42 @@ export function canReceiveDamage(
     );
 }
 
-export function canReceiveHealing(battle: BattleState, target: Ref<Unit & Vitality>): boolean {
+export function canReceiveHp(battle: BattleState, target: Ref<Unit & Vitality>): boolean {
     const unit = target.get(battle);
 
     return unit?.lifecycle === "ACTIVE" && isAlive(unit);
 }
 
-export function receiveDamage(
+export function receiveDecrease(
     battle: BattleState,
-    context: damage.ReceivingContext,
-    pending: damage.Pending,
+    context: decrease.ReceivingContext,
+    pending: decrease.Pending,
     options: hooks.Options | null,
-): Result<damage.Pending> {
-    const result = dispatchHook(battle, context, pending, damageReceiving, options);
+): Result<decrease.Pending> {
+    return receive(battle, context, pending, decrease.receiving, options);
+}
+
+export function receiveIncrease(
+    battle: BattleState,
+    context: increase.ReceivingContext,
+    pending: increase.Pending,
+    options: hooks.Options | null,
+): Result<increase.Pending> {
+    return receive(battle, context, pending, increase.receiving, options);
+}
+
+interface TargetContext {
+    readonly request: { readonly target: Ref<Unit & Vitality> };
+}
+
+function receive<C extends TargetContext, R extends string, H extends hooks.Hook<C, Pending<R>>>(
+    battle: BattleState,
+    context: C,
+    pending: Pending<R>,
+    key: hooks.Key<H, Unit & Vitality>,
+    options: hooks.Options | null,
+): Result<Pending<R>> {
+    const result = dispatchHook(battle, context, pending, key, options);
 
     return {
         state: result.state,
@@ -74,39 +97,22 @@ export function receiveDamage(
     };
 }
 
-export function receiveHealing(
+export function commitDecrease(
     battle: BattleState,
-    context: healing.ReceivingContext,
-    pending: healing.Pending,
-    options: hooks.Options | null,
-): Result<healing.Pending> {
-    const result = dispatchHook(battle, context, pending, healingReceiving, options);
-
-    return {
-        state: result.state,
-        value:
-            result.value.type === "CANCELLED"
-                ? result.value
-                : { ...result.value, amount: Math.max(0, result.value.amount) },
-    };
-}
-
-export function commitDamage(
-    battle: BattleState,
-    context: damage.CommitContext,
-): Result<DamageApplication | null> {
+    context: decrease.CommitContext,
+): Result<DecreaseApplication | null> {
     const target = context.request.target;
     const unit = target.get(battle)!;
     const previous = unit.vitality.health;
     const committed = dispatchHook(
         battle,
-        { request: context.request, previous },
+        { ...context, previous },
         change(
             previous,
             previous.hp - context.received.amount,
             resolveMaxMinusHp(unit.definition.vitality, unit.vitality),
         ),
-        damageCommitting,
+        lossCommitting,
         null,
     );
     battle = committed.state;
@@ -133,22 +139,24 @@ export function commitDamage(
         battle = replace(battle, [replaceIn(current, ["vitality", "health"], after)]);
     }
 
-    battle = appendEvents(battle, [
-        {
-            type: "DAMAGE",
-            targetUnitId: target.id,
-            damageType: context.calculated.type,
-            amount: application.hpLoss,
-            tick: battle.tick,
-        },
-    ]);
+    if (context.type === "DAMAGE") {
+        battle = appendEvents(battle, [
+            {
+                type: "DAMAGE",
+                targetUnitId: target.id,
+                damageType: context.calculated.type,
+                amount: application.hpLoss,
+                tick: battle.tick,
+            },
+        ]);
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-invalid-void-type -- The hook's work type is void.
-    const notified = dispatchHook<DamageCommittedContext, void, DamageCommittedHook>(
+    const notified = dispatchHook<LossCommittedContext, void, LossCommittedHook>(
         battle,
-        { request: context.request, application },
+        { ...context, application },
         undefined,
-        damageCommitted,
+        lossCommitted,
         null,
     );
 
@@ -158,11 +166,16 @@ export function commitDamage(
     };
 }
 
-export function commitHealing(
+export function commitIncrease(
     battle: BattleState,
-    context: healing.CommitContext,
-): Result<HealingApplication> {
-    return recoverHp(battle, context.request.target, context.received.amount, "HEAL");
+    context: increase.CommitContext,
+): Result<IncreaseApplication> {
+    return recoverHp(
+        battle,
+        context.request.target,
+        context.received.amount,
+        context.type === "HEALING" ? "HEAL" : null,
+    );
 }
 
 export function advance(battle: BattleState, reference: Ref<Unit & Vitality>): BattleState {
@@ -180,7 +193,7 @@ export function increaseHp(
     battle: BattleState,
     reference: Ref<Unit & Vitality>,
     amount: number,
-): Result<HealingApplication> {
+): Result<IncreaseApplication> {
     return recoverHp(battle, reference, amount, null);
 }
 
@@ -189,7 +202,7 @@ function recoverHp(
     reference: Ref<Unit & Vitality>,
     amount: number,
     event: "HEAL" | null,
-): Result<HealingApplication> {
+): Result<IncreaseApplication> {
     assertNonnegativeNumber(amount, "HP recovery amount");
     const unit = reference.get(battle);
     assert(unit?.lifecycle === "ACTIVE", "HP recovery target is not active", RangeError);
@@ -230,7 +243,7 @@ function recoverHp(
     return { state: battle, value: application };
 }
 
-function dispatchHook<C extends damage.Context | healing.Context, T, H extends hooks.Hook<C, T>>(
+function dispatchHook<C extends TargetContext, T, H extends hooks.Hook<C, T>>(
     battle: BattleState,
     context: C,
     initial: T,

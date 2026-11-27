@@ -6,7 +6,9 @@ import { battle, get } from "../helpers/battle.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
+import * as hpDecrease from "../../dist/core/battle/resource/hp/decrease.js";
 import * as hpHealing from "../../dist/core/battle/resource/hp/healing/index.js";
+import * as hpIncrease from "../../dist/core/battle/resource/hp/increase.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
 import * as epHealing from "../../dist/core/battle/resource/ep/healing/index.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
@@ -47,13 +49,13 @@ test("EVENT-01: resource operations emit actual changes and only HP cancellation
     }));
     state = epDamage.applyDamage(injury, epDamage.calculateDamage(state, injury, null), null).state;
 
-    for (const operation of [hpDamage, hpHealing, epDamage]) {
+    for (const [operation, direction] of [[hpDamage, hpDecrease], [hpHealing, hpIncrease], [epDamage, epDamage]]) {
         state = update(state, target, units.setHook(operation.beforeReceive, {
             priority: 0,
             id: "cancel",
             invoke: (current, { forbidden }, pending) => ({
                 state: current,
-                value: operation.cancel(pending, "UNSPECIFIED", forbidden),
+                value: direction.cancel(pending, "UNSPECIFIED", forbidden),
             }),
         }));
     }

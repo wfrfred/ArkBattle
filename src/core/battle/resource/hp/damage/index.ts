@@ -11,14 +11,9 @@ export type {
     Parameters,
     Request,
     Calculated,
-    Reason,
-    Pending,
-    Next,
     Application,
     Outcome,
 } from "./contract.js";
-
-export { fix, cancel } from "./contract.js";
 
 export type {
     Context,
@@ -27,15 +22,12 @@ export type {
     CommitContext,
     AppliedContext,
     CompletedContext,
-    TargetKilledContext,
     SourceFormulaHook,
     TargetFormulaHook,
     OutputHook,
-    BeforeCommitHook,
     ReceivingHook,
     AppliedHook,
     CompletedHook,
-    TargetKilledHook,
 } from "./hook.js";
 
 export {
@@ -43,12 +35,9 @@ export {
     targetFormula,
     output,
     beforeReceive,
-    receiving,
-    beforeCommit,
     targetApplied,
     sourceApplied,
     completed,
-    targetKilled,
 } from "./hook.js";
 
 export { calculateDamage } from "./calculate.js";

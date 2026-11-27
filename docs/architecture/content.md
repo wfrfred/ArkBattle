@@ -54,7 +54,7 @@ Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速
 
 泥岩 S2 满足目标条件时不等待普攻周期，其 Action 周期为 FIXED(0)；启动先显式取消正在执行的普攻，再清空相关冷却，旧普攻不继续输出，依据见[技能状态切换](../research/cases/08-action-eligibility-and-interruption.md)。普通攻击已接入攻速时序，S2 的执行使用专属 FIXED 时序，未完整接入其根／子程序的原生时间链。
 
-护盾耗尽不移除充能机制。先成功以 BLOCKED 取消才扣盾、自疗和获得盾额外 SP，禁止抵挡或已有取消不执行这些后继；普通 HIT 仍独立按本笔资格。NORMAL 的萨卡兹／阻挡减伤与 FIXED 保值分别遵守接收协议，见[抵挡研究](../research/cases/38-damage-classification-and-permissions.md#抵挡及屏障)。
+泥岩护盾监听 hp.decrease.receiving，但明确只接受实际普通 DAMAGE 类型且 nature 非 LOSS；Adjustment 不授予其普通抵挡响应。护盾耗尽不移除充能机制。先成功以 BLOCKED 取消才扣盾、自疗和获得盾额外 SP，禁止抵挡或已有取消不执行这些后继；普通 HIT 仍独立按本笔资格。NORMAL 的萨卡兹／阻挡减伤与 FIXED 保值分别遵守接收协议，见[抵挡研究](../research/cases/38-damage-classification-and-permissions.md#抵挡及屏障)。
 
 护盾满层仍推进充能、S2 对实际结算目标独立抽样，以及现有受击回复时点采用明确项目政策；不以组件拆分相似证明原生一致。原生嵌套依据见[同步结算](../research/cases/03-dispatch-and-nested-settlement.md)，公开玩法资料见[PRTS 泥岩](https://prts.wiki/w/泥岩)，两类证据不能互相冒充。
 

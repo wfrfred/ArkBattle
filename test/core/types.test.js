@@ -286,7 +286,7 @@ const registered = Hooks.empty().set(outputKey, {
 registered.get(outputKey)[0]!.invoke(battle, { amount: 1 }, 0) satisfies { state: State; value: number };
 // @ts-expect-error the registration cannot widen the key's callback payload.
 Hooks.empty().set(outputKey, { id: 'wrong', priority: 0, invoke: (state, context: { text: string }, current) => ({ state, value: current }) });
-const guardHealth = setHook(vitality.damageCommitting, {
+const guardHealth = setHook(vitality.lossCommitting, {
     id: 'keep-alive', priority: 0,
     invoke(state, _context, health) {
         return { state, value: { ...health, hp: Math.max(1, health.hp) } };
@@ -295,27 +295,28 @@ const guardHealth = setHook(vitality.damageCommitting, {
 // @ts-expect-error the key's owning capability remains required through Change.
 update(battle, ref(bare), guardHealth);
 // @ts-expect-error the post-commit key only notifies, so it cannot replace committed health.
-Hooks.empty().set(vitality.damageCommitted, { id: 'rewrite', priority: 0, invoke: state => ({ state, value: { hp: 1, minusHp: 0 } }) });
+Hooks.empty().set(vitality.lossCommitted, { id: 'rewrite', priority: 0, invoke: state => ({ state, value: { hp: 1, minusHp: 0 } }) });
 declare const damageRestriction: elemental.DamageRestriction;
 // @ts-expect-error a restriction from the damage context cannot be installed in the healing context.
 elemental.setRestriction('healingRestrictions', { id: 'wrong-context', group: null, value: damageRestriction });
 
 // Resource phases cannot skip the request facts or undo a one-way transition.
 const damage = resource.hp.damage;
-const receiving = Hooks.empty().set(damage.receiving, {
-    id: 'evade', priority: 0, invoke: (state, context, current) => ({ state, value: damage.cancel(current, 'MISS', context.forbidden) }),
+const decrease = resource.hp.decrease;
+const receiving = Hooks.empty().set(decrease.receiving, {
+    id: 'evade', priority: 0, invoke: (state, context, current) => ({ state, value: decrease.cancel(current, 'MISS', context.forbidden) }),
 });
-declare const receivingContext: resource.hp.damage.ReceivingContext;
-declare const cancelled: resource.hp.damage.Pending<'MISS', 'CANCELLED'>;
-receiving.get(damage.receiving)[0]!.invoke(battle, receivingContext, cancelled).value.reason satisfies 'MISS';
+declare const receivingContext: resource.hp.decrease.ReceivingContext;
+declare const cancelled: resource.hp.decrease.Pending<'MISS', 'CANCELLED'>;
+receiving.get(decrease.receiving)[0]!.invoke(battle, receivingContext, cancelled).value.reason satisfies 'MISS';
 // @ts-expect-error a later receiver cannot restore a fixed value to NORMAL.
 Hooks.empty().set(damage.beforeReceive, { id: 'unfix', priority: 0, invoke: (state, _context, current) => ({ state, value: { ...current, type: 'NORMAL' as const } }) });
 // @ts-expect-error a later receiver cannot restore an already cancelled hit, even to FIXED.
-Hooks.empty().set(damage.receiving, { id: 'revive', priority: 0, invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
+Hooks.empty().set(decrease.receiving, { id: 'revive', priority: 0, invoke: (state, _context, current) => ({ state, value: { ...current, type: 'FIXED' as const } }) });
 // @ts-expect-error a later receiver cannot replace an established cancellation reason.
-Hooks.empty().set(damage.receiving, { id: 'rewrite', priority: 0, invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
+Hooks.empty().set(decrease.receiving, { id: 'rewrite', priority: 0, invoke: (state, _context, current) => ({ state, value: current.type === 'CANCELLED' ? { ...current, reason: 'BLOCKED' as const } : current }) });
 // @ts-expect-error the sender must explicitly supply this settlement's cancellation permissions.
-damage.cancel(cancelled, 'BLOCKED');
+decrease.cancel(cancelled, 'BLOCKED');
 // @ts-expect-error an HP dodge reason is outside EP's cancellation protocol.
 resource.ep.damage.cancel({ type: 'NORMAL', amount: 10 }, 'MISS', new Set());
 declare const request: resource.hp.damage.Request;

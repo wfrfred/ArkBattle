@@ -22,13 +22,13 @@ export type { Restriction } from "./restriction.js";
 
 export type { ReceivingContext as RestrictionContext } from "../../../battle/resource/hp/damage/hook.js";
 
-export { damageCommitting, damageCommitted } from "./hook.js";
+export { lossCommitting, lossCommitted } from "./hook.js";
 
 export type {
-    DamageCommittingContext,
-    DamageCommittingHook,
-    DamageCommittedContext,
-    DamageCommittedHook,
+    LossCommittingContext,
+    LossCommittingHook,
+    LossCommittedContext,
+    LossCommittedHook,
 } from "./hook.js";
 
 export {
@@ -41,13 +41,13 @@ export {
 
 export {
     canReceiveDamage,
-    canReceiveHealing,
-    receiveDamage,
-    receiveHealing,
-    commitDamage,
-    commitHealing,
+    canReceiveHp,
+    receiveDecrease,
+    receiveIncrease,
+    commitDecrease,
+    commitIncrease,
     increaseHp,
     advance,
 } from "./operations.js";
 
-export type { DamageApplication, HealingApplication } from "./operations.js";
+export type { DecreaseApplication, IncreaseApplication } from "./operations.js";

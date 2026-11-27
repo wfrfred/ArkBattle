@@ -18,7 +18,7 @@
 | [Action · 5. Capability 与冷却](action.md#5-capability-与冷却)、[Skill · 4. Restriction、程序与 Hook](skill.md#4-restriction程序与-hook) | [输出方式由普通模板的操作推导，专属输出须显式声明。普通攻击模板的 timing 保留私有状态，冷却 Change 仅接收静态修正。回复限制不能充当发动豁免。](../../test/core/types.test.js#L205) |
 | [Effect · 2. Definition、实例与泛型](effect.md#2-definition实例与泛型)、[接口约定 · 6. Effect self 的身份与宿主约束](api-conventions.md#6-effect-self-的身份与宿主约束) | [叠层回调保留私有状态、宿主与层数类型。合并结果保留宿主和叠层身份，可作为基础 Effect Ref 使用，但不能借本次传入的 Definition 恢复旧私有状态；精确 Definition 查询可恢复该状态。](../../test/core/types.test.js#L227) |
 | [Projectile · 4. 创建、查询与内容更新](projectile.md#4-创建查询与内容更新)、[Projectile · 移除与消除](projectile.md#移除与消除) | [Projectile 创建必须装配回调声明的 Trait，普通弹道不暴露该字段。创建后的精确 Ref 保留 Definition 的消除资格，普通 Ref 不允许以消除原因移除。](../../test/core/types.test.js#L254) |
-| [Hook · 类型化键与集合](hook.md#类型化键与集合)、[Capability · 资格限制](capability.md#资格限制)、[接口约定 · 5.2 Unit 登记变更工厂](api-conventions.md#52-unit-登记变更工厂)、[Vitality · 伤害写入前后](vitality.md#伤害写入前后) | [Hook Key 决定载荷、可改工作值与所需宿主。提交后通知不能改已提交的生命报告。接收限制只有对应阶段可用，Elemental 的伤害限制不能用作治疗限制。](../../test/core/types.test.js#L280) |
+| [Hook · 类型化键与集合](hook.md#类型化键与集合)、[Capability · 资格限制](capability.md#资格限制)、[接口约定 · 5.2 Unit 登记变更工厂](api-conventions.md#52-unit-登记变更工厂)、[Vitality · HP 减少提交前后](vitality.md#hp-减少提交前后) | [Hook Key 决定载荷、可改工作值与所需宿主。提交后通知不能改已提交的生命报告。接收限制只有对应阶段可用，Elemental 的伤害限制不能用作治疗限制。](../../test/core/types.test.js#L280) |
 | [Resource · 请求分类](resource.md#请求分类)、[Resource · 接收工作值、数值固定与取消](resource.md#接收工作值数值固定与取消)、[Resource · 生命状态、通知与离场](resource.md#生命状态通知与离场) | [被固定和取消的工作值无法恢复，已有的取消原因不能改写。取消使用本次权限和所属领域的原因集。每笔伤害显式声明攻击方式与归属，离场请求也明确死亡归属，提交报告不提前暴露击杀结果。](../../test/core/types.test.js#L302) |
 | [Deployment · 静态内容与 Card](deployment.md#静态内容与-card)、[Effect · 2. Definition、实例与泛型](effect.md#2-definition实例与泛型)、[接口约定 · 统一 Typed Ref 与类型恢复](api-conventions.md#统一-typed-ref-与类型恢复) | [精确 Card Ref 恢复私有状态及策略，Unit 与 Card 的联合 Ref 保留两种精确读取结果。Unit 和 Card Ref 都能作为依赖目标，持久 Action 无独立 Lifetime，Card 的 never 结束参数拒绝显式结束。普通查询按策略收窄，只有 QUEUED 能入队。Runtime 接收同场多种 Card 与无宿主 Effect 状态，装配和登记拒绝 Definition 与状态错配。Card Effect 回调持有准确宿主类型，拒绝错误宿主。](../../test/core/types.test.js#L336) |
 
@@ -153,7 +153,7 @@
 | 架构条款 | 验收结果与代表场景 |
 | --- | --- |
 | [Vitality · 自然 HP 回复](vitality.md#自然-hp-回复) | [自然恢复在 Effect 后 Action 前按当前属性推进，不经普通治疗，消失可自然恢复而零 HP 不可](../../test/core/vitality.test.js#L30) |
-| [Vitality · 伤害写入前后](vitality.md#伤害写入前后) | [保护读写完整 Health，按当前宿主提交并先输出 Event，嵌套后继不改原报告，失去宿主不提交](../../test/core/vitality.test.js#L131) |
+| [Vitality · HP 减少提交前后](vitality.md#hp-减少提交前后) | [保护读写完整 Health，按当前宿主提交并先输出 Event，嵌套后继不改原报告，失去宿主不提交](../../test/core/vitality.test.js#L131) |
 | [Vitality · 负生命与资源分配](vitality.md#负生命与资源分配) | [MaxHP 与债务按最新容量处理，恢复先填债再恢复生命并分离溢出，恢复导致离场也保留实际报告](../../test/core/vitality.test.js#L243) |
 | [Elemental · 3. 查询、结算与资源提交](elemental.md#3-查询结算与资源提交) | [五条 EP 独立扣减、各得同额治疗并按当前容量归位，零收益不通知 healed，回复无需 Vitality](../../test/core/elemental.test.js#L305) |
 | [Elemental · 4. Hook、提交事实与同步重入](elemental.md#4-hook提交事实与同步重入) | [EP 耗尽先发布 Burst 和标准输出，再通知资源损伤与 Applied](../../test/core/elemental.test.js#L221)<br>[同步取消新 Burst 抑制后续标准输出，原 EP 损失和身份报告仍有效](../../test/core/elemental.test.js#L265) |
@@ -168,6 +168,7 @@
 | [Resource · 接收工作值、数值固定与取消](resource.md#接收工作值数值固定与取消) | [禁用取消理由及固定量约束工作值单向演进，提前完成的治疗、恢复及反伤不回滚](../../test/core/resource/application.test.js#L428) |
 | [Resource · 本次 Hook 排除、取消权限与接收豁免](resource.md#本次-hook-排除取消权限与接收豁免) | [排除按 Key 或 ID 作用于本次各宿主，Calculate、Apply 和嵌套业务独立，同名不同 Key 不受影响](../../test/core/resource/application.test.js#L39)<br>[同一次豁免按最新有效限制复检，不传给没有明确选项的嵌套伤害](../../test/core/resource/application.test.js#L265) |
 | [Resource · 生命状态、通知与离场](resource.md#生命状态通知与离场) | [零 HP 直到 Applied 后才确认离场，正常治疗拒绝，直接恢复可保留原阻挡，未恢复才清理](../../test/core/resource/application.test.js#L823) |
+| [Resource · 有符号 HP 调整](resource.md#有符号-hp-调整) | [调整经增减方向接收与提交，忽略普通伤害限制但仍受取消与生命保护；共享负生命分配和击杀归属，不产生普通伤疗 Event／Applied／Completed](../../test/core/resource/application.test.js#L1138) |
 | [Resource · 单笔击杀结果与 targetKilled](resource.md#单笔击杀结果与-targetkilled) | [嵌套损伤首次获确认，不因延迟注销而重复归属，仍登记的 ENDING 击杀者可异于请求来源](../../test/core/resource/application.test.js#L931)<br>[Completed 启动的致死后继不能改写已经固定的外层击杀结果](../../test/core/resource/application.test.js#L1028) |
 
 ## Event 的回归语义

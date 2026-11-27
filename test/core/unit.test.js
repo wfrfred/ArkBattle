@@ -12,6 +12,7 @@ import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as facing from "../../dist/core/unit/capability/facing/index.js";
 import * as targetable from "../../dist/core/unit/capability/targetable/capability.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
+import * as hpDecrease from "../../dist/core/battle/resource/hp/decrease.js";
 import { add, update, remove } from "../../dist/core/unit/operations.js";
 import { hasOccupancy } from "../../dist/core/unit/capability/occupancy/index.js";
 import { effectInitial } from "../helpers/effect.js";
@@ -148,7 +149,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
     const response = {
         id: "death-response", group: null, initialize: () => ({}),
         onEnable(current, self) {
-            return update(current, self.ref.host, units.setHook(hpDamage.targetKilled, {
+            return update(current, self.ref.host, units.setHook(hpDecrease.targetKilled, {
                 id: "death-response", priority: 0,
                 invoke(state, departure) {
                     assert.equal(departure.reason, "DEATH");
@@ -164,7 +165,7 @@ test("Unit death preserves its attribution through Effect responses and the orig
             }));
         },
         onDisable(current, self) {
-            return update(current, self.ref.host, units.removeHook(hpDamage.targetKilled, "death-response"));
+            return update(current, self.ref.host, units.removeHook(hpDecrease.targetKilled, "death-response"));
         },
     };
     state = effects.install(state, killer, response, effectInitial).state;
@@ -212,8 +213,8 @@ test("Unit death preserves its attribution through Effect responses and the orig
         invoke(current, departure) {
             assert.equal(directTarget.get(current).lifecycle, "ENDING");
             return dispatch(current, departure, undefined, {
-                candidates: next => killer.get(next).hooks.get(hpDamage.targetKilled),
-                find: (next, id) => killer.get(next)?.hooks.find(hpDamage.targetKilled, id),
+                candidates: next => killer.get(next).hooks.get(hpDecrease.targetKilled),
+                find: (next, id) => killer.get(next)?.hooks.find(hpDecrease.targetKilled, id),
             });
         },
     }));

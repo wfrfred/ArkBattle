@@ -8,13 +8,14 @@
 
 | 事项 | 当前状态 | 领域与依据 |
 | --- | --- | --- |
-| 生命比例同步的 HP 调整 | 待接入 | [Resource / Vitality](research-necessity-20261122.md#resource--vitality) |
 | 动态出生参与调度等待（U048） | 待接入 | [Schedule](research-necessity-20261122.md#schedule) |
 | 波次和终局等待的释放时点（U047） | 待定 | [Schedule](research-necessity-20261122.md#schedule) |
 | 全局个体结算计数 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
 | 关卡生命值 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
 
 已接入：普通仇恨所用的路线距离。Route 分离普通路线替代（Alternative 或 Main）与临时运动控制（Override），`remainingDistance` 只查询普通路线，选敌程序保留比较政策。 [原生仇恨与路线选择](../research/cases/33-targeting-and-targetable-pipeline.md#L230) · [Route 契约](navigation.md#运动目标与-main-出口)
+
+已接入：生命比例同步的有符号 HP 调整。普通伤疗与调整共享增减方向接收；调整保留生命提交和死亡处理，不生成普通伤疗事件及应用后通知。具体内容仍按实际语义接入。 [原生依据](../research/cases/29-hp-and-ep-healing-settlement.md#有符号调整保留特定接收与生命归零程序) · [Resource 契约](resource.md#有符号-hp-调整)
 
 ## 初次盘点的分类
 
@@ -104,7 +105,7 @@
 | U001 | 异宿主派生子项在父收尾时可已失效、仍未完成。具体支持内容是否读取这段先后。Core Lifetime 采用依赖完整收尾后再父 Finalize | 已有表达。父 Effect 请求结束时子项立即失去资格，当前依赖收尾顺序覆盖维什戴尔残影样本。 | [Case 01](../research/cases/01-buff-installation-and-parent-scope.md#L165) |
 | U002 | 普通支持范围内 EXTEND 是否重新采样并重载既有输出，以及动态 RefreshPriority 的实际使用。已绑定 EXTEND+快照配置来自排除的生息演算。单独保留支持范围内的正例问题 | 按内容核对。重延并重新采样的正例来自生息演算，支持范围内动态抢组仍缺实际样本。 | [Case 01](../research/cases/01-buff-installation-and-parent-scope.md#L275) |
 | U004 | 同一 Ability 重挂并改变周期，因保留已过时间影响下轮资格的实际配置。已有操作只按比例刷新或清空／重置。实际需要保持已过时间的现有技能持续已由 extendTime 表达 | 已有表达。哈蒂娅用现有技能延时。Action 重挂后按已过时间结算的普通正例仍缺。 | [Case 07](../research/cases/07-action-timing-and-animation.md#L138) |
-| U005 | 直接写当前 HP 的 TakeDamageMoveBackEnemy 等方法是否实际绑定支持玩法（同 Cases 37–39） | 按内容核对。该原生方法的实际绑定仍未找到。魔王和「岁」的有符号 HP 调整已另列 [Core 缺口](research-necessity-20261122.md#resource--vitality)。 | [Case 11](../research/cases/11-damage-apply-and-hp-application.md#L265) |
+| U005 | 直接写当前 HP 的 TakeDamageMoveBackEnemy 等方法是否实际绑定支持玩法（同 Cases 37–39） | 按内容核对。该原生方法的实际绑定仍未找到。魔王和「岁」的有符号 HP 调整已有 [Core 表达](resource.md#有符号-hp-调整)。 | [Case 11](../research/cases/11-damage-apply-and-hp-application.md#L265) |
 | U007 | 启用 alwaysCheckCurrentPoint 的实际敌人是否主动重建 Main Cursor，从而改变不可达路点政策 | 按内容核对。开关已有真值样本，临时路线可用独立 Context。需要重建 Main 并改变不可达处理的实际组合仍未证。 | [Case 13](../research/cases/13-route-and-movement-timing.md#L143) |
 | U008 | 是否有支持范围内的首 APPEAR 或 DISAPPEAR 正例需要普通 Unit 登记前的同步标志或回调 | 按内容核对。已知出生可用位置初值和入场程序。普通出生必须在登记前处理首条指令的实际消费者仍缺。 | [Case 13](../research/cases/13-route-and-movement-timing.md#L272) |
 | U014 | 原生足部定位点和 Core 身体坐标的差异是否会在实际内容中导致不同的导航或避障决策 | 已有表达。Route 可用 Context.offset。脚点与身体位置差异产生实际导航或避障结果的样本仍缺。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L148) |

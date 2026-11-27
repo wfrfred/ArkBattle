@@ -11,6 +11,7 @@ import * as effects from "../../dist/core/effect/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as vitality from "../../dist/core/unit/capability/vitality/index.js";
 import * as hpDamage from "../../dist/core/battle/resource/hp/damage/index.js";
+import * as hpDecrease from "../../dist/core/battle/resource/hp/decrease.js";
 import { create as createTile } from "../../dist/core/battlefield/map/tile.js";
 import { get as getTile } from "../../dist/core/battlefield/map/map.js";
 import { Tiles } from "../../dist/core/battlefield/map/tiles.js";
@@ -113,10 +114,11 @@ test("HP-06: infection keeps its entry clocks and ordinary reception while exclu
         }),
     })], [terrain.infection]);
     let battle = update(configured.battle, units.ref(current(configured.battle)),
-        units.setHook(hpDamage.receiving, {
+        units.setHook(hpDecrease.receiving, {
             id: "observe-environment-reception",
             priority: 0,
-            invoke(state, { request }, pending) {
+            invoke(state, { type, request }, pending) {
+                assert.equal(type, "DAMAGE");
                 assert.equal(request.nature, "ENVIRONMENT");
                 assert.equal(request.hitRecovery, false);
                 receptions.push(pending.amount);
@@ -204,10 +206,11 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
                 restrictions: [],
                 body: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 1 },
             },
-            hooks: Hooks.empty().set(hpDamage.receiving, {
+            hooks: Hooks.empty().set(hpDecrease.receiving, {
                 id: "observe-deepsea-nature",
                 priority: 0,
-                invoke(state, { request }, pending) {
+                invoke(state, { type, request }, pending) {
+                    assert.equal(type, "DAMAGE");
                     natures.push(request.nature);
                     return { state, value: pending };
                 },
