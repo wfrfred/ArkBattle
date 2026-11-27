@@ -18,9 +18,9 @@ Change 组合、单宿主发布与 Settlement 的详细契约以[接口约定](a
 
 Catalog 从 initializer 字典的函数签名派生配置、标准状态和 Initial，不维护第二份必需能力清单。initializer 接收当前 BattleState 与正在装配的 Unit，读取自身配置并补自身状态，保留已有字段与登记；有前置依赖时在输入类型中明确声明。
 
-具体 Definition 决定装配哪些能力；调用方总是显式提供 hooks 与顶层 initial；没有额外程序或能力输入时分别传 Hooks.empty() 与 {}。对应 initializer 的第三参数必填时，initial 对应键必填。允许额外的已知 Initial，它们在未选能力时忽略，未知键和错误值仍被类型拒绝。Occupancy 必需 tile 与可空 direction，Route 必需 Plan／offset，Facing 必需方向；调用者不能预装运行进度。以 Unit 为宿主的 Effect 在 Unit 登记后通过通用安装入口建立。
+具体 Definition 决定装配哪些能力；调用方总是显式提供 hooks 与顶层 initial；没有额外程序或能力输入时分别传 Hooks.empty() 与 {}。对应 initializer 的第三参数必填时，initial 对应键必填。允许额外的已知 Initial，它们在未选能力时忽略，未知键和错误值仍被类型拒绝。Occupancy 必需 tile 与可空 direction，Route 必需 Plan／offset，Locomotion 必需 mode，Facing 必需方向；调用者不能预装运行进度。以 Unit 为宿主的 Effect 在 Unit 登记后通过通用安装入口建立。
 
-`Unit.initialize` 创建稳定 Ref，将当前 BattleState 分配的表现编号保存在 `ref.id`，然后按 Catalog 顺序接续各 initializer。最后合并 Definition.hooks，同键同 ID 后者覆盖并保留位置。Occupancy 先于依赖它的 Deployable。初始化期间可以读取当前战场或消费 RNG，需要本次已装配的能力时直接读取输入 Unit。调用方接续返回的 State，可先登记本业务的事实，再用 `Unit.add` 发布实例并触发 entered。
+`Unit.initialize` 创建稳定 Ref，将当前 BattleState 分配的表现编号保存在 `ref.id`，然后按 Catalog 顺序接续各 initializer。最后合并 Definition.hooks，同键同 ID 后者覆盖并保留位置。Occupancy 先于依赖它的 Deployable，Locomotion 先于依赖它的 Route 和 Shiftable，也先于登记自主移动限制的 Blockable。Deployable 与 Locomotion 互斥。初始化期间可以读取当前战场或消费 RNG，需要本次已装配的能力时直接读取输入 Unit。调用方接续返回的 State，可先登记本业务的事实，再用 `Unit.add` 发布实例并触发 entered。
 
 Action 的 `definitions` 声明所选行动，Skill 的 `definition` 声明所选技能。各 Capability initializer 负责组装实例，逐次接续具体 Definition 的私有状态初始化结果。
 
@@ -76,7 +76,7 @@ Offense 保存 attack Attribute，默认下限为0；选择有效来源后按当
 
 ## Layer 与 Hitbox
 
-Unit.position 是身体坐标，Layer 是 GROUND／AIR，Route Plan.motionMode 是 WALK／FLY；它们互相独立。Layer.setType 主动脱离当前阻挡，同值也清理：先发布身份，Settlement 按能力调用 `blocker.releaseAll` 或 `blockable.release`，后者取消自身计划。它不改路径、自身阻挡规则或自动搜索；依据见[运动模式调查](../research/cases/15-locomotion-native-semantics.md)。
+Unit.position 是身体坐标，Layer 是 GROUND／AIR，Locomotion.State.mode 是 WALK／FLY；它们互相独立。Layer.setType 主动脱离当前阻挡，同值也清理：先发布身份，Settlement 按能力调用 `blocker.releaseAll` 或 `blockable.release`，后者取消自身计划。它不改路径、自身阻挡规则或自动搜索；依据见[运动模式调查](../research/cases/15-locomotion-native-semantics.md)。
 
 Hitbox Definition 保存单个静态 Shape，State 为空，不复制几何或提供运行时改形接口。它与阻挡半径、Locomotion 半身宽分别用于受击、接敌和避障，不能替代。[Spatial](spatial.md)提供战场几何查询。
 
@@ -90,7 +90,7 @@ turn 是完整操作，要求当前 ACTIVE；NORMAL 检查本次方向限制，F
 
 ### 触发与跨领域交互
 
-- 自主移动获准且有效速度为正时，具有 Facing、距 Route 提供的 MovementTarget.nextPoint 超过 0.25 才采样方向；先发布位移／速度，再 turn。转向拒绝不撤销移动，不用避障后的位移反推面向。
+- 自主移动获准且有效速度为正时，具有 Facing、距 Locomotion 当前 MovementTarget.nextPoint 超过 0.25 才采样方向；先发布位移／速度，再 turn。转向拒绝不撤销移动，不用避障后的位移反推面向。
 - 攻击／治疗由内容的首次开始程序决定是否转向。普通近远程程序在绑定目标距离超过 0.2 时尝试，泥岩 S2 不请求转向；后续 Tick 和命中不重复开始业务。
 - 眩晕分别限制转向、移动和其他能力；强制转向不恢复其他能力或绕过生命周期。
 - 正背面业务读取当前 Facing，动画只消费结果。

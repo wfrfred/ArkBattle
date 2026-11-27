@@ -59,22 +59,24 @@ test("eligible movement faces its navigation direction independently of velocity
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 0.01 } },
     };
     let state = battle([{ definition, hooks: Hooks.empty(), position: [3, 1],
-        initial: { facing: { direction: "RIGHT" } },
+        initial: { locomotion: { mode: "WALK" }, facing: { direction: "RIGHT" } },
     }]);
     const host = units.ref(get(state, 0));
-    const context = { mode: "WALK", speedMultiplier: 1 };
     const left = { nextPoint: [1, 1], goal: [1, 1] };
     const right = { nextPoint: [6, 1], goal: [6, 1] };
     state = update(state, host, locomotion.setRestriction({ id: "casting", group: null, value: { allows: () => false } }));
-    assert.equal(locomotion.advance(state, host, left, context), state);
+    state = update(state, host, locomotion.setTarget(left));
+    assert.equal(locomotion.advance(state, host), state);
     state = update(state, host, locomotion.removeRestriction("casting"));
     state = update(state, host, facing.setRestriction({ id: "fixed", group: null, value: { allows: () => false } }));
     for (let advance = 0; advance < 4; advance++) {
-        state = locomotion.advance(state, host, right, context);
+        state = update(state, host, locomotion.setTarget(right));
+        state = locomotion.advance(state, host);
     }
 
     const movingRight = get(state, 0).position[0];
-    state = locomotion.advance(state, host, left, context);
+    state = update(state, host, locomotion.setTarget(left));
+    state = locomotion.advance(state, host);
     assert.ok(get(state, 0).position[0] > movingRight);
     assert.equal(get(state, 0).facing.direction, "RIGHT");
 
@@ -83,16 +85,21 @@ test("eligible movement faces its navigation direction independently of velocity
         id: "fixed", group: null, value: { allows: (current, { self }) =>
             self.position[0] > beforeTurn && host.get(current) === self },
     }));
-    state = locomotion.advance(state, host, left, context);
+    state = update(state, host, locomotion.setTarget(left));
+    state = locomotion.advance(state, host);
     assert.ok(get(state, 0).locomotion.velocity[0] > 0);
     assert.equal(get(state, 0).facing.direction, "LEFT");
     state = update(state, host, facing.removeRestriction("fixed"));
 
     const vertical = [get(state, 0).position[0], 2];
-    state = locomotion.advance(state, host, { nextPoint: vertical, goal: vertical }, context);
+    state = update(state, host, locomotion.setTarget({ nextPoint: vertical, goal: vertical }));
+    state = locomotion.advance(state, host);
     assert.equal(get(state, 0).facing.direction, "LEFT");
     const near = [get(state, 0).position[0] + 0.1, get(state, 0).position[1]];
-    state = locomotion.advance(state, host, { nextPoint: near, goal: near }, context);
+    state = update(state, host, locomotion.setTarget({ nextPoint: near, goal: near }));
+    state = locomotion.advance(state, host);
     assert.equal(get(state, 0).facing.direction, "LEFT");
-    assert.equal(locomotion.advance(state, host, right, { ...context, speedMultiplier: 0 }), state);
+    state = update(state, host, locomotion.setTarget(right));
+    state = update(state, host, locomotion.setSpeedRange({ min: 0, max: 0 }));
+    assert.equal(locomotion.advance(state, host), state);
 });

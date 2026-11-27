@@ -34,7 +34,7 @@ Deployment 聚合资源、部署历史及调度；Card 完成部署资格、消�
 
 开场手牌的每一项绑定一份 `definition` 和一份 `unitDefinition`。Card Definition 描述卡牌政策和程序。Unit Definition 描述场上单位，并提供卡牌部署所需的 `occupancy` 和 `deployable`。部署时默认复用该 Unit Definition，可由本次构造前 Hook 调整。多张 Card 可以共用一份 Unit Definition，各有独立身份和资源。
 
-Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Route 需要本次路线的 Plan 和 offset，因此带 Route 的蓝图在 Card 构造时由类型检查拒绝。
+Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格部署提供 Occupancy 和 Facing 初值。Deployable 和 Locomotion 互斥；Route 依赖 Locomotion，因此 Card 绑定的蓝图既不含 Route，也不含 Locomotion，无需新增 Card Initial。这是基于现有研究范围的项目构造约束；部署单位仍可通过明确的位置变更和特殊重部署完成内容移动，不依赖自主积分。依据见[部署单位与自主运动调查](../research/evidence/deployable-motion-20261127/README.md)。
 
 `card.initialize(battle, { definition, unitDefinition })` 创建 Ref、运行 Card Definition 的初始化并返回完整实例。`card.add(battle, self)` 将 `Card<S, P>` 按 Ref 登记，并把新卡追加到当前牌序末尾，同时登记 Lifetime。Card 使用 `Config<Card, never>`，能够作为依赖目标，结束输入在编译期被禁止。Deck 使用异构 Store 以 Ref 为键存放完整实例。`card.all(battle)` 与 `deck.ordered(battle)` 返回默认 `Card`，精确引用通过 `ref.get(battle)` 取得对应的实例类型。
 
@@ -98,7 +98,7 @@ Card 在构造前 Hook 完成后将自己的离场关联结算 Hook 追加至本
 
 ## Deployable 依赖与构造
 
-Deployable 单向依赖 Occupancy。初始来源为空，COST 与额度为零。尚未登记时由 `setDeployment` 构造本次部署事实。运行中的撤退限制经 Change 更新，Context 使用当前 self。
+Deployable 单向依赖 Occupancy，与 Locomotion 互斥。初始来源为空，COST 与额度为零。尚未登记时由 `setDeployment` 构造本次部署事实。运行中的撤退限制经 Change 更新，Context 使用当前 self。
 
 `Deployable.Definition.refund` 声明默认返费倍率和上限规则，`null` 表示禁止返费。`setDeployment` 接收采样的基础费用与本次 COST，根据 Unit 的规则计算实例上限。`BASE_COST` 取基础费用，`DEPLOYMENT_COST` 取基础费用与本次 COST 的较大值。`Deployable.State.refund` 保存本次返费倍率和数值上限，未配置部署事实时为 `null`。 [Deployable 部署操作](../../src/core/unit/capability/deployable/operations.ts)
 

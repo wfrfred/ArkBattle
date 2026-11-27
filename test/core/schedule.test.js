@@ -11,7 +11,6 @@ import { isCompleted, timing, triggerBranch, releaseFromWave } from "../../dist/
 import { battle, get as getUnit } from "../helpers/battle.js";
 
 const plan = {
-    motionMode: "WALK",
     startPosition: [1, 1],
     destination: null,
     checkpoints: [{ type: "WAIT", anchor: "ENTER", tick: 1000, timer: null }],
@@ -29,11 +28,12 @@ function definition(id, onEntered) {
                       invoke: (state, self) => ({ state: onEntered(state, self), value: undefined }),
                   }),
         route: { alwaysCheckCurrentPoint: true },
+        locomotion: { speed: { default: 0, min: 0, max: null }, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     };
 }
 
 function spawn(definition, atTick = 0, wait = "NONE") {
-    return { definition, plan, offset: [0, 0], randomRange: [0, 0], atTick, wait };
+    return { definition, plan, mode: "WALK", offset: [0, 0], randomRange: [0, 0], atTick, wait };
 }
 
 function fragment(entries, preDelayTicks = 0) {
@@ -438,7 +438,7 @@ test("dynamic birth waits use the captured Wave and Fragment clocks", () => {
         const created = initialize(capture(state, self), {
             hooks: Hooks.empty(),
             definition: follower, position: [1, 1],
-            initial: { route: { plan: followerPlan, offset: [0, 0] } },
+            initial: { locomotion: { mode: "WALK" }, route: { plan: followerPlan, offset: [0, 0] } },
         });
         return add(created.state, created.value);
     });

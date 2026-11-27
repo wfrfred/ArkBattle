@@ -27,7 +27,7 @@ export function battle(initialUnits = [], { rows = 3, columns = 8, ...options } 
         initialEffects: [],
         initialUnits,
         schedule: { waves: [], branches: {} },
-        routeMoveMultiplier: 1,
+        moveMultiplier: 1,
         pushMultiplier: 0.5,
         deployment: null,
         initialCards: [],

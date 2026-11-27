@@ -1,6 +1,5 @@
 import { hasRoute } from "../../unit/capability/route/capability.js";
 import * as route from "../../unit/capability/route/operations.js";
-import { activeContext, movementTarget } from "../../unit/capability/route/query.js";
 import { Vec2 } from "../../common/vector.js";
 import {
     hasLocomotion,
@@ -15,10 +14,7 @@ import { replace } from "../../unit/operations.js";
 import * as units from "../../unit/query.js";
 import type { State as BattleState } from "../state.js";
 
-export function advanceMovement(
-    battle: BattleState,
-    { routeMoveMultiplier }: { readonly routeMoveMultiplier: number },
-): BattleState {
+export function advanceMovement(battle: BattleState): BattleState {
     const candidates = units.all(battle);
 
     for (const unit of candidates.filter(hasBlockable)) {
@@ -37,20 +33,11 @@ export function advanceMovement(
         }
 
         const current = hasShiftable(unit) ? unit.shiftable.unbalance : null;
+        battle = locomotion.advance(battle, units.ref(unit));
+
         if (current?.lifecycle === "ACTIVE") {
             battle = unbalance.advance(battle, unbalance.ref(current));
-            continue;
         }
-
-        if (!hasRoute(unit) || (hasBlockable(unit) && unit.blockable.relation !== null)) {
-            continue;
-        }
-
-        const target = movementTarget(battle, units.ref(unit));
-        battle = locomotion.advance(battle, units.ref(unit), target, {
-            mode: activeContext(unit).plan.motionMode,
-            speedMultiplier: routeMoveMultiplier,
-        });
     }
 
     const samples = units

@@ -101,9 +101,9 @@ const armed: Armed = initialize(battle, armedInput).value;
 // @ts-expect-error an Occupancy Initial must provide the structural tile.
 initialize(battle, { ...armedInput, initial: { ...armedInput.initial, occupancy: {} } });
 declare const plan: Plan;
-const routeDefinition = { id: 'route', hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } };
+const routeDefinition = { id: 'route', hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true }, locomotion: { speed: { default: 0, min: 0, max: null }, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } } };
 const routeInput = {
-    definition: routeDefinition, position: [0, 0], hooks: Hooks.empty(), initial: { route: { plan, offset: [0, 0] } },
+    definition: routeDefinition, position: [0, 0], hooks: Hooks.empty(), initial: { locomotion: { mode: "WALK" }, route: { plan, offset: [0, 0] } },
 } satisfies UnitInput<typeof routeDefinition>;
 const withUnusedInitial = initialize(battle, { ...routeInput, definition: bare.definition }).value;
 // @ts-expect-error a known spare Initial does not create the associated capability.
@@ -388,8 +388,8 @@ for (const card of cards.all(battle)) {
         cards.supply.enqueue(card);
     }
 }
-// @ts-expect-error normal placement cannot supply a Route Plan and offset.
-cards.initialize(battle, { ...countInput, unitDefinition: { ...cardUnit, route: routeDefinition.route } });
+// @ts-expect-error a deployable unit cannot own Locomotion and Route.
+cards.initialize(battle, { ...countInput, unitDefinition: { ...cardUnit, route: routeDefinition.route, locomotion: routeDefinition.locomotion } });
 // @ts-expect-error registration must reject state that does not match its own Definition.
 cards.add(builtCard.state, { ...exactCard, state: { count: 'wrong' } });
 const counter: effects.Definition<{ count: number }, null> = {

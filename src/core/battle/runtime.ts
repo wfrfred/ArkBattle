@@ -35,7 +35,7 @@ export function initialize<
 >(input: Input<CardStates, EffectStates, UnitDefinitions>): State;
 export function initialize(input: Input<readonly any[], readonly any[]>): State {
     const { pushMultiplier } = input;
-    assertNonnegativeNumber(input.routeMoveMultiplier, "routeMoveMultiplier");
+    assertNonnegativeNumber(input.moveMultiplier, "moveMultiplier");
     assertNonnegativeNumber(pushMultiplier, "pushMultiplier");
     assert(
         Number.isInteger(input.rngState) && input.rngState >= 0 && input.rngState < 2 ** 32,
@@ -56,7 +56,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
         initializeDeployment(input.deployment),
         initializeSchedule(input.schedule),
         {
-            routeMoveMultiplier: input.routeMoveMultiplier,
+            moveMultiplier: input.moveMultiplier,
             pushMultiplier,
         },
     );
@@ -95,9 +95,7 @@ export function step(battle: State, commands: readonly Command<Card<any>>[]): St
 
     state = advanceProjectiles(state, projectileCandidates);
 
-    state = advanceMovement(state, {
-        routeMoveMultiplier: battle.definition.routeMoveMultiplier,
-    });
+    state = advanceMovement(state);
 
     state = advanceBlocking(state);
 

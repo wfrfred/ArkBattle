@@ -385,11 +385,11 @@ test("block offsets survive relation release while active departure and spatial 
     assert.equal(blocking.blockerOf(state, departing), undefined);
     assert.equal(get(state, 2).blockable.offset, null);
 
-    state = advanceMovement({ ...state, tick: 3 }, { routeMoveMultiplier: 1 });
+    state = advanceMovement({ ...state, tick: 3 });
     assert.ok(Math.abs(get(state, 1).position[0] - 2.35) < 1e-12);
     state = blocking.release(state, blocking.relations(state, target));
     assert.notEqual(get(state, 1).blockable.offset, null);
-    state = advanceMovement({ ...state, tick: 6 }, { routeMoveMultiplier: 1 });
+    state = advanceMovement({ ...state, tick: 6 });
     assert.deepEqual(get(state, 1).position, [2.5, 1]);
     assert.equal(get(state, 1).blockable.offset, null);
 
@@ -400,7 +400,7 @@ test("block offsets survive relation release while active departure and spatial 
     state = unit.update(state, owner, presence.disappear());
     assert.equal(blocking.blockerOf(state, departing), undefined);
     assert.deepEqual(get(state, 2).blockable.offset, independentPlan);
-    state = advanceMovement({ ...state, tick: 9 }, { routeMoveMultiplier: 1 });
+    state = advanceMovement({ ...state, tick: 9 });
     assert.notDeepEqual(get(state, 2).position, independentPlan.from);
     state = unit.update(state, departing, presence.disappear());
     assert.equal(get(state, 2).blockable.offset, null);
@@ -454,8 +454,8 @@ test("a blocker-defined offset determines the destination reached by Movement", 
     assert.deepEqual(get(state, 1).position, [2.25, 1]);
     assert.equal(state.execution.rngState, rng.state());
 
-    state = advanceMovement({ ...state, tick: 3 }, { routeMoveMultiplier: 1 });
+    state = advanceMovement({ ...state, tick: 3 });
     assert.deepEqual(get(state, 1).position, [(2.25 + to) / 2, 1]);
-    state = advanceMovement({ ...state, tick: 6 }, { routeMoveMultiplier: 1 });
+    state = advanceMovement({ ...state, tick: 6 });
     assert.deepEqual(get(state, 1).position, [to, 1]);
 });

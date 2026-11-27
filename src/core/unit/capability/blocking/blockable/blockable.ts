@@ -14,6 +14,10 @@ import { createRegistrationOperations } from "../../../registration.js";
 import type { Change } from "../../../change.js";
 import { ref } from "../../../query.js";
 import { settleCapacity } from "../blocker/operations.js";
+import {
+    hasLocomotion,
+    setRestriction as setLocomotionRestriction,
+} from "../../locomotion/capability.js";
 
 interface Restrictions {
     readonly restrictions: readonly contribution.Contribution<Restriction>[];
@@ -58,18 +62,29 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
     assertPositiveSafeInteger(volume, "blocking volume");
     validateRestrictions(restrictions);
 
+    const value: U & Blockable = {
+        ...unit,
+        hooks: UnitHooks.empty().set(removingKey, removing).merge(unit.hooks),
+        blockable: {
+            relation: null,
+            offset: null,
+            volume: [],
+            restrictions,
+        },
+    };
+
     return {
         state: battle,
-        value: {
-            ...unit,
-            hooks: UnitHooks.empty().set(removingKey, removing).merge(unit.hooks),
-            blockable: {
-                relation: null,
-                offset: null,
-                volume: [],
-                restrictions,
-            },
-        },
+        value: hasLocomotion(value)
+            ? setLocomotionRestriction({
+                  id: "@blockable/held",
+                  group: null,
+                  value: {
+                      allows: (_battle, { self }) =>
+                          !hasBlockable(self) || self.blockable.relation === null,
+                  },
+              })(value).next
+            : value,
     };
 }
 

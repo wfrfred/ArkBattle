@@ -2,11 +2,11 @@ import { Vec2 } from "../../../common/vector.js";
 import { assert, assertNonnegativeSafeInteger } from "../../../common/assert.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
 import { timing } from "../../../battle/schedule/query.js";
-import type { MotionMode } from "../../../battlefield/navigation/state.js";
 import type { Identified, Ref } from "../../../common/ref.js";
 import type { TilePosition, WorldPosition } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import * as lifecycle from "../../hook.js";
+import { hasLocomotion, type Locomotion } from "../locomotion/capability.js";
 import { enter } from "./operations.js";
 import { createContextRef, ref } from "./query.js";
 
@@ -15,7 +15,6 @@ export interface Definition {
 }
 
 export interface Plan {
-    readonly motionMode: MotionMode;
     readonly startPosition: TilePosition;
     readonly checkpoints: readonly Checkpoint[];
     readonly destination: Destination | null;
@@ -83,20 +82,22 @@ export interface State {
     readonly fragmentReadyTick: number;
 }
 
-export interface Route {
+export type Route = Locomotion & {
     readonly definition: { readonly route: Definition };
     readonly route: State;
-}
+};
 
 export function hasRoute<U extends Unit>(unit: U): unit is U & Route {
     return "route" in unit && "route" in unit.definition;
 }
 
-export function initialize<U extends Unit & Pick<Route, "definition">>(
-    battle: BattleState,
-    unit: U,
-    initial: Initial,
-): Result<U & Route> {
+export function initialize<
+    U extends Unit & Locomotion & { readonly definition: { readonly route: Definition } },
+>(battle: BattleState, unit: U, initial: Initial): Result<U & Route> {
+    if (!hasLocomotion(unit)) {
+        throw new TypeError("route requires locomotion");
+    }
+
     validatePlan(initial.plan);
     assert(Vec2.is(initial.offset), "invalid route offset", TypeError);
     const reference = createContextRef(unit.ref as Ref<Unit & Route>);

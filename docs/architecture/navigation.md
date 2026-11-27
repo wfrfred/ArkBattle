@@ -4,7 +4,7 @@ Navigation 提供确定的格图查询，Route 解释路线并构造连续运动
 
 ## 职责与状态归属
 
-Battlefield 将当前地块投影为 WALK／FLY 基础 Map，并持有 Navigation State。State 只保存基础图与 Overlay；有效图和 Field 是可重建派生值。Route Context 保存程序进度，Locomotion 保存历史速度，位置只归 Unit.position。
+Battlefield 将当前地块投影为 WALK／FLY 基础 Map，并持有 Navigation State。State 只保存基础图与 Overlay；有效图和 Field 是可重建派生值。Route Context 保存程序进度，Locomotion 保存当前运动方式、运动目标及历史速度，位置只归 Unit.position。
 
 Navigation 仅接收格坐标并返回格图信息；Field 按显式目标格构建，不认识世界坐标、路线偏移、连续路程或运动目标。Route 按原格导航，另行解释精确世界目标。缓存可以内部可变，但不进入 BattleState，也不能改变领域结果。
 
@@ -38,9 +38,9 @@ Navigation 按运动方式保存覆盖，校验代价并投影到有效图。FLY
 
 ### Route／Locomotion 的交互约束
 
-Route 解析当前指令目标与偏移，通过格图查询构造 `MovementTarget` 的 nextPoint／goal，不可达 MOVE 由 Context 政策决定等待或跳过。Locomotion 消费实际世界坐标和当前运动方式，负责积分、局部避障、物理所在格不可通时的脱困及碰撞。Route 负责恢复身体坐标及减去 Context.offset 后的导航坐标同时在地图内的有效域，不扩张 Navigation 的结果协议。
+Route 依赖 Locomotion，解析当前指令目标与偏移，使用 Locomotion 当前 mode 通过格图查询构造 `MovementTarget` 的 nextPoint／goal，不可达 MOVE 由 Context 政策决定等待或跳过。Locomotion 消费实际世界坐标和当前运动方式，负责积分、局部避障、物理所在格不可通时的脱困及碰撞。Route 负责恢复身体坐标及减去 Context.offset 后的导航坐标同时在地图内的有效域，不扩张 Navigation 的结果协议。
 
-每 Tick 路线可连续消费即时指令，实际运动只有一份预算。出生调用者为位置和 Route Initial 使用同一偏移样本；主路线和临时路线各自持有对应样本。
+每 Tick 路线可连续消费即时指令，随后把当前运动目标（含 null）发布到 Locomotion，实际运动只有一份预算。出生调用者为位置和 Route Initial 使用同一偏移样本；主路线和临时路线各自持有对应样本。
 
 ## Route 定义与进度
 
@@ -48,7 +48,7 @@ Route 是统一的路线解释器。Main 与其他 Context 使用相同 Plan 和
 
 ### 类型与身份
 
-Definition 保存初始执行政策 alwaysCheckCurrentPoint；Plan 保存运动方式、出生起点、指令序列和 `destination: Destination | null`。Plan 不属于共享 UnitDefinition；创建时必需 Initial 提供本次 Plan 与 offset。
+Definition 保存初始执行政策 alwaysCheckCurrentPoint；Plan 保存出生起点、指令序列和 `destination: Destination | null`。Plan 不属于共享 UnitDefinition；创建时必需 Initial 提供本次 Plan 与 offset。
 
 ```typescript
 type Destination =
@@ -96,7 +96,7 @@ Content 持有目标 Unit Ref 并更新目标格；Route 只保存最后登记�
 
 ### 推进与同步操作
 
-advance 先更新各 Context 的计时，再连续解释活动 Context，最后检查 Main 出口。MOVE 未到、WAIT 未满足或持续 TRACE 阻塞解释。
+advance 先更新各 Context 的计时，再连续解释活动 Context，检查 Main 出口后向仍有效的宿主发布当前 MovementTarget（含 null）。MOVE 未到、WAIT 未满足或持续 TRACE 阻塞解释。
 
 一次连续解释以局部已访问索引集合保证终止；再遇索引时在进入前让出，保留待进入位置，下一 Tick 再进入。长而无环的序列不受固定次数截断；集合不写 State、不跨调用共享，Plan 改变时重置。
 
@@ -112,9 +112,9 @@ reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索�
 
 movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRACE；指令耗尽后可追踪 MOVE 或 EXIT 的 destination.position。MOVE 终点持续有效，抵达后仍留场，身体偏离后可恢复追踪。destination 为 null 时没有固定的最终目标。等待或无目标返回空，空目标不表示 Main 完成。
 
-Route 先从身体位置减去 Context.offset 再量化为起格，以路点原格查询 nextTile。若查询返回目标格（包括起格即目标格），nextPoint 使用精确目标坐标；否则使用后继格中心。Route 将 nextPoint 与精确 goal 同时加回 Context.offset，形成 MovementTarget。MOVE 局部偏移只应用于精确抵达坐标，不改变构场、不可达判断或剩余距离的目标格，即使两者跨格。整体 Context.offset 与 MOVE 局部偏移独立。建议点不保证身体从偏离格心的位置可直线抵达，局部避障归 Locomotion。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
+Route 先从身体位置减去 Context.offset 再量化为起格，使用当前 Locomotion.mode 以路点原格查询 nextTile。若查询返回目标格（包括起格即目标格），nextPoint 使用精确目标坐标；否则使用后继格中心。Route 将 nextPoint 与精确 goal 同时加回 Context.offset，形成 MovementTarget。MOVE 局部偏移只应用于精确抵达坐标，不改变构场、不可达判断或剩余距离的目标格，即使两者跨格。整体 Context.offset 与 MOVE 局部偏移独立。建议点不保证身体从偏离格心的位置可直线抵达，局部避障归 Locomotion。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
 
-remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。Route 根据 path 累计当前与后续 MOVE／终点的连续几何路程，而非 Field 搜索代价。起格即目标格或后继直接是目标格时使用身体至精确目标的欧氏距离；否则将身体相对起格中心的偏移投影到首段方向以修正首段长度，沿中间格中心累加，最后一段使用精确目标坐标。WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，当前 MOVE 使用已进入的样本，未来固定 MOVE 使用配置偏移，未来随机目标按原格格心估计且不消费 RNG。
+remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。Route 使用当前 Locomotion.mode，根据 path 累计当前与后续 MOVE／终点的连续几何路程，而非 Field 搜索代价。起格即目标格或后继直接是目标格时使用身体至精确目标的欧氏距离；否则将身体相对起格中心的偏移投影到首段方向以修正首段长度，沿中间格中心累加，最后一段使用精确目标坐标。WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，当前 MOVE 使用已进入的样本，未来固定 MOVE 使用配置偏移，未来随机目标按原格格心估计且不消费 RNG。
 
 当前 TRACE 查询最后目标格的几何距离，不可达时回退为直线距离；没有可确定有限终点的无终点路线、循环或未来持续 TRACE 返回 undefined。MOVE 和 EXIT 都提供有效终点。有限路线的某段越界或不可达时保留之前已累计的距离，并加上该段直线回退，不继续叠加后续段，也不用回退掩盖无有限终点。
 
@@ -132,19 +132,21 @@ Main 的 destination 必须为 EXIT 且实际抵达其位置（含 Main.offset�
 
 ## Locomotion
 
-Locomotion 保存历史 velocity、speed 的 [Attribute](attribute.md) State 与移动限制。目标由本次参数提供，真实位置归 Unit。速度及范围使用格／Tick，普通内容将0.1格／秒转换为默认下限；半身宽独立于 Hitbox。Data 将 steeringFactor 除以 Tick 率、maxSteeringForce 除以 Tick 率平方，内容绑定运动配置。
+Locomotion 保存历史 velocity、当前 mode（WALK／FLY）、target（`MovementTarget | null`）、speed 的 [Attribute](attribute.md) State 与移动限制。Initial 必须提供 mode，初始 target 为 null。目标和运动方式分别以 `setTarget`、`setMode` Change 修改，目标一经设置持续到下一次修改；真实位置归 Unit。无 Route 的自主移动单位也可直接设置目标。速度及范围使用格／Tick，普通内容将0.1格／秒转换为默认下限；半身宽独立于 Hitbox。Data 将 steeringFactor 除以 Tick 率、maxSteeringForce 除以 Tick 率平方，内容绑定运动配置。
 
 ### 关键语义
 
-本次速度为 `当前有效speed × 本次倍率`；贡献和范围通过 Locomotion 的 Change 修改，限制与速度独立。暂停或零速保留历史速度。取得移动资格后，接近最终 goal 且预算足够时直接吸附，保留 velocity；中间建议点不吸附。
+`advance(battle, ref)` 自行读取当前状态，本次速度为 `当前有效speed × battle.definition.moveMultiplier`；贡献和范围通过 Locomotion 的 Change 修改，限制与速度独立。暂停或零速保留历史速度。取得移动资格后，接近最终 goal 且预算足够时直接吸附，保留 velocity；中间建议点不吸附。
 
-Movement 将本步的路线目标或空值传给 Locomotion。没有目标时，身体所在格在地图内且不可通，就朝最近的可通邻格脱困。没有这样的邻格或身体所在格可通时，保持位置与历史速度。
+没有目标时，身体所在格在地图内且不可通，就朝最近的可通邻格脱困。没有这样的邻格或身体所在格可通时，保持位置与历史速度。
+
+`isMoving(battle, self)` 是实时自主运动意图查询：当前具备自主移动资格、有效速度（含倍率）为正，且有尚未抵达的有效目标，或需要且能够自行脱困时为 true。它不积分、不读取历史 velocity 作为资格，也不要求已产生实际位移；外力运动与已结束的自主运动均不会单凭位移或残留速度满足它。该谓词是项目政策，用于冲撞等读当前自主运动的内容，不宣称与原生 state／hanging 的逐帧判定同义。依据见[原生冲撞语义](../research/cases/15-locomotion-native-semantics.md#水手重艇与凶豕兽的冲撞)。
 
 普通积分以历史速度、目标速度误差与八邻域局部避障形成合力，先限力再积分限速。WALK 将硬障碍和 cost≥1000 的邻格用于避障，FLY 只看硬障碍。半身宽参与横向几何，局部力去除沿目标方向的分量，并按历史速度比例缩放。身体所在格不可通时，局部力取最近可通邻格的方向。
 
 仅在位移跨格且目的格不可通时反射整次位移，不做整段扫掠或反射后二次检查；高代价不等于不可通，反射不改积分所得 velocity。运动结束后可通过 [Facing](capability.md#facing)接续转向。
 
-项目每次积分重算局部避障。Presence 通过限制禁自主移动，Blocking 在 Movement 入口通过当前关系限制它。阻挡偏移、Route 等待与强制空间操作各自独立。
+项目每次积分重算局部避障。Presence 通过限制禁自主移动；具有 Locomotion 的 Blockable 和依赖 Locomotion 的 Shiftable 在初始化时各登记一次 Locomotion Restriction，实时读取当前阻挡关系和失衡段，禁止自主运动而不复制状态。阻挡偏移、Route 等待与强制空间操作各自独立。
 
 ## 强制位移
 
@@ -172,7 +174,7 @@ Movement 将本步的路线目标或空值传给 Locomotion。没有目标时，
 
 失衡只在推进阶段检查自然结束。速度不高于停止阈值、保护到期、已无有效牵引和待施单步力时结束。宿主离场以 `HOST_UNAVAILABLE` 结束失衡。结束请求立即使段的依赖引用不可用，随后发布 `ENDING` 并请求依赖本段的牵引等实例结束。清理回调内可开始新段，收尾仍按旧引用处理。来源或拉点结束会撤掉牵引，剩余外力速度留给下一次失衡推进。
 
-Movement 推进失衡单位，包括无 Route 的单位。每五个 Tick 以两次实际位置的距离更新 `totalMoveDistance`。随后由 Blocking 结算阻挡。地形控制器在下一次 Effect 扫描时读取当前位置。位置相关 Effect 可读取累计距离，持有相应牵引或失衡段的 Ref，并结算自身伤害。
+Movement 先推进所有已有阻挡偏移，再按阶段入口的 Unit 候选逐一推进：先 Route，然后对仍有效的 Locomotion 调用一次 advance（包括无 Route 的单位），最后推进该单位已有的 active Unbalance。自主运动在失衡结束前已经完成资格检查，避免状态结束当 Tick 再做自主积分。每五个 Tick 以两次实际位置的距离更新 `totalMoveDistance`。随后由 Blocking 结算阻挡。地形控制器在下一次 Effect 扫描时读取当前位置。位置相关 Effect 可读取累计距离，持有相应牵引或失衡段的 Ref，并结算自身伤害。
 
 扫掠将受力单位的共享 `Shape` 与静态地块的显式碰撞盒作确定性碰撞计算。原生接触轨迹的实测和具体内容的接入范围见 [Tactical 语义](tactical-semantics.md)。
 

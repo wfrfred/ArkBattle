@@ -15,6 +15,7 @@ import * as projectiles from "../../../dist/core/projectile/index.js";
 import * as units from "../../../dist/core/unit/index.js";
 import * as effects from "../../../dist/core/effect/index.js";
 import { pull, push, shifter, shiftable, unbalance } from "../../../dist/core/unit/capability/shifting/index.js";
+import { isMoving, setTarget } from "../../../dist/core/unit/capability/locomotion/index.js";
 import { unbalanceImmunity } from "../../../dist/core/effects/protection.js";
 import { effectInitial } from "../../helpers/effect.js";
 
@@ -37,7 +38,7 @@ const sourceDefinition = {
 
 function setup(definition = targetDefinition, options) {
     const state = battle([
-        { definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] },
+        { definition, hooks: Hooks.empty(), initial: { locomotion: { mode: "WALK" } }, position: [1, 1] },
         { definition: sourceDefinition, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
     ], options);
     return { state, host: units.ref(get(state, 0)), source: units.ref(get(state, 1)) };
@@ -75,7 +76,7 @@ test("push uses current grades and releases blocking before forced movement begi
                     return { state: current, value: undefined };
                 },
             }),
-        }, hooks: Hooks.empty(), initial: {},
+        }, hooks: Hooks.empty(), initial: { locomotion: { mode: "WALK" } },
         position: [1, 1],
     }, {
         definition: {
@@ -89,8 +90,12 @@ test("push uses current grades and releases blocking before forced movement begi
     const strengthened = units.update(state, source, shifter.setBaseForceLevelContribution({
         id: "extra-force", group: null, value: [modifier({ addition: 3.5 })],
     }));
-    const held = blocking.acquire(strengthened, source, host);
+    const moving = units.update(strengthened, host, setTarget({ nextPoint: [6, 1], goal: [6, 1] }));
+    assert.equal(isMoving(moving, get(moving, 0)), true);
+    const held = blocking.acquire(moving, source, host);
+    assert.equal(isMoving(held, get(held, 0)), false);
     const shifted = push(held, source, host, { forceLevel: 0, direction: [1, 0] });
+    assert.equal(isMoving(shifted.state, get(shifted.state, 0)), false);
     assert.ok(shifted.value);
     assert.deepEqual(releases, [true]);
     const moved = step(shifted.state, []);

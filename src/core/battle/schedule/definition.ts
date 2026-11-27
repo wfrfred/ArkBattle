@@ -1,3 +1,4 @@
+import type { MotionMode } from "../../battlefield/navigation/state.js";
 import type { WorldPosition } from "../../geometry/coordinate.js";
 import type { Definitions } from "../../unit/capability/catalog.js";
 import type { Plan, Route } from "../../unit/capability/route/capability.js";
@@ -6,7 +7,7 @@ import type { Result, State as BattleState } from "../state.js";
 
 export type UnitDefinition = BaseDefinition &
     Route["definition"] &
-    Partial<Omit<Definitions, "route" | "occupancy" | "deployable">> & {
+    Partial<Omit<Definitions, "route" | "locomotion" | "occupancy" | "deployable">> & {
         readonly occupancy?: never;
         readonly deployable?: never;
     };
@@ -14,6 +15,7 @@ export type UnitDefinition = BaseDefinition &
 export interface Spawn {
     readonly definition: UnitDefinition;
     readonly plan: Plan;
+    readonly mode: MotionMode;
     readonly offset: WorldPosition;
     readonly randomRange: WorldPosition;
     readonly atTick: number;

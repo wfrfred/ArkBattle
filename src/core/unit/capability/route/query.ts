@@ -119,7 +119,7 @@ export function remainingDistance(
     context: Context,
 ): number | undefined {
     const state = battle.battlefield.navigation;
-    const mode = context.plan.motionMode;
+    const mode = self.locomotion.mode;
     let position = Vec2.sub(self.position, context.offset);
     if (context.current?.type === "TRACE") {
         const tile = context.current.position;
@@ -241,7 +241,7 @@ export function movementTarget(
         return null;
     }
 
-    const mode = context.plan.motionMode;
+    const mode = self.locomotion.mode;
     const map = battle.battlefield.navigation.baseline[mode];
     const locator = Vec2.sub(self.position, context.offset);
     if (!map.contains(World.toTile(self.position)) || !map.contains(World.toTile(locator))) {

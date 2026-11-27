@@ -8,7 +8,6 @@
 
 | 事项 | 当前状态 | 领域与依据 |
 | --- | --- | --- |
-| 自主运动的冲撞资格（U019） | 待接入 | [Navigation / Route / Locomotion / Shifting](research-necessity-20261122.md#navigation--route--locomotion--shifting) |
 | 普通仇恨所用的路线距离 | 待定 | [Targeting / Route](research-necessity-20261122.md#targeting--route) |
 | 生命比例同步的 HP 调整 | 待接入 | [Resource / Vitality](research-necessity-20261122.md#resource--vitality) |
 | 动态出生参与调度等待（U048） | 待接入 | [Schedule](research-necessity-20261122.md#schedule) |
@@ -64,7 +63,7 @@
 
 | 编号 | 初次盘点的问题 | 当前状态 | 来源 |
 | --- | --- | --- | --- |
-| U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **待接入。** 重艇和凶豕兽需要自主运动资格，受力位移或残留速度不能代替。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
+| U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **已结案。** Core 提供实时自主运动意图查询 `locomotion.isMoving(battle, self)`，用于重艇和凶豕兽的自主运动资格，受力位移或残留速度不能代替。该项目政策不与原生 state／hanging 逐帧等同；具体技能由内容绑定。 | [Locomotion](navigation.md#locomotion) · [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
 | U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
 | U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **待接入。** 已确认动态出生要登记当前波次、终局或两处等待，缺少普通动态创建后的登记入口。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
 

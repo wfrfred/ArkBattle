@@ -145,7 +145,7 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 1 },
         },
     };
-    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: { locomotion: { mode: "WALK" } }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     const incoming = injuryRequest(target, "NEURAL", 1000);
     const started = epDamage.applyDamage(incoming, epDamage.calculateDamage(state, incoming, null), null);
@@ -169,11 +169,11 @@ test("EP-06: immediate recovery completion retains independent stun and cannot o
         state = effects.advance({ ...state, tick });
     }
     const goal = { nextPoint: [0.5, 0], goal: [0.5, 0] };
-    const movement = { mode: "WALK", speedMultiplier: 1 };
-    state = locomotion.advance(state, target, goal, movement);
+    state = units.update(state, target, locomotion.setTarget(goal));
+    state = locomotion.advance(state, target);
     assert.deepEqual(get(state, 0).position, [0, 0]);
     state = effects.advance({ ...state, tick: 300 });
-    state = locomotion.advance(state, target, goal, movement);
+    state = locomotion.advance(state, target);
     assert.deepEqual(get(state, 0).position, goal.goal);
 });
 
@@ -193,7 +193,7 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
             },
         },
     };
-    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [0, 0] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: { locomotion: { mode: "WALK" } }, position: [0, 0] }]);
     const target = units.ref(get(state, 0));
     const neural = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NEURAL", power: 1000 } };
     const result = epDamage.applyDamage(neural, epDamage.calculateDamage(state, neural, null), null);
@@ -203,11 +203,11 @@ test("EP-03: zero recovery budgets keep installation output and independent stun
     assert.equal(get(state, 0).elemental.burst, null);
     assert.deepEqual(get(state, 0).elemental.ep, elemental.elementValues(1000));
     const goal = { nextPoint: [0.5, 0], goal: [0.5, 0] };
-    const movement = { mode: "WALK", speedMultiplier: 1 };
-    state = locomotion.advance(state, target, goal, movement);
+    state = units.update(state, target, locomotion.setTarget(goal));
+    state = locomotion.advance(state, target);
     assert.deepEqual(get(state, 0).position, [0, 0]);
     state = effects.advance({ ...state, tick: 300 });
-    state = locomotion.advance(state, target, goal, movement);
+    state = locomotion.advance(state, target);
     assert.deepEqual(get(state, 0).position, goal.goal);
 
     const necrosis = { target, source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type: "NECROSIS", power: 1000 } };

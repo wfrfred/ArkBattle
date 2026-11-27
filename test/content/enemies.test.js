@@ -109,8 +109,8 @@ test('hound content binds configured regeneration and rejects unimplemented stun
 });
 
 function routeInitial(position, destination = null) {
-  return { facing: { direction: 'RIGHT' }, route: { plan: {
-    motionMode: 'WALK', startPosition: World.toTile(position), destination,
+  return { locomotion: { mode: 'WALK' }, facing: { direction: 'RIGHT' }, route: { plan: {
+    startPosition: World.toTile(position), destination,
     checkpoints: [],
   }, offset: [0, 0] } };
 }
@@ -120,7 +120,7 @@ test('scheduled hound faces its route after the first checkpoint has changed its
     ...parameters('enemy_1000_gopro'), timing: houndTiming, hitRadius: 0.2, movement: houndMovement,
   });
   const plan = {
-    motionMode: 'WALK', startPosition: [1, 1], destination: null,
+    startPosition: [1, 1], destination: null,
     checkpoints: [
       { type: 'APPEAR', position: [1, 5], offset: [0, 0] },
       { type: 'MOVE', position: [1, 3], offset: [0, 0], randomizeOffset: false },
@@ -129,7 +129,7 @@ test('scheduled hound faces its route after the first checkpoint has changed its
   const state = advanceSchedule(createBattle([], { schedule: {
     waves: [{ preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
       fragments: [{ preDelayTicks: 0, entries: [{
-        definition, plan, offset: [0, 0], randomRange: [0, 0], atTick: 0, wait: 'WAVE',
+        definition, plan, mode: 'WALK', offset: [0, 0], randomRange: [0, 0], atTick: 0, wait: 'WAVE',
       }] }],
     }],
     branches: {},

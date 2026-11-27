@@ -26,6 +26,7 @@ function source() {
     const actions = [action("A", "group", 0), action("N", null, 0), action("B", "group", 1, 2)];
     const definitions = new Map(actions.map(({ key }) => [key, {
         id: key, hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true },
+        locomotion: { speed: { default: 0, min: 0, max: null }, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     }]));
 
     return {
@@ -47,6 +48,7 @@ function source() {
 test("native routes compile patrol loops and retain wait anchors before birth", () => {
     const raw = fixture("level_act1autochess_h07_02");
     const level = parseLevelDefinition(raw, { mire: null, deepsea: null, tileDeploymentPrefabs: [] });
+    assert.deepEqual(level.routes.map(({ mode }) => mode), raw.routes.map(({ motionMode }) => motionMode));
     assert.deepEqual(level.routes[6].plan.checkpoints.map(({ type }) => type), ["MOVE", "MOVE", "MOVE", "GOTO"]);
     assert.equal(level.routes[6].plan.checkpoints[3].index, 0);
 
@@ -85,6 +87,7 @@ test("main random groups preserve source order and expand the selected count onc
 
     assert.deepEqual(spawns.map(({ definition }) => definition.id), ["N", "B", "B"]);
     assert.deepEqual(spawns.map(({ atTick }) => atTick), [0, 0, 3]);
+    assert.deepEqual(spawns.map(({ mode }) => mode), Array(3).fill(level.routes[0].mode));
     assert.notEqual(compiled.rngState, seed);
     const actions = level.waves[0].fragments[0].actions.map((action) => ({
         ...action, weight: action.randomSpawnGroupKey === null ? 0 : 1,
@@ -143,6 +146,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     const definition = {
         id: "scheduled-unit", hooks: Hooks.empty(),
         route: { alwaysCheckCurrentPoint: true },
+        locomotion: { speed: { default: 0, min: 0, max: null }, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     };
     const compiled = compileSpawnSchedule(level, {
         actions: [0, 1].map((actionIndex) => ({ waveIndex: 0, fragmentIndex: 0, actionIndex })),
@@ -161,7 +165,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     assert.deepEqual(compiled.schedule.waves[0].fragments[0].entries.map(({ wait }) => wait), ["NONE", "WAVE"]);
     let state = step(initialize({
         map: level.map, schedule: compiled.schedule, initialUnits: [], initialEffects: [],
-        routeMoveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, initialCards: [], rngState: compiled.rngState,
+        moveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, initialCards: [], rngState: compiled.rngState,
     }), []);
     const waiting = ref(get(state, 1));
     assert.deepEqual(state.schedule.waiting, { wave: [waiting], final: [waiting] });

@@ -80,6 +80,7 @@ function resolveActionSpawn(
     return {
         definition: content.definition,
         plan: route.plan,
+        mode: route.mode,
         offset: route.spawnOffset,
         randomRange: route.spawnRandomRange,
         wait: wait(action, fromBranch, content.notCountInTotal),

@@ -10,12 +10,12 @@ import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { update as updateTile } from "../../../dist/core/battle/tile.js";
 import { integrate } from "../../../dist/core/unit/capability/locomotion/steering.js";
 import { reflect } from "../../../dist/core/unit/capability/locomotion/motion.js";
-import { advance } from "../../../dist/core/unit/capability/locomotion/index.js";
+import { update } from "../../../dist/core/unit/operations.js";
+import { advance, setTarget, isMoving } from "../../../dist/core/unit/capability/locomotion/index.js";
 import { unbalance } from "../../../dist/core/unit/capability/shifting/index.js";
 import { step } from "../../../dist/core/battle/runtime.js";
 
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-12, `${actual} ≈ ${expected}`);
-const context = { mode: "WALK", speedMultiplier: 1 };
 const definition = {
     id: "mover", hooks: Hooks.empty(), presence: {},
     locomotion: { speed: defineAttribute(0.2), halfBodyWidth: 0,
@@ -49,17 +49,24 @@ test("destination-cell reflection changes displacement without sweeping or a sec
 });
 
 test("movement passes intermediate tracking points and reaches the final goal with its history velocity", () => {
-    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [2, 1] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: { locomotion: { mode: "WALK" } }, position: [2, 1] }]);
     const host = ref(get(state, 0));
-    state = advance(state, host, { nextPoint: [2, 2], goal: [2, 2] }, context);
-    state = advance(state, host, { nextPoint: [2.05, 1.2], goal: [6, 1.2] }, context);
+    assert.equal(isMoving(state, get(state, 0)), false);
+    state = update(state, host, setTarget({ nextPoint: [2, 2], goal: [2, 2] }));
+    assert.equal(isMoving(state, get(state, 0)), true);
+    state = step(state, []);
+    state = update(state, host, setTarget({ nextPoint: [2.05, 1.2], goal: [6, 1.2] }));
+    assert.equal(isMoving(state, get(state, 0)), true);
+    state = advance(state, host);
     near(get(state, 0).position[0], 2.2);
     near(get(state, 0).position[1], 1.2);
     assert.deepEqual(get(state, 0).locomotion.velocity, [0.2, 0]);
 
     const goal = [2.25, 1.2];
-    state = advance(state, host, { nextPoint: [1, 1.2], goal }, context);
+    state = update(state, host, setTarget({ nextPoint: [1, 1.2], goal }));
+    state = advance(state, host);
     assert.deepEqual(get(state, 0).position, goal);
+    assert.equal(isMoving(state, get(state, 0)), false);
     assert.deepEqual(get(state, 0).locomotion.velocity, [0.2, 0]);
 });
 
@@ -74,7 +81,7 @@ test("runtime advances a routeless unit under force and samples its committed po
                 restrictions: [],
                 body: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.1 }, mass: 1, frictionFactor: 0 },
             },
-        }, hooks: Hooks.empty(), initial: {},
+        }, hooks: Hooks.empty(), initial: { locomotion: { mode: "WALK" } },
     }]);
     const host = ref(get(state, 0));
     state = unbalance.applyImpulse(state, host, [0.25, 0]).state;
@@ -91,15 +98,16 @@ test("runtime advances a routeless unit under force and samples its committed po
 });
 
 test("movement uses current terrain and reflects displacement while retaining controller velocity", () => {
-    let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [2, 1.4] }]);
+    let state = battle([{ definition, hooks: Hooks.empty(), initial: { locomotion: { mode: "WALK" } }, position: [2, 1.4] }]);
     const host = ref(get(state, 0));
     const target = { nextPoint: [6, 1.4], goal: [6, 1.4] };
-    state = advance(state, host, target, context);
+    state = update(state, host, setTarget(target));
+    state = advance(state, host);
     const before = get(state, 0).position;
     state = updateTile(state, [2, 2], {
         ...getTile(state.battlefield.map, [2, 2]).state, walkCost: 1000,
     });
-    state = advance(state, host, target, context);
+    state = advance(state, host);
     assert.ok(get(state, 0).position[0] > before[0]);
     assert.ok(get(state, 0).position[1] < before[1]);
 
@@ -107,7 +115,7 @@ test("movement uses current terrain and reflects displacement while retaining co
     state = updateTile(state, [1, 3], {
         ...getTile(state.battlefield.map, [1, 3]).state, passability: "NONE",
     });
-    state = advance(state, host, target, context);
+    state = advance(state, host);
     assert.ok(get(state, 0).position[0] < approaching[0]);
     assert.ok(get(state, 0).locomotion.velocity[0] > 0);
 });

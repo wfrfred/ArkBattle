@@ -26,6 +26,7 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
         position: Vec2.add(Tile.center(entry.plan.startPosition), offset),
         initial: {
             route: { plan: entry.plan, offset },
+            locomotion: { mode: entry.mode },
             facing: { direction: "RIGHT" },
         },
     });

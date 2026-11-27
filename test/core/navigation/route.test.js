@@ -5,6 +5,7 @@ import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
 import { Hooks } from "../../../dist/core/hook.js";
 import { removed as unitRemoved, setHook } from "../../../dist/core/battle/unit-hook.js";
+import { isMoving } from "../../../dist/core/unit/capability/locomotion/index.js";
 import * as route from "../../../dist/core/unit/capability/route/index.js";
 import * as units from "../../../dist/core/unit/index.js";
 import { update } from "../../../dist/core/unit/operations.js";
@@ -17,7 +18,7 @@ import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { update as updateTile } from "../../../dist/core/battle/tile.js";
 
 const plan = (checkpoints = [], extra = {}) => ({
-    motionMode: "WALK", startPosition: [0, 0], destination: null,
+    startPosition: [0, 0], destination: null,
     checkpoints, ...extra,
 });
 const wait = (tick, anchor = "ENTER") => ({ type: "WAIT", anchor, tick, timer: null });
@@ -29,8 +30,8 @@ const movement = {
 function creation(program, extra = {}) {
     return { definition: {
         id: "traveller", hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true },
-        presence: {}, ...extra,
-    }, hooks: Hooks.empty(), position: [0, 0], initial: { route: { plan: program, offset: [0, 0] } } };
+        presence: {}, locomotion: { ...movement, speed: defineAttribute(0) }, ...extra,
+    }, hooks: Hooks.empty(), position: [0, 0], initial: { locomotion: { mode: "WALK" }, route: { plan: program, offset: [0, 0] } } };
 }
 const current = state => get(state, 0).route.main;
 function ticks(state, count) {
@@ -163,12 +164,14 @@ test("route waits continue through forced movement and steering resumes after th
     state = step(unbalance.applyImpulse(state, host, [0.5, 0]).state, []);
     const forcedPosition = get(state, 0).position;
     assert.equal(current(state).current.type, "MOVE");
+    assert.equal(isMoving(state, get(state, 0)), false);
     assert.ok(forcedPosition[0] > 0);
     assert.equal(forcedPosition[1], 0);
 
     state = update(state, host, shiftable.setRestriction({ id: "immune", group: null, value: { allows: () => false } }));
     state = step(state, []);
     assert.equal(shiftable.isUnbalanced(get(state, 0)), false);
+    assert.equal(isMoving(state, get(state, 0)), true);
     assert.deepEqual(get(state, 0).position, forcedPosition);
     state = step(state, []);
     assert.ok(get(state, 0).position[1] > 0);
@@ -185,6 +188,7 @@ test("an impassable starting tile keeps the current MOVE while the unit recovers
         passability: "NONE",
     });
 
+    assert.equal(isMoving(state, get(state, 0)), true);
     state = step(state, []);
     assert.deepEqual(current(state).current, instruction);
     assert.notDeepEqual(get(state, 0).position, [0, 0]);

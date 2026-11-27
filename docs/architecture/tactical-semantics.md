@@ -48,7 +48,7 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 | BLOCK-03 关系增容 | 当前固定候选、实时容量政策。 | 大君之触／赐的增容来源与满容量取得边界，见[Blocking](blocking.md#满阻挡筛选与关系引起的容量变化)。 |
 | SPACE-02 承载 | 双槽结构与共享 Pair，具体平台后继可完整移除乘员。 | 更多设施的承载、销毁与替代政策。 |
 | SPACE-03 地形 | 活性源石、烟雾、沼泽、深水、地穴链路。 | 更多地形与原生变体，见 [Terrain](terrain.md)。 |
-| MOVE-01 路线 | Plan／Context、显式指令、计时／控制分开与 Main 出口。 | Fear／Attract／Trace 的实际控制来源、缓存恢复和特殊操作内容。 |
+| MOVE-01 路线 | Plan／Context、显式指令、计时／控制分开与 Main 出口。Locomotion 独立持有运动方式和目标，提供自主运动意图查询。 | Fear／Attract／Trace 的实际控制来源、缓存恢复和特殊操作内容，以及具体冲撞技能绑定。 |
 | MOVE-02 强制移动 | Route 固定位置出现。[Shifting](navigation.md#强制位移) 推击、牵引、近停与失衡生命周期，受力免疫与地图实体碰撞。Locomotion 累计实际位移。 | 具体推拉技能和地形绑定、浮空及特殊撤退再部署。 |
 | MOVE-03 面向 | LEFT／RIGHT、普通／强制转向与既有移动／攻击接入。 | 受力、待机及特殊转向，见[面向调查](../research/cases/35-facing-and-turning-conditions.md)。 |
 | PROJECTILE-01 弹道 | 独立泛型实例、阵营、外部变速、类型化消除与 Lifetime，已接入弩箭追踪。 | 弩箭超时、变速和消除资格及更多弹道模板随内容接入。 [Projectile](projectile.md) |

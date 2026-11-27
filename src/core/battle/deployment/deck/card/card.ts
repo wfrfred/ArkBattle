@@ -19,6 +19,7 @@ import type * as supply from "./supply/supply.js";
 export type UnitDefinition = BaseDefinition & {
     readonly deployable: DeployableDefinition;
     readonly occupancy: OccupancyDefinition;
+    readonly locomotion?: never;
     readonly route?: never;
 };
 

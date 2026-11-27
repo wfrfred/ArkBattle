@@ -21,7 +21,7 @@ import type { Skill } from "../unit/capability/skill/capability.js";
 export type { Event } from "./event.js";
 
 export interface Definition {
-    readonly routeMoveMultiplier: number;
+    readonly moveMultiplier: number;
     readonly pushMultiplier: number;
 }
 

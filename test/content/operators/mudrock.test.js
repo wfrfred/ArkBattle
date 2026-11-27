@@ -17,7 +17,7 @@ import { advance as advanceEffects, forHost } from "../../../dist/core/effect/in
 import { advance as advanceSkill, activate, modify } from "../../../dist/core/unit/capability/skill/index.js";
 import { ref as skillRef } from "../../helpers/skill.js";
 import { start, advance as advanceAction, ref as actionRef } from "../../../dist/core/unit/capability/action/index.js";
-import { advance as advanceLocomotion } from "../../../dist/core/unit/capability/locomotion/index.js";
+import { advance as advanceLocomotion, setTarget } from "../../../dist/core/unit/capability/locomotion/index.js";
 import { setAttackContribution } from "../../../dist/core/unit/capability/offense/index.js";
 import { setMaxHpContribution } from "../../../dist/core/unit/capability/vitality/index.js";
 import { setType } from "../../../dist/core/unit/capability/layer/index.js";
@@ -30,7 +30,7 @@ const moduleX = "uniequip_002_mudrok";
 const baseMaxHp = 4428;
 const moduleXMaxHp = 4828;
 const baseAttack = 882;
-const enemy = (id, position, fields = {}) => initialize({ id, position, definition: {
+const enemy = (id, position, fields = {}) => initialize({ id, position, initial: { locomotion: { mode: "WALK" } }, definition: {
     id: "enemy", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: attribute(0, -2, 2), restrictions: [] },
     vitality: vitality(10000),
     classification: { type: "ENEMY", side: "ENEMY", filterTags: [], rank: "NORMAL" }, layer: { type: "GROUND" },
@@ -71,7 +71,7 @@ function wound(battle) {
 const approximate = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, String(actual) + " != " + expected);
 function canMove(battle, unit) {
     const goal = [unit.position[0] + 0.05, unit.position[1]];
-    const moved = advanceLocomotion(battle, ref(unit), { nextPoint: goal, goal }, { mode: "WALK", speedMultiplier: 1 });
+    const moved = advanceLocomotion(update(battle, ref(unit), setTarget({ nextPoint: goal, goal })), ref(unit));
     return !Vec2.equal(unit.ref.get(moved).position, unit.position);
 }
 

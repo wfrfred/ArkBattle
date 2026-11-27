@@ -49,7 +49,7 @@ const combat = {
 };
 const unit = (column, fields = {}) => ({
     definition: { id: "terrain-unit", hooks: Hooks.empty(), presence: {}, ...fields },
-    position: [column, 0], hooks: Hooks.empty(), initial: {},
+    position: [column, 0], hooks: Hooks.empty(), initial: fields.locomotion ? { locomotion: { mode: "WALK" } } : {},
 });
 
 function setup(terrains, placements, definitions) {
@@ -65,7 +65,7 @@ function setup(terrains, placements, definitions) {
         map: createMap(1, terrains.length, tiles, [], []),
         initialEffects: controllers.map(definition => ({ initial: effectInitial, definition })),
         initialUnits: placements,
-        schedule: { waves: [], branches: {} }, routeMoveMultiplier: 1, pushMultiplier: 0.5, deployment: null, initialCards: [], rngState: 7,
+        schedule: { waves: [], branches: {} }, moveMultiplier: 1, pushMultiplier: 0.5, deployment: null, initialCards: [], rngState: 7,
     });
     return {
         battle,
@@ -266,8 +266,8 @@ test("terrain contact is detected from the actual route position", () => {
         locomotion: { speed: attribute(1, 0), halfBodyWidth: 0,
             steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     });
-    traveller.initial = { route: {
-        plan: { motionMode: "WALK", startPosition: [0, 0], destination: null,
+    traveller.initial = { locomotion: { mode: "WALK" }, route: {
+        plan: { startPosition: [0, 0], destination: null,
             checkpoints: [{ type: "MOVE", position: [0, 1], offset: [0, 0], randomizeOffset: false }],
         }, offset: [0, 0],
     } };

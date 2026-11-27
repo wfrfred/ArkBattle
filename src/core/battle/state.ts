@@ -38,7 +38,7 @@ const defaultExecution: BattleExecutionState = {
 export const DEFAULT_PUSH_MULTIPLIER = 0.5;
 
 const defaultDefinition: Definition = {
-    routeMoveMultiplier: 1,
+    moveMultiplier: 1,
     pushMultiplier: DEFAULT_PUSH_MULTIPLIER,
 };
 

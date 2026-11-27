@@ -20,6 +20,7 @@ import { hasBlockable } from "../blocking/blockable/blockable.js";
 import { release } from "../blocking/blockable/operations.js";
 import { hasBlocker } from "../blocking/blocker/blocker.js";
 import { releaseAll } from "../blocking/blocker/operations.js";
+import { setTarget } from "../locomotion/capability.js";
 import {
     validatePlan,
     type Checkpoint,
@@ -28,7 +29,14 @@ import {
     type Plan,
     type Route,
 } from "./capability.js";
-import { activeContext, contextFor, createContextRef, ref, target } from "./query.js";
+import {
+    activeContext,
+    contextFor,
+    createContextRef,
+    movementTarget,
+    ref,
+    target,
+} from "./query.js";
 
 const RADIUS = 0.05;
 
@@ -307,14 +315,14 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boo
             if (!atTarget(self, context, goal.position)) {
                 const locator = Vec2.sub(self.position, context.offset);
                 const state = battle.battlefield.navigation;
-                const map = navigation.effectiveMap(state, plan.motionMode);
+                const map = navigation.effectiveMap(state, self.locomotion.mode);
                 if (
                     context.alwaysCheckCurrentPoint ||
                     map.get(World.toTile(self.position))?.passable !== true ||
                     !map.contains(World.toTile(locator)) ||
                     navigation.nextTile(
                         state,
-                        plan.motionMode,
+                        self.locomotion.mode,
                         World.toTile(locator),
                         goal.tile,
                     ) !== null
@@ -400,7 +408,7 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
             (route.current !== null || route.index !== route.plan.checkpoints.length)) ||
         !atTarget(latest, route, Tile.center(destination.position))
     ) {
-        return battle;
+        return update(battle, reference, setTarget(movementTarget(battle, reference)));
     }
 
     return removeUnit(battle, reference, { reason: "EXIT" });

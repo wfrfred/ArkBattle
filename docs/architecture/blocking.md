@@ -97,7 +97,7 @@ RELEASED 是解除后的历史通知，不要求旧关系仍存在，允许仍�
 
 关系查询直接返回两端保存的原对象。局部查询不扫描全场；全场查询按 Unit 和关系建立顺序汇集。端点查询返回 Typed Ref，引用不充当关系轮次身份。
 
-Movement 先推进所有已有 Blockable 阻挡偏移，再推进 Route；根据当前关系决定是否执行自主 Locomotion。阻挡不停止路线等待、即时指令或强制空间操作。真实离场、依赖保护与最终注销统一遵守 [Lifetime](lifetime.md)。
+Movement 先推进所有已有 Blockable 阻挡偏移，再推进 Route 和所有有效 Locomotion。Blockable 在装配时登记一次 Locomotion Restriction（若有 Locomotion），实时读取阻挡关系以禁止自主移动，不复制关系状态。阻挡不停止路线等待、即时指令或强制空间操作。真实离场、依赖保护与最终注销统一遵守 [Lifetime](lifetime.md)。
 
 ## 地块阻挡资格
 
@@ -109,7 +109,7 @@ Movement 先推进所有已有 Blockable 阻挡偏移，再推进 Route；根据
 
 ## 阻挡层与其他领域的边界
 
-目标 Layer 表示当前空地身份，blocker.rule.layers 表示可阻挡目标层集合；Route Plan.motionMode 表示寻路方式；禁挡由二元限制表达。它们不互相推导，详见[原生模式调查](../research/evidence/blocking-native-20261023/modes/report.txt)。
+目标 Layer 表示当前空地身份，blocker.rule.layers 表示可阻挡目标层集合；Locomotion.State.mode 表示自主运动及寻路方式；禁挡由二元限制表达。它们不互相推导，详见[原生模式调查](../research/evidence/blocking-native-20261023/modes/report.txt)。
 
 [蒂比与空中阻挡研究](../research/cases/21-tippi-air-blocking.md)确认自身 WALK、阻挡 AIR、对地规避可以独立存在。Core 已支持跨层规则及运行时半径修正；角色起降及具体半径倍率来源仍按实际内容接入。
 
@@ -123,7 +123,7 @@ Movement 先推进所有已有 Blockable 阻挡偏移，再推进 Route；根据
 
 普通计算以当前真实位置及当前 Tick 为起点。取得新关系时新偏移覆盖旧偏移，`blockable.advanceOffset` 按 0.2 秒（30 Hz 下六 Tick）线性推进；完成清除偏移，不改关系。Unit.position 是唯一真实坐标，不另存 Tween、位置进度或速度。普通释放、容量裁撤和 Blocker 离场保留目标偏移；目标自身主动脱离／覆盖位置／离场取消偏移。
 
-Movement 两遍推进各项接续最新状态，不承诺所有偏移一次原子发布。即使没有 Route，Blockable 仍推进偏移；偏移完成本身不阻止随后按当前关系与移动资格推进。时序及取消依据见[位置修正研究](../research/cases/22-block-positioning-and-interruption.md)。
+Movement 各遍推进接续最新状态，不承诺所有偏移一次原子发布。即使没有 Route，Blockable 仍推进偏移；偏移完成本身不阻止随后按当前关系与移动资格推进。时序及取消依据见[位置修正研究](../research/cases/22-block-positioning-and-interruption.md)。
 
 ## 支持边界
 

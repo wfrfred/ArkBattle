@@ -9,7 +9,11 @@ import * as attribute from "../../attribute.js";
 import { createChange, type Change } from "../../change.js";
 import { createRegistrationOperations } from "../../registration.js";
 import type { Unit } from "../../unit.js";
-import { hasLocomotion, type Locomotion } from "../locomotion/capability.js";
+import {
+    hasLocomotion,
+    setRestriction as setLocomotionRestriction,
+    type Locomotion,
+} from "../locomotion/capability.js";
 import type { Unbalance } from "./unbalance.js";
 
 export interface BodyDefinition {
@@ -65,18 +69,24 @@ export function initialize<
     assertNonnegativeNumber(body.frictionFactor, "shiftable body friction factor");
     validateRestrictions(definition.restrictions);
 
+    const value: U & Shiftable = {
+        ...unit,
+        shiftable: {
+            massLevel: attribute.initialize<Input>(definition.massLevel),
+            frictionFactor: body.frictionFactor,
+            restrictions: definition.restrictions,
+            unbalance: null,
+            endingUnbalances: new Map(),
+        },
+    };
+
     return {
         state: battle,
-        value: {
-            ...unit,
-            shiftable: {
-                massLevel: attribute.initialize<Input>(definition.massLevel),
-                frictionFactor: body.frictionFactor,
-                restrictions: definition.restrictions,
-                unbalance: null,
-                endingUnbalances: new Map(),
-            },
-        },
+        value: setLocomotionRestriction({
+            id: "@shiftable/unbalanced",
+            group: null,
+            value: { allows: (_battle, { self }) => !isUnbalanced(self) },
+        })(value).next,
     };
 }
 

@@ -1,10 +1,12 @@
 import { assertFiniteNumber, assertSafeInteger } from "../../core/common/assert.js";
+import type { MotionMode } from "../../core/battlefield/navigation/state.js";
 import type { TilePosition, WorldPosition } from "../../core/geometry/coordinate.js";
 import type { Checkpoint, Plan } from "../../core/unit/capability/route/capability.js";
 import { secondsToTicks } from "../../core/tick.js";
 
 export interface Route {
     readonly plan: Plan;
+    readonly mode: MotionMode;
     readonly spawnOffset: WorldPosition;
     readonly spawnRandomRange: WorldPosition;
 }
@@ -192,8 +194,8 @@ export function parseRouteDefinition(value: unknown): Route {
     const requireFinish = boolean(data.visitEveryCheckPoint, "route.visitEveryCheckPoint");
 
     return {
+        mode: motionMode,
         plan: {
-            motionMode,
             startPosition: position(data.startPosition, "route.startPosition"),
             destination:
                 data.endPosition === null

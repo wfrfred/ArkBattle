@@ -40,7 +40,6 @@ test("initial and scheduled entry see registered battle facts and preserve their
         },
     };
     const plan = {
-        motionMode: "WALK",
         startPosition: [0, 5],
         destination: { type: "EXIT", position: [0, 6], requireFinish: true },
         checkpoints: [{ type: "WAIT", anchor: "ENTER", tick: 30, timer: null }],
@@ -48,6 +47,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
     const scheduled = {
         id: "scheduled",
         route: { alwaysCheckCurrentPoint: true },
+        locomotion: { speed: { default: 0, min: 0, max: null }, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
         hooks: Hooks.empty().set(units.entered, {
             priority: 0,
             id: "observe-birth",
@@ -104,7 +104,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
         schedule: { waves: [{
             preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
             fragments: [{ preDelayTicks: 0, entries: [{
-                atTick: 0, definition: scheduled, plan, offset: [0, 0],
+                atTick: 0, definition: scheduled, plan, mode: "WALK", offset: [0, 0],
                 randomRange: [0, 0], wait: "WAVE",
             }] }],
         }], branches: {} },

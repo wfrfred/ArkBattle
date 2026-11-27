@@ -11,7 +11,7 @@ import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../../dist/core/unit/capability/skill/index.js";
 import * as sp from "../../../dist/core/unit/capability/skill/sp.js";
 import * as effects from "../../../dist/core/effect/index.js";
-import { advance as advanceLocomotion } from "../../../dist/core/unit/capability/locomotion/index.js";
+import { advance as advanceLocomotion, setTarget } from "../../../dist/core/unit/capability/locomotion/index.js";
 import * as facing from "../../../dist/core/unit/capability/facing/index.js";
 import { stun, stunRestriction, silence, blockSpRecovery } from "../../../dist/core/effects/control.js";
 import { effectInitial } from "../../helpers/effect.js";
@@ -43,7 +43,7 @@ function actor(ignoreRestrictions, onEnd = state => state) {
 function canMove(state, reference) {
     const self = reference.get(state);
     const goal = [self.position[0] + 0.05, self.position[1]];
-    const moved = advanceLocomotion(state, reference, { nextPoint: goal, goal }, { mode: "WALK", speedMultiplier: 1 });
+    const moved = advanceLocomotion(units.update(state, reference, setTarget({ nextPoint: goal, goal })), reference);
     return reference.get(moved).position[0] > self.position[0];
 }
 
@@ -51,7 +51,7 @@ test("stun interrupts the current action, suppresses its affected capabilities, 
     const endings = [];
     const content = actor([], (state, _source, _self, end) => { endings.push(end); return state; });
     let state = battle([
-        { hooks: Hooks.empty(), definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } },
+        { hooks: Hooks.empty(), definition: content.definition, position: [1, 1], initial: { locomotion: { mode: "WALK" }, facing: { direction: "RIGHT" } } },
         { hooks: Hooks.empty(), initial: {}, definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [1.5, 1] },
     ]);
     const source = units.ref(get(state, 0));
@@ -93,7 +93,7 @@ test("stun interrupts the current action, suppresses its affected capabilities, 
 
 test("silence blocks activation while SP prevention independently blocks recovery", () => {
     const content = actor([]);
-    let state = battle([{ hooks: Hooks.empty(), definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } }]);
+    let state = battle([{ hooks: Hooks.empty(), definition: content.definition, position: [1, 1], initial: { locomotion: { mode: "WALK" }, facing: { direction: "RIGHT" } } }]);
     const source = units.ref(get(state, 0));
     const skill = skills.ref(source.get(state).skill);
     const parent = effects.install(state, source, { id: "combined-control", group: null, initialize: () => ({}) }, effectInitial);
@@ -121,7 +121,7 @@ test("silence blocks activation while SP prevention independently blocks recover
 test("a skill can ignore every stun source for activation while silence, SP and other stun constraints remain", () => {
     const content = actor([stunRestriction]);
     let state = battle([
-        { hooks: Hooks.empty(), definition: content.definition, position: [1, 1], initial: { facing: { direction: "RIGHT" } } },
+        { hooks: Hooks.empty(), definition: content.definition, position: [1, 1], initial: { locomotion: { mode: "WALK" }, facing: { direction: "RIGHT" } } },
         { hooks: Hooks.empty(), initial: {}, definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [1.5, 1] },
     ]);
     const source = units.ref(get(state, 0));

@@ -3,6 +3,8 @@ export {
     initialize,
     setRestriction,
     removeRestriction,
+    setMode,
+    setTarget,
     setSpeedContribution,
     removeSpeedContribution,
     setSpeedRange,
@@ -14,12 +16,14 @@ export type {
     RestrictionContext,
     Restriction,
     Input,
+    Initial,
     State,
     Locomotion,
     MovementTarget,
-    MovementContext,
 } from "./capability.js";
 
 export { advance } from "./operations.js";
+
+export { isMoving } from "./query.js";
 
 export type { SteeringParameters } from "./steering.js";
