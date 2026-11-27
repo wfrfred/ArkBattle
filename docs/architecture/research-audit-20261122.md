@@ -15,6 +15,8 @@
 | 生命比例同步的 HP 调整 | 待接入 | [Resource / Vitality](research-necessity-20261122.md#resource--vitality) |
 | 动态出生参与调度等待（U048） | 待接入 | [Schedule](research-necessity-20261122.md#schedule) |
 | 波次和终局等待的释放时点（U047） | 待定 | [Schedule](research-necessity-20261122.md#schedule) |
+| 全局个体结算计数 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
+| 关卡生命值 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
 
 ## 初次盘点的分类
 

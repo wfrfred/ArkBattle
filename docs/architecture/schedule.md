@@ -90,7 +90,7 @@ Data 合并 Action／Enemy 的 notCountInTotal 后，按以下优先级转换：
 
 ## 领域边界
 
-Schedule 只维护调度与等待；Route 决定路线出口并请求完整离场，已登记的 removed 反馈等待释放。统计、关卡生命、得分和终局由对应规则／调用者处理，不保存 Battle.result 或 Total／Finished／Killed。
+Schedule 只维护调度与等待；Route 决定路线出口并请求完整离场，已登记的 removed 反馈等待释放。Schedule 不持有 Total／Finished／Killed 或关卡生命值。全局统计和关卡生命值尚未接入，见 [Core 剩余缺口](research-necessity-20261122.md#battle--关卡结算)。各领域提供结算事实，外部规则／调用者裁决胜负、得分和终局；Core 不保存 Battle.result。
 
 ## 回归语义
 
