@@ -69,3 +69,15 @@
 [案例 32](32-leithanien-summons-blocking-and-movement.md)已在当前 PersistentData 热更新资源中定位 `enemy_9025_aclts`、`enemy_9026_acltm`：两者为 Enemy 类、使用 ALLY 阵营索引，且 `_specificBlockMask=2` 启用面向敌方的普通阻挡路径；实际挂载的 Trace 与普通状态机负责自主寻敌、接敌停走。旧版 38 包全零扫描不覆盖这些更新对象，不能继续以该扫描否定自主移动阻挡者的内容需求。
 
 本补核仍不以 `_blockVolume=1` 推断阻挡容量或实际双重关系；当前新 EnemyData 的最终属性值及实机同时取得入向／出向关系尚未确认。它补充实际配置与执行路径，不自动要求保留某个任意 Unit 维护入口。
+
+## 2026-11-27 补查：Card 部署体与连续运动
+
+问题限于卫戍协议、集成战略、主线和支线，区分同一实体连续自主运动／推拉失衡、特殊结束后重新部署，以及表现动画或作战前的布阵拖动。具体扫描范围和复跑入口见 [deployable-motion-20261127](../evidence/deployable-motion-20261127/README.md)。
+
+- **N：普通 Card 部署产物属于 Character 家族。** [CharacterCard 创建链](../evidence/card-source-identity-20261111/deployment/README.md) 与 [TokenCard 创建链](../evidence/device-source-20261111/spawn/README.md) 经过 Deck 的普通生成入口，并在 Character 上写入 Card 身份。原生 Trap → Token → Character 与 Enemy → Unit 为不同分支；见[继承证据](../evidence/device-source-20261111/hierarchy/README.md)。较早原生版本已核对 Character 默认状态机不含 Enemy MoveState，并非仅依据角色移速属性推断。
+- **D：扫描未找到普通自主运动的部署体样例。** 当前基础安装、热更新的 599 个干员、召唤物和关卡 Prefab 组包内没有命中已知 MoveController（包括四种变体）或 Enemy 控制器的 MonoScript 引用；扫描对照命中了 Character、Token、Trap、GiantTrap。固定镜像 3,663 份关卡 JSON 内，4,126 条明确声明的 Card 的 485 种不同键全部属于角色表，无 enemy_ 键。两种扫描均有限定范围，动态授卡、脚本实现与其它资源不在负结果的覆盖内。
+- **N／P：通常推拉失衡也是 Enemy 的运动语义。** 当前 metadata 的 KnockBack 接收虚槽只在 Enemy、EnemyRistar、FootballEnemy 声明；既有[实际技能和原生施力链](../evidence/forced-motion-20261118/README.md)由 Enemy 的刚体及 UnbalanceState 处理。社区 [移速](https://prts.wiki/w/游戏数据基础#移速) 将自主移动限定于敌人类，[失衡位移机制](https://prts.wiki/w/失衡位移机制) 说明角色类单位不能受到失衡位移。这里不由方法名检索否定所有特殊脚本的坐标修改。
+- **N／D：实际角色技能“移动”不等于连续积分。** 乌尔比安、Mon3tr、思衡托的实际移动绑定经过特殊结束与原 Card 再生成；支线「泡影苍霆」的外部角色移位同样是特殊再部署。它们各自的技能／HP、SP 接续不意味着同一场上 Unit 沿路线运动，详见 [Case 24 特殊移动](24-deployment-cost-and-supply.md#特殊移动的结束原因)及[当前技能绑定](../evidence/redeploy-state-and-repeater-20261122/README.md#特殊移动)、[外部重部署](../evidence/external-redeploy-20261122/README.md)。[PRTS 予愿安洁莉娜](https://prts.wiki/w/予愿安洁莉娜) 亦记录其模型滑翔／追击表现期间实际所在格、中心坐标不变，到达后才按再部署处理；动画表现、空地身份改变及部署格的选择本身均不是自主运动或推拉的直接证据。
+- **D／N：移动的友方单位确有实际内容，但友方阵营不等于实际手卡部署。** 一个小节、一个乐部是由实际召唤模板 `SummonEnemyWithRuntimeRoute` 创建的 ALLY Enemy，具有路线／追踪和 MoveController 绑定，见 [Case 32](32-leithanien-summons-blocking-and-movement.md)。卫戍「炎佑」亦为我方的敌人类飞行单位；集成战略的[天师锦囊](https://prts.wiki/w/天师锦囊) 在炎国干员初次部署时额外召唤炎佑，触发部署的干员与被召出的移动单位并非同一实体。另见[实际盟约控制器](../evidence/spatial-content-20261122/README.md#卫戍更新中的普通阻挡掩码)中「不眠雪山」的 Enemy 初始阵营与阻挡掩码。
+
+当前已取得的支持玩法证据支持区分实际 Card 普通部署和 Enemy 类运动控制；尚无经 Card 部署又采用上述连续运动或普通推拉失衡的真实内容正例。此结论不是原生全局互斥定理：未穷尽所有动态创建、其他资源、具体特殊位移与运行热更，也不据此决定项目的能力类型或接口。

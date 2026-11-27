@@ -1,0 +1,3044 @@
+{
+  "provenance": {
+    "collectedOn": "2026-11-27",
+    "versionId": "26-11-13-06-34-18-84612175",
+    "selectionGlobs": [
+      "charpack/*.ab",
+      "pkgrps/btl_pfb_tokens_*.ab",
+      "battle/prefabs/levelprefabs/**/*.ab"
+    ],
+    "tools": [
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/unity_assets.py",
+        "bytes": 3542,
+        "sha256": "cece612435569ab6162594a9b42cbdbdab420579719f099a3b705ab4adaf7e25"
+      },
+      {
+        "path": "/home/wfrfred/workspace/ArkBattle/docs/research/evidence/nymph-action-settlement-20261103/projectile/decode_projectile.py",
+        "bytes": 6749,
+        "sha256": "dab13196fb726d06bd9094c29f09a12dc3677b2c129359a1f7c305e13a8157fb"
+      }
+    ],
+    "manifest": {
+      "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles/hot_update_list.json",
+      "bytes": 3348046,
+      "sha256": "f5d0009a16adadf90d27e6a211af5716ae34c7eea982ce6dfc23dbaf9cc6103d"
+    },
+    "note": "Bundle fingerprint inventory collected after scan from same installed paths; did not rescan component bytes."
+  },
+  "result": [
+    {
+      "root": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows",
+      "scriptBundle": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+        "bytes": 477255,
+        "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99"
+      },
+      "bundleCount": 556,
+      "bundles": [
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_06/level_sandbox2_06.ab",
+          "size": 637068,
+          "sha256": "4186c4e37c704babc1686248d93b53c5cafd21f027ef0d59388a2274ca3657eb"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_07/level_sandbox2_07.ab",
+          "size": 686173,
+          "sha256": "5fd86a772e1d11e0477f8635efb1c773ef12e30516a739a023b8740922f68210"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_08/level_sandbox2_08.ab",
+          "size": 1176510,
+          "sha256": "d3c82ae5d4541be78f3732440f69e20d10441ec0c6c6896d5fe3c611c2e3e138"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_09/level_sandbox2_09.ab",
+          "size": 731933,
+          "sha256": "d94491ca8a54bfbb7c7cc067b5557b305bd65ccf3c82d9e3cb99cf3a7e0985a2"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_10/level_sandbox2_10.ab",
+          "size": 800681,
+          "sha256": "ae51ea502a6eca681261f4c629844b5d8dc1141ea22843dccf0d78535977be4b"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_11/level_sandbox2_11.ab",
+          "size": 610338,
+          "sha256": "f41f60f6ea453398d046679d3e2b181c3fe4daab694f71efd87581fffe67a1ce"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_12/level_sandbox2_12.ab",
+          "size": 869745,
+          "sha256": "a8eb889c4e5a26ff8429a3d307911ca5cd6f040ea26d064bfcef124eac63980b"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_13/level_sandbox2_13.ab",
+          "size": 492593,
+          "sha256": "b84823bf9bdddcf22d3a0e6ee502a7fce8bd756449c27220c074daf3d8fa1ab5"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_14/level_sandbox2_14.ab",
+          "size": 998806,
+          "sha256": "1cd9d4e640c6c1b18ecd1b102f3d70bfa259e94bcfd648b7c93ed703ba0b9e8c"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_15/level_sandbox2_15.ab",
+          "size": 566471,
+          "sha256": "16179b671769054bc73afc22714b99c5e017b98a7d35b1968b39c0f892be7222"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_16/level_sandbox2_16.ab",
+          "size": 1171298,
+          "sha256": "c1d6210056b13af509dd897e640acd3f9769a9d6a25d2c3145a54c6e27d6c9c5"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_17/level_sandbox2_17.ab",
+          "size": 1142628,
+          "sha256": "aa70ec9dbd01fe36509a37baf2c131f923db7b83377f8f87144ae7519e4b9d59"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_18/level_sandbox2_18.ab",
+          "size": 718390,
+          "sha256": "ffc4ba1d8a083159160e98b45a1c3fc139c887481f92306179bb558274b1d98d"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_19/level_sandbox2_19.ab",
+          "size": 443085,
+          "sha256": "141a1962bac2d23f703e1cb533b8cf943ae4ef26b0d3a60e52efb31a5488ac38"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_20/level_sandbox2_20.ab",
+          "size": 886238,
+          "sha256": "0279c1bc51a80c91b9c3fb6a20aabb0771068a78d2e849a9ca77361cb36da766"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_21/level_sandbox2_21.ab",
+          "size": 854766,
+          "sha256": "3cc3f5f4b5a4e0e8112f47a9d3f9f7f004c7fe2ebe6cca048ce95754f7596e15"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_22/level_sandbox2_22.ab",
+          "size": 824258,
+          "sha256": "cba2aeba296cc272d845cdd01f787a7a997384597e20e428e397da43b1e58fae"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_23/level_sandbox2_23.ab",
+          "size": 1054660,
+          "sha256": "9ceee88e035fe5fdae9afde851acbcf73c4e03572b52f9bcb8a310643a477e73"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_24/level_sandbox2_24.ab",
+          "size": 737522,
+          "sha256": "e372f9b6b3c4104a8fa5c799d67cb815072001775c1075ddf48e4027596e6b33"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_24_02/level_sandbox2_24_02.ab",
+          "size": 358042,
+          "sha256": "99eac45d9c779cc26d07d87e857716fdf87d79a05fe18153f3e0fe236ae41ce8"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_25/level_sandbox2_25.ab",
+          "size": 1166744,
+          "sha256": "d0bfd4740c05832de943415939b8bcef411cf899b326486c288e5b80089aa7c7"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26/level_sandbox2_26.ab",
+          "size": 1118344,
+          "sha256": "10f61c8c2dbf8c39683972873e636797e0ce7eac17323056f23b9a15ad4f12eb"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_01/level_sandbox2_26_01.ab",
+          "size": 739242,
+          "sha256": "578d6996f8abd1d16c744df34daa353cc89a2a2b1c2128a30acb3579fd794795"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_02/level_sandbox2_26_02.ab",
+          "size": 524123,
+          "sha256": "6ef7660d409c55bbdd06e0c433f9e164feabd2bc815dfd51c64bc4c1b81dbc10"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_03/level_sandbox2_26_03.ab",
+          "size": 441765,
+          "sha256": "c50871a4be9f44565ab39778208959c76c79240e5c1f8da76d291dc0fbd5e2fe"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_26_04/level_sandbox2_26_04.ab",
+          "size": 587908,
+          "sha256": "0f8f30b1adeb09d5da27c32797f43ce6d63ed3e20f25ceeff1547f64685009b3"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_27/level_sandbox2_27.ab",
+          "size": 1771915,
+          "sha256": "3d2a57427240615ef2b7e3b1d53a6ee9084c0be9e2eb0d49b049d8790006626a"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28/level_sandbox2_28.ab",
+          "size": 1020679,
+          "sha256": "259c1e1986766b8ba5dd2752e2ad0da15418eb95d67f8978ca95541334238d84"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_01/level_sandbox2_28_01.ab",
+          "size": 394183,
+          "sha256": "fd791776112d98ba6a06ca27f9baebdb4d0b8c5c21f6461cc0147c0fb891346a"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_02/level_sandbox2_28_02.ab",
+          "size": 518724,
+          "sha256": "66e253a2e884f6d69ba94fc92f41d6905f80afd728a5feae13d58cd7dcf173b2"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_28_03/level_sandbox2_28_03.ab",
+          "size": 512032,
+          "sha256": "d95ad868a5a430e12cf4019323c57cc895e278dc3064156456749933c619d677"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_29/level_sandbox2_29.ab",
+          "size": 349807,
+          "sha256": "b4081391cf720d6f175ea8275232a10ed2dd0803842d530971fc798c7a43a169"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_30/level_sandbox2_30.ab",
+          "size": 370872,
+          "sha256": "45d48e44481a9227a616a7287204f8df5592986072edd319a8a514db0f70c99c"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_31/level_sandbox2_31.ab",
+          "size": 443803,
+          "sha256": "5f558aba3c9ac114ff8a8b50aea7d3eec1f8a1e3b9451be0b8bbc240affa34ec"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_32/level_sandbox2_32.ab",
+          "size": 514327,
+          "sha256": "914abcff99280717114fbbeabee0521894099224757d60a8686eb5790a616520"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_33/level_sandbox2_33.ab",
+          "size": 322444,
+          "sha256": "325e5f9ff8664de6acf513a4a0b3eb68fd86c8b60769b18a1984de8253836423"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_34/level_sandbox2_34.ab",
+          "size": 638685,
+          "sha256": "e67f842fc56f458ef9dc00043d58874517035d648dda52506797ab0e7378a975"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_35/level_sandbox2_35.ab",
+          "size": 319803,
+          "sha256": "3e82df20e6fe2926527068d11b2df319fbbdce22811a3c2407930f8c81dc2e40"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_36/level_sandbox2_36.ab",
+          "size": 679115,
+          "sha256": "b8ca250e713e1e2d91fbbd54dde5a7922ff157e144f38d3c94a6a88535e3852e"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_37/level_sandbox2_37.ab",
+          "size": 616569,
+          "sha256": "69a0fc379f8f31bf24bd20a16f4a149f6a3f800c4fcd8f15819efb3e9a6b16a4"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_38/level_sandbox2_38.ab",
+          "size": 838217,
+          "sha256": "a98867f5f5aa033746984fe76e5fea04bdd9824c6b33f9cdea38781d79edec6f"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_39/level_sandbox2_39.ab",
+          "size": 261785,
+          "sha256": "5fdf0bbf27b8c76c9460360f9493e15889af6fd93b7dc76e896616cf356be2d8"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_40/level_sandbox2_40.ab",
+          "size": 828003,
+          "sha256": "0335a75b9cdd7eb78b942172d7f1a78a0292ad0bd945493b21ec9c206192e45f"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_41/level_sandbox2_41.ab",
+          "size": 959972,
+          "sha256": "104e698767e172cac5f438f4687aeadafa1474b3353580e102580f8d723a05fc"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_42/level_sandbox2_42.ab",
+          "size": 676160,
+          "sha256": "9a4e81a33857f44803aa8909769151ae00185025da427cb452872039d6dca438"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_43/level_sandbox2_43.ab",
+          "size": 476543,
+          "sha256": "021944e3d4e571ecc6824d9fea32840b8959f995e0bf23456d81bf693130e584"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_44/level_sandbox2_44.ab",
+          "size": 316477,
+          "sha256": "d504a1d1f24059b2807fea5ced5f008bd5251bbd943dc8d2c9e2a1dd06117c83"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_45/level_sandbox2_45.ab",
+          "size": 480336,
+          "sha256": "db9303a06c22205a9e379fe2789e52781f426463c08a5731bfce906639930c5e"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_46/level_sandbox2_46.ab",
+          "size": 432756,
+          "sha256": "113256ac4371f08a2184c46049f98dbfca612def7377e7eabe1e275417ab15ef"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_47/level_sandbox2_47.ab",
+          "size": 779915,
+          "sha256": "ab34477cde1ef33c570454ded9290eba0f091ce2a6217592e2783893c5895986"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_48/level_sandbox2_48.ab",
+          "size": 233928,
+          "sha256": "8a729561c9f66d57a114d0fa2e768565a8b1673f6b509234b156fa8eb71a071f"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_49/level_sandbox2_49.ab",
+          "size": 366156,
+          "sha256": "d34f657c2934e7e5361b7e2f443479e96b7540f87f41e93ca610cbda2da09183"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_50/level_sandbox2_50.ab",
+          "size": 578372,
+          "sha256": "1458ced432124f9106d68ad0ceffbfd7e2609815caf6e4653d0b69780af64348"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_51/level_sandbox2_51.ab",
+          "size": 708375,
+          "sha256": "283240f03ea0973e11df407a268c721bb8fa6768e69654c7fc35e7d5fbb3797b"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_52/level_sandbox2_52.ab",
+          "size": 730975,
+          "sha256": "e9d4ee94a42ee218fb044ab8dfce0b9297f98fe019cf4e415cf8a040cbb33506"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_53/level_sandbox2_53.ab",
+          "size": 700292,
+          "sha256": "6cd5d0424cb0df14e7e2c375725a59f3da976a2c2eab67904b3bbb939e302184"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_54/level_sandbox2_54.ab",
+          "size": 545117,
+          "sha256": "b4caf8cc038d5d561d3378ee9bc49b7b9a042f8389d7166e83569e049d83b743"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_55/level_sandbox2_55.ab",
+          "size": 486521,
+          "sha256": "0fe27b1c41c1a0adb492dd50b2776842637f982a908f5e26fe0915fab92c7c49"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_56/level_sandbox2_56.ab",
+          "size": 608609,
+          "sha256": "2e81be072239b64a56594076923fecc9771592811d575967610e153c997a05ce"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_57/level_sandbox2_57.ab",
+          "size": 654445,
+          "sha256": "02314431f8afd4355c4e45f024f98ffc2800edf0a35d07f8350790f1f57c98fe"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_58/level_sandbox2_58.ab",
+          "size": 620795,
+          "sha256": "9e6f4a6121542e7bcecdd31bceb0df89039c954950947cd7f8513066667f51e1"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_59/level_sandbox2_59.ab",
+          "size": 322914,
+          "sha256": "7205ccaf4cbcd8dd3f391b9da84e461995edcd715067876d128cdfda5ad3fdc3"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_60/level_sandbox2_60.ab",
+          "size": 266094,
+          "sha256": "b8d702b6f4d683f2dc6f92b4afea7f96117bef3192ab9a29cae932f2905397f2"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_61/level_sandbox2_61.ab",
+          "size": 439181,
+          "sha256": "4abde4a4dc2c5f67c092409117dd8171b5ac72202114531e0469771f8287a729"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_62/level_sandbox2_62.ab",
+          "size": 333727,
+          "sha256": "522159a162cb94b30b097c8553ddcc69cc308ae89a4e84afa25415652c5a1aad"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_63/level_sandbox2_63.ab",
+          "size": 356425,
+          "sha256": "280e7b50ccee165ce9d4f960d66135337c7d0ee66c682095407f5d899c336e6f"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_64/level_sandbox2_64.ab",
+          "size": 232480,
+          "sha256": "300f81f652ff4ac34ed45daa7c615da1a75401b8037747f644d2f14458fb26b7"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_65/level_sandbox2_65.ab",
+          "size": 337392,
+          "sha256": "6c74efe39a24b01d92bc6813873ec61f1169c9bd02b8d612bff67a892f2da947"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_66/level_sandbox2_66.ab",
+          "size": 364614,
+          "sha256": "fb187d677fdc94f3873f2ba54c13069686271549258f1a339355beeea73b99f4"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_67/level_sandbox2_67.ab",
+          "size": 268901,
+          "sha256": "b93c6d26e163915b44bc072a4043a9919aa4b9700a84e5f75b7a5788ef8553ca"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_68/level_sandbox2_68.ab",
+          "size": 405061,
+          "sha256": "7fa0d785c31acbb16fcef69cb9ac598cd7221f19624324076881ca2247964efa"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_69/level_sandbox2_69.ab",
+          "size": 472958,
+          "sha256": "59099d7fff374b43d6cf51ef0b5211b50ee0b22b29591d23980e6dbb0cebba68"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_70/level_sandbox2_70.ab",
+          "size": 354758,
+          "sha256": "7a316652910c25f69dd6881e0a4d912c34c6582f1209dbe10d7ceab76288ae8d"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_71/level_sandbox2_71.ab",
+          "size": 387439,
+          "sha256": "5b67b9350e2c1c15cb3e78150c31f0d7bbed63701bbe39a06297b41b781ac9af"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_72/level_sandbox2_72.ab",
+          "size": 337306,
+          "sha256": "14d2adc474191bbd0004ac069d389a6b35a465ec5eb662fbe14e3958c5c388ce"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_73/level_sandbox2_73.ab",
+          "size": 458084,
+          "sha256": "eb7319e612abab3a16b76621cc6e8f96c533b3a4d7d9c8884f1f1a34830e9055"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_74/level_sandbox2_74.ab",
+          "size": 339915,
+          "sha256": "301f05126e962fbe369dcb81c3bd85d911fab76f6a77eafeafafbb67797e80ea"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_75/level_sandbox2_75.ab",
+          "size": 554158,
+          "sha256": "4fe60c34585bb3b8f77c6ce0d5473c35dd886b23e91b102284f633dff872c4c7"
+        },
+        {
+          "relativePath": "charpack/char_002_amiya.ab",
+          "size": 22160,
+          "sha256": "d22748e3b17f8742d68aeeae3ca435bbcba5f213f11e22e136010b363b480189"
+        },
+        {
+          "relativePath": "charpack/char_003_kalts.ab",
+          "size": 26105,
+          "sha256": "96d10f92fb6850838b8f4390291d451ff82e945a517ea6cb4265b3f4f0f5b7c5"
+        },
+        {
+          "relativePath": "charpack/char_008_owl.ab",
+          "size": 20010,
+          "sha256": "10aa73f661d2bafcab1978fdc71e5fbb3a286f3c58ec7c8b2664e13ced584071"
+        },
+        {
+          "relativePath": "charpack/char_009_12fce.ab",
+          "size": 20485,
+          "sha256": "0d99125e0b0c610cf51ec9d3bdbe18f88aceeab3f23d2305f1b0107d1667287a"
+        },
+        {
+          "relativePath": "charpack/char_010_chen.ab",
+          "size": 22978,
+          "sha256": "a437358d117536871d9f5e44cd79faf020e45e9968eca51e11c42a1587ba1a8e"
+        },
+        {
+          "relativePath": "charpack/char_017_huang.ab",
+          "size": 22584,
+          "sha256": "338dff3a9d2bb4dcfb2f153bc599e26d84b36fb142be7860287363c1174025eb"
+        },
+        {
+          "relativePath": "charpack/char_1001_amiya2.ab",
+          "size": 25770,
+          "sha256": "f2f53228a1089ebed3e6cd39251ef4728f086e571c871cf84e11716d7541979c"
+        },
+        {
+          "relativePath": "charpack/char_1011_lava2.ab",
+          "size": 25957,
+          "sha256": "d899fa01bacf3c91e7abb5049cc632a4ee962b334304f67f9e704829642892d0"
+        },
+        {
+          "relativePath": "charpack/char_1012_skadi2.ab",
+          "size": 21407,
+          "sha256": "52662c7866015b345803272d3365e3403aa64becf07dbbc81a9b9043a8168a31"
+        },
+        {
+          "relativePath": "charpack/char_1013_chen2.ab",
+          "size": 35859,
+          "sha256": "022e308a908d4ae622a231d3b34245bf9512298cd89d48d945449107a1208d3c"
+        },
+        {
+          "relativePath": "charpack/char_1014_nearl2.ab",
+          "size": 22906,
+          "sha256": "e395052d6042109b8ea7b07384b715cb5e539ad0fa47b5d8842cb489e6102f70"
+        },
+        {
+          "relativePath": "charpack/char_1015_aglna2.ab",
+          "size": 40593,
+          "sha256": "1d12075f7bbe0b4a0241cf51e280c95ccbba3d3d75719fb26465c806172de2f3"
+        },
+        {
+          "relativePath": "charpack/char_1016_agoat2.ab",
+          "size": 36239,
+          "sha256": "8fb9d23260be8d2c48215140475a73586992d154a7f2f2b8ec4217e84bcb7024"
+        },
+        {
+          "relativePath": "charpack/char_1019_siege2.ab",
+          "size": 25625,
+          "sha256": "fc8490af3a9a04aab7ad9106fdd2750ec806c40a49409d45583edb46cefab1d6"
+        },
+        {
+          "relativePath": "charpack/char_101_sora.ab",
+          "size": 19174,
+          "sha256": "b638a019d5a2080a7015660fb100bf0b21863455c4dce7760c14937f722eabcf"
+        },
+        {
+          "relativePath": "charpack/char_1020_reed2.ab",
+          "size": 23833,
+          "sha256": "3940e0b66f3377748b043511ce18ef447a65dfae83e9daab9ff396630bce62e9"
+        },
+        {
+          "relativePath": "charpack/char_1021_kroos2.ab",
+          "size": 23619,
+          "sha256": "0631c2edaa34aa326af4a13284176bc578d81e654c2b3255dcae74d321e0fa57"
+        },
+        {
+          "relativePath": "charpack/char_1022_flwr2.ab",
+          "size": 23287,
+          "sha256": "b9d1bc7ae541bf42aa8db9d63a24ba430de3c7588d29be8e70e9420052440105"
+        },
+        {
+          "relativePath": "charpack/char_1023_ghost2.ab",
+          "size": 34893,
+          "sha256": "c54be5a4204b099ea636d77216d50a2ba88a7e816beb6e5fd5c08f8725cf4b21"
+        },
+        {
+          "relativePath": "charpack/char_1024_hbisc2.ab",
+          "size": 20976,
+          "sha256": "0b7cbae56f91bf9eb36dd567dd463924e05d1604848b433915d76a4b63327e55"
+        },
+        {
+          "relativePath": "charpack/char_1026_gvial2.ab",
+          "size": 24680,
+          "sha256": "777dddcdc260c1b983eb4b0eb400f9354296ba7567449fbe816981bf64c13385"
+        },
+        {
+          "relativePath": "charpack/char_1027_greyy2.ab",
+          "size": 19520,
+          "sha256": "7d15f5a7b4889d3820992f6ee3df85bdac5fc90516d94ed53a1cde54c5ffb046"
+        },
+        {
+          "relativePath": "charpack/char_1028_texas2.ab",
+          "size": 26264,
+          "sha256": "0d7abf2343b35980fcbaf0b77b2e6bab001fdcc1f5dd75e4b4e331b317c37259"
+        },
+        {
+          "relativePath": "charpack/char_1029_yato2.ab",
+          "size": 27221,
+          "sha256": "7d0b4a23a1852629acd5cca2bb05de5d6873934adfec8c542d181f5176190d3c"
+        },
+        {
+          "relativePath": "charpack/char_102_texas.ab",
+          "size": 19077,
+          "sha256": "b2ce0bbd9f6ea0e038daca3e5bcd0246726101c40a696ed4cca70a1508635f9a"
+        },
+        {
+          "relativePath": "charpack/char_1030_noirc2.ab",
+          "size": 27176,
+          "sha256": "b6c044f1db1808e3e48a719130f73c8f3d4e9ae44f629fcdde986ff9aa78b7b7"
+        },
+        {
+          "relativePath": "charpack/char_1031_slent2.ab",
+          "size": 25436,
+          "sha256": "f19ca2d8c11c10493f3ce5e140051dfe6f1dd7366af170aa8020186870f880ea"
+        },
+        {
+          "relativePath": "charpack/char_1032_excu2.ab",
+          "size": 36694,
+          "sha256": "095f309692475e0cd14bea0f1880de7a9dd5f1637a0aec69d26584a7556c0d4a"
+        },
+        {
+          "relativePath": "charpack/char_1033_swire2.ab",
+          "size": 39060,
+          "sha256": "2237d149b07a24aa4239b7a53e56c6f2fc46ffa5f05020eb319295a16dd2ea5e"
+        },
+        {
+          "relativePath": "charpack/char_1034_jesca2.ab",
+          "size": 34765,
+          "sha256": "352283c8ac167561e7aed14347c2c8a3b4d18708b254411f34841cc5b185b7b0"
+        },
+        {
+          "relativePath": "charpack/char_1035_wisdel.ab",
+          "size": 33056,
+          "sha256": "86be3f333f6d83234cc9ca689cce60e3fa108903ce179e2b2e400ee8869a681b"
+        },
+        {
+          "relativePath": "charpack/char_1036_fang2.ab",
+          "size": 21780,
+          "sha256": "f411e2a5c85f4fae2af56899afa7df8cba41bbe33052619d9e1491f5ff1a5c6c"
+        },
+        {
+          "relativePath": "charpack/char_1037_amiya3.ab",
+          "size": 25408,
+          "sha256": "6337cc0c448f4840b11da8aa77f8898aaca589eb7b66ee28bf55fe0819b129d3"
+        },
+        {
+          "relativePath": "charpack/char_1038_whitw2.ab",
+          "size": 41188,
+          "sha256": "013db8178c7aa532cc8a392d0644e0afbb1fa9b4625a00de0f8c3f56eba15aa5"
+        },
+        {
+          "relativePath": "charpack/char_1039_thorn2.ab",
+          "size": 29065,
+          "sha256": "14e86c29231589a23fe1603410a73c73124fed2697fd760a9ba25662d578ba30"
+        },
+        {
+          "relativePath": "charpack/char_103_angel.ab",
+          "size": 23003,
+          "sha256": "8633d654a745b0d9feb0a240e94bf727618716161e7187f537fffcee21888719"
+        },
+        {
+          "relativePath": "charpack/char_1040_blaze2.ab",
+          "size": 47115,
+          "sha256": "dc89cef60e183f70dc8663b7bed65139ae9898f370abd27c8d05b94e8b79d970"
+        },
+        {
+          "relativePath": "charpack/char_1041_angel2.ab",
+          "size": 55075,
+          "sha256": "a35a6a37e01a34d3615540b0781a4ae5af75835921e15abdcd81d7a6b4f1d26a"
+        },
+        {
+          "relativePath": "charpack/char_1042_phatm2.ab",
+          "size": 30665,
+          "sha256": "2dbe490383f7e123be33968af5cc63d2dd642b64516cd7046e67235a1b81fdc6"
+        },
+        {
+          "relativePath": "charpack/char_1043_leizi2.ab",
+          "size": 37760,
+          "sha256": "e7e1ef13ef124586cc325fbd5e5a675a648ba3beab53ba03911fe756582a1a04"
+        },
+        {
+          "relativePath": "charpack/char_1044_hsgma2.ab",
+          "size": 32356,
+          "sha256": "047029cf76d9270d130e08afcb05d4264bf4fa065d56f8aa6d130a9bffc1e271"
+        },
+        {
+          "relativePath": "charpack/char_1045_svash2.ab",
+          "size": 34030,
+          "sha256": "4da58c3993d531490f90faa511dd8e0b314e89ffd5d081b1efb3b09d5f59130b"
+        },
+        {
+          "relativePath": "charpack/char_1046_sbell2.ab",
+          "size": 34128,
+          "sha256": "8a4b46258d3962c967fa51db90c8f598a5719a1a8a63722feb9b478afe696726"
+        },
+        {
+          "relativePath": "charpack/char_1047_halo2.ab",
+          "size": 29283,
+          "sha256": "8f789c3cef076aa0c31a605080e3b9a641319a5e5e1feb469615d4d908ff5a83"
+        },
+        {
+          "relativePath": "charpack/char_1048_orchd2.ab",
+          "size": 30723,
+          "sha256": "546d56c6c7f95602f0ba3653e0ec8f241654dcbf7293bd58af311c2de39f0cf6"
+        },
+        {
+          "relativePath": "charpack/char_1049_catap2.ab",
+          "size": 30674,
+          "sha256": "730cb2a93f5b6fa7371e085ae5ae242c7ad59752234c2aa340644b9b908f2ac8"
+        },
+        {
+          "relativePath": "charpack/char_1050_chen3.ab",
+          "size": 23781,
+          "sha256": "73aaf5013eceabbbd670450ed04cc4dda3b3b72e2eac7aa5eccf5d0ed6d0c07e"
+        },
+        {
+          "relativePath": "charpack/char_1051_headb2.ab",
+          "size": 32522,
+          "sha256": "a17b58581bcd512a757031ad2dfa33b4af37f64501d46588be64ceda915c1e17"
+        },
+        {
+          "relativePath": "charpack/char_1052_kalts2.ab",
+          "size": 45213,
+          "sha256": "97d58abead488de8af1aa40aa1eee8f3ddfa55e5d459140451f28ce05e142713"
+        },
+        {
+          "relativePath": "charpack/char_106_franka.ab",
+          "size": 21351,
+          "sha256": "0f9eb239629c7cfdc188b6603d6a05793767ff6cddbec63b938265c1860d3f66"
+        },
+        {
+          "relativePath": "charpack/char_107_liskam.ab",
+          "size": 23731,
+          "sha256": "5e8111522ec2a27474a9e81da16587fd84180cdb347f4df3324c053b979fa2a0"
+        },
+        {
+          "relativePath": "charpack/char_108_silent.ab",
+          "size": 20799,
+          "sha256": "5dca818fa162203fd82ad755427f92e075d972419575ae4f849a19bf5441ee67"
+        },
+        {
+          "relativePath": "charpack/char_109_fmout.ab",
+          "size": 21198,
+          "sha256": "6c03b8029ff040c968cd6388b5bcf8c66f2afc9de3d5eab11bc1310266a0abf0"
+        },
+        {
+          "relativePath": "charpack/char_110_deepcl.ab",
+          "size": 21182,
+          "sha256": "99649d6a04f1b6c4ce02f4b649f196e66c4dcd17ac23cb4a95c4f7725579c92e"
+        },
+        {
+          "relativePath": "charpack/char_112_siege.ab",
+          "size": 23757,
+          "sha256": "bf3fbf8d1846bf1ed23d496ac1f91dea6e880cdf8a9e4d926cd312e1e8643d9c"
+        },
+        {
+          "relativePath": "charpack/char_113_cqbw.ab",
+          "size": 24018,
+          "sha256": "8eed914ccc2f6c7f84dbac790f28c3daff9bae6887a3605cdb5b3dd409ba8c3f"
+        },
+        {
+          "relativePath": "charpack/char_115_headbr.ab",
+          "size": 18834,
+          "sha256": "ceb4dce343ee0fe1a69f7de4b55c00c7aaf868467ce8e3dfd50bc891b77679a6"
+        },
+        {
+          "relativePath": "charpack/char_117_myrrh.ab",
+          "size": 17901,
+          "sha256": "e8df52d0fc058c98b4e1cc655adc20e157ecf3386dcd93be8a9b62708a1d8ef9"
+        },
+        {
+          "relativePath": "charpack/char_118_yuki.ab",
+          "size": 19829,
+          "sha256": "a90f351c26f7878dc294ec34eec123adfbfb5c4453f04ddc356b8e7154aa1e3b"
+        },
+        {
+          "relativePath": "charpack/char_120_hibisc.ab",
+          "size": 20100,
+          "sha256": "f3777879ceb3a8a563dc6a6c857a3cae00e01a7a52c1875c22697e4ba42e101b"
+        },
+        {
+          "relativePath": "charpack/char_121_lava.ab",
+          "size": 20464,
+          "sha256": "3db84643784203db9745280c5d120058c634ddf49aa2096480966f0a75b3f62f"
+        },
+        {
+          "relativePath": "charpack/char_122_beagle.ab",
+          "size": 20204,
+          "sha256": "22534fb043b97e59a5f9a6e47b011bb3ae49deb8c6dd1f36de463a2e4aa23ec5"
+        },
+        {
+          "relativePath": "charpack/char_123_fang.ab",
+          "size": 18610,
+          "sha256": "bf51459ea43624c0a81fc6cc3a8777be561998d4ae2a9d134884a3dc9b1e7a60"
+        },
+        {
+          "relativePath": "charpack/char_124_kroos.ab",
+          "size": 19859,
+          "sha256": "cce77b8754667db622866b288ff3c4a6167c49cac25b5c86468b6b8b25575b1e"
+        },
+        {
+          "relativePath": "charpack/char_126_shotst.ab",
+          "size": 19755,
+          "sha256": "b81d54671f19f88b79252551a3103e267dcd2f9ddcb97f1ec422436c6dcd0f70"
+        },
+        {
+          "relativePath": "charpack/char_127_estell.ab",
+          "size": 22455,
+          "sha256": "f9887cb928bc555556c4eda3d28fec2da5dac33284adf6e71edbcff5b5f28479"
+        },
+        {
+          "relativePath": "charpack/char_128_plosis.ab",
+          "size": 23926,
+          "sha256": "4ef18ea50b05229cfa04a4abdd701a2412c0796c86e84ad95f3f5737b4582543"
+        },
+        {
+          "relativePath": "charpack/char_129_bluep.ab",
+          "size": 21548,
+          "sha256": "8ccbfd5d6b308e67e5e91ef81cb7fb2dc11ca17fee11c5856c2a447ae949715a"
+        },
+        {
+          "relativePath": "charpack/char_130_doberm.ab",
+          "size": 22884,
+          "sha256": "3001384439beff8e6c1ed57262c3629733a9ebbe4e1245033d2fa92b7581ec55"
+        },
+        {
+          "relativePath": "charpack/char_131_flameb.ab",
+          "size": 21239,
+          "sha256": "ac7e788ce9c82e771fc4b36e4e2f02a65cc5d77d5faee7d972aa8d795bb32076"
+        },
+        {
+          "relativePath": "charpack/char_133_mm.ab",
+          "size": 21810,
+          "sha256": "5f05e2b2be05f91e618a9083a5dca6aa6135e495aeef8085b4b0625d8ad0736d"
+        },
+        {
+          "relativePath": "charpack/char_134_ifrit.ab",
+          "size": 22734,
+          "sha256": "fa40c03d4cc14121b29590895ae44cbb9e3d48d749ca1231ef8278e300201b76"
+        },
+        {
+          "relativePath": "charpack/char_135_halo.ab",
+          "size": 22471,
+          "sha256": "b9d5721a31f15f070cf79d7f2b745fa5703e3ea51ad7ff986ba33906c55158eb"
+        },
+        {
+          "relativePath": "charpack/char_136_hsguma.ab",
+          "size": 24236,
+          "sha256": "9d3e4458c91d3fdf4caa9ad2aaa25348ae8e927539cc7875a23bf6b9838a72bb"
+        },
+        {
+          "relativePath": "charpack/char_137_brownb.ab",
+          "size": 23420,
+          "sha256": "ed20047efac77b8d4a535056d9c84ae8939bd9369802cddb4ab3a9eb0fa0c597"
+        },
+        {
+          "relativePath": "charpack/char_140_whitew.ab",
+          "size": 21526,
+          "sha256": "79f6f9fb6693a95ff9cb8a264af86665962abd3c3fb02606dabd728b752ca316"
+        },
+        {
+          "relativePath": "charpack/char_141_nights.ab",
+          "size": 23265,
+          "sha256": "2969bdd61eb426c35bab2146053cd873b583676064e2b12fa84749ad0e3a6e5c"
+        },
+        {
+          "relativePath": "charpack/char_143_ghost.ab",
+          "size": 20271,
+          "sha256": "73d987515bfab7942125a4eae44d32c91bb9b92951e14c88301f594f318041a7"
+        },
+        {
+          "relativePath": "charpack/char_144_red.ab",
+          "size": 20441,
+          "sha256": "bf54e9aa24f6e26d6abefa7ee0332e147826e9de2951491f2178c19bc1b3cb52"
+        },
+        {
+          "relativePath": "charpack/char_145_prove.ab",
+          "size": 21807,
+          "sha256": "94741c8581e6d03c45ef9bb66e83d4c67f915cff2851f4570e3e57eb1e134191"
+        },
+        {
+          "relativePath": "charpack/char_147_shining.ab",
+          "size": 23161,
+          "sha256": "2343e9aae98713a837cce3244214d4ec6a8b1267743e494cdf77c24fdd96eac1"
+        },
+        {
+          "relativePath": "charpack/char_148_nearl.ab",
+          "size": 22783,
+          "sha256": "371cf51d398d2dcf93f000568fa9fdcef4a1d589977ff679f8fb9db83734715a"
+        },
+        {
+          "relativePath": "charpack/char_149_scave.ab",
+          "size": 23803,
+          "sha256": "a21d927b84b312beef1d81238467087ff61172a4545ca4cbbef495d1a5166fda"
+        },
+        {
+          "relativePath": "charpack/char_1502_crosly.ab",
+          "size": 30207,
+          "sha256": "59a94f6b6e433434cd03dc68cbd94d6d90e4177c0d46b5abf07f16a9232607ba"
+        },
+        {
+          "relativePath": "charpack/char_150_snakek.ab",
+          "size": 21399,
+          "sha256": "198ec4fc10a1b501dd18006af06fa947ddf7f81ae0db876824725447c9ec7d73"
+        },
+        {
+          "relativePath": "charpack/char_151_myrtle.ab",
+          "size": 22384,
+          "sha256": "7838b257bd04789a15cb19a1d829f1ba1194c587c8f3d453881f51521df880fa"
+        },
+        {
+          "relativePath": "charpack/char_154_morgan.ab",
+          "size": 23957,
+          "sha256": "7faef3e6226aae7d61853a0ba0f750d1d5079c219ec7f5052a47b2f5b7cb234d"
+        },
+        {
+          "relativePath": "charpack/char_155_tiger.ab",
+          "size": 21079,
+          "sha256": "82209719aa227fcd9009df0351698f6bbc2b3a4aa0728b42919d821a47a9e759"
+        },
+        {
+          "relativePath": "charpack/char_157_dagda.ab",
+          "size": 28883,
+          "sha256": "a13f58e9b193ac8fc6d3711f25241f9328d2fe528f279ab6f3122fe582de2c7e"
+        },
+        {
+          "relativePath": "charpack/char_158_milu.ab",
+          "size": 20838,
+          "sha256": "3ae305290acd85f04d5618ef9399842386bf5afdbe416edbaadc34e32b3e6587"
+        },
+        {
+          "relativePath": "charpack/char_159_peacok.ab",
+          "size": 20086,
+          "sha256": "875407f6c415aa4a5a6afe7c932a1b390aa848fd30d70aab718f1eeb3835d16a"
+        },
+        {
+          "relativePath": "charpack/char_163_hpsts.ab",
+          "size": 21108,
+          "sha256": "a6e8364384f855d25ab28de3e37ebfe9f6e0f4e2cbfb1f50d985209ddb2f8ce0"
+        },
+        {
+          "relativePath": "charpack/char_164_nightm.ab",
+          "size": 21799,
+          "sha256": "7d7eeed186c97db77f3b12264ac55c57d1e5683b09370d8df21b7156d88dfc34"
+        },
+        {
+          "relativePath": "charpack/char_166_skfire.ab",
+          "size": 22072,
+          "sha256": "87cb0d404c098b9733a4d63c5324e8273f100d8502cda53c39264b5a8727adff"
+        },
+        {
+          "relativePath": "charpack/char_171_bldsk.ab",
+          "size": 23571,
+          "sha256": "91d49f7bcd68bdf28d198ea41362151527fe0942fe041b3c2f379693dcc5fd3c"
+        },
+        {
+          "relativePath": "charpack/char_172_svrash.ab",
+          "size": 25939,
+          "sha256": "09b1cb8b331cbc3e1ed160ac7a716139141221fb600c41ada0a4c1ab732f97b1"
+        },
+        {
+          "relativePath": "charpack/char_173_slchan.ab",
+          "size": 23248,
+          "sha256": "e7548604e68c5f88b932aaf5c8ad641c3e61264a279c080cd7ba722e90148bae"
+        },
+        {
+          "relativePath": "charpack/char_174_slbell.ab",
+          "size": 22108,
+          "sha256": "69cafd6c554b158cc9e3e51c6434de0fc2b0e9f58dda0408d88c0e1191958449"
+        },
+        {
+          "relativePath": "charpack/char_179_cgbird.ab",
+          "size": 21463,
+          "sha256": "f695aafa71a72a11fba6b11da931fbd6db1854aaf5de5ecf1b72c3b9dd39d7d3"
+        },
+        {
+          "relativePath": "charpack/char_180_amgoat.ab",
+          "size": 23679,
+          "sha256": "28cf2c8e64eabc2eaef08b561cc29300e8cd1b24056470343933a45ad2a2aefc"
+        },
+        {
+          "relativePath": "charpack/char_181_flower.ab",
+          "size": 22516,
+          "sha256": "7100d1051e91f62e5bd01a0af875d4c3d5b41836325993e8ebd4f4ddf8a13a3b"
+        },
+        {
+          "relativePath": "charpack/char_183_skgoat.ab",
+          "size": 22686,
+          "sha256": "2a146eb79a70c7931715a50e68f221e2f4ad06dcd75a2083e92383747c011e58"
+        },
+        {
+          "relativePath": "charpack/char_185_frncat.ab",
+          "size": 19678,
+          "sha256": "8a087918c4cf0a2b60814009dcf0c1c84b56d39a87dc2f0af2229d5fa5456843"
+        },
+        {
+          "relativePath": "charpack/char_187_ccheal.ab",
+          "size": 22406,
+          "sha256": "7a55301f27467f2ed1b4df6fa9412618ce31e6c8f3f9fa2d574e39ca5b1c40f2"
+        },
+        {
+          "relativePath": "charpack/char_188_helage.ab",
+          "size": 24624,
+          "sha256": "2a4a7f9b6f61e76db34c525c712cd4f5ef868172850b17fc0b5145f6641198a3"
+        },
+        {
+          "relativePath": "charpack/char_190_clour.ab",
+          "size": 22366,
+          "sha256": "dad5208d9f582614e99de2898f1178011353c73775f9d465fc1f3fc2bd0bf8fc"
+        },
+        {
+          "relativePath": "charpack/char_192_falco.ab",
+          "size": 20265,
+          "sha256": "bf4d8f886db96d3b32b0014be7498b5a05284f014d1e0e5cc39b1a39c962b7f2"
+        },
+        {
+          "relativePath": "charpack/char_193_frostl.ab",
+          "size": 22489,
+          "sha256": "dfc7b8d02abc0ef16c053d39fcbd906d586ec6201fb9e717765db819f1a25354"
+        },
+        {
+          "relativePath": "charpack/char_194_leto.ab",
+          "size": 26373,
+          "sha256": "eca14ea196dc8dc8970fcabad4c698db0c0c92ead6a75d3d032c52879b3c60cb"
+        },
+        {
+          "relativePath": "charpack/char_195_glassb.ab",
+          "size": 23806,
+          "sha256": "02236dc7f3811eadb42fd9f640cf0af69d24b7bd7475de1a0d2976419f172cd2"
+        },
+        {
+          "relativePath": "charpack/char_196_sunbr.ab",
+          "size": 21651,
+          "sha256": "375b689ae90a5a95f55d08a3e47644cf20594eae102aa057f2b5ca561cfaf5f7"
+        },
+        {
+          "relativePath": "charpack/char_197_poca.ab",
+          "size": 24182,
+          "sha256": "030ba24c2715665729a6d801ea57aa52bbb71dc2a4df1d0c600e7ded6879585f"
+        },
+        {
+          "relativePath": "charpack/char_198_blackd.ab",
+          "size": 24161,
+          "sha256": "e001f38c02243f685d9d98a1819c08df15a17a3630a5da86e244ca240d80a396"
+        },
+        {
+          "relativePath": "charpack/char_199_yak.ab",
+          "size": 20077,
+          "sha256": "56e9ae95338d92abca8d40d18bc892ef6c1e39217c2c902460bb7864636a9d23"
+        },
+        {
+          "relativePath": "charpack/char_2012_typhon.ab",
+          "size": 27556,
+          "sha256": "362f3b1073cd42251bdd712dd4dedcf61c7676cc72908c3974ac1b9aaca7dcaf"
+        },
+        {
+          "relativePath": "charpack/char_2013_cerber.ab",
+          "size": 24600,
+          "sha256": "c164be4df0f9bed9a603ae780e804fb57a332b770f216ab730b8b4470985d9e8"
+        },
+        {
+          "relativePath": "charpack/char_2014_nian.ab",
+          "size": 23713,
+          "sha256": "1ffee97496a055313d41c5800ddc788417da4fc598c0d92e71757e63ba27de4c"
+        },
+        {
+          "relativePath": "charpack/char_2015_dusk.ab",
+          "size": 29195,
+          "sha256": "8a4561aae0a8588c532035ccdfac633536badb128a8170a844c996b8b88cf3d7"
+        },
+        {
+          "relativePath": "charpack/char_201_moeshd.ab",
+          "size": 23466,
+          "sha256": "b1efd8a1b67e37fe8d34ae633b44a14130fe44b96862df5269623e35d8ef06ca"
+        },
+        {
+          "relativePath": "charpack/char_2023_ling.ab",
+          "size": 23797,
+          "sha256": "02567b83fcaf839cbeaf77074e54a711eaba3d0f5ac715168f56978a509c62f7"
+        },
+        {
+          "relativePath": "charpack/char_2024_chyue.ab",
+          "size": 21693,
+          "sha256": "841a0ba9b49f3d12ef6064ccf080002cc7f5a0b5644b1e676d610f44e2ba2c79"
+        },
+        {
+          "relativePath": "charpack/char_2025_shu.ab",
+          "size": 47961,
+          "sha256": "e51c88640c74abcff8892c0c4fa120ebe63afd425150318da2408c62389ca487"
+        },
+        {
+          "relativePath": "charpack/char_2026_yu.ab",
+          "size": 30552,
+          "sha256": "f2a228d69ee16b5aa4a08a9d340de4dfbf54816d26fd2cb4831a4bd664a4a698"
+        },
+        {
+          "relativePath": "charpack/char_2027_wang.ab",
+          "size": 29567,
+          "sha256": "3b88c3b79553aa43e4eac5ab0bfcd9076ce5e6ee46490863fe6863974a12c22b"
+        },
+        {
+          "relativePath": "charpack/char_202_demkni.ab",
+          "size": 22049,
+          "sha256": "1defbff0320e33f3a9560f53233d8a5a930d6c4ed0ce6d5c5df3b1ba4b3a9a05"
+        },
+        {
+          "relativePath": "charpack/char_204_platnm.ab",
+          "size": 20586,
+          "sha256": "f5be60b739b64879244ee3632841a6946139cab909c449d4399c51b5fb005f77"
+        },
+        {
+          "relativePath": "charpack/char_206_gnosis.ab",
+          "size": 26741,
+          "sha256": "82efddc0517432127ae35839d53a8a577b8c89a0370a161dc11703ff50ad5a34"
+        },
+        {
+          "relativePath": "charpack/char_208_melan.ab",
+          "size": 20655,
+          "sha256": "8729f4ba1cb6ce533657c6451ca0ce3602f552fce8a0fdfef12da0b7dcf530f8"
+        },
+        {
+          "relativePath": "charpack/char_209_ardign.ab",
+          "size": 20153,
+          "sha256": "97beb95c12b44acc48df3137c8d437c592c50c34ea138556966a8fa4c0d57ad6"
+        },
+        {
+          "relativePath": "charpack/char_210_stward.ab",
+          "size": 19797,
+          "sha256": "a25e014112e5b98bdd763933a9ca864c312f6e79e9546cc203164b465070efd8"
+        },
+        {
+          "relativePath": "charpack/char_211_adnach.ab",
+          "size": 20219,
+          "sha256": "0e4609f9e296c1e318d61253adbb59ee1839f746e2e5b7585182a40edee673f9"
+        },
+        {
+          "relativePath": "charpack/char_212_ansel.ab",
+          "size": 17112,
+          "sha256": "01005776dcc0c5c7fd924f33901c599a3eba5a81f2a4e5f98daf4debf1088c06"
+        },
+        {
+          "relativePath": "charpack/char_213_mostma.ab",
+          "size": 24951,
+          "sha256": "86baf6b2e709166382fbbc47fd959c730cf16d8e589e8a1c3373b1da76267b77"
+        },
+        {
+          "relativePath": "charpack/char_214_kafka.ab",
+          "size": 19074,
+          "sha256": "742fa946e42e19c80ac7fcbb140d4a288ed80692b08e9e25227393b192571506"
+        },
+        {
+          "relativePath": "charpack/char_215_mantic.ab",
+          "size": 22572,
+          "sha256": "8937a0130fe009f12993e39bb30d5574216424d21f626ed9bd0c6e33f9c994f9"
+        },
+        {
+          "relativePath": "charpack/char_218_cuttle.ab",
+          "size": 23002,
+          "sha256": "833d34af9e8dd3b02528929184bfd7846de551b4695f5a4fd2ddff48145df253"
+        },
+        {
+          "relativePath": "charpack/char_219_meteo.ab",
+          "size": 19145,
+          "sha256": "da8b8fb17ac9e6a797790f2c5fb7940c996e95fcff840e4b9cdb44099be5996d"
+        },
+        {
+          "relativePath": "charpack/char_220_grani.ab",
+          "size": 23075,
+          "sha256": "24c32b0e8be99745478e45ebf3ec4cbe979e6581f2b949b7ea88e4f48f7f397a"
+        },
+        {
+          "relativePath": "charpack/char_222_bpipe.ab",
+          "size": 22793,
+          "sha256": "369392d33db87b53043d37e454d473e73a4e0e4ccdec7adc05ea19c4eb4af6e4"
+        },
+        {
+          "relativePath": "charpack/char_225_haak.ab",
+          "size": 22986,
+          "sha256": "95f081a133221722e6aed0070bd84db5ad6cbc6ee95d0710b337a59310294ea9"
+        },
+        {
+          "relativePath": "charpack/char_226_hmau.ab",
+          "size": 21792,
+          "sha256": "8c45266fe272c8b27334b48dff35b771d9465d4d6e7fad6773804da55691aca2"
+        },
+        {
+          "relativePath": "charpack/char_230_savage.ab",
+          "size": 23287,
+          "sha256": "8959d60b14900eca91ba96a28d30b6eeb231f8f3d3f842a511d6a2728b06a566"
+        },
+        {
+          "relativePath": "charpack/char_235_jesica.ab",
+          "size": 20397,
+          "sha256": "8de20a1073e7483b6f75c2476bb5ac90723fe594c4ad7033eacacb8afd6a7164"
+        },
+        {
+          "relativePath": "charpack/char_236_rope.ab",
+          "size": 19041,
+          "sha256": "ebff887520a884a83bc60be550cb13be5c94d29e1442d38712dd6b5e33836da6"
+        },
+        {
+          "relativePath": "charpack/char_237_gravel.ab",
+          "size": 23783,
+          "sha256": "7fa72fd20b3fae0f4116e36458b95880084b8d76722a47fcacc62adf932e0249"
+        },
+        {
+          "relativePath": "charpack/char_240_wyvern.ab",
+          "size": 19938,
+          "sha256": "f77fda6e587a614e09550893e67643b93e49910ccd728450fd9c9e253f4b6a19"
+        },
+        {
+          "relativePath": "charpack/char_241_panda.ab",
+          "size": 20245,
+          "sha256": "2fb231ea6637dd4fd6518fc7322d64130c52dc8f02a1f6be4dece435c406cdbe"
+        },
+        {
+          "relativePath": "charpack/char_242_otter.ab",
+          "size": 20951,
+          "sha256": "061f5403ec90ab9aaa69ef2eb69ef663413d092258beaa7422a5d0ef12fd3f63"
+        },
+        {
+          "relativePath": "charpack/char_243_waaifu.ab",
+          "size": 21927,
+          "sha256": "a42ac6014b25d621272e2f986218755e50702f3a458a54b44882f570da4d7890"
+        },
+        {
+          "relativePath": "charpack/char_245_cello.ab",
+          "size": 25546,
+          "sha256": "da28ef50bba1496963d3084363610b727e7ac44b07a90878aa927fdaaf91e92e"
+        },
+        {
+          "relativePath": "charpack/char_248_mgllan.ab",
+          "size": 24261,
+          "sha256": "91a4db6e3b2ace8976c978f10afef30deba67ccd76be6c75a21b25c9457f9dac"
+        },
+        {
+          "relativePath": "charpack/char_249_mlyss.ab",
+          "size": 27898,
+          "sha256": "463c57ef965d5a871b93dd173484cc50506133808b951ecc3f78e7785e2b94cf"
+        },
+        {
+          "relativePath": "charpack/char_250_phatom.ab",
+          "size": 23506,
+          "sha256": "ffcc3ff84ff1f4d1e8e97c73262b717bc76c1893b6a63e4137e84a7c7479f21d"
+        },
+        {
+          "relativePath": "charpack/char_252_bibeak.ab",
+          "size": 20581,
+          "sha256": "0a94e48ee440bf6b32e890bd4184d66de6d2a9be8919239325149a0e36912683"
+        },
+        {
+          "relativePath": "charpack/char_253_greyy.ab",
+          "size": 23823,
+          "sha256": "1762cf50c0d0eac7cf20017dd91c2cf3d07ce052d0f4d208bbb3b027bfe10c8e"
+        },
+        {
+          "relativePath": "charpack/char_254_vodfox.ab",
+          "size": 22416,
+          "sha256": "77b7fd9b70052e4e265c17d33ad9f6baedc1e748e81c54588cf6ae93d9cb6537"
+        },
+        {
+          "relativePath": "charpack/char_258_podego.ab",
+          "size": 24924,
+          "sha256": "d5990cd30709a8a02c6c076a9019b1a601081a6fbbf1f9fe0d30f8495a883d5a"
+        },
+        {
+          "relativePath": "charpack/char_260_durnar.ab",
+          "size": 22430,
+          "sha256": "a19b1addeddf2d82ad466ad8897fad2c4156770357db376be9d52a9361b00996"
+        },
+        {
+          "relativePath": "charpack/char_261_sddrag.ab",
+          "size": 21761,
+          "sha256": "5b3d1442f34b518f8213f7fb247579840e7ed3b009eecfb69ac3614edc634501"
+        },
+        {
+          "relativePath": "charpack/char_263_skadi.ab",
+          "size": 22537,
+          "sha256": "d0cbab3efd829f85bd6a4817b89adb3361c2972cf5887390290eb387f5225711"
+        },
+        {
+          "relativePath": "charpack/char_264_f12yin.ab",
+          "size": 25693,
+          "sha256": "113403d55ec8bd5ab70f183ae51e78595b2d622bd6902ea55ff8056146b29977"
+        },
+        {
+          "relativePath": "charpack/char_265_sophia.ab",
+          "size": 24832,
+          "sha256": "fa6f6a84cbae3f0c53c51655b18043841c57a0ab84d1281c44aa8c46d589bee0"
+        },
+        {
+          "relativePath": "charpack/char_271_spikes.ab",
+          "size": 21919,
+          "sha256": "83a645c72d26d8933ab93fb75fabcdbb67764c37ebb969b42fbfc04e0ea68767"
+        },
+        {
+          "relativePath": "charpack/char_272_strong.ab",
+          "size": 21729,
+          "sha256": "475b7fa5124a2715909ba288a227c3ce636c3fd546db2b4e0c24def0d2b9b996"
+        },
+        {
+          "relativePath": "charpack/char_274_astesi.ab",
+          "size": 20782,
+          "sha256": "59a81dcb78c6b7b8a857bd84353d3ba169d7a77d47b2836eb4773edb70b410d6"
+        },
+        {
+          "relativePath": "charpack/char_275_breeze.ab",
+          "size": 20554,
+          "sha256": "fc25dd521e0583acb2ec60fa71f8b3bedde71d3ea0d9f1c4a76cfddecd3048fd"
+        },
+        {
+          "relativePath": "charpack/char_277_sqrrel.ab",
+          "size": 20810,
+          "sha256": "0ea640bba0f483bddf7a66e24b4bafbfe80741f9a936c8b3df5fb80a545aed6a"
+        },
+        {
+          "relativePath": "charpack/char_278_orchid.ab",
+          "size": 21073,
+          "sha256": "f722b5c21b5f2e5fff32d86487ee4f428b454782bc70520a905578725ceb5e22"
+        },
+        {
+          "relativePath": "charpack/char_279_excu.ab",
+          "size": 23316,
+          "sha256": "f025a3090c6e0f7ed83398735fd770a4ab607f1fdc77ac4d10059ff31806503d"
+        },
+        {
+          "relativePath": "charpack/char_279_knit3.ab",
+          "size": 20389,
+          "sha256": "16166db6430399b8e1c9e984a9bbc1b3623586abecde4929804301328296fc4f"
+        },
+        {
+          "relativePath": "charpack/char_281_popka.ab",
+          "size": 20390,
+          "sha256": "8799539b1ea2b39f50a083fa522100819984a6d22e73c57eada60de6af36dc83"
+        },
+        {
+          "relativePath": "charpack/char_282_catap.ab",
+          "size": 19900,
+          "sha256": "b667096661f060b75ec40a342c21f067765e45f6ad2982172623d1a7439e889a"
+        },
+        {
+          "relativePath": "charpack/char_283_midn.ab",
+          "size": 20891,
+          "sha256": "d9a2668609e93705d164086fc98daf27dd0015287a358b7c0cb1a4bbccdd1115"
+        },
+        {
+          "relativePath": "charpack/char_284_spot.ab",
+          "size": 21208,
+          "sha256": "f0808ce423c8052970f330bbed546f1dee7070ac1986656eee2f8131cdd8835b"
+        },
+        {
+          "relativePath": "charpack/char_285_medic2.ab",
+          "size": 20785,
+          "sha256": "6378199593d994cae052167a6a2ab2566ad700bf9cd4297a12439fc5fa593787"
+        },
+        {
+          "relativePath": "charpack/char_286_cast3.ab",
+          "size": 23832,
+          "sha256": "699ddb01c1c6b8f1a7c2286b274fa803a888db75555d4c07012f729d740b8bcb"
+        },
+        {
+          "relativePath": "charpack/char_289_gyuki.ab",
+          "size": 19966,
+          "sha256": "cb86893fa177706162b8e02a25013744989d18dabc47c3099295830e9ed92d8b"
+        },
+        {
+          "relativePath": "charpack/char_290_vigna.ab",
+          "size": 21191,
+          "sha256": "82995775c85e9df5c2a65ddf23b38dd7215278af061943e93745f925e45dc9f8"
+        },
+        {
+          "relativePath": "charpack/char_291_aglina.ab",
+          "size": 26752,
+          "sha256": "5d98f9387da485153fcd7649826313bc087b790f2b432ad0f800103a46d9ab8d"
+        },
+        {
+          "relativePath": "charpack/char_293_thorns.ab",
+          "size": 25102,
+          "sha256": "d1060d1e8762309ac459482e1ccac36a7d548bebe5bd5b5883372fd064d615d0"
+        },
+        {
+          "relativePath": "charpack/char_294_ayer.ab",
+          "size": 22714,
+          "sha256": "c69e5e6f494a42ad7f05eceb5f41d586e2695a76d9ee85374b9684fa1967fd12"
+        },
+        {
+          "relativePath": "charpack/char_297_hamoni.ab",
+          "size": 23152,
+          "sha256": "6f217ed2447bb026013356bb610430d7accb900707b65f07bc727deb57df5148"
+        },
+        {
+          "relativePath": "charpack/char_298_susuro.ab",
+          "size": 20667,
+          "sha256": "51ea90e28b361a369b3c8a0a109ce87a8a44b24d5e9ce25273c74f5a36a85206"
+        },
+        {
+          "relativePath": "charpack/char_300_phenxi.ab",
+          "size": 25043,
+          "sha256": "d7b2a1664fe5eed5cff7dabeacfbb5eb23afd8252f06c083491ff95e127a73e9"
+        },
+        {
+          "relativePath": "charpack/char_301_cutter.ab",
+          "size": 20456,
+          "sha256": "2b46767ee6b10ef413ec023705b94bddda8018536d18a1c632e9321aeb2ccd62"
+        },
+        {
+          "relativePath": "charpack/char_302_glaze.ab",
+          "size": 21963,
+          "sha256": "e29813232ba61875cc7958b9052fa1935214d772c829014d5f0ad3985f50bcc0"
+        },
+        {
+          "relativePath": "charpack/char_304_zebra.ab",
+          "size": 24028,
+          "sha256": "6893cba32ec566d7a7c3928631b4c834eba0bda46fea4570f9979eab975dfdef"
+        },
+        {
+          "relativePath": "charpack/char_306_leizi.ab",
+          "size": 21813,
+          "sha256": "4721b875fd444c8b4324cdf51e51146bf2f10537156de2d1cc71a135dadc5e51"
+        },
+        {
+          "relativePath": "charpack/char_308_swire.ab",
+          "size": 22819,
+          "sha256": "d788b5ba1a4ed7052fcad9d3f4cda9549ea296129f5bf3e93af70d27b0b884de"
+        },
+        {
+          "relativePath": "charpack/char_311_mudrok.ab",
+          "size": 22177,
+          "sha256": "4a778b6aefc00b405d5d32acffdf1d601cbec2d3a5dafe0bfaf3657eeed3992b"
+        },
+        {
+          "relativePath": "charpack/char_322_lmlee.ab",
+          "size": 26786,
+          "sha256": "378fa47aeb5e3d6c6173e3d689661a5afc0cb2668a27a07febff8ef905d14ece"
+        },
+        {
+          "relativePath": "charpack/char_325_bison.ab",
+          "size": 23775,
+          "sha256": "238a81617ce2072d7763a9bf44b147851f994afa1c2af31a030056c20c054cd0"
+        },
+        {
+          "relativePath": "charpack/char_326_glacus.ab",
+          "size": 23791,
+          "sha256": "dc49ecccce38b94f2534feb023cac0c709e1a1b040e30f9e4f12b099ece060b7"
+        },
+        {
+          "relativePath": "charpack/char_328_cammou.ab",
+          "size": 23291,
+          "sha256": "f5328ddf29b114ac73203f3e25924284a44f1109d12576d2eee16761a4d72d09"
+        },
+        {
+          "relativePath": "charpack/char_332_archet.ab",
+          "size": 24167,
+          "sha256": "0fd18ace5e6b0e31dc5ce7523195a1b7517d5cd6da1ce22d86756be37b768634"
+        },
+        {
+          "relativePath": "charpack/char_333_sidero.ab",
+          "size": 20861,
+          "sha256": "2805e12425c1a03e9de9dd1c09fc8b250b1e2f6eb6c9fb43b032e1ce68d7a882"
+        },
+        {
+          "relativePath": "charpack/char_336_folivo.ab",
+          "size": 21074,
+          "sha256": "2bcfc4eaafb7e1d21917ff0ee3919840d4537b43d86650721084d0fb23ffb609"
+        },
+        {
+          "relativePath": "charpack/char_337_utage.ab",
+          "size": 22224,
+          "sha256": "8b0d8472c2887ac88a327188c7083bd19d0b4ecfa3d9f48ebe2d612fd9bb45d8"
+        },
+        {
+          "relativePath": "charpack/char_338_iris.ab",
+          "size": 20744,
+          "sha256": "f28d5412ca6959ced18ac5fe1b72f4dfa0ac7c45b6224f0e23e44f76a9d40f85"
+        },
+        {
+          "relativePath": "charpack/char_340_shwaz.ab",
+          "size": 27193,
+          "sha256": "61fb2ba2e7a1ee4ff06ef0163e339bf1e00ea98a0d173283a6f039f8d2bb2eb7"
+        },
+        {
+          "relativePath": "charpack/char_341_sntlla.ab",
+          "size": 24540,
+          "sha256": "5d0a3edbd49f507da9663b9754ef55b6ca52b02cd0d86ad9ca18d442d9d538fb"
+        },
+        {
+          "relativePath": "charpack/char_343_tknogi.ab",
+          "size": 24831,
+          "sha256": "2c10d78b74e4ccc605725717b59d7ed7b4a25622b1ca11375f66eae0f16dd706"
+        },
+        {
+          "relativePath": "charpack/char_344_beewax.ab",
+          "size": 22834,
+          "sha256": "52451ff9941c6c01274579c782b0f36caa8e9249192aa8d53465fafe0f1a597c"
+        },
+        {
+          "relativePath": "charpack/char_345_folnic.ab",
+          "size": 20905,
+          "sha256": "11ad16290bbb44922258bae4ebdb85668a8c27ed6a74fc024003b3d29fc6f7ff"
+        },
+        {
+          "relativePath": "charpack/char_346_aosta.ab",
+          "size": 21799,
+          "sha256": "64cc8f9fcf2c02e66f85e453a76cfe86367703ec8c81e0ffa64a063d8abdc2f8"
+        },
+        {
+          "relativePath": "charpack/char_347_jaksel.ab",
+          "size": 24255,
+          "sha256": "e78dadfc78da43eed54bbe99864552509b119d30f7a8822c5602dc42b14c5bd4"
+        },
+        {
+          "relativePath": "charpack/char_348_ceylon.ab",
+          "size": 21549,
+          "sha256": "a49f6dbaea79bf83e3b56db018b7b7440433277853daa2556c636e50db5893c8"
+        },
+        {
+          "relativePath": "charpack/char_349_chiave.ab",
+          "size": 22767,
+          "sha256": "b302c79d12c22c70ac5516f25788dce1697e39c6f7de7b17aa48ab036a0943fe"
+        },
+        {
+          "relativePath": "charpack/char_350_surtr.ab",
+          "size": 24169,
+          "sha256": "e75b72f5a74b10958b60a44c056328859f07cdfe590ad095ec7db5e99a8c47c4"
+        },
+        {
+          "relativePath": "charpack/char_355_ethan.ab",
+          "size": 21349,
+          "sha256": "f1186c13f3d2471c94c7d17f939f85026eb6e0f1665ff043df9f4bfe77760b3e"
+        },
+        {
+          "relativePath": "charpack/char_356_broca.ab",
+          "size": 23478,
+          "sha256": "9fef7883009a8ab62e8c925a8667a9ca768610fe3e75fb19a5c996435d36d0d4"
+        },
+        {
+          "relativePath": "charpack/char_358_lisa.ab",
+          "size": 26816,
+          "sha256": "9b0da4d37c2df3a52d717bae7962c244e181b3c3859c93985c6968784d57d787"
+        },
+        {
+          "relativePath": "charpack/char_362_saga.ab",
+          "size": 22882,
+          "sha256": "36f2b0b8ee55fa781cf366190e66d93fd64d076f38d8435f8755ad1fc18eef2e"
+        },
+        {
+          "relativePath": "charpack/char_363_toddi.ab",
+          "size": 22118,
+          "sha256": "b37fa087b0b8c8197e9f79f3d3f6c293641b08ef9c2f64bb1e7f465ebcc64312"
+        },
+        {
+          "relativePath": "charpack/char_365_aprl.ab",
+          "size": 23396,
+          "sha256": "a3db18a64564e0977ffa13ac78f34200ac0069e06a6c2824ed135e79969bb413"
+        },
+        {
+          "relativePath": "charpack/char_366_acdrop.ab",
+          "size": 22303,
+          "sha256": "9eb305272854527ab1015fa4d28ac67f61365379560f577e0967cd5c16d1d22d"
+        },
+        {
+          "relativePath": "charpack/char_367_swllow.ab",
+          "size": 21593,
+          "sha256": "d26720ac7f3acf286404923a85e9a7016f503fee2a42929de9c3ef1b643b2929"
+        },
+        {
+          "relativePath": "charpack/char_369_bena.ab",
+          "size": 27595,
+          "sha256": "0976bc5a9d3c0c4ddcbebfacac10f6fe71f0b80e1ab0cb528bed7044686d27b6"
+        },
+        {
+          "relativePath": "charpack/char_373_lionhd.ab",
+          "size": 22866,
+          "sha256": "9f15ba8cc4c3a9533c050fc60ff15ba33a372a02b1754250bbfa6c23706e5365"
+        },
+        {
+          "relativePath": "charpack/char_376_therex.ab",
+          "size": 24276,
+          "sha256": "abb2d8bd30978be0f7a4212bbb2b66dc519b196f3b99c1fb7b40dc97c25cd586"
+        },
+        {
+          "relativePath": "charpack/char_377_gdglow.ab",
+          "size": 27388,
+          "sha256": "62035485850b83571452946317f7a2bdd50bcc7b3cd925d808465c5fd0318204"
+        },
+        {
+          "relativePath": "charpack/char_378_asbest.ab",
+          "size": 20968,
+          "sha256": "df5e55ffdab0258a87ed59449a38bcc64fa67815ee6b618d4034f14b41ee8f9c"
+        },
+        {
+          "relativePath": "charpack/char_379_sesa.ab",
+          "size": 23608,
+          "sha256": "5bbc9e68497c941204c149c3b7e60ddb59cbe80742e97bd9590e45853d971425"
+        },
+        {
+          "relativePath": "charpack/char_381_bubble.ab",
+          "size": 21382,
+          "sha256": "95411389a29ed579f6b27eefa512279f0dc7f8ef8d32e63119be77133a6f8bdc"
+        },
+        {
+          "relativePath": "charpack/char_383_snsant.ab",
+          "size": 19575,
+          "sha256": "e5d2c08e707cb5afcb23a6345168ccee19b32c55d9bb89814e5397f160d13391"
+        },
+        {
+          "relativePath": "charpack/char_385_finlpp.ab",
+          "size": 20916,
+          "sha256": "d650ed1b012512da9cf10ee820e670499c9b78ccfc55962ee5bc1d547b3d629c"
+        },
+        {
+          "relativePath": "charpack/char_388_mint.ab",
+          "size": 22662,
+          "sha256": "0b5b45619a87b3c21ca4113e61acf4e6db175b5e9db8d14f0564e87e33125ae3"
+        },
+        {
+          "relativePath": "charpack/char_391_rosmon.ab",
+          "size": 28605,
+          "sha256": "2a5d505fecb776c737d0f607d74155bfb577c3a33216641cc773f35d17dc9d2a"
+        },
+        {
+          "relativePath": "charpack/char_393_toledo.ab",
+          "size": 23840,
+          "sha256": "7fedc0aea9b12c96af8c8c9d1bef41e2d0587f4850a411596a1a38bc8389c80f"
+        },
+        {
+          "relativePath": "charpack/char_394_hadiya.ab",
+          "size": 22733,
+          "sha256": "82ee81fd3c52e046fde76fe5296112e18e9b5af530ea5c4342992d15719790f8"
+        },
+        {
+          "relativePath": "charpack/char_4000_jnight.ab",
+          "size": 24786,
+          "sha256": "42ce473e394b5d8ed5b6e34a8e99ec30373ed00d0216aa247cafa0adbcc9cf9d"
+        },
+        {
+          "relativePath": "charpack/char_4004_pudd.ab",
+          "size": 21576,
+          "sha256": "f1aae7bab555b009b76bea9874f5f26df49fa7d401425d057a2007e118fa6878"
+        },
+        {
+          "relativePath": "charpack/char_4006_melnte.ab",
+          "size": 22642,
+          "sha256": "59169f28c47fea9fb3815715597b5dc036462542a9c312e7f9228ad5f756f225"
+        },
+        {
+          "relativePath": "charpack/char_4009_irene.ab",
+          "size": 23405,
+          "sha256": "210abaafb6373cdb1d3c1a24a7f622192fa84263970a1da8722c3915df893e16"
+        },
+        {
+          "relativePath": "charpack/char_400_weedy.ab",
+          "size": 22890,
+          "sha256": "671d879c84c8956949362f5891aaacf3a648561b4fc511c44ab675837e5ff396"
+        },
+        {
+          "relativePath": "charpack/char_4010_etlchi.ab",
+          "size": 32204,
+          "sha256": "54f172b1cb42dddbe257b6f6848a47daa072754715d169e1dff1165840b9b2a7"
+        },
+        {
+          "relativePath": "charpack/char_4011_lessng.ab",
+          "size": 22402,
+          "sha256": "bf4404417577f68d8b910219477c6930dc181ba36bf5fca3c98a0700de9c9564"
+        },
+        {
+          "relativePath": "charpack/char_4013_kjera.ab",
+          "size": 22801,
+          "sha256": "71d6dd3dd22396e22fe583e70c082475a80b1e3c7555627667539d19a4c07e86"
+        },
+        {
+          "relativePath": "charpack/char_4014_lunacu.ab",
+          "size": 22097,
+          "sha256": "6a5a82f80f5f8952a75599247bded38cf6233dd21aa39336594032b31980de94"
+        },
+        {
+          "relativePath": "charpack/char_4015_spuria.ab",
+          "size": 24650,
+          "sha256": "f30d0847b7f2d1479a1b23ad6350a58f51feadc71896df9d3f93ad70d9daaca6"
+        },
+        {
+          "relativePath": "charpack/char_4016_kazema.ab",
+          "size": 27716,
+          "sha256": "8da76f4046b4bdd4ca88a45d5c0e0d77937206a6d245f907c35ca7fa6d1c19e2"
+        },
+        {
+          "relativePath": "charpack/char_4017_puzzle.ab",
+          "size": 20869,
+          "sha256": "04dc13e5866c3dc1985e4f98d9ee0578cb55d31e947eb7fe2cc6c4a60a9c4758"
+        },
+        {
+          "relativePath": "charpack/char_4019_ncdeer.ab",
+          "size": 24183,
+          "sha256": "fcc9f6e51a62e5ca6e1103a80ebc2a9235dc303b6145b38b929ba31abf272223"
+        },
+        {
+          "relativePath": "charpack/char_401_elysm.ab",
+          "size": 21206,
+          "sha256": "d8bdb2ce19aa77e93d4d9bccb001d9853035ac891c671bea1d2d46179c4f956f"
+        },
+        {
+          "relativePath": "charpack/char_4023_rfalcn.ab",
+          "size": 22405,
+          "sha256": "cfa15fc7c5ba7313239865aa0b1e1de900a141c949309d30a847b0641de61845"
+        },
+        {
+          "relativePath": "charpack/char_4025_aprot2.ab",
+          "size": 25557,
+          "sha256": "b9deeea4b4747761668bd76714378a73a8642213988a0875e7c3e34353e89294"
+        },
+        {
+          "relativePath": "charpack/char_4026_vulpis.ab",
+          "size": 22324,
+          "sha256": "0b94a9d29944dcac4871d18e46e6ebec57b83958ef3dd5d05ca3576a99348992"
+        },
+        {
+          "relativePath": "charpack/char_4027_heyak.ab",
+          "size": 27120,
+          "sha256": "c4f83882f7bd43ccd8a11d51fdc530eb977e92c8d380249aee41f0b71d2594bf"
+        },
+        {
+          "relativePath": "charpack/char_402_tuye.ab",
+          "size": 22348,
+          "sha256": "df296c99b28affd5667631108f6be81d415b876d00a7ce8261004f6d4412717d"
+        },
+        {
+          "relativePath": "charpack/char_4031_liesel.ab",
+          "size": 20785,
+          "sha256": "0c9551fb18386edc529d607793544915fc42423e0cbc056f310a180b7639d8f7"
+        },
+        {
+          "relativePath": "charpack/char_4032_provs.ab",
+          "size": 22438,
+          "sha256": "3c12cbbae52cf89fe747775893be75da522b1e46d349190cde1e33ac61443e70"
+        },
+        {
+          "relativePath": "charpack/char_4036_forcer.ab",
+          "size": 20939,
+          "sha256": "342459200f6371d1bb36dab997f5fe71b8a33df6d9e357768fe2c4b1e2f0e538"
+        },
+        {
+          "relativePath": "charpack/char_4037_demetr.ab",
+          "size": 27355,
+          "sha256": "b04c9d002daeb661b02d3ef78ed1891c7ee75152d2bab2c4d2e90312f1b48dd3"
+        },
+        {
+          "relativePath": "charpack/char_4039_horn.ab",
+          "size": 43753,
+          "sha256": "c0801f565d5e75d7e3760d7ce3c045a8f5a4fd6652c9d62982fd85f2d805bd23"
+        },
+        {
+          "relativePath": "charpack/char_4040_rockr.ab",
+          "size": 24755,
+          "sha256": "99f9d4c9b34e40791d4fb0131bdcaa37a9be730876ccdf8a74b5cfe2bfdd81a0"
+        },
+        {
+          "relativePath": "charpack/char_4041_chnut.ab",
+          "size": 20761,
+          "sha256": "94102e5d32a8b7a23ef437774b6293222f9d794fe3b09b6ff56459df9190d988"
+        },
+        {
+          "relativePath": "charpack/char_4042_lumen.ab",
+          "size": 23961,
+          "sha256": "5da58397804d1751133f7190941a925bd23856f663dcd757b14b19ec3ab15d2d"
+        },
+        {
+          "relativePath": "charpack/char_4043_erato.ab",
+          "size": 21819,
+          "sha256": "acb9d99e2ae25451ced5da45f732fe2a57ecac8c9fe071ececd988a9d169cbbf"
+        },
+        {
+          "relativePath": "charpack/char_4045_heidi.ab",
+          "size": 21876,
+          "sha256": "92c932897272ae5d6f5a58f7bd59660f86cc6af1dd1116b1a48b63692f71475f"
+        },
+        {
+          "relativePath": "charpack/char_4046_ebnhlz.ab",
+          "size": 30115,
+          "sha256": "1080b4fc4a43c8f4aba77b0134168b1db2c62c578cb335df6b41e01600859dbb"
+        },
+        {
+          "relativePath": "charpack/char_4047_pianst.ab",
+          "size": 22521,
+          "sha256": "f595e0fef2073d6ce40340ca09b445a09e3025be047329f25e647196e6511c19"
+        },
+        {
+          "relativePath": "charpack/char_4048_doroth.ab",
+          "size": 25808,
+          "sha256": "e31274dc404de42196a9533e030a795cd65f399b93766db887272fb59480d201"
+        },
+        {
+          "relativePath": "charpack/char_4051_akkord.ab",
+          "size": 22740,
+          "sha256": "79b993725e5ae2b71dedd4776ce5091d39573df4bed5e6130e962c6dd06db3c4"
+        },
+        {
+          "relativePath": "charpack/char_4052_surfer.ab",
+          "size": 21728,
+          "sha256": "78e7ca264730f0a2fc9841bb3bf7ef9bf5618dd361be7067d8c9b30123a1a16a"
+        },
+        {
+          "relativePath": "charpack/char_4054_malist.ab",
+          "size": 19969,
+          "sha256": "2d5fa74590c486497ab8ccffecc93c305a6fe0c0d52bec0fdab92faebc302459"
+        },
+        {
+          "relativePath": "charpack/char_4055_bgsnow.ab",
+          "size": 27302,
+          "sha256": "6b0bda27d4bb98f6e112f77a9b51b42773dd415a998e1fc1b1dba848f99cc2c4"
+        },
+        {
+          "relativePath": "charpack/char_4056_titi.ab",
+          "size": 27719,
+          "sha256": "296418e01710b49100572a222aff349bab9b81403d01fd5aa94d28f384fab955"
+        },
+        {
+          "relativePath": "charpack/char_4058_pepe.ab",
+          "size": 30313,
+          "sha256": "f1e550255b4729a3a736a06038d25f7dab445197fcd82b1154802fea35bf038b"
+        },
+        {
+          "relativePath": "charpack/char_405_absin.ab",
+          "size": 22102,
+          "sha256": "95a5a4fde55e012499a2ee1f334d5cdd0c3dc627ffe0358e06e0579307d8e5c5"
+        },
+        {
+          "relativePath": "charpack/char_4062_totter.ab",
+          "size": 23574,
+          "sha256": "6f71d1dff55e18639da550dc543758a92cbc75b0d54ced308c7a0aa4ab6dd100"
+        },
+        {
+          "relativePath": "charpack/char_4063_quartz.ab",
+          "size": 21462,
+          "sha256": "f1878fc15f91282d4311741958e6973b339659e455f91b728b90d7c39d72f3e6"
+        },
+        {
+          "relativePath": "charpack/char_4064_mlynar.ab",
+          "size": 27663,
+          "sha256": "33d3bfe3ea8adf211e753308b7cdec421921d38924d37a705da5be5517cf9016"
+        },
+        {
+          "relativePath": "charpack/char_4065_judge.ab",
+          "size": 23571,
+          "sha256": "fd0e2d255d681e7cdca6134a4e1da760d74deebe503acdabe4a6d53ffeb27fe0"
+        },
+        {
+          "relativePath": "charpack/char_4066_highmo.ab",
+          "size": 24415,
+          "sha256": "164020bc419bb8656dbcfff14ff1058f3758f116a0693e64b649656f7b78333d"
+        },
+        {
+          "relativePath": "charpack/char_4067_lolxh.ab",
+          "size": 22461,
+          "sha256": "662c9afd44e3dae71a52b2861daeb98cfdbc186ab3e378bf118603e12c2d7277"
+        },
+        {
+          "relativePath": "charpack/char_4071_peper.ab",
+          "size": 23280,
+          "sha256": "e28f5e051463c8bfc176b592aa17d12b307ea0b1478da81dba85de920254d638"
+        },
+        {
+          "relativePath": "charpack/char_4072_ironmn.ab",
+          "size": 22711,
+          "sha256": "5e5897323afe232147d2ec44467bdfe0a7d25bdfa31ac3e3a8d97663fce005f0"
+        },
+        {
+          "relativePath": "charpack/char_4077_palico.ab",
+          "size": 25664,
+          "sha256": "ac15daeb451f9cc9a90e51e68689cae86aa2e75acc1f312eaaeaca95dde94d4a"
+        },
+        {
+          "relativePath": "charpack/char_4078_bdhkgt.ab",
+          "size": 23714,
+          "sha256": "68f52b9d920ae4713378961b2beb9ea77953f9c59f026b0f2130b3213e1aa407"
+        },
+        {
+          "relativePath": "charpack/char_4079_haini.ab",
+          "size": 25062,
+          "sha256": "e1a9b5ea91fe784106fbf59166f595fcb8e699204178381758f8fc53b7b6d39a"
+        },
+        {
+          "relativePath": "charpack/char_4080_lin.ab",
+          "size": 30062,
+          "sha256": "8c5663b93366038be89b8047fe9f65456878a0cf2698805d3684721579bdcd17"
+        },
+        {
+          "relativePath": "charpack/char_4081_warmy.ab",
+          "size": 23508,
+          "sha256": "dfd0d3a5edc82b9f12ae080712d5745b27578cace28584f1425b2f18b957e6de"
+        },
+        {
+          "relativePath": "charpack/char_4082_qiubai.ab",
+          "size": 25744,
+          "sha256": "c4132b0919d31266847da6280349cd29ed5cf50b6e54d2a895161bd8edf9abe0"
+        },
+        {
+          "relativePath": "charpack/char_4083_chimes.ab",
+          "size": 23061,
+          "sha256": "e3a9dc940ab21028cca5a07933fc9144513fc2c47a4030d499bb0927056fe181"
+        },
+        {
+          "relativePath": "charpack/char_4087_ines.ab",
+          "size": 32535,
+          "sha256": "a5db1c711fbdadc4e856fb18349e56bdd5153dad68dc73ce8f3ba4a1fd0a0a85"
+        },
+        {
+          "relativePath": "charpack/char_4088_hodrer.ab",
+          "size": 25239,
+          "sha256": "afa012db09b596b9a953edddd0cc22e2a0eed77e5e33147edd0251b53d61d49b"
+        },
+        {
+          "relativePath": "charpack/char_4091_ulika.ab",
+          "size": 23406,
+          "sha256": "fe798f41959a22082921c425c8b35ada4a9ac9cd0e6444cc5ab65a8dd1d162a8"
+        },
+        {
+          "relativePath": "charpack/char_4093_frston.ab",
+          "size": 23522,
+          "sha256": "bf016b27a0825b650ab48780eb710868993d00dbea5de70bbe22d7782118e8a3"
+        },
+        {
+          "relativePath": "charpack/char_4098_vvana.ab",
+          "size": 37097,
+          "sha256": "b213f3af6453591ab641fc34311967fad4453271c42b14b8d782c5ddaa04e387"
+        },
+        {
+          "relativePath": "charpack/char_4100_caper.ab",
+          "size": 22944,
+          "sha256": "b3a0d9e4cc0da36134a438aff0e9e83da7d6d2c6d6569f5c62b3e55d5bc3e828"
+        },
+        {
+          "relativePath": "charpack/char_4102_threye.ab",
+          "size": 22138,
+          "sha256": "c85326d02b48119c1573b6d923eefa7a6eb97ffcafa2b6d70e8aff731345e799"
+        },
+        {
+          "relativePath": "charpack/char_4104_coldst.ab",
+          "size": 30831,
+          "sha256": "88d313d718bc095b3c557110b40440e0084cae8b9de37c76c2cda921066e916c"
+        },
+        {
+          "relativePath": "charpack/char_4105_almond.ab",
+          "size": 20858,
+          "sha256": "d68b960fd5ef92569cb04fae8ba6449ea5abcde8589aaeb6b3adafd6ea873270"
+        },
+        {
+          "relativePath": "charpack/char_4106_bryota.ab",
+          "size": 27353,
+          "sha256": "2415870fbb3582c9ca6ac6498234eb9331ceb50c242f968431d9ab414e20e73d"
+        },
+        {
+          "relativePath": "charpack/char_4107_vrdant.ab",
+          "size": 29695,
+          "sha256": "32911aa266cda099433d33a0e3744b4e3b7d58530a17851c488c34edbc9b0f5f"
+        },
+        {
+          "relativePath": "charpack/char_4109_baslin.ab",
+          "size": 24095,
+          "sha256": "58795055ead633c9263d7c4cc461e7e94d2d38c193860ae1ec87433590f68194"
+        },
+        {
+          "relativePath": "charpack/char_4110_delphn.ab",
+          "size": 28821,
+          "sha256": "6e5720d64d4d75ff0077f3f641ab56b54766f3a1db7e6d3b28a690a9047b6c98"
+        },
+        {
+          "relativePath": "charpack/char_4114_harold.ab",
+          "size": 24043,
+          "sha256": "096e61ea42df3a34b219680460c8894b00b061659775516675a586e491a0c3ec"
+        },
+        {
+          "relativePath": "charpack/char_4116_blkkgt.ab",
+          "size": 23855,
+          "sha256": "61e591ac2f97ae415ae196e2ecbbb44cf08fe56e490c7315a09ca29409404eff"
+        },
+        {
+          "relativePath": "charpack/char_4117_ray.ab",
+          "size": 41529,
+          "sha256": "d34e7792300981f3e5be98b50d9e71af98dffd0d70ea3956c328d8502f1776f8"
+        },
+        {
+          "relativePath": "charpack/char_4119_wanqin.ab",
+          "size": 22863,
+          "sha256": "dcb06bff6c98f6f4dc84ec1b6477db047c807f5fac32fceb9fd47065427a116d"
+        },
+        {
+          "relativePath": "charpack/char_411_tomimi.ab",
+          "size": 21450,
+          "sha256": "dae1360a165212e2c8a36f86d2cd5bb6fc071d0fc5eb8db828da8fa8cab6776f"
+        },
+        {
+          "relativePath": "charpack/char_4121_zuole.ab",
+          "size": 23379,
+          "sha256": "f698d5b0acc9ced968bbab8c3d6429be8eedc9cb33a437036bf1fdca049704b1"
+        },
+        {
+          "relativePath": "charpack/char_4122_grabds.ab",
+          "size": 22172,
+          "sha256": "12f57c14ea89e3abb0befcbacdcaf1a56b09983d0cc2795564511d8f7febfb27"
+        },
+        {
+          "relativePath": "charpack/char_4123_ela.ab",
+          "size": 23634,
+          "sha256": "1b9dca7a852f743c514daf226624b0c6a1cfe46be7e090c9f42a5843d1335cea"
+        },
+        {
+          "relativePath": "charpack/char_4124_iana.ab",
+          "size": 30104,
+          "sha256": "3a7f3f2f676d573ede3c73958828d0bd162d0c86f025b94e4739025e096eedf7"
+        },
+        {
+          "relativePath": "charpack/char_4125_rdoc.ab",
+          "size": 23186,
+          "sha256": "4e1d209121ef72f0aa8ed36c427d64bd5d80c0c8e786805b84d0d66f59c66930"
+        },
+        {
+          "relativePath": "charpack/char_4126_fuze.ab",
+          "size": 21821,
+          "sha256": "96ca9270512a981ee33139936a0cd6a129697069637dd44382448e2cfcf3d83f"
+        },
+        {
+          "relativePath": "charpack/char_4130_luton.ab",
+          "size": 23041,
+          "sha256": "2425f37177a00ba17c9f5f015cc88bc4bdea9a005a74bed09c931b39df35e0ae"
+        },
+        {
+          "relativePath": "charpack/char_4131_odda.ab",
+          "size": 23126,
+          "sha256": "4663898dc10beb746490c5b88946f5f81d04fa4bfde5d1833d032a8a3eb9e404"
+        },
+        {
+          "relativePath": "charpack/char_4132_ascln.ab",
+          "size": 24790,
+          "sha256": "6cffdcb6198996e9071ea2df8e20a0b96392174611e7ea5be9542bb80521df39"
+        },
+        {
+          "relativePath": "charpack/char_4133_logos.ab",
+          "size": 31734,
+          "sha256": "86c5b1ea6e59b2230ba1157e6acc0de8365edb9ce2f94a7e928cc73a69d9e3c5"
+        },
+        {
+          "relativePath": "charpack/char_4134_cetsyr.ab",
+          "size": 26503,
+          "sha256": "b4b73ff1667c89dd0d1378369e960ac3c812747331904918576fc9f912f39d40"
+        },
+        {
+          "relativePath": "charpack/char_4136_phonor.ab",
+          "size": 24494,
+          "sha256": "be7c613c24f3f069e1cffc34eea60a0f64c58429db65e13e02f8803a3773c9f7"
+        },
+        {
+          "relativePath": "charpack/char_4137_udflow.ab",
+          "size": 22417,
+          "sha256": "69595bf93ab627290e641f8721ea28ae364a0e2947fc2306df7aa73262336ed1"
+        },
+        {
+          "relativePath": "charpack/char_4138_narant.ab",
+          "size": 30872,
+          "sha256": "5d1a3164c354dcc5cfbd5f550e0b5dcad501424d57c28021d2295bab5e2ac7bd"
+        },
+        {
+          "relativePath": "charpack/char_4139_papyrs.ab",
+          "size": 23091,
+          "sha256": "8740f478f6e63a67d95a12057ae1848fc2624fa8d27658317cb3bb5795104714"
+        },
+        {
+          "relativePath": "charpack/char_4140_lasher.ab",
+          "size": 24512,
+          "sha256": "d5e91e8d031891cc7353e9880f82d11ad4e548c3295f4177abe6439b09ac669d"
+        },
+        {
+          "relativePath": "charpack/char_4141_marcil.ab",
+          "size": 31633,
+          "sha256": "e64b26747dc74aade4a3b06ac540a44a547372f1d6e2db38ecdaec4017ecc7e5"
+        },
+        {
+          "relativePath": "charpack/char_4142_laios.ab",
+          "size": 19988,
+          "sha256": "61bc76c9142522faeaf8dec85e9d896713d321ba5cf45a7ae01d09c4db503bce"
+        },
+        {
+          "relativePath": "charpack/char_4143_sensi.ab",
+          "size": 20133,
+          "sha256": "42e393215019af5b0a0bdeb72c932e5274f808d3277c05238ed656e734d48727"
+        },
+        {
+          "relativePath": "charpack/char_4144_chilc.ab",
+          "size": 25483,
+          "sha256": "35057ae4be2cdc4e23ad074fbb09520ce8a71513aafc07bcd25c46fa445c0367"
+        },
+        {
+          "relativePath": "charpack/char_4145_ulpia.ab",
+          "size": 27857,
+          "sha256": "bd0098b276de65b11d78a5566c6786391ced425bdafe3d0d15bb76e681585343"
+        },
+        {
+          "relativePath": "charpack/char_4146_nymph.ab",
+          "size": 25609,
+          "sha256": "e5f8d7c626ebfbeedda9a968da977e8cf35c99f0b7c7861d72e6ff34aa710c28"
+        },
+        {
+          "relativePath": "charpack/char_4147_mitm.ab",
+          "size": 22386,
+          "sha256": "c6f333c4a3cd389115626dacf231fdbebd51768f97cddf06ee4e8fa3ea3e39f7"
+        },
+        {
+          "relativePath": "charpack/char_4148_philae.ab",
+          "size": 21769,
+          "sha256": "49c96c245aaa7d8ffaf75586fa15d2ef636a00cacdb67eee54e5b1f34cf88958"
+        },
+        {
+          "relativePath": "charpack/char_4151_tinman.ab",
+          "size": 19887,
+          "sha256": "cd4317777115d3b7a20dea73c608c14d364251f4cccf12c549253d3cdae84969"
+        },
+        {
+          "relativePath": "charpack/char_4155_talr.ab",
+          "size": 22237,
+          "sha256": "acedeb3eb7c169efe8123f417e317295f9c84befa4db92e06c936eae591d2c24"
+        },
+        {
+          "relativePath": "charpack/char_415_flint.ab",
+          "size": 23948,
+          "sha256": "8b8a4717e32ce5a836d287aea30eb09444a96784ac100aa5655c0731e48e4f1a"
+        },
+        {
+          "relativePath": "charpack/char_4162_cathy.ab",
+          "size": 26920,
+          "sha256": "2e7dd14264ca43e7b76292a2499c346ee394179f4ecd91e19d892421603ca72d"
+        },
+        {
+          "relativePath": "charpack/char_4163_rosesa.ab",
+          "size": 24036,
+          "sha256": "a180f3286eea9639e25763f44f0381e855125e055dfba55fe2dc40d85c7ad5b5"
+        },
+        {
+          "relativePath": "charpack/char_4164_tecno.ab",
+          "size": 43003,
+          "sha256": "30358b9d2aee4331f05a8c1c62461b936f11f6be74195c7bc1173bbe3d10e929"
+        },
+        {
+          "relativePath": "charpack/char_4165_ctrail.ab",
+          "size": 30209,
+          "sha256": "1ea3c7c9a71854f2f884e7cea27ca902b49a7b343cb9e097fc465f0dfc3d41ba"
+        },
+        {
+          "relativePath": "charpack/char_4166_varkis.ab",
+          "size": 23008,
+          "sha256": "ba771078d0a43c1e871cb62c0eee2debef01cc6670b848ef5d2f83d00d5de70f"
+        },
+        {
+          "relativePath": "charpack/char_4169_caledo.ab",
+          "size": 21707,
+          "sha256": "d2b5d694dd437bb927b1538d5d9dfd56dcbff14318d1497816c604b4ada5c122"
+        },
+        {
+          "relativePath": "charpack/char_416_zumama.ab",
+          "size": 24902,
+          "sha256": "007560542b54339afb869e1a6deb4c5cedf74ebc6ec85dd3cb604766c47a64b8"
+        },
+        {
+          "relativePath": "charpack/char_4170_hdbell.ab",
+          "size": 25539,
+          "sha256": "7f5b59219b135021381577e9185ec342ec481e4d575b18687bd1a16765960203"
+        },
+        {
+          "relativePath": "charpack/char_4171_wulfen.ab",
+          "size": 20969,
+          "sha256": "adb40b3f4831ee989d98b2d145295e61216721c47a9efebea7162e56991ec634"
+        },
+        {
+          "relativePath": "charpack/char_4172_xingzh.ab",
+          "size": 25858,
+          "sha256": "af36d30b3ee0f39404da5a29751f3593ea03a72bf91b5e2313fd32eb228dd45d"
+        },
+        {
+          "relativePath": "charpack/char_4173_nowell.ab",
+          "size": 22007,
+          "sha256": "cc45fb54a18002ac0365c61e7583de004a055bb1bc50ed986ff0dc4507373f21"
+        },
+        {
+          "relativePath": "charpack/char_4177_brigid.ab",
+          "size": 22016,
+          "sha256": "14270c3659713b4d91c0bf06741195f49fa348b6a51dfbe6de464da2aed3b86c"
+        },
+        {
+          "relativePath": "charpack/char_4178_alanna.ab",
+          "size": 24569,
+          "sha256": "b7c4c53869c5d854f88eec5de53f74148922f5906295156ea4827e25a40ce89a"
+        },
+        {
+          "relativePath": "charpack/char_4179_monstr.ab",
+          "size": 28170,
+          "sha256": "fb08b38331a8f2d3e364ff58a706aa73b39420b74999638bac2044eedee3a7aa"
+        },
+        {
+          "relativePath": "charpack/char_4182_oblvns.ab",
+          "size": 57487,
+          "sha256": "b6224ce8f63678bbd38252cff524646349f701bbd0e01b6b8b3625d2a441cf5b"
+        },
+        {
+          "relativePath": "charpack/char_4183_mortis.ab",
+          "size": 34889,
+          "sha256": "6cc7b99e7e509d7b6a9a375d4a60691eb6b8a80737427e442ea386c5d2dc58ce"
+        },
+        {
+          "relativePath": "charpack/char_4184_dolris.ab",
+          "size": 28243,
+          "sha256": "2376ad723309cc8df353d8c2fb4ce2942a57aee3622d87861cbb24c77032f65c"
+        },
+        {
+          "relativePath": "charpack/char_4185_amoris.ab",
+          "size": 31515,
+          "sha256": "9420a8ae451b33b9f369258d0d4fcc455041be05ed55e122c6ebbe20dfa65fdd"
+        },
+        {
+          "relativePath": "charpack/char_4186_tmoris.ab",
+          "size": 25507,
+          "sha256": "3fda1c21f27657bad2398c25f7578481dc065118f4c758674afb692879cf8071"
+        },
+        {
+          "relativePath": "charpack/char_4187_graceb.ab",
+          "size": 22029,
+          "sha256": "45475ddf94fc253a7383a1157930982db44797e76c07b7a0d07fde9b788d3e29"
+        },
+        {
+          "relativePath": "charpack/char_4188_confes.ab",
+          "size": 24159,
+          "sha256": "7c30f6ac61c588af5507f15ea59dd5f69f7c9f8288aed49a13fd77d1d103d84c"
+        },
+        {
+          "relativePath": "charpack/char_4191_tippi.ab",
+          "size": 29131,
+          "sha256": "a05bcdc4d65c64b851284f65b3d8c852e61fbbc53ec8013c2ad0188e0ec4a3e2"
+        },
+        {
+          "relativePath": "charpack/char_4193_lemuen.ab",
+          "size": 43561,
+          "sha256": "cd2b35d1198da00b5bdc9e2e57c4d3a2d9328dd6433d8cd4c2abe4dfcbe3d404"
+        },
+        {
+          "relativePath": "charpack/char_4194_rmixer.ab",
+          "size": 22858,
+          "sha256": "0e61dc45eede679a4afb695187061fd6b913c1ff8f9da37fb1fe03b1a266ca15"
+        },
+        {
+          "relativePath": "charpack/char_4195_radian.ab",
+          "size": 27873,
+          "sha256": "3c1c0fc72efa03e5f2f7608561b9a665d06ae2dbb821e8c0b9a62c6c2f087c75"
+        },
+        {
+          "relativePath": "charpack/char_4196_reckpr.ab",
+          "size": 23599,
+          "sha256": "b905240278d73d0bceaf106964f7797a231af381b07fbed57d51fdc502fdb938"
+        },
+        {
+          "relativePath": "charpack/char_4198_christ.ab",
+          "size": 21799,
+          "sha256": "19976ad502607accd0ae74fffa85c70700c0d0a7e23b7c9b75133fda93054e27"
+        },
+        {
+          "relativePath": "charpack/char_4199_makiri.ab",
+          "size": 24021,
+          "sha256": "86c08d47d4482bee517553ca322a0327028aec74897cff3367346e439506efa1"
+        },
+        {
+          "relativePath": "charpack/char_4202_haruka.ab",
+          "size": 33526,
+          "sha256": "f93aa8b9f846799aca9c3ab705092362555db9efefd7132d75746f7be0785eca"
+        },
+        {
+          "relativePath": "charpack/char_4203_kichi.ab",
+          "size": 22904,
+          "sha256": "2854c57e3d4ac1742611f955be459a7142db8d27f16cf8b5dc0fed1fbed17bc7"
+        },
+        {
+          "relativePath": "charpack/char_4204_mantra.ab",
+          "size": 34003,
+          "sha256": "f1ce86425cc6a1a49a73cb08d2ac2f537889a75b9a1101bea8d282ec3837aceb"
+        },
+        {
+          "relativePath": "charpack/char_4207_branch.ab",
+          "size": 22861,
+          "sha256": "6e566f1e965a388858eccc6e36957296d5cdd20dc91aa760d00d3030a123d861"
+        },
+        {
+          "relativePath": "charpack/char_4208_wintim.ab",
+          "size": 20868,
+          "sha256": "c2c7a6bc59e05502693bcddeeecbeb44b4dbd097820487432a97cf7fdb258071"
+        },
+        {
+          "relativePath": "charpack/char_420_flamtl.ab",
+          "size": 27138,
+          "sha256": "ea28009412a2f22a7539e3856c2c928f0e9493970765321fb2917a76447a4e68"
+        },
+        {
+          "relativePath": "charpack/char_4211_snhunt.ab",
+          "size": 28424,
+          "sha256": "b2a1697bd554108fe09b5590e87f17e42bcbcfcc2292068fdd09d9d84e8eea8b"
+        },
+        {
+          "relativePath": "charpack/char_4212_nasti.ab",
+          "size": 26644,
+          "sha256": "543bcc5318b0cf2ccd0be05eedf98ec3759435d81f7572b6a8f9f962425c90f7"
+        },
+        {
+          "relativePath": "charpack/char_4213_skybx.ab",
+          "size": 28109,
+          "sha256": "cd8cf07947d6fcc26d968ea51312ffd87de67ab889f9c6057e03984082bc9eb9"
+        },
+        {
+          "relativePath": "charpack/char_4214_cairn.ab",
+          "size": 23215,
+          "sha256": "dd21b08f8df06618e5b3fa53769c59d66e366faa1cb90372e9047da2b504b827"
+        },
+        {
+          "relativePath": "charpack/char_4215_buddy.ab",
+          "size": 27272,
+          "sha256": "7cf1031c1d98066413efb14736b766bf1f57f699fba7a1783837b37d76286cf2"
+        },
+        {
+          "relativePath": "charpack/char_4217_makoto.ab",
+          "size": 53075,
+          "sha256": "78e5cb91990f04b455fdff0f5fb5593a272f930aa657e7ca05a1bfc08e5001d4"
+        },
+        {
+          "relativePath": "charpack/char_4218_aigis.ab",
+          "size": 24036,
+          "sha256": "f028c26c1bb105ced028c2491428f5efcc4af6b4012bd6b06c75a9490d2b211d"
+        },
+        {
+          "relativePath": "charpack/char_4219_yukari.ab",
+          "size": 22732,
+          "sha256": "004da2cb8362a93d5a54bbc32666f605b910723ccb2157f97b6ce3d5f280b8b2"
+        },
+        {
+          "relativePath": "charpack/char_421_crow.ab",
+          "size": 21804,
+          "sha256": "df04e989102d84f030ca6697dea90efdaf81a273cbcd110978cc9b1ea5438031"
+        },
+        {
+          "relativePath": "charpack/char_4220_kormr.ab",
+          "size": 23945,
+          "sha256": "f84c41619e554806f27da04c365c524f2bd2e47dd8e47564c9d543b309c3f3d8"
+        },
+        {
+          "relativePath": "charpack/char_4221_ju.ab",
+          "size": 22470,
+          "sha256": "e985e7e259d9ea8cda8df9e92a6878c106ebe449b073a845dcee2987b4ec9cc6"
+        },
+        {
+          "relativePath": "charpack/char_4222_taraxa.ab",
+          "size": 29899,
+          "sha256": "6d758a9b0ff36860f29738fa7121de04c65b4f282d9782edee64db8d005cd60a"
+        },
+        {
+          "relativePath": "charpack/char_4223_botany.ab",
+          "size": 22824,
+          "sha256": "085ce5d19c3a7fd97d436d50028f0d6d2a2a698d7b0116efae3a82016c281192"
+        },
+        {
+          "relativePath": "charpack/char_4224_turdus.ab",
+          "size": 22674,
+          "sha256": "aa55d40d18378b445618067e36697b12189f312bd67bc94306b7aa14bbd2805d"
+        },
+        {
+          "relativePath": "charpack/char_4225_tanya.ab",
+          "size": 22285,
+          "sha256": "766807899bc8570c33df2f2598f74dcabfca208856d16afad81f0c540aec622b"
+        },
+        {
+          "relativePath": "charpack/char_4226_veen.ab",
+          "size": 34208,
+          "sha256": "b39e51b1e9762e97455c0556a4ccafab99e7b774b9e18dace87302d7ee533369"
+        },
+        {
+          "relativePath": "charpack/char_4227_gallus.ab",
+          "size": 23692,
+          "sha256": "06c79f968a5284a1048d588df74982fc193f2c1440527b0d6b2217a84c24624c"
+        },
+        {
+          "relativePath": "charpack/char_4228_closur.ab",
+          "size": 31221,
+          "sha256": "3eecba0efbe8acd659688c5ed3b29bb72a0a2fc6c4746ea62e82f45b6ebd0293"
+        },
+        {
+          "relativePath": "charpack/char_4229_aphris.ab",
+          "size": 30104,
+          "sha256": "8c34d9c3d1e6853071f9c877394b36b9d4ec192d8103e0ca7360461872255c4c"
+        },
+        {
+          "relativePath": "charpack/char_422_aurora.ab",
+          "size": 26547,
+          "sha256": "a002979a02037859e4c4040721cdaba2211a68b4db687170f9bb5c359532eec5"
+        },
+        {
+          "relativePath": "charpack/char_4230_mcnist.ab",
+          "size": 29935,
+          "sha256": "9a7e6a62e1ef3e3121e1c158dac7789d3c99f6e77370af67f5a169a726ef882b"
+        },
+        {
+          "relativePath": "charpack/char_4231_clemnt.ab",
+          "size": 30284,
+          "sha256": "7387acad6220bf79a84a29ec694356aa52046d3bc0f0a7ecf76c1f0c4e2e23a6"
+        },
+        {
+          "relativePath": "charpack/char_4232_hbound.ab",
+          "size": 20925,
+          "sha256": "eefed1504bc35ef42c565f167fa68fc8e85ae1d5296b4248b2a295100f52b22c"
+        },
+        {
+          "relativePath": "charpack/char_4234_pedro.ab",
+          "size": 23154,
+          "sha256": "f88f62b71257e772ad95bc5c0e2fd673745111fa0dde27bf5b86c11d898be87f"
+        },
+        {
+          "relativePath": "charpack/char_4235_thumpy.ab",
+          "size": 31724,
+          "sha256": "1cb5ae5141606bcaa9c5c64e82a5cf8e5547b092c08234a828a4fe0784e43918"
+        },
+        {
+          "relativePath": "charpack/char_4236_tmslot.ab",
+          "size": 22999,
+          "sha256": "1318ab0d7ec76bce4501508cd8ccae4bcdeab66d410bc0fa2e088acd1a60243f"
+        },
+        {
+          "relativePath": "charpack/char_4237_jcinta.ab",
+          "size": 23767,
+          "sha256": "93c4c441a1de2a379100327d5d4ea3d4b78304e7dacb6d492ad711c5a2c266af"
+        },
+        {
+          "relativePath": "charpack/char_423_blemsh.ab",
+          "size": 26010,
+          "sha256": "516a47551b48fcff5cb736c337839cdc3d6d4484c6afef7e33f5f8b49152d7d6"
+        },
+        {
+          "relativePath": "charpack/char_4244_tocka.ab",
+          "size": 24829,
+          "sha256": "9c70e4e7d6c950654b3b5b6b626a991b0035c1f0338f9410672794ef6882276c"
+        },
+        {
+          "relativePath": "charpack/char_4245_alga.ab",
+          "size": 24561,
+          "sha256": "e71bd3ac2a11b58105ef268f558d3ce8b51978380ff1d4a798cb388f54ec73d7"
+        },
+        {
+          "relativePath": "charpack/char_4246_dminon.ab",
+          "size": 23728,
+          "sha256": "5df9027e5bc2e91632e930bbac9c8fff84fc6ff8358126ea17560940b6ba68c9"
+        },
+        {
+          "relativePath": "charpack/char_4247_oxi.ab",
+          "size": 37540,
+          "sha256": "097194db8ad50c69a089086ca20f7f5b29e791dc36fbee21587f97468dcd0497"
+        },
+        {
+          "relativePath": "charpack/char_426_billro.ab",
+          "size": 28543,
+          "sha256": "3cfa6fa731ff48644c875a4d75f874f4fd679a9f64420fb5a230e1d90f300c4f"
+        },
+        {
+          "relativePath": "charpack/char_427_vigil.ab",
+          "size": 24425,
+          "sha256": "d6d7778119f108ae0ffcd5f1796eb2f7e7feacd302b7d59fd075560d150d65dc"
+        },
+        {
+          "relativePath": "charpack/char_430_fartth.ab",
+          "size": 24353,
+          "sha256": "0cbca7fa97986e8dbfe49c3a9ba7d5e9c5c3b74b5f3615b663b3a408aed4f245"
+        },
+        {
+          "relativePath": "charpack/char_431_ashlok.ab",
+          "size": 26794,
+          "sha256": "3b899b1652e823a0218a862b197f8e05cb0236745b5cc571c219081ddcb60437"
+        },
+        {
+          "relativePath": "charpack/char_433_windft.ab",
+          "size": 24379,
+          "sha256": "f362643f14bfba781e628d4facc07ea0dffc85b3adc603485d4ca81656a4c583"
+        },
+        {
+          "relativePath": "charpack/char_436_whispr.ab",
+          "size": 21530,
+          "sha256": "5acf68a323c983919e6fe97d2e1b5bc3c77fb03d63459e8b7779add2fe91a4d6"
+        },
+        {
+          "relativePath": "charpack/char_437_mizuki.ab",
+          "size": 27815,
+          "sha256": "4a7b50b73db6f504d9df0df89ef9e967307bfe3623a9f228aa9d69842a3ab7d1"
+        },
+        {
+          "relativePath": "charpack/char_440_pinecn.ab",
+          "size": 21871,
+          "sha256": "26010f7304ad8c1e969c50ddee6500ebb8f6a8c548cae074411befdda8917753"
+        },
+        {
+          "relativePath": "charpack/char_445_wscoot.ab",
+          "size": 22911,
+          "sha256": "77ae6e77a61fee0ebddac9faf903dc914ea8da3793463dbb14fe412be37acac3"
+        },
+        {
+          "relativePath": "charpack/char_446_aroma.ab",
+          "size": 21873,
+          "sha256": "9d58908ab6b57242aece82815957c08f8a63690e08d3cfcadc9eabc26c8b6c15"
+        },
+        {
+          "relativePath": "charpack/char_449_glider.ab",
+          "size": 21917,
+          "sha256": "0c7a486b2b5045db66135e90f5ec2cf26be9cc6f6de490522cddfd76f88f2814"
+        },
+        {
+          "relativePath": "charpack/char_450_necras.ab",
+          "size": 41518,
+          "sha256": "c02accb8debc9d674aa9ace1871f21d1d0f34d76ad5cb20ee03bda88f7f3239c"
+        },
+        {
+          "relativePath": "charpack/char_451_robin.ab",
+          "size": 21227,
+          "sha256": "0e8e73a9552aabacfb85ba65821bcfb42e0bf5bc01f4dd6ce1834425521e4675"
+        },
+        {
+          "relativePath": "charpack/char_452_bstalk.ab",
+          "size": 23901,
+          "sha256": "9a67a7ad3d3e468176432d6cec91e4c391f43d8d2e47f9288c883fb60f0f3683"
+        },
+        {
+          "relativePath": "charpack/char_455_nothin.ab",
+          "size": 22655,
+          "sha256": "13a9813ffe40342250d716c51bcaf67e54e3bbcf4c2656c00ded341333dc9034"
+        },
+        {
+          "relativePath": "charpack/char_456_ash.ab",
+          "size": 24355,
+          "sha256": "c675a7ba388ceb8f484558a7eae5ea9c96f66dd43b813a3b9f0ee3c63defdc43"
+        },
+        {
+          "relativePath": "charpack/char_457_blitz.ab",
+          "size": 25780,
+          "sha256": "cb989b132e6ebef240f28ab3eb68e7ea46e4d42c66b2e13a65f96dc27f23e9fa"
+        },
+        {
+          "relativePath": "charpack/char_458_rfrost.ab",
+          "size": 21193,
+          "sha256": "d69a5e2a6fac7ca9abb9a6de62bdcbd32b1ea569225cb2ce7d1a4a13c4132df2"
+        },
+        {
+          "relativePath": "charpack/char_459_tachak.ab",
+          "size": 24370,
+          "sha256": "a419f13853d41927cb647930a8dc75b85847c662f7cb6c48e79a32610b5fc108"
+        },
+        {
+          "relativePath": "charpack/char_464_cement.ab",
+          "size": 23891,
+          "sha256": "660037c3764458ff3d179dbb5dd0d29bf212c52661afb18d084231cf096fd230"
+        },
+        {
+          "relativePath": "charpack/char_466_qanik.ab",
+          "size": 24529,
+          "sha256": "d2af7c5b2646b831fc04fc7b1ea115f9cbfa3b2d9ecd9a79a2751c996bd9a214"
+        },
+        {
+          "relativePath": "charpack/char_469_indigo.ab",
+          "size": 27582,
+          "sha256": "546505b3b08ce6ba850cff8d0676f82a22638770e24c2ca60a9177c79d649c46"
+        },
+        {
+          "relativePath": "charpack/char_472_pasngr.ab",
+          "size": 21951,
+          "sha256": "8857fae7de6d16cd56c7db08ae312b31132a8b00b5c84e4db55c443e0822518b"
+        },
+        {
+          "relativePath": "charpack/char_473_mberry.ab",
+          "size": 26199,
+          "sha256": "ef53adb2b73899bf2db7b52102af86cb1612915f01f41a4e16e4a6417b204acb"
+        },
+        {
+          "relativePath": "charpack/char_474_glady.ab",
+          "size": 24776,
+          "sha256": "09bf3d049d194032ab998c2b7634dab44a3d917e4bbce7b979c566c29a9b7b55"
+        },
+        {
+          "relativePath": "charpack/char_475_akafyu.ab",
+          "size": 20986,
+          "sha256": "378871f8b1171882a1a878041576a6b6df5b60123874dc2a60b3350c988fc707"
+        },
+        {
+          "relativePath": "charpack/char_476_blkngt.ab",
+          "size": 21303,
+          "sha256": "b8d2d1fa2de6260f3978a415830f0c87d471e5be69a36ea530817207cbe35ee2"
+        },
+        {
+          "relativePath": "charpack/char_478_kirara.ab",
+          "size": 23452,
+          "sha256": "b8e9680d1d5d7441d1d1a5db55b55555342067be8dc87fb70756837bb04491e9"
+        },
+        {
+          "relativePath": "charpack/char_479_sleach.ab",
+          "size": 24221,
+          "sha256": "0b835f9622025e48ece9db924d9d88844d178c6b7473ee36a17d653862f9b388"
+        },
+        {
+          "relativePath": "charpack/char_484_robrta.ab",
+          "size": 21391,
+          "sha256": "16873c334d43c0df11bffc98b385a35730b983bc22d24340a59a9cf14eeb80b4"
+        },
+        {
+          "relativePath": "charpack/char_485_pallas.ab",
+          "size": 25824,
+          "sha256": "613c8d5e47505ac6ef33d230c17e5f0f2558fd0634ba9d47b4d39d41d80a8d10"
+        },
+        {
+          "relativePath": "charpack/char_486_takila.ab",
+          "size": 23421,
+          "sha256": "30d23d017e826f372dfdff0babc1bc3d25bb34c31149592c2627b74ba73911f5"
+        },
+        {
+          "relativePath": "charpack/char_487_bobb.ab",
+          "size": 23931,
+          "sha256": "d2bb50cc9845e99945f2ad7f5a47320758b605e5005b8b207b5a4fc8458d366c"
+        },
+        {
+          "relativePath": "charpack/char_488_buildr.ab",
+          "size": 21278,
+          "sha256": "fa56ccc342f8adc892a76b93fd30939ef94c30f6e5f7b425711af4494dbb73bd"
+        },
+        {
+          "relativePath": "charpack/char_489_serum.ab",
+          "size": 24675,
+          "sha256": "b11b556a8016e699ec32c87a40fa6f21c3b66e080f1a440bc3114ffb68b60c01"
+        },
+        {
+          "relativePath": "charpack/char_491_humus.ab",
+          "size": 21528,
+          "sha256": "5f3bd892d4623477886883c2e5863d048a6c72b95f8f0b5004b6402cfc23aa34"
+        },
+        {
+          "relativePath": "charpack/char_492_quercu.ab",
+          "size": 23739,
+          "sha256": "75914219e4f0562f0868fc271a0a94f59720cc911dc34d9a8e03f4b580a52784"
+        },
+        {
+          "relativePath": "charpack/char_493_firwhl.ab",
+          "size": 29124,
+          "sha256": "0a90817e12066e5be700678d32aeeb36b2bf9d698b41264e560056f9257a4738"
+        },
+        {
+          "relativePath": "charpack/char_494_vendla.ab",
+          "size": 22204,
+          "sha256": "3867644b009bc9c9d0261313a3196c998f5e01dab7e5ccfa58b0287e69bf0cde"
+        },
+        {
+          "relativePath": "charpack/char_496_wildmn.ab",
+          "size": 22334,
+          "sha256": "c73160ae6c0e00369efd9c36bd2a2fdf8e7784c6581e66e3f8cdf4960b9d9f60"
+        },
+        {
+          "relativePath": "charpack/char_497_ctable.ab",
+          "size": 25395,
+          "sha256": "380a1467ecd4a87b162e4b9325142e217c68f80160324da5c1cea8c0ba41d143"
+        },
+        {
+          "relativePath": "charpack/char_498_inside.ab",
+          "size": 25977,
+          "sha256": "4c8f4c98a4f152c135ac23e008375453fcc878a8300f96a51dfed465cc9a9dd7"
+        },
+        {
+          "relativePath": "charpack/char_499_kaitou.ab",
+          "size": 23101,
+          "sha256": "0cee1012a5878fa6917b69c9f5025d885b6feb297dd6957871b39dd7ba02eda4"
+        },
+        {
+          "relativePath": "charpack/char_500_noirc.ab",
+          "size": 20462,
+          "sha256": "690d772fae41768505b18d9ef15806ae5acdab924ce7fffece09d774947871ea"
+        },
+        {
+          "relativePath": "charpack/char_501_durin.ab",
+          "size": 19206,
+          "sha256": "3b44e5dc773a79242c4172231fd31fe54b0b26e4b0efa16becc584411b5bbd70"
+        },
+        {
+          "relativePath": "charpack/char_502_nblade.ab",
+          "size": 20239,
+          "sha256": "c2a69fde01be2d7feb2c41d619f6f0ba694e969e042295dbcf097619273fccbc"
+        },
+        {
+          "relativePath": "charpack/char_503_rang.ab",
+          "size": 19713,
+          "sha256": "a21eb35d212da2bf971644dbef5bb642c6f8a6742e595e7f9c2cc1c2f39a4cf1"
+        },
+        {
+          "relativePath": "charpack/char_504_rguard.ab",
+          "size": 17737,
+          "sha256": "49f015d901e7fa0ba8298eb6978962e192703b4275f00d4e87c4a046f94a8187"
+        },
+        {
+          "relativePath": "charpack/char_505_rcast.ab",
+          "size": 18096,
+          "sha256": "8711e3ce26e89a104efd78f06b1a440b423f474df2d5351e242a1ccd4de1b4f0"
+        },
+        {
+          "relativePath": "charpack/char_506_rmedic.ab",
+          "size": 17442,
+          "sha256": "9e9d4f9169a02470f4dc9e5210cfa05e307b72a1fdc9d554f33e2961c7fff622"
+        },
+        {
+          "relativePath": "charpack/char_507_rsnipe.ab",
+          "size": 18793,
+          "sha256": "408e951301484e039847adc03ac6685fa5b2f1390fde1f81965e2398934efc08"
+        },
+        {
+          "relativePath": "charpack/char_508_aguard.ab",
+          "size": 20850,
+          "sha256": "52e28941115ed4aeab39ec96a5ae487c9b4540d5d3171a25a10bbc79e6e73cf6"
+        },
+        {
+          "relativePath": "charpack/char_509_acast.ab",
+          "size": 20646,
+          "sha256": "0e148cc652d8d33dcdaae9d66d578b2e76306f305097af4dcc4247d3a871ad63"
+        },
+        {
+          "relativePath": "charpack/char_510_amedic.ab",
+          "size": 20704,
+          "sha256": "31e12011cab5c28aea82158e62eddbab24c202453185a4bc0b972c3a1ac412c2"
+        },
+        {
+          "relativePath": "charpack/char_511_asnipe.ab",
+          "size": 20636,
+          "sha256": "0d1187b4bdffc07f2a1a14f94de6bbd837306d5f922b39e9d803fc99e1cd7a5c"
+        },
+        {
+          "relativePath": "charpack/char_512_aprot.ab",
+          "size": 24497,
+          "sha256": "5da9ad3197bc9b2aec26fd1f2d62ff0145c4a7dfc6c07c62a60114d27ad24fb4"
+        },
+        {
+          "relativePath": "charpack/char_513_apionr.ab",
+          "size": 20213,
+          "sha256": "23e207a2c989c6106305ca66beff07e56a693437362ddd885a7f5f471f32f611"
+        },
+        {
+          "relativePath": "charpack/char_514_rdfend.ab",
+          "size": 17779,
+          "sha256": "f90653254157f91a8243253da75c4fa6430f31b4a6134d8f1b78282a94ddccb0"
+        },
+        {
+          "relativePath": "charpack/char_600_cpione.ab",
+          "size": 20225,
+          "sha256": "8c8f92badc136a0321da12367d9a240e9dc94e6adc34edc1b5bee4af9d0b38f9"
+        },
+        {
+          "relativePath": "charpack/char_601_cguard.ab",
+          "size": 20050,
+          "sha256": "464ac671453503e75017ede4117dba9dd599c62c5e57f77cd9bed2cf34e09015"
+        },
+        {
+          "relativePath": "charpack/char_602_cdfend.ab",
+          "size": 20055,
+          "sha256": "ab4f6507dcf3c23c1705a1fdce90defee37041dadfcfc845eec9d737aaf44db4"
+        },
+        {
+          "relativePath": "charpack/char_603_csnipe.ab",
+          "size": 21291,
+          "sha256": "bf6660956885c4e28fe49105ef616444326534b5a8901e511c1366f00f91bd82"
+        },
+        {
+          "relativePath": "charpack/char_604_ccast.ab",
+          "size": 20882,
+          "sha256": "1b61f3355dd0f52aa0f82a52e550c67d4c9b5e6a5f81cf1d02dc70f264b5b7db"
+        },
+        {
+          "relativePath": "charpack/char_605_cmedic.ab",
+          "size": 19913,
+          "sha256": "97a2e9b8ad156386d246256aee52815f6274117003f1a9fe502f4559043b6006"
+        },
+        {
+          "relativePath": "charpack/char_606_csuppo.ab",
+          "size": 20976,
+          "sha256": "192a822d7089c4213a7a20860719757f1f1fcd4f8d27a6612122fbcb858290bc"
+        },
+        {
+          "relativePath": "charpack/char_607_cspec.ab",
+          "size": 20125,
+          "sha256": "0e0a775781ada32dff39e2c6e72ea1b35b6a95fb5f2984000603abdc22ea557c"
+        },
+        {
+          "relativePath": "charpack/char_608_acpion.ab",
+          "size": 20606,
+          "sha256": "69b5bcb5d3a67ede9f68566e79edf42e5d309ed3350d75bd0d46e33f7035e594"
+        },
+        {
+          "relativePath": "charpack/char_609_acguad.ab",
+          "size": 24750,
+          "sha256": "224d324b5c17150e497dba3c04671ea9910ecbce93af24fda44206cd9fa5b532"
+        },
+        {
+          "relativePath": "charpack/char_610_acfend.ab",
+          "size": 21597,
+          "sha256": "5d9437e9c83ab875b87999bcbb5466f78abf0080cdcbbbf951ac73d899a0289f"
+        },
+        {
+          "relativePath": "charpack/char_611_acnipe.ab",
+          "size": 24365,
+          "sha256": "fe0440f249cc7c3942e49188b62b10309322db78171f8d9f4b809a0403afc499"
+        },
+        {
+          "relativePath": "charpack/char_612_accast.ab",
+          "size": 24162,
+          "sha256": "41ed769b3de90ec76ff6b67f8291ab5944baf276a5f49e6a531b139b80617af7"
+        },
+        {
+          "relativePath": "charpack/char_613_acmedc.ab",
+          "size": 26747,
+          "sha256": "e7910022c4334325b27b66d9c8b412a569bf7f2bf8de14bdc7e3acb1ab7ff70f"
+        },
+        {
+          "relativePath": "charpack/char_614_acsupo.ab",
+          "size": 25956,
+          "sha256": "49dc7ff5b0a91bc3decccf9249afced43599df062f893c10ed0e4616fdb3aef0"
+        },
+        {
+          "relativePath": "charpack/char_615_acspec.ab",
+          "size": 20910,
+          "sha256": "d47c701fc5e4930dc9c5eec4bc7f5a032177b8bb2a9d13dc48e204a06c4ebcde"
+        },
+        {
+          "relativePath": "charpack/char_616_pithst.ab",
+          "size": 19592,
+          "sha256": "cef141128b9d898898cd10e3c46027079cb3bb324fb295b68bf535d1391b94fb"
+        },
+        {
+          "relativePath": "charpack/char_617_sharp2.ab",
+          "size": 21101,
+          "sha256": "ab33f6acf8353332c569cc922e7a0952585d451751a073cf71a881da264b0e17"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_0.ab",
+          "size": 5089969,
+          "sha256": "adcf77f260748418d57e08d2539993232de53053bf4a5ec2292ff9a4c7865f1d"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_1.ab",
+          "size": 1955267,
+          "sha256": "e399b7335ba58134d81d6a7b42079a0284d447f39da9fdcc08ef3909e3b89604"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_2.ab",
+          "size": 4890432,
+          "sha256": "9781d097ccdddb0835cee6a2dd988a0963c63a4e7cd6e2ed9a4d25d77418b726"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_3.ab",
+          "size": 2040978,
+          "sha256": "b4489956c3b5be0c53bc6fc0dcdf31ecbe0babb6e8099da1ecafca084f99e64c"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_4.ab",
+          "size": 3211755,
+          "sha256": "09ef43e4a181cda91c01c5dc9658451fac30de1e87b462e5b60f71ae546ed618"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_5.ab",
+          "size": 2812726,
+          "sha256": "4a49fe9d4535474d896e64331657773790c891f14dd99616b6774dfe5a1d7a96"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_6.ab",
+          "size": 994726,
+          "sha256": "f632f2d5722e63965a3e3c30445a677275c58bdf9d6d7f8a2e7aee01ce118177"
+        }
+      ]
+    },
+    {
+      "root": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/PersistentData/Bundles",
+      "scriptBundle": null,
+      "bundleCount": 43,
+      "bundles": [
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_01/level_act3autochess_m01_sub_01.ab",
+          "size": 1451220,
+          "sha256": "f2455fa70f8809bbe26ad07908f528581014e4b5af63c58b82e1da4b9794432b"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_02/level_act3autochess_m01_sub_02.ab",
+          "size": 1672841,
+          "sha256": "547f1f84d68414cd44b097f7e36d5cf8a9f75a983eb6c57ea6370be862f1460a"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m01/level_act3autochess_m01_sub_03/level_act3autochess_m01_sub_03.ab",
+          "size": 1676412,
+          "sha256": "6511d19d9738fb182697edb9adf6befb749364ac85b1ca84365d174acbdb0c8f"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_01/level_act3autochess_m02_sub_01.ab",
+          "size": 1506051,
+          "sha256": "2d3c21b1ebd3915ac219725673db365788f6b15a93b8ed6a9ad637710ddbdfe6"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_02/level_act3autochess_m02_sub_02.ab",
+          "size": 1495236,
+          "sha256": "937303578b89b6091f142d2a3668a12482d75cb647ee10971a807535edcb34ad"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m02/level_act3autochess_m02_sub_03/level_act3autochess_m02_sub_03.ab",
+          "size": 1795213,
+          "sha256": "d1a7ac06e161a7650da5492a1c541595a6c4942cd2922258abfeefb18d3809ea"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_01/level_act3autochess_m03_sub_01.ab",
+          "size": 1410507,
+          "sha256": "a1cfa60c65bd6e0bbbe1e51b8a03b3e7dc6adb4273dd9b73a40feb670a3f4fc3"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_02/level_act3autochess_m03_sub_02.ab",
+          "size": 1637589,
+          "sha256": "392d9db523d3231efd7458aee42a88cb28048bd75545520fc19fcc14ee06ba36"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m03/level_act3autochess_m03_sub_03/level_act3autochess_m03_sub_03.ab",
+          "size": 1712022,
+          "sha256": "c2ed0a2b94ee2971b17771dea236eb5207496bf7fd7b9736ba6fcc690938d14f"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_01/level_act3autochess_m04_sub_01.ab",
+          "size": 1415031,
+          "sha256": "5c079890f84982ab189a998f0b4cfe846e295239a1482afb22ce96ff3e6fa708"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_02/level_act3autochess_m04_sub_02.ab",
+          "size": 1395123,
+          "sha256": "0f4665e5493eded49c74765b9fe148bd3b33a9cc3345668420676b4d4f17b942"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m04/level_act3autochess_m04_sub_03/level_act3autochess_m04_sub_03.ab",
+          "size": 1885545,
+          "sha256": "569ce8ade40d039453b93ab40215950702c558426be13c6c52261bb4d67aa4ed"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_01/level_act3autochess_m05_sub_01.ab",
+          "size": 3451838,
+          "sha256": "53393ddc5bfe449ef1816ce16d25842fadfb9bbf65d763bc3ae5a19564d18e7c"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_02/level_act3autochess_m05_sub_02.ab",
+          "size": 3529244,
+          "sha256": "3f7602c6b701e08be6e4e1de61a074d53e2b1c97e9ae892737967432d9599e3f"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m05/level_act3autochess_m05_sub_03/level_act3autochess_m05_sub_03.ab",
+          "size": 4543604,
+          "sha256": "0233b20373187e3ff981518f93a8fbdadb58836ecbd58e29fdcb4002fbae56c7"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_01/level_act3autochess_m06_sub_01.ab",
+          "size": 1278761,
+          "sha256": "c6e2450ed05a8b3fe9270ed8fcd54bd408741c44f25f35c3bb23493aaa46f8ad"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_02/level_act3autochess_m06_sub_02.ab",
+          "size": 1517404,
+          "sha256": "ec8e3d7e362891bf9bb360425f725e848ffd5db772f21260326ec656810acaa3"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m06/level_act3autochess_m06_sub_03/level_act3autochess_m06_sub_03.ab",
+          "size": 1935007,
+          "sha256": "1c8fbc1c5ba9940ff419dfba9c13111e821dbd5d1351764d89f6ea83fa00d56a"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_01/level_act3autochess_m09_sub_01.ab",
+          "size": 1677012,
+          "sha256": "24447147340181caf5c3d4936149fc51a3df150f94c010900560bfc6a7a6c27b"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_02/level_act3autochess_m09_sub_02.ab",
+          "size": 1532118,
+          "sha256": "dd36a84fef5be608de125caeb3acf21c3ad64ccf709329ddc7d721f0e776e99e"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m09/level_act3autochess_m09_sub_03/level_act3autochess_m09_sub_03.ab",
+          "size": 1944988,
+          "sha256": "3b461dbf19eceeb036c3b097819b8835b835e7c372d6cbdf90ec6fe39bddbc8d"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_01/level_act3autochess_m10_sub_01.ab",
+          "size": 5198647,
+          "sha256": "62a3abfec515152742fa60ad72111567d4464bb8bf3e6ef853b2aadb6d54f05b"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_02/level_act3autochess_m10_sub_02.ab",
+          "size": 5050969,
+          "sha256": "08f7db30da042d38937664ee7aeb3b2ac99addba08f047c356f51e656c8822bb"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m10/level_act3autochess_m10_sub_03/level_act3autochess_m10_sub_03.ab",
+          "size": 5079103,
+          "sha256": "35973886f2a11c8365926432af2ccb04a4fc9a1594838426589798eafd6686c7"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_01/level_act3autochess_m11_sub_01.ab",
+          "size": 1739144,
+          "sha256": "25414c0ec6da4f24ccbc5e55c192374c510cfbc23b527fe9296d7ff094c0bfaf"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_02/level_act3autochess_m11_sub_02.ab",
+          "size": 1586957,
+          "sha256": "dcf3451869a14a446eeea156439f9d80bb6ec811d7d2611db1902b4f462a5373"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m11/level_act3autochess_m11_sub_03/level_act3autochess_m11_sub_03.ab",
+          "size": 1968070,
+          "sha256": "b09e7828ba6ab657f41d2e5b018c2805494ca51ea215e9c55589146256d4dae5"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_01/level_act3autochess_m12_sub_01.ab",
+          "size": 5008983,
+          "sha256": "6ce8e4ef52f59ab5f24ec54f1a0e7fa855fb3213f877af5678e55b8735e6f154"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_02/level_act3autochess_m12_sub_02.ab",
+          "size": 5177180,
+          "sha256": "a902a30e87774e16560bdb845899654e7ca62ac57879e31d28ccf2ac3e592051"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/activities/act3autochess/level_act3autochess_m12/level_act3autochess_m12_sub_03/level_act3autochess_m12_sub_03.ab",
+          "size": 5053684,
+          "sha256": "f13b1d5ef3692381df53986c6d762ddc83a1715edef2fd317d731834521a0694"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_06/level_sandbox2_06.ab",
+          "size": 637068,
+          "sha256": "f7c5161446954fabaddaa748473c8caed5a314d229fc53d793098cc1065fd1c0"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_09/level_sandbox2_09.ab",
+          "size": 731933,
+          "sha256": "bef6629adebc7ca9e53296277139f08d432f1fe56fd690eca3b8fada03319433"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_11/level_sandbox2_11.ab",
+          "size": 610332,
+          "sha256": "a39fe1586f0105a284c549a9500a0231a67071e09d2b9c111c17bf1e195bed16"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_13/level_sandbox2_13.ab",
+          "size": 492593,
+          "sha256": "143d1c4c8e752c406c008f6ec96fccbdbb7ea6a1444432c188b2824b742cbb6e"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_32/level_sandbox2_32.ab",
+          "size": 514327,
+          "sha256": "8043a73ea018f255cb1bfdbbbc8c89b8c7ee5e43d5d7cdf8020271de9c2db592"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_43/level_sandbox2_43.ab",
+          "size": 476538,
+          "sha256": "732026e76762d8f9a204ebf51c228b454114f896faa370cc8e846812db4c8ed7"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_45/level_sandbox2_45.ab",
+          "size": 480336,
+          "sha256": "f8120f7aff315eaafdfe905fc5d716b3c4aae36483d056c3704fec1b6dee6b5b"
+        },
+        {
+          "relativePath": "battle/prefabs/levelprefabs/obt/sandbox/sandbox_2/level_sandbox2_46/level_sandbox2_46.ab",
+          "size": 432756,
+          "sha256": "e926b2fc55e156e24a4ec805be8b4fdace9545929b06a585bfe8cd1deb06b36f"
+        },
+        {
+          "relativePath": "charpack/char_300_phenxi.ab",
+          "size": 25368,
+          "sha256": "cd8f093663c35bdea150a1d645c092ea5e788534400b1b1bd7158bd4e5389245"
+        },
+        {
+          "relativePath": "charpack/char_4245_alga.ab",
+          "size": 24379,
+          "sha256": "fd45dc5d58ffd2a71fc413f9345cf85584b759644d24520f39e3f8a813a05620"
+        },
+        {
+          "relativePath": "charpack/char_618_acrbot.ab",
+          "size": 22775,
+          "sha256": "1884e494bc1c95c9deb38aaba45924320a0b35eb4bb8f6085f647e0bca55aa3b"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_1.ab",
+          "size": 1955270,
+          "sha256": "1db6c3726c33a15dfa897300bdeb9b8236df0983a571084502368091c37660a4"
+        },
+        {
+          "relativePath": "pkgrps/btl_pfb_tokens_6.ab",
+          "size": 3322915,
+          "sha256": "9427f1e25f19208b7cbc9ad5be40c7ba38b0a0ef146534b577b2e5cd9a97fca7"
+        }
+      ]
+    }
+  ]
+}

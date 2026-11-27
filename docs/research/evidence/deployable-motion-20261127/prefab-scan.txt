@@ -1,0 +1,6 @@
+Windows charpack/*.ab 471 Counter({'Character': 471}) errors [] matches []
+Windows pkgrps/btl_pfb_tokens_*.ab 7 Counter({'Trap': 808, 'Token': 59, 'GiantTrap': 11, 'Character': 10}) errors [] matches []
+Windows battle/prefabs/levelprefabs/**/*.ab 78 Counter() errors [] matches []
+Bundles charpack/*.ab 3 Counter({'Character': 3}) errors [] matches []
+Bundles pkgrps/btl_pfb_tokens_*.ab 2 Counter({'Trap': 220, 'Token': 1}) errors [] matches []
+Bundles battle/prefabs/levelprefabs/**/*.ab 38 Counter() errors [] matches []

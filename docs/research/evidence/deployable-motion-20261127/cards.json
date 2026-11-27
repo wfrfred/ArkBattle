@@ -1,0 +1,73 @@
+{
+  "provenance": {
+    "character_table_sha256": "e523c7c83c36e2d76697121079e17d0282da1a94d59a55e1cc55616edf0b41c4",
+    "limitation": "Only level-defined Card keys in the selected fixed mirror; excludes runtime card grants, dynamically created units, behavior/Prefab analysis, and other versions. Matched keys do not by themselves establish movement behavior.",
+    "mirror_commit": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+    "scanned_levels_digest": {
+      "algorithm": "SHA256(sorted relative UTF-8 path + NUL + raw SHA256 digest for each parsed file)",
+      "sha256": "902d82b8f0644f44544ceecf7f282ed8e3e7c854d3b3667d7a87313b8e700d82"
+    },
+    "selection": {
+      "exclude_relative_path_substrings": [
+        "/sandbox",
+        "/tower"
+      ],
+      "glob": "zh_CN/gamedata/levels/**/*.json",
+      "group_priority": [
+        "relative contains autochess",
+        "relative contains /roguelike/",
+        "relative contains /main/",
+        "others"
+      ],
+      "pointers": [
+        "/predefines/characterCards/*/inst/characterKey",
+        "/predefines/tokenCards/*/inst/characterKey",
+        "/hardPredefines/characterCards/*/inst/characterKey",
+        "/hardPredefines/tokenCards/*/inst/characterKey"
+      ]
+    }
+  },
+  "result": {
+    "card_records": 4126,
+    "card_records_by_field": {
+      "characterCards": 1779,
+      "tokenCards": 2347
+    },
+    "character_table_keys_by_prefix": {
+      "char": 461,
+      "token": 74,
+      "trap": 847
+    },
+    "character_table_records": 1382,
+    "distinct_card_keys": 485,
+    "distinct_card_keys_by_prefix": {
+      "char": 359,
+      "trap": 126
+    },
+    "distinct_matched_card_keys_by_profession": {
+      "CASTER": 53,
+      "MEDIC": 35,
+      "PIONEER": 36,
+      "SNIPER": 53,
+      "SPECIAL": 39,
+      "SUPPORT": 33,
+      "TANK": 41,
+      "TRAP": 126,
+      "WARRIOR": 69
+    },
+    "enemy_prefixed_distinct_card_keys": 0,
+    "level_files_by_group": {
+      "autochess": 120,
+      "main": 401,
+      "others": 2549,
+      "roguelike": 593
+    },
+    "missing_card_key_records": 0,
+    "missing_distinct_card_keys": 0,
+    "missing_records": [],
+    "parsed_level_files": 3663,
+    "read_failures": [],
+    "selected_level_files": 3663,
+    "source_level_files": 3946
+  }
+}

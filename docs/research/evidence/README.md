@@ -42,6 +42,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 
 | 批次 | 调查主题 |
 | --- | --- |
+| [deployable-motion-20261127](deployable-motion-20261127/README.md) | Card 部署体、连续自主运动与推拉失衡的配置及原生证据 |
 | [nearl-deployment-combo-20261122](nearl-deployment-combo-20261122/README.md) | 耀骑士临光与耀阳的牌组接力状态、出牌过滤与出生采样 |
 | [stronghold-opening-deploy-20261122](stronghold-opening-deploy-20261122/README.md) | 卫戍开场与战中补位的原生实参、接力判定的证据边界 |
 | [stronghold-opening-nearl-slot-20261122](stronghold-opening-nearl-slot-20261122/README.md) | 逐夜烁光的免占位卡牌修正与开战实际部署计数 |

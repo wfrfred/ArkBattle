@@ -1,0 +1,325 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-27"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-27",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "knockback-methods.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "knockback-methods.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "cards.json",
+      "knockback-methods.json",
+      "prefab-provenance.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "cards.json",
+        "kind": "record",
+        "bytes": 2268,
+        "sha256": "441de93272bd77ee89f9d240f44e255d8160f9305d1ad27262c483b0e32b4279"
+      },
+      {
+        "path": "knockback-methods.json",
+        "kind": "record",
+        "bytes": 36766,
+        "sha256": "e0f832192b9ac245069c22c735554aeb11ead9a02c46dea0913d37ab7196acbb"
+      },
+      {
+        "path": "prefab-provenance.json",
+        "kind": "record",
+        "bytes": 124523,
+        "sha256": "69c4f60200bbceab116884bfdf7a0a5affb2dbfd1cc2f3b5b759e6e01781c93b"
+      },
+      {
+        "path": "prefab-scan.txt",
+        "kind": "historical-report",
+        "bytes": 523,
+        "sha256": "6b6f06ab17713db510b5b0f8d6d555689b28f765ec3a542dc25648effc61f3d6"
+      },
+      {
+        "path": "scan-cards.py",
+        "kind": "historical-script",
+        "bytes": 4837,
+        "sha256": "172b8856daa6125d9aa44fd3e4cd4c8391d7c495fc86bec3a12146480c1cd1e1"
+      },
+      {
+        "path": "scan_prefab.py",
+        "kind": "historical-script",
+        "bytes": 2548,
+        "sha256": "6262daac60583dace93a9ba3db9141e50e8977b73be4062df57fbf58cd594dd0"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 74940,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/0"
+          ],
+          "fullname": "Torappu.Battle.FootBallHudPluginTalent.TryKnockBack",
+          "address": "0x1809e4310"
+        },
+        {
+          "index": 74941,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/1"
+          ],
+          "fullname": "Torappu.Battle.FootBallHudPluginTalent.OnKnockBack",
+          "address": "0x1809e3c00"
+        },
+        {
+          "index": 77748,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/2"
+          ],
+          "fullname": "Torappu.Battle.Enemy.KnockBack",
+          "address": "0x180abd6f0"
+        },
+        {
+          "index": 78335,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/3"
+          ],
+          "fullname": "Torappu.Battle.EnemyRistar.KnockBack",
+          "address": "0x180add9c0"
+        },
+        {
+          "index": 78342,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/4"
+          ],
+          "fullname": "Torappu.Battle.EnemyRistar.<>xLuaBaseProxy_KnockBack",
+          "address": "0x180addd70"
+        },
+        {
+          "index": 78365,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/5"
+          ],
+          "fullname": "Torappu.Battle.FootballEnemy.KnockBack",
+          "address": "0x180ae0a70"
+        },
+        {
+          "index": 78385,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/6"
+          ],
+          "fullname": "Torappu.Battle.FootballEnemy.<>xLuaBaseProxy_KnockBack",
+          "address": "0x180addd70"
+        },
+        {
+          "index": 97510,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/7"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/YmgpckKnockBackWithDirection.get_allowedSource",
+          "address": "0x18107ed50"
+        },
+        {
+          "index": 97511,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/8"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/YmgpckKnockBackWithDirection.Execute",
+          "address": "0x18107e900"
+        },
+        {
+          "index": 97512,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/9"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/YmgpckKnockBackWithDirection..ctor",
+          "address": "0x18107ecb0"
+        },
+        {
+          "index": 100305,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/10"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Knockback.get_allowedSource",
+          "address": "0x1811795f0"
+        },
+        {
+          "index": 100306,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/11"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Knockback.Execute",
+          "address": "0x1811791b0"
+        },
+        {
+          "index": 100307,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/12"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/Knockback..ctor",
+          "address": "0x181179580"
+        },
+        {
+          "index": 100308,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/13"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackWithDirection.get_allowedSource",
+          "address": "0x181179150"
+        },
+        {
+          "index": 100309,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/14"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackWithDirection.Execute",
+          "address": "0x181178cf0"
+        },
+        {
+          "index": 100310,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/15"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackWithDirection..ctor",
+          "address": "0x1811790c0"
+        },
+        {
+          "index": 100311,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/16"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackTargetsByRootTile.get_allowedSource",
+          "address": "0x181178860"
+        },
+        {
+          "index": 100312,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/17"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackTargetsByRootTile.Execute",
+          "address": "0x1811781e0"
+        },
+        {
+          "index": 100313,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/18"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackTargetsByRootTile._GetPushDir",
+          "address": "0x181178670"
+        },
+        {
+          "index": 100314,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/19"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackTargetsByRootTile..ctor",
+          "address": "0x1811787f0"
+        },
+        {
+          "index": 100315,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/20"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackWithCharacterDirection.get_allowedSource",
+          "address": "0x181178c90"
+        },
+        {
+          "index": 100316,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/21"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackWithCharacterDirection.Execute",
+          "address": "0x1811788c0"
+        },
+        {
+          "index": 100317,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/22"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/KnockBackWithCharacterDirection..ctor",
+          "address": "0x181178c20"
+        },
+        {
+          "index": 104229,
+          "mode": "metadata",
+          "records": [
+            "knockback-methods.json#/result/23"
+          ],
+          "fullname": "Torappu.Battle.UI.FootBallHudPlugin.OnKnockBackByDamage",
+          "address": "0x1812a16c0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": [
+        {
+          "kind": "bundle",
+          "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "gameRelativePath": "Arknights_Data/StreamingAssets/AB/Windows/anon/bac85f8fe65f27a2b7ea13fff6de62e8.bin",
+          "sha256": "10fca9cc0cc0fde445e5133c004ef08f776640fb99440e3cb8949fa7d9541c99",
+          "records": [
+            "prefab-provenance.json#/result/0/scriptBundle"
+          ],
+          "bytes": 477255
+        }
+      ]
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
