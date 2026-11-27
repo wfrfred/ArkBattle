@@ -358,7 +358,7 @@ test("Card Definition and DeployRequest each reject duplicate restriction IDs", 
     assert.throws(() => cards.deploy(state, request), /duplicate restriction identity/);
 });
 
-test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before group resolution", () => {
+test("DEPLOY-RESTRICTION-02: Card restriction replacement is permanent and Request overrides are local", () => {
     const permit = { allows: () => true };
     const deny = { allows: () => false };
     let state = battle([], {
@@ -378,10 +378,12 @@ test("DEPLOY-RESTRICTION-02: Definition, Card and Request replace IDs before gro
         id: "@deployment/slots", value: deny, group: { id: "permission", priority: 2 },
     });
     const request = { card, tilePosition: [0, 2], direction: null, quote: null, restrictions: [] };
-    assert.equal(cards.canDeploy(state, request), false);
     const allowed = { ...request, restrictions: [
         { id: "@deployment/slots", value: permit, group: { id: "permission", priority: 2 } },
     ] };
+    state = cards.removeRestriction(state, card, "@deployment/cooldown");
+    assert.equal(cards.canDeploy(state, allowed), true);
+    assert.equal(cards.canDeploy(state, request), false);
     const rejected = { ...allowed, restrictions: [
         ...allowed.restrictions,
         { group: null, id: "@deployment/cooldown", value: deny },

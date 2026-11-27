@@ -1,4 +1,5 @@
 import { resolveEntries, type Contribution } from "../../../../common/contribution.js";
+import { set } from "../../../../common/collection/entries.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { TilePosition } from "../../../../geometry/coordinate.js";
 import { at } from "../../../../battlefield/occupancy.js";
@@ -6,71 +7,9 @@ import { get as getTile } from "../../../../battlefield/map/map.js";
 import type { State as BattleState } from "../../../state.js";
 import type { Card } from "./card.js";
 import { resolveCost } from "./dp/query.js";
-import { isReady, resolveActiveLimit } from "./supply/query.js";
 import type { Restriction } from "./restriction.js";
 import { validateRequest, type DeployRequest, type Quote } from "./request.js";
 import { canPay } from "../../dp/query.js";
-import { remaining } from "../../slot/query.js";
-
-const defaultRestrictions: readonly Contribution<Restriction>[] = [
-    {
-        id: "@deployment/cooldown",
-        group: null,
-        value: {
-            allows: (battle, { request }) => isReady(request.card.get(battle)!),
-        },
-    },
-    {
-        id: "@deployment/active-limit",
-        group: null,
-        value: {
-            allows: (battle, { request }) => {
-                const card = request.card.get(battle)!;
-                const limit = resolveActiveLimit(card);
-
-                return limit === null || card.units.length < limit;
-            },
-        },
-    },
-    {
-        id: "@deployment/slots",
-        group: null,
-        value: {
-            allows: (battle, { request }) => {
-                const available = remaining(battle);
-                const slots = request.quote?.slots ?? request.card.get(battle)!.definition.slot;
-
-                return available === null || slots <= available;
-            },
-        },
-    },
-    {
-        id: "@deployment/placement",
-        group: null,
-        value: {
-            allows: (battle, { request }) =>
-                getTile(battle.battlefield.map, request.tilePosition)!.state.placement !== "NONE",
-        },
-    },
-];
-
-function resolveRestrictions(
-    self: Card,
-    entries: readonly Contribution<Restriction>[],
-): readonly Contribution<Restriction>[] {
-    const restrictions = new Map<string, Contribution<Restriction>>();
-
-    for (const entry of [
-        ...defaultRestrictions,
-        ...self.definition.restrictions,
-        ...self.restrictions,
-        ...entries,
-    ]) {
-        restrictions.set(entry.id, entry);
-    }
-
-    return resolveEntries([...restrictions.values()]);
-}
 
 function allowsDeployment(
     battle: BattleState,
@@ -115,13 +54,9 @@ export function canDeploy(battle: BattleState, request: DeployRequest): boolean 
         slots: self.definition.slot,
     };
 
-    return allowsDeployment(
-        battle,
-        self,
-        request,
-        quote,
-        resolveRestrictions(self, request.restrictions),
-    );
+    const restrictions = resolveEntries(request.restrictions.reduce(set, self.restrictions));
+
+    return allowsDeployment(battle, self, request, quote, restrictions);
 }
 
 export function positions(battle: BattleState, reference: Ref<Card>): readonly TilePosition[] {
@@ -131,7 +66,7 @@ export function positions(battle: BattleState, reference: Ref<Card>): readonly T
         return result;
     }
 
-    const restrictions = resolveRestrictions(self, []);
+    const restrictions = resolveEntries(self.restrictions);
     const quote: Quote = {
         dp: resolveCost(battle, self),
         stock: self.definition.supply.consumption,

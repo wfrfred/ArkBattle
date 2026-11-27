@@ -2,6 +2,8 @@ import {
     assertNonnegativeNumber,
     assertNonnegativeSafeInteger,
 } from "../../../../common/assert.js";
+import { set } from "../../../../common/collection/entries.js";
+import { defaultRestrictions } from "./restriction.js";
 import { createRef, type Ref } from "../../../../common/ref.js";
 import { validateRestrictions } from "../../../../restriction.js";
 import type { State as BattleState, Result } from "../../../state.js";
@@ -81,7 +83,7 @@ export function initialize<
         unitDefinition,
         units: [],
         hooks: definition.hooks,
-        restrictions: [],
+        restrictions: definition.restrictions.reduce(set, defaultRestrictions),
         state: initialized.value,
     };
 

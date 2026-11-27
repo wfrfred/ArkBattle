@@ -22,14 +22,11 @@
 | 完整操作与 Change 的归属 | Presence、Route 的部分完整业务返回 Change，易与普通字段变更混淆 | 文件归属按业务语义确定；[Presence](../../src/core/unit/capability/presence/operations.ts) 与 [Route](../../src/core/unit/capability/route/operations.ts) 的完整操作保留在 operations，Contribution／Restriction 与普通字段变更仍归模型文件，即使附带 Settlement。现有代码符合约定，无需迁移。 |
 | Unit 活性与领域准入 | 多领域重复 ACTIVE、可选 Vitality 与 HP 的判断 | 各领域保持自己的实际资格判定，不新增公共谓词、不将基础 Unit 与 Vitality 耦合；同一布尔表达式不是独立的共享业务概念。`elemental.available` 仅为内部资格辅助，不再公开；保留 `canReceiveDamage`／`canReceiveHealing` 等完整领域查询。 |
 | SP 状态变更的最低宿主类型 | SP Contribution／Range 对没有 SP 的 Skill 忽略，数值查询要求 hasSp | SP 是 Skill 的可空子系统；字段修改允许无 SP 的正常无效果，数值查询要求 SP 存在。保持现有 `Change<Unit & SkillCapability>` 和 `NO_SP` 资源结果，无需迁移代码。[SP 契约](skill.md#2-sp) |
+| Card 限制的覆盖生命周期 | 默认、Definition、runtime、Request 四层覆盖，撤销运行登记会复活底层 | 初始化合并默认与 Definition，随后使用唯一运行限制列表，set/remove 与 Unit 一致；保留 Request 本次覆盖及 redeploy 冷却豁免。多来源临时覆盖使用独立 ID 与 Group。[部署资格](deployment.md#请求与统一资格) |
 
 相关[接口约定](api-conventions.md)与领域文档已迁移。不为这些等价迁移新增长期测试用例。
 
 ## 待取舍
-
-### 6. Card 限制的覆盖生命周期
-
-[Card query](../../src/core/battle/deployment/deck/card/query.ts) 按 default、Definition、runtime、Request 四层同 ID 覆盖，撤销 runtime 项会重新露出底层限制；Unit 初始化把 Definition 的限制装成唯一运行列表，撤销同 ID 项不恢复旧值。Request 的短期覆盖有特殊移动部署这一实际需求，应保留。待决定 Definition 与 runtime 的覆盖是临时替换还是永久登记替换；没有证据要求把 Unit 的所有限制改成四层。Deck 负责有序 Card 集合，Card 入口读取/登记集合可由 Deck 实现，不为目录一致改变这一既有所有权。
 
 ### 7. SP 的 Tick 边界与实时推进
 

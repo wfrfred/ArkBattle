@@ -40,7 +40,7 @@ Card 绑定的蓝图所需 `Initial` 必须由部署入口提供。普通按格�
 
 `Card<S, P>` 是按策略区分的判别联合，与原始 `Definition<S, P>` 共享私有状态类型 `S` 和策略类型 `P`。实例持有以公共 `EraseCallbacks` 擦除输入的 Definition；精确 Card Ref 可向默认 `Ref<Card>` 泛化，部署请求只需要该公共 Ref，不携带私有状态泛型。初始化从 `definition.policy` 设置实例顶层的 `card.policy`，它在卡牌生命周期内保持稳定。策略为 `DEFAULT`、`UNIQUE` 或 `QUEUED`。
 
-`dp` 配置基础费用和涨费，`Supply.Definition<P>` 配置初始库存、普通部署的库存消耗量 `consumption`、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。`Card.Definition.restrictions` 声明静态部署限制，运行时 Card 保存后续登记的限制；两者均参与整次部署的资格判断。
+`dp` 配置基础费用和涨费，`Supply.Definition<P>` 配置初始库存、普通部署的库存消耗量 `consumption`、持有／在场上限及基础冷却时长（Tick）。`slot` 是单次部署默认占用数。运行时 `card.dp` 保存涨费阶段和费用贡献，`card.supply` 按 `Supply.State<P>` 保存库存、冷却和再部署时长贡献。只有 `QUEUED` 的供给配置和状态持有 `pending`，其初始值在配置中必填。`Card.Definition.restrictions` 声明初始部署限制，与 Core 默认限制合并构成运行时 `card.restrictions`；此后该列表是 Card 持久限制的唯一来源。
 
 Card 根据策略结算本次扣库、回收和冷却，并写回 Deck。每 Tick 的 `card.advance` 提交计时变化，再执行 `Definition.onTick`。[Card 操作](../../src/core/battle/deployment/deck/card/operations.ts)
 
@@ -78,7 +78,7 @@ Unit 注销后保留记录，`cardForUnit` 仍可反查它来自哪张 Card；�
 
 固定前提由代码检查：Card 存在、资源足够、支付后不低于 DP 下限、落点合法、同 Slot 不冲突。不能用限制豁免保留无法履行的消费承诺。冷却、同卡在场上限、部署位上限及普通地块许可属于可配置限制，其默认限制 ID 分别为 `@deployment/cooldown`、`@deployment/active-limit`、`@deployment/slots`、`@deployment/placement`。
 
-Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一。限制依次合并默认、Card 静态、Card 当前与 Request，不同列表的同 ID 后者覆盖。有效项按贡献政策选择，所有限制均允许才通过资格；不对具体拒绝分支建立公共原因分类。查询与执行都使用同一规则和资源事实。
+Card 初始化与 DeployRequest 入口各自校验列表内的限制 ID 唯一。初始化时将 Core 默认限制与 Card Definition 限制按 ID 合并为唯一运行列表，Definition 同 ID 覆盖默认项。运行期 setRestriction 同 ID 永久替换，removeRestriction 真正删除，不恢复默认或 Definition 旧项；可撤销的多来源竞争使用独立 ID 与 Group。Request 限制只在本次查询／部署时按 ID 覆盖当前 Card 列表，不修改 Card。有效项按贡献政策选择，所有限制均允许才通过资格；不对具体拒绝分支建立公共原因分类。查询与执行都使用同一规则和资源事实。
 
 部署资格读取传入的 BattleState。`card.canDeploy(battle, request)` 返回本次请求是否满足全部资格；`card.positions(battle, cardRef)` 查询普通 Card 当前可部署的全部地块，使用未指定方向、默认报价及空的本次限制列表。特殊请求需要逐格调用 `card.canDeploy`。`Card.Restriction` 的 Context 为 `Card.RestrictionContext`，仅包含原始 `request: DeployRequest`（quote 可为 null）。调度器先推进部署领域，再处理本 Tick 的部署命令。
 
