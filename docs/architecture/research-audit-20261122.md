@@ -8,7 +8,6 @@
 
 | 事项 | 当前状态 | 领域与依据 |
 | --- | --- | --- |
-| 波次和终局等待的释放时点（U047） | 待定 | [Schedule](research-necessity-20261122.md#schedule) |
 | 全局个体结算计数 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
 | 关卡生命值 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
 
@@ -60,12 +59,6 @@
 
 ## 逐项研究记录
 
-### 仍列为缺口的原 Core 候选取证
-
-| 编号 | 初次盘点的问题 | 当前状态 | 来源 |
-| --- | --- | --- | --- |
-| U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
-
 ### 原 Core 候选的其他复核结论
 
 | 编号 | 初次盘点的问题 | 当前状态 | 来源 |
@@ -87,6 +80,7 @@
 | U043 | 零伤害、无敌、完全吸收下伤后观察者的资格，含奥术法阵各段跳跃与妮芙附加 EP | 项目选择已定。奥术法阵按正输出尝试施加沉默，后续抵挡和归零沿用现有 Resource 契约。特殊入口按实例核对。 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
 | U045 | 实际内容中目标前置（含原因 5 提前中断）与来源输出换位是否会改变结果 | 项目选择已定。保留 Calculate 的来源输出与 Apply 的目标前置接收。已查提前中断未形成受支持的冲突样本。 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L52) |
 | U046 | 联合分担或均摊治疗能否绑定到支持范围内的实际玩法 | 未证实 Core 缺口。已见均摊治疗节点分别来自保全派驻和生息演算。已证的有符号 HP 调整独立记录。 | [Case 29](../research/cases/29-hp-and-ep-healing-settlement.md#9-剩余证据边界) |
+| U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **已结案（项目简化）。** 普通原生路径在死亡销毁时释放 wave，之后对象池回收才释放 final，造成终局完成时点差异。项目保持完整离场时同步释放 wave 与 final，不模拟对象池回收延迟。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) · [Schedule](schedule.md#等待关系与生命周期) |
 | U050 | 莱塔尼亚召唤物能否同时具有入向与出向阻挡关系（含 Case 23） | 项目选择已定。已查莱塔尼亚召唤物关联为出向，保留 Blocker／Blockable 互斥。 | [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md#L32) |
 | U054 | 煌的锁血数值拒写与后续伤判联用时，是否有实际观察者需要看到较早锁定的值 | 项目选择已定。煌的限幅、可抵挡的固定损失沿用现有 Resource Hook 和 fix。联用按实际消费者核对。 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L121) |
 | U055 | DAMAGE_WITHOUT_MODIFY 越过低血量缩放的实际可达消费者（同 Case 10 flag4） | 项目选择已定。沿用 FIXED 与现有修改权限，标志 4 和低血缩放的真实交互仍待证。 | [Case 38](../research/cases/38-damage-classification-and-permissions.md#L185) |
@@ -128,7 +122,7 @@
 | U041 | BeforeStart 起步窗口是否有真实可达的第二轮并行爆发，现仅有静态重入窗口 | 已有表达。酒神实际发出延迟命中的弹道，用爆发通知创建 Projectile 即可。同宿主同步第二轮仍缺正例。 | [Case 25](../research/cases/25-elemental-burst-recovery-timing.md#L200) |
 | U042 | 妮芙的 EP 后继和其他伤后观察者相对顺序是否改变可达结果 | 已有表达。妮芙可读取提交前的爆发状态，按接收量给仍存活的目标附加 EP。公共结算顺序已定。 | [Case 27](../research/cases/27-attack-additions-and-damage-events.md#L156) |
 | U044 | 是否存在独立抵挡通知或区分两种 BLOCKED 的实际后继（含 Case 38） | 已有表达。星熊 Y2／Y3 消费成功抵挡，现有接收 Hook 可区分其结果。 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
-| U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **已结案。** 计划和动态出生均使用 `registerWait`，在 Unit.add 前按 NONE／FINAL／WAVE 登记。等待关系的释放时点仍按 U047 独立处理。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) · [Schedule](schedule.md#等待关系与生命周期) |
+| U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **已结案。** 计划和动态出生均使用 `registerWait`，在 Unit.add 前按 NONE／FINAL／WAVE 登记。等待关系在完整离场时同步解除（U047 项目简化）。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) · [Schedule](schedule.md#等待关系与生命周期) |
 | U049 | acfnc 等保留原巡逻再插点的可达链和真实巡逻回边 | 已有表达。「假想敌：械」的实际 MOVE 插入可用 Route.reassign。需要同时保留旧巡逻或 WAIT 的正例未证。 | [Case 31](../research/cases/31-route-operations-and-state.md#L139) |
 | U051 | Trace 短距预测在消失、隐藏等目标资格变化时的接续与到达后继 | 已有表达。Trace 可分别保存地块和目标，离场重选沿用现有入口。隐藏目标后的具体行为仍待内容证据。 | [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md#L83) |
 | U052 | MultiSpine 延后发布有效朝向是否影响一项实际玩法 | 按内容核对。已核延迟发布路径和实际朝向消费者，两者在同一机制的绑定仍未证。 | [Case 35](../research/cases/35-facing-and-turning-conditions.md#L75) |
