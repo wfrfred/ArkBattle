@@ -29,7 +29,7 @@ Definition 是共享行为；实例保存稳定身份、实际来源、分组采
 
 `Effect<S, H>` 是基础实例；`StackEffect<S, H>` 继承它，增加 `stackCount` 和具体叠层定义。`S` 表达私有状态，`H extends Lifetime | null` 表达宿主要求，任意已登记且可用的 Lifetime 可作为宿主，`null` 表达无宿主。精确 Ref 保留具体私有状态、宿主和叠层实例类型；普通查询返回基础 `Effect`，通过 `hasStack` 按 `stackCount` 字段是否存在收窄叠层实例。
 
-`Definition<S, H, Self>` 与 `StackDefinition<S, H, Self>` 在内容声明时保留具体回调所接收的 self 类型，叠层回调可直接读取 `stackCount`。实例持有 `Self = never` 的共享定义，运行时仅在已经配对的真实实例与自身 Definition 的调用边界恢复该类型，不另建回调视图。普通查询不承诺未知私有状态的形状，内容不需要逐个断言自己已声明的类型。
+`Definition<S, H, Self>` 与 `StackDefinition<S, H, Self>` 在内容声明时保留具体回调所接收的 self 类型，叠层回调可直接读取 `stackCount`。实例持有公共 `EraseCallbacks` 处理后的共享定义，运行时仅在已经配对的真实实例与自身 Definition 的调用边界恢复回调类型，不另建回调视图。普通查询不承诺未知私有状态的形状，内容不需要逐个断言自己已声明的类型。
 
 `Expiration` 不再携带叠层政策泛型。普通效果与 END 叠层允许全部时间形式；DECAY 只允许 DURATION／INFINITE，不能使用缺少重启预算的 DEADLINE。安装和 `setExpiration` 在实际输入边界依据叠层定义检查该约束。
 

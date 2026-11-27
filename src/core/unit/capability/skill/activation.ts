@@ -5,6 +5,7 @@ import type { Unit } from "../../unit.js";
 import type { Skill as SkillCapability } from "./capability.js";
 import type { ActivationRestriction } from "./restriction.js";
 import type { Skill } from "./skill.js";
+import type { SkillCallback } from "./definition.js";
 import type { Definition as DurationDefinition, State as DurationState } from "./duration.js";
 import { config } from "./operations.js";
 
@@ -25,70 +26,45 @@ export interface Parameters {
     readonly cost: number;
 }
 
+export type ActivationCallback<S extends object, A extends object, H extends object> = (
+    battle: BattleState,
+    host: Ref<Unit & SkillCapability & H>,
+    self: Activation<A>,
+    skill: Ref<Skill<S, A>>,
+) => BattleState;
+
 export interface Definition<
-    S extends object,
-    A extends object,
+    S extends object = object,
+    A extends object = object,
     H extends object = object,
 > extends Parameters {
     readonly trigger: Trigger;
     readonly ignoreRestrictions: readonly ActivationRestriction[];
-    readonly initialize: (
-        battle: BattleState,
-        source: Ref<Unit & SkillCapability & H>,
-        self: Skill<S, A>,
-    ) => Initial<A>;
-    readonly accepts?: (
-        battle: BattleState,
-        source: Ref<Unit & SkillCapability & H>,
-        self: Skill<S, A>,
-    ) => boolean;
-    readonly onStart?: (
-        battle: BattleState,
-        source: Ref<Unit & SkillCapability & H>,
-        self: Activation<A>,
-        skill: Ref<Skill<S, A>>,
-    ) => BattleState;
-    readonly onTick?: (
-        battle: BattleState,
-        source: Ref<Unit & SkillCapability & H>,
-        self: Activation<A>,
-        skill: Ref<Skill<S, A>>,
-    ) => BattleState;
-    readonly operations?: Readonly<
-        Partial<
-            Record<
-                Operation,
-                (
-                    battle: BattleState,
-                    source: Ref<Unit & SkillCapability & H>,
-                    self: Activation<A>,
-                    skill: Ref<Skill<S, A>>,
-                ) => BattleState
-            >
-        >
-    >;
+    readonly initialize: SkillCallback<S, A, H, Initial<A>>;
+    readonly accepts?: SkillCallback<S, A, H, boolean>;
+    readonly onStart?: ActivationCallback<S, A, H>;
+    readonly onTick?: ActivationCallback<S, A, H>;
+    readonly operations?: Readonly<Partial<Record<Operation, ActivationCallback<S, A, H>>>>;
     readonly onEnd?: (
         battle: BattleState,
-        source: Ref<Unit & SkillCapability & H>,
+        host: Ref<Unit & SkillCapability & H>,
         self: Activation<A>,
-        end: End,
         skill: Ref<Skill<S, A>>,
+        end: End,
     ) => BattleState;
 }
 
-export interface Activation<in out A extends object = object> extends Lifetime<{
+export interface Activation<A extends object = object> extends Lifetime<{
     readonly host: Ref<Unit & SkillCapability>;
 }> {
-    readonly config: Config<ActivationIdentity, End>;
+    readonly config: Config<Activation, End>;
     readonly startedAtTick: number;
     readonly lifecycle: "ACTIVE" | "ENDING";
     readonly duration: DurationState;
     readonly state: A;
 }
 
-export type ActivationIdentity = Omit<Activation, "state"> & { readonly state: unknown };
-
-export type ActivationRef = Ref<ActivationIdentity>;
+export type ActivationRef = Ref<Activation>;
 
 export function create<A extends object>(
     host: Ref<Unit & SkillCapability>,

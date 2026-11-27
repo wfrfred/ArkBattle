@@ -22,7 +22,6 @@ import { advanceSkills } from "./steps/skills.js";
 import { initialize as initializeSchedule } from "./schedule/state.js";
 import { initializeBattlefield } from "./initialization.js";
 import * as unit from "../unit/operations.js";
-import type { Card } from "./deployment/deck/card/card.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
 import * as cards from "./deployment/deck/card/index.js";
 
@@ -67,7 +66,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
     return initializeBattlefield(initial, input);
 }
 
-export function step(battle: State, commands: readonly Command<Card<any>>[]): State {
+export function step(battle: State, commands: readonly Command[]): State {
     const projectileCandidates = projectiles.all(battle).map(projectiles.ref);
     let state = replaceIn(battle, ["events"], []);
 

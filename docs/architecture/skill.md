@@ -22,7 +22,7 @@ SP 可以不存在；hasSp 同时证明配置与状态存在。SP Definition 保
 
 持久 state 保存跨激活事实，本轮 state 保存当次进度。可直接由 activation 槽位判断的阶段不再重复保存；SP.value 是余额的唯一事实。聚合不重复保存 host，内容程序显式接收宿主 Ref。
 
-Content 在 `SkillCapability<H>` 的配置中声明技能。Skill Definition 和 Activation Definition 用 `H` 约束回调的宿主 Ref。Activation 创建前的程序接收 `Skill<S, A>`。本轮程序接收 `Activation<A>`，并在末尾接收精确的 `Ref<Skill<S, A>>`。结束原因在 `onEnd` 的第四个参数。
+Content 在 `SkillCapability<H>` 的配置中声明技能。Skill Definition 和 Activation Definition 用 `H` 约束回调的 `host` Ref。Activation 创建前的程序接收 `Skill<S, A>`。本轮程序接收 `Activation<A>`，随后接收精确的 `Ref<Skill<S, A>>`。结束结果是 `onEnd` 的最后一个参数。实例以公共 `EraseCallbacks` 保存 Definition，明确擦除 activation 与 operations 中的回调；实际派发恢复已建立的配对。
 
 Capability 装配时调用 `SkillDefinition.initialize(battle)`，建立私有状态、SP 初态和空激活槽位，并接续返回的 BattleState。持久初始化发生在宿主登记前。
 

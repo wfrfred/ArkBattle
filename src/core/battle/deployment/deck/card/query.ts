@@ -101,19 +101,15 @@ function allowsDeployment(
     return restrictions.every((entry) => entry.value.allows(battle, context));
 }
 
-export function canDeploy<T extends Card<any>>(
-    battle: BattleState,
-    request: DeployRequest<T>,
-): boolean {
-    const input = request as object as DeployRequest;
-    validateRequest(input);
+export function canDeploy(battle: BattleState, request: DeployRequest): boolean {
+    validateRequest(request);
 
-    const self = input.card.get(battle);
+    const self = request.card.get(battle);
     if (self === undefined) {
         return false;
     }
 
-    const quote = input.quote ?? {
+    const quote = request.quote ?? {
         dp: resolveCost(battle, self),
         stock: self.definition.supply.consumption,
         slots: self.definition.slot,
@@ -122,19 +118,15 @@ export function canDeploy<T extends Card<any>>(
     return allowsDeployment(
         battle,
         self,
-        input,
+        request,
         quote,
-        resolveRestrictions(self, input.restrictions),
+        resolveRestrictions(self, request.restrictions),
     );
 }
 
-export function positions<T extends Card<any>>(
-    battle: BattleState,
-    reference: Ref<T>,
-): readonly TilePosition[] {
+export function positions(battle: BattleState, reference: Ref<Card>): readonly TilePosition[] {
     const result: TilePosition[] = [];
-    const card = reference as object as Ref<Card>;
-    const self = card.get(battle);
+    const self = reference.get(battle);
     if (self === undefined) {
         return result;
     }
@@ -151,7 +143,7 @@ export function positions<T extends Card<any>>(
         for (let column = 0; column < columns; column++) {
             const tilePosition: TilePosition = [row, column];
             const request: DeployRequest = {
-                card,
+                card: reference,
                 tilePosition,
                 direction: null,
                 quote: null,

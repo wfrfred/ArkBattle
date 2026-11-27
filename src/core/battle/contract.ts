@@ -11,7 +11,6 @@ import type { Input as UnitInput } from "../unit/initialize.js";
 import type { Definitions as CapabilityDefinitions } from "../unit/capability/catalog.js";
 import type { Definition as DeploymentDefinition } from "./deployment/deployment.js";
 import type { Input as CardInput } from "./deployment/deck/card/initialize.js";
-import type { Card } from "./deployment/deck/card/card.js";
 import type { DeploymentCommand } from "./deployment/operations.js";
 import type { Ref } from "../common/ref.js";
 import type { ExecutionRef } from "../unit/capability/action/execution.js";
@@ -57,8 +56,8 @@ export interface SkillCommand {
     readonly operation: "ACTIVATE" | Operation;
 }
 
-export type Command<T extends Card<any> = Card> =
-    | DeploymentCommand<T>
+export type Command =
+    | DeploymentCommand
     | SkillCommand
     | {
           readonly type: "CANCEL_ACTION_EXECUTION";

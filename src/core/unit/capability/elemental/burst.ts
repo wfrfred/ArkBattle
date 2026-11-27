@@ -1,10 +1,11 @@
+import type { EraseCallbacks } from "../../../common/callback.js";
 import type { Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState } from "../../../battle/state.js";
 import { replace } from "../../operations.js";
 import type { Unit } from "../../unit.js";
 import { setExpiration } from "../../../effect/operations.js";
 import { ref, type Effect } from "../../../effect/effect.js";
-import type { Definition as EffectDefinition } from "../../../effect/definition.js";
+import type { Callback, Definition as EffectDefinition } from "../../../effect/definition.js";
 import type { Duration } from "../../../effect/expiration.js";
 import { elementValues, type Elemental, type Type } from "./capability.js";
 import { available, resolveMaxEp, resolveBurstRecoverySpeed } from "./query.js";
@@ -19,9 +20,9 @@ export interface Input<S extends State> {
     readonly id: string;
     readonly durationTicks: number;
     readonly initialize: (battle: BattleState) => S;
-    readonly onInstall?: (battle: BattleState, self: Burst<S>) => BattleState;
-    readonly onEnable?: (battle: BattleState, self: Burst<S>) => BattleState;
-    readonly onDisable?: (battle: BattleState, self: Burst<S>) => BattleState;
+    readonly onInstall?: Callback<Burst<S>>;
+    readonly onEnable?: Callback<Burst<S>>;
+    readonly onDisable?: Callback<Burst<S>>;
     readonly onTick?: (battle: BattleState, self: Burst<S>, previous: Duration) => BattleState;
 }
 
@@ -34,7 +35,7 @@ export interface Definition<
 }
 
 export interface Burst<S extends State = State> extends Effect<S, Unit & Elemental> {
-    readonly definition: Definition<S, never>;
+    readonly definition: EraseCallbacks<Definition<S>>;
     readonly expiration: Duration;
 }
 

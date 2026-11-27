@@ -5,11 +5,9 @@ import type { Eliminatable, Projectile } from "./projectile.js";
 export { ref } from "../common/ref.js";
 
 export function all(battle: BattleState): Query<Projectile> {
-    return battle.battlefield.projectiles.values() as Query<Projectile>;
+    return battle.battlefield.projectiles.values();
 }
 
-export function hasEliminatable<P extends Projectile<object, any>>(
-    self: P,
-): self is P & Eliminatable {
+export function hasEliminatable<P extends Projectile>(self: P): self is P & Eliminatable {
     return "eliminatable" in self.definition && self.definition.eliminatable === true;
 }

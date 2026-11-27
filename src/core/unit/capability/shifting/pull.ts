@@ -18,7 +18,7 @@ export type Point =
     | { readonly type: "FIXED"; readonly position: WorldPosition }
     | {
           readonly type: "PROJECTILE";
-          readonly projectile: Ref<projectiles.Projectile<object, any>>;
+          readonly projectile: Ref<projectiles.Projectile>;
       };
 
 export type NearStop = (battle: BattleState, self: Pull) => boolean;

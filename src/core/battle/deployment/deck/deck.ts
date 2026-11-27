@@ -11,7 +11,7 @@ export interface Definition {
 }
 
 export interface State {
-    readonly cards: Store<Ref<Card<any>>, Card<any>>;
+    readonly cards: Store<Ref<Card>, Card>;
     readonly order: readonly Ref<Card>[];
     readonly ordering: Ordering | null;
     readonly costCeiling: number;

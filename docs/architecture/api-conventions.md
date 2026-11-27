@@ -15,13 +15,13 @@
 | 战斗查询 | BattleState、身份或查询条件 → 结果 | 只读当前版本 |
 | 完整操作 | BattleState、主要身份、业务输入 → State／Result | 定位当前实例、检查领域资格并完成本次结算 |
 | 调度推进 | BattleState、实例或候选 → State | 由调度器在所属阶段调用 |
-| Definition 程序 | BattleState、已配对的 self、业务输入 → State／Result | 执行所属内容，不重新传入重复身份或 Definition |
+| Definition 程序 | BattleState、必要宿主 Ref、已配对的 self、持久实例 Ref、业务输入 → State／Result | 只接收本程序需要的事实，不重复传入身份或 Definition |
 
 无单个主要对象的批量操作可以省略 Ref。函数所在目录、名字及是否返回 State，不决定它属于哪类。私有 setter 接收计算完成的结果值；只写状态的操作直接返回 State，有调用者实际消费的结果时才使用 Result 或 Outcome。通用 Result 使用同一名称，不为领域另造同义类型别名。
 
 实例生命周期阶段统一叫 `lifecycle`，两态生命周期使用 `ACTIVE`／`ENDING`。私有业务数据叫 `state`。Effect.enabled 表达启用意图，Lifetime 节点的 `ending` 保存首次结束数据。Definition 描述配置和程序，Initial 提供本次构造事实；不为普通定义另造 Runtime、Compiled、Program 等别名。
 
-实例程序用 `onStart`、`onTick`、`onEnd` 等场景动词。事实通知用 `started`、`ended`、`paid` 等已发生名称，前置干预用 `beforeXxx`。主动操作按业务命名，同一语义复用已有动词，不以转发包装统一表面签名。
+实例程序用 `onStart`、`onTick`、`onEnd` 等场景动词。相同的回调参数契约提取领域 `Callback` 类型；不同的返回值可以由返回类型泛型表达，不为单次声明或不同业务建立统一程序协议。回调第一参数为 battle；必要的宿主引用命名为 `host`，自身为 `self`，执行轮次所需的持久实例 Ref 紧随 self，结束原因等业务参数在末尾。实际施加者或伤害来源仍叫 `source`。事实通知用 `started`、`ended`、`paid` 等已发生名称，前置干预用 `beforeXxx`。主动操作按业务命名，同一语义复用已有动词，不以转发包装统一表面签名。
 
 ### 生命周期命名
 
@@ -78,7 +78,9 @@ Ref 对目标类型协变，每个运行实例在创建时分配一次 Ref，各
 
 能力组成在同一实例身份下稳定，泛型类型守卫保留输入已有的完整类型。动态 HP、位置、生命周期等谓词只证明当前版本的事实，不能据此建立跨状态更新仍有效的类型保证。
 
-异构集合内部可以擦除泛型，公开入口必须先保持 Definition、私有状态和回调的配对，读取时恢复。默认公开实例用 object，不用 any 逃避内容检查；不得在 Content 回调逐项断言。具体创建分支提供具体 Definition，不增加专为联合 Definition 服务的校验框架。
+Content 使用具体的私有状态、宿主与能力类型；创建、装配和登记入口保持原始 Definition 与实例的配对检查。实例持有 `EraseCallbacks<Definition<…>>`：保留配置、初始化结果及回调的 BattleState 参数，将其余回调输入擦为 `never`；仅显式指定的嵌套回调组继续擦除（例如 Skill 的 activation 和 operations）。这让精确实例及 Ref 可以向默认类型泛化，不为回调的逆变增加 Identity、View 或不变性协议。
+
+普通 Core 查询与操作使用默认 `object` 私有状态类型；异构容器内部及实际派发、精确类型恢复的受信边界允许必要的类型擦除和 `any`；实例已能向默认类型泛化时，异构 Store 也可直接保存默认类型，不保留多余断言。派发只调用实例已配对的 Definition，不让普通调用者任意调用已擦除的程序。精确写回保留其私有状态类型；宽类型调用者不知道私有状态形状时不得主动写入该状态，这是接口使用约定，不再以人为不变性限制泛化。不得在 Content 回调逐项断言。具体创建分支提供具体 Definition，不增加专为联合 Definition 服务的校验框架。
 
 Unit Initial 由 Catalog 推导：所选能力要求的输入必填，额外的已知能力输入允许提供并忽略，未知键由普通对象类型检查。精确构造约束见 [Capability](capability.md#初始化与装配)。
 
@@ -163,4 +165,4 @@ const { set: setRestriction, remove: removeRestriction } =
 
 Effect 的 S、H 分别约束私有数据和宿主类型；`StackEffect` 直接继承 Effect 并表达叠层身份，精确 Ref 保留实例实际的配对。安装以 Definition 决定最低宿主要求；合并可能保留旧 Definition，不能借本次传入类型证明旧私有 state 的类型。
 
-`Definition` 和 `StackDefinition` 的 Self 泛型保留具体回调的实例要求；实例持有的 Definition 将 Self 擦除为 never，实际调用自身 Definition 时由 Core 恢复已建立的配对。安装必须提供独立于私有类型的完整 Initial，只有新实例才由 `Definition.initialize(battle)` 构造私有 state。叠层的 END／DECAY 到期形式由安装与时间写回边界检查。安装返回及类型擦除边界由 [Effect](effect.md#2-definition实例与泛型)维护。通用私有写回规则与其他实例相同，不另提供失去类型关联的写入口。
+`Definition` 和 `StackDefinition` 的 Self 泛型保留具体回调的实例要求；实例持有的 Definition 使用公共 `EraseCallbacks` 擦除回调输入，实际调用自身 Definition 时由 Core 恢复已建立的配对。安装必须提供独立于私有类型的完整 Initial，只有新实例才由 `Definition.initialize(battle)` 构造私有 state。叠层的 END／DECAY 到期形式由安装与时间写回边界检查。安装返回及类型擦除边界由 [Effect](effect.md#2-definition实例与泛型)维护。通用私有写回规则与其他实例相同，不另提供失去类型关联的写入口。

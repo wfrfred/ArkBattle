@@ -10,19 +10,17 @@ export type Id = number;
 
 export type Lifecycle = "ACTIVE" | "ENDING";
 
-export interface Execution<in out E extends object = object> extends Lifetime<{
+export interface Execution<E extends object = object> extends Lifetime<{
     readonly host: Ref<Unit & ActionCapability>;
 }> {
-    readonly config: Config<ExecutionIdentity, End>;
+    readonly config: Config<Execution, End>;
     readonly id: Id;
     readonly startedAtTick: number;
     readonly lifecycle: Lifecycle;
     readonly state: E;
 }
 
-export type ExecutionIdentity = Omit<Execution, "state"> & { readonly state: unknown };
-
-export type ExecutionRef = Ref<ExecutionIdentity>;
+export type ExecutionRef = Ref<Execution>;
 
 export function create<E extends object>(
     host: Ref<Unit & ActionCapability>,

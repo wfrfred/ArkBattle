@@ -14,6 +14,19 @@ export type Period =
 export type End =
     { readonly type: "FINISHED" } | { readonly type: "CANCELLED"; readonly reason: string };
 
+export type ActionCallback<P extends object, E extends object, H extends object, R> = (
+    battle: BattleState,
+    host: Ref<Unit & ActionCapability & H>,
+    self: Action<P, E>,
+) => R;
+
+export type ExecutionCallback<P extends object, E extends object, H extends object> = (
+    battle: BattleState,
+    host: Ref<Unit & ActionCapability & H>,
+    self: Execution<E>,
+    action: Ref<Action<P, E>>,
+) => BattleState;
+
 export interface Definition<
     P extends object = object,
     E extends object = object,
@@ -23,22 +36,13 @@ export interface Definition<
     readonly applyWay: ApplyWay;
     readonly period: Period;
     readonly initialize: (battle: BattleState) => Result<P>;
-    readonly prepare: (
-        battle: BattleState,
-        source: Ref<Unit & ActionCapability & H>,
-        self: Action<P, E>,
-    ) => Result<E | null>;
-    readonly onTick: (
-        battle: BattleState,
-        source: Ref<Unit & ActionCapability & H>,
-        self: Execution<E>,
-        action: Ref<Action<P, E>>,
-    ) => BattleState;
+    readonly prepare: ActionCallback<P, E, H, Result<E | null>>;
+    readonly onTick: ExecutionCallback<P, E, H>;
     readonly onEnd?: (
         battle: BattleState,
-        source: Ref<Unit & ActionCapability & H>,
+        host: Ref<Unit & ActionCapability & H>,
         self: Execution<E>,
-        end: End,
         action: Ref<Action<P, E>>,
+        end: End,
     ) => BattleState;
 }

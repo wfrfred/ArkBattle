@@ -49,7 +49,7 @@ function canMove(state, reference) {
 
 test("stun interrupts the current action, suppresses its affected capabilities, and withdraws only its own restrictions", () => {
     const endings = [];
-    const content = actor([], (state, _source, _self, end) => { endings.push(end); return state; });
+    const content = actor([], (state, _source, _self, _action, end) => { endings.push(end); return state; });
     let state = battle([
         { hooks: Hooks.empty(), definition: content.definition, position: [1, 1], initial: { locomotion: { mode: "WALK" }, facing: { direction: "RIGHT" } } },
         { hooks: Hooks.empty(), initial: {}, definition: { id: "blockable", hooks: Hooks.empty(), layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] } }, position: [1.5, 1] },

@@ -18,7 +18,7 @@ export function get<S extends object, H extends Lifetime | null>(
 export function get(
     battle: BattleState,
     reference: Ref<Effect>,
-    definition: Definition<object, Lifetime | null, never>,
+    definition: Effect["definition"],
 ): Effect | undefined {
     const self = reference.get(battle);
 

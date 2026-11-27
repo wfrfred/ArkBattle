@@ -4,7 +4,7 @@ export type { Action } from "./action.js";
 
 export type { Execution, ExecutionRef } from "./execution.js";
 
-export type { Definition, Period } from "./definition.js";
+export type { Definition, Period, ActionCallback, ExecutionCallback } from "./definition.js";
 
 export type { Event } from "./event.js";
 

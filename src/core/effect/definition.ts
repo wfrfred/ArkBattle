@@ -4,6 +4,8 @@ import type { Effect, StackEffect } from "./effect.js";
 import type { Expiration } from "./expiration.js";
 import type { Group } from "./group.js";
 
+export type Callback<Self> = (battle: BattleState, self: Self) => BattleState;
+
 export interface Definition<
     S extends object = object,
     H extends Lifetime | null = Lifetime | null,
@@ -12,9 +14,9 @@ export interface Definition<
     readonly id: string;
     readonly initialize: (battle: BattleState) => S;
     readonly group: Group | null;
-    readonly onInstall?: (battle: BattleState, self: Self) => BattleState;
-    readonly onEnable?: (battle: BattleState, self: Self) => BattleState;
-    readonly onDisable?: (battle: BattleState, self: Self) => BattleState;
+    readonly onInstall?: Callback<Self>;
+    readonly onEnable?: Callback<Self>;
+    readonly onDisable?: Callback<Self>;
     readonly onTick?: (battle: BattleState, self: Self, previous: Expiration) => BattleState;
     readonly onEnd?: (battle: BattleState, self: Self, reason: string) => BattleState;
 }

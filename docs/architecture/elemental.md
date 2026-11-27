@@ -23,7 +23,7 @@ elementResistance 只用于 EP 损伤，damageResistance 只用于 HP 元素伤�
 
 标准库在 `core/effects/elemental/` 提供十种实际 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃、消耗 SP／恢复攻击力的凋亡，以及按行动／时间累加伤害的狂躁。`content/elemental.ts` 根据静态接收者配置绑定参数和爆发表。Core 按元素类型读取已配置的爆发。标准爆发 HP 输出均为 nature=DAMAGE；角色狂躁周期允许 HIT 回复，其余标准输出不允许，不因 Effect 或周期身份变为 ENVIRONMENT，也不以全局阻回替代本笔许可。
 
-Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 durationTicks 恢复预算，group 固定为 null。具体爆发通过 `burst.create(input)` 装配 Definition，Input 提供 id、durationTicks、initialize 和可选的 onInstall／onEnable／onDisable／onTick，不提供分组或结束程序。工厂统一保证槽位登记、入场通知、EP 恢复和结束结算；具体回调只实现爆发特有业务。Definition／Burst 的泛型保留具体私有 State 与回调配对，异构查表在完成配对后擦除私有类型。安装时直接提供 `duration = remaining = durationTicks`、`rate = 0` 的 DURATION。Elemental 只保存根 Effect 的 Typed Ref，不分配独立 Burst ID；旧 Ref 不操作下一次爆发。
+Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 durationTicks 恢复预算，group 固定为 null。具体爆发通过 `burst.create(input)` 装配 Definition，Input 提供 id、durationTicks、initialize 和可选的 onInstall／onEnable／onDisable／onTick，不提供分组或结束程序。工厂统一保证槽位登记、入场通知、EP 恢复和结束结算；具体回调只实现爆发特有业务。Definition／Burst 的泛型保留具体私有 State 与回调配对，实例 Definition 和异构爆发表统一使用公共 `EraseCallbacks`；安装时恢复已经配对的程序。安装时直接提供 `duration = remaining = durationTicks`、`rate = 0` 的 DURATION。Elemental 只保存根 Effect 的 Typed Ref，不分配独立 Burst ID；旧 Ref 不操作下一次爆发。
 
 持续输出由 onEnable／onDisable 管理，一次性输出属于 onInstall。需要随根结束的灼燃减抗、封技、阻止 SP 回复等产物绑定根 Lifetime。神经眩晕按独立 stunDurationTicks 建立 DEADLINE，不绑定恢复预算；标准恢复与眩晕虽各配置十秒，仍分别计时，零眩晕期限遵守 Effect 安装到期规则。永久侵蚀减防与尚未消费的麻痹独立保留，再次神经爆发按标准规则重置麻痹层数。永久性由规则决定，不按数值正负推导。
 

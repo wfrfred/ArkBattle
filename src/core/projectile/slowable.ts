@@ -12,7 +12,7 @@ export interface Slowable {
     };
 }
 
-export function hasSlowable<P extends Projectile<object, any>>(self: P): self is P & Slowable {
+export function hasSlowable<P extends Projectile>(self: P): self is P & Slowable {
     return "move" in self;
 }
 
@@ -20,9 +20,9 @@ export function resolve(self: Slowable): number {
     return contribution.resolve(self.move.contributions).reduce((scale, value) => scale * value, 1);
 }
 
-export function setContribution<P extends Projectile<object, any> & Slowable>(
+export function setContribution(
     battle: BattleState,
-    reference: Ref<P>,
+    reference: Ref<Projectile & Slowable>,
     entry: contribution.Contribution<number>,
 ): BattleState {
     assertNonnegativeNumber(entry.value, "projectile movement scale");
@@ -30,17 +30,17 @@ export function setContribution<P extends Projectile<object, any> & Slowable>(
     return updateContributions(battle, reference, (current) => entries.set(current, entry));
 }
 
-export function removeContribution<P extends Projectile<object, any> & Slowable>(
+export function removeContribution(
     battle: BattleState,
-    reference: Ref<P>,
+    reference: Ref<Projectile & Slowable>,
     id: string,
 ): BattleState {
     return updateContributions(battle, reference, (current) => entries.remove(current, id));
 }
 
-function updateContributions<P extends Projectile<object, any> & Slowable>(
+function updateContributions(
     battle: BattleState,
-    reference: Ref<P>,
+    reference: Ref<Projectile & Slowable>,
     update: (current: Slowable["move"]["contributions"]) => Slowable["move"]["contributions"],
 ): BattleState {
     const self = reference.get(battle);

@@ -8,11 +8,11 @@ import type { Definition, Id } from "./definition.js";
 type ActionWithExecution = Action & { readonly execution: Execution };
 
 export class Actions {
-    static readonly #empty = new Actions(Store.empty<Ref<Action<any, any>>, Action<any, any>>());
+    static readonly #empty = new Actions(Store.empty<Ref<Action>, Action>());
 
-    readonly #store: Store<Ref<Action<any, any>>, Action<any, any>>;
+    readonly #store: Store<Ref<Action>, Action>;
 
-    private constructor(store: Store<Ref<Action<any, any>>, Action<any, any>>) {
+    private constructor(store: Store<Ref<Action>, Action>) {
         this.#store = store;
     }
 
@@ -26,12 +26,10 @@ export class Actions {
 
     get(id: Id): Action | undefined;
     get<P extends object, E extends object>(
-        definition: Definition<P, E, never>,
+        definition: Definition<P, E, never> | Action<P, E>["definition"],
     ): Action<P, E> | undefined;
     get<P extends object, E extends object>(reference: Ref<Action<P, E>>): Action<P, E> | undefined;
-    get(
-        identity: Id | Pick<Definition, "id"> | Ref<Action<any, any>>,
-    ): Action<any, any> | undefined {
+    get(identity: Id | Pick<Definition, "id"> | Ref<Action>): Action | undefined {
         if (typeof identity === "string") {
             return this.#store.values().find((self) => self.definition.id === identity);
         }
@@ -50,7 +48,7 @@ export class Actions {
     }
 
     values(): Query<Action> {
-        return this.#store.values() as Query<Action>;
+        return this.#store.values();
     }
 
     add<P extends object, E extends object>(self: Action<P, E>): Actions {
@@ -61,7 +59,7 @@ export class Actions {
         return new Actions(this.#store.add(ref(self), self));
     }
 
-    replace<P extends object, E extends object>(self: Action<P, E>): Actions {
+    replace(self: Action): Actions {
         const store = this.#store.replace(ref(self), self);
 
         return store === this.#store ? this : new Actions(store);

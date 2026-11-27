@@ -172,21 +172,17 @@ if (started.value !== null) {
     actions.setExecutionState(started.state, execution, { hits: hits + 1 });
     // @ts-expect-error a write cannot infer a new private type for the current execution.
     actions.setExecutionState(started.state, execution, { hits: 'wrong' });
-    // @ts-expect-error widening an execution type would weaken the private-write guarantee.
-    const widened: Ref<actions.Execution> = execution;
     // @ts-expect-error an execution and its persistent action are different identities.
     const persistent: typeof actionRef = execution;
     runtime.step(started.state, [{ type: 'CANCEL_ACTION_EXECUTION', ref: execution }]);
 }
-const executionIdentity = actions.forUnit(battle, owner)[0]!;
-const publicExecution = executionIdentity.get(battle)!;
-publicExecution.state satisfies unknown;
+const executionRef = actions.forUnit(battle, owner)[0]!;
+const publicExecution = executionRef.get(battle)!;
+publicExecution.state satisfies object;
 // @ts-expect-error an erased query cannot read a private field.
 publicExecution.state.hits;
 // @ts-expect-error a round does not expose the persistent Action's Definition.
 publicExecution.definition;
-// @ts-expect-error a cancellation identity alone cannot write private state.
-actions.setExecutionState(battle, executionIdentity, { hits: 1 });
 // @ts-expect-error the numeric address does not carry a Unit identity proof.
 const forged: Ref<Unit> = { id: 0 };
 declare const exactSkill: skills.Skill<{ completed: number }, { remaining: number }>;
@@ -392,7 +388,7 @@ for (const card of cards.all(battle)) {
 // @ts-expect-error a deployable unit cannot own Locomotion and Route.
 cards.initialize(battle, { ...countInput, unitDefinition: { ...cardUnit, route: routeDefinition.route, locomotion: routeDefinition.locomotion } });
 // @ts-expect-error registration must reject state that does not match its own Definition.
-cards.add(builtCard.state, { ...exactCard, state: { count: 'wrong' } });
+cards.add(builtCard.state, { ...builtCard.value, state: { count: 'wrong' } });
 const counter: effects.Definition<{ count: number }, null> = {
     id: 'counter', group: null, initialize: () => ({ count: 0 }),
     onTick: (state, self) => effects.setState(state, effects.ref(self), { count: self.state.count + 1 }),

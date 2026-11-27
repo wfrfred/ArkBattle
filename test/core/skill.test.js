@@ -39,7 +39,7 @@ test("activation publishes payment before onStart and clears only the completed 
                     total: 7,
                 });
             },
-            onEnd(state, source, self, end, skill) {
+            onEnd(state, source, self, skill, end) {
                 const reference = skills.ref(self);
                 state = skills.setActivationState(state, reference, {
                     ...self.state,
@@ -362,7 +362,7 @@ test("TIME extension stays in its round while persistent state selects a later I
                     ticks: self.state.ticks + 1,
                 });
             },
-            onEnd(state, _source, _self, _end, skill) {
+            onEnd(state, _source, _self, skill) {
                 return skills.setState(state, skill, {
                     completed: skill.get(state).state.completed + 1,
                 });

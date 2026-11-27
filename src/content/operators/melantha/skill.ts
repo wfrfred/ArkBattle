@@ -31,8 +31,8 @@ export function create({ id, cost, durationTicks, sp, trigger, attackBonus }: Sk
             requirement: cost,
             cost,
             initialize: () => ({ state: {}, duration: { type: "TIME", durationTicks } }),
-            onStart(state, source, self) {
-                const unit = source.get(state);
+            onStart(state, host, self) {
+                const unit = host.get(state);
                 if (unit === undefined) {
                     return state;
                 }

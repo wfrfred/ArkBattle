@@ -17,16 +17,11 @@
 | 读取与求值 | Action.getApplyWay 实际归并 Definition；Elemental.get 实际要求所给 Burst 仍占当前槽 | `resolveApplyWay` 与 `getCurrentBurst`，不把后者与 Ref 的登记查询混为一谈。[Action query](../../src/core/unit/capability/action/query.ts) · [Elemental query](../../src/core/unit/capability/elemental/query.ts) |
 | 不存在的业务状态 | EP Healing Pending 恒带 `cancellation:null`，但该业务没有取消协议 | 仅保留 amount，不新增虚构的判别状态。[EP Healing](../../src/core/battle/resource/ep/healing/contract.ts) |
 | 不可变字段写回 | Card 的 Hook/Restriction 手写同一叶字段替换；Targetable 独有无用 readonly 数组复制 | 具体 Card 使用 `replaceIn`，保留原 no-op 行为；Targetable 与其他 Capability 一样共享不可变初值。 |
+| 实例与 Definition 类型擦除 | Card、Action 等使用宽化补丁、不变性或 Identity 视图；回调参数契约分散 | [公共 EraseCallbacks](../../src/core/common/callback.ts) 选择性擦除回调输入，构造保留原始 Definition 检查，普通访问默认 object；移除 Execution／Activation Identity 和无实际配对职责的部署请求泛型，Effect 子类型 Burst 与爆发表同步迁移。统一同义 Callback 声明、宿主参数和结束回调参数顺序。 |
 
 相关[接口约定](api-conventions.md)与领域文档已迁移。不为这些等价迁移新增长期测试用例。
 
 ## 待取舍
-
-### 1. 实例类型与擦除边界（优先）
-
-现有 Effect、Skill 允许具体实例向默认 `object` 视图泛化；Card、Action 的具体 Ref 无法赋给默认 Ref（以项目严格模式类型探针验证）。[Card](../../src/core/battle/deployment/deck/card/card.ts) 及其公共 Hook、部署请求、查询使用 `any` 处理方差障碍；[Action](../../src/core/unit/capability/action/action.ts)、[Execution](../../src/core/unit/capability/action/execution.ts)、[Activation](../../src/core/unit/capability/skill/activation.ts) 存在不变泛型或额外 Identity 视图。[Projectile](../../src/core/projectile/projectile.ts) 的回调配对与额外字段类型擦除也不同于 Effect／Action。
-
-已经确认的项目选择是 Content 精确类型、普通 Core 使用 `object`、异构存储和派发边界允许受控 `any`；宽视图不主动写调用者不知道的私有状态，不要求 TS 额外证明这一约定。**待定的是如何统一实际模型，而不是重新禁止宽视图。** 推荐先明确各实例保存 Definition 的配对方式，再统一公开查询和操作约束；保留 Projectile 的实际能力装配及具体 Definition 类型，不贸然抹去 T 或引入新 View／Identity 协议。方差改变会影响装配、精确 Ref 和回调，不能视作纯改名。
 
 ### 2. Blocking 固有 Hook 的顺序（优先）
 

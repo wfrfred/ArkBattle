@@ -1,7 +1,7 @@
 import type { Ref } from "../common/ref.js";
 import { replaceIn } from "../common/object.js";
 import type { WorldPosition } from "../geometry/coordinate.js";
-import type { EndReason } from "./definition.js";
+import type { Definition, EndReason } from "./definition.js";
 import type { Eliminatable, Projectile } from "./projectile.js";
 import { ref } from "./query.js";
 import { end, register } from "../lifetime/operations.js";
@@ -9,7 +9,7 @@ import type { State as BattleState } from "../battle/state.js";
 
 export function add<S extends object, T extends object>(
     battle: BattleState,
-    self: Projectile<S, T> & NoInfer<T>,
+    self: Projectile<NoInfer<S>, T> & NoInfer<T> & { readonly definition: Definition<S, T> },
 ): BattleState {
     const projectiles = battle.battlefield.projectiles.add(ref(self), self);
     battle = replaceIn(battle, ["battlefield", "projectiles"], projectiles);
@@ -40,7 +40,7 @@ export function update<S extends object, T extends object>(
     return replace(battle, reference, { ...current, position, state });
 }
 
-export function replace<P extends Projectile<object, any>>(
+export function replace<P extends Projectile>(
     battle: BattleState,
     reference: Ref<P>,
     self: NoInfer<P>,
@@ -57,7 +57,7 @@ export const config: Projectile["config"] = {
             replace(battle, reference, { ...initial, lifecycle: "ENDING" }),
         finalize: (battle, reference, _initial, reason) => {
             const self = reference.get(battle)!;
-            battle = self.definition.onEnd?.(battle, self, reason) ?? battle;
+            battle = (self.definition as Definition).onEnd?.(battle, self, reason) ?? battle;
 
             const projectiles = battle.battlefield.projectiles.remove(reference);
 
@@ -66,32 +66,29 @@ export const config: Projectile["config"] = {
     },
 };
 
-export function remove<P extends Projectile<object, any>>(
+export function remove(
     battle: BattleState,
-    reference: Ref<P>,
+    reference: Ref<Projectile>,
     reason: Exclude<EndReason, "ELIMINATED">,
 ): BattleState;
-export function remove<P extends Projectile<object, any> & Eliminatable>(
+export function remove(
     battle: BattleState,
-    reference: Ref<P>,
+    reference: Ref<Projectile & Eliminatable>,
     reason: "ELIMINATED",
 ): BattleState;
-export function remove<P extends Projectile<object, any>>(
+export function remove(
     battle: BattleState,
-    reference: Ref<P>,
+    reference: Ref<Projectile>,
     reason: EndReason,
 ): BattleState {
     return end(battle, reference, reason);
 }
 
-export function advance<P extends Projectile<object, any>>(
-    battle: BattleState,
-    candidates: Iterable<Ref<P>>,
-): BattleState {
+export function advance(battle: BattleState, candidates: Iterable<Ref<Projectile>>): BattleState {
     for (const reference of candidates) {
         const self = reference.get(battle);
         if (self?.lifecycle === "ACTIVE") {
-            battle = self.definition.onTick?.(battle, self) ?? battle;
+            battle = (self.definition as Definition).onTick?.(battle, self) ?? battle;
         }
     }
 

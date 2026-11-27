@@ -21,7 +21,7 @@ import { dispatch as prepareDeployment } from "./hook.js";
 import * as dp from "../../dp/operations.js";
 import * as slot from "../../slot/operations.js";
 
-export function setState<T extends Card<any>>(
+export function setState<T extends Card>(
     battle: BattleState,
     reference: Ref<T>,
     state: NoInfer<T["state"]>,
@@ -31,16 +31,15 @@ export function setState<T extends Card<any>>(
     return state === self.state ? battle : replace(battle, { ...self, state });
 }
 
-export function deploy<T extends Card<any>>(
+export function deploy(
     battle: BattleState,
-    request: DeployRequest<T>,
+    request: DeployRequest,
 ): Result<Ref<Unit & Deployable> | null> {
     if (!canDeploy(battle, request)) {
         return { state: battle, value: null };
     }
 
-    const input = request as object as DeployRequest;
-    const self = input.card.get(battle)!;
+    const self = request.card.get(battle)!;
     const cost = resolveCost(battle, self);
     const baseCost = resolveBaseCost(self);
     const quote = request.quote ?? {
@@ -59,7 +58,7 @@ export function deploy<T extends Card<any>>(
     }
 
     battle = replace(battle, next);
-    const prepared = prepareDeployment(battle, input, {
+    const prepared = prepareDeployment(battle, request, {
         definition: self.unitDefinition,
         position: Tile.center(request.tilePosition),
         initial: {
@@ -71,7 +70,7 @@ export function deploy<T extends Card<any>>(
         },
         hooks: Hooks.empty(),
     });
-    const card = input.card;
+    const card = request.card;
     const initialized = initializeUnit(prepared.state, {
         ...prepared.value,
         hooks: prepared.value.hooks.set(removed, {
@@ -95,19 +94,19 @@ export function deploy<T extends Card<any>>(
         }),
     });
     const unit = setDeployment(initialized.value, {
-        card: input.card,
+        card: request.card,
         cost,
         baseCost,
         slots: quote.slots,
     });
     const reference = unitRef(unit);
     battle = initialized.state;
-    const current = input.card.get(battle)!;
+    const current = request.card.get(battle)!;
     battle = replace(battle, replaceIn(current, ["units"], [...current.units, reference]));
     battle = replaceIn(
         battle,
         ["deployment", "history"],
-        [...battle.deployment.history, { card: input.card, unit: reference }],
+        [...battle.deployment.history, { card: request.card, unit: reference }],
     );
     battle = add(battle, unit);
 
@@ -155,11 +154,8 @@ export function advance(battle: BattleState, reference: Ref<Card>): BattleState 
 
     battle = replace(battle, next);
 
-    return (
-        (
-            next.definition as {
-                readonly onTick?: (battle: BattleState, self: Card) => BattleState;
-            }
-        ).onTick?.(battle, next) ?? battle
-    );
+    const onTick = next.definition.onTick as
+        ((battle: BattleState, self: Card) => BattleState) | undefined;
+
+    return onTick?.(battle, next) ?? battle;
 }

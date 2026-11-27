@@ -69,10 +69,10 @@ const actionRecovery: ReleasedHook = {
     },
 };
 
-export function setState<X extends Skill<any, any>>(
+export function setState<S extends object>(
     battle: BattleState,
-    reference: Ref<X>,
-    state: NoInfer<X["state"]>,
+    reference: Ref<Skill<S>>,
+    state: NoInfer<S>,
 ): BattleState {
     const unit = reference.host.get(battle);
     if (unit === undefined) {
@@ -219,7 +219,7 @@ export const config: Activation["config"] = {
 
             return replaceUnits(battle, [
                 replaceIn(host, ["skill", "activation"], {
-                    ...(initial as Activation),
+                    ...initial,
                     lifecycle: "ENDING",
                 }),
             ]);
@@ -228,11 +228,8 @@ export const config: Activation["config"] = {
             const source = reference.host;
             const unit = source.get(battle)!;
             const active = unit.skill.activation!;
-            const definition = unit.skill.definition.activation as ActivationDefinition<
-                object,
-                object
-            >;
-            battle = definition.onEnd?.(battle, source, active, ending, ref(unit.skill)) ?? battle;
+            const definition = unit.skill.definition.activation as ActivationDefinition;
+            battle = definition.onEnd?.(battle, source, active, ref(unit.skill), ending) ?? battle;
 
             const host = source.get(battle)!;
             battle = replaceUnits(battle, [replaceIn(host, ["skill", "activation"], null)]);
@@ -280,7 +277,7 @@ export function operate(
         return { state: battle, value: false };
     }
 
-    const definition = unit.skill.definition.activation as ActivationDefinition<object, object>;
+    const definition = unit.skill.definition.activation as ActivationDefinition;
     const handler = definition.operations?.[operation];
     if (handler === undefined) {
         return { state: battle, value: false };
@@ -291,7 +288,7 @@ export function operate(
     }
 
     return {
-        state: handler(battle, reference.host, self as Activation, ref(unit.skill)),
+        state: handler(battle, reference.host, self, ref(unit.skill)),
         value: true,
     };
 }
@@ -311,10 +308,7 @@ export function advance(battle: BattleState, host: Ref<Unit & SkillCapability>):
         if (active.duration.type === "TIME" && active.duration.endsAtTick <= battle.tick) {
             battle = finish(battle, ref(active));
         } else {
-            const definition = unit.skill.definition.activation as ActivationDefinition<
-                object,
-                object
-            >;
+            const definition = unit.skill.definition.activation as ActivationDefinition;
             battle = definition.onTick?.(battle, host, active, ref(unit.skill)) ?? battle;
         }
     }

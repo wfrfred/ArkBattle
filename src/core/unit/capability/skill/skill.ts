@@ -1,4 +1,5 @@
 import type { State as BattleState } from "../../../battle/state.js";
+import type { EraseCallbacks } from "../../../common/callback.js";
 import { createRef, type Identified, type Identity, type Ref } from "../../../common/ref.js";
 import type { Unit } from "../../unit.js";
 import type { Skill as SkillCapability } from "./capability.js";
@@ -9,7 +10,10 @@ import type { Activation } from "./activation.js";
 export interface Skill<S extends object = object, A extends object = object> extends Identified<{
     readonly host: Ref<Unit & SkillCapability>;
 }> {
-    readonly definition: Definition<S, A, never>;
+    readonly definition: EraseCallbacks<
+        Definition<S, A, never>,
+        { activation: { operations: object } }
+    >;
     readonly state: S;
     readonly sp: SpState | null;
     readonly activation: Activation<A> | null;

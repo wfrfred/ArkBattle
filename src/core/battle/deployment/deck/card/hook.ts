@@ -14,11 +14,11 @@ export const beforeDeploy = hooks.key<BeforeDeployHook, Card>("card.beforeDeploy
 
 export function setHook<H extends Entry>(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     key: hooks.Key<H, Card>,
     entry: NoInfer<H>,
 ): BattleState {
-    const self: Card = reference.get(battle)!;
+    const self = reference.get(battle)!;
     const next = replaceIn(self, ["hooks"], self.hooks.set(key, entry));
 
     return next === self ? battle : replace(battle, next);
@@ -26,11 +26,11 @@ export function setHook<H extends Entry>(
 
 export function removeHook<H extends Entry>(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     key: hooks.Key<H, Card>,
     id: string,
 ): BattleState {
-    const self: Card = reference.get(battle)!;
+    const self = reference.get(battle)!;
     const next = replaceIn(self, ["hooks"], self.hooks.remove(key, id));
 
     return next === self ? battle : replace(battle, next);

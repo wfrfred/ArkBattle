@@ -40,10 +40,10 @@ export function create(
             requirement: cost,
             cost,
             initialize: () => ({ state: {}, duration: { type: "INFINITE" } }),
-            accepts(battle, sourceRef) {
-                const source = sourceRef.get(battle);
+            accepts(battle, host) {
+                const unit = host.get(battle);
 
-                return source !== undefined && skillTargets(battle, source, range).some(() => true);
+                return unit !== undefined && skillTargets(battle, unit, range).some(() => true);
             },
             onStart(state, host) {
                 const unit = host.get(state);

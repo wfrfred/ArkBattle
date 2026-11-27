@@ -25,7 +25,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         initialize: (state) => ({ state, value: {} }),
         prepare: (state) => ({ state, value: {} }),
         onTick: state => state,
-        onEnd(state, _source, _self, end) {
+        onEnd(state, _source, _self, _action, end) {
             ended.push(end);
             return state;
         },

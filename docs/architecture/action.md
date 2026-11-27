@@ -24,7 +24,7 @@ Definition 提供基础时序、持久初始化、prepare、onTick 和可选 onE
 
 Content 在 Action Capability 的 `definitions` 中按顺序声明行动。Capability 装配时逐项接续 BattleState，执行 Definition 的持久初始化，并保存带就绪冷却和空执行槽位的 Action。`select` 仍由 Content 决定运行时选招。共享 Definition 的不同宿主分别产生私有状态。初始化期间宿主尚未登记，也不能假定兄弟能力已完成装配。
 
-`Definition<P, E, H>` 声明持久状态 `P`、执行状态 `E` 和额外宿主要求 `H`。`prepare`、`onTick` 和 `onEnd` 的 `source` 类型是 `Ref<Unit & ActionCapability & H>`。`prepare` 接收 `Action<P, E>`。`onTick` 和 `onEnd` 接收本轮 `Execution<E>`，并在末尾接收精确的 `Ref<Action<P, E>>`。结束原因在 `onEnd` 的第四个参数。只依赖 Action Capability 的程序可使用默认的 `H`。
+`Definition<P, E, H>` 声明持久状态 `P`、执行状态 `E` 和额外宿主要求 `H`。`prepare`、`onTick` 和 `onEnd` 的 `host` 类型是 `Ref<Unit & ActionCapability & H>`。`prepare` 接收 `Action<P, E>`。`onTick` 和 `onEnd` 接收本轮 `Execution<E>`，随后接收精确的 `Ref<Action<P, E>>`。结束结果是 `onEnd` 的最后一个参数。只依赖 Action Capability 的程序可使用默认的 `H`。
 
 Content 先声明具体的行动 Definition，再在具备所需能力的 Unit 配置中组装行动列表。`CapabilityDefinition<H>` 在组装处校验行动与宿主的配对，并为 `select` 提供对应的宿主类型。例如，声明了 `Offense` 的行动在查到宿主后可以直接读取攻击力。
 
@@ -34,7 +34,7 @@ prepare 检查本次内容条件、初始化执行数据并采样；返回 null 
 
 ## 4. 异构容器与两种引用身份
 
-行动以 Ref 为容器键登记，重复配置 ID 在创建边界拒绝。异构容器内部擦除 `P/E`，私有状态在普通容器视图中是 `object`。Battle 按配置 ID 选择并启动行动，按执行引用推进。Action Ref 读取持久 Action，Execution Ref 读取指定轮次。两种精确 Ref 都从 `ref.get(battle)` 恢复各自的私有类型。
+行动以 Ref 为容器键登记，重复配置 ID 在创建边界拒绝。实例以 `EraseCallbacks` 保存 Definition，真实派发时恢复配对。异构容器内部擦除 `P/E`，普通查询与操作的私有状态类型为 `object`。精确实例和 Ref 可以向默认类型泛化；持久状态及执行状态的精确写回保持各自的类型。Battle 按配置 ID 选择并启动行动，按执行引用推进。Action Ref 读取持久 Action，Execution Ref 读取指定轮次。两种精确 Ref 都从 `ref.get(battle)` 恢复各自的私有类型。
 
 持久 Action Ref 在装配时分配，跨多轮有效。每个 Execution 在启动时分配自己的 Ref。`ref(action)` 和 `ref(execution)` 取得已保存的对象，精度来自传入的实例。已知 Definition 时可用 Action 容器的 `get(definition)` 查找并恢复 `P/E`；已知 Ref 时直接以该 Ref 查询。`H` 由 Content 装配约束校验。`forUnit`、释放通知和取消命令使用擦除私有状态类型的 `ExecutionRef`，只凭该引用可以推进或结束指定轮次。旧引用只定位原轮次，执行 ID 由宿主单调分配以保留本宿主的启动顺序。ENDING 本轮在清空前仍可读，`hasExecution` 同期仍成立；查询时显式给出 Definition ID，传 null 表示查询任意行动。
 

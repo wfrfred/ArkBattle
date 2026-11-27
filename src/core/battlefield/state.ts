@@ -10,7 +10,7 @@ import type { TileOccupancy } from "./occupancy.js";
 export interface State {
     readonly map: TileMap;
     readonly units: ReadonlyMap<Ref<Unit>, Unit>;
-    readonly projectiles: Store<Ref<Projectile<object, any>>, Projectile<object, any>>;
+    readonly projectiles: Store<Ref<Projectile>, Projectile>;
     readonly navigation: navigation.State;
     readonly occupancy: ReadonlyMap<number, TileOccupancy>;
 }
@@ -24,7 +24,7 @@ export function create(map: TileMap): State {
     return {
         map,
         units: new Map<Ref<Unit>, Unit>(),
-        projectiles: Store.empty<Ref<Projectile<object, any>>, Projectile<object, any>>(),
+        projectiles: Store.empty<Ref<Projectile>, Projectile>(),
         occupancy: new Map(),
         navigation: state,
     };

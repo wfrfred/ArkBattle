@@ -33,21 +33,21 @@ export function create<H extends object = object>(
     return createWithState<object, State, H & SkillCapability>({
         ...definition,
         initialize: (battle) => ({ state: battle, value: {} }),
-        prepare(battle, source) {
-            const host = source.get(battle);
+        prepare(battle, host) {
+            const unit = host.get(battle);
 
             return {
                 state: battle,
                 value: {
                     activation:
-                        host !== undefined && host.skill.activation !== null
-                            ? activationRef(host.skill.activation)
+                        unit !== undefined && unit.skill.activation !== null
+                            ? activationRef(unit.skill.activation)
                             : null,
                 },
             };
         },
-        afterOutput(battle, source, self, action) {
-            battle = afterOutput?.(battle, source, self, action) ?? battle;
+        afterOutput(battle, host, self, action) {
+            battle = afterOutput?.(battle, host, self, action) ?? battle;
             const current = executionRef(self).get(battle);
             const activation = current?.state.data.activation;
             if (current?.lifecycle !== "ACTIVE" || activation == null) {

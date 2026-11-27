@@ -12,10 +12,10 @@ import * as deck from "./deck/operations.js";
 import * as dp from "./dp/operations.js";
 import * as slot from "./slot/operations.js";
 
-export type DeploymentCommand<T extends Card<any> = Card> =
+export type DeploymentCommand =
     | {
           readonly type: "DEPLOY_UNIT";
-          readonly ref: Ref<T>;
+          readonly ref: Ref<Card>;
           readonly tilePosition: TilePosition;
           readonly direction: Direction | null;
       }

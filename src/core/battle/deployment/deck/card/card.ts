@@ -12,6 +12,7 @@ import type { Definition as OccupancyDefinition } from "../../../../unit/capabil
 import type { Contribution } from "../../../../common/contribution.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Hooks } from "../../../../hook.js";
+import type { EraseCallbacks } from "../../../../common/callback.js";
 import type { Definition } from "./definition.js";
 import type * as dp from "./dp/index.js";
 import type { Restriction } from "./restriction.js";
@@ -34,7 +35,7 @@ export type Card<S extends object = object, P extends Policy = Policy> = {
 } & {
     [K in Policy]: Lifetime & {
         readonly policy: K;
-        readonly definition: Definition<S, K>;
+        readonly definition: EraseCallbacks<Definition<S, K>>;
         readonly dp: dp.State<K>;
         readonly supply: supply.State<K>;
         readonly unitDefinition: UnitDefinition;
@@ -47,10 +48,10 @@ export { ref } from "../../../../common/ref.js";
 
 export function setRestriction(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     entry: Contribution<Restriction>,
 ): BattleState {
-    const self: Card = reference.get(battle)!;
+    const self = reference.get(battle)!;
     const next = replaceIn(self, ["restrictions"], set(self.restrictions, entry));
 
     return next === self ? battle : replace(battle, next);
@@ -58,10 +59,10 @@ export function setRestriction(
 
 export function removeRestriction(
     battle: BattleState,
-    reference: Ref<Card<any>>,
+    reference: Ref<Card>,
     id: string,
 ): BattleState {
-    const self: Card = reference.get(battle)!;
+    const self = reference.get(battle)!;
     const next = replaceIn(self, ["restrictions"], remove(self.restrictions, id));
 
     return next === self ? battle : replace(battle, next);

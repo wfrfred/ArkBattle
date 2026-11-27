@@ -10,9 +10,10 @@ import {
     resolveAttackPeriod,
     dispatchBeforeRelease,
     dispatchReleased,
-    type Action,
     type ActionCapability,
     type Execution,
+    type ActionCallback,
+    type ExecutionCallback,
     type Definition as ActionDefinition,
     type Period,
 } from "../../core/unit/capability/action/index.js";
@@ -89,8 +90,7 @@ export interface Configuration<
     readonly triggerBindingId: string;
     readonly targetGroups: readonly [TargetGroup<H>, ...TargetGroup<H>[]];
     readonly followUps: readonly FollowUp<H>[];
-    readonly timing:
-        Timing | ((battle: BattleState, source: Source<H>, self: Action<P, State<E>>) => Timing);
+    readonly timing: Timing | ActionCallback<P, State<E>, H, Timing>;
 }
 
 export type Definition<
@@ -98,29 +98,14 @@ export type Definition<
     E extends object = object,
     H extends object = object,
 > = Configuration<P, E, H> & {
-    readonly onStart?: (
-        battle: BattleState,
-        source: Source<H>,
-        self: Execution<State<E>>,
-        action: Ref<Action<P, State<E>>>,
-    ) => BattleState;
-    readonly afterOutput?: (
-        battle: BattleState,
-        source: Source<H>,
-        self: Execution<State<E>>,
-        action: Ref<Action<P, State<E>>>,
-    ) => BattleState;
+    readonly onStart?: ExecutionCallback<P, State<E>, H>;
+    readonly afterOutput?: ExecutionCallback<P, State<E>, H>;
     readonly onEnd?: ActionDefinition<P, State<E>, H>["onEnd"];
 } & (
         | { readonly output?: undefined; readonly applyWay?: never }
         | {
               readonly applyWay: ApplyWay;
-              readonly output: (
-                  battle: BattleState,
-                  source: Source<H>,
-                  self: Execution<State<E>>,
-                  action: Ref<Action<P, State<E>>>,
-              ) => BattleState;
+              readonly output: ExecutionCallback<P, State<E>, H>;
           }
     );
 
@@ -130,11 +115,7 @@ export type StatefulDefinition<
     H extends object = object,
 > = Definition<P, E, H> & {
     readonly initialize: (battle: BattleState) => Result<P>;
-    readonly prepare: (
-        battle: BattleState,
-        source: Source<H>,
-        self: Action<P, State<E>>,
-    ) => Result<E>;
+    readonly prepare: ActionCallback<P, State<E>, H, Result<E>>;
 };
 
 export interface State<S extends object = object> {
@@ -163,23 +144,23 @@ function isSourceActive(battle: BattleState, source: Ref<Unit>): boolean {
 
 export function faceTarget<E extends object>(
     battle: BattleState,
-    source: Ref<Unit>,
+    host: Ref<Unit>,
     self: Execution<State<E>>,
 ): BattleState {
-    const host = source.get(battle);
+    const unit = host.get(battle);
     const target = self.state.target.get(battle);
     if (
-        host === undefined ||
-        !hasFacing(host) ||
+        unit === undefined ||
+        !hasFacing(unit) ||
         target === undefined ||
-        Vec2.distanceSquared(host.position, target.position) <= 0.04
+        Vec2.distanceSquared(unit.position, target.position) <= 0.04
     ) {
         return battle;
     }
 
-    const direction = fromVector(Vec2.sub(target.position, host.position));
+    const direction = fromVector(Vec2.sub(target.position, unit.position));
 
-    return direction === null ? battle : turn(battle, units.ref(host), direction);
+    return direction === null ? battle : turn(battle, units.ref(unit), direction);
 }
 
 export function chooseTargets<P extends object, E extends object, H extends object>(
@@ -378,26 +359,26 @@ export function createWithState<P extends object, E extends object, H extends ob
         period: definition.period,
         attack: configuration,
         initialize: definition.initialize,
-        prepare(battle, source, self) {
-            const selected = chooseTargets(battle, source, definition);
+        prepare(battle, host, self) {
+            const selected = chooseTargets(battle, host, definition);
             battle = selected.state;
-            const unit = source.get(battle);
+            const unit = host.get(battle);
             const bindings = selected.value;
             const target = bindings[definition.triggerBindingId]?.[0];
             if (unit === undefined || target === undefined) {
                 return { state: battle, value: null };
             }
 
-            const initialized = definition.prepare(battle, source, self);
+            const initialized = definition.prepare(battle, host, self);
             const current = ref(self).get(initialized.state);
-            const host = source.get(initialized.state);
-            if (current === undefined || host === undefined) {
+            const currentUnit = host.get(initialized.state);
+            if (current === undefined || currentUnit === undefined) {
                 return { state: initialized.state, value: null };
             }
 
             const input =
                 typeof definition.timing === "function"
-                    ? definition.timing(initialized.state, source, current)
+                    ? definition.timing(initialized.state, host, current)
                     : definition.timing;
             if (typeof definition.timing === "function") {
                 timing.validate(input);
@@ -408,7 +389,11 @@ export function createWithState<P extends object, E extends object, H extends ob
                 value: {
                     target,
                     bindings,
-                    timing: timing.sample(input, resolveAttackPeriod(host), initialized.state.tick),
+                    timing: timing.sample(
+                        input,
+                        resolveAttackPeriod(currentUnit),
+                        initialized.state.tick,
+                    ),
                     released: false,
                     previousReadyAtTick: current.cooldown.readyAtTick,
                     cooldownAdjusted: false,
@@ -416,7 +401,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 },
             };
         },
-        onTick(battle, source, self, action) {
+        onTick(battle, host, self, action) {
             const identity = ref(self);
 
             if (!self.state.cooldownAdjusted) {
@@ -437,18 +422,18 @@ export function createWithState<P extends object, E extends object, H extends ob
                 battle = appendEvents(battle, [
                     {
                         type: "ATTACK_STARTED",
-                        sourceUnitId: source.id,
+                        sourceUnitId: host.id,
                         targetUnitId: self.state.target.id,
                         tick: battle.tick,
                     },
                 ]);
-                battle = definition.onStart?.(battle, source, self, action) ?? battle;
+                battle = definition.onStart?.(battle, host, self, action) ?? battle;
 
                 const current = identity.get(battle);
                 if (current?.lifecycle !== "ACTIVE") {
                     return battle;
                 }
-                if (!isSourceActive(battle, source)) {
+                if (!isSourceActive(battle, host)) {
                     return actions.cancel(battle, identity, "SOURCE_ABSENT");
                 }
 
@@ -457,14 +442,14 @@ export function createWithState<P extends object, E extends object, H extends ob
 
             const beginUntilTick = self.state.timing.beginUntilTick;
             if (!self.state.released && beginUntilTick !== null && battle.tick >= beginUntilTick) {
-                const host = source.get(battle);
-                if (host === undefined) {
+                const unit = host.get(battle);
+                if (unit === undefined) {
                     return battle;
                 }
 
                 const progressed = timing.advance(
                     self.state.timing,
-                    resolveAttackPeriod(host),
+                    resolveAttackPeriod(unit),
                     self.startedAtTick,
                     battle.tick,
                 );
@@ -490,7 +475,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 if (current?.lifecycle !== "ACTIVE") {
                     return battle;
                 }
-                if (!isSourceActive(battle, source)) {
+                if (!isSourceActive(battle, host)) {
                     return actions.cancel(battle, identity, "SOURCE_ABSENT");
                 }
                 if (permission.value.type === "INTERRUPT") {
@@ -507,7 +492,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 battle = appendEvents(battle, [
                     {
                         type: "ACTION_RELEASED",
-                        sourceUnitId: source.id,
+                        sourceUnitId: host.id,
                         tick: battle.tick,
                     },
                 ]);
@@ -518,12 +503,12 @@ export function createWithState<P extends object, E extends object, H extends ob
                 if (output?.lifecycle !== "ACTIVE") {
                     return battle;
                 }
-                if (!isSourceActive(battle, source)) {
+                if (!isSourceActive(battle, host)) {
                     return actions.cancel(battle, identity, "SOURCE_ABSENT");
                 }
 
                 if (definition.output !== undefined) {
-                    battle = definition.output(battle, source, output, action);
+                    battle = definition.output(battle, host, output, action);
                 } else {
                     for (const group of definition.targetGroups) {
                         for (const operation of group.operations) {
@@ -532,19 +517,19 @@ export function createWithState<P extends object, E extends object, H extends ob
                                     return battle;
                                 }
 
-                                battle = apply(battle, source, target, operation);
+                                battle = apply(battle, host, target, operation);
                             }
                         }
                     }
                     for (const followUp of definition.followUps) {
                         for (const target of followUp.receiver.type === "SOURCE"
-                            ? [source]
+                            ? [host]
                             : (output.state.bindings[followUp.receiver.bindingId] ?? [])) {
                             if (identity.get(battle)?.lifecycle !== "ACTIVE") {
                                 return battle;
                             }
 
-                            battle = apply(battle, source, target, followUp.operation);
+                            battle = apply(battle, host, target, followUp.operation);
                         }
                     }
                 }
@@ -555,7 +540,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                 }
 
                 if (definition.afterOutput !== undefined) {
-                    battle = definition.afterOutput(battle, source, completed, action);
+                    battle = definition.afterOutput(battle, host, completed, action);
                 }
             }
 

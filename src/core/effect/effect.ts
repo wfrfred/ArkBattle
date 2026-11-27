@@ -1,6 +1,7 @@
 import type { Unit } from "../unit/unit.js";
 import type { State as BattleState } from "../battle/state.js";
 import type { Definition, StackDefinition } from "./definition.js";
+import type { EraseCallbacks } from "../common/callback.js";
 import { createRef, type Ref } from "../common/ref.js";
 import type { Config, Lifetime } from "../lifetime/index.js";
 import type { Expiration } from "./expiration.js";
@@ -18,7 +19,7 @@ export interface Effect<
 > extends Lifetime<{ readonly host: HostRef<H> }> {
     readonly config: Config<Effect, string>;
     readonly id: Id;
-    readonly definition: Definition<S, H, never>;
+    readonly definition: EraseCallbacks<Definition<S, H>>;
     readonly state: S;
     readonly source: Ref<Unit> | null;
     readonly partition: Ref<Lifetime> | null | "SHARED";
@@ -31,7 +32,7 @@ export interface StackEffect<
     S extends object = object,
     H extends Lifetime | null = Lifetime | null,
 > extends Effect<S, H> {
-    readonly definition: StackDefinition<S, H, never>;
+    readonly definition: EraseCallbacks<StackDefinition<S, H>>;
     readonly stackCount: number;
 }
 

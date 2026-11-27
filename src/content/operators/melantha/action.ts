@@ -63,14 +63,14 @@ export function create({ range, timing }: AttackParameters): Attack<State, objec
         id: "normal-attack",
         initialize: (battle) => ({ state: battle, value: { inSession: false } }),
         prepare: (battle) => ({ state: battle, value: {} }),
-        timing: (_battle, _source, self) =>
+        timing: (_battle, _host, self) =>
             self.state.inSession ? { ...timing, beginTicks: 0 } : timing,
-        onStart(battle, source, self, action) {
+        onStart(battle, host, self, action) {
             battle = setState(battle, action, { inSession: true });
 
-            return faceTarget(battle, source, self);
+            return faceTarget(battle, host, self);
         },
-        onEnd: (battle, _source, _self, end, action) =>
+        onEnd: (battle, _host, _self, action, end) =>
             end.type === "CANCELLED" ? setState(battle, action, { inSession: false }) : battle,
         period: { type: "ATTACK_SPEED" },
         triggerBindingId: "primary",

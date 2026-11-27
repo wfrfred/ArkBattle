@@ -71,7 +71,7 @@ test("prepare can reject without allocating a round; ending preserves the latest
             state = actions.setExecutionState(state, reference, { advances });
             return advances === 2 ? actions.finish(state, reference) : state;
         },
-        onEnd(state, source, self, end, action) {
+        onEnd(state, source, self, action, end) {
             const reference = actions.ref(self);
             state = actions.setExecutionState(state, reference, {
                 ...self.state,

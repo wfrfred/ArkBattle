@@ -32,7 +32,7 @@ export function install<S extends object, H extends Lifetime | null>(
 export function install(
     battle: BattleState,
     host: HostRef,
-    definition: Definition<object, Lifetime | null, never>,
+    definition: Effect["definition"],
     initial: Initial,
 ): Result<Ref<Effect> | null> {
     const { source, scopes, expiration, enabled } = initial;

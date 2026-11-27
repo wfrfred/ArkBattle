@@ -1,4 +1,4 @@
-export type { Definition } from "./definition.js";
+export type { Definition, SkillCallback } from "./definition.js";
 
 export { ref } from "../../../common/ref.js";
 
@@ -11,6 +11,7 @@ export type {
     Initial as ActivationInitial,
     Parameters as ActivationParameters,
     Definition as ActivationDefinition,
+    ActivationCallback,
     Activation,
     ActivationRef,
 } from "./activation.js";
