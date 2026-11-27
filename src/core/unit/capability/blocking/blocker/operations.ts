@@ -8,8 +8,8 @@ import * as units from "../../../query.js";
 import { resolveCapacity, type Blocker } from "./blocker.js";
 
 export const removing: RemovingHook = {
-    id: "@blocker/prepare",
-    priority: 0,
+    id: "@blocker/removing",
+    priority: 1000,
     invoke: (battle, { unit }) => ({
         state: releaseAll(battle, units.ref(unit as Unit & Blocker)),
         value: undefined,

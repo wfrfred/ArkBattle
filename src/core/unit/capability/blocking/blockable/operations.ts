@@ -14,8 +14,8 @@ import { replaceIn } from "../../../../common/object.js";
 const BLOCK_OFFSET_TICKS = 0.2 * TICKS_PER_SECOND;
 
 export const removing: RemovingHook = {
-    id: "@blockable/prepare",
-    priority: 0,
+    id: "@blockable/removing",
+    priority: 1000,
     invoke: (battle, { unit }) => ({
         state: release(battle, units.ref(unit as Unit & Blockable)),
         value: undefined,

@@ -20,7 +20,7 @@ ID 的范围是集合 × Key × ID。无登记返回空集合；同键同 ID 的
 
 ## 固有声明与初始化
 
-Definition、创建输入与 Unit 使用同一种 Hooks 集合，无登记使用 Hooks.empty()。初始化从输入集合开始，按 Capability initializer 顺序装配，最后合并 Definition.hooks；全部固有登记在 add 与 entered 之前就绪。当前 Blocker／Blockable 的 removing 固有登记先于输入集合合并，存在同级顺序及同 ID 覆盖例外；此差异见[一致性审查](consistency-audit-20261127.md#待取舍)，尚不将其定为通用规则。
+Definition、创建输入与 Unit 使用同一种 Hooks 集合，无登记使用 Hooks.empty()。初始化从输入集合开始，按 Capability initializer 顺序装配，最后合并 Definition.hooks；全部固有登记在 add 与 entered 之前就绪。固有 Hook 使用通常的 set 登记，业务先后由 priority 明确表达，不通过改变集合装配顺序实现。
 
 固有 Hook 可以直接声明，不必包装 Effect。Card 持有自身的 Hooks，从 Definition.hooks 装配，通过 `card.beforeDeploy` 调整本次 Unit.Input；工作值可调整 definition、initial 和 hooks，不复制 Card 的 Hooks，也不提前保存一组 Unit 程序。
 
@@ -61,7 +61,7 @@ Unit 本地 `entered` 从 Battle 级入场程序完成后的最新 Unit 采样�
 
 普通 HIT 回复与伤判共用 hp.decrease.receiving；HIT 约定采用 10000 量级高优先级并原样返回工作值，普通伤判通常为 0。数值是内容顺序约定，不建立强制分区或额外派发轮次。HP 的普通 beforeReceive 保留业务专属 Key，准入后的 receiving 与来源 beforeCommit 按 HP 减少／增加方向共享；方向 Context 的 type 区分普通伤疗及 Adjustment，内容自行判断适用性。
 
-HP decrease 的临时 removing Hook 与 targetKilled 顺序由 [Resource](resource.md)规定；公共 Hook 不自动添加击杀程序。
+HP decrease 的临时 removing Hook 与 targetKilled 顺序由 [Resource](resource.md)规定；公共 Hook 不自动添加击杀程序。Blocking 的固有 removing 使用 priority 1000，位于 priority 10000 的击杀通知之后、priority 0 的普通离场程序之前，仍遵守公共排序。
 
 ## 本次调用的 Hook 排除
 

@@ -8,7 +8,7 @@ import type { Restriction } from "../restriction.js";
 import { settleRestrictions } from "../../../../battle/blocking/operations.js";
 import type { WorldPosition } from "../../../../geometry/coordinate.js";
 import { removing } from "./operations.js";
-import { Hooks as UnitHooks, key } from "../../../../hook.js";
+import { key } from "../../../../hook.js";
 import { removing as removingKey } from "../../../hook.js";
 import { createRegistrationOperations } from "../../../registration.js";
 import type { Change } from "../../../change.js";
@@ -64,7 +64,7 @@ export function initialize<U extends Unit & Pick<Blockable, "definition">>(
 
     const value: U & Blockable = {
         ...unit,
-        hooks: UnitHooks.empty().set(removingKey, removing).merge(unit.hooks),
+        hooks: unit.hooks.set(removingKey, removing),
         blockable: {
             relation: null,
             offset: null,

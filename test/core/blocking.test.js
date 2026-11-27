@@ -291,8 +291,17 @@ test("layer and blocking rule settlements release current relations acquired by 
 });
 
 test("own layer requests release current relations before hooks, including same-value requests", () => {
+    let removalObserved = false;
     let state = battle([
-        { definition: { ...blocker, layer: { type: "GROUND" } }, hooks: Hooks.empty(), initial: {}, position: [2, 1] },
+        { definition: { ...blocker, layer: { type: "GROUND" } }, hooks: Hooks.empty().set(units.removing, {
+            id: "observe-departure", priority: 0,
+            invoke(current, departure) {
+                removalObserved = true;
+                assert.equal(departure.unit.blocker.relations.length, 2);
+                assert.deepEqual(blocking.blocked(current, units.ref(departure.unit)), []);
+                return { state: current, value: undefined };
+            },
+        }), initial: {}, position: [2, 1] },
         { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.1, 1] },
         { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.2, 1] },
     ]);
@@ -360,6 +369,7 @@ test("own layer requests release current relations before hooks, including same-
         }));
     state = unit.remove(state, owner, { reason: "SCRIPT" });
     assert.equal(removedNotifications, 2);
+    assert.equal(removalObserved, true);
     assert.ok(targets.every((target) => blocking.blockerOf(state, target) === undefined));
 });
 

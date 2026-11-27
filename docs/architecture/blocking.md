@@ -91,6 +91,8 @@ maintain 先确认同一个 Relation 仍存在，再检查当前双方；失效�
 
 每条通知先 Blocker、后 Blockable，不跨两方比较 Hook priority。ACQUIRED 每项执行前确认原 Relation 仍有效；Hook 解除旧关系后，外层停止旧取得的后续响应，同双方重建也不能恢复它。
 
+Unit 离场时，两侧固有 removing 均使用 priority 1000，在 HP 的 targetKilled（10000）之后、普通 removing（0）之前解除本端关系。普通离场程序读取的是已经解除阻挡的当前战场；`Departure.unit` 仍保留首次结束请求时的历史快照。
+
 RELEASED 是解除后的历史通知，不要求旧关系仍存在，允许仍登记的 ENDING 宿主响应。两端的候选及优先级在该条通知开始时一起固定，登记替换、嵌套和优先级遵守[公共 Hook](hook.md)。后续关系轮到时才采样，不提前冻结整批通知。
 
 ## 查询、Hook 与 Runtime 接入

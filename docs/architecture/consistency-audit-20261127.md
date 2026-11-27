@@ -18,16 +18,11 @@
 | 不存在的业务状态 | EP Healing Pending 恒带 `cancellation:null`，但该业务没有取消协议 | 仅保留 amount，不新增虚构的判别状态。[EP Healing](../../src/core/battle/resource/ep/healing/contract.ts) |
 | 不可变字段写回 | Card 的 Hook/Restriction 手写同一叶字段替换；Targetable 独有无用 readonly 数组复制 | 具体 Card 使用 `replaceIn`，保留原 no-op 行为；Targetable 与其他 Capability 一样共享不可变初值。 |
 | 实例与 Definition 类型擦除 | Card、Action 等使用宽化补丁、不变性或 Identity 视图；回调参数契约分散 | [公共 EraseCallbacks](../../src/core/common/callback.ts) 选择性擦除回调输入，构造保留原始 Definition 检查，普通访问默认 object；移除 Execution／Activation Identity 和无实际配对职责的部署请求泛型，Effect 子类型 Burst 与爆发表同步迁移。统一同义 Callback 声明、宿主参数和结束回调参数顺序。 |
+| Blocking 固有 removing | 通过前置集合合并改变同级执行及同 ID 覆盖顺序 | 两侧固有 Hook 统一使用普通 set、priority 1000；击杀通知先于解除阻挡，普通离场程序读取解除后的实时关系。历史事实来自 Departure 快照。[Blocking 顺序](blocking.md#两侧通知顺序) |
 
 相关[接口约定](api-conventions.md)与领域文档已迁移。不为这些等价迁移新增长期测试用例。
 
 ## 待取舍
-
-### 2. Blocking 固有 Hook 的顺序（优先）
-
-[Blocker](../../src/core/unit/capability/blocking/blocker/blocker.ts)、[Blockable](../../src/core/unit/capability/blocking/blockable/blockable.ts) 初始化用 `Hooks.empty().set(...).merge(unit.hooks)` 前置固有 removing；Deployable、Skill、Route、Occupancy 则在现有集合上 set。两侧 Blocking 固有 Hook 都是 priority 0。因此前者改变同级执行顺序，以及同 ID 的输入／固有登记覆盖方向。阻挡释放会派发同步通知，顺序差异可被观察，不能直接换成 set。
-
-需要决定是否有明确业务理由让解除阻挡早于输入的同级 removing；若有，推荐以实际优先级明确表达，而非隐藏在装配方式里；若无，统一通常的登记方式。现有 Hook／Capability 文档原先没有描述例外，已标明待决事实，不把例外定成规范。
 
 ### 3. 完整操作与 Change 的文件归属
 

@@ -17,7 +17,7 @@ import type { Relation, Hook } from "../contract.js";
 import type { Restriction } from "../restriction.js";
 import { settleRestrictions } from "../../../../battle/blocking/operations.js";
 import { removing, releaseAll, settleCapacity } from "./operations.js";
-import { Hooks as UnitHooks, key } from "../../../../hook.js";
+import { key } from "../../../../hook.js";
 import { removing as removingKey } from "../../../hook.js";
 
 export type Modifier = { readonly type: "ADD"; readonly value: number } | { readonly type: "ZERO" };
@@ -93,7 +93,7 @@ export function initialize<U extends Unit & Pick<Blocker, "definition">>(
         state: battle,
         value: {
             ...unit,
-            hooks: UnitHooks.empty().set(removingKey, removing).merge(unit.hooks),
+            hooks: unit.hooks.set(removingKey, removing),
             blocker: {
                 relations: [],
                 capacity: [],
