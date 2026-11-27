@@ -114,7 +114,7 @@ Calculate 与 Apply 分别接受必填的 Options 或 ApplyOptions；`null` 表�
 
 ignore 不绕过 ACTIVE、存活、Burst 或中立默认前提。HP Restriction 接收实际 ReceivingContext，EP 接收 `{self, request, type}`，实际 type 来自 Calculated；不为索敌伪造计算结果。HP Healing 没有接收限制数组，EP Healing 保留自己的 healingRestrictions，均不增加本次 ignore；EP Healing 也没有 forbidden。
 
-Hook 的固定 Context、priority、候选快照与重入资格只在 [Hook](hook.md) 定义。sourceFormula／targetFormula、targetApplied／sourceApplied 是不同角色；同一 Unit 承担两个角色仍分别 Applied，HP Damage／Healing 的 Completed 对同一宿主只通知一次；当前 EP Damage／Healing 不派发 Completed。是否需要 EP 的完成通知见[一致性审查](consistency-audit-20261127.md#待取舍)。
+Hook 的固定 Context、priority、候选快照与重入资格只在 [Hook](hook.md) 定义。sourceFormula／targetFormula、targetApplied／sourceApplied 是不同角色；同一 Unit 承担两个角色仍分别 Applied，HP Damage／Healing 的 Completed 对同一宿主只通知一次；EP Damage／Healing 不派发 Completed：正变化由 `damaged`／`healed` 通知，调用者直接取得最终 Outcome；没有独立业务需求时不为接口对称性增加失败、取消或完成通知。
 
 ## 有符号 HP 调整
 

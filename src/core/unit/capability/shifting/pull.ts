@@ -38,7 +38,6 @@ export interface Pull extends lifetimes.Lifetime<{
 }> {
     readonly config: lifetimes.Config<Pull, string>;
     readonly lifecycle: "ACTIVE" | "ENDING";
-    readonly scope: Ref<lifetimes.Lifetime>;
     readonly point: Point;
     readonly maxForce: number;
     readonly initialDistance: number;
@@ -139,7 +138,6 @@ export function apply(
         ref: reference,
         config,
         lifecycle: "ACTIVE",
-        scope: input.scope,
         point: input.point,
         maxForce,
         initialDistance: Vec2.length(Vec2.sub(point, unit.position)),
