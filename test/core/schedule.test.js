@@ -7,7 +7,7 @@ import { all, ref } from "../../dist/core/unit/query.js";
 import { add, remove } from "../../dist/core/unit/operations.js";
 import { initialize } from "../../dist/core/unit/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
-import { isCompleted, timing, triggerBranch, releaseFromWave } from "../../dist/core/battle/schedule/index.js";
+import { isCompleted, timing, triggerBranch, registerWait, releaseFromWave } from "../../dist/core/battle/schedule/index.js";
 import { battle, get as getUnit } from "../helpers/battle.js";
 
 const plan = {
@@ -187,7 +187,7 @@ test("a weighted branch operation can wait past its due tick and see the latest 
     assert.equal(isCompleted(state.schedule), true);
 });
 
-test("wait policies publish before the entered hook and timeout leaves final waits until complete removal", () => {
+test("scheduled and dynamic births publish waits before entered; timeout leaves final waits until complete removal", () => {
     const entries = [];
     const observe = (state, self) => {
         entries.push({
@@ -197,6 +197,14 @@ test("wait policies publish before the entered hook and timeout leaves final wai
         });
         return state;
     };
+    const summon = (state, self) => {
+        const created = initialize(observe(state, self), {
+            definition: definition("wave", observe), hooks: Hooks.empty(),
+            position: self.position,
+            initial: { route: { plan, offset: [0, 0] }, locomotion: { mode: "WALK" } },
+        });
+        return add(registerWait(created.state, ref(created.value), "WAVE"), created.value);
+    };
     let state = step(
         create({
             waves: [
@@ -204,8 +212,7 @@ test("wait policies publish before the entered hook and timeout leaves final wai
                     [
                         fragment([
                             spawn(definition("unmanaged", observe), 0, "NONE"),
-                            spawn(definition("final", observe), 0, "FINAL"),
-                            spawn(definition("wave", observe), 0, "WAVE"),
+                            spawn(definition("final", summon), 0, "FINAL"),
                         ]),
                     ],
                     { maxWaitingTicks: 2, postDelayTicks: 2 },

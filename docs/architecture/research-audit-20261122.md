@@ -8,7 +8,6 @@
 
 | 事项 | 当前状态 | 领域与依据 |
 | --- | --- | --- |
-| 动态出生参与调度等待（U048） | 待接入 | [Schedule](research-necessity-20261122.md#schedule) |
 | 波次和终局等待的释放时点（U047） | 待定 | [Schedule](research-necessity-20261122.md#schedule) |
 | 全局个体结算计数 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
 | 关卡生命值 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
@@ -65,9 +64,7 @@
 
 | 编号 | 初次盘点的问题 | 当前状态 | 来源 |
 | --- | --- | --- | --- |
-| U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **已结案。** Core 提供实时自主运动意图查询 `locomotion.isMoving(battle, self)`，用于重艇和凶豕兽的自主运动资格，受力位移或残留速度不能代替。该项目政策不与原生 state／hanging 逐帧等同；具体技能由内容绑定。 | [Locomotion](navigation.md#locomotion) · [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
 | U047 | useRecycleToFinishScheduler 等运行动态配置的当前有效取值和实际等待差异 | **待定。** 普通 0-1 已区分死亡解波次等待与回收解终局等待，待决定是否由 Schedule 分开承载。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L136) |
-| U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **待接入。** 已确认动态出生要登记当前波次、终局或两处等待，缺少普通动态创建后的登记入口。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) |
 
 ### 原 Core 候选的其他复核结论
 
@@ -112,6 +109,7 @@
 | U016 | 支持玩法中是否有实际推拉接触需要检测非地图实体的动态碰撞体 | 已有表达。已核地图碰撞用 Tile collider 和 Shifting。动态单位碰撞仍缺支持范围内正例。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L224) |
 | U017 | 是否存在施力者已经失效却仍能创建普通持续牵引的实际内容 | 已有表达。暗索等牵引用有效来源及弹道 Scope。失效来源仍创建持续牵引的正例未证。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L251) |
 | U018 | 排除阵地足球后，是否存在地形或内容需要组合多个同时有效的加法摩擦修正 | 已有表达。SN-5 和 BI-TR-2 可设定和恢复摩擦。多个同时有效的加法来源只见于足球对照。 | [Case 15](../research/cases/15-locomotion-native-semantics.md#L287) |
+| U019 | 支持玩法的实际内容是否分别绑定刚体运动状态查询和自主运动状态查询，并产生不同结果 | **已结案。** Core 提供实时自主运动意图查询 `locomotion.isMoving(battle, self)`，用于重艇和凶豕兽的自主运动资格，受力位移或残留速度不能代替。该项目政策不与原生 state／hanging 逐帧等同；具体技能由内容绑定。 | [Locomotion](navigation.md#locomotion) · [Case 15](../research/cases/15-locomotion-native-semantics.md#L335) |
 | U020 | 弹道反射或实际施法来源替换时，来源、属性采样与归属如何变化 | 已有表达。已核来源与采样可保存在弹道私有 State。反射时阵营或弹道身份改变继续按实例核对。 | [Case 18](../research/cases/18-projectile-source-and-target-lifecycles.md#L200) |
 | U025 | 普通 QUEUED 归队实际哪些状态、调用实参和顺序会重置现行恢复时钟 | 已有表达。普通中继器追加恢复份数时保留本段，下段重新采样周期。显式归零可操作当前段。已核普通 Card 使用一条计时。 | [队列恢复](../research/cases/24-deployment-cost-and-supply.md#多份队列恢复的预算采样) · [同卡计时](../research/cases/24-deployment-cost-and-supply.md#同一张-card-的计时器) |
 | U026 | 银灰 X 模组临时再部署修正解除后是否回滚已运行冷却 | 已有表达。银灰 X 的修正解除只改变后续周期，已开始的计时段保留。 | [计时证据](../research/evidence/card-rules-20261122/README.md#再部署计时) |
@@ -130,6 +128,7 @@
 | U041 | BeforeStart 起步窗口是否有真实可达的第二轮并行爆发，现仅有静态重入窗口 | 已有表达。酒神实际发出延迟命中的弹道，用爆发通知创建 Projectile 即可。同宿主同步第二轮仍缺正例。 | [Case 25](../research/cases/25-elemental-burst-recovery-timing.md#L200) |
 | U042 | 妮芙的 EP 后继和其他伤后观察者相对顺序是否改变可达结果 | 已有表达。妮芙可读取提交前的爆发状态，按接收量给仍存活的目标附加 EP。公共结算顺序已定。 | [Case 27](../research/cases/27-attack-additions-and-damage-events.md#L156) |
 | U044 | 是否存在独立抵挡通知或区分两种 BLOCKED 的实际后继（含 Case 38） | 已有表达。星熊 Y2／Y3 消费成功抵挡，现有接收 Hook 可区分其结果。 | [Case 28](../research/cases/28-damage-hooks-and-event-granularity.md#L48) |
+| U048 | 外部召唤或动态 Branch 生成是否实际需要登记到当前波次等待。卫戍 dragon 的触发条件纳入这一链 | **已结案。** 计划和动态出生均使用 `registerWait`，在 Unit.add 前按 NONE／FINAL／WAVE 登记。等待关系的释放时点仍按 U047 独立处理。 | [Case 30](../research/cases/30-scheduler-action-data-fields.md#L182) · [Schedule](schedule.md#等待关系与生命周期) |
 | U049 | acfnc 等保留原巡逻再插点的可达链和真实巡逻回边 | 已有表达。「假想敌：械」的实际 MOVE 插入可用 Route.reassign。需要同时保留旧巡逻或 WAIT 的正例未证。 | [Case 31](../research/cases/31-route-operations-and-state.md#L139) |
 | U051 | Trace 短距预测在消失、隐藏等目标资格变化时的接续与到达后继 | 已有表达。Trace 可分别保存地块和目标，离场重选沿用现有入口。隐藏目标后的具体行为仍待内容证据。 | [Case 32](../research/cases/32-leithanien-summons-blocking-and-movement.md#L83) |
 | U052 | MultiSpine 延后发布有效朝向是否影响一项实际玩法 | 按内容核对。已核延迟发布路径和实际朝向消费者，两者在同一机制的绑定仍未证。 | [Case 35](../research/cases/35-facing-and-turning-conditions.md#L75) |

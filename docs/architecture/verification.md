@@ -96,10 +96,10 @@
 | [函数式内核 · 正常取消与失败](functional-core.md#正常取消与失败) | [Tick 各阶段接续已发布资源，后继异常不污染输入版本，无调度计划仍可正常推进战斗](../../test/core/runtime.test.js#L118) |
 | [Skill · 5. 发动与完整结束](skill.md#5-发动与完整结束) | [命令 MANUAL 检查触发类型而不抑制 AUTO 或 PASSIVE，显式发动可按程序启动 AUTO](../../test/core/runtime.test.js#L168) |
 | [Schedule · 调度时间](schedule.md#调度时间) | [主线待重试操作不快进本队列，其他队列照常推进，目标出现后待重试和已到期后继继续接续](../../test/core/schedule.test.js#L91) |
-| [Schedule · 从 Spawn 到 Unit](schedule.md#从-spawn-到-unit) | [波次和片段前延迟决定实际出生 Tick，出生位置和 Route 使用同一偏移样本](../../test/core/schedule.test.js#L56)<br>[出生已登记的等待在该 Unit 的 entered 立即移除自身时同步释放，允许下一波按时出生](../../test/core/schedule.test.js#L295) |
-| [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [已抽中的 Branch 操作可保留到过期后，使用实际出现的新目标完成该实例](../../test/core/schedule.test.js#L148)<br>[Branch 在 entered 中触发后继 Phase 能读到已发布索引，外层旧 Phase 后继保留](../../test/core/schedule.test.js#L328)<br>[循环重入时重新抽选并在 entered 前发布 RNG，各次实例保存自己已选择的后续条目](../../test/core/schedule.test.js#L369) |
-| [Schedule · Route 的主流程时间上下文](schedule.md#route-的主流程时间上下文) | [动态出生取得主线 Wave 和 Fragment 时基快照，之后 Route 的绝对等待按其出生时基推进](../../test/core/schedule.test.js#L420) |
-| [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [出生的等待先于 entered 可见，Wave 超时只清前进等待，最终等待在对应 Unit 完成离场后解除](../../test/core/schedule.test.js#L190)<br>[活 Unit 可只撤销自身 Wave 等待，操作本身不推进，也保留实例和最终等待](../../test/core/schedule.test.js#L262) |
+| [Schedule · 从 Spawn 到 Unit](schedule.md#从-spawn-到-unit) | [波次和片段前延迟决定实际出生 Tick，出生位置和 Route 使用同一偏移样本](../../test/core/schedule.test.js#L56)<br>[出生已登记的等待在该 Unit 的 entered 立即移除自身时同步释放，允许下一波按时出生](../../test/core/schedule.test.js#L302) |
+| [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [已抽中的 Branch 操作可保留到过期后，使用实际出现的新目标完成该实例](../../test/core/schedule.test.js#L148)<br>[Branch 在 entered 中触发后继 Phase 能读到已发布索引，外层旧 Phase 后继保留](../../test/core/schedule.test.js#L335)<br>[循环重入时重新抽选并在 entered 前发布 RNG，各次实例保存自己已选择的后续条目](../../test/core/schedule.test.js#L376) |
+| [Schedule · Route 的主流程时间上下文](schedule.md#route-的主流程时间上下文) | [动态出生取得主线 Wave 和 Fragment 时基快照，之后 Route 的绝对等待按其出生时基推进](../../test/core/schedule.test.js#L427) |
+| [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [计划与 entered 中动态出生的等待均先于各自 entered 可见，Wave 超时只清前进等待，最终等待在对应 Unit 完成离场后解除](../../test/core/schedule.test.js#L190)<br>[活 Unit 可只撤销自身 Wave 等待，操作本身不推进，也保留实例和最终等待](../../test/core/schedule.test.js#L269) |
 | [Navigation · 格图查询](navigation.md#格图查询) | [后继格查询遵循通行方式；路径含起终格并沿平滑后继链跳过中间格](../../test/core/battlefield.test.js#L85) |
 | [Route · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [跨格 MOVE 用原格决定后继与不可达，末段仍为实际偏移目标；路线剩余距离保留该区分，直接抵达段保持欧氏长度](../../test/core/navigation/route.test.js#L67) |
 | [Route · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [路线剩余距离按身体偏移投影修正首段、使用导航几何长度且排除瞬移路段，不用搜索代价](../../test/core/navigation/route.test.js#L42) |

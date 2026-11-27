@@ -26,7 +26,7 @@ Operation 包含相对时刻 `atTick` 和 `execute(battle): Result<boolean>`。�
 
 initialize 建立初始主线、Branch 索引和空等待；无 Wave 时主线直接完成，尚无历史的时基为零。isCompleted 只读推导主线完成、活动 Phase 为空且 final 等待为空，不裁决战斗胜负。
 
-advance 推进主线与已有活动 Phase；triggerBranch 触发一个 Phase，loop 仅决定末尾选择是否回首；resolveUnits 按已离场的 Unit Ref 释放两个集合关系；releaseFromWave 只解除指定活 Unit 的 wave 等待。后两者不隐式 advance，不移除 Unit 或改变计数。
+advance 推进主线与已有活动 Phase；triggerBranch 触发一个 Phase，loop 仅决定末尾选择是否回首；registerWait 按 Wait 为一次出生登记 Unit Ref；resolveUnits 按已离场的 Unit Ref 释放两个集合关系；releaseFromWave 只解除指定活 Unit 的 wave 等待。等待登记与解除不隐式 advance，不移除 Unit 或改变计数。
 
 Battle 初始化登记全局 `battle.unit.removed` 反馈，任意完整 Unit 离场同步释放等待；通用 Unit 生命周期不依赖 Schedule。
 
@@ -50,7 +50,7 @@ Battle 初始化登记全局 `battle.unit.removed` 反馈，任意完整 Unit �
 
 Route 在实际初始化时取得主线时间快照，登记后的 entered 同步进入首指令；这些回调已经能看到完整出生和等待事实。unit.add 不解释路线。返回后始终接续最新 State，不覆盖嵌套操作的 Schedule／RNG／Unit 修改。
 
-其他技能、Effect 与机制创建者复用 Unit 初始化通道，自行选择路线来源和出生业务，不强制使用 Schedule Spawn。
+其他技能、Effect 与机制创建者复用 Unit 初始化通道，自行选择路线来源和出生业务，不强制使用 Schedule Spawn。需参与等待时，与计划出生一样接续 Unit.initialize 的 state，在 Unit.add 前调用 `registerWait(battle, ref(unit), wait)`；每次出生只登记一次，NONE 不写入等待关系。
 
 ## 主线推进
 

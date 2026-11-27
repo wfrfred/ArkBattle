@@ -9,7 +9,7 @@ import { initialize as initializeUnit } from "../../unit/initialize.js";
 import type { Unit } from "../../unit/unit.js";
 import type { Result, State as BattleState } from "../state.js";
 import { add } from "../../unit/operations.js";
-import type { Entry, Spawn, Wave } from "./definition.js";
+import type { Entry, Spawn, Wait, Wave } from "./definition.js";
 import type { ActivePhase } from "./state.js";
 
 function spawn(battle: BattleState, entry: Spawn): BattleState {
@@ -30,18 +30,8 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
             facing: { direction: "RIGHT" },
         },
     });
-    battle = created.state;
 
-    if (entry.wait !== "NONE") {
-        const reference = ref(created.value);
-        const { waiting } = battle.schedule;
-        battle = replaceIn(battle, ["schedule", "waiting"], {
-            wave: entry.wait === "WAVE" ? [...waiting.wave, reference] : waiting.wave,
-            final: [...waiting.final, reference],
-        });
-    }
-
-    return add(battle, created.value);
+    return add(registerWait(created.state, ref(created.value), entry.wait), created.value);
 }
 
 function advanceEntries(
@@ -259,6 +249,19 @@ export function triggerBranch(battle: BattleState, id: string, loop: boolean): B
     };
 
     return advancePhase(battle, phase);
+}
+
+export function registerWait(battle: BattleState, reference: Ref<Unit>, wait: Wait): BattleState {
+    if (wait === "NONE") {
+        return battle;
+    }
+
+    const { waiting } = battle.schedule;
+
+    return replaceIn(battle, ["schedule", "waiting"], {
+        wave: wait === "WAVE" ? [...waiting.wave, reference] : waiting.wave,
+        final: [...waiting.final, reference],
+    });
 }
 
 export function releaseFromWave(battle: BattleState, reference: Ref<Unit>): BattleState {
