@@ -38,7 +38,7 @@ SP 的容量 capacity 与 Activation Definition 的发动门槛 requirement、�
 
 `activate(battle, reference, parameters)` 接收 Skill Ref。Parameters 包含必填的 requirement 与 cost。传入 null 时使用 Definition 的整组静态值；提供时只用于本次资格检查和实际支付，不修改 Definition、SP 配置或后续普通启动。Fever 等内容可以显式传入 `{ requirement: 0, cost: 0 }`，其余启动限制和操作前提照常检查。
 
-recoverySpeed 与 recoveryMultiplier 均须显式提供 [Attribute](attribute.md) Definition，默认下限0。每次查询按当前贡献和范围取得连续值，再相乘得到自然回复速率。贡献或范围 Change 只发布属性；计时器在下一次 SP.advance 读取有效速率，不同步回复或重置余额。
+recoverySpeed 与 recoveryMultiplier 均须显式提供 [Attribute](attribute.md) Definition，默认下限0。每次查询按当前贡献和范围取得连续值，再相乘得到自然回复速率。贡献或范围 Change 只发布属性；计时器在下一次 SP.advance 读取有效速率，不同步回复或重置余额。`setSpContribution`／`removeSpContribution`、`setSpRange`／`clearSpRange` 返回 `Change<Unit & SkillCapability>`：SP 是可不存在的技能子系统，无 SP 时这些 Change 原样返回宿主，调用者无需另行使用 `hasSp`。实际数值查询 `resolveRecoverySpeed`／`resolveRecoveryMultiplier` 要求 SP 存在，可通过 `hasSp` 收窄。
 
 Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 要求显式 amount，null 表示使用来源的定义回复量（其他来源为 1）；检查来源与回复许可并限制到容量；pay 要求显式金额，足额支付或失败，不读取发动政策，也不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，调用方必须明确 forced，它只绕过规定的回复限制。三者要求宿主 ACTIVE，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
 
@@ -54,7 +54,7 @@ ACTION 回复监听成功释放；普通 Action 的启动或结束不自动授�
 
 ## 3. Duration 与弹药
 
-`ActivationDefinition.initialize(battle, source, self)` 是纯求值。它在宿主登记后读取带 `H` 的宿主 Ref 和扣费前的完整 Skill，返回 `{ state, duration }`。duration 为 TIME、AMMO 或 INFINITE；可以根据长期状态、充能等本次事实选择预算。本轮预算在提交前校验。
+`ActivationDefinition.initialize(battle, host, self)` 是纯求值。它在宿主登记后读取带 `H` 的宿主 Ref 和扣费前的完整 Skill，返回 `{ state, duration }`。duration 为 TIME、AMMO 或 INFINITE；可以根据长期状态、充能等本次事实选择预算。本轮预算在提交前校验。
 
 TIME 保存本轮截止 Tick，extendTime 明确调整它；INFINITE 由内容结束。AMMO 保存本次初始容量、余量和累计补弹量。
 

@@ -21,14 +21,11 @@
 | Blocking 固有 removing | 通过前置集合合并改变同级执行及同 ID 覆盖顺序 | 两侧固有 Hook 统一使用普通 set、priority 1000；击杀通知先于解除阻挡，普通离场程序读取解除后的实时关系。历史事实来自 Departure 快照。[Blocking 顺序](blocking.md#两侧通知顺序) |
 | 完整操作与 Change 的归属 | Presence、Route 的部分完整业务返回 Change，易与普通字段变更混淆 | 文件归属按业务语义确定；[Presence](../../src/core/unit/capability/presence/operations.ts) 与 [Route](../../src/core/unit/capability/route/operations.ts) 的完整操作保留在 operations，Contribution／Restriction 与普通字段变更仍归模型文件，即使附带 Settlement。现有代码符合约定，无需迁移。 |
 | Unit 活性与领域准入 | 多领域重复 ACTIVE、可选 Vitality 与 HP 的判断 | 各领域保持自己的实际资格判定，不新增公共谓词、不将基础 Unit 与 Vitality 耦合；同一布尔表达式不是独立的共享业务概念。`elemental.available` 仅为内部资格辅助，不再公开；保留 `canReceiveDamage`／`canReceiveHealing` 等完整领域查询。 |
+| SP 状态变更的最低宿主类型 | SP Contribution／Range 对没有 SP 的 Skill 忽略，数值查询要求 hasSp | SP 是 Skill 的可空子系统；字段修改允许无 SP 的正常无效果，数值查询要求 SP 存在。保持现有 `Change<Unit & SkillCapability>` 和 `NO_SP` 资源结果，无需迁移代码。[SP 契约](skill.md#2-sp) |
 
 相关[接口约定](api-conventions.md)与领域文档已迁移。不为这些等价迁移新增长期测试用例。
 
 ## 待取舍
-
-### 5. SP 状态变更的最低宿主类型
-
-[SP](../../src/core/unit/capability/skill/sp.ts) 的属性 Contribution/Range Change 接受所有 Skill；无 SP 时忽略。其他属性 Change 要求对应能力，且已有 `hasSp`。需决定这是面向所有技能的便利操作（无 SP 是正常结果），还是只允许具有 SP 的宿主，调用方在真实运行期不确定时使用 optional。SP 完整业务操作的 `NO_SP` 等拒绝结果不因此改义。
 
 ### 6. Card 限制的覆盖生命周期
 
