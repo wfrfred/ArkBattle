@@ -174,7 +174,7 @@ visitEveryCheckPoint=false 说明终点资格不只取决于指令索引；上�
 
 **N：** 原生 MoveCheckpoint.GetNextDirection（70190）在安全 next 格已经指向路点目标格时，就将本次已采样 offset 加入 next 位置后求方向；不要求当前格先进入目标格。位置计算与分支见 `0x1808a03f3..0x1808a0437`。[末段方向](../evidence/route-movement-20261018/70190.asm)
 
-原生末段偏移会在 next 指向目标格时参与，不只在当前格已经是目标格时参与；项目 nextPoint 契约见 [Navigation](../../architecture/navigation.md)。
+原生末段偏移会在 next 指向目标格时参与，不只在当前格已经是目标格时参与；项目由 Route 将后继格转换为连续运动目标，见 [Navigation／Route](../../architecture/navigation.md#运动目标与-main-出口)。
 
 ## 7. 证据边界
 

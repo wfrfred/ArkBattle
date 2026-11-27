@@ -44,7 +44,7 @@ Content 提交 Capability Change 或调用完整领域操作。`unit.update` 组
 
 ## Navigation 与 Spatial
 
-地块按移动方式投影通行资格：WALK 使用当前 walkCost，FLY 的基础代价为 1；阻隔边按其适用的移动方式限制出口。Overlay 只能增加禁止或提高代价，必须指定 cost，1 表示不提高代价；撤销一项不会解除其他来源的限制。Navigation 返回追踪建议，实际位置推进由运动领域处理，详见 [Navigation](navigation.md#职责与状态归属)。
+地块按移动方式投影通行资格：WALK 使用当前 walkCost，FLY 的基础代价为 1；阻隔边按其适用的移动方式限制出口。Overlay 只能增加禁止或提高代价，必须指定 cost，1 表示不提高代价；撤销一项不会解除其他来源的限制。Navigation 提供格图查询，Route 构造连续运动目标，实际位置推进由 Locomotion 处理，详见 [Navigation](navigation.md#职责与状态归属)。
 
 Spatial 的 within 检查真实位置，overlap 检查 Hitbox 相交，sweep 返回首次几何接触及其比例。查询不按地图边界裁剪，不要求来源是 Unit，也不执行伤害或选择目标。返回 Ref 供后继操作读取最新对象，接触比例则保留当次查询的几何事实，详见 [Spatial](spatial.md)。
 

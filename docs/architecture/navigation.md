@@ -1,12 +1,12 @@
 # Navigation 设计
 
-Navigation 提供确定的导航建议，Route 解释路线，Locomotion 执行自主移动；三者不共享执行状态。公共入口见 [Navigation](../../src/core/battlefield/navigation/state.ts)、[Route](../../src/core/unit/capability/route/index.ts)与 [Locomotion](../../src/core/unit/capability/locomotion/index.ts)。
+Navigation 提供确定的格图查询，Route 解释路线并构造连续运动目标，Locomotion 执行自主移动；三者不共享执行状态。公共入口见 Navigation 的 [State 与更新](../../src/core/battlefield/navigation/state.ts)、[只读查询](../../src/core/battlefield/navigation/query.ts)，以及 [Route](../../src/core/unit/capability/route/index.ts)与 [Locomotion](../../src/core/unit/capability/locomotion/index.ts)。
 
 ## 职责与状态归属
 
 Battlefield 将当前地块投影为 WALK／FLY 基础 Map，并持有 Navigation State。State 只保存基础图与 Overlay；有效图和 Field 是可重建派生值。Route Context 保存程序进度，Locomotion 保存历史速度，位置只归 Unit.position。
 
-Navigation 接收明确分离的目标格和精确世界目标；Field 按显式目标格构建，末段使用精确目标。缓存可以内部可变，但不进入 BattleState，也不能改变领域结果。
+Navigation 仅接收格坐标并返回格图信息；Field 按显式目标格构建，不认识世界坐标、路线偏移、连续路程或运动目标。Route 按原格导航，另行解释精确世界目标。缓存可以内部可变，但不进入 BattleState，也不能改变领域结果。
 
 ### Navigation 的关键语义
 
@@ -26,21 +26,19 @@ Navigation 不依赖 BattleState 或战场地块类型。具体类型和签名�
 
 Navigation 按运动方式保存覆盖，校验代价并投影到有效图。FLY 代价只能省略或为一。覆盖的创建和撤销时机由业务所有者决定。
 
-### nextPoint
+### 格图查询
 
-`nextPoint` 与 `distance` 的第四参均为 `Navigation.Target`（`{ tile: TilePosition; position: WorldPosition }`）。`tile` 决定构场、通行资格与后继判断，`position` 为实际抵达坐标；即使两者跨格，也不再从精确坐标反推目标格。当前位置所在格或目标格越界、目标格不可通、当前位置不可达时返回 null。若已位于显式目标格或后继是该格，返回精确目标；否则返回后继格中心。
+`nextTile(state, mode, from: TilePosition, to: TilePosition): TilePosition | null` 返回平滑后的 Field 后继格；当起格与目标格相同且可通时返回目标格。
 
-查询直接消费 Field 后继，不附加整段射线筛选，也不把 null 当到达。建议点不保证从偏离格心的实际位置可直线到达，局部避障归 Locomotion。
+`path(state, mode, from: TilePosition, to: TilePosition): Iterable<TilePosition> | null` 沿同一 Field 的平滑后继链提供包含起格和终格的序列，而非逐个相邻格的轨迹；同格返回单元素序列。返回的 Iterable 可重复迭代。
 
-### distance
+两种查询在起格或目标格越界、目标格不可通或起格不可达时均返回 null。查询不附加整段射线筛选，也不把 null 当作已到达。Field 的 distance 是搜索代价，不是连续几何路程。
 
-估计路程沿导航后继累加几何段长，并将身体相对格心的偏移投影到前进方向修正；若当前格为显式目标格或下一建议点已是实际目标，则直接使用身体至精确目标的距离。其他情况沿该目标格的 Field，最后一段使用精确坐标。显式目标格或当前格越界、目标不可通或当前位置不可达返回 null。
-
-Field 的 distance 是搜索代价，不是实际路程；高代价格权重不能当作行走长度。
+`effectiveMap(state, mode)` 是公共只读查询，返回叠加当前 Overlay 后的有效 Map。消费方不从内部 cache 模块导入。
 
 ### Route／Locomotion 的交互约束
 
-Route 解析当前指令目标与偏移，调用 Navigation 获得 nextPoint／goal；Locomotion 消费实际世界坐标和当前运动方式。不可达 MOVE 由 Context 政策决定等待或跳过；地图外恢复由 Route 协调，不扩张 Navigation 的结果协议。
+Route 解析当前指令目标与偏移，通过格图查询构造 `MovementTarget` 的 nextPoint／goal，不可达 MOVE 由 Context 政策决定等待或跳过。Locomotion 消费实际世界坐标和当前运动方式，负责积分、局部避障、物理所在格不可通时的脱困及碰撞。Route 负责恢复身体坐标及减去 Context.offset 后的导航坐标同时在地图内的有效域，不扩张 Navigation 的结果协议。
 
 每 Tick 路线可连续消费即时指令，实际运动只有一份预算。出生调用者为位置和 Route Initial 使用同一偏移样本；主路线和临时路线各自持有对应样本。
 
@@ -114,11 +112,11 @@ reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索�
 
 movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRACE；指令耗尽后可追踪 MOVE 或 EXIT 的 destination.position。MOVE 终点持续有效，抵达后仍留场，身体偏离后可恢复追踪。destination 为 null 时没有固定的最终目标。等待或无目标返回空，空目标不表示 Main 完成。
 
-导航先从身体位置减去 Context.offset，得到建议点后加回偏移。MOVE 使用路点原格作为导航目标格，局部偏移只应用于精确抵达坐标，不改变构场、不可达判断或剩余距离的目标格。整体 Context.offset 与 MOVE 局部偏移独立。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
+Route 先从身体位置减去 Context.offset 再量化为起格，以路点原格查询 nextTile。若查询返回目标格（包括起格即目标格），nextPoint 使用精确目标坐标；否则使用后继格中心。Route 将 nextPoint 与精确 goal 同时加回 Context.offset，形成 MovementTarget。MOVE 局部偏移只应用于精确抵达坐标，不改变构场、不可达判断或剩余距离的目标格，即使两者跨格。整体 Context.offset 与 MOVE 局部偏移独立。建议点不保证身体从偏离格心的位置可直线抵达，局部避障归 Locomotion。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
 
-remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。它累计当前与后续 MOVE／终点的导航几何路程，WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，当前 MOVE 使用已进入的样本，未来固定 MOVE 使用配置偏移，未来随机目标按原格格心估计且不消费 RNG。
+remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。Route 根据 path 累计当前与后续 MOVE／终点的连续几何路程，而非 Field 搜索代价。起格即目标格或后继直接是目标格时使用身体至精确目标的欧氏距离；否则将身体相对起格中心的偏移投影到首段方向以修正首段长度，沿中间格中心累加，最后一段使用精确目标坐标。WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，当前 MOVE 使用已进入的样本，未来固定 MOVE 使用配置偏移，未来随机目标按原格格心估计且不消费 RNG。
 
-当前 TRACE 查询最后目标格的距离；没有可确定有限终点的无终点路线、循环或未来持续 TRACE 返回 undefined。MOVE 和 EXIT 都提供有效终点。有限路线的当前段越界或不可达时只给该段直线回退，不继续叠加后续段，也不用回退掩盖无有限终点。
+当前 TRACE 查询最后目标格的几何距离，不可达时回退为直线距离；没有可确定有限终点的无终点路线、循环或未来持续 TRACE 返回 undefined。MOVE 和 EXIT 都提供有效终点。有限路线的某段越界或不可达时保留之前已累计的距离，并加上该段直线回退，不继续叠加后续段，也不用回退掩盖无有限终点。
 
 Main 的 destination 必须为 EXIT 且实际抵达其位置（含 Main.offset）。requireFinish 为 true 时还须完成全部指令，为 false 时允许提前退出。每 Tick 在 advance 末尾独立检查 Main，不受其他 Context 控制、计时或是否到达自身终点影响；其他 Context 自身的 EXIT 不触发离场。Route 用 `unit.remove(..., { reason: "EXIT" })` 请求完整 Unit 离场，Content 可以用同一操作主动触发强制出口。两者通过相同 Lifetime 生命周期向本地与全局 Hook 发布离场原因，由 UNIT_REMOVED 表达 UI 离场表现，不另发 Route 事件。Route 不负责统计、扣血或胜负；运动阶段随后重读 Unit 决定是否继续移动。
 
@@ -192,7 +190,7 @@ apply 由基础图与当前覆盖重算有效图，只向地图内的整数格�
 
 ## 内部缓存
 
-有效图和目标导向 Field 可复用，同目标格的不同精确目标可共用 Field，末段仍采用各自精确坐标。命中、淘汰与重建不能引入历史相关结果。
+有效图和目标导向 Field 可复用；同有效图与目标格可共用 Field，不因 Route 精确目标坐标或偏移而变化。命中、淘汰与重建不能引入历史相关结果。
 
 ## 内部 Field 类型与构建 API
 

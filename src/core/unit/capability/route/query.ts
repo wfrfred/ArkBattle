@@ -1,9 +1,18 @@
 import { Vec2 } from "../../../common/vector.js";
 import { createRef, type Ref } from "../../../common/ref.js";
 import type { State as BattleState } from "../../../battle/state.js";
-import * as navigation from "../../../battlefield/navigation/state.js";
+import * as navigation from "../../../battlefield/navigation/query.js";
+import type {
+    State as NavigationState,
+    MotionMode,
+} from "../../../battlefield/navigation/state.js";
 import type { Map } from "../../../battlefield/navigation/map.js";
-import { Tile, World, type WorldPosition } from "../../../geometry/coordinate.js";
+import {
+    Tile,
+    World,
+    type TilePosition,
+    type WorldPosition,
+} from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import type { MovementTarget } from "../locomotion/capability.js";
 import type { Context, Route } from "./capability.js";
@@ -31,7 +40,12 @@ export function activeContext(self: Unit & Route): Context {
     return contextFor(self, self.route.active)!;
 }
 
-export function target(context: Context): navigation.Target | null {
+interface Target {
+    readonly tile: TilePosition;
+    readonly position: WorldPosition;
+}
+
+export function target(context: Context): Target | null {
     const current = context.current;
     if (current?.type === "MOVE") {
         return {
@@ -55,6 +69,50 @@ export function target(context: Context): navigation.Target | null {
         : null;
 }
 
+function distance(
+    state: NavigationState,
+    mode: MotionMode,
+    current: WorldPosition,
+    target: Target,
+): number | null {
+    const origin = World.toTile(current);
+    const path = navigation.path(state, mode, origin, target.tile);
+    if (path === null) {
+        return null;
+    }
+
+    let position = Tile.center(origin);
+    let first = true;
+    let remaining = 0;
+
+    for (const tile of path) {
+        if (Vec2.equal(tile, origin)) {
+            continue;
+        }
+
+        const final = Vec2.equal(tile, target.tile);
+        const following = final ? target.position : Tile.center(tile);
+        if (first) {
+            if (final) {
+                return Vec2.length(Vec2.sub(target.position, current));
+            }
+
+            const direction = Vec2.sub(following, position);
+            const length = Vec2.length(direction);
+            const displacement = Vec2.sub(current, position);
+            remaining =
+                length - (displacement[0] * direction[0] + displacement[1] * direction[1]) / length;
+            first = false;
+        } else {
+            remaining += Vec2.length(Vec2.sub(following, position));
+        }
+
+        position = following;
+    }
+
+    return first ? Vec2.length(Vec2.sub(target.position, current)) : remaining;
+}
+
 export function remainingDistance(
     battle: BattleState,
     self: Unit & Route,
@@ -68,7 +126,7 @@ export function remainingDistance(
         const goal = Tile.center(tile);
 
         return (
-            navigation.distance(state, mode, position, { tile, position: goal }) ??
+            distance(state, mode, position, { tile, position: goal }) ??
             Vec2.length(Vec2.sub(goal, position))
         );
     }
@@ -79,13 +137,13 @@ export function remainingDistance(
     let remaining = 0;
     let fallback: number | undefined;
 
-    const move = (goal: navigation.Target): void => {
+    const move = (goal: Target): void => {
         if (fallback === undefined) {
-            const distance = navigation.distance(state, mode, position, goal);
-            if (distance === null) {
+            const length = distance(state, mode, position, goal);
+            if (length === null) {
                 fallback = remaining + Vec2.length(Vec2.sub(goal.position, position));
             } else {
-                remaining += distance;
+                remaining += length;
             }
         }
 
@@ -192,12 +250,20 @@ export function movementTarget(
         return recovery === null ? null : { nextPoint: recovery, goal: recovery };
     }
 
-    const point = navigation.nextPoint(battle.battlefield.navigation, mode, locator, goal);
+    const next = navigation.nextTile(
+        battle.battlefield.navigation,
+        mode,
+        World.toTile(locator),
+        goal.tile,
+    );
 
-    return point === null
+    return next === null
         ? null
         : {
-              nextPoint: Vec2.add(point, context.offset),
+              nextPoint: Vec2.add(
+                  Vec2.equal(next, goal.tile) ? goal.position : Tile.center(next),
+                  context.offset,
+              ),
               goal: Vec2.add(goal.position, context.offset),
           };
 }

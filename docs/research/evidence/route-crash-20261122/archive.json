@@ -48,8 +48,8 @@
       {
         "path": "compare.mjs",
         "kind": "artifact",
-        "bytes": 1839,
-        "sha256": "9686f53df8cda5c24a00f42b8b673e236d60e8b4a72775cbc2701511d828a927"
+        "bytes": 1971,
+        "sha256": "1573fcd6bc869460ffca8477c0815a2a3b1c6dd677edaed67a397708074a10ed"
       },
       {
         "path": "config.json",

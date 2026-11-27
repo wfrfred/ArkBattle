@@ -13,7 +13,6 @@ import { appear } from "../../../dist/core/unit/capability/presence/index.js";
 import { shiftable, unbalance } from "../../../dist/core/unit/capability/shifting/index.js";
 import { calculateOffset, search } from "../../../dist/core/battle/blocking/index.js";
 import { blockable, blocker } from "../../../dist/core/unit/capability/blocking/index.js";
-import * as navigation from "../../../dist/core/battlefield/navigation/state.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { update as updateTile } from "../../../dist/core/battle/tile.js";
 
@@ -45,7 +44,7 @@ test("remaining route distance follows navigation geometry and excludes teleport
         { type: "APPEAR", position: [0, 6], offset: [0, 0] },
         move([0, 7]),
     ], { destination: { type: "MOVE", position: [0, 7] } });
-    let state = battle([creation(program)]);
+    let state = battle([{ ...creation(program), position: [0.25, 0.25] }]);
     const corridor = new Set(["0:0", "0:1", "0:2", "1:2", "2:2", "2:3", "2:4", "0:6", "0:7"]);
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 8; col++) {
@@ -61,8 +60,7 @@ test("remaining route distance follows navigation geometry and excludes teleport
         ...getTile(state.battlefield.map, [0, 0]).state, walkCost: 20,
     });
     const self = get(state, 0);
-    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 0], { tile: [2, 4], position: [4, 2] }), 6);
-    assert.equal(route.remainingDistance(state, self, self.route.main), 7);
+    assert.equal(route.remainingDistance(state, self, self.route.main), 6.75);
 });
 
 test("a MOVE across a tile boundary navigates to its registered tile with the actual offset endpoint", () => {
@@ -76,12 +74,9 @@ test("a MOVE across a tile boundary navigates to its registered tile with the ac
     });
     const host = units.ref(get(state, 0));
     const goal = [1, 1.75];
-    const target = { tile: checkpoint.position, position: goal };
 
     // The offset endpoint is in [2, 1], which would require a turn around [2, 0].
     assert.deepEqual(route.movementTarget(state, host), { nextPoint: goal, goal });
-    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 1], target), 1.25);
-    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0.375, 1], { tile: [1, 1], position: [0.125, 1] }), 0.25);
     assert.equal(route.remainingDistance(state, get(state, 0), current(state)), 1.5);
 
     state = updateTile(state, checkpoint.position, {
@@ -89,11 +84,17 @@ test("a MOVE across a tile boundary navigates to its registered tile with the ac
         passability: "NONE",
     });
     assert.equal(route.movementTarget(state, host), null);
-    assert.equal(navigation.distance(state.battlefield.navigation, "WALK", [0, 1], target), null);
     assert.equal(route.remainingDistance(state, get(state, 0), current(state)), 1.25);
     // An unreachable MOVE is skipped when checking the current point is optional.
     state = route.advance(state, host);
     assert.equal(current(state).index, 1);
+
+    // A direct endpoint behind the locator still contributes a positive geometric length.
+    const reverse = plan([{ ...move([1, 1]), offset: [-0.875, 0] }], {
+        startPosition: [1, 0], destination: { type: "MOVE", position: [1, 0] },
+    });
+    const reversed = battle([{ ...creation(reverse), position: [0.375, 1] }]);
+    assert.equal(route.remainingDistance(reversed, get(reversed, 0), current(reversed)), 0.375);
 });
 
 test("distance observes the requested Main or TRACE rather than temporary movement control", () => {

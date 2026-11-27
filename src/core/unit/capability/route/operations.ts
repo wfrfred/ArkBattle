@@ -4,8 +4,7 @@ import { createRng } from "../../../common/rng.js";
 import { remove as removeUnit, replace as replaceUnit, update } from "../../operations.js";
 import type { Ref } from "../../../common/ref.js";
 import type { State as BattleState, Result } from "../../../battle/state.js";
-import { effectiveMap } from "../../../battlefield/navigation/cache.js";
-import * as navigation from "../../../battlefield/navigation/state.js";
+import * as navigation from "../../../battlefield/navigation/query.js";
 import {
     Tile,
     World,
@@ -308,12 +307,17 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boo
             if (!atTarget(self, context, goal.position)) {
                 const locator = Vec2.sub(self.position, context.offset);
                 const state = battle.battlefield.navigation;
-                const map = effectiveMap(state, plan.motionMode);
+                const map = navigation.effectiveMap(state, plan.motionMode);
                 if (
                     context.alwaysCheckCurrentPoint ||
                     map.get(World.toTile(self.position))?.passable !== true ||
                     !map.contains(World.toTile(locator)) ||
-                    navigation.nextPoint(state, plan.motionMode, locator, goal) !== null
+                    navigation.nextTile(
+                        state,
+                        plan.motionMode,
+                        World.toTile(locator),
+                        goal.tile,
+                    ) !== null
                 ) {
                     return battle;
                 }

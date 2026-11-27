@@ -3,7 +3,7 @@ import { replace } from "../../operations.js";
 import { assertNonnegativeNumber } from "../../../common/assert.js";
 import type { Ref } from "../../../common/ref.js";
 import { type State as BattleState } from "../../../battle/state.js";
-import { effectiveMap } from "../../../battlefield/navigation/cache.js";
+import { effectiveMap } from "../../../battlefield/navigation/query.js";
 import { World } from "../../../geometry/coordinate.js";
 
 import * as units from "../../query.js";

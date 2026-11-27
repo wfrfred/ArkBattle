@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { deepEqual } from "node:assert/strict";
 import * as battlefield from "../../../../dist/core/battlefield/state.js";
-import * as navigation from "../../../../dist/core/battlefield/navigation/state.js";
+import * as navigation from "../../../../dist/core/battlefield/navigation/query.js";
 import { Tile, World } from "../../../../dist/core/geometry/coordinate.js";
 import { parseBattlefieldMap } from "../../../../dist/data/level/map.js";
 
@@ -27,8 +27,14 @@ const reachPosition = [
     originalCenter[1] + current.reachOffset.y,
 ];
 const roundedTile = World.toTile(reachPosition);
-const fromOriginalGridWithOffset = navigation.nextPoint(state, "WALK", position, { tile: originalTile, position: reachPosition });
-const fromRoundedGrid = navigation.nextPoint(state, "WALK", position, { tile: roundedTile, position: reachPosition });
+const fromTile = World.toTile(position);
+function nextPoint(toTile) {
+    const next = navigation.nextTile(state, "WALK", fromTile, toTile);
+    if (next === null) return null;
+    return next[0] === toTile[0] && next[1] === toTile[1] ? reachPosition : Tile.center(next);
+}
+const fromOriginalGridWithOffset = nextPoint(originalTile);
+const fromRoundedGrid = nextPoint(roundedTile);
 
 deepEqual([originalTile, roundedTile], [[1, 4], [2, 4]]);
 deepEqual([fromOriginalGridWithOffset, fromRoundedGrid], [[4.25, 1.5], [4, 1]]);

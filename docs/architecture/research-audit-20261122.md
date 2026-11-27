@@ -73,7 +73,7 @@
 | 编号 | 初次盘点的问题 | 当前状态 | 来源 |
 | --- | --- | --- | --- |
 | U003 | ReassignTalents 的真实调用者和旧天赋分离／重装时是否保持身份／计数。未见必须改 Unit Definition／能力组成的实证 | 范围外样本。已查到的直接调用来自次生预案战中升级，普通天赋启停和计数已有表达。 | [Case 06](../research/cases/06-talent-lifecycle-and-model.md#L60) |
-| U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | **Core 已接入。** MOVE 按路点原格构场和判断资格，末段使用含局部偏移的精确目标；剩余距离使用相同输入。 [Navigation](navigation.md#nextpoint) | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
+| U006 | 实际跨格偏移场景是否因使用原路点格或量化后的最终世界坐标而产生不同寻路结果 | **Core 已接入。** MOVE 按路点原格构场和判断资格，末段使用含局部偏移的精确目标；剩余距离使用相同输入。 [Route](navigation.md#运动目标与-main-出口) | [Case 12](../research/cases/12-navigation-native-algorithm.md#L339) |
 | U009 | 是否有实际内容使用 MOVE 的非零 reachDistance，并因此要求逐路点设置到达半径 | 未证实 Core 缺口。已查静态与动态路线均未找到 MOVE 使用非零到达容差的正例。 | [Case 13](../research/cases/13-route-and-movement-timing.md#L318) |
 | U010 | 是否存在会实际切换为不允许对角平滑的路线 | 未证实 Core 缺口。固定路线扫描未见禁用对角平滑的普通路径。 | [Case 14](../research/cases/14-route-definition-fields.md#L38) |
 | U011 | 是否存在实际要求每个经过格的中心都必须访问的路线 | 未证实 Core 缺口。已知明确的中心点序列可用 MOVE 表达。 | [Case 14](../research/cases/14-route-definition-fields.md#L39) |

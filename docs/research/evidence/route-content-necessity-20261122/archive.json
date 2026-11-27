@@ -28,8 +28,8 @@
       {
         "path": "compare-navigation.mjs",
         "kind": "artifact",
-        "bytes": 2597,
-        "sha256": "499074d45cfecd19979216f005a79676546207f296c20082008278e2b601cf33"
+        "bytes": 2784,
+        "sha256": "fd18b6213f632dab32c2d832cfa1ececfab823954a006f849893fa006851ad87"
       },
       {
         "path": "result.json",

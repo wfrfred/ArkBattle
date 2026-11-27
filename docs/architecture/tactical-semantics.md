@@ -83,7 +83,7 @@ Targeting 的查询抽象见[领域设计](targeting.md)，完整上下游依据
 
 ### 仇恨事实与普通排序
 
-Targetable 提供有效嘲讽，UID 表达入场先后，Route／Navigation 提供剩余路程。内容选择比较政策，distance 不冒充普通仇恨，也不从阵营推导实体类别。
+Targetable 提供有效嘲讽，UID 表达入场先后，Route 提供剩余路程。内容选择比较政策，distance 不冒充普通仇恨，也不从阵营推导实体类别。
 
 ### 弩手锁定后的阵营检查
 
