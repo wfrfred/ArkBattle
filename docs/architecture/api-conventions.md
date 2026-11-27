@@ -13,7 +13,7 @@
 | 局部查询／转换 | 已取得的值 → 结果值 | 不推进世界，不为统一形式增加 BattleState 或 Ref |
 | 变更工厂 | 业务参数 → `Change<C>` | 声明最低宿主要求，不绑定 Ref、不读取战斗 |
 | 战斗查询 | BattleState、身份或查询条件 → 结果 | 只读当前版本 |
-| 完整操作 | BattleState、主要身份、业务输入 → State／Result | 定位当前实例、检查领域资格并完成本次结算 |
+| 完整操作 | BattleState、主要身份、业务输入 → State／Result；也可返回供 Unit.update 提交的 Change | 执行完整领域业务及其结算 |
 | 调度推进 | BattleState、实例或候选 → State | 由调度器在所属阶段调用 |
 | Definition 程序 | BattleState、必要宿主 Ref、已配对的 self、持久实例 Ref、业务输入 → State／Result | 只接收本程序需要的事实，不重复传入身份或 Definition |
 
@@ -48,7 +48,7 @@ Restriction 只提供纯 `allows(battle, context)`，不携带登记身份。领
 
 文件组织应帮助读者从业务概念找到所属模块，并连贯理解实现。经常一起阅读、修改的内容尽量靠近；模型、初始化、查询和操作可以共同构成一个文件，形成独立主题后再拆分。相似领域采用容易预测的组织方式，同时允许实际复杂度带来差异，不以文件短小或目录整齐衡量效果。
 
-状态定义文件（如 `capability.ts` 或实体同名文件）负责 Definition／State、初始化、守卫和普通字段变更，包括 Restriction／Contribution 登记与撤销。返回 Unit Change 的字段变更即使带有 Settlement，仍归状态定义文件；Settlement 所委托的完整业务归所属操作。不将 Change 因其存在后继而移入 `operations.ts`。`operations.ts` 负责完整业务、实例生命周期和调度推进；`query.ts` 负责只读业务查询。`battle/runtime.ts` 负责跨领域战斗协调，领域自己的推进归 `operations.ts`，不另建同义 runtime 文件。小领域可以在一个文件内保留这些职责，按规模拆分，不要求每个领域都建立全部文件。
+状态定义文件（如 `capability.ts` 或实体同名文件）负责 Definition／State、初始化、守卫和普通字段变更，包括 Restriction／Contribution 登记与撤销。这些字段变更即使附带 Settlement 也不改变职责；Settlement 所委托的完整业务归所属操作。`operations.ts` 负责具有独立业务语义的完整操作、实例生命周期和调度推进，包括为组合发布而返回 Change 的操作（如 Presence.appear／disappear、Route.removeContext／reassign／skipWait／setTraceTarget）。文件归属由操作语义决定，不由返回类型或是否存在 Settlement 决定；`query.ts` 负责只读业务查询。`battle/runtime.ts` 负责跨领域战斗协调，领域自己的推进归 `operations.ts`，不另建同义 runtime 文件。小领域可以在一个文件内保留这些职责，按规模拆分，不要求每个领域都建立全部文件。
 
 明确属于某领域的内容可由其他领域直接依赖；脱离具体领域仍成立的基础机制集中在 common，避免为共享而拆散完整概念。多个实现文件组成公共领域时，由 index 显式导出；不使用无选择的 `export * from` 展平实现文件。独立子领域可以按具名命名空间导出其已明确的公共入口，不为单一清晰入口强加 barrel。
 

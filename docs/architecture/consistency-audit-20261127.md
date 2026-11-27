@@ -19,16 +19,11 @@
 | 不可变字段写回 | Card 的 Hook/Restriction 手写同一叶字段替换；Targetable 独有无用 readonly 数组复制 | 具体 Card 使用 `replaceIn`，保留原 no-op 行为；Targetable 与其他 Capability 一样共享不可变初值。 |
 | 实例与 Definition 类型擦除 | Card、Action 等使用宽化补丁、不变性或 Identity 视图；回调参数契约分散 | [公共 EraseCallbacks](../../src/core/common/callback.ts) 选择性擦除回调输入，构造保留原始 Definition 检查，普通访问默认 object；移除 Execution／Activation Identity 和无实际配对职责的部署请求泛型，Effect 子类型 Burst 与爆发表同步迁移。统一同义 Callback 声明、宿主参数和结束回调参数顺序。 |
 | Blocking 固有 removing | 通过前置集合合并改变同级执行及同 ID 覆盖顺序 | 两侧固有 Hook 统一使用普通 set、priority 1000；击杀通知先于解除阻挡，普通离场程序读取解除后的实时关系。历史事实来自 Departure 快照。[Blocking 顺序](blocking.md#两侧通知顺序) |
+| 完整操作与 Change 的归属 | Presence、Route 的部分完整业务返回 Change，易与普通字段变更混淆 | 文件归属按业务语义确定；[Presence](../../src/core/unit/capability/presence/operations.ts) 与 [Route](../../src/core/unit/capability/route/operations.ts) 的完整操作保留在 operations，Contribution／Restriction 与普通字段变更仍归模型文件，即使附带 Settlement。现有代码符合约定，无需迁移。 |
 
 相关[接口约定](api-conventions.md)与领域文档已迁移。不为这些等价迁移新增长期测试用例。
 
 ## 待取舍
-
-### 3. 完整操作与 Change 的文件归属
-
-[Presence operations](../../src/core/unit/capability/presence/operations.ts) 的 appear/disappear 返回 Change，但组合可见性、移动限制、Action 中断和 Blocking 释放，是完整业务主题。[Route operations](../../src/core/unit/capability/route/operations.ts) 的 removeContext、reassign、skipWait、setTraceTarget 与共同解释器紧密配合。与已迁移的简单字段 Change 不同，拆到 capability.ts 会跨文件共享内部解释和结算入口。
-
-需要决定规范以实际业务职责为准，还是所有 Change 工厂必须位于模型文件。推荐按职责区分，小而相连的完整主题共置，不能单纯依据返回类型机械移动。
 
 ### 4. 基础 Unit 活性与领域准入
 

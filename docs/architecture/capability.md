@@ -10,7 +10,7 @@ Capability 拥有本领域的静态配置、当前状态、初始化与合法操
 
 ## 操作范围
 
-纯数值／几何查询接收已经取得的值。已登记能力字段使用要求最低宿主能力的 Change，完整业务使用 BattleState 与 Typed Ref；何时需要后继由领域决定。
+纯数值／几何查询接收已经取得的值。已登记能力字段使用要求最低宿主能力的 Change。完整业务可直接使用 BattleState 与 Typed Ref，也可返回供 Unit.update 组合提交的 Change；文件归属按业务语义确定。是否需要 Settlement 由领域决定。
 
 Change 组合、单宿主发布与 Settlement 的详细契约以[接口约定](api-conventions.md#51-unit-完整操作与批量变更)为准。本页不复制函数声明；跨领域只能调用该领域的合法 Change 或完整操作，不能手写其私有 State。
 
