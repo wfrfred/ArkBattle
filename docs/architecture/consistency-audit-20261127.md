@@ -23,14 +23,11 @@
 | Unit 活性与领域准入 | 多领域重复 ACTIVE、可选 Vitality 与 HP 的判断 | 各领域保持自己的实际资格判定，不新增公共谓词、不将基础 Unit 与 Vitality 耦合；同一布尔表达式不是独立的共享业务概念。`elemental.available` 仅为内部资格辅助，不再公开；保留 `canReceiveDamage`／`canReceiveHealing` 等完整领域查询。 |
 | SP 状态变更的最低宿主类型 | SP Contribution／Range 对没有 SP 的 Skill 忽略，数值查询要求 hasSp | SP 是 Skill 的可空子系统；字段修改允许无 SP 的正常无效果，数值查询要求 SP 存在。保持现有 `Change<Unit & SkillCapability>` 和 `NO_SP` 资源结果，无需迁移代码。[SP 契约](skill.md#2-sp) |
 | Card 限制的覆盖生命周期 | 默认、Definition、runtime、Request 四层覆盖，撤销运行登记会复活底层 | 初始化合并默认与 Definition，随后使用唯一运行限制列表，set/remove 与 Unit 一致；保留 Request 本次覆盖及 redeploy 冷却豁免。多来源临时覆盖使用独立 ID 与 Group。[部署资格](deployment.md#请求与统一资格) |
+| SP 的 Tick 边界与实时推进 | 使用 lastTick 差值推进，创建 Tick 跳过，与固定 Tick 调度不一致 | 删除 lastTick 及初始化 tick 入参；每次调度推进一个 Tick，保留停速恢复当 Tick 重建完整周期与满槽／阻回暂停，未变化时保留原状态。[SP 契约](skill.md#2-sp) |
 
 相关[接口约定](api-conventions.md)与领域文档已迁移。不为这些等价迁移新增长期测试用例。
 
 ## 待取舍
-
-### 7. SP 的 Tick 边界与实时推进
-
-[SP](../../src/core/unit/capability/skill/sp.ts) 用 lastTick 保存实际已过时间，创建时采样；DP、HP、EP 则每次调度推进一步。现有 [Skill 契约](skill.md) 明确 SP 的首 Tick、停速及恢复行为。若统一为每次 advance 固定推进一次，需要决定创建 Tick 是否计时及速率恢复时点，不能直接删除 lastTick。其他资源的周期保留方式不是同一语义，不要求统一状态形状。
 
 ### 8. HP / EP 的完成通知
 

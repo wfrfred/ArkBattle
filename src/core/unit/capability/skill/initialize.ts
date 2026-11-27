@@ -33,10 +33,7 @@ export function initialize<S extends object, A extends object>(
             ref: createSkillRef(source),
             definition,
             state: initialized.value,
-            sp:
-                definition.sp === null
-                    ? null
-                    : sp.initialize(definition.sp, initialized.state.tick),
+            sp: definition.sp === null ? null : sp.initialize(definition.sp),
             activation: null,
         },
     };

@@ -14,7 +14,7 @@
 | 变更工厂 | 业务参数 → `Change<C>` | 声明最低宿主要求，不绑定 Ref、不读取战斗 |
 | 战斗查询 | BattleState、身份或查询条件 → 结果 | 只读当前版本 |
 | 完整操作 | BattleState、主要身份、业务输入 → State／Result；也可返回供 Unit.update 提交的 Change | 执行完整领域业务及其结算 |
-| 调度推进 | BattleState、实例或候选 → State | 由调度器在所属阶段调用 |
+| 调度推进 | BattleState、实例或候选 → State | 由调度器在所属阶段每 Tick 调用一次，推进本 Tick；普通操作和查询不调用 advance |
 | Definition 程序 | BattleState、必要宿主 Ref、已配对的 self、持久实例 Ref、业务输入 → State／Result | 只接收本程序需要的事实，不重复传入身份或 Definition |
 
 无单个主要对象的批量操作可以省略 Ref。函数所在目录、名字及是否返回 State，不决定它属于哪类。私有 setter 接收计算完成的结果值；只写状态的操作直接返回 State，有调用者实际消费的结果时才使用 Result 或 Outcome。通用 Result 使用同一名称，不为领域另造同义类型别名。

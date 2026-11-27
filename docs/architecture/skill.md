@@ -42,10 +42,10 @@ recoverySpeed 与 recoveryMultiplier 均须显式提供 [Attribute](attribute.md
 
 Recovery 为 TIME、ACTION、HIT 或 NONE；EXTERNAL 是显式操作的来源。recover 要求显式 amount，null 表示使用来源的定义回复量（其他来源为 1）；检查来源与回复许可并限制到容量；pay 要求显式金额，足额支付或失败，不读取发动政策，也不受回复限制；modify 直接增减，普通正增量仍检查 EXTERNAL 许可，负增量不被阻回拦截，调用方必须明确 forced，它只绕过规定的回复限制。三者要求宿主 ACTIVE，具有 Vitality 时仍活着；无 Vitality 的 Skill 宿主也可使用资源。
 
-TIME 配置只表示回复来源，周期由 `TICKS_PER_SECOND / 有效回复速率` 得到；速率非正时不计时。自然回复保留周期、余时和上次时刻：
+TIME 配置只表示回复来源，周期由 `TICKS_PER_SECOND / 有效回复速率` 得到；速率非正时不计时。自然回复只保存周期与余时。SP.advance 由调度器每 Tick 调用一次，符合资格时推进一个 Tick，包括本 Tick 创建且进入 Skill 推进阶段的 Unit：
 
-- 满槽、阻回或宿主暂不具备资源资格时暂停，不积攒补算。
-- 速度变化保留绝对已过时间；速度归零使计时无效，恢复后从完整周期开始。
+- 满槽、阻回或宿主暂不具备资源资格时暂停，不积攒补算；计时与资源均未变化时保留原状态。
+- 速度变化保留绝对已过时间；速度归零使计时无效，恢复正速的当 Tick 重建完整周期，不扣减时间。
 - 达到满槽后停止消费余下时间。ACTION／HIT／NONE 不推进自然计时。
 
 默认激活阻回由一项可移除的 recoveryRestriction 表达，资源操作不硬编码“激活必然禁止回复”。

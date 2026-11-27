@@ -289,7 +289,7 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
         initialize: (state) => ({ state, value: {} }),
         activation: null,
         sp: {
-            initial: 2,
+            initial: 1,
             capacity: 2,
             recovery: { type: "TIME" },
             recoverySpeed: attribute(7.5),
@@ -303,39 +303,41 @@ test("natural SP recovery pauses without backlog and uses current recovery speed
     };
     let state = battle([{ definition, hooks: Hooks.empty(), initial: {}, position: [1, 1] }]);
     const source = units.ref(get(state, 0));
-    for (let tick = 0; tick <= 5; tick++) state = skills.advance({ ...state, tick }, source);
+    for (let i = 0; i < 4; i++) state = step(state, []);
+    assert.equal(get(state, 0).skill.sp.value, 2);
+    for (let i = 0; i < 2; i++) state = step(state, []);
     state = update(state, source, skills.setRestriction("recoveryRestrictions", { id: "blocked", group: null, value: { allows: () => false } }));
     const payment = skills.pay(state, source, 2);
     state = payment.state;
     assert.deepEqual(payment.value, { type: "APPLIED", amount: 2 });
     assert.equal(skills.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
     assert.equal(skills.modify(state, source, 1, false).value.type, "REJECTED");
-    for (let tick = 6; tick <= 10; tick++) state = skills.advance({ ...state, tick }, source);
+    for (let i = 0; i < 5; i++) state = step(state, []);
     assert.equal(get(state, 0).skill.sp.value, 0);
     state = update(state, source, skills.removeRestriction("recoveryRestrictions", "blocked"));
-    for (let tick = 11; tick <= 13; tick++) state = skills.advance({ ...state, tick }, source);
+    for (let i = 0; i < 3; i++) state = step(state, []);
     assert.equal(get(state, 0).skill.sp.value, 0);
 
     let stopped = update(state, source, skills.setSpContribution("recoverySpeed", {
         id: "stopped", group: null, value: [modifier({ multiplier: -1 })],
     }));
-    stopped = skills.advance({ ...stopped, tick: 14 }, source);
+    stopped = step(stopped, []);
     let restarted = update(stopped, source, skills.removeSpContribution("recoverySpeed", "stopped"));
-    for (let tick = 15; tick <= 18; tick++) restarted = skills.advance({ ...restarted, tick }, source);
+    for (let i = 0; i < 4; i++) restarted = step(restarted, []);
     assert.equal(get(restarted, 0).skill.sp.value, 0);
-    restarted = skills.advance({ ...restarted, tick: 19 }, source);
+    restarted = step(restarted, []);
     assert.equal(get(restarted, 0).skill.sp.value, 1);
 
-    state = skills.advance({ ...state, tick: 14 }, source);
+    state = step(state, []);
     assert.equal(get(state, 0).skill.sp.value, 1);
 
     state = update(state, source, skills.setSpContribution("recoverySpeed", {
             id: "haste", group: null,
             value: [modifier({ multiplier: 1 })],
         }));
-    state = skills.advance({ ...state, tick: 15 }, source);
+    state = step(state, []);
     assert.equal(get(state, 0).skill.sp.value, 1);
-    state = skills.advance({ ...state, tick: 16 }, source);
+    state = step(state, []);
     assert.equal(get(state, 0).skill.sp.value, 2);
     assert.equal(skills.recover(state, source, "EXTERNAL", 1).value.type, "REJECTED");
     state = skills.modify(state, source, -1, false).state;

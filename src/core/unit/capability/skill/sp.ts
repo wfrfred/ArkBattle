@@ -42,7 +42,6 @@ export interface Timer {
 export interface State {
     readonly value: number;
     readonly recovery: Timer | null;
-    readonly lastTick: number;
     readonly recoverySpeed: attribute.State<Input>;
     readonly recoveryMultiplier: attribute.State<Input>;
 }
@@ -165,7 +164,7 @@ export function validateDefinition(definition: Definition): void {
     }
 }
 
-export function initialize(definition: Definition, tick = 0): State {
+export function initialize(definition: Definition): State {
     const recoverySpeed = attribute.initialize(definition.recoverySpeed);
     const recoveryMultiplier = attribute.initialize(definition.recoveryMultiplier);
     const rate =
@@ -179,7 +178,6 @@ export function initialize(definition: Definition, tick = 0): State {
             definition.recovery.type === "TIME" && periodTicks !== null
                 ? { periodTicks, remainingTicks: periodTicks }
                 : null,
-        lastTick: tick,
         recoverySpeed,
         recoveryMultiplier,
     };
@@ -335,17 +333,13 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
         return battle;
     }
 
-    if (battle.tick < state.lastTick) {
-        throw new RangeError("skill SP cannot advance to an earlier tick");
-    }
-
     const rate = resolveRecoverySpeed(battle, self) * resolveRecoveryMultiplier(battle, self);
+    const previous = state.recovery;
     let recovery: Timer | null = null;
     let pulses = 0;
 
     if (rate > 0) {
         const periodTicks = TICKS_PER_SECOND / rate;
-        const previous = state.recovery;
         let remainingTicks =
             previous === null
                 ? periodTicks
@@ -358,7 +352,7 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
             state.value < capacity &&
             allowsRecovery(battle, self, "TIME")
         ) {
-            remainingTicks -= battle.tick - state.lastTick;
+            remainingTicks -= 1;
 
             if (remainingTicks <= 1e-8) {
                 const available = Math.floor((-remainingTicks + 1e-8) / periodTicks) + 1;
@@ -371,11 +365,17 @@ export function advance(battle: BattleState, ref: Ref<Unit & Skill>): BattleStat
             }
         }
 
-        recovery = { periodTicks, remainingTicks };
+        recovery =
+            previous !== null &&
+            previous.periodTicks === periodTicks &&
+            previous.remainingTicks === remainingTicks
+                ? previous
+                : { periodTicks, remainingTicks };
     }
 
-    const next = { ...state, recovery, lastTick: battle.tick };
-    battle = replaceUnits(battle, [replaceIn(self, ["skill", "sp"], next)]);
+    if (recovery !== previous) {
+        battle = replaceUnits(battle, [replaceIn(self, ["skill", "sp", "recovery"], recovery)]);
+    }
 
     return pulses === 0 ? battle : recover(battle, ref, "TIME", pulses).state;
 }
