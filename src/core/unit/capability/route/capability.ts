@@ -66,18 +66,21 @@ export interface Context extends Identified<{
     readonly index: number;
     readonly current: Checkpoint | null;
     readonly alwaysCheckCurrentPoint: boolean;
-    readonly ticking: boolean;
 }
 
 export interface ContextInput extends Initial {
     readonly alwaysCheckCurrentPoint: boolean;
-    readonly ticking: boolean;
+}
+
+export interface Override {
+    readonly context: Context;
+    readonly priority: number;
 }
 
 export interface State {
     readonly main: Context;
-    readonly others: readonly Context[];
-    readonly active: Ref<Context>;
+    readonly alternative: Context | null;
+    readonly overrides: readonly Override[];
     readonly waveStartTick: number;
     readonly fragmentReadyTick: number;
 }
@@ -98,9 +101,10 @@ export function initialize<
         throw new TypeError("route requires locomotion");
     }
 
-    validatePlan(initial.plan);
-    assert(Vec2.is(initial.offset), "invalid route offset", TypeError);
-    const reference = createContextRef(unit.ref as Ref<Unit & Route>);
+    const main = createContext(unit.ref as Ref<Unit & Route>, {
+        ...initial,
+        alwaysCheckCurrentPoint: unit.definition.route.alwaysCheckCurrentPoint,
+    });
 
     return {
         state: battle,
@@ -115,20 +119,26 @@ export function initialize<
                 }),
             }),
             route: {
-                main: {
-                    ref: reference,
-                    plan: initial.plan,
-                    offset: initial.offset,
-                    index: 0,
-                    current: null,
-                    alwaysCheckCurrentPoint: unit.definition.route.alwaysCheckCurrentPoint,
-                    ticking: true,
-                },
-                others: [],
-                active: reference,
+                main,
+                alternative: null,
+                overrides: [],
                 ...timing(battle.schedule),
             },
         },
+    };
+}
+
+export function createContext(host: Ref<Unit & Route>, input: ContextInput): Context {
+    validatePlan(input.plan);
+    assert(Vec2.is(input.offset), "invalid route offset", TypeError);
+
+    return {
+        ref: createContextRef(host),
+        plan: input.plan,
+        offset: input.offset,
+        index: 0,
+        current: null,
+        alwaysCheckCurrentPoint: input.alwaysCheckCurrentPoint,
     };
 }
 

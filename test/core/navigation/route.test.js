@@ -61,7 +61,7 @@ test("remaining route distance follows navigation geometry and excludes teleport
         ...getTile(state.battlefield.map, [0, 0]).state, walkCost: 20,
     });
     const self = get(state, 0);
-    assert.equal(route.remainingDistance(state, self, self.route.main), 6.75);
+    assert.equal(route.remainingDistance(state, self), 6.75);
 });
 
 test("a MOVE across a tile boundary navigates to its registered tile with the actual offset endpoint", () => {
@@ -78,14 +78,14 @@ test("a MOVE across a tile boundary navigates to its registered tile with the ac
 
     // The offset endpoint is in [2, 1], which would require a turn around [2, 0].
     assert.deepEqual(route.movementTarget(state, host), { nextPoint: goal, goal });
-    assert.equal(route.remainingDistance(state, get(state, 0), current(state)), 1.5);
+    assert.equal(route.remainingDistance(state, get(state, 0)), 1.5);
 
     state = updateTile(state, checkpoint.position, {
         ...getTile(state.battlefield.map, checkpoint.position).state,
         passability: "NONE",
     });
     assert.equal(route.movementTarget(state, host), null);
-    assert.equal(route.remainingDistance(state, get(state, 0), current(state)), 1.25);
+    assert.equal(route.remainingDistance(state, get(state, 0)), 1.25);
     // An unreachable MOVE is skipped when checking the current point is optional.
     state = route.advance(state, host);
     assert.equal(current(state).index, 1);
@@ -95,57 +95,64 @@ test("a MOVE across a tile boundary navigates to its registered tile with the ac
         startPosition: [1, 0], destination: { type: "MOVE", position: [1, 0] },
     });
     const reversed = battle([{ ...creation(reverse), position: [0.375, 1] }]);
-    assert.equal(route.remainingDistance(reversed, get(reversed, 0), current(reversed)), 0.375);
+    assert.equal(route.remainingDistance(reversed, get(reversed, 0)), 0.375);
 });
 
-test("distance observes the requested Main or TRACE rather than temporary movement control", () => {
-    let state = battle([creation(plan([wait(999)], { destination: { type: "EXIT", position: [0, 5], requireFinish: true } }))]);
+test("two route layers restore control by priority while ordinary distance and waits remain independent", () => {
+    const destination = { type: "EXIT", position: [0, 7], requireFinish: true };
+    let state = battle([creation(plan([wait(3), move([0, 2])], { destination }))]);
     const host = units.ref(get(state, 0));
-    const fear = route.createContext(state, host, {
-        plan: plan([move([0, 1])]), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
+    const input = program => ({ plan: program, offset: [0, 0], alwaysCheckCurrentPoint: false });
+    const high = route.addOverride(state, host, {
+        ...input(plan([wait(3)])), priority: 10,
     });
-    const trace = route.createContext(fear.state, host, {
-        plan: plan([{ type: "TRACE", position: [0, 3], reached: false }]),
-        offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
+    state = step(high.state, []);
+    assert.equal(current(state).current.timer, 2);
+    const alternative = route.setAlternative(state, host, input(plan([wait(2)], {
+        destination: { type: "EXIT", position: [0, 5], requireFinish: true },
+    })));
+    const low = route.addOverride(alternative.state, host, {
+        ...input(plan([wait(1), { type: "APPEAR", position: [0, 3], offset: [0, 0] }])), priority: 5,
     });
-    state = update(trace.state, host, route.selectContext(trace.value));
-    state = update(state, host, appear([3, 0]));
-    state = route.advance(state, host);
-    assert.equal(trace.value.get(state).current.reached, true);
-    state = update(state, host, units.compose(appear([1, 0]), route.selectContext(fear.value)));
-    const self = get(state, 0);
-    assert.equal(route.remainingDistance(state, self, self.route.main), 4);
-    assert.equal(route.remainingDistance(state, self, trace.value.get(state)), 2);
-    assert.equal(route.remainingDistance(state, self, fear.value.get(state)), undefined);
-});
+    const tied = route.addOverride(low.state, host, {
+        ...input(plan([{ type: "APPEAR", position: [0, 4], offset: [0, 0] }])), priority: 10,
+    });
+    state = ticks(tied.state, 2);
+    assert.equal(route.ref(route.activeContext(get(state, 0))), high.value);
+    assert.deepEqual(get(state, 0).position, [0, 0]);
+    assert.equal(high.value.get(state).index, 1);
+    assert.equal(low.value.get(state).current.timer, 0);
+    assert.equal(alternative.value.get(state).current.timer, 0);
+    assert.equal(current(state).current.timer, 2);
+    assert.equal(route.remainingDistance(state, get(state, 0)), 5);
 
-test("Context selection and ticking separately control relative and absolute waits", () => {
-    let state = battle([creation(plan([wait(3), move([0, 2])]))]);
-    const host = units.ref(get(state, 0));
-    const temporary = route.createContext(state, host, {
-        plan: plan([wait(2)]), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
-    });
-    state = update(temporary.state, host, units.compose(
-        route.selectContext(temporary.value), route.setTicking(route.ref(current(state)), false),
-    ));
+    state = update(state, host, route.removeContext(high.value));
+    state = step(state, []);
+    assert.equal(route.ref(route.activeContext(get(state, 0))), tied.value);
+    assert.deepEqual(get(state, 0).position, [4, 0]);
+    state = update(state, host, route.removeContext(tied.value));
+    state = step(state, []);
+    assert.equal(route.ref(route.activeContext(get(state, 0))), low.value);
+    assert.deepEqual(get(state, 0).position, [3, 0]);
+    state = update(state, host, route.removeContext(low.value));
+    state = step(state, []);
+    assert.equal(route.ref(route.activeContext(get(state, 0))), alternative.value);
+    assert.equal(alternative.value.get(state).index, 1);
+    assert.equal(route.remainingDistance(state, get(state, 0)), 2);
+    state = step(update(state, host, appear([5, 0])), []);
+    assert.ok(get(state, 0));
+    assert.equal(route.remainingDistance(state, get(state, 0)), 0);
+    state = update(state, host, route.removeContext(alternative.value));
     state = ticks(state, 2);
-    assert.equal(current(state).current.timer, 3);
-    assert.equal(temporary.value.get(state).index, 1);
-    state = update(state, host, units.compose(route.selectContext(route.ref(current(state))), route.setTicking(route.ref(current(state)), true)));
-    state = ticks(state, 3);
     assert.equal(current(state).current.type, "MOVE");
+    assert.equal(route.ref(route.activeContext(get(state, 0))), route.ref(current(state)));
 
     let absolute = battle([creation(plan([wait(2, "BATTLE"), move([0, 2])]))]);
     const absoluteHost = units.ref(get(absolute, 0));
-    const other = route.createContext(absolute, absoluteHost, {
-        plan: plan(), offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
-    });
-    absolute = update(other.state, absoluteHost, units.compose(
-        route.selectContext(other.value), route.setTicking(route.ref(current(absolute)), false),
-    ));
-    absolute = ticks(absolute, 3);
+    const other = route.setAlternative(absolute, absoluteHost, input(plan()));
+    absolute = ticks(other.state, 3);
     assert.equal(current(absolute).current.anchor, "BATTLE");
-    absolute = update(absolute, absoluteHost, route.selectContext(route.ref(current(absolute))));
+    absolute = update(absolute, absoluteHost, route.removeContext(other.value));
     absolute = step(absolute, []);
     assert.equal(current(absolute).current.type, "MOVE");
 });
@@ -238,32 +245,31 @@ test("MOVE samples on entry, queries keep the sample and loop entry samples agai
 test("TRACE holds its registered tile and control after arrival until explicitly restarted or removed", () => {
     let state = battle([creation(plan([wait(999)]), { locomotion: movement })]);
     const host = units.ref(get(state, 0));
-    const tracing = route.createContext(state, host, {
+    const tracing = route.setAlternative(state, host, {
         plan: plan([{ type: "TRACE", position: [0, 2], reached: false }]),
-        offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
+        offset: [0, 0], alwaysCheckCurrentPoint: false,
     });
-    state = update(tracing.state, host, units.compose(
-        route.selectContext(tracing.value), route.setTicking(route.ref(current(state)), false),
-    ));
+    state = tracing.state;
     state = ticks(state, 3);
     let context = tracing.value.get(state);
     assert.deepEqual(context.current.position, [0, 2]);
     assert.equal(context.current.reached, true);
     assert.equal(context.index, 0);
-    assert.equal(get(state, 0).route.active, route.ref(context));
+    assert.equal(route.ref(route.activeContext(get(state, 0))), route.ref(context));
     assert.equal(route.movementTarget(state, host), null);
     state = update(state, host, appear([0, 0]));
+    assert.equal(route.remainingDistance(state, get(state, 0)), 2);
     state = update(state, host, route.setTraceTarget(route.ref(context), [0, 2]));
     context = tracing.value.get(state);
     assert.equal(context.current.reached, false);
     assert.deepEqual(route.movementTarget(state, host).goal, [2, 0]);
-    state = update(state, host, route.removeContext(route.ref(context), route.ref(current(state))));
+    state = update(state, host, route.removeContext(route.ref(context)));
     assert.equal(tracing.value.get(state), undefined);
     assert.equal(current(state).current.timer, 999);
-    assert.equal(get(state, 0).route.active, route.ref(current(state)));
+    assert.equal(route.ref(route.activeContext(get(state, 0))), route.ref(current(state)));
 });
 
-test("Main MOVE destination keeps the Unit present and EXIT ends its lifetime once independently of the selected Context", () => {
+test("Main EXIT ends the Unit lifetime once independently of both other route layers, while MOVE keeps it present", () => {
     const exits = [];
     const observeExit = {
         id: "exit", priority: 0,
@@ -276,13 +282,14 @@ test("Main MOVE destination keeps the Unit present and EXIT ends its lifetime on
     const host = units.ref(get(state, 0));
     assert.equal(current(state).index, 1);
     assert.deepEqual(get(state, 0).position, [3, 0]);
-    const temporary = route.createContext(state, host, {
+    state = route.setAlternative(state, host, {
+        plan: plan([wait(999)]), offset: [0, 0], alwaysCheckCurrentPoint: false,
+    }).state;
+    const temporary = route.addOverride(state, host, {
         plan: plan([{ type: "TRACE", position: [0, 5], reached: false }]),
-        offset: [0, 0], alwaysCheckCurrentPoint: false, ticking: true,
+        offset: [0, 0], alwaysCheckCurrentPoint: false, priority: 1,
     });
-    state = update(temporary.state, host, units.compose(
-        route.selectContext(temporary.value), route.setTicking(route.ref(current(state)), false),
-    ));
+    state = temporary.state;
     const exitTick = state.tick;
     state = step(state, []);
     assert.equal(get(state, 0), undefined);
@@ -305,15 +312,15 @@ test("Main MOVE destination keeps the Unit present and EXIT ends its lifetime on
     assert.equal(get(step(battle([creation(earlyExit)]), []), 0), undefined);
 
     let stay = battle([creation(plan([], { destination: { type: "MOVE", position: [0, 3] } }), { locomotion: movement })]);
-    assert.equal(route.remainingDistance(stay, get(stay, 0), current(stay)), 3);
+    assert.equal(route.remainingDistance(stay, get(stay, 0)), 3);
     stay = ticks(stay, 5);
     assert.deepEqual(get(stay, 0).position, [3, 0]);
-    assert.equal(route.remainingDistance(stay, get(stay, 0), current(stay)), 0);
+    assert.equal(route.remainingDistance(stay, get(stay, 0)), 0);
     assert.equal(stay.events.some(event => event.type === "UNIT_REMOVED"), false);
 });
 
 test("spatial instructions publish consumption before hooks and resume the latest Context", () => {
-    for (const operation of ["reassign", "ticking"]) {
+    for (const operation of ["reassign", "override"]) {
         let state = battle([
             creation(plan([wait(20)]), {
                 layer: { type: "GROUND" }, blockable: { volume: 1, restrictions: [] },
@@ -331,9 +338,11 @@ test("spatial instructions publish consumption before hooks and resume the lates
                 assert.equal(current(state).index, 1);
                 assert.equal(current(state).current, null);
                 assert.equal(get(state, 0).presence.present, false);
-                state = update(state, host, operation === "reassign"
-                    ? route.reassign(route.ref(current(state)), replacement)
-                    : route.setTicking(route.ref(current(state)), false));
+                state = operation === "reassign"
+                    ? update(state, host, route.reassign(route.ref(current(state)), replacement))
+                    : route.addOverride(state, host, {
+                        plan: plan([wait(9)]), offset: [0, 0], alwaysCheckCurrentPoint: false, priority: 1,
+                    }).state;
                 return { state, value: undefined };
             },
         }));
@@ -348,9 +357,13 @@ test("spatial instructions publish consumption before hooks and resume the lates
             assert.equal(current(state).current.timer, 9);
             assert.deepEqual(get(state, 0).position, [0, 0]);
         } else {
+            assert.equal(current(state).index, 1);
+            assert.equal(current(state).current, null);
+            assert.equal(get(state, 0).presence.present, false);
+            state = update(state, host, route.removeContext(route.ref(route.activeContext(get(state, 0)))));
+            state = step(state, []);
             assert.equal(current(state).index, 2);
             assert.equal(current(state).current.timer, 4);
-            assert.equal(current(state).ticking, false);
             assert.equal(get(state, 0).presence.present, true);
             assert.deepEqual(get(state, 0).position, [6, 0]);
         }

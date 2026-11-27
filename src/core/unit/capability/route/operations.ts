@@ -1,5 +1,9 @@
 import { Vec2 } from "../../../common/vector.js";
-import { assert, assertNonnegativeSafeInteger } from "../../../common/assert.js";
+import {
+    assert,
+    assertFiniteNumber,
+    assertNonnegativeSafeInteger,
+} from "../../../common/assert.js";
 import { createRng } from "../../../common/rng.js";
 import { remove as removeUnit, replace as replaceUnit, update } from "../../operations.js";
 import type { Ref } from "../../../common/ref.js";
@@ -22,6 +26,7 @@ import { hasBlocker } from "../blocking/blocker/blocker.js";
 import { releaseAll } from "../blocking/blocker/operations.js";
 import { setTarget } from "../locomotion/capability.js";
 import {
+    createContext,
     validatePlan,
     type Checkpoint,
     type Context,
@@ -29,14 +34,7 @@ import {
     type Plan,
     type Route,
 } from "./capability.js";
-import {
-    activeContext,
-    contextFor,
-    createContextRef,
-    movementTarget,
-    ref,
-    target,
-} from "./query.js";
+import { activeContext, contextFor, movementTarget, ref, target } from "./query.js";
 
 const RADIUS = 0.05;
 
@@ -52,63 +50,71 @@ function changeContext<U extends Unit & Route>(
 
     const next = transform(context);
 
-    return next === context
-        ? self
-        : {
-              ...self,
-              route:
-                  self.route.main.ref === reference
-                      ? { ...self.route, main: next }
-                      : {
-                            ...self.route,
-                            others: self.route.others.map((entry) =>
-                                entry.ref === reference ? next : entry,
-                            ),
-                        },
-          };
+    if (next === context) {
+        return self;
+    }
+
+    const route = self.route;
+    if (route.main.ref === reference) {
+        return { ...self, route: { ...route, main: next } };
+    }
+    if (route.alternative?.ref === reference) {
+        return { ...self, route: { ...route, alternative: next } };
+    }
+
+    return {
+        ...self,
+        route: {
+            ...route,
+            overrides: route.overrides.map((entry) =>
+                entry.context.ref === reference ? { ...entry, context: next } : entry,
+            ),
+        },
+    };
 }
 
 function publish(battle: BattleState, self: Unit & Route, next: Context): BattleState {
     return replaceUnit(battle, [changeContext(self, ref(next), () => next)]);
 }
 
-export function createContext(
+export function setAlternative(
     battle: BattleState,
     host: Ref<Unit & Route>,
     input: ContextInput,
 ): Result<Ref<Context>> {
-    validatePlan(input.plan);
-    assert(Vec2.is(input.offset), "invalid route offset", TypeError);
     const self = host.get(battle);
     assert(self?.lifecycle === "ACTIVE", "route host is not active", RangeError);
 
-    const reference = createContextRef(host);
-    const context: Context = {
-        ref: reference,
-        plan: input.plan,
-        offset: input.offset,
-        index: 0,
-        current: null,
-        alwaysCheckCurrentPoint: input.alwaysCheckCurrentPoint,
-        ticking: input.ticking,
-    };
+    const context = createContext(host, input);
+    battle = replaceUnit(battle, [{ ...self, route: { ...self.route, alternative: context } }]);
+
+    return { state: enter(battle, ref(context)), value: ref(context) };
+}
+
+export function addOverride(
+    battle: BattleState,
+    host: Ref<Unit & Route>,
+    input: ContextInput & { readonly priority: number },
+): Result<Ref<Context>> {
+    const self = host.get(battle);
+    assert(self?.lifecycle === "ACTIVE", "route host is not active", RangeError);
+    assertFiniteNumber(input.priority, "route override priority");
+
+    const context = createContext(host, input);
     battle = replaceUnit(battle, [
         {
             ...self,
             route: {
                 ...self.route,
-                others: [...self.route.others, context],
+                overrides: [...self.route.overrides, { context, priority: input.priority }],
             },
         },
     ]);
 
-    return { state: enter(battle, reference), value: reference };
+    return { state: enter(battle, ref(context)), value: ref(context) };
 }
 
-export function removeContext(
-    reference: Ref<Context>,
-    nextActive: Ref<Context>,
-): Change<Unit & Route> {
+export function removeContext(reference: Ref<Context>): Change<Unit & Route> {
     return createChange<Unit & Route>((self) => {
         assert(
             self.route.main.ref !== reference,
@@ -120,42 +126,18 @@ export function removeContext(
             return self;
         }
 
-        const active = self.route.active === reference;
-        if (active) {
-            assert(
-                nextActive !== reference && contextFor(self, nextActive) !== undefined,
-                "route successor must identify a remaining context",
-                RangeError,
-            );
+        if (self.route.alternative?.ref === reference) {
+            return { ...self, route: { ...self.route, alternative: null } };
         }
 
         return {
             ...self,
             route: {
                 ...self.route,
-                others: self.route.others.filter((context) => context.ref !== reference),
-                active: active ? nextActive : self.route.active,
+                overrides: self.route.overrides.filter(({ context }) => context.ref !== reference),
             },
         };
     });
-}
-
-export function selectContext(reference: Ref<Context>): Change<Unit & Route> {
-    return createChange<Unit & Route>((self) =>
-        self.lifecycle !== "ACTIVE" ||
-        self.route.active === reference ||
-        contextFor(self, reference) === undefined
-            ? self
-            : { ...self, route: { ...self.route, active: reference } },
-    );
-}
-
-export function setTicking(reference: Ref<Context>, ticking: boolean): Change<Unit & Route> {
-    return createChange<Unit & Route>((self) =>
-        changeContext(self, reference, (context) =>
-            context.ticking === ticking ? context : { ...context, ticking },
-        ),
-    );
 }
 
 export function reassign(reference: Ref<Context>, plan: Plan, index = 0): Change<Unit & Route> {
@@ -245,7 +227,9 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boo
         if (self?.lifecycle !== "ACTIVE" || context === undefined) {
             return battle;
         }
-        if (!enterFirst && self.route.active !== reference) {
+
+        const active = activeContext(self).ref === reference;
+        if (!active && (!enterFirst || context.current !== null)) {
             return battle;
         }
         if (plan !== context.plan) {
@@ -262,6 +246,14 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boo
             visited.add(context.index);
             enterFirst = false;
             const checkpoint = plan.checkpoints[context.index]!;
+            if (
+                !active &&
+                (checkpoint.type === "GOTO" ||
+                    checkpoint.type === "DISAPPEAR" ||
+                    checkpoint.type === "APPEAR")
+            ) {
+                return battle;
+            }
             if (checkpoint.type === "GOTO") {
                 battle = publish(battle, self, { ...context, index: checkpoint.index });
             } else if (checkpoint.type === "DISAPPEAR" || checkpoint.type === "APPEAR") {
@@ -377,21 +369,26 @@ export function advance(battle: BattleState, reference: Ref<Unit & Route>): Batt
     const tick = (context: Context): Context => {
         const current = context.current;
 
-        return context.ticking &&
-            current?.type === "WAIT" &&
-            current.anchor === "ENTER" &&
-            current.timer! > 0
+        return current?.type === "WAIT" && current.anchor === "ENTER" && current.timer! > 0
             ? { ...context, current: { ...current, timer: current.timer! - 1 } }
             : context;
     };
 
-    const main = tick(self.route.main);
-    const others = self.route.others.map(tick);
+    const main = self.route.alternative === null ? tick(self.route.main) : self.route.main;
+    const alternative = self.route.alternative === null ? null : tick(self.route.alternative);
+    const overrides = self.route.overrides.map((entry) => {
+        const context = tick(entry.context);
+
+        return context === entry.context ? entry : { ...entry, context };
+    });
     if (
         main !== self.route.main ||
-        others.some((context, index) => context !== self.route.others[index])
+        alternative !== self.route.alternative ||
+        overrides.some((entry, index) => entry !== self.route.overrides[index])
     ) {
-        battle = replaceUnit(battle, [{ ...self, route: { ...self.route, main, others } }]);
+        battle = replaceUnit(battle, [
+            { ...self, route: { ...self.route, main, alternative, overrides } },
+        ]);
     }
 
     battle = interpret(battle, ref(activeContext(self)), false);

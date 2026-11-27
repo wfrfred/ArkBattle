@@ -8,12 +8,13 @@
 
 | 事项 | 当前状态 | 领域与依据 |
 | --- | --- | --- |
-| 普通仇恨所用的路线距离 | 待定 | [Targeting / Route](research-necessity-20261122.md#targeting--route) |
 | 生命比例同步的 HP 调整 | 待接入 | [Resource / Vitality](research-necessity-20261122.md#resource--vitality) |
 | 动态出生参与调度等待（U048） | 待接入 | [Schedule](research-necessity-20261122.md#schedule) |
 | 波次和终局等待的释放时点（U047） | 待定 | [Schedule](research-necessity-20261122.md#schedule) |
 | 全局个体结算计数 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
 | 关卡生命值 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
+
+已接入：普通仇恨所用的路线距离。Route 分离普通路线替代（Alternative 或 Main）与临时运动控制（Override），`remainingDistance` 只查询普通路线，选敌程序保留比较政策。 [原生仇恨与路线选择](../research/cases/33-targeting-and-targetable-pipeline.md#L230) · [Route 契约](navigation.md#运动目标与-main-出口)
 
 ## 初次盘点的分类
 
@@ -42,7 +43,7 @@
 | G06 | 本次部署参与初始化的 Card 效果 | 松桐 S2 的 DeckBuff 在读取本次出生 HP 前参与 MaxHP 计算。 | 部署入口以固定蓝图完成 Unit.initialize，卡牌通过 Hook 装配入场业务。 | **已结案，现有接口可表达。** Card Effect 保存下次部署的附加数据，通过 `card.beforeDeploy` 在成功资格与资源结算后、Unit.initialize 前修改本次 Unit.Input；参与初始 HP 的配置可直接在构造前确定，其他入场业务可注入本次 Unit Hook。 | [原生依据](../research/cases/24-deployment-cost-and-supply.md#普通-native-分支的阶段区别) · [本次构造干预](deployment.md#部署观察) |
 | G07 | 同一 Card 的特殊部署 | 卫戍初始布阵保留卡牌身份，免初始费用，预放召唤物免库存。初查记录了部分效果跳过开场部署的说法。 | 走 deploy 可以留 Card 的关联历史，但固定派发普通部署通知。直接 Unit 初始化即使设置 Deployable.card，也不能用公开操作登记供 cardForUnit 读取的同一卡来源历史。 | **已结案，现有接口可表达。** 开场的免费和免库存由 `Quote` 表达，实际部署写入历史。入场效果按各自生效条件核对。 | [开场入场效果](../research/cases/24-deployment-cost-and-supply.md#开场实际部署的入场效果) · [报价契约](deployment.md#请求与统一资格) |
 | G08 | 路线到达、退出资格与退出事实 | 普通终点结算用 REACH_EXIT。喀兰圣女等实际 Prefab 禁止退出但仍有路线，主线 6-15 另有不扣蓝门生命但计击杀的配置。 | 到达终点直接移除，内部结束原因通用 SCRIPT，只有表现事件区分出口。改成最后一道 MOVE 会丢失真实终点及剩余路程。 | **Core 已接入。** Plan.destination 区分 MOVE、EXIT 与 null；Main 自然出口与内容强制出口以 Unit EXIT 原因完整离场，不再单发路线表现事件。全局计数和关卡生命值仍独立待接入。 | [原生依据](../research/cases/13-route-and-movement-timing.md#L153) · [Route 契约](navigation.md#运动目标与-main-出口) · [禁止退出配置](../research/evidence/route-operations-20261107/temporary/content.json#L2819) · [退出与击杀](../research/cases/30-scheduler-action-data-fields.md#L155) |
-| G09 | 推进分支与执行分支分开 | 活动关卡实际出生的思旧通过 ModifyRuntimeRouteUseBranchRoute 取路线，消耗下一 Phase，取路线失败也保留已推进索引。 | 公开 triggerBranch 在推进索引后立即启动当前 Phase。Content 要保留同一游标并用于真正触发时，缺少可单独消费 Phase 的操作。 | **已结案，已核实的样本可表达。** 思旧实际使用的分支各有一条路线，Data 可绑定对应 Plan，Content 调用 `route.reassign`。若出现同时用同一游标取路线和触发出怪的样本，再审查共享游标。 | [配置扫描](../research/evidence/cjstel-route-selection-20261122/README.md) · [Route 操作](../../src/core/unit/capability/route/operations.ts#L151) |
+| G09 | 推进分支与执行分支分开 | 活动关卡实际出生的思旧通过 ModifyRuntimeRouteUseBranchRoute 取路线，消耗下一 Phase，取路线失败也保留已推进索引。 | 公开 triggerBranch 在推进索引后立即启动当前 Phase。Content 要保留同一游标并用于真正触发时，缺少可单独消费 Phase 的操作。 | **已结案，已核实的样本可表达。** 思旧实际使用的分支各有一条路线，Data 可绑定对应 Plan，Content 调用 `route.reassign`。若出现同时用同一游标取路线和触发出怪的样本，再审查共享游标。 | [配置扫描](../research/evidence/cjstel-route-selection-20261122/README.md) · [Route 操作](../../src/core/unit/capability/route/operations.ts#L143) |
 
 首次复核确认主动返还 DP 在请求结束前，普通撤退与死亡的卡牌回收都在原生 `OnFinish`，对象注销在 `OnRecycle`。后续取证已定位全局部署额度与同卡在场名额各自的释放时点和部署资格消费者，也复核了本次审计当时留下的中继器回收、动态召唤等待线索。 [部署额度](../research/evidence/deployment-exit-limits-20261122/README.md) · [中继器回收](../research/evidence/repeater-recovery-20261122/README.md) · [动态召唤等待](../research/evidence/managed-summons-20261122/README.md)
 

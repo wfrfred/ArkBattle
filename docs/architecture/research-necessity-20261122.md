@@ -6,12 +6,6 @@
 
 本轮取证已更新各项状态。待查证指可能影响 Core 的具体组合或分支，待定指已有证据、仍需项目作设计取舍，待接入指已有语义缺少对应的 Core 表达。
 
-## Targeting / Route
-
-| 状态 | 事项 | 剩下的问题 |
-| --- | --- | --- |
-| 待定 | 普通仇恨所用的路线距离 | 普通敌人仇恨取有效 Trace 或 Main 的剩余路程。恐惧和诱导可以接管移动，但其临时路线不参与这一距离。当前 `remainingDistance` 要求调用者自行选 Context，直接传活动 Context 会读错。需确定由哪一层解释仇恨所用的路线，比较政策仍由选敌程序决定。 [原生仇恨与路线选择](../research/cases/33-targeting-and-targetable-pipeline.md#L230) · [当前距离约定](navigation.md#运动目标与-main-出口) |
-
 ## Resource / Vitality
 
 | 状态 | 事项 | 剩下的问题 |

@@ -44,7 +44,7 @@ Route 依赖 Locomotion，解析当前指令目标与偏移，使用 Locomotion 
 
 ## Route 定义与进度
 
-Route 是统一的路线解释器。Main 与其他 Context 使用相同 Plan 和指令；控制来源的选择、优先级和有效期归 Content／Effect。
+Route 是统一的路线解释器。Main、Alternative 与 Override 使用相同 Plan 和指令。Route 负责普通路线选择与临时控制优先级；Content／Effect 决定登记哪类路线、赋予的优先级及有效期。
 
 ### 类型与身份
 
@@ -58,15 +58,15 @@ type Destination =
 
 MOVE 表达抵达后留场的持续路线终点；EXIT 表达 Main 的自然出口；null 表达没有固定的最终目标。Data 将普通原始路线转换为 EXIT，Content／Meta 按实际内容与模式构造 MOVE 或无固定终点的 Plan。卫戍登记时禁止自然退出的路线使用 MOVE，不另建运行期 canExit。关卡通用 END Marker 不赋予 Unit 退出资格。
 
-Context 保存 Plan、offset、index、已进入的 current、有效的不可达政策和 ticking。Main 与其他 Context 各有独立 Ref，Ref 持有宿主引用，并在宿主中按 Ref 对象身份读取对应 Context。路线切换、更新和移除使用对应 Context 的 Ref。
+Context 保存 Plan、offset、index、已进入的 current 和有效的不可达政策。每个 Context 各有独立 Ref，Ref 持有宿主引用，并在宿主中按 Ref 对象身份读取对应 Context。更新和移除使用对应 Context 的 Ref。
 
-Route State 组织 Main、其他 Context、active 与出生时的 Wave／Fragment 时间快照。index 是执行位置，current 是已经进入的指令实例；current 为空且索引耗尽表示序列完成，不等于 Context 移除或 Main 可以退出。
+Route State 保存 `main: Context`、`alternative: Context | null`、`overrides: readonly Override[]` 与出生时的 Wave／Fragment 时间快照；Override 包含 context 与有限数值 priority。index 是执行位置，current 是已经进入的指令实例；current 为空且索引耗尽表示序列完成，不等于 Context 移除或 Main 可以退出。
 
 ### 控制选择与计时
 
-active 选择跨指令推进与位移目标；ticking 独立决定各 Context 的当前指令是否计时。非活动 Context 可以计时但不消费指令；活动 Context 即使不计时，仍能执行无需计时的到达检查和即时指令。Main 出口检查独立于 active。
+普通路线由 `ordinaryContext` 查询：存在 Alternative 时使用 Alternative，否则使用 Main。Trace 等真正替代普通路线的内容使用 Alternative。Fear／Attract 等仅改变移动控制的内容登记 Override；`activeContext` 选择优先级最高的 Override，同优先级先登记者胜，无 Override 时使用普通路线。两种选择均由 State 派生，不另存选择状态。
 
-切换 Context 不自动改 ticking 或删除其他执行。Fear／Attract／Trace 的控制政策由内容明确提交，Route 不建立优先级系统或通用暂停栈；Locomotion 禁止移动也不自动暂停路线计时。
+每 Tick 普通路线和所有 Override 的已进入 ENTER WAIT 均扣减 timer；Main 被 Alternative 替代时不扣减。自动推进中只有取得执行权的 Context 可消费指令、检查到达和提供位移目标。控制权变化不重建已有 current，删除任一临时路线后按现存路线自动选择。Locomotion 禁止移动也不自动暂停路线计时。Main 出口检查独立于执行权。
 
 ### Checkpoint 与进入
 
@@ -82,9 +82,9 @@ Plan 与 current 复用 Checkpoint 联合，求值只改 current：随机 MOVE �
 
 #### WAIT
 
-ENTER 进入时建立剩余 timer，仅 ticking 时扣减；重新进入取得完整时长。BATTLE 比较全局 Tick，WAVE 比较出生快照 waveStartTick，FRAGMENT 比较 fragmentReadyTick；三者 timer 为空，按各自基准加配置偏移判断。恢复检查时已经过期便满足，不积累独立计时。
+ENTER 进入时建立剩余 timer，按上述路线类别规则扣减；重新进入取得完整时长。BATTLE 比较全局 Tick，WAVE 比较出生快照 waveStartTick，FRAGMENT 比较 fragmentReadyTick；三者 timer 为空，按各自基准加配置偏移判断。恢复检查时已经过期便满足，不积累独立计时。
 
-非活动 Context 即使等待已满足也保留指令，成为活动执行后才消费。skipWait 仅显式跳过当前 ENTER，不跳过其他基准。
+未取得执行权的 Context 即使等待已满足也保留指令，恢复执行后才消费。skipWait 是由 Ref 指定的显式进度改写，可跳过非执行路线的当前 ENTER，但不跳过其他基准；其后续指令仍须等到取得执行权才自动推进。
 
 时间快照由 Route initializer 在实际出生时向 [Schedule](schedule.md#route-的主流程时间上下文) 取得：Wave 进入时刻与最近主 Fragment 前延迟结束时刻。Branch 出生也使用当时主线，不使用 Phase 时刻；后续调度变化不改快照，所有 Context 共享它。
 
@@ -96,17 +96,17 @@ Content 持有目标 Unit Ref 并更新目标格；Route 只保存最后登记�
 
 ### 推进与同步操作
 
-advance 先更新各 Context 的计时，再连续解释活动 Context，检查 Main 出口后向仍有效的宿主发布当前 MovementTarget（含 null）。MOVE 未到、WAIT 未满足或持续 TRACE 阻塞解释。
+advance 先按普通路线与 Override 规则更新计时，再连续解释取得执行权的 Context，检查 Main 出口后向仍有效的宿主发布当前 MovementTarget（含 null）。MOVE 未到、WAIT 未满足或持续 TRACE 阻塞解释。
 
 一次连续解释以局部已访问索引集合保证终止；再遇索引时在进入前让出，保留待进入位置，下一 Tick 再进入。长而无环的序列不受固定次数截断；集合不写 State、不跨调用共享，Plan 改变时重置。
 
-APPEAR／DISAPPEAR 先提交已消费的指令进度，再执行跨领域操作。返回后重读最新宿主、Context 与 active；宿主离场、Context 移除或失去资格便停止，重建路线则按最新进度继续，不恢复旧快照。查询不隐式进入、跳转或采样。
+APPEAR／DISAPPEAR 先提交已消费的指令进度，再执行跨领域操作。返回后重读最新宿主、Context 与派生的执行权；宿主离场、Context 移除或失去资格便停止，重建路线则按最新进度继续，不恢复旧快照。查询不隐式进入、跳转或采样。
 
 ### 公开操作
 
-createContext 建立独立身份并同步进入首条指令，不自动选择控制权。removeContext 不能移除 Main；移除活动 Context 时由调用者明确给出现存后继。selectContext 选择执行，不修改计时政策。
+`setAlternative(battle, host, input: ContextInput): Result<Ref<Context>>` 建立新普通替代路线，替换此前 Alternative（旧 Ref 失效）。`addOverride(battle, host, input: ContextInput & { readonly priority: number }): Result<Ref<Context>>` 登记独立临时控制。`removeContext(ref): Change<Unit & Route>` 移除 Alternative 或 Override，不能移除 Main；不需要调用者指定后继。创建操作同步初始化当前指令：未取得执行权时可进入 MOVE／WAIT／TRACE，但不能消费路点或执行 GOTO／APPEAR／DISAPPEAR。
 
-reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索引重建当前执行；不提供编辑 Plan 后保留旧 current 的隐式索引映射。skipWait、setTicking 与 setTraceTarget 各修改自己的事实。除创建和推进完整业务外，写入通过 Route Change 组合发布。
+reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索引重建当前执行；不提供编辑 Plan 后保留旧 current 的隐式索引映射。skipWait 与 setTraceTarget 各修改自己的事实。除创建和推进完整业务外，写入通过 Route Change 组合发布。
 
 ### 运动目标与 Main 出口
 
@@ -114,7 +114,7 @@ movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRAC
 
 Route 先从身体位置减去 Context.offset 再量化为起格，使用当前 Locomotion.mode 以路点原格查询 nextTile。若查询返回目标格（包括起格即目标格），nextPoint 使用精确目标坐标；否则使用后继格中心。Route 将 nextPoint 与精确 goal 同时加回 Context.offset，形成 MovementTarget。MOVE 局部偏移只应用于精确抵达坐标，不改变构场、不可达判断或剩余距离的目标格，即使两者跨格。整体 Context.offset 与 MOVE 局部偏移独立。建议点不保证身体从偏离格心的位置可直线抵达，局部避障归 Locomotion。当前 MOVE 未到达且身体所在格在地图内但不可通时，保留该 MOVE，供 Locomotion 先脱困。身体进入可通格后，按 alwaysCheckCurrentPoint 决定是否跳过不可达的 MOVE。Main 出口、时间和控制优先级各有独立政策，Layer 独立于运动方式。
 
-remainingDistance 显式指定 Context，不把临时控制当作普通路线优先级。Route 使用当前 Locomotion.mode，根据 path 累计当前与后续 MOVE／终点的连续几何路程，而非 Field 搜索代价。起格即目标格或后继直接是目标格时使用身体至精确目标的欧氏距离；否则将身体相对起格中心的偏移投影到首段方向以修正首段长度，沿中间格中心累加，最后一段使用精确目标坐标。WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，当前 MOVE 使用已进入的样本，未来固定 MOVE 使用配置偏移，未来随机目标按原格格心估计且不消费 RNG。
+`remainingDistance(battle, self)` 只读取 ordinaryContext，不把 Override 的临时控制用于普通仇恨排序。Route 使用当前 Locomotion.mode，根据 path 累计当前与后续 MOVE／终点的连续几何路程，而非 Field 搜索代价。起格即目标格或后继直接是目标格时使用身体至精确目标的欧氏距离；否则将身体相对起格中心的偏移投影到首段方向以修正首段长度，沿中间格中心累加，最后一段使用精确目标坐标。WAIT 不加距离，APPEAR 只改变后续起点而不累加传送，当前 MOVE 使用已进入的样本，未来固定 MOVE 使用配置偏移，未来随机目标按原格格心估计且不消费 RNG。
 
 当前 TRACE 查询最后目标格的几何距离，不可达时回退为直线距离；没有可确定有限终点的无终点路线、循环或未来持续 TRACE 返回 undefined。MOVE 和 EXIT 都提供有效终点。有限路线的某段越界或不可达时保留之前已累计的距离，并加上该段直线回退，不继续叠加后续段，也不用回退掩盖无有限终点。
 
@@ -124,11 +124,11 @@ Main 的 destination 必须为 EXIT 且实际抵达其位置（含 Main.offset�
 
 创建者选择 Plan、采样 offset，以同一样本构造出生位置并提供 Initial。Route 只建立 Main、执行政策和 Schedule 时基，不重新合成 UnitDefinition，也不接受预装执行状态。
 
-首指令由登记后的普通 Unit.entered 同步进入；Schedule 在 Unit.add 前发布等待关系。动态 Context 复用进入逻辑；已有 Unit 的新 Context 共享原出生时基，新 Unit 从当前 Schedule 独立取样，不从召唤者继承。
+首指令由登记后的普通 Unit.entered 同步进入；Schedule 在 Unit.add 前发布等待关系。动态 Context 复用进入逻辑并遵守执行权；已有 Unit 的新 Context 共享原出生时基，新 Unit 从当前 Schedule 独立取样，不从召唤者继承。
 
 ### 回归语义
 
-首指令、重新采样、WAIT 基准与 ticking、即时循环、持续 TRACE、Main 独立出口和同步重入由[语义验收](verification.md)集中保障，Route 不重复 Locomotion 或 Hook 的公共矩阵。
+首指令、重新采样、WAIT 基准与两层计时、路线替代和控制优先级、即时循环、持续 TRACE、Main 独立出口和同步重入由[语义验收](verification.md)集中保障，Route 不重复 Locomotion 或 Hook 的公共矩阵。
 
 ## Locomotion
 

@@ -8,19 +8,19 @@ export type {
     Checkpoint,
     Context,
     ContextInput,
+    Override,
     State,
     Route,
 } from "./capability.js";
 
 export {
-    createContext,
+    setAlternative,
+    addOverride,
     removeContext,
-    selectContext,
-    setTicking,
     reassign,
     skipWait,
     setTraceTarget,
     advance,
 } from "./operations.js";
 
-export { ref, activeContext, movementTarget, remainingDistance } from "./query.js";
+export { ref, ordinaryContext, activeContext, movementTarget, remainingDistance } from "./query.js";

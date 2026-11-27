@@ -15,7 +15,7 @@ import {
 } from "../../../geometry/coordinate.js";
 import type { Unit } from "../../unit.js";
 import type { MovementTarget } from "../locomotion/capability.js";
-import type { Context, Route } from "./capability.js";
+import type { Context, Override, Route } from "./capability.js";
 
 export { ref } from "../../../common/ref.js";
 
@@ -31,13 +31,30 @@ function getContext(this: object, battle: BattleState): Context | undefined {
 }
 
 export function contextFor(self: Unit & Route, reference: Ref<Context>): Context | undefined {
-    return self.route.main.ref === reference
-        ? self.route.main
-        : self.route.others.find((context) => context.ref === reference);
+    if (self.route.main.ref === reference) {
+        return self.route.main;
+    }
+    if (self.route.alternative?.ref === reference) {
+        return self.route.alternative;
+    }
+
+    return self.route.overrides.find(({ context }) => context.ref === reference)?.context;
+}
+
+export function ordinaryContext(self: Unit & Route): Context {
+    return self.route.alternative ?? self.route.main;
 }
 
 export function activeContext(self: Unit & Route): Context {
-    return contextFor(self, self.route.active)!;
+    let winner: Override | undefined;
+
+    for (const override of self.route.overrides) {
+        if (winner === undefined || override.priority > winner.priority) {
+            winner = override;
+        }
+    }
+
+    return winner?.context ?? ordinaryContext(self);
 }
 
 interface Target {
@@ -113,11 +130,8 @@ function distance(
     return first ? Vec2.length(Vec2.sub(target.position, current)) : remaining;
 }
 
-export function remainingDistance(
-    battle: BattleState,
-    self: Unit & Route,
-    context: Context,
-): number | undefined {
+export function remainingDistance(battle: BattleState, self: Unit & Route): number | undefined {
+    const context = ordinaryContext(self);
     const state = battle.battlefield.navigation;
     const mode = self.locomotion.mode;
     let position = Vec2.sub(self.position, context.offset);
