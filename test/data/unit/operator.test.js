@@ -1,7 +1,8 @@
 // Contract: [data](../../../docs/architecture/data.md).
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { fromTables, record } from "../../../dist/data/unit/operator.js";
+import { fromTables } from "../../../dist/data/tables.js";
+import { record } from "../../../dist/data/json.js";
 import { parseGroupTags } from "../../../dist/data/unit/tags.js";
 import { resolve as resolveMudrock } from "../../../dist/content/operators/mudrock/parameters.js";
 import {

@@ -1,15 +1,9 @@
+import { record as object } from "./json.js";
+
 export interface PrefabExtraction {
     readonly prefabKey: string;
     readonly components: readonly Record<string, unknown>[];
     readonly objects: ReadonlyMap<string, Record<string, unknown>>;
-}
-
-function object(value: unknown, name: string): Record<string, unknown> {
-    if (value === null || typeof value !== "object" || Array.isArray(value)) {
-        throw new TypeError(`${name} must be an object`);
-    }
-
-    return value as Record<string, unknown>;
 }
 
 export function parsePrefabExtraction(value: unknown): PrefabExtraction {

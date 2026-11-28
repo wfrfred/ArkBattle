@@ -1,4 +1,5 @@
 import { assertFiniteNumber } from "../core/common/assert.js";
+import { denseArray, record, string } from "./json.js";
 
 export interface ArknightsBlackboardEntry {
     readonly key: string;
@@ -11,26 +12,13 @@ export function parseBlackboard(
     name: string,
     options: { readonly allowEmptyKeys: boolean; readonly allowMissingValueStr: boolean },
 ): readonly ArknightsBlackboardEntry[] {
-    if (!Array.isArray(value)) {
-        throw new TypeError(`${name} must be an array`);
-    }
-
+    const sourceEntries = denseArray(value, name);
     const keys = new Set<string>();
     const entries: ArknightsBlackboardEntry[] = [];
 
-    for (let index = 0; index < value.length; index++) {
+    for (const [index, item] of sourceEntries.entries()) {
         const path = `${name}[${index}]`;
-
-        if (!Object.hasOwn(value, index) || value[index] === undefined) {
-            throw new TypeError(`${name} must be dense`);
-        }
-
-        const item: unknown = value[index];
-        if (item === null || typeof item !== "object" || Array.isArray(item)) {
-            throw new TypeError(`${path} must be an object`);
-        }
-
-        const source = item as Record<string, unknown>;
+        const source = record(item, path);
 
         for (const key of Object.keys(source)) {
             if (key !== "key" && key !== "value" && key !== "valueStr") {
@@ -38,10 +26,7 @@ export function parseBlackboard(
             }
         }
 
-        const key = source.key;
-        if (typeof key !== "string") {
-            throw new TypeError(`${path}.key must be a string`);
-        }
+        const key = string(source.key, `${path}.key`);
         if (key.length === 0 && !options.allowEmptyKeys) {
             throw new TypeError(`${path}.key must not be empty`);
         }

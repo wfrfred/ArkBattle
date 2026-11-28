@@ -30,6 +30,11 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 | 文件 | 职责 |
 | --- | --- |
+| `json.ts` | 共享原始 JSON 结构读取与校验。 |
+| `tables.ts` | 保留完整原表，按表根对象校验。 |
+| `load.ts` | 独立文件读取入口；纯转换不依赖文件系统。 |
+| `enemy-database.ts` | 原始条目索引、等级层选择与定义字段合并，不解释战斗属性。 |
+| `level.ts` | 保留原始关卡对象，按需读取格坐标与原始地图索引矩阵。 |
 | `blackboard.ts` | 读取数值／字符串参数；静态覆写顺序由使用这些资料的业务决定。 |
 | `range.ts` | 将范围表转换为可直接使用的几何描述。 |
 | `prefab.ts` | 读取提取结果中的组件、对象引用和资源关联；单位、关卡等字段在各自目录解释。 |
@@ -43,9 +48,9 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 ## 干员静态资料
 
-完整原表来自 `assets/arknights-game-data` 子模块固定的数据版本。使用完整表时先运行 `git submodule update --init --depth 1 assets/arknights-game-data`，再用 `data/unit/operator-tables.ts` 的 `load()` 读取 `zh_CN/gamedata/excel` 并把结果交给干员的 `create(configuration, tables)`。同一份加载结果可用于多个干员。测试使用 `fromTables()` 接入原表摘录。[原表加载](../../src/data/unit/operator-tables.ts) · [原表关联](../research/cases/06-talent-lifecycle-and-model.md#干员跨表绑定2026-11-21)
+完整原表来自 `assets/arknights-game-data` 子模块固定的数据版本。使用完整表时先运行 `git submodule update --init --depth 1 assets/arknights-game-data`，再用 `data/load.ts` 的 `loadTables()` 读取 `zh_CN/gamedata/excel` 并把结果交给干员的 `create(configuration, tables)`。同一份加载结果可用于多个干员。测试使用 `fromTables()` 接入原表摘录。[原表加载](../../src/data/load.ts) · [原表关联](../research/cases/06-talent-lifecycle-and-model.md#干员跨表绑定2026-11-21)
 
-`unit/operator.ts` 定义原表的 `Tables`。加载只校验表根对象，保留完整记录，包括 `uniequip_table.json` 的装备索引和其他字段。具体干员通过 `resolve(configuration, tables)` 选择记录和字段。Content 可以复用常规养成、范围和技能读取，也可以直接读专属机制需要的字段。信赖从同一数据版本的 `favor_table.json` 选择，普攻时序取自默认模型的动画证据。[原表类型](../../src/data/unit/operator.ts) · [攻击时序](../research/cases/07-action-timing-and-animation.md)
+`tables.ts` 定义原表的 `Tables`。加载只校验表根对象，保留完整记录，包括 `uniequip_table.json` 的装备索引和其他字段。具体干员通过 `resolve(configuration, tables)` 选择记录和字段。Content 可以复用常规养成、范围和技能读取，也可以直接读专属机制需要的字段。信赖从同一数据版本的 `favor_table.json` 选择，普攻时序取自默认模型的动画证据。[原表类型](../../src/data/tables.ts) · [攻击时序](../research/cases/07-action-timing-and-animation.md)
 
 常规养成按配置读取所选精英阶段、已获得的潜能、信赖、所选技能等级及模组阶段。等级属性和信赖增量分别按各自关键帧插值。MaxHP、ATK、DEF、嘲讽、阻挡数、费用和再部署时间取偶舍入，法抗、攻速与基础攻击间隔保留小数。先分别取整，再相加，然后应用潜能与选中模组阶段的加值。[干员配置数据补核](../research/cases/06-talent-lifecycle-and-model.md#干员配置数据补核2026-11-10)
 

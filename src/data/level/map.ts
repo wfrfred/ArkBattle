@@ -1,4 +1,4 @@
-import { assertFiniteNumber, assertSafeInteger } from "../../core/common/assert.js";
+import { assertSafeInteger } from "../../core/common/assert.js";
 import {
     create as createMap,
     type BlockEdge,
@@ -29,6 +29,7 @@ import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js
 import { secondsToTicks } from "../../core/tick.js";
 import type { TileDeploymentPrefab } from "./prefab.js";
 import { parseSiteCondition } from "./site-condition.js";
+import { parseMapGrid } from "../level.js";
 
 export interface ArknightsTileContext {
     readonly tileKey: string;
@@ -90,12 +91,6 @@ function string(value: unknown, name: string): string {
     if (typeof value !== "string") {
         throw new TypeError(`${name} must be a string`);
     }
-
-    return value;
-}
-
-function finite(value: unknown, name: string): number {
-    assertFiniteNumber(value, name);
 
     return value;
 }
@@ -293,35 +288,18 @@ export function parseBattlefieldMap(value: unknown, options: ArknightsMapOptions
     requireEmpty(source.effects, "map effects");
     requireEmpty(source.layerRects, "map layers");
 
-    const matrix = array(source.map, "map matrix");
-    if (matrix.length === 0) {
-        throw new RangeError("map matrix must have at least one row");
-    }
-
-    const columns = array(matrix[0], "map row").length;
-    if (columns === 0) {
-        throw new RangeError("map matrix must have at least one column");
-    }
-
     const definitions = array(source.tiles, "tile definitions");
+    const matrix = parseMapGrid(source.map, definitions.length);
+    const columns = matrix[0]!.length;
     let tiles = Tiles.empty();
     const markers: Marker[] = [];
 
     for (let row = 0; row < matrix.length; row++) {
         const sourceRowIndex = matrix.length - row - 1;
-        const rawRow = array(matrix[sourceRowIndex], "map row");
-        if (rawRow.length !== columns) {
-            throw new RangeError("map matrix must be rectangular");
-        }
+        const rawRow = matrix[sourceRowIndex]!;
+
         for (let col = 0; col < columns; col++) {
-            const definitionIndex = finite(rawRow[col], "tile definition index");
-            if (
-                !Number.isSafeInteger(definitionIndex) ||
-                definitionIndex < 0 ||
-                definitionIndex >= definitions.length
-            ) {
-                throw new RangeError(`invalid tile definition index ${definitionIndex}`);
-            }
+            const definitionIndex = rawRow[col]!;
 
             const parsed = parseTile(definitions[definitionIndex], [col, row], options, tiles);
             tiles = parsed.tiles;

@@ -8,7 +8,8 @@ import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { parseBlackboard, type ArknightsBlackboardEntry } from "../../data/blackboard.js";
 import { parseRange } from "../../data/range.js";
 import { parseArknightsSkillLevel } from "../../data/skill/operator.js";
-import { record, type Table, type Tables } from "../../data/unit/operator.js";
+import { record } from "../../data/json.js";
+import type { Table, Tables } from "../../data/tables.js";
 import type { Configuration, SkillSelection } from "./configuration.js";
 
 export interface Attributes {

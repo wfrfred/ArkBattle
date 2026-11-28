@@ -12,6 +12,7 @@ import { advance as advanceBlocking, release as releaseBlocking } from "../../di
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { parseEnemyDatabase } from '../../dist/data/enemy-database.js';
 import { readEnemyParameters, resolveEnemy } from '../../dist/data/unit/enemy.js';
 import { parseAttackTiming } from '../../dist/data/action/timing.js';
 import { readEnemyMovementPrefab } from '../../dist/data/unit/prefab.js';
@@ -46,7 +47,8 @@ const crossbowTiming = {
   melee: parseAttackTiming(timingData.crossbowMelee),
   ranged: parseAttackTiming(timingData.crossbowRanged),
 };
-const rawEnemy = id => fixture.enemies.find(entry => entry.Key === id);
+const database = parseEnemyDatabase(fixture);
+const rawEnemy = id => database.get(id);
 const enemy = (id, level = 0, overwrittenData) => resolveEnemy(rawEnemy(id), { level, overwrittenData });
 const parameters = id => readEnemyParameters(enemy(id));
 const houndPrefab = JSON.parse(readFileSync(new URL('../fixtures/arknights/prefab_enemy_1000_gopro.json', import.meta.url), 'utf8'));

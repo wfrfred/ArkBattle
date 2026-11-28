@@ -20,7 +20,7 @@ import { createAttackBonus } from "./effect.js";
 import { create as createSkill } from "./skill.js";
 import type { Operator } from "../operator.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
-import type { Tables } from "../../../data/unit/operator.js";
+import type { Tables } from "../../../data/tables.js";
 import { resolve } from "./parameters.js";
 import { allows } from "../../../core/restriction.js";
 import { TICKS_PER_SECOND } from "../../../core/tick.js";

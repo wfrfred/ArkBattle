@@ -1,3 +1,5 @@
+import { record } from "./json.js";
+
 export type Table = Readonly<Record<string, unknown>>;
 
 export interface Tables {
@@ -7,14 +9,6 @@ export interface Tables {
     readonly equipment: Table;
     readonly battleEquipment: Table;
     readonly favor: Table;
-}
-
-export function record(value: unknown, name: string): Table {
-    if (value === null || typeof value !== "object" || Array.isArray(value)) {
-        throw new TypeError(`${name} must be an object`);
-    }
-
-    return value as Table;
 }
 
 export function fromTables(tables: Readonly<Record<keyof Tables, unknown>>): Tables {

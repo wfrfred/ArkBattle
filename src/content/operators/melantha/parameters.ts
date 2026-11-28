@@ -1,4 +1,5 @@
-import { record, type Tables } from "../../../data/unit/operator.js";
+import { record } from "../../../data/json.js";
+import type { Tables } from "../../../data/tables.js";
 import { parseGroupTags } from "../../../data/unit/tags.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
 import {

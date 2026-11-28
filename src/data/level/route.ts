@@ -1,8 +1,9 @@
-import { assertFiniteNumber, assertSafeInteger } from "../../core/common/assert.js";
+import { assertFiniteNumber } from "../../core/common/assert.js";
 import type { MotionMode } from "../../core/battlefield/navigation/state.js";
 import type { TilePosition, WorldPosition } from "../../core/geometry/coordinate.js";
 import type { Checkpoint, Plan } from "../../core/unit/capability/route/capability.js";
 import { secondsToTicks } from "../../core/tick.js";
+import { parseGridPosition } from "../level.js";
 
 export interface Route {
     readonly plan: Plan;
@@ -50,11 +51,7 @@ function boolean(value: unknown, name: string): boolean {
 }
 
 function position(value: unknown, name: string): TilePosition {
-    const data = object(value, name, ["row", "col"]);
-    assertSafeInteger(data.row, `${name}.row`);
-    assertSafeInteger(data.col, `${name}.col`);
-
-    return [data.col, data.row];
+    return parseGridPosition(object(value, name, ["row", "col"]), name);
 }
 
 function offset(value: unknown, name: string): WorldPosition {

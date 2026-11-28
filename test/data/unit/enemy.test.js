@@ -2,12 +2,14 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { parseEnemyDatabase } from "../../../dist/data/enemy-database.js";
 import { readEnemyParameters, resolveEnemy } from "../../../dist/data/unit/enemy.js";
 
 const fixture = JSON.parse(readFileSync(
     new URL("../../fixtures/arknights/main-mode-units.json", import.meta.url), "utf8",
 ));
-const rawEnemy = id => fixture.enemies.find(entry => entry.Key === id);
+const database = parseEnemyDatabase(fixture);
+const rawEnemy = id => database.get(id);
 const parameters = (id, level = 0, overwrittenData) =>
     readEnemyParameters(resolveEnemy(rawEnemy(id), { level, overwrittenData }));
 
