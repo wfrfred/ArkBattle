@@ -23,7 +23,11 @@ function source() {
         ...original, key, randomSpawnGroupKey: group, weight, count,
         preDelay: 0, interval: 0.1, routeIndex: 0,
     });
-    const actions = [action("A", "group", 0), action("N", null, 0), action("B", "group", 1, 2)];
+    const actions = [
+        action("A", "group", 0),
+        { ...action("N", null, 0), dontBlockWave: true },
+        { ...action("B", "group", 1, 2), managedByScheduler: false, isUnharmfulAndAlwaysCountAsKilled: true },
+    ];
     const definitions = new Map(actions.map(({ key }) => [key, {
         id: key, hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true },
         locomotion: { speed: { default: 0, min: 0, max: null }, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
@@ -88,6 +92,9 @@ test("main random groups preserve source order and expand the selected count onc
     assert.deepEqual(spawns.map(({ definition }) => definition.id), ["N", "B", "B"]);
     assert.deepEqual(spawns.map(({ atTick }) => atTick), [0, 0, 3]);
     assert.deepEqual(spawns.map(({ mode }) => mode), Array(3).fill(level.routes[0].mode));
+    assert.deepEqual(spawns.map(({ wait }) => wait), ["FINAL", "NONE", "NONE"]);
+    assert.deepEqual(spawns.map(({ statistics }) => statistics), ["NORMAL", "ALWAYS_KILLED", "ALWAYS_KILLED"]);
+    assert.equal(compiled.statistics.total, 3);
     assert.notEqual(compiled.rngState, seed);
     const actions = level.waves[0].fragments[0].actions.map((action) => ({
         ...action, weight: action.randomSpawnGroupKey === null ? 0 : 1,
@@ -110,6 +117,10 @@ test("branch groups retain whole candidates for runtime choice and preserve entr
 
     assert.deepEqual(entries[0].options.map(({ weight, entries }) => [weight, entries.length]), [[0, 1], [1, 2]]);
     assert.equal(entries[1].definition.id, "N");
+    assert.equal(entries[1].wait, "FINAL");
+    assert.deepEqual(entries[0].options.flatMap(({ entries }) => entries.map(({ statistics }) => statistics)), [null, null, null]);
+    assert.equal(entries[1].statistics, null);
+    assert.equal(compiled.statistics.total, 0);
     assert.equal(compiled.rngState, 123);
 });
 
@@ -123,6 +134,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         { ...wave, fragments: [{ preDelay: 0, actions: [
             { ...action, notCountInTotal: true },
             action,
+            { ...action, key: enemy },
         ] }] },
         { ...wave, fragments: [] },
     ];
@@ -149,7 +161,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         locomotion: { speed: { default: 0, min: 0, max: null }, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
     };
     const compiled = compileSpawnSchedule(level, {
-        actions: [0, 1].map((actionIndex) => ({ waveIndex: 0, fragmentIndex: 0, actionIndex })),
+        actions: [0, 1, 2].map((actionIndex) => ({ waveIndex: 0, fragmentIndex: 0, actionIndex })),
         branches: ["uncounted"],
     }, (reference) => {
         const record = records.find(({ Key }) => Key === reference.id);
@@ -162,10 +174,13 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         const { delayToBornTicks } = readEnemyMovementPrefab(resolved, prefabs);
         return { definition, notCountInTotal: resolved.notCountInTotal, delayToBornTicks };
     }, 7);
-    assert.deepEqual(compiled.schedule.waves[0].fragments[0].entries.map(({ wait }) => wait), ["NONE", "WAVE"]);
+    const spawns = compiled.schedule.waves[0].fragments[0].entries;
+    assert.deepEqual(spawns.map(({ wait }) => wait), ["NONE", "WAVE", "NONE"]);
+    assert.deepEqual(spawns.map(({ statistics }) => statistics), [null, "NORMAL", null]);
+    assert.equal(compiled.statistics.total, 1);
     let state = step(initialize({
         map: level.map, schedule: compiled.schedule, initialUnits: [], initialEffects: [],
-        moveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, initialCards: [], rngState: compiled.rngState,
+        moveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, initialCards: [], rngState: compiled.rngState, statistics: compiled.statistics,
     }), []);
     const waiting = ref(get(state, 1));
     assert.deepEqual(state.schedule.waiting, { wave: [waiting], final: [waiting] });
@@ -173,5 +188,6 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     assert.deepEqual(state.schedule.waiting, { wave: [waiting], final: [waiting] });
     state = step(remove(state, waiting, { reason: "DEATH", killer: null }), []);
     assert.equal(isCompleted(state.schedule), true);
-    assert.deepEqual(all(state).map(unit => unit.ref.id).toArray(), [0, 2]);
+    assert.deepEqual(all(state).map(unit => unit.ref.id).toArray(), [0, 2, 3]);
+    assert.deepEqual(state.statistics, { total: 1, finished: 1, killed: 1, pending: new Map() });
 });

@@ -34,6 +34,7 @@ export type ArknightsEnemyResolver = (reference: ArknightsEnemyDbRef) => {
 
 export interface ArknightsScheduleCompilation {
     readonly schedule: Definition;
+    readonly statistics: { readonly total: number };
     readonly rngState: Seed;
     readonly omittedActions: readonly string[];
     readonly inactiveBranches: readonly string[];
@@ -48,11 +49,10 @@ function validateAction(action: ArknightsSpawnAction): void {
         action.hiddenGroup !== null ||
         action.randomSpawnGroupPackKey !== null ||
         action.randomType !== "ALWAYS" ||
-        action.refreshType !== "ALWAYS" ||
-        action.isUnharmfulAndAlwaysCountAsKilled
+        action.refreshType !== "ALWAYS"
     ) {
         throw new RangeError(
-            "spawn schedules do not support hidden groups, random packs, non-ALWAYS random policies or special kill accounting",
+            "spawn schedules do not support hidden groups, random packs or non-ALWAYS random policies",
         );
     }
     if (action.randomSpawnGroupKey === null && action.weight !== 0) {
@@ -77,22 +77,21 @@ function resolveActionSpawn(
         throw new RangeError("spawn schedules require synchronous enemy births");
     }
 
+    const notCountInTotal = action.notCountInTotal || content.notCountInTotal;
+
     return {
         definition: content.definition,
         plan: route.plan,
         mode: route.mode,
         offset: route.spawnOffset,
         randomRange: route.spawnRandomRange,
-        wait: wait(action, fromBranch, content.notCountInTotal),
+        wait: wait(action, fromBranch, notCountInTotal),
+        statistics: statistics(action, fromBranch, notCountInTotal),
     };
 }
 
-function wait(
-    action: ArknightsSpawnAction,
-    fromBranch: boolean,
-    enemyNotCountInTotal: boolean,
-): Wait {
-    if (action.notCountInTotal || enemyNotCountInTotal || !action.managedByScheduler) {
+function wait(action: ArknightsSpawnAction, fromBranch: boolean, notCountInTotal: boolean): Wait {
+    if (notCountInTotal || !action.managedByScheduler) {
         return "NONE";
     }
     if (action.dontBlockWave || (fromBranch && !action.forceBlockWaveInBranch)) {
@@ -100,6 +99,18 @@ function wait(
     }
 
     return "WAVE";
+}
+
+function statistics(
+    action: ArknightsSpawnAction,
+    fromBranch: boolean,
+    notCountInTotal: boolean,
+): Spawn["statistics"] {
+    if (fromBranch || notCountInTotal) {
+        return null;
+    }
+
+    return action.isUnharmfulAndAlwaysCountAsKilled ? "ALWAYS_KILLED" : "NORMAL";
 }
 
 function compileAction(
@@ -281,8 +292,21 @@ export function compileSpawnSchedule(
         },
     ]);
 
+    let total = 0;
+
+    for (const wave of waves) {
+        for (const fragment of wave.fragments) {
+            for (const entry of fragment.entries) {
+                if (entry.statistics !== null) {
+                    total += 1;
+                }
+            }
+        }
+    }
+
     return {
         schedule: { waves, branches: Object.fromEntries(branches) },
+        statistics: { total },
         rngState: rng.state(),
         omittedActions,
         inactiveBranches: Object.keys(level.branches).filter((id) => !selectedBranches.has(id)),

@@ -4,6 +4,7 @@ import type { Definitions } from "../../unit/capability/catalog.js";
 import type { Plan, Route } from "../../unit/capability/route/capability.js";
 import type { Definition as BaseDefinition } from "../../unit/unit.js";
 import type { Result, State as BattleState } from "../state.js";
+import type { Policy } from "../statistics.js";
 
 export type UnitDefinition = BaseDefinition &
     Route["definition"] &
@@ -20,6 +21,7 @@ export interface Spawn {
     readonly randomRange: WorldPosition;
     readonly atTick: number;
     readonly wait: Wait;
+    readonly statistics: Policy | null;
 }
 
 export type Wait = "NONE" | "FINAL" | "WAVE";

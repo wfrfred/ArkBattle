@@ -404,13 +404,13 @@ const startup = {
     initialCards: [countInput, { definition: nameCard, unitDefinition: cardUnit }],
 } as const;
 runtime.initialize({
-    ...startup, initialUnits: [armedInput, routeInput],
+    ...startup, initialUnits: [{ ...armedInput, statistics: null }, { ...routeInput, statistics: 'NORMAL' }],
     initialEffects: [{ definition: counter, initial: effectInitial }, { definition: named, initial: effectInitial }],
 });
 runtime.initialize({
     ...startup,
     // @ts-expect-error startup must still require Facing's Initial for the selected Unit.
-    initialUnits: [{ ...armedInput, initial: { occupancy: armedInput.initial.occupancy } }],
+    initialUnits: [{ ...armedInput, statistics: null, initial: { occupancy: armedInput.initial.occupancy } }],
     initialEffects: [],
 });
 const wrongEffect = { ...counter, initialize: () => ({ name: 'wrong' }) };

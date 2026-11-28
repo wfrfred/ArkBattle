@@ -49,7 +49,7 @@ test("real hidden devices preserve placement, static classification and target c
         consumeTileBlackboard: (_context, entry) => ["isValidHand", "previewNotAlloed"].includes(entry.key),
     });
     let battle = initialize({
-        map: level.map, initialUnits: [], initialEffects: [],
+        map: level.map, initialUnits: [], initialEffects: [], statistics: { total: 0 },
         schedule: { waves: [], branches: {} }, moveMultiplier: 1, pushMultiplier: 0.5, deployment: null, initialCards: [], rngState: 123,
     });
     const initializedCrate = initializeUnit(battle, crateCreation);

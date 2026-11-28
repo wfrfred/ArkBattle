@@ -11,6 +11,7 @@ import type { Result, State as BattleState } from "../state.js";
 import { add } from "../../unit/operations.js";
 import type { Entry, Spawn, Wait, Wave } from "./definition.js";
 import type { ActivePhase } from "./state.js";
+import { register as registerStatistics } from "../statistics.js";
 
 function spawn(battle: BattleState, entry: Spawn): BattleState {
     const rng = createRng(battle.execution.rngState);
@@ -31,7 +32,14 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
         },
     });
 
-    return add(registerWait(created.state, ref(created.value), entry.wait), created.value);
+    const reference = ref(created.value);
+    battle = registerWait(created.state, reference, entry.wait);
+
+    if (entry.statistics !== null) {
+        battle = registerStatistics(battle, reference, entry.statistics);
+    }
+
+    return add(battle, created.value);
 }
 
 function advanceEntries(

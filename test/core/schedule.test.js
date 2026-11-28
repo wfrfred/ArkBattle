@@ -33,7 +33,7 @@ function definition(id, onEntered) {
 }
 
 function spawn(definition, atTick = 0, wait = "NONE") {
-    return { definition, plan, mode: "WALK", offset: [0, 0], randomRange: [0, 0], atTick, wait };
+    return { definition, plan, mode: "WALK", offset: [0, 0], randomRange: [0, 0], atTick, wait, statistics: null };
 }
 
 function fragment(entries, preDelayTicks = 0) {

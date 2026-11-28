@@ -53,11 +53,13 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 `resolveEnemy(record, configuration)` 接收按关卡 ID 找到的敌人数据库条目。标有 `m_defined` 的字段和属性按等级 0、指定等级、关卡覆写的顺序合并。`ResolvedEnemy.layers` 保留完整原始层，包括 `skills`、`talentBlackboard` 和 `spData`，由需要这些数据的内容读取。`readEnemyParameters()` 转换普通战斗属性。[敌人数据](../../src/data/unit/enemy.ts)
 
-`readEnemyMovementPrefab()` 用最终的 `prefabKey` 选择已提取的组件记录，提供转向、避让宽度、路点策略和出生延迟。关卡接入处把运动参数交给敌人工厂，把出生延迟和计数资格交给调度。[Prefab 读取](../../src/data/unit/prefab.ts) · [路点策略依据](../research/cases/13-route-and-movement-timing.md)
+`readEnemyMovementPrefab()` 用最终的 `prefabKey` 选择已提取的组件记录，提供转向、避让宽度、路点策略和出生延迟。关卡接入处把运动参数交给敌人工厂，把出生延迟和本次计数资格交给出生配置。[Prefab 读取](../../src/data/unit/prefab.ts) · [路点策略依据](../research/cases/13-route-and-movement-timing.md)
 
 ## 路线静态资料
 
 原始路线的 motionMode 解析为 Data Route.mode，出怪编译将 mode 交给 Schedule.Spawn.mode，实际出生时用作 Locomotion Initial 的 mode，不进入 Route Plan。普通原始路线转换为 `Plan.destination` 的 EXIT 分支，保留原终点位置与是否必须完成全部路点的配置（requireFinish）。不根据通用关卡 END Marker 推导退出资格；具体 Content／Meta 按本次单位和玩法的实际路线语义选择 MOVE 或 EXIT，MOVE 保留终点而不自然退出。无固定目标以 null 表达，详见 [Route](navigation.md#类型与身份)。
+
+`compileSpawnSchedule` 独立转换 Wait 与 `Spawn.statistics`：Action／Enemy 的 notCountInTotal 任一成立则不计数，普通 Branch 默认不计数；主波其余按普通或 alwaysCountAsKilled 资格登记。非管理、只阻终局等 Wait 政策不影响统计资格。主波经选择和数量展开后汇总 `statistics.total`，由关卡装配传入 Battle 初始化。无害对关卡生命损失的影响归独立生命值领域，不混入击杀 Policy。[Statistics](statistics.md)
 
 ## 静态配置与数值
 

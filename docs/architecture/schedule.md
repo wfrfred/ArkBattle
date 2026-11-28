@@ -6,7 +6,7 @@ Schedule 推进主 Wave 和 Branch 的战斗操作，管理出生 Unit 的波次
 
 Definition 包含主 Waves 与按名称查找的 Branches。Wave 提供前延迟、后延迟、可空最大等待和 Fragment 序列。Fragment 提供前延迟与 Entry 序列。Branch 的每个 Phase 提供前延迟，允许混排确定 Entry 与按权重抽选的整组 Entry。
 
-Entry 可以是 Spawn 或 Operation。Spawn 描述一次出生，包含完整 UnitDefinition、本次 Route Plan、Locomotion mode、固定 offset、随机半宽 randomRange、前延迟后的 atTick 和 Wait。主线 count／interval 与随机组在 Data 预处理为确定序列，Branch 随执行抽选。
+Entry 可以是 Spawn 或 Operation。Spawn 描述一次出生，包含完整 UnitDefinition、本次 Route Plan、Locomotion mode、固定 offset、随机半宽 randomRange、前延迟后的 atTick、Wait 和可空统计资格 statistics。主线 count／interval 与随机组在 Data 预处理为确定序列，Branch 随执行抽选。
 
 Operation 包含相对时刻 `atTick` 和 `execute(battle): Result<boolean>`。条目到期时，关卡通过 execute 读取实时 BattleState，按业务规则同步调用各领域的正常入口。Data 的 `compileSpawnSchedule` 负责出怪转换，其他操作由关卡组装。
 
@@ -46,11 +46,11 @@ Battle 初始化登记全局 `battle.unit.removed` 反馈，任意完整 Unit �
 
 ## 从 Spawn 到 Unit
 
-出生先采样偏移并发布 RNG，再由 `Unit.initialize` 分配身份，用原 Definition、本次 Route Plan／offset、Locomotion mode 与 Facing 初值完成装配。接续初始化状态后先登记等待，再用 `Unit.add` 登记完整对象并派发 entered。
+出生先采样偏移并发布 RNG，再由 `Unit.initialize` 分配身份，用原 Definition、本次 Route Plan／offset、Locomotion mode 与 Facing 初值完成装配。接续初始化状态后登记等待，并按本次 `statistics` 在 [Statistics](statistics.md#资格与登记) 登记计数资格，再用 `Unit.add` 登记完整对象并派发 entered。
 
-Route 在实际初始化时取得主线时间快照，登记后的 entered 同步进入首指令；这些回调已经能看到完整出生和等待事实。unit.add 不解释路线。返回后始终接续最新 State，不覆盖嵌套操作的 Schedule／RNG／Unit 修改。
+Route 在实际初始化时取得主线时间快照，登记后的 entered 同步进入首指令；这些回调已经能看到完整出生、等待和计数登记事实。unit.add 不解释路线。返回后始终接续最新 State，不覆盖嵌套操作的 Schedule／RNG／Unit 修改。
 
-其他技能、Effect 与机制创建者复用 Unit 初始化通道，自行选择路线来源和出生业务，不强制使用 Schedule Spawn。需参与等待时，与计划出生一样接续 Unit.initialize 的 state，在 Unit.add 前调用 `registerWait(battle, ref(unit), wait)`；每次出生只登记一次，NONE 不写入等待关系。
+其他技能、Effect 与机制创建者复用 Unit 初始化通道，自行选择路线来源和出生业务，不强制使用 Schedule Spawn。需参与等待时，与计划出生一样接续 Unit.initialize 的 state，在 Unit.add 前调用 `registerWait(battle, ref(unit), wait)`；每次出生只登记一次，NONE 不写入等待关系。需要参与计数时另行调用 `statistics.register`，两种登记彼此独立。
 
 ## 主线推进
 
@@ -92,7 +92,7 @@ Data 合并 Action／Enemy 的 notCountInTotal 后，按以下优先级转换：
 
 ## 领域边界
 
-Schedule 只维护调度与等待；Route 按 Main 的 EXIT 终点决定自然出口并请求 Unit 以 EXIT 原因完整离场；内容触发的强制出口也走同一生命周期。已登记的 removed 反馈等待释放，结算消费者可用 Departure.reason 区分出口与其他离场。Schedule 不持有 Total／Finished／Killed 或关卡生命值。全局统计和关卡生命值尚未接入，见 [Core 剩余缺口](research-necessity-20261122.md#battle--关卡结算)。各领域提供结算事实，外部规则／调用者裁决胜负、得分和终局；Core 不保存 Battle.result。
+Schedule 只维护调度与等待；Route 按 Main 的 EXIT 终点决定自然出口并请求 Unit 以 EXIT 原因完整离场；内容触发的强制出口也走同一生命周期。已登记的 removed 反馈等待释放，结算消费者可用 Departure.reason 区分出口与其他离场。Schedule 不持有 Total／Finished／Killed 或关卡生命值；[Statistics](statistics.md) 独立维护普通个体账务，关卡生命值仍待接入，见 [Core 剩余缺口](research-necessity-20261122.md#battle--关卡结算)。各领域提供结算事实，外部规则／调用者裁决胜负、得分和终局；Core 不保存 Battle.result。
 
 ## 回归语义
 

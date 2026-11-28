@@ -17,6 +17,11 @@ import type { Id as UnitId } from "../unit/unit.js";
 import { initialize as initializeSchedule, type State as ScheduleState } from "./schedule/state.js";
 import { removedHook as scheduleRemovedHook } from "./schedule/operations.js";
 import {
+    initialize as initializeStatistics,
+    removedHook as statisticsRemovedHook,
+    type State as StatisticsState,
+} from "./statistics.js";
+import {
     initialize as initializeDeployment,
     type State as DeploymentState,
 } from "./deployment/deployment.js";
@@ -52,6 +57,7 @@ export interface State {
     readonly lifetime: LifetimeState;
     readonly unitHooks: Hooks;
     readonly schedule: ScheduleState;
+    readonly statistics: StatisticsState;
     readonly events: readonly Event[];
 }
 
@@ -67,6 +73,7 @@ export function createBattleState(
     deployment: DeploymentState = initializeDeployment(null),
     schedule: ScheduleState = initializeSchedule({ waves: [], branches: {} }),
     definition: Definition = defaultDefinition,
+    statistics: StatisticsState = initializeStatistics(0),
 ): State {
     return {
         definition,
@@ -76,8 +83,11 @@ export function createBattleState(
         execution,
         deployment,
         lifetime: initializeLifetime(),
-        unitHooks: Hooks.empty().set(unitRemoved, scheduleRemovedHook),
+        unitHooks: Hooks.empty()
+            .set(unitRemoved, scheduleRemovedHook)
+            .set(unitRemoved, statisticsRemovedHook),
         schedule,
+        statistics,
         events: [],
     };
 }

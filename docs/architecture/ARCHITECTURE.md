@@ -63,7 +63,7 @@ Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Init
 
 ## Subsystem 的责任与调用
 
-`battle/` 保存全局状态、外部命令、初始化和 Tick 调度。Blocking、Deployment、Resource、Schedule 和 Targeting 各有自己的子目录，定义在战斗上下文中生效的规则。`battlefield/` 提供地图、登记、空间索引与导航。Battlefield 的操作以战场状态为输入，Battle 负责协调这些空间事实与战斗业务。
+`battle/` 保存全局状态、外部命令、初始化和 Tick 调度。Blocking、Deployment、Resource、Schedule 和 Targeting 各有自己的子目录，Statistics 负责独立的个体结算计数，共同定义在战斗上下文中生效的规则。`battlefield/` 提供地图、登记、空间索引与导航。Battlefield 的操作以战场状态为输入，Battle 负责协调这些空间事实与战斗业务。
 
 `unit/` 保存 Unit、能力和宿主内实例。Action 与 Skill 各自在 Capability 目录中组织装配和运行模型。`projectile/` 与 `effect/` 各自负责独立实例及其生命周期。`lifetime/`、`geometry/` 与 `common/` 提供共享机制，`effects/` 提供标准效果。
 
@@ -80,6 +80,7 @@ Route 的本次 Plan／offset、Occupancy 的本次 tile 等实例事实经 Init
 | [Blocking](blocking.md)、[Occupancy](occupancy.md) | 阻挡关系与阻挡偏移、双槽占格与配对 |
 | [Presence](presence.md) | 暂时消失及适用的持续限制、主动清理 |
 | [Schedule](schedule.md)、[Deployment](deployment.md) | 出生与等待，Card、部署资源与部署业务 |
+| [Statistics](statistics.md) | 计划总数、个体完成与击杀结算；与调度及外部裁决分开 |
 | [Terrain](terrain.md) | 地块内容、接触控制器与接触结算 |
 
 Runtime 只安排调用时点；各领域拥有内部顺序与业务资格。协调流程也只能通过所属领域的合法 Change 或完整操作修改状态。目录和导出位置不授予跨领域写入权。

@@ -16,6 +16,7 @@ import type { Ref } from "../common/ref.js";
 import type { ExecutionRef } from "../unit/capability/action/execution.js";
 import type { Operation } from "../unit/capability/skill/activation.js";
 import type { Skill } from "../unit/capability/skill/capability.js";
+import type { Policy } from "./statistics.js";
 
 export type { Event } from "./event.js";
 
@@ -38,6 +39,7 @@ export interface Input<
     readonly deployment: DeploymentDefinition | null;
     readonly map: Map;
     readonly schedule: ScheduleDefinition;
+    readonly statistics: { readonly total: number };
     readonly initialCards: {
         readonly [K in keyof CardStates]: CardInput<CardStates[K]>;
     };
@@ -45,7 +47,9 @@ export interface Input<
         readonly [K in keyof EffectStates]: InitialEffect<EffectStates[K]>;
     };
     readonly initialUnits: {
-        readonly [K in keyof UnitDefinitions]: UnitInput<UnitDefinitions[K]>;
+        readonly [K in keyof UnitDefinitions]: UnitInput<UnitDefinitions[K]> & {
+            readonly statistics: Policy | null;
+        };
     };
     readonly rngState: Seed;
 }

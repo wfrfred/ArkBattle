@@ -24,6 +24,7 @@ import { initializeBattlefield } from "./initialization.js";
 import * as unit from "../unit/operations.js";
 import { initialize as initializeDeployment } from "./deployment/deployment.js";
 import * as cards from "./deployment/deck/card/index.js";
+import { initialize as initializeStatistics } from "./statistics.js";
 
 export function initialize<
     CardStates extends readonly object[],
@@ -56,6 +57,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
             moveMultiplier: input.moveMultiplier,
             pushMultiplier,
         },
+        initializeStatistics(input.statistics.total),
     );
 
     for (const card of input.initialCards) {
