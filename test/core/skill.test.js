@@ -7,7 +7,7 @@ import { step } from "../../dist/core/battle/index.js";
 import * as units from "../../dist/core/unit/index.js";
 import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
-import { create as createSkillAttack } from "../../dist/content/actions/skill.js";
+import { create as createSkillAttack } from "../../dist/content/actions/ammo.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update } from "../../dist/core/unit/operations.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
@@ -412,13 +412,11 @@ test("AMMO samples its charged base before payment and applies capacity, consump
         },
     };
     const attack = createSkillAttack({
-        id: "last-shot", ammoPerAction: 1, followUps: [],
+        id: "last-shot", ammoPerAction: 1, applyWay: "NONE",
         period: { type: "FIXED", ticks: 1 },
         timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
-        triggerBindingId: "self",
-        targetGroups: [{
-            id: "self", select: (state, source) => ({ state, value: [source] }), operations: [],
-        }],
+        select: (state, source) => ({ state, value: [source] }),
+        output: state => state,
         afterOutput(state, source) {
             const activation = source.get(state).skill.activation;
             if (activation.duration.remaining > 0) {

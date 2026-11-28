@@ -1,7 +1,7 @@
+import { normalMeleeOutput } from "../../actions/normal-melee.js";
 import {
     create as createAttack,
     faceTarget,
-    sourceAttack,
     type Attack as BaseAttack,
 } from "../../actions/attack.js";
 import type { Timing } from "../../actions/timing.js";
@@ -20,42 +20,28 @@ export function create(timing: Timing): Attack {
     return createAttack<Host>({
         id: "normal-attack",
         onStart: faceTarget,
-        triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
         timing,
-        targetGroups: [
-            {
-                id: "primary",
-                select(battle, source) {
-                    const self = source.get(battle);
-                    if (self === undefined) {
-                        return { state: battle, value: [] };
-                    }
+        applyWay: "MELEE",
+        select(battle, source) {
+            const self = source.get(battle);
+            if (self === undefined) {
+                return { state: battle, value: [] };
+            }
 
-                    const owner = self.blockable.relation?.blocker;
-                    const target = owner === undefined ? undefined : owner.get(battle);
-                    if (target === undefined || !hasTargetable(target)) {
-                        return { state: battle, value: [] };
-                    }
+            const owner = self.blockable.relation?.blocker;
+            const target = owner === undefined ? undefined : owner.get(battle);
+            if (target === undefined || !hasTargetable(target)) {
+                return { state: battle, value: [] };
+            }
 
-                    const eligible = targeting.damage(self, () => true)(battle);
+            const eligible = targeting.damage(self, () => true)(battle);
 
-                    return {
-                        state: battle,
-                        value: eligible(target) ? [units.ref(target)] : [],
-                    };
-                },
-                operations: [
-                    {
-                        type: "DAMAGE",
-                        attackType: "NORMAL",
-                        applyWay: "MELEE",
-                        power: sourceAttack,
-                        damageType: "PHYSICAL",
-                    },
-                ],
-            },
-        ],
-        followUps: [],
+            return {
+                state: battle,
+                value: eligible(target) ? [units.ref(target)] : [],
+            };
+        },
+        output: normalMeleeOutput,
     });
 }

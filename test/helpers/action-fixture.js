@@ -13,6 +13,8 @@ import { initialize } from "./unit.js";
 import { actionCapability } from "./actions.js";
 import { create as createAttack } from "../../dist/content/actions/attack.js";
 
+import { damage, parameters } from "./vitality.js";
+
 export const geometry = [{ type: "CIRCLE", offset: [0, 0], radius: 10 }];
 const hit = { type: "CIRCLE", offset: [0, 0], radius: 0.1 };
 const tile = createTile({
@@ -30,19 +32,14 @@ export function actionDefinition(power = 7, configuration = {}) {
             id: "primary",
             period: { type: "FIXED", ticks: 10 },
             timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
-            triggerBindingId: "primary",
-            targetGroups: [
-                {
-                    id: "primary",
-                    select: selectDamage({
-                        geometry,
-                        canTargetAir: true,
-                        maxTargets: 1,
-                    }),
-                    operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power, damageType: "TRUE" }],
-                },
-            ],
-            followUps: [],
+            applyWay: "MELEE",
+            select: selectDamage({ geometry, canTargetAir: true, maxTargets: 1 }),
+            output(state, source, self) {
+                for (const target of self.state.targets) {
+                    state = damage(state, { source, target, applyWay: "MELEE", parameters: parameters(power, "TRUE") }).state;
+                }
+                return state;
+            },
             ...configuration,
         },
     );

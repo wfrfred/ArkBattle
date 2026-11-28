@@ -14,7 +14,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { parseEnemyDatabase } from '../../dist/data/enemy-database.js';
 import { readEnemyParameters, resolveEnemy } from '../../dist/data/unit/enemy.js';
-import { parseAttackTiming } from '../../dist/data/action/timing.js';
+import { parseAttackTiming } from '../../dist/content/actions/timing.js';
 import { readEnemyMovementPrefab } from '../../dist/data/unit/prefab.js';
 import { create as createHound } from '../../dist/content/enemies/hound/unit.js';
 import { create as createCrossbowman } from '../../dist/content/enemies/crossbowman/unit.js';
@@ -155,10 +155,9 @@ test('a hound attacks its hidden blocker while still respecting invincibility', 
   const hound = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const before = advanceBlocking(addUnit(addUnit(emptyBattle(), blocker), hound));
   assert.equal(resolveApplyWay(getUnit(before, 1)), "MELEE");
-  const selectTargets = action.attack.targetGroups[0].select;
   assert.equal(allowsRestrictions(before, hound)(getUnit(before, 0)), false);
-  assert.deepEqual(selectTargets(before, unitRef(hound)).value.map(ref => ref.id), [0]);
   const started = startAction(before, actionRef(hound.action.actions.get(action)));
+  assert.notEqual(started.value, null);
   const hit = advanceActionUntil(started.state, started.value, 18);
   assert.equal(getUnit(hit, 0).vitality.health.hp, 850);
 
@@ -180,13 +179,13 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   const bow = initialize({ id: 1, position: [2, 2.5], definition, initial: routeInitial([2, 2.5]) });
   const initial = addUnit(addUnit(emptyBattle(), blocker), bow);
   const state = advanceBlocking(update(initial, unitRef(blocker), setCategory("DEVICE")));
-  const melee = meleeAction.attack.targetGroups[0].select;
-  const ranged = rangedAction.attack.targetGroups[0].select;
+  const melee = actionRef(bow.action.actions.get(meleeAction));
+  const ranged = actionRef(bow.action.actions.get(rangedAction));
 
   assert.equal(inRange(bow.position, narrow)(getUnit(state, 0)), false);
   assert.equal(allowsRestrictions(state, bow)(getUnit(state, 0)), false);
-  assert.deepEqual(melee(state, unitRef(bow)).value.map(ref => ref.id), [0]);
-  assert.deepEqual(ranged(state, unitRef(bow)).value, []);
+  assert.notEqual(startAction(state, melee).value, null);
+  assert.equal(startAction(state, ranged).value, null);
   assert.deepEqual(definition.action.select(state, getUnit(state, 1)).value, ['melee']);
   const started = advanceCombat(state);
   const released = advanceCombatUntil(started, 15);
@@ -199,8 +198,8 @@ test('crossbow selects melee for its actual blocker while ranged targeting keeps
   ])), bow);
   assert.deepEqual(blockingQueries.relations(unblocked).map(({ blocker, blocked }) => ({ blockerUnitId: blocker.id, blockedUnitId: blocked.id })), []);
   assert.equal(inRange(bow.position, narrow)(getUnit(unblocked, 0)), true);
-  assert.deepEqual(melee(unblocked, unitRef(bow)).value, []);
-  assert.deepEqual(ranged(unblocked, unitRef(bow)).value, []);
+  assert.equal(startAction(unblocked, melee).value, null);
+  assert.equal(startAction(unblocked, ranged).value, null);
   assert.deepEqual(definition.action.select(unblocked, getUnit(unblocked, 1)).value, ['ranged']);
 });
 
@@ -215,7 +214,6 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
 
   const position = [2, 3.5];
   const guardUnit = guard(0, [2, 2], 0);
-  const select = attack.attack.targetGroups[0].select;
   const initial = createBattle([
     { definition: guardUnit.definition, position: guardUnit.position, hooks: Hooks.empty(), initial: {} },
     { definition, position, hooks: Hooks.empty(), initial: routeInitial(position, { type: 'MOVE', position: [4, 3] }) },
@@ -223,12 +221,13 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
   const target = unitRef(getUnit(initial, 0));
   const bow = getUnit(initial, 1);
   assert.equal(resolveApplyWay(getUnit(initial, 1)), "ALL");
-  assert.deepEqual(select(initial, unitRef(bow)).value, [target]);
+  const reference = actionRef(bow.action.actions.get(attack));
+  assert.notEqual(startAction(initial, reference).value, null);
   const device = update(initial, target, setCategory("DEVICE"));
-  assert.deepEqual(select(device, unitRef(bow)).value, []);
+  assert.equal(startAction(device, reference).value, null);
   const before = update(device, target, setCategory("DEFAULT"));
-  assert.deepEqual(select(before, unitRef(bow)).value, [target]);
-  const started = startAction(before, actionRef(bow.action.actions.get(attack)));
+  const started = startAction(before, reference);
+  assert.notEqual(started.value, null);
   let state = started.state;
   assert.equal(resolveApplyWay(getUnit(state, 1)), "ALL");
   assert.equal(state.battlefield.projectiles.size, 0);

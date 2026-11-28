@@ -1,4 +1,5 @@
-import { createWithState, faceTarget, sourceAttack, type Attack } from "../../actions/attack.js";
+import { normalMeleeOutput } from "../../actions/normal-melee.js";
+import { createWithState, faceTarget, type Attack } from "../../actions/attack.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import { setState } from "../../../core/unit/capability/action/index.js";
 import * as targeting from "../../../core/battle/targeting/index.js";
@@ -73,39 +74,25 @@ export function create({ range, timing }: AttackParameters): Attack<State, objec
         onEnd: (battle, _host, _self, action, end) =>
             end.type === "CANCELLED" ? setState(battle, action, { inSession: false }) : battle,
         period: { type: "ATTACK_SPEED" },
-        triggerBindingId: "primary",
-        followUps: [],
-        targetGroups: [
-            {
-                id: "primary",
-                select(battle, source) {
-                    const self = source.get(battle);
-                    if (self === undefined) {
-                        return { state: battle, value: [] };
-                    }
+        applyWay: "MELEE",
+        select(battle, source) {
+            const self = source.get(battle);
+            if (self === undefined) {
+                return { state: battle, value: [] };
+            }
 
-                    const blockedFirst = targeting.blockedFirst(self);
-                    const distance = targeting.distance(self.position);
+            const blockedFirst = targeting.blockedFirst(self);
+            const distance = targeting.distance(self.position);
 
-                    return {
-                        state: battle,
-                        value: topK(
-                            candidates(battle, self, range),
-                            1,
-                            (left, right) => blockedFirst(left, right) || distance(left, right),
-                        ).map(units.ref),
-                    };
-                },
-                operations: [
-                    {
-                        type: "DAMAGE",
-                        attackType: "NORMAL",
-                        applyWay: "MELEE",
-                        power: sourceAttack,
-                        damageType: "PHYSICAL",
-                    },
-                ],
-            },
-        ],
+            return {
+                state: battle,
+                value: topK(
+                    candidates(battle, self, range),
+                    1,
+                    (left, right) => blockedFirst(left, right) || distance(left, right),
+                ).map(units.ref),
+            };
+        },
+        output: normalMeleeOutput,
     });
 }

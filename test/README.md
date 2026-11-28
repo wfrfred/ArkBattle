@@ -51,7 +51,7 @@ test/
 | [Projectile](../docs/architecture/projectile.md)、[Event](../docs/architecture/event.md) | [projectile](core/projectile.test.js)、[event](core/event.test.js) |
 | [Data：单位配置](../docs/architecture/data.md) | [operator](data/unit/operator.test.js)、[enemy](data/unit/enemy.test.js)、[tags](data/unit/tags.test.js) |
 | [Data：Effect 与关卡](../docs/architecture/data.md) | [effect](data/effect.test.js)、[route／schedule](data/level/route-schedule.test.js)、[predefined](data/level/predefined.test.js) |
-| [Content：行动与角色](../docs/architecture/content.md) | [attack](content/actions/attack.test.js)、[output](content/actions/output.test.js)、[enemies](content/enemies.test.js)、[Melantha](content/operators/melantha.test.js)、[Mudrock](content/operators/mudrock.test.js) |
+| [Content：行动与角色](../docs/architecture/content.md) | [attack](content/actions/attack.test.js)、[timing](content/actions/timing.test.js)、[enemies](content/enemies.test.js)、[Melantha](content/operators/melantha.test.js)、[Mudrock](content/operators/mudrock.test.js) |
 | [Content：装置、弹道与地形](../docs/architecture/content.md) | [tiles](content/devices/tiles.test.js)、[shooting-platform](content/devices/shooting-platform.test.js)、[arrow](content/projectiles/arrow.test.js)、[terrain](content/terrain.test.js) |
 
 [battle 夹具](helpers/battle.js)通过 Runtime 输入构造地图与预置 Unit，不接受任意能力状态或进度注入。综合场景只保留新增的协作结果。

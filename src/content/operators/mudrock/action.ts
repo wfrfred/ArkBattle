@@ -1,14 +1,11 @@
+import { normalMeleeOutput } from "../../actions/normal-melee.js";
 import type { Timing } from "../../actions/timing.js";
 import {
     create as createAttack,
+    createWithState,
     faceTarget,
-    sourceAttack,
     type Attack,
 } from "../../actions/attack.js";
-import {
-    create as createSkillAttack,
-    type State as SkillAttackState,
-} from "../../actions/skill.js";
 import { ref as executionRef } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef, all as allUnits, type Unit } from "../../../core/unit/index.js";
 import {
@@ -18,7 +15,12 @@ import {
 import { resolveAttack, type Offense } from "../../../core/unit/capability/offense/index.js";
 import type { Classification } from "../../../core/unit/capability/classification/index.js";
 
-import { finish, type SkillCapability } from "../../../core/unit/capability/skill/index.js";
+import {
+    finish,
+    ref as activationRef,
+    type ActivationRef,
+    type SkillCapability,
+} from "../../../core/unit/capability/skill/index.js";
 
 import type { Vitality } from "../../../core/unit/capability/vitality/index.js";
 import {
@@ -46,6 +48,10 @@ export type AttackHost = Classification & Occupancy & Blocker & Offense;
 export interface NormalAttackParameters {
     readonly range: readonly TilePosition[];
     readonly timing: Timing;
+}
+
+interface SkillAttackState {
+    readonly activation: ActivationRef | null;
 }
 
 export interface SkillActionParameters {
@@ -104,52 +110,38 @@ export function createNormal({
 }: NormalAttackParameters): Attack<object, object, AttackHost> {
     return createAttack<AttackHost>({
         id: "normal-attack",
-        triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
         timing,
-        followUps: [],
         onStart: faceTarget,
-        targetGroups: [
-            {
-                id: "primary",
-                select(battle, source) {
-                    const self = source.get(battle);
-                    if (self === undefined) {
-                        return { state: battle, value: [] };
-                    }
+        applyWay: "MELEE",
+        select(battle, source) {
+            const self = source.get(battle);
+            if (self === undefined) {
+                return { state: battle, value: [] };
+            }
 
-                    const withinRange = inAttackRange(self, range);
-                    const candidates = allUnits(battle)
-                        .filter(groundTarget(battle, self))
-                        .filter(
-                            (target) =>
-                                (inDefaultCategory(target) && withinRange(target)) ||
-                                (blockable.hasBlockable(target) &&
-                                    target.blockable.relation?.blocker === source),
-                        );
-                    const blockedFirst = targeting.blockedFirst(self);
-                    const distance = targeting.distance(self.position);
+            const withinRange = inAttackRange(self, range);
+            const candidates = allUnits(battle)
+                .filter(groundTarget(battle, self))
+                .filter(
+                    (target) =>
+                        (inDefaultCategory(target) && withinRange(target)) ||
+                        (blockable.hasBlockable(target) &&
+                            target.blockable.relation?.blocker === source),
+                );
+            const blockedFirst = targeting.blockedFirst(self);
+            const distance = targeting.distance(self.position);
 
-                    return {
-                        state: battle,
-                        value: topK(
-                            candidates,
-                            1,
-                            (left, right) => blockedFirst(left, right) || distance(left, right),
-                        ).map(unitRef),
-                    };
-                },
-                operations: [
-                    {
-                        type: "DAMAGE",
-                        attackType: "NORMAL",
-                        applyWay: "MELEE",
-                        power: sourceAttack,
-                        damageType: "PHYSICAL",
-                    },
-                ],
-            },
-        ],
+            return {
+                state: battle,
+                value: topK(
+                    candidates,
+                    1,
+                    (left, right) => blockedFirst(left, right) || distance(left, right),
+                ).map(unitRef),
+            };
+        },
+        output: normalMeleeOutput,
     });
 }
 
@@ -160,32 +152,32 @@ export function createSkill({
     stunChance,
     stunTicks,
 }: SkillActionParameters): Attack<object, SkillAttackState, AttackHost & SkillCapability> {
-    return createSkillAttack<AttackHost>({
+    return createWithState<object, SkillAttackState, AttackHost & SkillCapability>({
         id: "mudrock/s2",
-        ammoPerAction: 1,
-        triggerBindingId: "primary",
+        initialize: (battle) => ({ state: battle, value: {} }),
+        prepare(battle, host) {
+            const activation = host.get(battle)?.skill.activation;
+
+            return {
+                state: battle,
+                value: { activation: activation == null ? null : activationRef(activation) },
+            };
+        },
         period: { type: "FIXED", ticks: 0 },
         timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
-        followUps: [],
-        targetGroups: [
-            {
-                id: "primary",
-                select(battle, source) {
-                    const self = source.get(battle);
-                    if (self === undefined) {
-                        return { state: battle, value: [] };
-                    }
+        select(battle, source) {
+            const self = source.get(battle);
+            if (self === undefined) {
+                return { state: battle, value: [] };
+            }
 
-                    const targets = skillTargets(battle, self, range);
+            const targets = skillTargets(battle, self, range);
 
-                    return {
-                        state: battle,
-                        value: sort(targets, targeting.distance(self.position)).map(unitRef),
-                    };
-                },
-                operations: [],
-            },
-        ],
+            return {
+                state: battle,
+                value: sort(targets, targeting.distance(self.position)).map(unitRef),
+            };
+        },
         applyWay: "MELEE",
         output(state, host, self, action) {
             const source = host.get(state);
@@ -197,7 +189,7 @@ export function createSkill({
             const power = resolveAttack(state, source);
             state = healSelf(state, host, healRatio);
 
-            for (const targetRef of self.state.bindings.primary ?? []) {
+            for (const targetRef of self.state.targets) {
                 if (executionRef(self).get(state)?.lifecycle !== "ACTIVE") {
                     return state;
                 }

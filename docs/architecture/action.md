@@ -56,7 +56,7 @@ reset 从当前时刻开始完整周期，clear 立即就绪。成功启动开�
 
 ### 攻击方式
 
-Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤操作合并方式，纯治疗生成 `NONE`。自定义输出显式提供自身方式，并供实际输出复用。伤害请求的 `applyWay` 表达该笔输出。
+Action Definition 和攻击工厂均显式提供 `applyWay`；纯治疗使用 `NONE`。伤害请求的 `applyWay` 表达该笔输出，不能由距离、范围或技能状态推导。
 
 `resolveApplyWay(unit)` 合并单位所有已注册 Action 的 Definition，同一方式重复计入仍保持该值，近战和远程合并为 `ALL`，空集合为 `NONE`。普通单位和 Enemy 都按这一规则，空闲、冷却和当前 Execution 不影响结果。弩手注册近战与远程，因而得到 `ALL`。这是项目选择，原生模式汇总与敌人资料查询见[攻击方式调查](../research/cases/36-unit-classification-and-combat-tags.md#23-守林人目标的攻击方式)。
 
@@ -78,9 +78,9 @@ Combat 固定入口的 Unit 与已有执行候选。对每个宿主先推进原�
 
 ## 8. 普通攻击、释放 Hook 与移动
 
-[普通攻击模板](../../src/content/actions/attack.ts)在 prepare 绑定目标与时序；首次 onTick 先发布开始进度，再调用可选 onStart。实际输出通过[资源操作](resource.md)执行，弹道使用独立 Projectile 生命周期。面向由具体程序调用 [Facing](capability.md#facing)；通用 Action 不推断转向。
+[普通攻击模板](../../src/content/actions/attack.ts)在 prepare 接续 `select` 的状态并保存非空目标序列，首个目标是本轮主目标；空选择拒绝启动，已经发生的状态变化仍保留。首次 onTick 先发布开始进度，再调用可选 onStart。实际 `output` 由内容提供，通过[资源操作](resource.md)执行，弹道使用独立 Projectile 生命周期。面向由具体程序调用 [Facing](capability.md#facing)；通用 Action 不推断转向。
 
-时序程序归 Content，只消费静态业务参数，不把 Animator、Spine 或渲染状态引入 Core。FIXED 使用明确的前摇与恢复 Tick；ATTACK_SPEED 使用起手段、主段长度、主段内释放位置与缩放范围，参数由 [Data](data.md)转换。
+时序程序归 Content，只消费静态业务参数，不把 Animator、Spine 或渲染状态引入 Core。FIXED 使用明确的前摇与恢复 Tick；ATTACK_SPEED 使用起手段、主段长度、主段内释放位置与缩放范围，作者帧换算归 [timing.ts](../../src/content/actions/timing.ts)。
 
 设宿主有效普通攻击周期为 T、起手段长为 B、主段长为 L，缩放量为 `a = clamp(T / (B + L), minScale, maxScale)`，无上限时只限制下限。T独立读取宿主属性，不以本 Action 的 FIXED 冷却代替。开始时缓存动作预算 `(B + L) × a`；起手段的等待进入后固定，进入后续主段时可以用最新周期重新求释放时间。已经进入的等待与释放截止时间不随后来的改速重新缩放，冷却仍按自身契约更新。
 
@@ -94,11 +94,11 @@ beforeRelease 返回继续或中断及恢复时长；released 表示已到达成
 
 攻击通过拦截后记录 ACTION_RELEASED、派发 released，再读取最新执行的输出载荷。释放通知可以取消执行或结束宿主，此时旧输出停止，已完成的释放事实和回复保留。Skill 在此登记 ACTION 回复，Action 本身不读取 Skill。
 
-攻击模板的伤害 `power` 可以是固定值，也可以在每个目标结算前根据实时 BattleState 读取。`sourceAttack` 要求宿主具备 `Offense`，连续命中间发生的属性变化可影响后续目标。固定值伤害不要求 `Offense`。
+攻击模板不解释输出操作或决定伤疗数值。输出程序自行确定命中的接收者、数值采样与结算顺序，按其实际能力要求直接调用 Core 资源操作；使用固定伤害或治疗不要求 `Offense`。
 
 afterOutput 只在对应执行仍 ACTIVE 时进入，不是无条件清理回调；它自身也可取消执行或结束技能。回调后重新读取同一身份，避免重复完成。已经发生的输出、耗弹与后继责任由具体内容的消费时序决定。
 
-[弹药行动组合器](../../src/content/actions/skill.ts)在启动时采样 Activation Ref，并在自己的 afterOutput 消费及检查该轮弹药；旧攻击不能消费后来激活的弹药。跨轮起手、连续会话和模式事实由具体内容持有，失败启动不消费。
+[弹药行动组合器](../../src/content/actions/ammo.ts)在启动时采样 AMMO Activation Ref，并在自己的 afterOutput 消费及检查该轮弹药；旧攻击不能消费后来激活的弹药。不消费弹药的具体行动自行保存需要的激活身份。跨轮起手、连续会话和模式事实由具体内容持有，失败启动不消费。
 
 Locomotion 的移动许可独立判断当前状态；敌人可登记 casting 限制。Action 字段发布不自动维护 Blocking，改变阻挡资格的内容须显式复核关系。
 

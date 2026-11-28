@@ -1,6 +1,5 @@
 import type { Ref } from "../../core/common/ref.js";
 import { Vec2 } from "../../core/common/vector.js";
-import { assertNonnegativeNumber } from "../../core/common/assert.js";
 import { appendEvents, type State as BattleState, type Result } from "../../core/battle/index.js";
 import * as units from "../../core/unit/index.js";
 import type { Unit } from "../../core/unit/index.js";
@@ -20,94 +19,27 @@ import {
 import * as actions from "../../core/unit/capability/action/index.js";
 import * as timing from "./timing.js";
 import type { Timing, Sample as TimingSample } from "./timing.js";
-import { mergeApplyWays } from "../../core/battle/resource/damage.js";
-
-import { resolveAttack, type Offense } from "../../core/unit/capability/offense/index.js";
+import type { ApplyWay } from "../../core/battle/resource/damage.js";
 import { hasFacing, fromVector, turn } from "../../core/unit/capability/facing/index.js";
 
-import {
-    calculateDamage,
-    applyDamage,
-    type Request as DamageRequest,
-    type DamageType,
-    type AttackType,
-    type ApplyWay,
-} from "../../core/battle/resource/hp/damage/index.js";
-
-import { hasVitality } from "../../core/unit/capability/vitality/index.js";
-import {
-    calculateHealing,
-    applyHealing,
-    type Request as HealingRequest,
-} from "../../core/battle/resource/hp/healing/index.js";
-
-import {
-    hasElemental,
-    type Type as ElementType,
-} from "../../core/unit/capability/elemental/index.js";
-import * as epDamage from "../../core/battle/resource/ep/damage/index.js";
-import * as epHealing from "../../core/battle/resource/ep/healing/index.js";
-
-type Source<H extends object> = Ref<Unit & ActionCapability & H>;
-
-export type Operation<H extends object = object> =
-    | {
-          readonly type: "DAMAGE";
-          readonly power: number | ((battle: BattleState, source: Source<H>) => number | undefined);
-          readonly damageType: DamageType;
-          readonly attackType: AttackType;
-          readonly applyWay: ApplyWay;
-      }
-    | { readonly type: "HEAL"; readonly power: number }
-    | {
-          readonly type: "ELEMENTAL_INJURY";
-          readonly power: number;
-          readonly elementType: ElementType;
-          readonly attackType: AttackType;
-          readonly applyWay: ApplyWay;
-      }
-    | { readonly type: "ELEMENTAL_INJURY_HEALED"; readonly power: number };
-
-export interface TargetGroup<H extends object = object> {
-    readonly id: string;
-    readonly select: (battle: BattleState, source: Source<H>) => Result<readonly Ref<Unit>[]>;
-    readonly operations: readonly Operation<H>[];
-}
-
-export interface FollowUp<H extends object = object> {
-    readonly receiver:
-        { readonly type: "SOURCE" } | { readonly type: "BINDING"; readonly bindingId: string };
-    readonly operation: Operation<H>;
-}
-
-export interface Configuration<
+export interface Definition<
     P extends object = object,
     E extends object = object,
     H extends object = object,
 > {
     readonly id: string;
     readonly period: Period;
-    readonly triggerBindingId: string;
-    readonly targetGroups: readonly [TargetGroup<H>, ...TargetGroup<H>[]];
-    readonly followUps: readonly FollowUp<H>[];
+    readonly applyWay: ApplyWay;
     readonly timing: Timing | ActionCallback<P, State<E>, H, Timing>;
-}
-
-export type Definition<
-    P extends object = object,
-    E extends object = object,
-    H extends object = object,
-> = Configuration<P, E, H> & {
+    readonly select: (
+        battle: BattleState,
+        source: Ref<Unit & ActionCapability & H>,
+    ) => Result<readonly Ref<Unit>[]>;
+    readonly output: ExecutionCallback<P, State<E>, H>;
     readonly onStart?: ExecutionCallback<P, State<E>, H>;
     readonly afterOutput?: ExecutionCallback<P, State<E>, H>;
     readonly onEnd?: ActionDefinition<P, State<E>, H>["onEnd"];
-} & (
-        | { readonly output?: undefined; readonly applyWay?: never }
-        | {
-              readonly applyWay: ApplyWay;
-              readonly output: ExecutionCallback<P, State<E>, H>;
-          }
-    );
+}
 
 export type StatefulDefinition<
     P extends object,
@@ -119,8 +51,7 @@ export type StatefulDefinition<
 };
 
 export interface State<S extends object = object> {
-    readonly target: Ref<Unit>;
-    readonly bindings: Readonly<Record<string, readonly Ref<Unit>[]>>;
+    readonly targets: readonly [Ref<Unit>, ...Ref<Unit>[]];
     readonly timing: TimingSample;
     readonly released: boolean;
     readonly previousReadyAtTick: number;
@@ -128,13 +59,11 @@ export interface State<S extends object = object> {
     readonly data: S;
 }
 
-export interface Attack<
+export type Attack<
     P extends object = object,
     E extends object = object,
     H extends object = object,
-> extends ActionDefinition<P, State<E>, H> {
-    readonly attack: Configuration<P, E, H>;
-}
+> = ActionDefinition<P, State<E>, H>;
 
 function isSourceActive(battle: BattleState, source: Ref<Unit>): boolean {
     const current = source.get(battle);
@@ -148,7 +77,7 @@ export function faceTarget<E extends object>(
     self: Execution<State<E>>,
 ): BattleState {
     const unit = host.get(battle);
-    const target = self.state.target.get(battle);
+    const target = self.state.targets[0].get(battle);
     if (
         unit === undefined ||
         !hasFacing(unit) ||
@@ -161,131 +90,6 @@ export function faceTarget<E extends object>(
     const direction = fromVector(Vec2.sub(target.position, unit.position));
 
     return direction === null ? battle : turn(battle, units.ref(unit), direction);
-}
-
-export function chooseTargets<P extends object, E extends object, H extends object>(
-    battle: BattleState,
-    source: Source<H>,
-    definition: Configuration<P, E, H>,
-): Result<State["bindings"]> {
-    const unit = source.get(battle);
-    if (unit === undefined) {
-        return { state: battle, value: {} };
-    }
-
-    const bindings: Record<string, readonly Ref<Unit>[]> = {};
-
-    for (const group of definition.targetGroups) {
-        const selected = group.select(battle, source);
-        battle = selected.state;
-        bindings[group.id] = selected.value;
-    }
-
-    return { state: battle, value: bindings };
-}
-
-export function sourceAttack(battle: BattleState, source: Ref<Unit & Offense>): number | undefined {
-    const current = source.get(battle);
-
-    return current === undefined ? undefined : resolveAttack(battle, current);
-}
-
-function apply<H extends object>(
-    battle: BattleState,
-    source: Source<H>,
-    target: Ref<Unit>,
-    operation: Operation<H>,
-): BattleState {
-    switch (operation.type) {
-        case "DAMAGE": {
-            const receiver = target.get(battle);
-            if (receiver === undefined || !hasVitality(receiver)) {
-                return battle;
-            }
-
-            const power =
-                typeof operation.power === "function"
-                    ? operation.power(battle, source)
-                    : operation.power;
-            if (power === undefined) {
-                return battle;
-            }
-
-            const attack = { power, multiplier: 1, addition: 0 };
-            const type = operation.damageType;
-            const request: DamageRequest = {
-                attackType: operation.attackType,
-                applyWay: operation.applyWay,
-                source,
-                killer: source,
-                target: units.ref(receiver),
-                nature: "DAMAGE",
-                hitRecovery: true,
-                parameters:
-                    type === "PHYSICAL" || type === "ARTS"
-                        ? { type, attack, penetration: { fixed: 0, proportional: 0 } }
-                        : { type, attack },
-            };
-
-            return applyDamage(request, calculateDamage(battle, request, null), null).state;
-        }
-
-        case "HEAL": {
-            const receiver = target.get(battle);
-            if (receiver === undefined || !hasVitality(receiver)) {
-                return battle;
-            }
-
-            const request: HealingRequest = {
-                source,
-                target: units.ref(receiver),
-                parameters: { power: operation.power, multiplier: 1 },
-            };
-
-            return applyHealing(request, calculateHealing(battle, request, null), null).state;
-        }
-
-        case "ELEMENTAL_INJURY": {
-            const receiver = target.get(battle);
-            if (receiver === undefined || !hasElemental(receiver)) {
-                return battle;
-            }
-
-            const request: epDamage.Request = {
-                attackType: operation.attackType,
-                applyWay: operation.applyWay,
-                nature: "DAMAGE",
-                source,
-                target: units.ref(receiver),
-                parameters: { type: operation.elementType, power: operation.power },
-            };
-
-            return epDamage.applyDamage(
-                request,
-                epDamage.calculateDamage(battle, request, null),
-                null,
-            ).state;
-        }
-
-        case "ELEMENTAL_INJURY_HEALED": {
-            const receiver = target.get(battle);
-            if (receiver === undefined || !hasElemental(receiver)) {
-                return battle;
-            }
-
-            const request: epHealing.Request = {
-                source,
-                target: units.ref(receiver),
-                parameters: { power: operation.power },
-            };
-
-            return epHealing.applyHealing(
-                request,
-                epHealing.calculateHealing(battle, request, null),
-                null,
-            ).state;
-        }
-    }
 }
 
 export function create<H extends object = object>(
@@ -305,67 +109,16 @@ export function createWithState<P extends object, E extends object, H extends ob
         timing.validate(definition.timing);
     }
 
-    for (const group of definition.targetGroups) {
-        for (const operation of group.operations) {
-            if (typeof operation.power !== "function") {
-                assertNonnegativeNumber(operation.power, "attack operation power");
-            }
-        }
-    }
-
-    const ids = new Set(definition.targetGroups.map((group) => group.id));
-    if (
-        ids.has("") ||
-        ids.size !== definition.targetGroups.length ||
-        !ids.has(definition.triggerBindingId)
-    ) {
-        throw new TypeError("attack target bindings must be unique and include its trigger");
-    }
-
-    const followUps = definition.followUps;
-
-    for (const followUp of followUps) {
-        if (followUp.receiver.type === "BINDING" && !ids.has(followUp.receiver.bindingId)) {
-            throw new TypeError("attack follow-up references an unknown target binding");
-        }
-
-        if (typeof followUp.operation.power !== "function") {
-            assertNonnegativeNumber(followUp.operation.power, "attack operation power");
-        }
-    }
-
-    const operations = [
-        ...definition.targetGroups.flatMap((group) => group.operations),
-        ...followUps.map(({ operation }) => operation),
-    ];
-    const configuration: Configuration<P, E, H> = {
-        id: definition.id,
-        period: definition.period,
-        triggerBindingId: definition.triggerBindingId,
-        targetGroups: definition.targetGroups,
-        followUps,
-        timing: definition.timing,
-    };
     const attack: Attack<P, E, H> = {
         id: definition.id,
-        applyWay:
-            definition.output === undefined
-                ? mergeApplyWays(
-                      operations.map((operation) =>
-                          "applyWay" in operation ? operation.applyWay : "NONE",
-                      ),
-                  )
-                : definition.applyWay,
+        applyWay: definition.applyWay,
         period: definition.period,
-        attack: configuration,
         initialize: definition.initialize,
         prepare(battle, host, self) {
-            const selected = chooseTargets(battle, host, definition);
+            const selected = definition.select(battle, host);
             battle = selected.state;
-            const unit = host.get(battle);
-            const bindings = selected.value;
-            const target = bindings[definition.triggerBindingId]?.[0];
-            if (unit === undefined || target === undefined) {
+            const [target, ...others] = selected.value;
+            if (host.get(battle) === undefined || target === undefined) {
                 return { state: battle, value: null };
             }
 
@@ -387,8 +140,7 @@ export function createWithState<P extends object, E extends object, H extends ob
             return {
                 state: initialized.state,
                 value: {
-                    target,
-                    bindings,
+                    targets: [target, ...others],
                     timing: timing.sample(
                         input,
                         resolveAttackPeriod(currentUnit),
@@ -423,7 +175,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                     {
                         type: "ATTACK_STARTED",
                         sourceUnitId: host.id,
-                        targetUnitId: self.state.target.id,
+                        targetUnitId: self.state.targets[0].id,
                         tick: battle.tick,
                     },
                 ]);
@@ -507,32 +259,7 @@ export function createWithState<P extends object, E extends object, H extends ob
                     return actions.cancel(battle, identity, "SOURCE_ABSENT");
                 }
 
-                if (definition.output !== undefined) {
-                    battle = definition.output(battle, host, output, action);
-                } else {
-                    for (const group of definition.targetGroups) {
-                        for (const operation of group.operations) {
-                            for (const target of output.state.bindings[group.id] ?? []) {
-                                if (identity.get(battle)?.lifecycle !== "ACTIVE") {
-                                    return battle;
-                                }
-
-                                battle = apply(battle, host, target, operation);
-                            }
-                        }
-                    }
-                    for (const followUp of definition.followUps) {
-                        for (const target of followUp.receiver.type === "SOURCE"
-                            ? [host]
-                            : (output.state.bindings[followUp.receiver.bindingId] ?? [])) {
-                            if (identity.get(battle)?.lifecycle !== "ACTIVE") {
-                                return battle;
-                            }
-
-                            battle = apply(battle, host, target, followUp.operation);
-                        }
-                    }
-                }
+                battle = definition.output(battle, host, output, action);
 
                 const completed = identity.get(battle);
                 if (completed?.lifecycle !== "ACTIVE") {

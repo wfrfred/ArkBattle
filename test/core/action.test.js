@@ -13,6 +13,7 @@ import { actionCapability } from "../helpers/actions.js";
 import { update } from "../../dist/core/unit/operations.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import { create as attack } from "../../dist/content/actions/attack.js";
+import { damage, parameters } from "../helpers/vitality.js";
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 
 test("capabilities initialize declared programs in order and carry their battle state forward", () => {
@@ -177,24 +178,20 @@ test("interrupted attack, successful release, and damage output are separate bus
         id: "attack",
         period: { type: "FIXED", ticks: 10 },
         timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 },
-        triggerBindingId: "target",
-        followUps: [],
-        targetGroups: [
-            {
-                id: "target",
-                select(state) {
-                    return {
-                        state,
-                        value: units.all(state)
-                            .filter(target => target.definition.id === "target")
-                            .take(1)
-                            .map(units.ref)
-                            .toArray(),
-                    };
-                },
-                operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
-            },
-        ],
+        applyWay: "MELEE",
+        select(state) {
+            return {
+                state,
+                value: units.all(state)
+                    .filter(target => target.definition.id === "target")
+                    .take(1)
+                    .map(units.ref)
+                    .toArray(),
+            };
+        },
+        output(state, source, self) {
+            return damage(state, { source, target: self.state.targets[0], applyWay: "MELEE", parameters: parameters(7, "TRUE") }).state;
+        },
     });
     const resource = {
         id: "attack-sp",

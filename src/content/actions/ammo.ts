@@ -34,15 +34,13 @@ export function create<H extends object = object>(
         ...definition,
         initialize: (battle) => ({ state: battle, value: {} }),
         prepare(battle, host) {
-            const unit = host.get(battle);
+            const activation = host.get(battle)?.skill.activation;
 
             return {
                 state: battle,
                 value: {
                     activation:
-                        unit !== undefined && unit.skill.activation !== null
-                            ? activationRef(unit.skill.activation)
-                            : null,
+                        activation?.duration.type === "AMMO" ? activationRef(activation) : null,
                 },
             };
         },

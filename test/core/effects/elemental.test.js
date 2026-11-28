@@ -27,14 +27,17 @@ import * as hpDecrease from "../../../dist/core/battle/resource/hp/decrease.js";
 import * as actions from "../../../dist/core/unit/capability/action/index.js";
 import { dispatchReleased } from "../../../dist/core/unit/capability/action/release.js";
 import { resolveSpeed } from "../../../dist/core/unit/capability/action/timing.js";
+import { damage, parameters } from "../../helpers/vitality.js";
 import { effectInitial } from "../../helpers/effect.js";
 
 const range = [{ type: 'CIRCLE', offset: [0, 0], radius: 20 }];
 const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.1 };
+const select = selectDamage({ geometry: range, canTargetAir: true });
+function output(work, source, self) {
+  return damage(work, { source, target: self.state.targets[0], applyWay: 'MELEE', parameters: parameters(1, 'TRUE') }).state;
+}
 function action(interval = 1) {
-  return createAttack({ id: 'normal-attack', triggerBindingId: 'primary', period: { type: "FIXED", ticks: interval }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
-    targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
-      operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }], followUps: [] });
+  return createAttack({ id: 'normal-attack', applyWay: 'MELEE', period: { type: "FIXED", ticks: interval }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 }, select, output });
 }
 function definition(receiver = 'CHARACTER', overrides = {}) {
   return { hooks: Hooks.empty(), id: `element-${receiver}`,
@@ -137,11 +140,14 @@ test('elemental execution: necrosis shares its recovery budget with periodic dam
 });
 
 function battle(receiver, type) {
-  const casterAttack = createAttack({ ...action(10000).attack,
-    targetGroups: [{ ...action().attack.targetGroups[0], operations: [
-      { type: 'ELEMENTAL_INJURY', attackType: 'ADDITION', applyWay: 'MELEE', elementType: type, power: 1000 },
-      ...action().attack.targetGroups[0].operations,
-    ] }],
+  const casterAttack = createAttack({
+    id: 'normal-attack', applyWay: 'MELEE', period: { type: "FIXED", ticks: 10000 },
+    timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 }, select,
+    output(work, source, self) {
+      const request = { source, target: self.state.targets[0], attackType: 'ADDITION', applyWay: 'MELEE', nature: 'DAMAGE', parameters: { type, power: 1000 } };
+      work = epDamage.applyDamage(request, epDamage.calculateDamage(work, request, null), null).state;
+      return output(work, source, self);
+    },
   });
   const actor = (side, attack) => ({
     id: side, hooks: Hooks.empty(), vitality: defineVitality(100000, { defense: defineAttribute(500), resistance: defineAttribute(50, 0, 100) }),
@@ -183,10 +189,8 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
 
 test('mania counts each released action once and each skill activation, caps self-damage and keeps its independent character program after recovery cancellation', () => {
   const attack = createAttack({
-    followUps: [],
-    id: 'mania-attack', triggerBindingId: 'primary', period: { type: 'ATTACK_SPEED' }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
-    targetGroups: [{ id: 'primary', select: selectDamage({ geometry: range, canTargetAir: true }),
-      operations: [{ type: 'DAMAGE', attackType: 'NORMAL', applyWay: 'MELEE', power: 1, damageType: 'TRUE' }] }],
+    id: 'mania-attack', applyWay: 'MELEE', period: { type: 'ATTACK_SPEED' }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
+    select, output,
     afterOutput: (work, source, self) => dispatchReleased(work, actions.ref(self)),
   });
   const skill = createSkillDefinition({

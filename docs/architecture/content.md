@@ -32,9 +32,9 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 
 Core 定义战斗的标准语义。Action 的执行与冷却、Skill 的 SP 与激活、Effect 的实例与生命周期由对应 Core 领域处理。标准 Effect 实现位于 `core/effects/`，实例操作位于 `core/effect/`。实现标准眩晕等行为时，Content 调用对应的 Core 实现，并决定目标、时点、时长和专属后继。具体单位从 Core 的两套标准元素爆发表中显式选择适用预设，并独立配置 maxEp、元素损伤回复速率、抗性和爆发回复速度。当前普通干员容量为 1000，猎狗和弩手依传入位阶配置普通单位 1000、BOSS 2000 的容量。[标准 Effect](../../src/core/effects) · [Effect 实例操作](../../src/core/effect/index.ts) · [Elemental](elemental.md)
 
-Content 共享的是可选工厂。`content/actions/attack.ts` 提供常见攻击的组装，特殊行动可以直接编写 Action Definition。共享工厂按产出的 Definition 归类。`content/actions/skill.ts` 复用攻击模板，产出由技能驱动的 Action。返回 Skill Definition 的共享工厂归 `content/skills/`。共用规则用普通函数组合，具体数值读取规范化数据。
+Content 共享的是可选工厂。`content/actions/attack.ts` 提供常见攻击的组装，特殊行动可以直接编写 Action Definition。共享工厂按产出的 Definition 归类。`content/actions/ammo.ts` 复用攻击模板，产出消费技能弹药的 Action。返回 Skill Definition 的共享工厂归 `content/skills/`。共用规则用普通函数组合，具体数值读取规范化数据。
 
-攻击工厂要求明确提供 followUps（无后继时为空数组），技能行动工厂要求明确提供每次输出消耗的 ammoPerAction。攻击 Operation 明确提供攻击类别与施加途径，HP 伤害另提供性质、HIT 许可和死亡归属，不由范围、距离、来源或技能状态猜测。共同输出协议见 [Resource](resource.md)。
+攻击工厂负责时序、目标锁定与释放，显式提供 `select`、`output` 和 `applyWay`，不解释声明式输出列表。弹药行动工厂要求明确提供每次输出消耗的 `ammoPerAction`。具体伤害请求明确提供攻击类别、施加途径、性质、HIT 许可和死亡归属，不由范围、距离、来源或技能状态猜测。共同输出协议见 [Resource](resource.md)。
 
 猎狗和弩手各自声明所需的 `Parameters`，由 `create(parameters)` 直接组装 Unit Definition。关卡接入处读取敌人属性和 Prefab，将结果与该敌人的攻击时序等参数一起交给工厂。两者各自校验 `WALK`、使用 Prefab 提供的路点策略，并明确登记共用的攻击停步与登场面向 Hook。弩手近远程独立冷却与主行动互斥属于其内容政策，场景负责选择内容和波次。[敌人数据接入](data.md#敌人静态资料) · [共用敌人 Hook](../../src/content/enemies/hook.ts)
 

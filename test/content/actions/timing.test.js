@@ -1,8 +1,8 @@
-// Contract: [Data](../../../docs/architecture/data.md).
+// Contract: [Content](../../../docs/architecture/content.md).
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { parseAttackTiming } from "../../../dist/data/action/timing.js";
+import { parseAttackTiming } from "../../../dist/content/actions/timing.js";
 
 const timing = JSON.parse(readFileSync(
     new URL("../../fixtures/arknights/action_timing.json", import.meta.url),

@@ -20,41 +20,33 @@ import { actionCapability } from "../../helpers/actions.js";
 import { setSpeedContribution } from "../../../dist/core/unit/capability/action/index.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { update } from "../../../dist/core/unit/operations.js";
+import { damage, parameters } from "../../helpers/vitality.js";
+import * as healing from "../../../dist/core/battle/resource/hp/healing/index.js";
 import { effectInitial } from "../../helpers/effect.js";
 
-function definition(groups, prepare = state => ({ state, value: {} })) {
-    return createWithState({
-        id: "random-attack", period: { type: "FIXED", ticks: 10 }, timing: { type: "FIXED", windupTicks: 3, recoveryTicks: 0 },
-        triggerBindingId: "primary", targetGroups: groups, followUps: [],
-        initialize: state => ({ state, value: {} }), prepare,
-    });
+function select(state, source, count = 1) {
+    const rng = createRng(state.execution.rngState);
+    const candidates = units.all(state).filter(hasTargetable)
+        .filter(target => target.ref !== source);
+    const selected = rng.sample(candidates, count).map(units.ref);
+    return {
+        state: { ...state, execution: { ...state.execution, rngState: rng.state() } },
+        value: selected,
+    };
 }
 
-function group(id, count = 1, accepts = () => true) {
-    return {
-        id,
-        select(state, source) {
-            const rng = createRng(state.execution.rngState);
-            const candidates = units.all(state).filter(hasTargetable)
-                .filter(target => target.ref !== source && accepts(target));
-            const selected = rng.sample(candidates, count).map(units.ref);
-            return {
-                state: { ...state, execution: { ...state.execution, rngState: rng.state() } },
-                value: selected,
-            };
-        },
-        operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
-    };
+function output(state, source, self) {
+    for (const target of self.state.targets) {
+        state = damage(state, { source, target, applyWay: "MELEE", parameters: parameters(7, "TRUE") }).state;
+    }
+    return state;
 }
 
 test("an attack turns once at its started program, before output, without turning again on release", () => {
     const program = create({
         id: "facing-attack", period: { type: "FIXED", ticks: 10 }, timing: { type: "FIXED", windupTicks: 2, recoveryTicks: 1 },
-        triggerBindingId: "primary", onStart: faceTarget, followUps: [],
-        targetGroups: [{
-            id: "primary", operations: [{ type: "DAMAGE", attackType: "NORMAL", applyWay: "MELEE", power: 7, damageType: "TRUE" }],
-            select: state => ({ state, value: [units.ref(get(state, 1))] }),
-        }],
+        applyWay: "MELEE", onStart: faceTarget, output,
+        select: state => ({ state, value: [units.ref(get(state, 1))] }),
     });
     let state = createBattle([
         { definition: { id: "attacker", hooks: Hooks.empty(), facing: { restrictions: [] },
@@ -86,39 +78,47 @@ test("an attack turns once at its started program, before output, without turnin
     assert.equal(started.value.get(state), undefined);
 });
 
-test("attack selection groups and prepare receive the state produced by earlier groups", () => {
+test("attack selection state reaches prepare and the selected targets receive output", () => {
     let observed;
-    const primary = group("primary");
-    const secondary = group("secondary", 2);
-    const action = definition([primary, secondary], state => {
-        observed = state.execution.rngState;
-        return { state, value: {} };
+    const selectTwo = (state, source) => select(state, source, 2);
+    const action = createWithState({
+        id: "random-attack", period: { type: "FIXED", ticks: 10 }, timing: { type: "FIXED", windupTicks: 3, recoveryTicks: 0 },
+        applyWay: "MELEE", select: selectTwo, output,
+        initialize: state => ({ state, value: {} }),
+        prepare(state) {
+            observed = state.execution.rngState;
+            return { state, value: {} };
+        },
     });
     const source = unit(0, { action });
     const initial = battle(source, unit(1), unit(2), unit(3));
-    const first = primary.select(initial, units.ref(source));
-    const second = secondary.select(first.state, units.ref(source));
+    const selected = selectTwo(initial, units.ref(source));
     const started = actions.start(initial, actions.ref(source.action.actions.get(action)));
 
     assert.notEqual(started.value, null);
-    assert.equal(started.state.execution.rngState, second.state.execution.rngState);
-    assert.equal(observed, second.state.execution.rngState);
+    assert.equal(started.state.execution.rngState, selected.state.execution.rngState);
+    assert.equal(observed, selected.state.execution.rngState);
     let state = actions.advance(started.state, started.value);
+    assert.equal(state.events.find(event => event.type === "ATTACK_STARTED").targetUnitId, selected.value[0].id);
     state = actions.advance({ ...state, tick: 3 }, started.value);
-    const receivers = [...first.value, ...second.value].map(reference => reference.id);
-    assert.deepEqual(
-        [1, 2, 3].map(id => get(state, id).vitality.health.hp),
-        [1, 2, 3].map(id => 100 - 7 * receivers.filter(receiver => receiver === id).length),
-    );
+    const receivers = selected.value.map(reference => reference.id);
+    assert.deepEqual([1, 2, 3].map(id => get(state, id).vitality.health.hp),
+        [1, 2, 3].map(id => receivers.includes(id) ? 93 : 100));
 });
 
-test("an empty trigger binding rejects the attack without losing later completed selection state", () => {
-    const secondary = group("secondary");
-    const action = definition([group("primary", 1, () => false), secondary],
-        () => assert.fail("a rejected attack must not start"));
+test("an empty selection rejects the attack without losing selection state", () => {
+    const action = createWithState({
+        id: "empty-attack", period: { type: "FIXED", ticks: 10 }, timing: { type: "FIXED", windupTicks: 3, recoveryTicks: 0 },
+        applyWay: "MELEE", output,
+        select(state, source) {
+            return { state: select(state, source).state, value: [] };
+        },
+        initialize: state => ({ state, value: {} }),
+        prepare: () => assert.fail("a rejected attack must not start"),
+    });
     const source = unit(0, { action });
     const initial = battle(source, unit(1), unit(2));
-    const selected = secondary.select(initial, units.ref(source));
+    const selected = select(initial, units.ref(source));
     const started = actions.start(initial, actions.ref(source.action.actions.get(action)));
 
     assert.equal(started.value, null);
@@ -138,15 +138,20 @@ test("bound healing keeps its receivers when a later selection restriction would
     });
     let selected;
     const program = createWithState({
-        id: "bound-healing", period: { type: "FIXED", ticks: 1 }, timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 }, triggerBindingId: "primary",
+        id: "bound-healing", period: { type: "FIXED", ticks: 1 }, timing: { type: "FIXED", windupTicks: 0, recoveryTicks: 0 }, applyWay: "NONE", select: recipients,
         initialize: state => ({ state, value: {} }),
         prepare(state) {
             return { state: effects.install(state, selected, healFree, effectInitial).state, value: {} };
         },
-        targetGroups: [{ id: "primary", select: recipients, operations: [{ type: "HEAL", power: 20 }] }],
-        followUps: [
-            { receiver: { type: "BINDING", bindingId: "primary" }, operation: { type: "HEAL", power: 5 } },
-        ],
+        output(state, source, self) {
+            for (const target of self.state.targets) {
+                for (const power of [20, 5]) {
+                    const request = { source, target, parameters: { power, multiplier: 1 } };
+                    state = healing.applyHealing(request, healing.calculateHealing(state, request, null), null).state;
+                }
+            }
+            return state;
+        },
     });
     let state = createBattle([
         { definition: {
@@ -179,7 +184,7 @@ test("bound healing keeps its receivers when a later selection restriction would
 function timedProgram(timing) {
     return create({
         id: "timed-attack", period: { type: "ATTACK_SPEED" }, timing,
-        triggerBindingId: "primary", targetGroups: [group("primary")], followUps: [],
+        applyWay: "MELEE", select, output,
     });
 }
 

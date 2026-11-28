@@ -200,21 +200,22 @@ skills.activate(battle, skillRef, { requirement: 0 });
 
 // Definition shape controls policies that span multiple fields.
 const attackInput = {
-    id: 'timed', period: { type: 'FIXED', ticks: 1 } as const, triggerBindingId: 'primary',
+    id: 'timed', period: { type: 'FIXED', ticks: 1 } as const, applyWay: 'MELEE' as const,
     initialize: (state: State) => ({ state, value: { uses: 0 } }),
     prepare: (state: State) => ({ state, value: { hits: 0 } }),
     timing(_state, _source, self) {
         const hits = self.execution?.state.data.hits ?? 0;
         return { type: 'FIXED', windupTicks: self.state.uses + hits, recoveryTicks: 0 };
     },
-    followUps: [],
-    targetGroups: [{ id: 'primary', select: state => ({ state, value: [] }), operations: [] }],
+    select: state => ({ state, value: [] }),
+    output: state => state,
 } satisfies StatefulDefinition<{ uses: number }, { hits: number }, object>;
 attack(attackInput);
-// @ts-expect-error ordinary attack output derives applyWay from its operations.
-attack({ ...attackInput, applyWay: 'RANGED' });
-// @ts-expect-error a custom output must independently declare its applyWay.
-attack({ ...attackInput, output: (state: State) => state });
+const { applyWay: attackWay, output: attackOutput, ...attackBase } = attackInput;
+// @ts-expect-error attack output must independently declare its applyWay.
+attack({ ...attackBase, output: attackOutput });
+// @ts-expect-error attack definition requires an explicit output callback.
+attack({ ...attackBase, applyWay: attackWay });
 // @ts-expect-error a synchronous cooldown Change accepts static contribution values.
 actions.setSpeedContribution({ id: 'dynamic-speed', group: null, value: () => [] });
 declare const recoveryOnly: skills.RecoveryRestriction;

@@ -1,7 +1,7 @@
+import { normalMeleeOutput } from "../../actions/normal-melee.js";
 import {
     create as createAttack,
     faceTarget,
-    sourceAttack,
     type Attack as BaseAttack,
 } from "../../actions/attack.js";
 import * as units from "../../../core/unit/index.js";
@@ -27,43 +27,29 @@ export function createMelee(timing: Timing): Attack {
     return createAttack<Host>({
         id: "melee",
         onStart: faceTarget,
-        triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
         timing,
-        followUps: [],
-        targetGroups: [
-            {
-                id: "primary",
-                select(battle, source) {
-                    const self = source.get(battle);
-                    if (self === undefined) {
-                        return { state: battle, value: [] };
-                    }
+        applyWay: "MELEE",
+        select(battle, source) {
+            const self = source.get(battle);
+            if (self === undefined) {
+                return { state: battle, value: [] };
+            }
 
-                    const owner = self.blockable.relation?.blocker;
-                    const target = owner === undefined ? undefined : owner.get(battle);
-                    if (target === undefined || !hasTargetable(target)) {
-                        return { state: battle, value: [] };
-                    }
+            const owner = self.blockable.relation?.blocker;
+            const target = owner === undefined ? undefined : owner.get(battle);
+            if (target === undefined || !hasTargetable(target)) {
+                return { state: battle, value: [] };
+            }
 
-                    const eligible = targeting.damage(self, () => true)(battle);
+            const eligible = targeting.damage(self, () => true)(battle);
 
-                    return {
-                        state: battle,
-                        value: eligible(target) ? [units.ref(target)] : [],
-                    };
-                },
-                operations: [
-                    {
-                        type: "DAMAGE",
-                        attackType: "NORMAL",
-                        applyWay: "MELEE",
-                        power: sourceAttack,
-                        damageType: "PHYSICAL",
-                    },
-                ],
-            },
-        ],
+            return {
+                state: battle,
+                value: eligible(target) ? [units.ref(target)] : [],
+            };
+        },
+        output: normalMeleeOutput,
     });
 }
 
@@ -75,45 +61,35 @@ export function createRanged(rangeRadius: number, timing: Timing, projectile: Pr
         id: "ranged",
         applyWay: arrowApplyWay,
         onStart: faceTarget,
-        triggerBindingId: "primary",
         period: { type: "ATTACK_SPEED" },
         timing,
-        followUps: [],
-        targetGroups: [
-            {
-                id: "primary",
-                select(battle, source) {
-                    const self = source.get(battle);
-                    if (self === undefined) {
-                        return { state: battle, value: [] };
-                    }
+        select(battle, source) {
+            const self = source.get(battle);
+            if (self === undefined) {
+                return { state: battle, value: [] };
+            }
 
-                    const blocker = self.blockable.relation?.blocker;
-                    const candidates = units
-                        .all(battle)
-                        .filter(hasTargetable)
-                        .filter(targeting.inCategories(["DEFAULT"]))
-                        .filter(targeting.damage(self)(battle))
-                        .filter((target) => target.ref !== blocker)
-                        .filter(
-                            targeting.inRange(self.position, [
-                                { type: "CIRCLE", offset: [0, 0], radius: rangeRadius },
-                            ]),
-                        );
+            const blocker = self.blockable.relation?.blocker;
+            const candidates = units
+                .all(battle)
+                .filter(hasTargetable)
+                .filter(targeting.inCategories(["DEFAULT"]))
+                .filter(targeting.damage(self)(battle))
+                .filter((target) => target.ref !== blocker)
+                .filter(
+                    targeting.inRange(self.position, [
+                        { type: "CIRCLE", offset: [0, 0], radius: rangeRadius },
+                    ]),
+                );
 
-                    return {
-                        state: battle,
-                        value: topK(candidates, 1, targeting.distance(self.position)).map(
-                            units.ref,
-                        ),
-                    };
-                },
-                operations: [],
-            },
-        ],
+            return {
+                state: battle,
+                value: topK(candidates, 1, targeting.distance(self.position)).map(units.ref),
+            };
+        },
         output: (state, host, self) => {
             const source = host.get(state);
-            const target = self.state.target.get(state);
+            const target = self.state.targets[0].get(state);
             if (source === undefined || target === undefined || !hasVitality(target)) {
                 return state;
             }
