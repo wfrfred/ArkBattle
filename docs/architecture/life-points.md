@@ -7,10 +7,10 @@
 `Battle.Input.lifePoints` 显式提供 `balance` 和 `temporary` 两个非负整数初值；普通关卡从 `options.maxLifePoint` 取得普通生命初值，临时生命初值为零。`State` 保留这两个账户、待结算的个体损失登记 `pending` 和 `hooks`。普通与临时生命最低均为零，不设置通用运行时上限。
 
 - `modify(battle, delta)` 接受有符号整数，正值增加普通生命。
-- `addTemporary(battle, amount)` 接受非负整数，正值增加临时生命。
+- `addTemporary(battle, amount)` 接受非负整数，正值增加临时生命；零值直接返回原状态，不派发任何 Hook。
 - 两者使用同一修改程序。负向变化优先扣除临时生命，剩余损失扣普通生命，最低截到零。
 
-两个入口先派发 `beforeModify`，上下文 `"BALANCE" | "TEMPORARY"` 表示正向变化的目标账户，工作值为有符号变化量。Hook 可调整变化量或将其设为零；最终工作值取偶舍入，按前置 Hook 返回的最新 BattleState 结算。负向变化的分配顺序不受目标账户影响。
+进入修改程序后先派发 `beforeModify`，包括 `modify(battle, 0)`。上下文 `"BALANCE" | "TEMPORARY"` 表示正向变化的目标账户，工作值为有符号变化量。Hook 可调整变化量或将其设为零；最终工作值取偶舍入，按前置 Hook 返回的最新 BattleState 结算。负向变化的分配顺序不受目标账户影响。
 
 账户提交后，仅当普通或临时生命确实变化时派发 `modified`，载荷 `balanceDelta`、`temporaryDelta` 分别描述本次实际变化，而非原始请求。后续 Hook 可读取已提交资源并触发独立的修改；需要只触发一次的具体效果应先消费自己的资格，再发起二次扣减，不由 Core 屏蔽重入。`setHook`、`removeHook` 按项目通用 Hook 契约管理登记。
 

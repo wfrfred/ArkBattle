@@ -113,6 +113,10 @@ export function modify(battle: BattleState, delta: number): BattleState {
 export function addTemporary(battle: BattleState, amount: number): BattleState {
     assertNonnegativeSafeInteger(amount, "temporary life point addition");
 
+    if (amount === 0) {
+        return battle;
+    }
+
     return apply(battle, "TEMPORARY", amount);
 }
 

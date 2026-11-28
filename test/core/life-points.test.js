@@ -93,6 +93,7 @@ test("both accounts share modification hooks and actual losses may trigger a sec
         }),
     });
 
+    state = lifePoints.addTemporary(state, 0);
     state = lifePoints.addTemporary(state, 2);
     state = lifePoints.modify(state, -1);
     state = lifePoints.modify(state, -1);
