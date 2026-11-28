@@ -1,0 +1,465 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-28"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-28",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "bodies.json#/provenance/client/dll",
+          "callers-add.json#/provenance/client/dll",
+          "callers-dynamic.json#/provenance/client/dll",
+          "callers-set-calc.json#/provenance/client/dll",
+          "dynamic.json#/provenance/client/dll",
+          "phase-count.json#/provenance/client/dll",
+          "search-total.json#/provenance/client/dll",
+          "xref-add.json#/provenance/client/dll",
+          "xref-calc.json#/provenance/client/dll",
+          "xref-dynamic.json#/provenance/client/dll",
+          "xref-set.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "bodies.json#/provenance/client/metadata",
+          "callers-add.json#/provenance/client/metadata",
+          "callers-dynamic.json#/provenance/client/metadata",
+          "callers-set-calc.json#/provenance/client/metadata",
+          "dynamic.json#/provenance/client/metadata",
+          "phase-count.json#/provenance/client/metadata",
+          "search-total.json#/provenance/client/metadata",
+          "xref-add.json#/provenance/client/metadata",
+          "xref-calc.json#/provenance/client/metadata",
+          "xref-dynamic.json#/provenance/client/metadata",
+          "xref-set.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "bodies.json",
+      "callers-add.json",
+      "callers-dynamic.json",
+      "callers-set-calc.json",
+      "config.json",
+      "dynamic.json",
+      "phase-count.json",
+      "search-total.json",
+      "xref-add.json",
+      "xref-calc.json",
+      "xref-dynamic.json",
+      "xref-set.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "bodies.json",
+        "kind": "record",
+        "bytes": 313301,
+        "sha256": "6eed0db696941e9817ce87d236b0698880e7cf371d629ec9268da481d96d4955"
+      },
+      {
+        "path": "callers-add.json",
+        "kind": "record",
+        "bytes": 46432,
+        "sha256": "aa35583074fd671f6f112c00b3b7a4ec2f478ae629e35a67f8474018e8f57c02"
+      },
+      {
+        "path": "callers-dynamic.json",
+        "kind": "record",
+        "bytes": 83133,
+        "sha256": "ccb5198ea7c8194b8c34800e43218b758eac99f8f93436f77f670e0c3593ebda"
+      },
+      {
+        "path": "callers-set-calc.json",
+        "kind": "record",
+        "bytes": 24297,
+        "sha256": "1717b99fbd129ee55a5a34729f4b740bc9b22a6372339e6980529ee55f11028e"
+      },
+      {
+        "path": "config.json",
+        "kind": "record",
+        "bytes": 6681,
+        "sha256": "05d7c207935dcf5437f4ff6d958452e0798f8df1c0baba7a18b67c4502f1c747"
+      },
+      {
+        "path": "dynamic.json",
+        "kind": "record",
+        "bytes": 236780,
+        "sha256": "80e43ac6e400b846664aa78510d3794e430cc2e3f32e558978274a80722ed44b"
+      },
+      {
+        "path": "phase-count.json",
+        "kind": "record",
+        "bytes": 29891,
+        "sha256": "83a34c5be5894bba817ba7e79561df49c488ec2f8172839810ffb281423aab5a"
+      },
+      {
+        "path": "search-total.json",
+        "kind": "record",
+        "bytes": 19935,
+        "sha256": "3c99e391d61e954cdd66db71481d08ea3889fb23dca3d9d2fe5cece2b61066a9"
+      },
+      {
+        "path": "xref-add.json",
+        "kind": "record",
+        "bytes": 17374,
+        "sha256": "1eecc45bcc7959b3c198c4b86ccc5432b48f16c45e8e7fa6a72d0ce29ce1d767"
+      },
+      {
+        "path": "xref-calc.json",
+        "kind": "record",
+        "bytes": 17374,
+        "sha256": "28f460aa39ef243e729b903dd80618f5d29efc552964e17edd0ce7201eafede3"
+      },
+      {
+        "path": "xref-dynamic.json",
+        "kind": "record",
+        "bytes": 18557,
+        "sha256": "a93ffd22d0003bc74e4044e0cc30304bab9f9bda916e5cf314be658f2bd26f6e"
+      },
+      {
+        "path": "xref-set.json",
+        "kind": "record",
+        "bytes": 17712,
+        "sha256": "790880fe25a83b8cfabab6a6205e292a23243647b7ba91e1084c23c4e39ea039"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 32194,
+          "mode": "disasm",
+          "records": [
+            "phase-count.json#/result/methods/0",
+            "phase-count.json#/result/bodies/0/method",
+            "phase-count.json#/result/bodies/0/fragments/0",
+            "phase-count.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.LevelData/BranchData/PhaseData.GetEnemiesCnt",
+          "address": "0x1824703c0"
+        },
+        {
+          "index": 68824,
+          "mode": "metadata",
+          "records": [
+            "callers-add.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.Act1VaseManager._PrepareVaseRandomAndSelectPart1",
+          "address": "0x180795820"
+        },
+        {
+          "index": 68832,
+          "mode": "disasm",
+          "records": [
+            "dynamic.json#/result/methods/0",
+            "dynamic.json#/result/bodies/0/method",
+            "dynamic.json#/result/bodies/0/fragments/0",
+            "dynamic.json#/result/bodies/0/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Act1VaseManager._AssignExplicitBranchEntries",
+          "address": "0x1807928f0"
+        },
+        {
+          "index": 68833,
+          "mode": "disasm",
+          "records": [
+            "dynamic.json#/result/methods/1",
+            "dynamic.json#/result/bodies/1/method",
+            "dynamic.json#/result/bodies/1/fragments/0",
+            "dynamic.json#/result/bodies/1/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Act1VaseManager._AssignRemainingBranchEntries",
+          "address": "0x180792c50"
+        },
+        {
+          "index": 73236,
+          "mode": "metadata",
+          "records": [
+            "search-total.json#/result/0"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.get_totalEnemiesCnt",
+          "address": "0x180988890"
+        },
+        {
+          "index": 73237,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/methods/0",
+            "bodies.json#/result/bodies/0/method",
+            "bodies.json#/result/bodies/0/fragments/0",
+            "bodies.json#/result/bodies/0/fragments/0/method",
+            "search-total.json#/result/1"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.set_totalEnemiesCnt",
+          "address": "0x180988e50"
+        },
+        {
+          "index": 73250,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/methods/1",
+            "bodies.json#/result/bodies/1/method",
+            "bodies.json#/result/bodies/1/fragments/0",
+            "bodies.json#/result/bodies/1/fragments/0/method",
+            "search-total.json#/result/2"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.AddTotalEnemiesCnt",
+          "address": "0x18097d870"
+        },
+        {
+          "index": 73262,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/methods/2",
+            "bodies.json#/result/bodies/2/method",
+            "bodies.json#/result/bodies/2/fragments/0",
+            "bodies.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.Init",
+          "address": "0x18097e950"
+        },
+        {
+          "index": 73263,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/methods/3",
+            "bodies.json#/result/bodies/3/method",
+            "bodies.json#/result/bodies/3/fragments/0",
+            "bodies.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.CalculateStates",
+          "address": "0x18097d950"
+        },
+        {
+          "index": 73264,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/methods/4",
+            "bodies.json#/result/bodies/4/method",
+            "bodies.json#/result/bodies/4/fragments/0",
+            "bodies.json#/result/bodies/4/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.Reset",
+          "address": "0x18097fb80"
+        },
+        {
+          "index": 73265,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/methods/5",
+            "bodies.json#/result/bodies/5/method",
+            "bodies.json#/result/bodies/5/fragments/0",
+            "bodies.json#/result/bodies/5/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.UpdateWaves",
+          "address": "0x1809844c0"
+        },
+        {
+          "index": 73292,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/methods/6",
+            "bodies.json#/result/bodies/6/method",
+            "bodies.json#/result/bodies/6/fragments/0",
+            "bodies.json#/result/bodies/6/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler._DealAfterBattleWaveFromPlugin",
+          "address": "0x1809853c0"
+        },
+        {
+          "index": 73297,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/methods/7",
+            "bodies.json#/result/bodies/7/method",
+            "bodies.json#/result/bodies/7/fragments/0",
+            "bodies.json#/result/bodies/7/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.TryDealDynamicPhase",
+          "address": "0x1809836a0"
+        },
+        {
+          "index": 73436,
+          "mode": "disasm",
+          "records": [
+            "dynamic.json#/result/methods/2",
+            "dynamic.json#/result/bodies/2/method",
+            "dynamic.json#/result/bodies/2/fragments/0",
+            "dynamic.json#/result/bodies/2/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler/<TryDealDynamicPhase>d__127.MoveNext",
+          "address": "0x18098aa80"
+        },
+        {
+          "index": 81584,
+          "mode": "metadata",
+          "records": [
+            "callers-set-calc.json#/result/0/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessSchedulerManager.PrepareForBattle",
+          "address": "0x180c08c10"
+        },
+        {
+          "index": 82722,
+          "mode": "metadata",
+          "records": [
+            "callers-add.json#/result/1/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode.StartGame",
+          "address": "0x180c55040"
+        },
+        {
+          "index": 82734,
+          "mode": "disasm",
+          "records": [
+            "dynamic.json#/result/methods/3",
+            "dynamic.json#/result/bodies/3/method",
+            "dynamic.json#/result/bodies/3/fragments/0",
+            "dynamic.json#/result/bodies/3/fragments/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode._GetSpawnableTargetCount",
+          "address": "0x180c56cb0"
+        },
+        {
+          "index": 82740,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/0",
+            "callers-dynamic.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode._ActivateNextPendingTarget",
+          "address": "0x180c55380"
+        },
+        {
+          "index": 82768,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/1",
+            "callers-dynamic.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode/<_ActivateRarityTrapBranchCoroutine>d__44.MoveNext",
+          "address": "0x180c69790"
+        },
+        {
+          "index": 84304,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/2",
+            "callers-dynamic.json#/result/bodies/2/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode._TriggerBossBranchPreview",
+          "address": "0x180cdd910"
+        },
+        {
+          "index": 89350,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/3",
+            "callers-dynamic.json#/result/bodies/3/method"
+          ],
+          "fullname": "Torappu.Battle.SandboxV3.SandboxV3CatchedAnimalManager._OnBattleStart",
+          "address": "0x180e2b900"
+        },
+        {
+          "index": 89351,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/4",
+            "callers-dynamic.json#/result/bodies/4/method"
+          ],
+          "fullname": "Torappu.Battle.SandboxV3.SandboxV3CatchedAnimalManager._SummonPresetAnimals",
+          "address": "0x180e2f280"
+        },
+        {
+          "index": 91852,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/5",
+            "callers-dynamic.json#/result/bodies/5/method"
+          ],
+          "fullname": "Torappu.Battle.Sandbox.SandboxCatchedAnimalManager._ParseCatchedAnimalsInBuildMode",
+          "address": "0x180efb1f0"
+        },
+        {
+          "index": 92157,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/6",
+            "callers-dynamic.json#/result/bodies/6/method"
+          ],
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor.OnStartGame",
+          "address": "0x180f36ee0"
+        },
+        {
+          "index": 92160,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/7",
+            "callers-dynamic.json#/result/bodies/7/method"
+          ],
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor.SummonNextInsectPhase",
+          "address": "0x180f37990"
+        },
+        {
+          "index": 92181,
+          "mode": "metadata",
+          "records": [
+            "callers-dynamic.json#/result/methods/8",
+            "callers-dynamic.json#/result/bodies/8/method"
+          ],
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor/<OnFinalSchedule>d__28.MoveNext",
+          "address": "0x180f56330"
+        },
+        {
+          "index": 106274,
+          "mode": "metadata",
+          "records": [
+            "search-total.json#/result/3"
+          ],
+          "fullname": "Torappu.Battle.UI.UIRoguelikePluginRL05/UITopbarStatusRL5.get_totalEnemiesCnt",
+          "address": "0x18052de40"
+        },
+        {
+          "index": 106331,
+          "mode": "metadata",
+          "records": [
+            "search-total.json#/result/4"
+          ],
+          "fullname": "Torappu.Battle.UI.UIRoguelikePluginRL06/UITopbarStatusRL6.get_totalEnemiesCnt",
+          "address": "0x18052de40"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

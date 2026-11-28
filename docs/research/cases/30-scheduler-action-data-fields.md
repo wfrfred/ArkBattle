@@ -142,6 +142,14 @@ dontCountAsFinished = (B && !M) || N
 
 因此已有证据足以否定“managed 是总开关”“不阻波就不计数”“分支统一固定政策”等合并方式。尚未据此决定 Core 最终保留几个字段：需要保留的是这些独立的战斗事实，而不是原生字段数量本身。
 
+### 普通计划总数与独立增量（2026-11-28 补核）
+
+CalculateStates 在 0x18097da0c 清零 totalEnemiesCnt，然后按上述主 waves 公式加总；直接调用点是 Init (0x18097efc7) 和 AutoChessSchedulerManager.PrepareForBattle (0x180c08ef8，先 Reset)。Reset 不重置 total；UpdateWaves 只替换 waves 引用，不重算 total。普通初始 total 可由处理完毕的主 waves 计划推导，不等于所有出生数量或动态重算后的剩余队列长度。
+
+独立增量入口确实存在。公开 AddTotalEnemiesCnt(int count) 只接受正增量，以 total+count 调私有 setter。直接调用点为 Act1VaseManager._PrepareVaseRandomAndSelectPart1（0x180796d52，使用 Branch 分配返回的合计）和 ArkDexCaptureGameMode.StartGame（0x180c55271，建运行时目标后取 _GetSpawnableTargetCount 的正值）。配置镜像确认逐影集趣 DP-1 (`act1dp_01`) 为 ACTIVITY 关，含 `env_042_act1vase`，其主 waves SPAWN 总和为 0、Branch 两项；奇象巡展 `level_act1arkhub_solo_1_2` 含 `env_045_arkdex`，主 waves SPAWN 为 0、Branch 六项。两者为特殊活动内容，不能据此视作所有常规关卡或所有 Operation 都需独立增量。也不能因其特殊而否定活动关卡对此需求。
+
+TryDealDynamicPhase(phaseData, actionBlockTimer, includeInTotalEnemy) 的协程在 includeInTotalEnemy=true 时于 0x18098ab59 先加 PhaseData.GetEnemiesCnt，再处理动态 phase；该计数仅按 SPAWN 类型加 count，不做普通 CalculateStates 的启用／notCountInTotal 筛选。九个直接调用点均已核实实参：生息 Sandbox 三个入口为 true，其余 ArkDexCapture、HalfIdle、Sandbox/SandboxV3 六处为 false。未见主线、常规支线、肉鸽或卫戍的直接调用者。直接 E8/E9 取证不覆盖内联写入、间接调用与 XLua；不据此断言常规关卡完全不可能有独立增量需求。 [原件与复跑范围](../evidence/scheduler-total-20261128/README.md)。
+
 ### 额外有效计数（2026-11-28 补核）
 
 客户端还有独立的 validFinished、validKilled、validMissed 三项统计，不能与前述 Finished／Killed 同名合并。Scheduler 字段布局（分别为 +0x54、+0x68、+0x7c）与 _OnUnitDestroyed 的原件直接证实：通过 dontCountAsFinished、isSummon 两项门槛后，先更新普通 Finished／Killed，再处理有效计数。没有 override 时，isInvalidKilled=true 跳过有效计数；否则 validFinished 加一，按实际 death 分别增加 validKilled 或 validMissed（并不使用 alwaysCountAsKilled）。有 override 时，值大于零才增加 validFinished 或非 death 的 validMissed；实际 death 时 validKilled 加 override 并截断至不小于零。override 的分支优先于 isInvalidKilled。MarkEnemyKilled 仅更新普通 Finished／Killed。

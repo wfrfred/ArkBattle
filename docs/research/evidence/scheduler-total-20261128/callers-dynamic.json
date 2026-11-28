@@ -1,0 +1,2812 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "Torappu.Common.dll": {
+          "address": 6577712928,
+          "methodPointers": 6592562080,
+          "count": 6004,
+          "fileBacked": true
+        },
+        "ThirdPartyAssembly.dll": {
+          "address": 6577712272,
+          "methodPointers": 6592454304,
+          "count": 12660,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsModule.dll": {
+          "address": 6577900992,
+          "methodPointers": 6592933968,
+          "count": 6132,
+          "fileBacked": true
+        },
+        "System.dll": {
+          "address": 6577628368,
+          "methodPointers": 6592396096,
+          "count": 7003,
+          "fileBacked": true
+        },
+        "Unity.InputSystem.dll": {
+          "address": 6577776016,
+          "methodPointers": 6592616544,
+          "count": 5703,
+          "fileBacked": true
+        },
+        "Unity.Mathematics.dll": {
+          "address": 6577838608,
+          "methodPointers": 6592682032,
+          "count": 9336,
+          "fileBacked": true
+        },
+        "UnityEngine.CoreModule.dll": {
+          "address": 6577886944,
+          "methodPointers": 6592866352,
+          "count": 4154,
+          "fileBacked": true
+        },
+        "System.Xml.dll": {
+          "address": 6577618416,
+          "methodPointers": 6592367840,
+          "count": 3283,
+          "fileBacked": true
+        },
+        "Newtonsoft.Json.dll": {
+          "address": 6577473344,
+          "methodPointers": 6592259616,
+          "count": 2998,
+          "fileBacked": true
+        },
+        "Unity.TextMeshPro.dll": {
+          "address": 6577852240,
+          "methodPointers": 6592835600,
+          "count": 1618,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.dll": {
+          "address": 6577530576,
+          "methodPointers": 6592309936,
+          "count": 1885,
+          "fileBacked": true
+        },
+        "spine-unity.dll": {
+          "address": 6577560208,
+          "methodPointers": 6592332928,
+          "count": 1982,
+          "fileBacked": true
+        },
+        "protobuf-net.Core.dll": {
+          "address": 6577475616,
+          "methodPointers": 6592285904,
+          "count": 1952,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Runtime.dll": {
+          "address": 6565019472,
+          "methodPointers": 6587703856,
+          "count": 2565,
+          "fileBacked": true
+        },
+        "UnityEngine.UI.dll": {
+          "address": 6577955760,
+          "methodPointers": 6592996064,
+          "count": 2041,
+          "fileBacked": true
+        },
+        "Cinemachine.dll": {
+          "address": 6564996672,
+          "methodPointers": 6587684464,
+          "count": 1160,
+          "fileBacked": true
+        },
+        "ICSharpCode.SharpZipLib.dll": {
+          "address": 6565040576,
+          "methodPointers": 6587747952,
+          "count": 1256,
+          "fileBacked": true
+        },
+        "DOTween.dll": {
+          "address": 6565028192,
+          "methodPointers": 6587727808,
+          "count": 1188,
+          "fileBacked": true
+        },
+        "System.Core.dll": {
+          "address": 6577602800,
+          "methodPointers": 6592356000,
+          "count": 1117,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreTextEngineModule.dll": {
+          "address": 6577900064,
+          "methodPointers": 6592929888,
+          "count": 370,
+          "fileBacked": true
+        },
+        "Unity.Postprocessing.Runtime.dll": {
+          "address": 6577843136,
+          "methodPointers": 6592828752,
+          "count": 810,
+          "fileBacked": true
+        },
+        "Sirenix.Utilities.dll": {
+          "address": 6577549328,
+          "methodPointers": 6592325136,
+          "count": 968,
+          "fileBacked": true
+        },
+        "Mono.Security.dll": {
+          "address": 6577363904,
+          "methodPointers": 6592127104,
+          "count": 562,
+          "fileBacked": true
+        },
+        "UnityEngine.IMGUIModule.dll": {
+          "address": 6577890704,
+          "methodPointers": 6592908944,
+          "count": 724,
+          "fileBacked": true
+        },
+        "Unity.Timeline.dll": {
+          "address": 6577856512,
+          "methodPointers": 6592850304,
+          "count": 876,
+          "fileBacked": true
+        },
+        "Sirenix.OdinInspector.Attributes.dll": {
+          "address": 6577507296,
+          "methodPointers": 6592305952,
+          "count": 462,
+          "fileBacked": true
+        },
+        "System.Collections.Immutable.dll": {
+          "address": 6577584240,
+          "methodPointers": 6592349104,
+          "count": 825,
+          "fileBacked": true
+        },
+        "Hypergryph.OneChannel.dll": {
+          "address": 6565035376,
+          "methodPointers": 6587741424,
+          "count": 755,
+          "fileBacked": true
+        },
+        "ConsolePro.dll": {
+          "address": 6565008736,
+          "methodPointers": 6587697344,
+          "count": 793,
+          "fileBacked": true
+        },
+        "Assembly-CSharp-firstpass.dll": {
+          "address": 6563861904,
+          "methodPointers": 6585841648,
+          "count": 747,
+          "fileBacked": true
+        },
+        "P31RestKit.dll": {
+          "address": 6577475456,
+          "methodPointers": 6592283600,
+          "count": 287,
+          "fileBacked": true
+        },
+        "UnityEngine.ParticleSystemModule.dll": {
+          "address": 6577893824,
+          "methodPointers": 6592916384,
+          "count": 491,
+          "fileBacked": true
+        },
+        "clipper_library.dll": {
+          "address": 6564997696,
+          "methodPointers": 6587695360,
+          "count": 216,
+          "fileBacked": true
+        },
+        "torappu.CrashSight.Standalone.dll": {
+          "address": 6577764784,
+          "methodPointers": 6592613760,
+          "count": 280,
+          "fileBacked": true
+        },
+        "UnityEngine.AnimationModule.dll": {
+          "address": 6577860928,
+          "methodPointers": 6592861456,
+          "count": 366,
+          "fileBacked": true
+        },
+        "UnityEngine.AndroidJNIModule.dll": {
+          "address": 6577859152,
+          "methodPointers": 6592859440,
+          "count": 252,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsNativeModule.dll": {
+          "address": 6577945600,
+          "methodPointers": 6592993088,
+          "count": 245,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestModule.dll": {
+          "address": 6577956752,
+          "methodPointers": 6593013680,
+          "count": 143,
+          "fileBacked": true
+        },
+        "DOTween.Modules.dll": {
+          "address": 6565020800,
+          "methodPointers": 6587725728,
+          "count": 235,
+          "fileBacked": true
+        },
+        "System.Xml.Linq.dll": {
+          "address": 6577604992,
+          "methodPointers": 6592365952,
+          "count": 210,
+          "fileBacked": true
+        },
+        "XNode.dll": {
+          "address": 6577960256,
+          "methodPointers": 6593016992,
+          "count": 199,
+          "fileBacked": true
+        },
+        "UnityEngine.PhysicsModule.dll": {
+          "address": 6577895584,
+          "methodPointers": 6592924848,
+          "count": 182,
+          "fileBacked": true
+        },
+        "UnityEngine.Physics2DModule.dll": {
+          "address": 6577894672,
+          "methodPointers": 6592923088,
+          "count": 168,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreFontEngineModule.dll": {
+          "address": 6577898160,
+          "methodPointers": 6592927760,
+          "count": 121,
+          "fileBacked": true
+        },
+        "System.Numerics.dll": {
+          "address": 6577603280,
+          "methodPointers": 6592364992,
+          "count": 77,
+          "fileBacked": true
+        },
+        "UnityEngine.AIModule.dll": {
+          "address": 6577857296,
+          "methodPointers": 6592857856,
+          "count": 153,
+          "fileBacked": true
+        },
+        "UnityEngine.AudioModule.dll": {
+          "address": 6577861936,
+          "methodPointers": 6592865360,
+          "count": 96,
+          "fileBacked": true
+        },
+        "UnityEngine.UIModule.dll": {
+          "address": 6577946240,
+          "methodPointers": 6592995136,
+          "count": 116,
+          "fileBacked": true
+        },
+        "Hypergryph.Browser.dll": {
+          "address": 6565029568,
+          "methodPointers": 6587737712,
+          "count": 196,
+          "fileBacked": true
+        },
+        "UnityEngine.XRModule.dll": {
+          "address": 6577958704,
+          "methodPointers": 6593015712,
+          "count": 67,
+          "fileBacked": true
+        },
+        "Torappu.CETest.dll": {
+          "address": 6577712768,
+          "methodPointers": 6592561408,
+          "count": 84,
+          "fileBacked": true
+        },
+        "UnityEngine.TextRenderingModule.dll": {
+          "address": 6577900464,
+          "methodPointers": 6592933088,
+          "count": 50,
+          "fileBacked": true
+        },
+        "UnityEngine.InputLegacyModule.dll": {
+          "address": 6577891168,
+          "methodPointers": 6592915328,
+          "count": 71,
+          "fileBacked": true
+        },
+        "UnityEngine.TerrainModule.dll": {
+          "address": 6577897184,
+          "methodPointers": 6592927408,
+          "count": 41,
+          "fileBacked": true
+        },
+        "UnityEngine.SharedInternalsModule.dll": {
+          "address": 6577896208,
+          "methodPointers": 6592926640,
+          "count": 68,
+          "fileBacked": true
+        },
+        "UnityEngine.TilemapModule.dll": {
+          "address": 6577900816,
+          "methodPointers": 6592933536,
+          "count": 42,
+          "fileBacked": true
+        },
+        "UnityEngine.VFXModule.dll": {
+          "address": 6577957568,
+          "methodPointers": 6593015056,
+          "count": 33,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.Config.dll": {
+          "address": 6577507568,
+          "methodPointers": 6592309760,
+          "count": 22,
+          "fileBacked": true
+        },
+        "UnityEngine.AssetBundleModule.dll": {
+          "address": 6577861376,
+          "methodPointers": 6592865136,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.SubsystemsModule.dll": {
+          "address": 6577896832,
+          "methodPointers": 6592927184,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestWWWModule.dll": {
+          "address": 6577957232,
+          "methodPointers": 6593014928,
+          "count": 15,
+          "fileBacked": true
+        },
+        "UnityEngine.VideoModule.dll": {
+          "address": 6577957824,
+          "methodPointers": 6593015344,
+          "count": 18,
+          "fileBacked": true
+        },
+        "UnityEngine.DirectorModule.dll": {
+          "address": 6577887264,
+          "methodPointers": 6592908624,
+          "count": 34,
+          "fileBacked": true
+        },
+        "UnityEngine.InputModule.dll": {
+          "address": 6577891424,
+          "methodPointers": 6592916192,
+          "count": 17,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityAnalyticsModule.dll": {
+          "address": 6577955968,
+          "methodPointers": 6593013584,
+          "count": 12,
+          "fileBacked": true
+        },
+        "Hypergryph.EventLogSDK.dll": {
+          "address": 6565030464,
+          "methodPointers": 6587739280,
+          "count": 181,
+          "fileBacked": true
+        },
+        "UnityEngine.JSONSerializeModule.dll": {
+          "address": 6577891680,
+          "methodPointers": 6592916328,
+          "count": 7,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestTextureModule.dll": {
+          "address": 6577956976,
+          "methodPointers": 6593014832,
+          "count": 12,
+          "fileBacked": true
+        },
+        "UnityEngine.VRModule.dll": {
+          "address": 6577958032,
+          "methodPointers": 6593015520,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Torappu.Sofdec.dll": {
+          "address": 6577765232,
+          "methodPointers": 6592616000,
+          "count": 66,
+          "fileBacked": true
+        },
+        "UnityEngine.ImageConversionModule.dll": {
+          "address": 6577887632,
+          "methodPointers": 6592908904,
+          "count": 4,
+          "fileBacked": true
+        },
+        "UnityEngine.WindModule.dll": {
+          "address": 6577958256,
+          "methodPointers": 6593015600,
+          "count": 13,
+          "fileBacked": true
+        },
+        "UnityEngine.GridModule.dll": {
+          "address": 6577887440,
+          "methodPointers": 6592908896,
+          "count": 1,
+          "fileBacked": true
+        },
+        "UnityEngine.ScreenCaptureModule.dll": {
+          "address": 6577895760,
+          "methodPointers": 6592926624,
+          "count": 1,
+          "fileBacked": true
+        },
+        "Hypergryph.GameUpdate.dll": {
+          "address": 6565030928,
+          "methodPointers": 6587740736,
+          "count": 71,
+          "fileBacked": true
+        },
+        "Unity.Profiling.Core.dll": {
+          "address": 6577843520,
+          "methodPointers": 6592835264,
+          "count": 41,
+          "fileBacked": true
+        },
+        "System.Configuration.dll": {
+          "address": 6577584560,
+          "methodPointers": 6592355712,
+          "count": 35,
+          "fileBacked": true
+        },
+        "System.Runtime.Serialization.dll": {
+          "address": 6577603664,
+          "methodPointers": 6592365904,
+          "count": 6,
+          "fileBacked": true
+        },
+        "System.Runtime.CompilerServices.Unsafe.dll": {
+          "address": 6577603456,
+          "methodPointers": 6592365888,
+          "count": 2,
+          "fileBacked": true
+        },
+        "Unity.MemoryProfiler.dll": {
+          "address": 6577838800,
+          "methodPointers": 6592828688,
+          "count": 8,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Vp9.Runtime.dll": {
+          "address": 6565019680,
+          "methodPointers": 6587725648,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Hypergryph.Log.dll": {
+          "address": 6565031152,
+          "methodPointers": 6587741312,
+          "count": 14,
+          "fileBacked": true
+        },
+        "XNode.Groups.dll": {
+          "address": 6577959056,
+          "methodPointers": 6593016960,
+          "count": 3,
+          "fileBacked": true
+        },
+        "AntiSDK.dll": {
+          "address": 6563858064,
+          "methodPointers": 6585841616,
+          "count": 3,
+          "fileBacked": true
+        },
+        "Torappu.UICommonEditor.dll": {
+          "address": 6577765408,
+          "methodPointers": 6592616528,
+          "count": 2,
+          "fileBacked": true
+        },
+        "enum2int.dll": {
+          "address": 6565028352,
+          "methodPointers": 6593280072,
+          "count": 2,
+          "fileBacked": false
+        },
+        "__Generated": {
+          "address": 6577960432,
+          "methodPointers": 6593018584,
+          "count": 3,
+          "fileBacked": true
+        }
+      }
+    }
+  },
+  "result": {
+    "methods": [
+      {
+        "nameIndex": 3066922,
+        "declaringType": 12149,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100746037,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 82740,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455382912,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode._ActivateNextPendingTarget",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      {
+        "nameIndex": 11500,
+        "declaringType": 12145,
+        "returnType": 46024,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100746065,
+        "flags": 481,
+        "iflags": 0,
+        "slot": 6,
+        "parameterCount": 0,
+        "index": 82768,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455465872,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode/<_ActivateRarityTrapBranchCoroutine>d__44.MoveNext",
+        "returnTypeName": "bool",
+        "parameters": []
+      },
+      {
+        "nameIndex": 3106515,
+        "declaringType": 12244,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100747601,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 84304,
+        "image": "Assembly-CSharp.dll",
+        "address": 6455941392,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode._TriggerBossBranchPreview",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      {
+        "nameIndex": 3225771,
+        "declaringType": 12911,
+        "returnType": 84484,
+        "parameterStart": 86370,
+        "genericContainerIndex": -1,
+        "token": 100752647,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 89350,
+        "image": "Assembly-CSharp.dll",
+        "address": 6457309440,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.SandboxV3.SandboxV3CatchedAnimalManager._OnBattleStart",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 5240,
+            "token": 134304117,
+            "typeIndex": 64329,
+            "index": 86370,
+            "name": "arg",
+            "typeName": "object"
+          }
+        ]
+      },
+      {
+        "nameIndex": 3225786,
+        "declaringType": 12911,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100752648,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 89351,
+        "image": "Assembly-CSharp.dll",
+        "address": 6457324160,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.SandboxV3.SandboxV3CatchedAnimalManager._SummonPresetAnimals",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      {
+        "nameIndex": 3309459,
+        "declaringType": 13238,
+        "returnType": 84484,
+        "parameterStart": 88558,
+        "genericContainerIndex": -1,
+        "token": 100755149,
+        "flags": 129,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 1,
+        "index": 91852,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458159600,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Sandbox.SandboxCatchedAnimalManager._ParseCatchedAnimalsInBuildMode",
+        "returnTypeName": "void",
+        "parameters": [
+          {
+            "nameIndex": 1116000,
+            "token": 134306303,
+            "typeIndex": 9297,
+            "index": 88558,
+            "name": "animals",
+            "typeName": "type(kind=0x15, data=0x188e074e8)"
+          }
+        ]
+      },
+      {
+        "nameIndex": 3314666,
+        "declaringType": 13273,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100755454,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 92157,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458404576,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor.OnStartGame",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      {
+        "nameIndex": 3320796,
+        "declaringType": 13273,
+        "returnType": 84484,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100755457,
+        "flags": 134,
+        "iflags": 0,
+        "slot": 65535,
+        "parameterCount": 0,
+        "index": 92160,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458407312,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor.SummonNextInsectPhase",
+        "returnTypeName": "void",
+        "parameters": []
+      },
+      {
+        "nameIndex": 11500,
+        "declaringType": 13272,
+        "returnType": 46024,
+        "parameterStart": -1,
+        "genericContainerIndex": -1,
+        "token": 100755478,
+        "flags": 481,
+        "iflags": 0,
+        "slot": 6,
+        "parameterCount": 0,
+        "index": 92181,
+        "image": "Assembly-CSharp.dll",
+        "address": 6458532656,
+        "addressStatus": "file-backed",
+        "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor/<OnFinalSchedule>d__28.MoveNext",
+        "returnTypeName": "bool",
+        "parameters": []
+      }
+    ],
+    "bodies": [
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode._ActivateNextPendingTarget",
+          "token": 100746037
+        },
+        "method": {
+          "nameIndex": 3066922,
+          "declaringType": 12149,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746037,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 82740,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455382912,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode._ActivateNextPendingTarget",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "logicalEnd": "0x180c55890",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180c556af",
+            "bytes": "7410",
+            "mnemonic": "je",
+            "operands": "0x180c556c1",
+            "target": "0x180c556c1",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180c556b1",
+            "bytes": "f30f104f40",
+            "mnemonic": "movss",
+            "operands": "xmm1, dword ptr [rdi + 0x40]"
+          },
+          {
+            "address": "0x180c556b6",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180c556b9",
+            "bytes": "488bcf",
+            "mnemonic": "mov",
+            "operands": "rcx, rdi"
+          },
+          {
+            "address": "0x180c556bc",
+            "bytes": "e80f250000",
+            "mnemonic": "call",
+            "operands": "0x180c57bd0",
+            "target": "0x180c57bd0",
+            "methods": [
+              "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode._ScheduleNextTarget"
+            ]
+          },
+          {
+            "address": "0x180c556c1",
+            "bytes": "488b0d98c4f507",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7f5c498]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180c556c8",
+            "bytes": "e853909304",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180c556cd",
+            "bytes": "488b0d8cc4f507",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7f5c48c]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180c556d4",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180c556d7",
+            "bytes": "e844909304",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180c556dc",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180c556df",
+            "bytes": "0f849a010000",
+            "mnemonic": "je",
+            "operands": "0x180c5587f",
+            "target": "0x180c5587f",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180c556e5",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180c556e7",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180c556ea",
+            "bytes": "e831d3a1ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180c556ef",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180c556f2",
+            "bytes": "0f8487010000",
+            "mnemonic": "je",
+            "operands": "0x180c5587f",
+            "target": "0x180c5587f",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180c556f8",
+            "bytes": "488b542430",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rsp + 0x30]"
+          },
+          {
+            "address": "0x180c556fd",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180c55700",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180c55703",
+            "bytes": "4c897c2420",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], r15"
+          },
+          {
+            "address": "0x180c55708",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180c5570b",
+            "bytes": "e890dfd2ff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180c55710",
+            "bytes": "488b0d29a5eb07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7eba529]",
+            "ripReferences": [
+              "0x188b0fc40"
+            ]
+          },
+          {
+            "address": "0x180c55717",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180c5571a",
+            "bytes": "4439b9e0000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], r15d"
+          },
+          {
+            "address": "0x180c55721",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180c55728",
+            "target": "0x180c55728",
+            "targetOutsideRange": false,
+            "methods": []
+          }
+        ]
+      },
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode/<_ActivateRarityTrapBranchCoroutine>d__44.MoveNext",
+          "token": 100746065
+        },
+        "method": {
+          "nameIndex": 11500,
+          "declaringType": 12145,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100746065,
+          "flags": 481,
+          "iflags": 0,
+          "slot": 6,
+          "parameterCount": 0,
+          "index": 82768,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455465872,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode/<_ActivateRarityTrapBranchCoroutine>d__44.MoveNext",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        "logicalEnd": "0x180c698d0",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180c6981f",
+            "bytes": "48634330",
+            "mnemonic": "movsxd",
+            "operands": "rax, dword ptr [rbx + 0x30]"
+          },
+          {
+            "address": "0x180c69823",
+            "bytes": "3b4718",
+            "mnemonic": "cmp",
+            "operands": "eax, dword ptr [rdi + 0x18]"
+          },
+          {
+            "address": "0x180c69826",
+            "bytes": "0f8395000000",
+            "mnemonic": "jae",
+            "operands": "0x180c698c1",
+            "target": "0x180c698c1",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180c6982c",
+            "bytes": "488b7cc720",
+            "mnemonic": "mov",
+            "operands": "rdi, qword ptr [rdi + rax*8 + 0x20]"
+          },
+          {
+            "address": "0x180c69831",
+            "bytes": "4885ff",
+            "mnemonic": "test",
+            "operands": "rdi, rdi"
+          },
+          {
+            "address": "0x180c69834",
+            "bytes": "74c9",
+            "mnemonic": "je",
+            "operands": "0x180c697ff",
+            "target": "0x180c697ff",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180c69836",
+            "bytes": "48837f1800",
+            "mnemonic": "cmp",
+            "operands": "qword ptr [rdi + 0x18], 0"
+          },
+          {
+            "address": "0x180c6983b",
+            "bytes": "74c2",
+            "mnemonic": "je",
+            "operands": "0x180c697ff",
+            "target": "0x180c697ff",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180c6983d",
+            "bytes": "488b0d1c83f407",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7f4831c]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180c69844",
+            "bytes": "e8d74e9204",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180c69849",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180c6984c",
+            "bytes": "746d",
+            "mnemonic": "je",
+            "operands": "0x180c698bb",
+            "target": "0x180c698bb",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180c6984e",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180c69850",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180c69853",
+            "bytes": "e8c891a0ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180c69858",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180c6985b",
+            "bytes": "745e",
+            "mnemonic": "je",
+            "operands": "0x180c698bb",
+            "target": "0x180c698bb",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180c6985d",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180c69860",
+            "bytes": "48c744242000000000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], 0"
+          },
+          {
+            "address": "0x180c69869",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180c6986c",
+            "bytes": "488bd7",
+            "mnemonic": "mov",
+            "operands": "rdx, rdi"
+          },
+          {
+            "address": "0x180c6986f",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180c69872",
+            "bytes": "e8299ed1ff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180c69877",
+            "bytes": "488d4b18",
+            "mnemonic": "lea",
+            "operands": "rcx, [rbx + 0x18]"
+          },
+          {
+            "address": "0x180c6987b",
+            "bytes": "48894318",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rbx + 0x18], rax"
+          },
+          {
+            "address": "0x180c6987f",
+            "bytes": "488bd0",
+            "mnemonic": "mov",
+            "operands": "rdx, rax"
+          },
+          {
+            "address": "0x180c69882",
+            "bytes": "e8692483ff",
+            "mnemonic": "call",
+            "operands": "0x18049bcf0",
+            "target": "0x18049bcf0",
+            "methods": []
+          }
+        ]
+      },
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode._TriggerBossBranchPreview",
+          "token": 100747601
+        },
+        "method": {
+          "nameIndex": 3106515,
+          "declaringType": 12244,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100747601,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 84304,
+          "image": "Assembly-CSharp.dll",
+          "address": 6455941392,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode._TriggerBossBranchPreview",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "logicalEnd": "0x180cddb10",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180cdda59",
+            "bytes": "488b0d0041ed07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7ed4100]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180cdda60",
+            "bytes": "e8bb0c8b04",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180cdda65",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180cdda68",
+            "bytes": "0f8490000000",
+            "mnemonic": "je",
+            "operands": "0x180cddafe",
+            "target": "0x180cddafe",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180cdda6e",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180cdda70",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180cdda73",
+            "bytes": "e8a84f99ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180cdda78",
+            "bytes": "488b0de140ed07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7ed40e1]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180cdda7f",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180cdda82",
+            "bytes": "e8990c8b04",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180cdda87",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180cdda8a",
+            "bytes": "7472",
+            "mnemonic": "je",
+            "operands": "0x180cddafe",
+            "target": "0x180cddafe",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180cdda8c",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180cdda8e",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180cdda91",
+            "bytes": "e88a4f99ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180cdda96",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180cdda99",
+            "bytes": "7463",
+            "mnemonic": "je",
+            "operands": "0x180cddafe",
+            "target": "0x180cddafe",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180cdda9b",
+            "bytes": "488b542468",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rsp + 0x68]"
+          },
+          {
+            "address": "0x180cddaa0",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180cddaa3",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180cddaa6",
+            "bytes": "48c744242000000000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], 0"
+          },
+          {
+            "address": "0x180cddaaf",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180cddab2",
+            "bytes": "e8e95bcaff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180cddab7",
+            "bytes": "488b0d8221e307",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7e32182]",
+            "ripReferences": [
+              "0x188b0fc40"
+            ]
+          },
+          {
+            "address": "0x180cddabe",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180cddac1",
+            "bytes": "83b9e000000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], 0"
+          },
+          {
+            "address": "0x180cddac8",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180cddacf",
+            "target": "0x180cddacf",
+            "targetOutsideRange": false,
+            "methods": []
+          }
+        ]
+      },
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.SandboxV3.SandboxV3CatchedAnimalManager._OnBattleStart",
+          "token": 100752647
+        },
+        "method": {
+          "nameIndex": 3225771,
+          "declaringType": 12911,
+          "returnType": 84484,
+          "parameterStart": 86370,
+          "genericContainerIndex": -1,
+          "token": 100752647,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 89350,
+          "image": "Assembly-CSharp.dll",
+          "address": 6457309440,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.SandboxV3.SandboxV3CatchedAnimalManager._OnBattleStart",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 5240,
+              "token": 134304117,
+              "typeIndex": 64329,
+              "index": 86370,
+              "name": "arg",
+              "typeName": "object"
+            }
+          ]
+        },
+        "logicalEnd": "0x180e2bad0",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180e2b9fa",
+            "bytes": "488b0d5f61d807",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7d8615f]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180e2ba01",
+            "bytes": "e81a2d7604",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180e2ba06",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180e2ba09",
+            "bytes": "0f84ba000000",
+            "mnemonic": "je",
+            "operands": "0x180e2bac9",
+            "target": "0x180e2bac9",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180e2ba0f",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180e2ba11",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180e2ba14",
+            "bytes": "e8077084ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180e2ba19",
+            "bytes": "488b0d4061d807",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7d86140]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180e2ba20",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180e2ba23",
+            "bytes": "e8f82c7604",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180e2ba28",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180e2ba2b",
+            "bytes": "0f8498000000",
+            "mnemonic": "je",
+            "operands": "0x180e2bac9",
+            "target": "0x180e2bac9",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180e2ba31",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180e2ba33",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180e2ba36",
+            "bytes": "e8e56f84ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180e2ba3b",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180e2ba3e",
+            "bytes": "0f8485000000",
+            "mnemonic": "je",
+            "operands": "0x180e2bac9",
+            "target": "0x180e2bac9",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180e2ba44",
+            "bytes": "488b93a0000000",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rbx + 0xa0]"
+          },
+          {
+            "address": "0x180e2ba4b",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180e2ba4e",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180e2ba51",
+            "bytes": "48c744242000000000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], 0"
+          },
+          {
+            "address": "0x180e2ba5a",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180e2ba5d",
+            "bytes": "e83e7cb5ff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180e2ba62",
+            "bytes": "488b0dd741ce07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7ce41d7]",
+            "ripReferences": [
+              "0x188b0fc40"
+            ]
+          },
+          {
+            "address": "0x180e2ba69",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180e2ba6c",
+            "bytes": "83b9e000000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], 0"
+          },
+          {
+            "address": "0x180e2ba73",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180e2ba7a",
+            "target": "0x180e2ba7a",
+            "targetOutsideRange": false,
+            "methods": []
+          }
+        ]
+      },
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.SandboxV3.SandboxV3CatchedAnimalManager._SummonPresetAnimals",
+          "token": 100752648
+        },
+        "method": {
+          "nameIndex": 3225786,
+          "declaringType": 12911,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100752648,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 89351,
+          "image": "Assembly-CSharp.dll",
+          "address": 6457324160,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.SandboxV3.SandboxV3CatchedAnimalManager._SummonPresetAnimals",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "logicalEnd": "0x180e2f3e0",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180e2f32c",
+            "bytes": "488b0d2d28d807",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7d8282d]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180e2f333",
+            "bytes": "e8e8f37504",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180e2f338",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180e2f33b",
+            "bytes": "0f8491000000",
+            "mnemonic": "je",
+            "operands": "0x180e2f3d2",
+            "target": "0x180e2f3d2",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180e2f341",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180e2f343",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180e2f346",
+            "bytes": "e8d53684ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180e2f34b",
+            "bytes": "488b0d0e28d807",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7d8280e]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180e2f352",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180e2f355",
+            "bytes": "e8c6f37504",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180e2f35a",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180e2f35d",
+            "bytes": "7473",
+            "mnemonic": "je",
+            "operands": "0x180e2f3d2",
+            "target": "0x180e2f3d2",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180e2f35f",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180e2f361",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180e2f364",
+            "bytes": "e8b73684ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180e2f369",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180e2f36c",
+            "bytes": "7464",
+            "mnemonic": "je",
+            "operands": "0x180e2f3d2",
+            "target": "0x180e2f3d2",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180e2f36e",
+            "bytes": "488b93a0000000",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [rbx + 0xa0]"
+          },
+          {
+            "address": "0x180e2f375",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180e2f378",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180e2f37b",
+            "bytes": "48c744242000000000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], 0"
+          },
+          {
+            "address": "0x180e2f384",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180e2f387",
+            "bytes": "e81443b5ff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180e2f38c",
+            "bytes": "488b0dad08ce07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7ce08ad]",
+            "ripReferences": [
+              "0x188b0fc40"
+            ]
+          },
+          {
+            "address": "0x180e2f393",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180e2f396",
+            "bytes": "83b9e000000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], 0"
+          },
+          {
+            "address": "0x180e2f39d",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180e2f3a4",
+            "target": "0x180e2f3a4",
+            "targetOutsideRange": false,
+            "methods": []
+          }
+        ]
+      },
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.Sandbox.SandboxCatchedAnimalManager._ParseCatchedAnimalsInBuildMode",
+          "token": 100755149
+        },
+        "method": {
+          "nameIndex": 3309459,
+          "declaringType": 13238,
+          "returnType": 84484,
+          "parameterStart": 88558,
+          "genericContainerIndex": -1,
+          "token": 100755149,
+          "flags": 129,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 1,
+          "index": 91852,
+          "image": "Assembly-CSharp.dll",
+          "address": 6458159600,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Sandbox.SandboxCatchedAnimalManager._ParseCatchedAnimalsInBuildMode",
+          "returnTypeName": "void",
+          "parameters": [
+            {
+              "nameIndex": 1116000,
+              "token": 134306303,
+              "typeIndex": 9297,
+              "index": 88558,
+              "name": "animals",
+              "typeName": "type(kind=0x15, data=0x188e074e8)"
+            }
+          ]
+        },
+        "logicalEnd": "0x180efbbe0",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180efbaf2",
+            "bytes": "488b0d6760cb07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7cb6067]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180efbaf9",
+            "bytes": "e8222c6904",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180efbafe",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180efbb01",
+            "bytes": "0f84d2000000",
+            "mnemonic": "je",
+            "operands": "0x180efbbd9",
+            "target": "0x180efbbd9",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180efbb07",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180efbb09",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180efbb0c",
+            "bytes": "e80f6f77ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180efbb11",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180efbb14",
+            "bytes": "488b0d4560cb07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7cb6045]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180efbb1b",
+            "bytes": "e8002c6904",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180efbb20",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180efbb23",
+            "bytes": "0f84b0000000",
+            "mnemonic": "je",
+            "operands": "0x180efbbd9",
+            "target": "0x180efbbd9",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180efbb29",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180efbb2b",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180efbb2e",
+            "bytes": "e8ed6e77ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180efbb33",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180efbb36",
+            "bytes": "0f849d000000",
+            "mnemonic": "je",
+            "operands": "0x180efbbd9",
+            "target": "0x180efbbd9",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180efbb3c",
+            "bytes": "4c89642420",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], r12"
+          },
+          {
+            "address": "0x180efbb41",
+            "bytes": "41b101",
+            "mnemonic": "mov",
+            "operands": "r9b, 1"
+          },
+          {
+            "address": "0x180efbb44",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180efbb47",
+            "bytes": "498b5770",
+            "mnemonic": "mov",
+            "operands": "rdx, qword ptr [r15 + 0x70]"
+          },
+          {
+            "address": "0x180efbb4b",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180efbb4e",
+            "bytes": "e84d7ba8ff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180efbb53",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180efbb56",
+            "bytes": "488b0de340c107",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7c140e3]",
+            "ripReferences": [
+              "0x188b0fc40"
+            ]
+          },
+          {
+            "address": "0x180efbb5d",
+            "bytes": "83b9e000000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], 0"
+          },
+          {
+            "address": "0x180efbb64",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180efbb6b",
+            "target": "0x180efbb6b",
+            "targetOutsideRange": false,
+            "methods": []
+          }
+        ]
+      },
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor.OnStartGame",
+          "token": 100755454
+        },
+        "method": {
+          "nameIndex": 3314666,
+          "declaringType": 13273,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100755454,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 92157,
+          "image": "Assembly-CSharp.dll",
+          "address": 6458404576,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor.OnStartGame",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "logicalEnd": "0x180f370f0",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180f37001",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180f37003",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180f37006",
+            "bytes": "e815ba73ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180f3700b",
+            "bytes": "488b0dfe47c207",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7c247fe]",
+            "ripReferences": [
+              "0x188b5b810"
+            ]
+          },
+          {
+            "address": "0x180f37012",
+            "bytes": "488bf0",
+            "mnemonic": "mov",
+            "operands": "rsi, rax"
+          },
+          {
+            "address": "0x180f37015",
+            "bytes": "4c8b7338",
+            "mnemonic": "mov",
+            "operands": "r14, qword ptr [rbx + 0x38]"
+          },
+          {
+            "address": "0x180f37019",
+            "bytes": "e8d26253ff",
+            "mnemonic": "call",
+            "operands": "0x18046d2f0",
+            "target": "0x18046d2f0",
+            "methods": []
+          },
+          {
+            "address": "0x180f3701e",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180f37021",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180f37024",
+            "bytes": "0f84bf000000",
+            "mnemonic": "je",
+            "operands": "0x180f370e9",
+            "target": "0x180f370e9",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180f3702a",
+            "bytes": "4c8b052fbdd107",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rip + 0x7d1bd2f]",
+            "ripReferences": [
+              "0x188c52d60"
+            ]
+          },
+          {
+            "address": "0x180f37031",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180f37034",
+            "bytes": "488bd3",
+            "mnemonic": "mov",
+            "operands": "rdx, rbx"
+          },
+          {
+            "address": "0x180f37037",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180f3703a",
+            "bytes": "e8e1d4be03",
+            "mnemonic": "call",
+            "operands": "0x184b24520",
+            "target": "0x184b24520",
+            "methods": [
+              "XLua.__XLua_Gen_Delegate11..ctor"
+            ]
+          },
+          {
+            "address": "0x180f3703f",
+            "bytes": "4885f6",
+            "mnemonic": "test",
+            "operands": "rsi, rsi"
+          },
+          {
+            "address": "0x180f37042",
+            "bytes": "0f84a1000000",
+            "mnemonic": "je",
+            "operands": "0x180f370e9",
+            "target": "0x180f370e9",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180f37048",
+            "bytes": "41b101",
+            "mnemonic": "mov",
+            "operands": "r9b, 1"
+          },
+          {
+            "address": "0x180f3704b",
+            "bytes": "48c744242000000000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], 0"
+          },
+          {
+            "address": "0x180f37054",
+            "bytes": "4c8bc7",
+            "mnemonic": "mov",
+            "operands": "r8, rdi"
+          },
+          {
+            "address": "0x180f37057",
+            "bytes": "498bd6",
+            "mnemonic": "mov",
+            "operands": "rdx, r14"
+          },
+          {
+            "address": "0x180f3705a",
+            "bytes": "488bce",
+            "mnemonic": "mov",
+            "operands": "rcx, rsi"
+          },
+          {
+            "address": "0x180f3705d",
+            "bytes": "e83ec6a4ff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180f37062",
+            "bytes": "488b0dd78bbd07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7bd8bd7]",
+            "ripReferences": [
+              "0x188b0fc40"
+            ]
+          },
+          {
+            "address": "0x180f37069",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180f3706c",
+            "bytes": "83b9e000000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], 0"
+          },
+          {
+            "address": "0x180f37073",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180f3707a",
+            "target": "0x180f3707a",
+            "targetOutsideRange": false,
+            "methods": []
+          }
+        ]
+      },
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor.SummonNextInsectPhase",
+          "token": 100755457
+        },
+        "method": {
+          "nameIndex": 3320796,
+          "declaringType": 13273,
+          "returnType": 84484,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100755457,
+          "flags": 134,
+          "iflags": 0,
+          "slot": 65535,
+          "parameterCount": 0,
+          "index": 92160,
+          "image": "Assembly-CSharp.dll",
+          "address": 6458407312,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor.SummonNextInsectPhase",
+          "returnTypeName": "void",
+          "parameters": []
+        },
+        "logicalEnd": "0x180f37c10",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180f37b34",
+            "bytes": "488b0d25a0c707",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7c7a025]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180f37b3b",
+            "bytes": "e8e06b6504",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180f37b40",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180f37b43",
+            "bytes": "0f84b5000000",
+            "mnemonic": "je",
+            "operands": "0x180f37bfe",
+            "target": "0x180f37bfe",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180f37b49",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180f37b4b",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180f37b4e",
+            "bytes": "e8cdae73ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180f37b53",
+            "bytes": "488b0d06a0c707",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7c7a006]",
+            "ripReferences": [
+              "0x188bb1b60"
+            ]
+          },
+          {
+            "address": "0x180f37b5a",
+            "bytes": "488bf8",
+            "mnemonic": "mov",
+            "operands": "rdi, rax"
+          },
+          {
+            "address": "0x180f37b5d",
+            "bytes": "e8be6b6504",
+            "mnemonic": "call",
+            "operands": "0x18558e720",
+            "target": "0x18558e720",
+            "methods": []
+          },
+          {
+            "address": "0x180f37b62",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180f37b65",
+            "bytes": "0f8493000000",
+            "mnemonic": "je",
+            "operands": "0x180f37bfe",
+            "target": "0x180f37bfe",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180f37b6b",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180f37b6d",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180f37b70",
+            "bytes": "e8abae73ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180f37b75",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180f37b78",
+            "bytes": "0f8480000000",
+            "mnemonic": "je",
+            "operands": "0x180f37bfe",
+            "target": "0x180f37bfe",
+            "targetOutsideRange": true,
+            "methods": []
+          },
+          {
+            "address": "0x180f37b7e",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180f37b81",
+            "bytes": "48c744242000000000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], 0"
+          },
+          {
+            "address": "0x180f37b8a",
+            "bytes": "4533c0",
+            "mnemonic": "xor",
+            "operands": "r8d, r8d"
+          },
+          {
+            "address": "0x180f37b8d",
+            "bytes": "488bd6",
+            "mnemonic": "mov",
+            "operands": "rdx, rsi"
+          },
+          {
+            "address": "0x180f37b90",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180f37b93",
+            "bytes": "e808bba4ff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180f37b98",
+            "bytes": "488b0da180bd07",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7bd80a1]",
+            "ripReferences": [
+              "0x188b0fc40"
+            ]
+          },
+          {
+            "address": "0x180f37b9f",
+            "bytes": "488bd8",
+            "mnemonic": "mov",
+            "operands": "rbx, rax"
+          },
+          {
+            "address": "0x180f37ba2",
+            "bytes": "83b9e000000000",
+            "mnemonic": "cmp",
+            "operands": "dword ptr [rcx + 0xe0], 0"
+          },
+          {
+            "address": "0x180f37ba9",
+            "bytes": "7505",
+            "mnemonic": "jne",
+            "operands": "0x180f37bb0",
+            "target": "0x180f37bb0",
+            "targetOutsideRange": false,
+            "methods": []
+          }
+        ]
+      },
+      {
+        "selector": {
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor/<OnFinalSchedule>d__28.MoveNext",
+          "token": 100755478
+        },
+        "method": {
+          "nameIndex": 11500,
+          "declaringType": 13272,
+          "returnType": 46024,
+          "parameterStart": -1,
+          "genericContainerIndex": -1,
+          "token": 100755478,
+          "flags": 481,
+          "iflags": 0,
+          "slot": 6,
+          "parameterCount": 0,
+          "index": 92181,
+          "image": "Assembly-CSharp.dll",
+          "address": 6458532656,
+          "addressStatus": "file-backed",
+          "fullname": "Torappu.Battle.Sandbox.SandboxLevelDataProcessor/<OnFinalSchedule>d__28.MoveNext",
+          "returnTypeName": "bool",
+          "parameters": []
+        },
+        "logicalEnd": "0x180f564c0",
+        "boundary": "call excerpt of extracted contiguous pdata fragments",
+        "callExcerpt": [
+          {
+            "address": "0x180f5641a",
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operands": "edx, edx"
+          },
+          {
+            "address": "0x180f5641c",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180f5641f",
+            "bytes": "e8fcc571ff",
+            "mnemonic": "call",
+            "operands": "0x180672a20",
+            "target": "0x180672a20",
+            "methods": [
+              "Torappu.Battle.BattleController.get_scheduler"
+            ]
+          },
+          {
+            "address": "0x180f56424",
+            "bytes": "488b0de553c007",
+            "mnemonic": "mov",
+            "operands": "rcx, qword ptr [rip + 0x7c053e5]",
+            "ripReferences": [
+              "0x188b5b810"
+            ]
+          },
+          {
+            "address": "0x180f5642b",
+            "bytes": "488be8",
+            "mnemonic": "mov",
+            "operands": "rbp, rax"
+          },
+          {
+            "address": "0x180f5642e",
+            "bytes": "4c8b7728",
+            "mnemonic": "mov",
+            "operands": "r14, qword ptr [rdi + 0x28]"
+          },
+          {
+            "address": "0x180f56432",
+            "bytes": "e8b96e51ff",
+            "mnemonic": "call",
+            "operands": "0x18046d2f0",
+            "target": "0x18046d2f0",
+            "methods": []
+          },
+          {
+            "address": "0x180f56437",
+            "bytes": "488bf0",
+            "mnemonic": "mov",
+            "operands": "rsi, rax"
+          },
+          {
+            "address": "0x180f5643a",
+            "bytes": "4885c0",
+            "mnemonic": "test",
+            "operands": "rax, rax"
+          },
+          {
+            "address": "0x180f5643d",
+            "bytes": "7477",
+            "mnemonic": "je",
+            "operands": "0x180f564b6",
+            "target": "0x180f564b6",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180f5643f",
+            "bytes": "4c8b051ac9cf07",
+            "mnemonic": "mov",
+            "operands": "r8, qword ptr [rip + 0x7cfc91a]",
+            "ripReferences": [
+              "0x188c52d60"
+            ]
+          },
+          {
+            "address": "0x180f56446",
+            "bytes": "4533c9",
+            "mnemonic": "xor",
+            "operands": "r9d, r9d"
+          },
+          {
+            "address": "0x180f56449",
+            "bytes": "488bd7",
+            "mnemonic": "mov",
+            "operands": "rdx, rdi"
+          },
+          {
+            "address": "0x180f5644c",
+            "bytes": "488bc8",
+            "mnemonic": "mov",
+            "operands": "rcx, rax"
+          },
+          {
+            "address": "0x180f5644f",
+            "bytes": "e8cce0bc03",
+            "mnemonic": "call",
+            "operands": "0x184b24520",
+            "target": "0x184b24520",
+            "methods": [
+              "XLua.__XLua_Gen_Delegate11..ctor"
+            ]
+          },
+          {
+            "address": "0x180f56454",
+            "bytes": "4885ed",
+            "mnemonic": "test",
+            "operands": "rbp, rbp"
+          },
+          {
+            "address": "0x180f56457",
+            "bytes": "745d",
+            "mnemonic": "je",
+            "operands": "0x180f564b6",
+            "target": "0x180f564b6",
+            "targetOutsideRange": false,
+            "methods": []
+          },
+          {
+            "address": "0x180f56459",
+            "bytes": "41b101",
+            "mnemonic": "mov",
+            "operands": "r9b, 1"
+          },
+          {
+            "address": "0x180f5645c",
+            "bytes": "48c744242000000000",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rsp + 0x20], 0"
+          },
+          {
+            "address": "0x180f56465",
+            "bytes": "4c8bc6",
+            "mnemonic": "mov",
+            "operands": "r8, rsi"
+          },
+          {
+            "address": "0x180f56468",
+            "bytes": "498bd6",
+            "mnemonic": "mov",
+            "operands": "rdx, r14"
+          },
+          {
+            "address": "0x180f5646b",
+            "bytes": "488bcd",
+            "mnemonic": "mov",
+            "operands": "rcx, rbp"
+          },
+          {
+            "address": "0x180f5646e",
+            "bytes": "e82dd2a2ff",
+            "mnemonic": "call",
+            "operands": "0x1809836a0",
+            "target": "0x1809836a0",
+            "methods": [
+              "Torappu.Battle.Scheduler.TryDealDynamicPhase"
+            ]
+          },
+          {
+            "address": "0x180f56473",
+            "bytes": "488d4b18",
+            "mnemonic": "lea",
+            "operands": "rcx, [rbx + 0x18]"
+          },
+          {
+            "address": "0x180f56477",
+            "bytes": "48894318",
+            "mnemonic": "mov",
+            "operands": "qword ptr [rbx + 0x18], rax"
+          },
+          {
+            "address": "0x180f5647b",
+            "bytes": "488bd0",
+            "mnemonic": "mov",
+            "operands": "rdx, rax"
+          },
+          {
+            "address": "0x180f5647e",
+            "bytes": "e86d5854ff",
+            "mnemonic": "call",
+            "operands": "0x18049bcf0",
+            "target": "0x18049bcf0",
+            "methods": []
+          }
+        ]
+      }
+    ],
+    "helpers": [],
+    "aliasNote": "Instruction method alias lists over 100 entries are omitted with count; call bytes and address remain intact. These shared addresses are not assigned one method identity."
+  }
+}

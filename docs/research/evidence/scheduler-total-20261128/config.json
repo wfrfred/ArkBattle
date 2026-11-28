@@ -1,0 +1,289 @@
+{
+  "revision": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+  "result": [
+    {
+      "path": "levels/activities/act1dp/level_act1dp_01.json",
+      "sha256": "dda46659965f649d867f405c0700d2a35c2829eb57e3e84590b5aa1e25cedd78",
+      "optionsConfigBlackBoard": [
+        {
+          "key": "vase_start_character_count",
+          "value": 1.0,
+          "valueStr": null
+        },
+        {
+          "key": "vase_character_vase_count",
+          "value": 6.0,
+          "valueStr": null
+        },
+        {
+          "key": "fallback_trap",
+          "value": 0.0,
+          "valueStr": "trap_031_sleep#1"
+        }
+      ],
+      "runes": [
+        {
+          "difficultyMask": "ALL",
+          "key": "env_system_new",
+          "professionMask": 1023,
+          "buildableMask": "ALL",
+          "blackboard": [
+            {
+              "key": "key",
+              "value": 0.0,
+              "valueStr": "env_042_act1vase"
+            },
+            {
+              "key": "cost",
+              "value": 15.0,
+              "valueStr": null
+            },
+            {
+              "key": "append_time",
+              "value": 15.0,
+              "valueStr": null
+            },
+            {
+              "key": "invincible_time",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "ui_plugin_name",
+              "value": 0.0,
+              "valueStr": "vase_ui_plugin"
+            }
+          ]
+        }
+      ],
+      "mainWaveSpawnCount": 0,
+      "branchCount": 2
+    },
+    {
+      "path": "levels/activities/act1arkhub/level_act1arkhub_solo_1_2.json",
+      "sha256": "455a2744b28a5d1356e5454100d2df5caf72a00e75060a2e54ca58afd04f76c2",
+      "optionsConfigBlackBoard": [
+        {
+          "key": "rect_1",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_2",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_3",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_4",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_5",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_6",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_7",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_8",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_9",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_10",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_11",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_12",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_13",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_14",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_15",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_16",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_17",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_18",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_19",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "rect_20",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "enable_war_fog",
+          "value": 1.0,
+          "valueStr": null
+        },
+        {
+          "key": "enable_camera",
+          "value": 0.0,
+          "valueStr": null
+        },
+        {
+          "key": "disable_character_gbuff",
+          "value": 0.0,
+          "valueStr": null
+        },
+        {
+          "key": "disable_enemy_gbuff",
+          "value": 0.0,
+          "valueStr": null
+        },
+        {
+          "key": "CAMERA_VIEW_LEVEL",
+          "value": 3.0,
+          "valueStr": null
+        },
+        {
+          "key": "CAMERA_START_GRID",
+          "value": 0.0,
+          "valueStr": ""
+        },
+        {
+          "key": "construct_view_scale",
+          "value": 0.0,
+          "valueStr": null
+        }
+      ],
+      "runes": [
+        {
+          "difficultyMask": "NORMAL",
+          "key": "env_system_new",
+          "professionMask": 1023,
+          "buildableMask": "ALL",
+          "blackboard": [
+            {
+              "key": "key",
+              "value": 0.0,
+              "valueStr": "env_045_arkdex"
+            },
+            {
+              "key": "hp_ratio",
+              "value": 0.005,
+              "valueStr": null
+            },
+            {
+              "key": "atk",
+              "value": 1.0,
+              "valueStr": null
+            },
+            {
+              "key": "attack_speed",
+              "value": 50.0,
+              "valueStr": null
+            },
+            {
+              "key": "move_speed",
+              "value": 1.5,
+              "valueStr": null
+            },
+            {
+              "key": "reload_interval",
+              "value": 150.0,
+              "valueStr": null
+            },
+            {
+              "key": "hit_interval",
+              "value": 30.0,
+              "valueStr": null
+            }
+          ]
+        },
+        {
+          "difficultyMask": "NORMAL",
+          "key": "env_system_new",
+          "professionMask": 1023,
+          "buildableMask": "ALL",
+          "blackboard": [
+            {
+              "key": "key",
+              "value": 0.0,
+              "valueStr": "env_046_arkdexquadrant"
+            }
+          ]
+        }
+      ],
+      "mainWaveSpawnCount": 0,
+      "branchCount": 6
+    },
+    {
+      "path": "excel/stage_table.json",
+      "sha256": "59b5946f9a3491828fc021424340564a396574dabd15df8dabbd246705f04392",
+      "stage": {
+        "code": "DP-1",
+        "name": "入场吧绒绒！",
+        "stageType": "ACTIVITY",
+        "levelId": "Activities/act1dp/level_act1dp_01",
+        "zoneId": "act1dp_zone1"
+      }
+    },
+    {
+      "path": "excel/activity_table.json",
+      "sha256": "10f9b70a5e69a86dfa845e761ee49232c7d17755f469202b080c59bef5feb304",
+      "activity": {
+        "act1dp": {
+          "name": "逐影集趣",
+          "type": "ACT_DP"
+        },
+        "act1arkhub": {
+          "name": "奇象巡展",
+          "type": "ARK_HUB"
+        }
+      }
+    }
+  ]
+}

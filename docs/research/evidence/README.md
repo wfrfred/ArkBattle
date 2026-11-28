@@ -64,6 +64,7 @@ uv run "$skill/scripts/archive.py" docs/research/evidence
 | [signed-hp-adjustment-20261122](signed-hp-adjustment-20261122/README.md) | 跳过普通伤疗通知的生命调整、归零保护和淬羽赫默屏障 |
 | [scheduler-recycle-config-20261122](scheduler-recycle-config-20261122/README.md) | 安装版最终回收等待的配置来源、普通末敌和关卡完成消费者 |
 | [settlement-valid-counts-20261128](settlement-valid-counts-20261128/README.md) | 独立有效击杀／遗漏统计、图鉴非默认配置、UI 与结束数据消费者 |
+| [scheduler-total-20261128](scheduler-total-20261128/README.md) | 普通计划总数的初始化、独立增量入口与动态 Phase 计数参数 |
 | [redeploy-state-and-repeater-20261122](redeploy-state-and-repeater-20261122/README.md) | 特殊移动的 HP／SP 接续、中继器容量变化与卫戍自动部署重试 |
 | [resource-observers-20261122](resource-observers-20261122/README.md) | 实际爆发前置、成功抵挡观察者、锁血权限、取消原因与技力配置 |
 | [health-equalization-20261122](health-equalization-20261122/README.md) | 魔王 S3 的范围生命重新分配、实际技能组件与独立 HP 差值提交 |
