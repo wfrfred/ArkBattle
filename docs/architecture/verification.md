@@ -2,7 +2,7 @@
 
 先在领域架构文档确认需要保障的结果，再选择能区分正确与错误行为的已有场景。下表的结果链接直接指向代表用例。一个场景可同时验证相关结果，共享契约用一个入口代表。能力约束、身份、资源不变量和可观察时序各有明确的保留理由。
 
-用公开构造和领域操作建立场景。纯算法直接接收合法输入。改动已有语义时先更新对应代表。暂缓机制和原生待查项见 [Tactical 语义](tactical-semantics.md) 和 [Core 缺口](research-necessity-20261122.md)。运行方法见[测试说明](../../test/README.md)。
+用公开构造和领域操作建立场景。纯算法直接接收合法输入。改动已有语义时先更新对应代表。暂缓机制和原生待查项见 [Tactical 语义](tactical-semantics.md) 和 [研究审计](research-audit-20261122.md#当前-core-缺口)。运行方法见[测试说明](../../test/README.md)。
 
 ## 类型不变量
 
@@ -102,7 +102,7 @@
 | [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [计划与 entered 中动态出生的等待均先于各自 entered 可见，Wave 超时只清前进等待，最终等待在对应 Unit 完成离场后解除](../../test/core/schedule.test.js#L190)<br>[活 Unit 可只撤销自身 Wave 等待，操作本身不推进，也保留实例和最终等待](../../test/core/schedule.test.js#L269) |
 | [Statistics · 资格与登记、个体结算](statistics.md#资格与登记) | [总数由主波计数 Spawn 推导，不因初始、动态或不计数出生改变；entered 已可完成个体账务，死亡、出口与提前结算按独立资格一次性计数，动态登记与 Wait 独立](../../test/core/statistics.test.js#L49) |
 | [Life Points · 个体出口结算](life-points.md#个体出口结算) | [开场及调度出生先登记扣血量；自然及强制出口扣血，提前统计、死亡和取消登记不混淆，各实例完整离场消费一次登记](../../test/core/life-points.test.js#L11) |
-| [Life Points · 资源与修改](life-points.md#资源与修改) | [两类生命共享前后 Hook，损失优先消耗临时生命，普通生命最低为零且无运行时上限；仅实际变化通知，首次普通生命损失可以重入扣减](../../test/core/life-points.test.js#L69) |
+| [Life Points · 资源与修改](life-points.md#资源与修改) | [两类生命共享前后 Hook，零量临时生命请求不参与前置加值；损失优先消耗临时生命，普通生命最低为零且无运行时上限；仅实际变化通知，首次普通生命损失可以重入扣减](../../test/core/life-points.test.js#L69) |
 | [Navigation · 格图查询](navigation.md#格图查询) | [后继格查询遵循通行方式；路径含起终格并沿平滑后继链跳过中间格](../../test/core/battlefield.test.js#L85) |
 | [Route · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [跨格 MOVE 用原格决定后继与不可达，末段仍为实际偏移目标；路线剩余距离保留该区分，直接抵达段保持欧氏长度](../../test/core/navigation/route.test.js#L67) |
 | [Route · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [路线剩余距离按身体偏移投影修正首段、使用导航几何长度且排除瞬移路段，不用搜索代价](../../test/core/navigation/route.test.js#L42) |
