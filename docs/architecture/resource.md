@@ -29,6 +29,8 @@ Calculate 计算一笔输出；Apply 让目标接收该输出并完成资源与�
 
 Outcome 使用 type 判别：REJECTED 表示未获受理，CANCELLED 保留取消工作值，UNAVAILABLE 表示接收后失去继续提交资格，APPLIED 携带 received 与 Application。EP Healing 没有取消协议，因而没有 CANCELLED。Calculate 无法继续时返回 undefined 并保留已完成状态。
 
+项目保留来源 Output 在 Calculate、目标 BeforeReceive 在 Apply 的阶段划分。已核原生前置中断尚无支持范围内要求反转两者的冲突样本。[顺序调查](../research/cases/28-damage-hooks-and-event-granularity.md#6-目标前置与来源输出能否交换) 奥术法阵按逐目标正输出尝试施加沉默；后续抵挡或将接收量归零不撤销已完成的沉默，特殊入口和实际沉默资格仍按内容核对。[奥术法阵](../research/cases/26-arcane-circle-chain-silence.md)
+
 ## 固定 Request 与当前工作值
 
 Request 保存来源、目标、初始 parameters 及发起时确定的事实。来源与目标使用 Typed Ref；source 可为 null，来源已注销或 ENDING 时不派发其普通输出 Hook，但不否定目标仍可接收已采样输出。
@@ -99,6 +101,8 @@ fix 固定 NORMAL，其他状态保留。`cancel(current, reason, forbidden)` �
 | HP increase | UNSPECIFIED |
 
 MISS 是目标成功闪避，HIT_FAILED 是来源未命中，BLOCKED 是抵挡；原因不使用内容自造字符串。INTERRUPT 只表示本笔取消，不恢复原生特定时点的早退规则。成功闪避的通用后继用目标侧 Completed 观察最终 CANCELLED／MISS，在剩余 Receiving 后、同次 Apply 返回前执行；须确认自身为目标。这是项目时点选择，原生在 Evade 成功节点立即通知。
+
+煌的锁血限幅及可抵挡的固定损失沿用接收 Hook 与 fix；已核原生允许锁血暂时解除已固定的数值权限，但尚无支持范围内的实际组合证明必须读取这种改写。DAMAGE_WITHOUT_MODIFY 与低生命缩放的真实交互亦未证，不据此扩充固定数值权限。[原生依据](../research/cases/38-damage-classification-and-permissions.md)
 
 ## 本次 Hook 排除、取消权限与接收豁免
 

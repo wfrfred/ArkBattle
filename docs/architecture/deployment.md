@@ -148,6 +148,8 @@ removing 和依赖收尾期间的 removed 登记变化进入注销前快照；�
 
 持有上限和在场上限使用各自的 Contribution。有效上限取非负整数，`null` 表示不限。`supply.total(card)` 返回总持有量，`supply.remaining(card)` 返回还能增加的份数，不限量时返回 `null`。持有上限降低时同步裁剪总持有量，优先保留待恢复份数。若裁掉最后一份待恢复库存，则清除当前计时与暂停状态。在场上限用于后续部署资格，已部署单位由内容决定是否召回。
 
+谬因 S3 的正常结束可以用恢复两种上限、召回在场中继器及清零当前恢复计时组合表达，最终恢复为一份可用库存；可部署时点与原生最多相差 1 Tick 是该已核组合的接受差异，不推广到其他召唤物或失败场景。宿主离场后中继器不可部署仍是内容资格。[原生依据](../research/cases/24-deployment-cost-and-supply.md#已核的两条附属-card-路径)
+
 ## DP
 
 `Deployment.Definition.dp` 提供起始余额、基础上下限和自然回复周期。`dp.resolveMin`、`dp.resolveMax` 与 `dp.resolveRecoverySpeed` 按对应的 Modifier 贡献求出有效值。账户上限独立于 Deck 的卡牌费用截断上限。

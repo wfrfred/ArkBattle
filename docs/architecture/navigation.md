@@ -108,6 +108,8 @@ APPEAR／DISAPPEAR 先提交已消费的指令进度，再执行跨领域操作�
 
 reassign 保留身份、offset 和执行政策，绑定新 Plan 并从指定索引重建当前执行；不提供编辑 Plan 后保留旧 current 的隐式索引映射。skipWait 与 setTraceTarget 各修改自己的事实。除创建和推进完整业务外，写入通过 Route Change 组合发布。
 
+思旧已核关卡中用于取路线的 Branch 均为单 Phase、单 SPAWN，且未见同名分支实际执行出怪。Data 可绑定对应 Plan，Content 用 reassign 更新路线；只有发现同一游标同时用于取路线与触发出怪的实际样本时，才重新审查独立消费 Branch Phase 的需求。[原生证据](../research/cases/31-route-operations-and-state.md)
+
 ### 运动目标与 Main 出口
 
 movementTarget 使用活动 Context 的当前 MOVE 样本或未 reached 的 TRACE；指令耗尽后可追踪 MOVE 或 EXIT 的 destination.position。MOVE 终点持续有效，抵达后仍留场，身体偏离后可恢复追踪。destination 为 null 时没有固定的最终目标。等待或无目标返回空，空目标不表示 Main 完成。

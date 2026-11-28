@@ -34,4 +34,4 @@ Battle 初始化安装全局 `battle.unit.removed` Hook。在 Unit 完整注销�
 
 原生的普通计划总数、完成数和击杀数是独立于等待集合的个体账务。普通 EXIT 算完成、不算击杀；特殊无害计击杀配置和提前 MarkEnemyKilled 支持上述独立资格与结算入口。[Case 30](../research/cases/30-scheduler-action-data-fields.md#5-四个争议字段与退出账务) · [总数补核](../research/evidence/scheduler-total-20261128/README.md)
 
-项目暂不支持原生 `validFinished`／`validKilled`／`validMissed` 的另一组界面及外部统计口径；不因此增加普通计数字段。[Life Points](life-points.md) 独立维护关卡生命值，外部规则读取领域事实后裁决胜负。[支持边界](research-audit-20261122.md#已有项目方案与暂缓项) · [有效统计证据](../research/evidence/settlement-valid-counts-20261128/README.md)
+项目暂不支持原生 `validFinished`／`validKilled`／`validMissed` 的另一组界面及外部统计口径（有效击杀显示、结束数据、剿灭奖励预估及成就日志）；不因此增加普通计数字段。[Life Points](life-points.md) 独立维护关卡生命值，外部规则读取领域事实后裁决胜负。[有效统计证据](../research/evidence/settlement-valid-counts-20261128/README.md)

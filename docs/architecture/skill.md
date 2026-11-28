@@ -92,6 +92,6 @@ Skill 通知包括 SP 回复／支付／修改、耗弹／普通补弹和激活�
 
 ## 6. 覆盖边界
 
-本轮初始化可以按次数／充能状态构造 Duration，启动豁免可以表达止颂 S3的定向异常许可；显式 activate 与本次 Parameters 可以编排 Fever 启动。上述具体内容仍须接入，变化范围与实际数量见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。金币／魔力复用原生 SP，不直接证明项目必须提供普通 SP 运行期配置切换或封闭增减接口。
+本轮初始化可以按次数／充能状态构造 Duration，启动豁免可以表达止颂 S3的定向异常许可；显式 activate 与本次 Parameters 可以编排 Fever 启动。上述具体内容仍须接入，变化范围与实际数量见[发动变化研究](../research/cases/09-skill-mechanisms-and-requirements.md#10-发动变化的数量与表达范围2026-11-17)。金币／魔力复用原生 SP，不直接证明项目必须提供普通 SP 运行期配置切换或封闭增减接口。琳琅诗怀雅的金币可由 Content 私有状态保存，本次发动参数决定是否支付普通 SP；玛露西尔的魔力若由 Content 私有状态保存，则与普通 SP 操作自然隔离。共享 SP 的封闭需求仍取决于实际资源表示及消费者。[特殊资源研究](../research/cases/09-skill-mechanisms-and-requirements.md)
 
 充能、条件耗弹、Fever 的已查期限延后及跨部署魔力的持久保存可以使用现有领域组合；这不代表相应内容已经接入。完整接入范围见[内容缺口](tactical-semantics.md)，同实例复活的技能接续按具体原生程序确定，不统一推断保留或重置。

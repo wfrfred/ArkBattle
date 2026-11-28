@@ -23,7 +23,7 @@ Change 的局部后继在操作返回前完成；读取任意 Battle 事实的 R
 
 ## 状态与关系身份
 
-构造时 Blocker／Blockable 互斥，也可都没有；能力组成不推导阵营、自身空地身份或 Route／Locomotion。
+构造时 Blocker／Blockable 互斥，也可都没有；能力组成不推导阵营、自身空地身份或 Route／Locomotion。已核莱塔尼亚召唤物使用出向阻挡，尚无实际同时入向与出向关系的支持范围样本，保留互斥。[原生证据](../research/cases/32-leithanien-summons-blocking-and-movement.md#5-证据缺口与项目关联)
 
 Blocker 按建立顺序保存 relations，Blockable 保存唯一 relation。每次取得创建一个不可变 Relation，含两端 Typed Ref，两端及查询／Hook 共享该对象；解除重建产生新对象。旧候选按对象身份确认，不重建端点投影充当关系。
 

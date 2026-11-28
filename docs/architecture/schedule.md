@@ -86,7 +86,7 @@ Branch 出生也使用实际出生时的主线时基，不用 Phase 时间。Rou
 
 超时只清 wave；releaseFromWave 只解除指定 Unit 的 wave；完整离场同步解除 wave 与 final 两个集合。进入 POST_DELAY 后不回退已完成等待，下一 Wave 清旧 wave，final 始终保留。等待政策不决定击杀、漏怪、扣血或计数资格。
 
-项目简化（U047）：原生普通路径启用 `useRecycleToFinishScheduler` 时，死亡销毁释放波次等待，对象池回收才释放终局等待，已核主线 0-1 普通敌人默认回收预算为 1 秒，因此终局等待可能晚于死亡解除。项目不模拟这段回收等待；完整离场同步解除两种等待，无需另存待回收实例或延迟 Branch。终局表现时序由外部决定。[原生证据](../research/evidence/scheduler-recycle-config-20261122/README.md)
+项目简化：原生普通路径启用 `useRecycleToFinishScheduler` 时，死亡销毁释放波次等待，对象池回收才释放终局等待，已核主线 0-1 普通敌人默认回收预算为 1 秒，因此终局等待可能晚于死亡解除。项目不模拟这段回收等待；完整离场同步解除两种等待，无需另存待回收实例或延迟 Branch。终局表现时序由外部决定。[原生证据](../research/evidence/scheduler-recycle-config-20261122/README.md)
 
 Data 合并 Action／Enemy 的 notCountInTotal 后，按以下优先级转换：不计数或不受 Scheduler 管理为 NONE；否则 dontBlockWave 或 Branch 默认豁免为 FINAL；其余 WAVE。forceBlockWaveInBranch 只取消 Branch 默认豁免，不能压过前述 NONE 或 dontBlockWave。Core 不再从出生位置猜默认政策。
 
