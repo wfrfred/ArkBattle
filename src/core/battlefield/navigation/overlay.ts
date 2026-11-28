@@ -23,7 +23,7 @@ export function apply(base: Map, overlays: readonly Overlay[]): Map {
                 continue;
             }
 
-            const index = position[0] * base.columns + position[1];
+            const index = position[1] * base.columns + position[0];
             const cell = cells[index]!;
             let departures = cell.departures;
 

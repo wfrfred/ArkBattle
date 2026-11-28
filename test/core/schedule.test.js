@@ -439,7 +439,7 @@ test("dynamic birth waits use the captured Wave and Fragment clocks", () => {
     const followerPlan = { ...plan, checkpoints: [
         { type: "WAIT", anchor: "WAVE", tick: 10, timer: null },
         { type: "WAIT", anchor: "FRAGMENT", tick: 6, timer: null },
-        { type: "MOVE", position: [1, 3], offset: [0, 0], randomizeOffset: false },
+        { type: "MOVE", position: [3, 1], offset: [0, 0], randomizeOffset: false },
     ] };
     const branch = definition("branch", (state, self) => {
         const created = initialize(capture(state, self), {

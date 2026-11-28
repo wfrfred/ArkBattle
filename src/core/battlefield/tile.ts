@@ -14,7 +14,7 @@ export function update(field: State, position: TilePosition, state: TileState): 
     }
 
     validateState(state);
-    const index = position[0] * field.map.columns + position[1];
+    const index = position[1] * field.map.columns + position[0];
     const map = { ...field.map, tiles: field.map.tiles.replace(index, state) };
     const walkChanged =
         navigation.includesMode(previous.state.passability, "WALK") !==

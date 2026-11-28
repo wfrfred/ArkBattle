@@ -14,8 +14,8 @@ import { sides, blocker } from "../../../dist/core/unit/capability/blocking/inde
 import { fixture as blockingFixture, holder, target, acquire, ownerId } from "../../helpers/blocking.js";
 import { getUnit, initialize } from "../../helpers/unit.js";
 
-const first = [1, 2];
-const second = [1, 5];
+const first = [2, 1];
+const second = [5, 1];
 const deployable = createDeployable();
 function passenger(id = 10, tile = first, rule = blocker.ground) {
     return initialize({

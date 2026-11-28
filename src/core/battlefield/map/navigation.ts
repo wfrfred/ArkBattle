@@ -34,7 +34,7 @@ export function create(map: TileMap, mode: MotionMode): Map {
                 continue;
             }
 
-            const index = position[0] * map.columns + position[1];
+            const index = position[1] * map.columns + position[0];
             const cell = cells[index]!;
 
             cells[index] = {

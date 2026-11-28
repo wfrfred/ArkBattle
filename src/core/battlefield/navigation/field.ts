@@ -32,7 +32,7 @@ export function build(map: Map, target: TilePosition): Field {
         inQueue[index] = true;
     };
 
-    const targetIndex = target[0] * map.columns + target[1];
+    const targetIndex = target[1] * map.columns + target[0];
 
     if (map.get(target)?.passable === true) {
         distances[targetIndex] = 0;
@@ -49,7 +49,7 @@ export function build(map: Map, target: TilePosition): Field {
         const col = current % map.columns;
 
         for (const direction of DIRECTIONS) {
-            const [dRow, dCol] = Direction.vector(direction);
+            const [dCol, dRow] = Direction.vector(direction);
             const neighborRow = row + dRow;
             const neighborCol = col + dCol;
             if (
@@ -93,7 +93,7 @@ export function build(map: Map, target: TilePosition): Field {
 
         return {
             distance,
-            next: [Math.floor(successor / map.columns), successor % map.columns],
+            next: [successor % map.columns, Math.floor(successor / map.columns)],
         };
     });
 
@@ -113,11 +113,11 @@ function smooth(map: Map, nodes: (Node | null)[]): void {
             continue;
         }
 
-        const from: TilePosition = [Math.floor(index / map.columns), index % map.columns];
+        const from: TilePosition = [index % map.columns, Math.floor(index / map.columns)];
         let next = node.next;
 
         for (;;) {
-            const candidate = nodes[next[0] * map.columns + next[1]]!.next;
+            const candidate = nodes[next[1] * map.columns + next[0]]!.next;
             if (candidate === null || !canSmooth(map, nodes, from, candidate)) {
                 break;
             }

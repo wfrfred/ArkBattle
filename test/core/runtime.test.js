@@ -40,8 +40,8 @@ test("initial and scheduled entry see registered battle facts and preserve their
         },
     };
     const plan = {
-        startPosition: [0, 5],
-        destination: { type: "EXIT", position: [0, 6], requireFinish: true },
+        startPosition: [5, 0],
+        destination: { type: "EXIT", position: [6, 0], requireFinish: true },
         checkpoints: [{ type: "WAIT", anchor: "ENTER", tick: 30, timer: null }],
     };
     const scheduled = {
@@ -142,7 +142,7 @@ test("Tick phases publish their resource operations and failures preserve the in
     });
     const card = cards.ref([...cards.all(before)][0]);
     const commands = [
-        { direction: null, type: "DEPLOY_UNIT", ref: card, tilePosition: [0, 1] },
+        { direction: null, type: "DEPLOY_UNIT", ref: card, tilePosition: [1, 0] },
     ];
     const completed = step(before, commands);
     assert.equal(completed.tick, 1);

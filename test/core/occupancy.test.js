@@ -71,11 +71,11 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     const [supportCard, unitCard] = [...cards.all(state)].map(cards.ref);
     const placedSupport = cards.deploy(
         state,
-        { card: supportCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] },
+        { card: supportCard, tilePosition: [2, 1], direction: null, quote: null, restrictions: [] },
     );
     state = placedSupport.state;
     let replacement;
-    const request = { card: unitCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] };
+    const request = { card: unitCard, tilePosition: [2, 1], direction: null, quote: null, restrictions: [] };
     state = cards.setHook(state, unitCard, cards.beforeDeploy, {
         id: "replace-on-leave", priority: 0,
         invoke(current, _request, input) {
@@ -112,7 +112,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
     const occupancy = replacement.get(state).occupancy;
     assert.equal(occupancy.direction, "UP");
     assert.equal(occupancy.pair, pair);
-    assert.deepEqual(occupancy.tile, [1, 2]);
+    assert.deepEqual(occupancy.tile, [2, 1]);
     assert.deepEqual(notifications, [
         ["occupantAdded", placedUnit.value],
         ["occupantRemoved", placedUnit.value],
@@ -121,7 +121,7 @@ test("occupancy pairs notify once and an old departure cannot clear the replacem
 
     state = retreat(state, placedSupport.value);
     assert.equal(replacement.get(state).occupancy.pair, null);
-    const returned = cards.deploy(state, { card: supportCard, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
+    const returned = cards.deploy(state, { card: supportCard, tilePosition: [2, 1], direction: null, quote: null, restrictions: [] });
     assert.notEqual(returned.value, null);
     assert.notEqual(returned.value, replacement);
     state = returned.state;

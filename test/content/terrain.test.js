@@ -224,8 +224,8 @@ test("deepsea and holes affect ground enemies, including a unit pushed into a ho
     assert.deepEqual(natures, ["DAMAGE"]);
     assert.deepEqual([0, 1, 2].map(id => current(battle, id).vitality.health.hp), [960, 1000, 1000]);
     assert.deepEqual([0, 1, 2].map(id => attackSpeed(battle, id)), [40, 100, 100]);
-    const hole = getTile(battle.battlefield.map, [0, 1]);
-    battle = updateTile(battle, [0, 1], { ...hole.state, passability: "FLY_ONLY" });
+    const hole = getTile(battle.battlefield.map, [1, 0]);
+    battle = updateTile(battle, [1, 0], { ...hole.state, passability: "FLY_ONLY" });
     battle = unbalance.applyImpulse(battle, units.ref(current(battle, 0)), [30, 0]).state;
     for (const id of [1, 2]) battle = move(battle, id, 1);
     battle = until(battle, battle.tick + 2);
@@ -272,7 +272,7 @@ test("terrain contact is detected from the actual route position", () => {
     });
     traveller.initial = { locomotion: { mode: "WALK" }, route: {
         plan: { startPosition: [0, 0], destination: null,
-            checkpoints: [{ type: "MOVE", position: [0, 1], offset: [0, 0], randomizeOffset: false }],
+            checkpoints: [{ type: "MOVE", position: [1, 0], offset: [0, 0], randomizeOffset: false }],
         }, offset: [0, 0],
     } };
     const configured = setup([

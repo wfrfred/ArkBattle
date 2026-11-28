@@ -100,7 +100,7 @@ test("search and maintenance use effective pair restrictions, volume, layers and
                 blocker: { calculateOffset: blocking.calculateOffset, capacity: 2, rule: blockerCapability.ground, restrictions: [{ id: "opposing-side", group: null, value: sides("ENEMY") }] },
             }, hooks: Hooks.empty(),
             position: [2, 1],
-            initial: { occupancy: { tile: [0, 2], direction: null } },
+            initial: { occupancy: { tile: [2, 0], direction: null } },
         },
         { definition: { ...enemy, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] } }, hooks: Hooks.empty(), initial: {}, position: [2.1, 1] },
         { definition: { ...enemy, layer: { type: "AIR" } }, hooks: Hooks.empty(), initial: {}, position: [2.15, 1] },
@@ -139,11 +139,11 @@ test("search and maintenance use effective pair restrictions, volume, layers and
         [4],
     );
 
-    const bodyTile = maps.get(state.battlefield.map, [1, 2]);
-    state = tiles.update(state, [1, 2], { ...bodyTile.state, allowsBlocking: false });
+    const bodyTile = maps.get(state.battlefield.map, [2, 1]);
+    state = tiles.update(state, [2, 1], { ...bodyTile.state, allowsBlocking: false });
     assert.equal(blocking.blockerOf(state, units.ref(get(state, 4))).id, owner.id);
-    const rootTile = maps.get(state.battlefield.map, [0, 2]);
-    state = tiles.update(state, [0, 2], { ...rootTile.state, allowsBlocking: false });
+    const rootTile = maps.get(state.battlefield.map, [2, 0]);
+    state = tiles.update(state, [2, 0], { ...rootTile.state, allowsBlocking: false });
     state = blocking.search(state, owner);
     assert.deepEqual(blocking.blocked(state, owner), []);
     state = unit.update(state, owner, blockerCapability.setRule(blockerCapability.air));

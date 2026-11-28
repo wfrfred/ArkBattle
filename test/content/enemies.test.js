@@ -122,8 +122,8 @@ test('scheduled hound faces its route after the first checkpoint has changed its
   const plan = {
     startPosition: [1, 1], destination: null,
     checkpoints: [
-      { type: 'APPEAR', position: [1, 5], offset: [0, 0] },
-      { type: 'MOVE', position: [1, 3], offset: [0, 0], randomizeOffset: false },
+      { type: 'APPEAR', position: [5, 1], offset: [0, 0] },
+      { type: 'MOVE', position: [3, 1], offset: [0, 0], randomizeOffset: false },
     ],
   };
   const state = advanceSchedule(createBattle([], { schedule: {
@@ -216,7 +216,7 @@ test('crossbow releases on the authored event, hits on contact, and moves after 
   const select = attack.attack.targetGroups[0].select;
   const initial = createBattle([
     { definition: guardUnit.definition, position: guardUnit.position, hooks: Hooks.empty(), initial: {} },
-    { definition, position, hooks: Hooks.empty(), initial: routeInitial(position, { type: 'MOVE', position: [3, 4] }) },
+    { definition, position, hooks: Hooks.empty(), initial: routeInitial(position, { type: 'MOVE', position: [4, 3] }) },
   ], { rows: 5, columns: 5 });
   const target = unitRef(getUnit(initial, 0));
   const bow = getUnit(initial, 1);

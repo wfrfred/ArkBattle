@@ -20,7 +20,7 @@ const position = [
     previous.position.col + previous.reachOffset.x,
     previous.position.row + previous.reachOffset.y,
 ];
-const originalTile = [current.position.row, current.position.col];
+const originalTile = [current.position.col, current.position.row];
 const originalCenter = Tile.center(originalTile);
 const reachPosition = [
     originalCenter[0] + current.reachOffset.x,
@@ -36,7 +36,9 @@ function nextPoint(toTile) {
 const fromOriginalGridWithOffset = nextPoint(originalTile);
 const fromRoundedGrid = nextPoint(roundedTile);
 
-deepEqual([originalTile, roundedTile], [[1, 4], [2, 4]]);
+// Retain the historical evidence's native [row, col] output convention.
+const nativeTiles = [originalTile, roundedTile].map(([x, y]) => [y, x]);
+deepEqual(nativeTiles, [[1, 4], [2, 4]]);
 deepEqual([fromOriginalGridWithOffset, fromRoundedGrid], [[4.25, 1.5], [4, 1]]);
-console.log(JSON.stringify({ position, originalTile, roundedTile, reachPosition,
+console.log(JSON.stringify({ position, originalTile: nativeTiles[0], roundedTile: nativeTiles[1], reachPosition,
     fromOriginalGridWithOffset, fromRoundedGrid }, null, 2));

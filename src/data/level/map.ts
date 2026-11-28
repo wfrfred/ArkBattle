@@ -276,7 +276,7 @@ function parseBlockEdge(value: unknown): BlockEdge {
     assertSafeInteger(pos.col, "block edge column");
 
     return {
-        position: [pos.row, pos.col],
+        position: [pos.col, pos.row],
         direction,
         blockMask: string(source.blockMask, "block edge mask") as Passability,
     };
@@ -323,7 +323,7 @@ export function parseBattlefieldMap(value: unknown, options: ArknightsMapOptions
                 throw new RangeError(`invalid tile definition index ${definitionIndex}`);
             }
 
-            const parsed = parseTile(definitions[definitionIndex], [row, col], options, tiles);
+            const parsed = parseTile(definitions[definitionIndex], [col, row], options, tiles);
             tiles = parsed.tiles;
 
             if (parsed.marker !== null) {

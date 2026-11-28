@@ -64,7 +64,7 @@ test("native routes compile patrol loops and retain wait anchors before birth", 
             .map((type) => ({ type, time: 1 })),
     });
     assert.deepEqual(route.plan.destination, {
-        type: "EXIT", position: [raw.routes[0].endPosition.row, raw.routes[0].endPosition.col],
+        type: "EXIT", position: [raw.routes[0].endPosition.col, raw.routes[0].endPosition.row],
         requireFinish: true,
     });
     assert.equal(level.routes[0].plan.destination.requireFinish, false);

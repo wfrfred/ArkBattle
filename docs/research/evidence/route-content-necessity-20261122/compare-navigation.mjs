@@ -52,7 +52,7 @@ for (const [file, pointer, s] of scan.samples.crossing) {
         if (next === null) return null;
         return next[0] === toTile[0] && next[1] === toTile[1] ? target : coords.Tile.center(next);
     }
-    const a = nextPoint([row, col]);
+    const a = nextPoint([col, row]);
     const b = nextPoint(coords.World.toTile(target));
     if ((a?.[0] !== b?.[0] || a?.[1] !== b?.[1]) && (!previous || !previous.randomizeReachOffset)) {
         diff.push({

@@ -82,7 +82,7 @@ function applyChanges(state: State, changes: readonly Change[]): State {
         }
 
         const before = change.previous.occupancy.tile;
-        const key = before[0] * state.map.columns + before[1];
+        const key = before[1] * state.map.columns + before[0];
         const entry = occupancy.get(key)!;
         const slot =
             change.previous.definition.occupancy.slot === "OCCUPANT" ? "occupant" : "support";
@@ -105,7 +105,7 @@ function applyChanges(state: State, changes: readonly Change[]): State {
             throw new RangeError("occupancy tile is outside the battlefield");
         }
 
-        const key = tile[0] * state.map.columns + tile[1];
+        const key = tile[1] * state.map.columns + tile[0];
         const entry = occupancy.get(key) ?? { occupant: null, support: null };
         const slot = unit.definition.occupancy.slot === "OCCUPANT" ? "occupant" : "support";
         if (entry[slot] !== null) {

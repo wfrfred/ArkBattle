@@ -76,7 +76,7 @@ export function positions(battle: BattleState, reference: Ref<Card>): readonly T
 
     for (let row = 0; row < rows; row++) {
         for (let column = 0; column < columns; column++) {
-            const tilePosition: TilePosition = [row, column];
+            const tilePosition: TilePosition = [column, row];
             const request: DeployRequest = {
                 card: reference,
                 tilePosition,

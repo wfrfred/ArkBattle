@@ -41,17 +41,17 @@ function ticks(state, count) {
 
 test("remaining route distance follows navigation geometry and excludes teleport jumps", () => {
     const program = plan([
-        move([2, 4]),
-        { type: "APPEAR", position: [0, 6], offset: [0, 0] },
-        move([0, 7]),
-    ], { destination: { type: "MOVE", position: [0, 7] } });
+        move([4, 2]),
+        { type: "APPEAR", position: [6, 0], offset: [0, 0] },
+        move([7, 0]),
+    ], { destination: { type: "MOVE", position: [7, 0] } });
     let state = battle([{ ...creation(program), position: [0.25, 0.25] }]);
-    const corridor = new Set(["0:0", "0:1", "0:2", "1:2", "2:2", "2:3", "2:4", "0:6", "0:7"]);
+    const corridor = new Set(["0:0", "1:0", "2:0", "2:1", "2:2", "3:2", "4:2", "6:0", "7:0"]);
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 8; col++) {
-            if (!corridor.has(`${row}:${col}`)) {
-                state = updateTile(state, [row, col], {
-                    ...getTile(state.battlefield.map, [row, col]).state,
+            if (!corridor.has(`${col}:${row}`)) {
+                state = updateTile(state, [col, row], {
+                    ...getTile(state.battlefield.map, [col, row]).state,
                     passability: "NONE",
                 });
             }
@@ -66,17 +66,17 @@ test("remaining route distance follows navigation geometry and excludes teleport
 
 test("a MOVE across a tile boundary navigates to its registered tile with the actual offset endpoint", () => {
     const checkpoint = { ...move([1, 1]), offset: [0, 0.75] };
-    const program = plan([checkpoint], { startPosition: [1, 0], destination: { type: "MOVE", position: [2, 1] } });
+    const program = plan([checkpoint], { startPosition: [0, 1], destination: { type: "MOVE", position: [1, 2] } });
     const traveller = creation(program, { route: { alwaysCheckCurrentPoint: false } });
     let state = battle([{ ...traveller, position: [0, 1] }]);
-    state = updateTile(state, [2, 0], {
-        ...getTile(state.battlefield.map, [2, 0]).state,
+    state = updateTile(state, [0, 2], {
+        ...getTile(state.battlefield.map, [0, 2]).state,
         passability: "NONE",
     });
     const host = units.ref(get(state, 0));
     const goal = [1, 1.75];
 
-    // The offset endpoint is in [2, 1], which would require a turn around [2, 0].
+    // The offset endpoint is in [1, 2], which would require a turn around [0, 2].
     assert.deepEqual(route.movementTarget(state, host), { nextPoint: goal, goal });
     assert.equal(route.remainingDistance(state, get(state, 0)), 1.5);
 
@@ -92,15 +92,15 @@ test("a MOVE across a tile boundary navigates to its registered tile with the ac
 
     // A direct endpoint behind the locator still contributes a positive geometric length.
     const reverse = plan([{ ...move([1, 1]), offset: [-0.875, 0] }], {
-        startPosition: [1, 0], destination: { type: "MOVE", position: [1, 0] },
+        startPosition: [0, 1], destination: { type: "MOVE", position: [0, 1] },
     });
     const reversed = battle([{ ...creation(reverse), position: [0.375, 1] }]);
     assert.equal(route.remainingDistance(reversed, get(reversed, 0)), 0.375);
 });
 
 test("two route layers restore control by priority while ordinary distance and waits remain independent", () => {
-    const destination = { type: "EXIT", position: [0, 7], requireFinish: true };
-    let state = battle([creation(plan([wait(3), move([0, 2])], { destination }))]);
+    const destination = { type: "EXIT", position: [7, 0], requireFinish: true };
+    let state = battle([creation(plan([wait(3), move([2, 0])], { destination }))]);
     const host = units.ref(get(state, 0));
     const input = program => ({ plan: program, offset: [0, 0], alwaysCheckCurrentPoint: false });
     const high = route.addOverride(state, host, {
@@ -109,13 +109,13 @@ test("two route layers restore control by priority while ordinary distance and w
     state = step(high.state, []);
     assert.equal(current(state).current.timer, 2);
     const alternative = route.setAlternative(state, host, input(plan([wait(2)], {
-        destination: { type: "EXIT", position: [0, 5], requireFinish: true },
+        destination: { type: "EXIT", position: [5, 0], requireFinish: true },
     })));
     const low = route.addOverride(alternative.state, host, {
-        ...input(plan([wait(1), { type: "APPEAR", position: [0, 3], offset: [0, 0] }])), priority: 5,
+        ...input(plan([wait(1), { type: "APPEAR", position: [3, 0], offset: [0, 0] }])), priority: 5,
     });
     const tied = route.addOverride(low.state, host, {
-        ...input(plan([{ type: "APPEAR", position: [0, 4], offset: [0, 0] }])), priority: 10,
+        ...input(plan([{ type: "APPEAR", position: [4, 0], offset: [0, 0] }])), priority: 10,
     });
     state = ticks(tied.state, 2);
     assert.equal(route.ref(route.activeContext(get(state, 0))), high.value);
@@ -147,7 +147,7 @@ test("two route layers restore control by priority while ordinary distance and w
     assert.equal(current(state).current.type, "MOVE");
     assert.equal(route.ref(route.activeContext(get(state, 0))), route.ref(current(state)));
 
-    let absolute = battle([creation(plan([wait(2, "BATTLE"), move([0, 2])]))]);
+    let absolute = battle([creation(plan([wait(2, "BATTLE"), move([2, 0])]))]);
     const absoluteHost = units.ref(get(absolute, 0));
     const other = route.setAlternative(absolute, absoluteHost, input(plan()));
     absolute = ticks(other.state, 3);
@@ -158,7 +158,7 @@ test("two route layers restore control by priority while ordinary distance and w
 });
 
 test("route waits continue through forced movement and steering resumes after the forced step", () => {
-    let state = battle([creation(plan([wait(1), move([2, 0])]), {
+    let state = battle([creation(plan([wait(1), move([0, 2])]), {
         layer: { type: "GROUND" },
         locomotion: movement,
         shiftable: {
@@ -185,7 +185,7 @@ test("route waits continue through forced movement and steering resumes after th
 });
 
 test("an impassable starting tile keeps the current MOVE while the unit recovers", () => {
-    let state = battle([creation(plan([move([0, 5])]), {
+    let state = battle([creation(plan([move([5, 0])]), {
         route: { alwaysCheckCurrentPoint: false },
         locomotion: { ...movement, speed: defineAttribute(0.25) },
     })]);
@@ -206,7 +206,7 @@ test("an impassable starting tile keeps the current MOVE while the unit recovers
 });
 
 test("reassign rebuilds the entered instruction and skipWait only skips a relative wait", () => {
-    const program = plan([wait(5), move([0, 3])]);
+    const program = plan([wait(5), move([3, 0])]);
     let state = battle([creation(program)]);
     const host = units.ref(get(state, 0));
     state = update(state, host, route.skipWait(route.ref(current(state))));
@@ -220,7 +220,7 @@ test("reassign rebuilds the entered instruction and skipWait only skips a relati
 });
 
 test("a long immediate program completes while an immediate GOTO cycle yields", () => {
-    const program = plan([...Array.from({ length: 200 }, () => wait(0, "BATTLE")), move([0, 2])]);
+    const program = plan([...Array.from({ length: 200 }, () => wait(0, "BATTLE")), move([2, 0])]);
     const state = battle([creation(program)]);
     assert.equal(current(state).index, 200);
     assert.equal(current(state).current.type, "MOVE");
@@ -246,20 +246,20 @@ test("TRACE holds its registered tile and control after arrival until explicitly
     let state = battle([creation(plan([wait(999)]), { locomotion: movement })]);
     const host = units.ref(get(state, 0));
     const tracing = route.setAlternative(state, host, {
-        plan: plan([{ type: "TRACE", position: [0, 2], reached: false }]),
+        plan: plan([{ type: "TRACE", position: [2, 0], reached: false }]),
         offset: [0, 0], alwaysCheckCurrentPoint: false,
     });
     state = tracing.state;
     state = ticks(state, 3);
     let context = tracing.value.get(state);
-    assert.deepEqual(context.current.position, [0, 2]);
+    assert.deepEqual(context.current.position, [2, 0]);
     assert.equal(context.current.reached, true);
     assert.equal(context.index, 0);
     assert.equal(route.ref(route.activeContext(get(state, 0))), route.ref(context));
     assert.equal(route.movementTarget(state, host), null);
     state = update(state, host, appear([0, 0]));
     assert.equal(route.remainingDistance(state, get(state, 0)), 2);
-    state = update(state, host, route.setTraceTarget(route.ref(context), [0, 2]));
+    state = update(state, host, route.setTraceTarget(route.ref(context), [2, 0]));
     context = tracing.value.get(state);
     assert.equal(context.current.reached, false);
     assert.deepEqual(route.movementTarget(state, host).goal, [2, 0]);
@@ -275,8 +275,8 @@ test("Main EXIT ends the Unit lifetime once independently of both other route la
         id: "exit", priority: 0,
         invoke: (current, departure) => { exits.push(departure.reason); return { state: current, value: undefined }; },
     };
-    let state = battle([creation(plan([{ type: "APPEAR", position: [0, 3], offset: [0, 0] }], {
-        destination: { type: "EXIT", position: [0, 3], requireFinish: true },
+    let state = battle([creation(plan([{ type: "APPEAR", position: [3, 0], offset: [0, 0] }], {
+        destination: { type: "EXIT", position: [3, 0], requireFinish: true },
     }))]);
     state = setHook(state, unitRemoved, observeExit);
     const host = units.ref(get(state, 0));
@@ -286,7 +286,7 @@ test("Main EXIT ends the Unit lifetime once independently of both other route la
         plan: plan([wait(999)]), offset: [0, 0], alwaysCheckCurrentPoint: false,
     }).state;
     const temporary = route.addOverride(state, host, {
-        plan: plan([{ type: "TRACE", position: [0, 5], reached: false }]),
+        plan: plan([{ type: "TRACE", position: [5, 0], reached: false }]),
         offset: [0, 0], alwaysCheckCurrentPoint: false, priority: 1,
     });
     state = temporary.state;
@@ -311,7 +311,7 @@ test("Main EXIT ends the Unit lifetime once independently of both other route la
     const earlyExit = { ...waitingAtExit, destination: { ...waitingAtExit.destination, requireFinish: false } };
     assert.equal(get(step(battle([creation(earlyExit)]), []), 0), undefined);
 
-    let stay = battle([creation(plan([], { destination: { type: "MOVE", position: [0, 3] } }), { locomotion: movement })]);
+    let stay = battle([creation(plan([], { destination: { type: "MOVE", position: [3, 0] } }), { locomotion: movement })]);
     assert.equal(route.remainingDistance(stay, get(stay, 0)), 3);
     stay = ticks(stay, 5);
     assert.deepEqual(get(stay, 0).position, [3, 0]);
@@ -330,7 +330,7 @@ test("spatial instructions publish consumption before hooks and resume the lates
             }, hooks: Hooks.empty(), initial: {}, position: [0, 0] },
         ]);
         const host = units.ref(get(state, 0));
-        const replacement = plan([wait(9), move([0, 2])]);
+        const replacement = plan([wait(9), move([2, 0])]);
         let released = 0;
         state = update(state, host, units.setHook(blockable.released, {
             id: "change-route", priority: 0, invoke: (state) => {
@@ -349,7 +349,7 @@ test("spatial instructions publish consumption before hooks and resume the lates
         state = search(state, units.ref(get(state, 1)));
         assert.notEqual(get(state, 0).blockable.relation, null);
         state = update(state, host, route.reassign(route.ref(current(state)), plan([
-            { type: "DISAPPEAR" }, { type: "APPEAR", position: [0, 6], offset: [0, 0] }, wait(4),
+            { type: "DISAPPEAR" }, { type: "APPEAR", position: [6, 0], offset: [0, 0] }, wait(4),
         ])));
         assert.equal(released, 1);
         if (operation === "reassign") {

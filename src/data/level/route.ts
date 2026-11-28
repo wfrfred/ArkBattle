@@ -54,7 +54,7 @@ function position(value: unknown, name: string): TilePosition {
     assertSafeInteger(data.row, `${name}.row`);
     assertSafeInteger(data.col, `${name}.col`);
 
-    return [data.row, data.col];
+    return [data.col, data.row];
 }
 
 function offset(value: unknown, name: string): WorldPosition {

@@ -47,7 +47,7 @@ test("operator selection uses table identity, group tags and canonical ranges", 
     assert.equal(selected.attributes.maxHp, 3928);
     assert.equal(selected.attributes.attack, 882);
     assert.equal(selected.attributes.recoverySpeed, 0);
-    assert.deepEqual(selected.range, [[0, 0], [0, 1]]);
+    assert.deepEqual(selected.range, [[0, 0], [1, 0]]);
     assert.equal(selected.skill.id, "skchr_mudrok_2");
     assert.equal(selected.skill.level.cost, 5);
     assert.equal(blackboard(selected.skill.level.blackboard).atk_scale, 2.1);

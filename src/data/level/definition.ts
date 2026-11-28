@@ -238,8 +238,8 @@ function position(value: unknown, name: string): TilePosition {
     const source = object(value, name, ["row", "col"]);
 
     return [
-        integer(source.row, `${name}.row`, -Number.MAX_SAFE_INTEGER),
         integer(source.col, `${name}.col`, -Number.MAX_SAFE_INTEGER),
+        integer(source.row, `${name}.row`, -Number.MAX_SAFE_INTEGER),
     ];
 }
 

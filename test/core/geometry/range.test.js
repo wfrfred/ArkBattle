@@ -38,7 +38,7 @@ test('capsule range queries use the rounded cap and include point and shape tang
 test('tile-derived ranges combine separated cells around a continuous source position', () => {
   const source = [0.25, 0.25];
   const hit = { type: 'CIRCLE', offset: [0, 0], radius: 0.125 };
-  const range = fromTiles([[0, 1], [0, 3]], 'UP');
+  const range = fromTiles([[1, 0], [3, 0]], 'UP');
   assert.equal(overlaps(range, source, hit, [0.25, 1.875]), true);
   assert.equal(overlaps(range, source, hit, [0.25, 2.25]), false);
   assert.equal(contains(range, source, [0.25, 3.25]), true);

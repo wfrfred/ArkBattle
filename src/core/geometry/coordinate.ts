@@ -22,22 +22,19 @@ export const Tile = {
     },
 
     rotate(vector: TilePosition, direction: Direction): TilePosition {
-        const [dRow, dCol] = vector;
-        const [forwardRow, forwardCol] = Direction.vector(direction);
+        const [dx, dy] = vector;
+        const [fx, fy] = Direction.vector(direction);
 
-        const row = dRow * forwardCol + dCol * forwardRow;
-        const col = -dRow * forwardRow + dCol * forwardCol;
-
-        return [row, col];
+        return [dx * fx - dy * fy, dx * fy + dy * fx];
     },
 
     center(position: TilePosition): WorldPosition {
-        return [position[1], position[0]];
+        return position;
     },
 };
 
 export const World = {
     toTile(position: WorldPosition): TilePosition {
-        return [toTileComponent(position[1]), toTileComponent(position[0])];
+        return [toTileComponent(position[0]), toTileComponent(position[1])];
     },
 };

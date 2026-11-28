@@ -107,8 +107,8 @@ test("movement uses current terrain and reflects displacement while retaining co
     assert.ok(get(state, 0).position[1] < before[1]);
 
     const approaching = get(state, 0).position;
-    state = updateTile(state, [1, 3], {
-        ...getTile(state.battlefield.map, [1, 3]).state, passability: "NONE",
+    state = updateTile(state, [3, 1], {
+        ...getTile(state.battlefield.map, [3, 1]).state, passability: "NONE",
     });
     state = advance(state, host);
     assert.ok(get(state, 0).position[0] < approaching[0]);

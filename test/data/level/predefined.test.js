@@ -57,8 +57,8 @@ test("real hidden devices preserve placement, static classification and target c
     battle = add(initializedCrate.state, initializedCrate.value);
     const [crate] = battle.battlefield.units.values();
     assert.deepEqual(crate.position, [4, 12]);
-    assert.deepEqual(crate.occupancy.tile, [12, 4]);
-    assert.equal(occupancyAt(battle.battlefield, [12, 4]).occupant, crate.ref);
+    assert.deepEqual(crate.occupancy.tile, [4, 12]);
+    assert.equal(occupancyAt(battle.battlefield, [4, 12]).occupant, crate.ref);
     assert.deepEqual(crate.definition.classification, {
         type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [],
     });

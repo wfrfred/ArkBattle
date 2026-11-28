@@ -42,27 +42,27 @@ test("a field batch publishes final occupancy without moving bodies or executing
             hooks: Hooks.empty(),
             definition: definition("second"),
             position: [1, 0],
-            initial: { occupancy: { direction: null, tile: [0, 1] } },
+            initial: { occupancy: { direction: null, tile: [1, 0] } },
         },
     ]);
     const first = get(state, 0),
         second = get(state, 1);
     const next = updateUnits(state.battlefield, [
-        { ...first, occupancy: { direction: null, ...first.occupancy, tile: [0, 1] } },
+        { ...first, occupancy: { direction: null, ...first.occupancy, tile: [1, 0] } },
         { ...second, occupancy: { direction: null, ...second.occupancy, tile: [0, 0] } },
     ]);
 
     assert.equal(at(next, [0, 0]).occupant.id, 1);
-    assert.equal(at(next, [0, 1]).occupant.id, 0);
+    assert.equal(at(next, [1, 0]).occupant.id, 0);
     assert.deepEqual(next.units.get(ref(first)).position, [0, 0]);
     assert.equal(at(state.battlefield, [0, 0]).occupant.id, 0);
-    assert.equal(at(state.battlefield, [0, 1]).occupant.id, 1);
+    assert.equal(at(state.battlefield, [1, 0]).occupant.id, 1);
     assert.deepEqual(notices, ["first", "second"]);
 });
 
 test("fractional tile addresses cannot alias an integer tile", () => {
     const dimensions = { rows: 2, columns: 2 };
-    const tile = [0.5, 0];
+    const tile = [0, 0.5];
     const state = battle([], dimensions);
     assert.equal(getTile(state.battlefield.map, tile), undefined);
 
@@ -79,17 +79,17 @@ test("fractional tile addresses cannot alias an integer tile", () => {
         denyPassage: true,
         denyDepartures: [],
     });
-    assert.deepEqual(nextTile(covered.state.battlefield.navigation, "WALK", [0, 0], [0, 1]), [0, 1]);
+    assert.deepEqual(nextTile(covered.state.battlefield.navigation, "WALK", [0, 0], [1, 0]), [1, 0]);
 });
 
 test("navigation follows current tile costs, directional restrictions and independent overlays", () => {
     const original = battle([], { rows: 1, columns: 3 });
-    const destination = [0, 2];
+    const destination = [2, 0];
 
-    const blocked = { cost: 1, cells: [[0, 1]], denyPassage: true, denyDepartures: [] };
+    const blocked = { cost: 1, cells: [[1, 0]], denyPassage: true, denyDepartures: [] };
     const first = overlays.create(original, "WALK", blocked);
     const second = overlays.create(first.state, "WALK", { ...blocked, cost: 7 });
-    assert.deepEqual(nextTile(second.state.battlefield.navigation, "FLY", [0, 0], destination), [0, 2]);
+    assert.deepEqual(nextTile(second.state.battlefield.navigation, "FLY", [0, 0], destination), [2, 0]);
     const flight = overlays.create(second.state, "FLY", blocked);
 
     const covered = overlays.remove(flight.state, first.value);
@@ -100,45 +100,45 @@ test("navigation follows current tile costs, directional restrictions and indepe
         denyPassage: false,
         denyDepartures: ["RIGHT"],
     });
-    const tile = getTile(direction.battlefield.map, [0, 1]);
-    const changed = updateBattleTile(direction, [0, 1], { ...tile.state, walkCost: 5 });
+    const tile = getTile(direction.battlefield.map, [1, 0]);
+    const changed = updateBattleTile(direction, [1, 0], { ...tile.state, walkCost: 5 });
     const navigation = changed.battlefield.navigation;
     assert.equal(nextTile(navigation, "WALK", [0, 0], destination), null);
-    assert.deepEqual(nextTile(navigation, "WALK", [0, 2], [0, 0]), [0, 0]);
+    assert.deepEqual(nextTile(navigation, "WALK", [2, 0], [0, 0]), [0, 0]);
     assert.equal(nextTile(navigation, "FLY", [0, 0], destination), null);
 
     const walkOpened = overlays.remove(changed, second.value);
-    assert.deepEqual(nextTile(walkOpened.battlefield.navigation, "WALK", [0, 0], destination), [0, 2]);
+    assert.deepEqual(nextTile(walkOpened.battlefield.navigation, "WALK", [0, 0], destination), [2, 0]);
     assert.equal(nextTile(walkOpened.battlefield.navigation, "FLY", [0, 0], destination), null);
     const open = overlays.remove(walkOpened, flight.value);
     const replacement = overlays.create(open, "WALK", blocked);
     const staleRemoval = overlays.remove(replacement.state, first.value);
     assert.equal(nextTile(staleRemoval.battlefield.navigation, "WALK", [0, 0], destination), null);
     assert.throws(() => overlays.update(staleRemoval, first.value, blocked), RangeError);
-    assert.deepEqual(nextTile(original.battlefield.navigation, "WALK", [0, 0], destination), [0, 2]);
+    assert.deepEqual(nextTile(original.battlefield.navigation, "WALK", [0, 0], destination), [2, 0]);
 
-    const closed = updateTile(open.battlefield, [0, 1], { ...tile.state, passability: "FLY_ONLY" });
+    const closed = updateTile(open.battlefield, [1, 0], { ...tile.state, passability: "FLY_ONLY" });
     assert.equal(nextTile(closed.navigation, "WALK", [0, 0], destination), null);
-    assert.deepEqual(nextTile(closed.navigation, "FLY", [0, 0], destination), [0, 2]);
+    assert.deepEqual(nextTile(closed.navigation, "FLY", [0, 0], destination), [2, 0]);
 
     let fork = battle([], { rows: 3, columns: 3 }).battlefield;
-    const forkDestination = [1, 2];
+    const forkDestination = [2, 1];
     fork = updateTile(fork, [1, 1], {
         ...getTile(fork.map, [1, 1]).state,
         passability: "FLY_ONLY",
     });
-    fork = updateTile(fork, [2, 1], { ...getTile(fork.map, [2, 1]).state, walkCost: 5 });
-    assert.ok(nextTile(fork.navigation, "WALK", [1, 0], forkDestination)[0] < 1);
-    assert.deepEqual([...path(fork.navigation, "WALK", [1, 0], forkDestination)], [[1, 0], [0, 0], [0, 2], [1, 2]]);
+    fork = updateTile(fork, [1, 2], { ...getTile(fork.map, [1, 2]).state, walkCost: 5 });
+    assert.ok(nextTile(fork.navigation, "WALK", [0, 1], forkDestination)[1] < 1);
+    assert.deepEqual([...path(fork.navigation, "WALK", [0, 1], forkDestination)], [[0, 1], [0, 0], [2, 0], [2, 1]]);
     for (const position of [
         [0, 0],
-        [0, 1],
-        [0, 2],
+        [1, 0],
+        [2, 0],
     ]) {
         fork = updateTile(fork, position, { ...getTile(fork.map, position).state, walkCost: 5 });
     }
-    assert.ok(nextTile(fork.navigation, "WALK", [1, 0], forkDestination)[0] > 1);
-    assert.deepEqual(nextTile(fork.navigation, "FLY", [1, 0], forkDestination), [1, 2]);
+    assert.ok(nextTile(fork.navigation, "WALK", [0, 1], forkDestination)[1] > 1);
+    assert.deepEqual(nextTile(fork.navigation, "FLY", [0, 1], forkDestination), [2, 1]);
 });
 
 test("spatial queries distinguish body position from hitboxes and return current geometric contacts", () => {

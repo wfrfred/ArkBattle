@@ -57,6 +57,8 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 ## 路线静态资料
 
+原始资料中的 `{ row, col }` 在 Data 转换边界映射为 Core 格坐标 `[col, row]`（即 `[x, y]`）。原始地图矩阵的行列组织、行序转换和连续世界偏移的 x/y 含义不变。
+
 原始路线的 motionMode 解析为 Data Route.mode，出怪编译将 mode 交给 Schedule.Spawn.mode，实际出生时用作 Locomotion Initial 的 mode，不进入 Route Plan。普通原始路线转换为 `Plan.destination` 的 EXIT 分支，保留原终点位置与是否必须完成全部路点的配置（requireFinish）。不根据通用关卡 END Marker 推导退出资格；具体 Content／Meta 按本次单位和玩法的实际路线语义选择 MOVE 或 EXIT，MOVE 保留终点而不自然退出。无固定目标以 null 表达，详见 [Route](navigation.md#类型与身份)。
 
 `compileSpawnSchedule` 独立转换 Wait 与 `Spawn.statistics`：Action／Enemy 的 notCountInTotal 任一成立则不计数，普通 Branch 默认不计数；主波其余按普通或 alwaysCountAsKilled 资格登记。非管理、只阻终局等 Wait 政策不影响统计资格。主波经过选择和数量展开后已具备完整 Spawn 资格；Battle 初始化从该计划推导 `statistics.total`，Data 不另行返回重复总数。 [Statistics](statistics.md)

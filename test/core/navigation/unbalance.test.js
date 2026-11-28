@@ -315,14 +315,14 @@ test("forced movement slides along a physical wall and publishes its committed c
             },
         }),
     });
-    const tile = getTile(state.battlefield.map, [1, 2]);
-    const wall = updateTile(state, [1, 2], {
+    const tile = getTile(state.battlefield.map, [2, 1]);
+    const wall = updateTile(state, [2, 1], {
         ...tile.state,
         collision: { type: "BOX", offset: [0, 0], halfExtents: [0.5, 0.5] },
     });
     const moved = step(unbalance.applyImpulse(wall, host, [45, 15]).state, []);
     assertPosition(moved, [1.4, 1.5]);
-    assert.deepEqual(contact, [{ tile: [1, 2], normal: [-1, 0] }]);
+    assert.deepEqual(contact, [{ tile: [2, 1], normal: [-1, 0] }]);
 });
 
 test("ending a segment settles its pulls even when a pull dependent starts the next segment", () => {

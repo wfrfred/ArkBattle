@@ -9,9 +9,9 @@ export function canSmooth(
     from: TilePosition,
     to: TilePosition,
 ): boolean {
-    const steep = Math.abs(to[0] - from[0]) > Math.abs(to[1] - from[1]);
-    let [x0, y0]: TilePosition = steep ? from : [from[1], from[0]];
-    let [x1, y1]: TilePosition = steep ? to : [to[1], to[0]];
+    const steep = Math.abs(to[1] - from[1]) > Math.abs(to[0] - from[0]);
+    let [x0, y0]: TilePosition = steep ? [from[1], from[0]] : from;
+    let [x1, y1]: TilePosition = steep ? [to[1], to[0]] : to;
     const reversed = x0 > x1;
     if (reversed) {
         [x0, x1] = [x1, x0];
@@ -35,14 +35,14 @@ export function canSmooth(
         minor = Direction.opposite(minor);
     }
 
-    const position = (x: number, y: number): TilePosition => (steep ? [x, y] : [y, x]);
+    const position = (x: number, y: number): TilePosition => (steep ? [y, x] : [x, y]);
 
     const clear = (position: TilePosition): boolean => {
         const cell = map.get(position);
 
         return (
             cell !== undefined &&
-            nodes[position[0] * map.columns + position[1]] !== null &&
+            nodes[position[1] * map.columns + position[0]] !== null &&
             cell.passable &&
             cell.cost < 1000
         );
@@ -52,9 +52,9 @@ export function canSmooth(
         map.get(position)?.departures[direction] === true;
 
     if (dy <= 1) {
-        for (let row = Math.min(from[0], to[0]); row <= Math.max(from[0], to[0]); row++) {
-            for (let col = Math.min(from[1], to[1]); col <= Math.max(from[1], to[1]); col++) {
-                if (!clear([row, col])) {
+        for (let row = Math.min(from[1], to[1]); row <= Math.max(from[1], to[1]); row++) {
+            for (let col = Math.min(from[0], to[0]); col <= Math.max(from[0], to[0]); col++) {
+                if (!clear([col, row])) {
                     return false;
                 }
             }

@@ -678,7 +678,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const nextSource = redeployed.value;
     assert.notEqual(nextSource, firstSource);
     assert.equal(effects.install(state, owner, delayed, { ...effectInitial, source: nextSource }).value, null);
-    const otherUnit = cards.deploy(state, { card: b, tilePosition: [0, 1], direction: null, quote: null, restrictions: [] });
+    const otherUnit = cards.deploy(state, { card: b, tilePosition: [1, 0], direction: null, quote: null, restrictions: [] });
     const other = effects.install(otherUnit.state, owner, delayed, {
         ...effectInitial,
         source: otherUnit.value,

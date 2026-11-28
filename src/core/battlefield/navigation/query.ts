@@ -18,7 +18,7 @@ function reachableField(
 
     const result = field(map, to);
 
-    return result.nodes[from[0] * result.columns + from[1]] === null ? null : result;
+    return result.nodes[from[1] * result.columns + from[0]] === null ? null : result;
 }
 
 export function nextTile(
@@ -29,7 +29,7 @@ export function nextTile(
 ): TilePosition | null {
     const result = reachableField(state, mode, from, to);
 
-    return result === null ? null : (result.nodes[from[0] * result.columns + from[1]]!.next ?? to);
+    return result === null ? null : (result.nodes[from[1] * result.columns + from[0]]!.next ?? to);
 }
 
 export function path(
@@ -49,7 +49,7 @@ export function path(
 
             while (tile !== null) {
                 yield tile;
-                tile = result.nodes[tile[0] * result.columns + tile[1]]!.next;
+                tile = result.nodes[tile[1] * result.columns + tile[0]]!.next;
             }
         },
     };

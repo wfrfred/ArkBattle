@@ -15,5 +15,5 @@ export function at(field: State, tile: TilePosition): TileOccupancy | undefined 
         return undefined;
     }
 
-    return field.occupancy.get(tile[0] * field.map.columns + tile[1]);
+    return field.occupancy.get(tile[1] * field.map.columns + tile[0]);
 }

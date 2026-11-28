@@ -10,14 +10,14 @@ import {
 import { TICKS_PER_SECOND } from "../../../tick.js";
 
 const NEIGHBORS: readonly TilePosition[] = [
-    [1, 0],
-    [1, 1],
     [0, 1],
-    [-1, 1],
-    [-1, 0],
-    [-1, -1],
-    [0, -1],
+    [1, 1],
+    [1, 0],
     [1, -1],
+    [0, -1],
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
 ];
 
 export function nearestPassableNeighbor(
@@ -66,8 +66,8 @@ function terrainForce(
     let x = 0;
     let y = 0;
 
-    for (const [row, col] of NEIGHBORS) {
-        const neighbor = map.get(Vec2.add(tile, [row, col]));
+    for (const [col, row] of NEIGHBORS) {
+        const neighbor = map.get(Vec2.add(tile, [col, row]));
         if (
             neighbor === undefined ||
             (neighbor.passable && (mode === "FLY" || neighbor.cost < 1000))

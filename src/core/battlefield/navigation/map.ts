@@ -23,14 +23,14 @@ export class Map {
             return false;
         }
 
-        const [row, col] = position;
+        const [col, row] = position;
 
         return row >= 0 && row < this.rows && col >= 0 && col < this.columns;
     }
 
     get(position: TilePosition): Cell | undefined {
         return this.contains(position)
-            ? this.cells[position[0] * this.columns + position[1]]
+            ? this.cells[position[1] * this.columns + position[0]]
             : undefined;
     }
 }

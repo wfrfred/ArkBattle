@@ -61,7 +61,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         blockable: { volume: 1, restrictions: [] }, layer: { type: "GROUND" },
     };
     let state = battle([
-        { definition: { id: "support", hooks: Hooks.empty(), occupancy: { slot: "SUPPORT" } }, hooks: Hooks.empty(), position: [2, 1], initial: { occupancy: { tile: [1, 2], direction: null } } },
+        { definition: { id: "support", hooks: Hooks.empty(), occupancy: { slot: "SUPPORT" } }, hooks: Hooks.empty(), position: [2, 1], initial: { occupancy: { tile: [2, 1], direction: null } } },
         { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.1, 1] },
         { definition: enemy, hooks: Hooks.empty(), initial: {}, position: [2.2, 1] },
     ], {
@@ -73,7 +73,7 @@ test("disappearance preserves deployment and lifetimes, releases blocking before
         initialCards: [{ definition: cardDefinition, unitDefinition: operator }],
     });
     const card = cards.ref([...cards.all(state)][0]);
-    const deployed = cards.deploy(state, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
+    const deployed = cards.deploy(state, { card, tilePosition: [2, 1], direction: null, quote: null, restrictions: [] });
     assert.notEqual(deployed.value, null);
     state = deployed.state;
     const owner = deployed.value;

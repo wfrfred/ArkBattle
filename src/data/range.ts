@@ -44,7 +44,7 @@ export function parseRange(value: unknown, id: unknown): readonly TilePosition[]
         const grid = record(value, "range grid");
         assertSafeInteger(grid.row, "range row");
         assertSafeInteger(grid.col, "range column");
-        const tile: TilePosition = [grid.row, grid.col];
+        const tile: TilePosition = [grid.col, grid.row];
         const key = `${tile[0]},${tile[1]}`;
         if (seen.has(key)) {
             throw new RangeError("range must not contain duplicate tiles");

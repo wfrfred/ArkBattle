@@ -29,7 +29,7 @@ export function contains(map: Map, position: TilePosition): boolean {
         return false;
     }
 
-    const [row, col] = position;
+    const [col, row] = position;
 
     return row >= 0 && row < map.rows && col >= 0 && col < map.columns;
 }
@@ -49,7 +49,7 @@ export function get(
         return undefined;
     }
 
-    const [row, col] = position;
+    const [col, row] = position;
 
     const index = row * map.columns + col;
 
@@ -92,8 +92,8 @@ export function create(
             throw new RangeError(`block edge at index ${index} has an invalid tile position`);
         }
 
-        const [dRow, dCol] = Direction.vector(edge.direction);
-        const neighbor: TilePosition = [position[0] + dRow, position[1] + dCol];
+        const [dCol, dRow] = Direction.vector(edge.direction);
+        const neighbor: TilePosition = [position[0] + dCol, position[1] + dRow];
         if (!contains(map, position) && !contains(map, neighbor)) {
             throw new RangeError(`block edge at index ${index} has no endpoint inside the map`);
         }

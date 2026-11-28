@@ -51,10 +51,10 @@ test("a crate modifies its registered tile, preserves hole cost, and restores on
         tileChanges: {},
     });
     const tile = [0, 0];
-    let state = place(battle(), definition, tile, Tile.center([0, 2]));
+    let state = place(battle(), definition, tile, Tile.center([2, 0]));
     const obstructed = getTile(state.battlefield.map, tile).state;
     assert.equal(obstructed.walkCost, 1000);
-    assert.equal(getTile(state.battlefield.map, [0, 2]).state.walkCost, 2000);
+    assert.equal(getTile(state.battlefield.map, [2, 0]).state.walkCost, 2000);
 
     state = updateTile(state, tile, { ...obstructed, allowsBlocking: false });
     state = remove(state, ref(getUnit(state, 0)), { reason: "SCRIPT" });

@@ -10,9 +10,9 @@
 
 ## 坐标语义与转换
 
-TilePosition 按 `[row, col]` 解释，WorldPosition 按 `[x, y]` 解释。格子分量为安全整数，连续坐标分量为有限数；两者复用向量表示。
+TilePosition 和 WorldPosition 统一按 `[x, y]` 解释；格坐标的 x 对应列、y 对应行，格子分量为安全整数，连续坐标分量为有限数。两者复用向量表示，不在坐标轴之间交换分量。正 x 向右，正 y 向上。
 
-Tile.center 将 `[row, col]` 转为 `[col, row]`；World.toTile 使用 ties-to-even 舍入。Tile.rotate 按四向 Direction 旋转相对格子向量。方向是几何值，不意味着每个 Unit 都具有朝向：摆放方向归 Occupancy，左右面向归 Facing。
+Tile.center 表示格子的世界中心，保持坐标分量；World.toTile 对每个轴分别使用 ties-to-even 舍入。Direction 的 UP、RIGHT、DOWN、LEFT 向量分别为 `[0, 1]`、`[1, 0]`、`[0, -1]`、`[-1, 0]`；Tile.rotate 以 RIGHT 为基准旋转相对格子向量。方向是几何值，不意味着每个 Unit 都具有朝向：摆放方向归 Occupancy，左右面向归 Facing。
 
 ## Shape 与 Range
 

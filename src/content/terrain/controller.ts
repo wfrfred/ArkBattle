@@ -107,7 +107,7 @@ function create<P extends object>(
                 }
 
                 const position = World.toTile(unit.position);
-                const index = position[0] * map.columns + position[1];
+                const index = position[1] * map.columns + position[0];
 
                 return contains(map, position) &&
                     selectedSet.has(index) &&
