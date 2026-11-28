@@ -109,3 +109,20 @@
 第 2 节是已取得原生路径与实际绑定的机制入口，第 4 节是具体证据限制，两者均不是当前代码缺口表。负生命、保护成功后继、来源通知及具体假死／替身的项目表达按对应架构维护；具体内容未接入与公共模型无法合理表达分别判断。
 
 动态属性范围的实际绑定已补核到攻速、基础攻击间隔、移速、MaxHP、自然 SP 回复速度及倍率，见[Case39完整属性与使用调查](39-death-attribution-and-attribute-ranges.md#4-属性求值与范围)。不能再将范围需求限于信仰搅拌机的攻速下限，也不能把模板存在直接当作支持玩法中已经启用。五型 EP、特殊恢复与时间操作按各案例维护原生证据，当前实现范围由对应架构文档维护，不在本概览另存代码缺口表。新增简化仍应说明实际影响；原生 flags 的数量不决定项目 API 数量。
+
+## 6. 关卡生命点与临时生命
+
+2026-11-28 补核 [原生分支与社区模式资料](../evidence/life-point-20261128/README.md)。关卡生命点是战斗全局资源，不等同个体 HP、护盾属性或敌人击杀计数。
+
+**N：** BattleController 运行时分别保存 `m_lifePointDict`（0xc0）和 `m_tempLifePointDict`（0xd8），均按 PlayerSide 查找；side=0 先取当前 playerSide。因此常规生命与临时生命为独立数值。LevelData.Options.maxLifePoint 是配置字段（0x14），Rune LMaxLifePointSet/Add 修改该字段。BattleController.get_maxLifePoint 另读取 0x240 的保存值。常规 setter 没有使用 maxLifePoint 作为写入上限，也未发现独立的通用 minLifePoint 配置。
+
+- `SetLifePoint(value, side, force)` #65546：playing 或 force 时赋值，结果 <=0 则写回 0 并分派 mode.OnPlayerLifeToZero。DefaultGameMode #84163 调 FinishGame(2)；AutoChessGameMode #82903 无热更新分支直接返回。
+- `SetTempLifePoint(value, side)` #65548：仅 playing 时置值，不进行常规生命归零判断；静态 setter 未见上下限。公开 `AddTempLifePoint(value, source, side)` #65602 仅接受正数且 playing，创建 NewLifePointDelta 并置 ALLOW_ADD_TEMP_LIFE_POINT_FLAG（0x1000），通过 GlobalModifier。
+- `ModifyLifePoint(value, source, side, isReachExit)` #65601：playing 时创建带符号 NewLifePointDelta；出口来源设置 LIFE_POINT_LOSS_BY_REACH_EXIT（0x200）。先执行游戏模式的 OnApplyingGlobalModifier 再 _DoApplyGlobalModifier，通过后才分派 OnModifyLifePoint 及事件。
+- `_DoApplyGlobalModifier` #65794 的生命点分支 0x1806656d6–0x180665909：对 modifier.finalDelta 调 RoundToInt；正值含 0x1000 时增加临时生命且令待结算常规变化为零；负值时先扣临时生命（足量则剩余变化为零，不足则临时生命归零并带入剩余负值）；最后将当前常规生命加上剩余变化调用 SetLifePoint。这个结算**不会自动以 maxLifePoint 限制普通正向变化**，可越过初始配置；归零的默认行为见上。临时生命同样没有自动上限。结算把 modifier.finalDelta 写回为常规生命的实际净变化，不包含临时生命吸收或新增；只在常规生命净减少时按 0x200 分类计入敌人/其他损失。LifePointToShow #65549 后继 0x180654dd9 显示 max(0, 常规生命+临时生命)。
+
+**W：** [集成战略](https://prts.wiki/w/集成战略) 的探索目标生命跨关卡保存；早期主题的临时生命每场重复生效，水月以后护盾为跨场消耗资源。非战斗的事件损失不由本场临时生命抵消且不降到 1 以下。[水月](https://prts.wiki/w/水月与深蓝之树)及[界园](https://prts.wiki/w/界园)另外存在探索目标生命上限、调整上限会同步调整剩余生命、探索回复受上限约束。不能把这些跨场政策等同通用 BattleController 的 setter。原生静态代码确实有 Roguelike 的生命修正 addition/scale 和模式修改入口，本批未完成各主题的热更新与探索转入/转出核对。
+
+**N + W：** [卫戍帮助](https://prts.wiki/w/卫戍协议/帮助) 描述按未击倒敌人的所属玩家扣各自生命（回合至多 10），[盟约](https://m.prts.wiki/w/卫戍协议：盟约)描述最终领袖轮合并剩余生命再结算超时。实际 AutoChessGameMode.OnEnemyReachExit #82900 静态委托 AutoChessGameManager.OnEnemyReachExit，再按自战、联防、领袖或训练状态分流。自战状态 0x180c074ba–0x180c07718 使用 GetBattlePlayerIndex、按玩家取得 SelfBattleRoundStatus、累加 enemyEscapedCnt、ReqSelfBattleEnemyEscape；联防状态 0x180c06ec1–0x180c07003 读取 selfPlayerIndex 并 ReqHelpBattleEnemyEscape；没有直接调用通用 Get/Set/ModifyLifePoint。这是模式独立的玩家状态/回合请求，不是通用生命字典的同义词。PlayerSide 元数据列有多个 side、AutoChess GetPlayerSideOnMap 分别按玩家列表和地图位置解析，均不能单独证明通用生命字典在卫戍多玩家中承担该账目。领袖轮及线上服务实际合并结算尚未完整闭合。
+
+**适用边界：** 常规关卡的有符号生命修改、普通生命下限归零、临时生命先消耗、普通正向变化无通用上限由以上静态原件直接支持。该证据也提供肉鸽战斗内的通用资源表达；探索级上限、护盾补给、胜负及卫戍多人账户政策不能从通用字段名推断。没有证明支持范围内必须让同一通用战斗持有多个独立生命账户，也没有证明其它模式全局不存在这种用法。实际内容/热更新可能选择不同入口，不宣称每种模式均完整运行验证。

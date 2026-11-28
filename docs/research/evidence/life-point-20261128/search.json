@@ -1,0 +1,3296 @@
+{
+  "provenance": {
+    "scope": "Static native branches; no game execution or runtime XLua verification.",
+    "client": {
+      "dll": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "bytes": 223112680,
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff"
+      },
+      "metadata": {
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "bytes": 46669332,
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5"
+      },
+      "metadataVersion": 29,
+      "imageBase": "0x180000000"
+    },
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/native.py",
+        "bytes": 18723,
+        "sha256": "1c6c16dc97e0dd9af0af4033c81a7534384dd65ebb1e604df3f4a3289df158e6"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]"
+    },
+    "location": {
+      "metadataRegistration": "0x187ee0630",
+      "modules": {
+        "Assembly-CSharp.dll": {
+          "address": 6564854272,
+          "methodPointers": 6585881040,
+          "count": 225427,
+          "fileBacked": true
+        },
+        "Torappu.Common.dll": {
+          "address": 6577712928,
+          "methodPointers": 6592562080,
+          "count": 6004,
+          "fileBacked": true
+        },
+        "ThirdPartyAssembly.dll": {
+          "address": 6577712272,
+          "methodPointers": 6592454304,
+          "count": 12660,
+          "fileBacked": true
+        },
+        "mscorlib.dll": {
+          "address": 6577364064,
+          "methodPointers": 6592131600,
+          "count": 13987,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsModule.dll": {
+          "address": 6577900992,
+          "methodPointers": 6592933968,
+          "count": 6132,
+          "fileBacked": true
+        },
+        "System.dll": {
+          "address": 6577628368,
+          "methodPointers": 6592396096,
+          "count": 7003,
+          "fileBacked": true
+        },
+        "Unity.InputSystem.dll": {
+          "address": 6577776016,
+          "methodPointers": 6592616544,
+          "count": 5703,
+          "fileBacked": true
+        },
+        "Unity.Mathematics.dll": {
+          "address": 6577838608,
+          "methodPointers": 6592682032,
+          "count": 9336,
+          "fileBacked": true
+        },
+        "UnityEngine.CoreModule.dll": {
+          "address": 6577886944,
+          "methodPointers": 6592866352,
+          "count": 4154,
+          "fileBacked": true
+        },
+        "System.Xml.dll": {
+          "address": 6577618416,
+          "methodPointers": 6592367840,
+          "count": 3283,
+          "fileBacked": true
+        },
+        "Newtonsoft.Json.dll": {
+          "address": 6577473344,
+          "methodPointers": 6592259616,
+          "count": 2998,
+          "fileBacked": true
+        },
+        "Unity.TextMeshPro.dll": {
+          "address": 6577852240,
+          "methodPointers": 6592835600,
+          "count": 1618,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.dll": {
+          "address": 6577530576,
+          "methodPointers": 6592309936,
+          "count": 1885,
+          "fileBacked": true
+        },
+        "spine-unity.dll": {
+          "address": 6577560208,
+          "methodPointers": 6592332928,
+          "count": 1982,
+          "fileBacked": true
+        },
+        "protobuf-net.Core.dll": {
+          "address": 6577475616,
+          "methodPointers": 6592285904,
+          "count": 1952,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Runtime.dll": {
+          "address": 6565019472,
+          "methodPointers": 6587703856,
+          "count": 2565,
+          "fileBacked": true
+        },
+        "UnityEngine.UI.dll": {
+          "address": 6577955760,
+          "methodPointers": 6592996064,
+          "count": 2041,
+          "fileBacked": true
+        },
+        "Cinemachine.dll": {
+          "address": 6564996672,
+          "methodPointers": 6587684464,
+          "count": 1160,
+          "fileBacked": true
+        },
+        "ICSharpCode.SharpZipLib.dll": {
+          "address": 6565040576,
+          "methodPointers": 6587747952,
+          "count": 1256,
+          "fileBacked": true
+        },
+        "DOTween.dll": {
+          "address": 6565028192,
+          "methodPointers": 6587727808,
+          "count": 1188,
+          "fileBacked": true
+        },
+        "System.Core.dll": {
+          "address": 6577602800,
+          "methodPointers": 6592356000,
+          "count": 1117,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreTextEngineModule.dll": {
+          "address": 6577900064,
+          "methodPointers": 6592929888,
+          "count": 370,
+          "fileBacked": true
+        },
+        "Unity.Postprocessing.Runtime.dll": {
+          "address": 6577843136,
+          "methodPointers": 6592828752,
+          "count": 810,
+          "fileBacked": true
+        },
+        "Sirenix.Utilities.dll": {
+          "address": 6577549328,
+          "methodPointers": 6592325136,
+          "count": 968,
+          "fileBacked": true
+        },
+        "Mono.Security.dll": {
+          "address": 6577363904,
+          "methodPointers": 6592127104,
+          "count": 562,
+          "fileBacked": true
+        },
+        "UnityEngine.IMGUIModule.dll": {
+          "address": 6577890704,
+          "methodPointers": 6592908944,
+          "count": 724,
+          "fileBacked": true
+        },
+        "Unity.Timeline.dll": {
+          "address": 6577856512,
+          "methodPointers": 6592850304,
+          "count": 876,
+          "fileBacked": true
+        },
+        "Sirenix.OdinInspector.Attributes.dll": {
+          "address": 6577507296,
+          "methodPointers": 6592305952,
+          "count": 462,
+          "fileBacked": true
+        },
+        "System.Collections.Immutable.dll": {
+          "address": 6577584240,
+          "methodPointers": 6592349104,
+          "count": 825,
+          "fileBacked": true
+        },
+        "Hypergryph.OneChannel.dll": {
+          "address": 6565035376,
+          "methodPointers": 6587741424,
+          "count": 755,
+          "fileBacked": true
+        },
+        "ConsolePro.dll": {
+          "address": 6565008736,
+          "methodPointers": 6587697344,
+          "count": 793,
+          "fileBacked": true
+        },
+        "Assembly-CSharp-firstpass.dll": {
+          "address": 6563861904,
+          "methodPointers": 6585841648,
+          "count": 747,
+          "fileBacked": true
+        },
+        "P31RestKit.dll": {
+          "address": 6577475456,
+          "methodPointers": 6592283600,
+          "count": 287,
+          "fileBacked": true
+        },
+        "UnityEngine.ParticleSystemModule.dll": {
+          "address": 6577893824,
+          "methodPointers": 6592916384,
+          "count": 491,
+          "fileBacked": true
+        },
+        "clipper_library.dll": {
+          "address": 6564997696,
+          "methodPointers": 6587695360,
+          "count": 216,
+          "fileBacked": true
+        },
+        "torappu.CrashSight.Standalone.dll": {
+          "address": 6577764784,
+          "methodPointers": 6592613760,
+          "count": 280,
+          "fileBacked": true
+        },
+        "UnityEngine.AnimationModule.dll": {
+          "address": 6577860928,
+          "methodPointers": 6592861456,
+          "count": 366,
+          "fileBacked": true
+        },
+        "UnityEngine.AndroidJNIModule.dll": {
+          "address": 6577859152,
+          "methodPointers": 6592859440,
+          "count": 252,
+          "fileBacked": true
+        },
+        "UnityEngine.UIElementsNativeModule.dll": {
+          "address": 6577945600,
+          "methodPointers": 6592993088,
+          "count": 245,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestModule.dll": {
+          "address": 6577956752,
+          "methodPointers": 6593013680,
+          "count": 143,
+          "fileBacked": true
+        },
+        "DOTween.Modules.dll": {
+          "address": 6565020800,
+          "methodPointers": 6587725728,
+          "count": 235,
+          "fileBacked": true
+        },
+        "System.Xml.Linq.dll": {
+          "address": 6577604992,
+          "methodPointers": 6592365952,
+          "count": 210,
+          "fileBacked": true
+        },
+        "XNode.dll": {
+          "address": 6577960256,
+          "methodPointers": 6593016992,
+          "count": 199,
+          "fileBacked": true
+        },
+        "UnityEngine.PhysicsModule.dll": {
+          "address": 6577895584,
+          "methodPointers": 6592924848,
+          "count": 182,
+          "fileBacked": true
+        },
+        "UnityEngine.Physics2DModule.dll": {
+          "address": 6577894672,
+          "methodPointers": 6592923088,
+          "count": 168,
+          "fileBacked": true
+        },
+        "UnityEngine.TextCoreFontEngineModule.dll": {
+          "address": 6577898160,
+          "methodPointers": 6592927760,
+          "count": 121,
+          "fileBacked": true
+        },
+        "System.Numerics.dll": {
+          "address": 6577603280,
+          "methodPointers": 6592364992,
+          "count": 77,
+          "fileBacked": true
+        },
+        "UnityEngine.AIModule.dll": {
+          "address": 6577857296,
+          "methodPointers": 6592857856,
+          "count": 153,
+          "fileBacked": true
+        },
+        "UnityEngine.AudioModule.dll": {
+          "address": 6577861936,
+          "methodPointers": 6592865360,
+          "count": 96,
+          "fileBacked": true
+        },
+        "UnityEngine.UIModule.dll": {
+          "address": 6577946240,
+          "methodPointers": 6592995136,
+          "count": 116,
+          "fileBacked": true
+        },
+        "Hypergryph.Browser.dll": {
+          "address": 6565029568,
+          "methodPointers": 6587737712,
+          "count": 196,
+          "fileBacked": true
+        },
+        "UnityEngine.XRModule.dll": {
+          "address": 6577958704,
+          "methodPointers": 6593015712,
+          "count": 67,
+          "fileBacked": true
+        },
+        "Torappu.CETest.dll": {
+          "address": 6577712768,
+          "methodPointers": 6592561408,
+          "count": 84,
+          "fileBacked": true
+        },
+        "UnityEngine.TextRenderingModule.dll": {
+          "address": 6577900464,
+          "methodPointers": 6592933088,
+          "count": 50,
+          "fileBacked": true
+        },
+        "UnityEngine.InputLegacyModule.dll": {
+          "address": 6577891168,
+          "methodPointers": 6592915328,
+          "count": 71,
+          "fileBacked": true
+        },
+        "UnityEngine.TerrainModule.dll": {
+          "address": 6577897184,
+          "methodPointers": 6592927408,
+          "count": 41,
+          "fileBacked": true
+        },
+        "UnityEngine.SharedInternalsModule.dll": {
+          "address": 6577896208,
+          "methodPointers": 6592926640,
+          "count": 68,
+          "fileBacked": true
+        },
+        "UnityEngine.TilemapModule.dll": {
+          "address": 6577900816,
+          "methodPointers": 6592933536,
+          "count": 42,
+          "fileBacked": true
+        },
+        "UnityEngine.VFXModule.dll": {
+          "address": 6577957568,
+          "methodPointers": 6593015056,
+          "count": 33,
+          "fileBacked": true
+        },
+        "Sirenix.Serialization.Config.dll": {
+          "address": 6577507568,
+          "methodPointers": 6592309760,
+          "count": 22,
+          "fileBacked": true
+        },
+        "UnityEngine.AssetBundleModule.dll": {
+          "address": 6577861376,
+          "methodPointers": 6592865136,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.SubsystemsModule.dll": {
+          "address": 6577896832,
+          "methodPointers": 6592927184,
+          "count": 28,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestWWWModule.dll": {
+          "address": 6577957232,
+          "methodPointers": 6593014928,
+          "count": 15,
+          "fileBacked": true
+        },
+        "UnityEngine.VideoModule.dll": {
+          "address": 6577957824,
+          "methodPointers": 6593015344,
+          "count": 18,
+          "fileBacked": true
+        },
+        "UnityEngine.DirectorModule.dll": {
+          "address": 6577887264,
+          "methodPointers": 6592908624,
+          "count": 34,
+          "fileBacked": true
+        },
+        "UnityEngine.InputModule.dll": {
+          "address": 6577891424,
+          "methodPointers": 6592916192,
+          "count": 17,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityAnalyticsModule.dll": {
+          "address": 6577955968,
+          "methodPointers": 6593013584,
+          "count": 12,
+          "fileBacked": true
+        },
+        "Hypergryph.EventLogSDK.dll": {
+          "address": 6565030464,
+          "methodPointers": 6587739280,
+          "count": 181,
+          "fileBacked": true
+        },
+        "UnityEngine.JSONSerializeModule.dll": {
+          "address": 6577891680,
+          "methodPointers": 6592916328,
+          "count": 7,
+          "fileBacked": true
+        },
+        "UnityEngine.UnityWebRequestTextureModule.dll": {
+          "address": 6577956976,
+          "methodPointers": 6593014832,
+          "count": 12,
+          "fileBacked": true
+        },
+        "UnityEngine.VRModule.dll": {
+          "address": 6577958032,
+          "methodPointers": 6593015520,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Torappu.Sofdec.dll": {
+          "address": 6577765232,
+          "methodPointers": 6592616000,
+          "count": 66,
+          "fileBacked": true
+        },
+        "UnityEngine.ImageConversionModule.dll": {
+          "address": 6577887632,
+          "methodPointers": 6592908904,
+          "count": 4,
+          "fileBacked": true
+        },
+        "UnityEngine.WindModule.dll": {
+          "address": 6577958256,
+          "methodPointers": 6593015600,
+          "count": 13,
+          "fileBacked": true
+        },
+        "UnityEngine.GridModule.dll": {
+          "address": 6577887440,
+          "methodPointers": 6592908896,
+          "count": 1,
+          "fileBacked": true
+        },
+        "UnityEngine.ScreenCaptureModule.dll": {
+          "address": 6577895760,
+          "methodPointers": 6592926624,
+          "count": 1,
+          "fileBacked": true
+        },
+        "Hypergryph.GameUpdate.dll": {
+          "address": 6565030928,
+          "methodPointers": 6587740736,
+          "count": 71,
+          "fileBacked": true
+        },
+        "Unity.Profiling.Core.dll": {
+          "address": 6577843520,
+          "methodPointers": 6592835264,
+          "count": 41,
+          "fileBacked": true
+        },
+        "System.Configuration.dll": {
+          "address": 6577584560,
+          "methodPointers": 6592355712,
+          "count": 35,
+          "fileBacked": true
+        },
+        "System.Runtime.Serialization.dll": {
+          "address": 6577603664,
+          "methodPointers": 6592365904,
+          "count": 6,
+          "fileBacked": true
+        },
+        "System.Runtime.CompilerServices.Unsafe.dll": {
+          "address": 6577603456,
+          "methodPointers": 6592365888,
+          "count": 2,
+          "fileBacked": true
+        },
+        "Unity.MemoryProfiler.dll": {
+          "address": 6577838800,
+          "methodPointers": 6592828688,
+          "count": 8,
+          "fileBacked": true
+        },
+        "CriMw.CriWare.Vp9.Runtime.dll": {
+          "address": 6565019680,
+          "methodPointers": 6587725648,
+          "count": 10,
+          "fileBacked": true
+        },
+        "Hypergryph.Log.dll": {
+          "address": 6565031152,
+          "methodPointers": 6587741312,
+          "count": 14,
+          "fileBacked": true
+        },
+        "XNode.Groups.dll": {
+          "address": 6577959056,
+          "methodPointers": 6593016960,
+          "count": 3,
+          "fileBacked": true
+        },
+        "AntiSDK.dll": {
+          "address": 6563858064,
+          "methodPointers": 6585841616,
+          "count": 3,
+          "fileBacked": true
+        },
+        "Torappu.UICommonEditor.dll": {
+          "address": 6577765408,
+          "methodPointers": 6592616528,
+          "count": 2,
+          "fileBacked": true
+        },
+        "enum2int.dll": {
+          "address": 6565028352,
+          "methodPointers": 6593280072,
+          "count": 2,
+          "fileBacked": false
+        },
+        "__Generated": {
+          "address": 6577960432,
+          "methodPointers": 6593018584,
+          "count": 3,
+          "fileBacked": true
+        }
+      }
+    }
+  },
+  "result": [
+    {
+      "nameIndex": 411482,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35222,
+      "genericContainerIndex": -1,
+      "token": 100681112,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17815,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450875392,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_GetLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252954,
+          "typeIndex": 60391,
+          "index": 35222,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 411498,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35223,
+      "genericContainerIndex": -1,
+      "token": 100681113,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17816,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450933856,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_SetLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252955,
+          "typeIndex": 60391,
+          "index": 35223,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 411514,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35224,
+      "genericContainerIndex": -1,
+      "token": 100681114,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17817,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450880000,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_GetTempLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252956,
+          "typeIndex": 60391,
+          "index": 35224,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 411534,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35225,
+      "genericContainerIndex": -1,
+      "token": 100681115,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17818,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450938000,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_SetTempLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252957,
+          "typeIndex": 60391,
+          "index": 35225,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 411554,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35226,
+      "genericContainerIndex": -1,
+      "token": 100681116,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17819,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450884576,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_LifePointToShow",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252958,
+          "typeIndex": 60391,
+          "index": 35226,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 411573,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35227,
+      "genericContainerIndex": -1,
+      "token": 100681117,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17820,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450874176,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_GetLifePointLossByEnemy",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252959,
+          "typeIndex": 60391,
+          "index": 35227,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 411600,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35228,
+      "genericContainerIndex": -1,
+      "token": 100681118,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17821,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450874784,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_GetLifePointLossByOthers",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252960,
+          "typeIndex": 60391,
+          "index": 35228,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 412270,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35263,
+      "genericContainerIndex": -1,
+      "token": 100681153,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17856,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450898560,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_ModifyLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252995,
+          "typeIndex": 60391,
+          "index": 35263,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 412289,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35264,
+      "genericContainerIndex": -1,
+      "token": 100681154,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 17857,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450806080,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_AddTempLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134252996,
+          "typeIndex": 60391,
+          "index": 35264,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 417715,
+      "declaringType": 863,
+      "returnType": 60309,
+      "parameterStart": 35495,
+      "genericContainerIndex": -1,
+      "token": 100681385,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 18088,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450789920,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._g_get_maxLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134253227,
+          "typeIndex": 60391,
+          "index": 35495,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 422619,
+      "declaringType": 875,
+      "returnType": 60309,
+      "parameterStart": 35737,
+      "genericContainerIndex": -1,
+      "token": 100681639,
+      "flags": 145,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 18342,
+      "image": "Assembly-CSharp.dll",
+      "address": 6453339312,
+      "addressStatus": "file-backed",
+      "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._m_NewLifePointDelta_xlua_st_",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 382526,
+          "token": 134253469,
+          "typeIndex": 60391,
+          "index": 35737,
+          "name": "L",
+          "typeName": "nint"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2478155,
+      "declaringType": 10185,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100728840,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 65543,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449208800,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.get_maxLifePoint",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2478196,
+      "declaringType": 10185,
+      "returnType": 60309,
+      "parameterStart": 66044,
+      "genericContainerIndex": -1,
+      "token": 100728842,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 65545,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449084624,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.GetLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 1412069,
+          "token": 134283778,
+          "typeIndex": 65995,
+          "index": 66044,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2478209,
+      "declaringType": 10185,
+      "returnType": 84484,
+      "parameterStart": 66045,
+      "genericContainerIndex": -1,
+      "token": 100728843,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 3,
+      "index": 65546,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449134208,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.SetLifePoint",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134283779,
+          "typeIndex": 60309,
+          "index": 66045,
+          "name": "value",
+          "typeName": "int"
+        },
+        {
+          "nameIndex": 1412069,
+          "token": 134283780,
+          "typeIndex": 65990,
+          "index": 66046,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        },
+        {
+          "nameIndex": 529947,
+          "token": 134283781,
+          "typeIndex": 46049,
+          "index": 66047,
+          "name": "force",
+          "typeName": "bool"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2478222,
+      "declaringType": 10185,
+      "returnType": 60309,
+      "parameterStart": 66048,
+      "genericContainerIndex": -1,
+      "token": 100728844,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 65547,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449086784,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.GetTempLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 1412069,
+          "token": 134283782,
+          "typeIndex": 65995,
+          "index": 66048,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2478239,
+      "declaringType": 10185,
+      "returnType": 84484,
+      "parameterStart": 66049,
+      "genericContainerIndex": -1,
+      "token": 100728845,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 2,
+      "index": 65548,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449136752,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.SetTempLifePoint",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134283783,
+          "typeIndex": 60309,
+          "index": 66049,
+          "name": "value",
+          "typeName": "int"
+        },
+        {
+          "nameIndex": 1412069,
+          "token": 134283784,
+          "typeIndex": 65990,
+          "index": 66050,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2478256,
+      "declaringType": 10185,
+      "returnType": 60309,
+      "parameterStart": 66051,
+      "genericContainerIndex": -1,
+      "token": 100728846,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 65549,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449089904,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.LifePointToShow",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 1412069,
+          "token": 134283785,
+          "typeIndex": 65995,
+          "index": 66051,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2478272,
+      "declaringType": 10185,
+      "returnType": 60309,
+      "parameterStart": 66052,
+      "genericContainerIndex": -1,
+      "token": 100728847,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 65550,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449084080,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.GetLifePointLossByEnemy",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 1412069,
+          "token": 134283786,
+          "typeIndex": 65995,
+          "index": 66052,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2478296,
+      "declaringType": 10185,
+      "returnType": 60309,
+      "parameterStart": 66053,
+      "genericContainerIndex": -1,
+      "token": 100728848,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 65551,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449084352,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.GetLifePointLossByOthers",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 1412069,
+          "token": 134283787,
+          "typeIndex": 65995,
+          "index": 66053,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2479263,
+      "declaringType": 10185,
+      "returnType": 46024,
+      "parameterStart": 66127,
+      "genericContainerIndex": -1,
+      "token": 100728898,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 4,
+      "index": 65601,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449104016,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.ModifyLifePoint",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134283861,
+          "typeIndex": 60309,
+          "index": 66127,
+          "name": "value",
+          "typeName": "int"
+        },
+        {
+          "nameIndex": 6707,
+          "token": 134283862,
+          "typeIndex": 53921,
+          "index": 66128,
+          "name": "source",
+          "typeName": "Torappu.Battle.Entity"
+        },
+        {
+          "nameIndex": 1412069,
+          "token": 134283863,
+          "typeIndex": 65990,
+          "index": 66129,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        },
+        {
+          "nameIndex": 2479251,
+          "token": 134283864,
+          "typeIndex": 46049,
+          "index": 66130,
+          "name": "isReachExit",
+          "typeName": "bool"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2479279,
+      "declaringType": 10185,
+      "returnType": 46024,
+      "parameterStart": 66131,
+      "genericContainerIndex": -1,
+      "token": 100728899,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 3,
+      "index": 65602,
+      "image": "Assembly-CSharp.dll",
+      "address": 6449041200,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController.AddTempLifePoint",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134283865,
+          "typeIndex": 60309,
+          "index": 66131,
+          "name": "value",
+          "typeName": "int"
+        },
+        {
+          "nameIndex": 6707,
+          "token": 134283866,
+          "typeIndex": 53921,
+          "index": 66132,
+          "name": "source",
+          "typeName": "Torappu.Battle.Entity"
+        },
+        {
+          "nameIndex": 1412069,
+          "token": 134283867,
+          "typeIndex": 65990,
+          "index": 66133,
+          "name": "side",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2499359,
+      "declaringType": 10172,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100729115,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 65818,
+      "image": "Assembly-CSharp.dll",
+      "address": 6447909792,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.BattleController/ReplayController.get_savedRemainingLifePoint",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2594715,
+      "declaringType": 10419,
+      "returnType": 60309,
+      "parameterStart": 68754,
+      "genericContainerIndex": -1,
+      "token": 100731606,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 68309,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450164576,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.CooperateCommonGlobalBuff._GetReviveLifePoint",
+      "returnTypeName": "int",
+      "parameters": [
+        {
+          "nameIndex": 2594703,
+          "token": 134286488,
+          "typeIndex": 60309,
+          "index": 68754,
+          "name": "currentLife",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3165,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": 68845,
+      "genericContainerIndex": -1,
+      "token": 100731723,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 10,
+      "parameterCount": 1,
+      "index": 68426,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450328512,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.OnTick",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3876,
+          "token": 134286579,
+          "typeIndex": 54451,
+          "index": 68845,
+          "name": "deltaTime",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 5026,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": 68846,
+      "genericContainerIndex": -1,
+      "token": 100731724,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 12,
+      "parameterCount": 1,
+      "index": 68427,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450328320,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.OnInit",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 1749,
+          "token": 134286580,
+          "typeIndex": 100828,
+          "index": 68846,
+          "name": "data",
+          "typeName": "Torappu.LevelData/GlobalBuffData"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2598398,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100731725,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 68428,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450329440,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint._CheckToggled",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2598422,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": 68847,
+      "genericContainerIndex": -1,
+      "token": 100731726,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 68429,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450329856,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint._OnToggleChanged",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2598412,
+          "token": 134286581,
+          "typeIndex": 46024,
+          "index": 68847,
+          "name": "isToggled",
+          "typeName": "bool"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2598439,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100731727,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 68430,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450329008,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint._AddCardBuff",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2598452,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100731728,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 68431,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450329632,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint._ClearCardBuff",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100731729,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 68432,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450330560,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2598467,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": 68848,
+      "genericContainerIndex": -1,
+      "token": 100731730,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 68433,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450328800,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.<_ClearCardBuff>b__9_0",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 1095561,
+          "token": 134286582,
+          "typeIndex": 34875,
+          "index": 68848,
+          "name": "cards",
+          "typeName": "Torappu.Battle.Deck/Card[]"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2437253,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": 68849,
+      "genericContainerIndex": -1,
+      "token": 100731731,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 68434,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450298256,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.<>xLuaBaseProxy_OnTick",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134286583,
+          "typeIndex": 54451,
+          "index": 68849,
+          "name": "P0",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 7065,
+      "declaringType": 10435,
+      "returnType": 84484,
+      "parameterStart": 68850,
+      "genericContainerIndex": -1,
+      "token": 100731732,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 68435,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450148272,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.<>xLuaBaseProxy_OnInit",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134286584,
+          "typeIndex": 100828,
+          "index": 68850,
+          "name": "P0",
+          "typeName": "Torappu.LevelData/GlobalBuffData"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 10434,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100731733,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 68436,
+      "image": "Assembly-CSharp.dll",
+      "address": 6447828160,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint/<>c__DisplayClass8_0..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2598643,
+      "declaringType": 10434,
+      "returnType": 84484,
+      "parameterStart": 68851,
+      "genericContainerIndex": -1,
+      "token": 100731734,
+      "flags": 131,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 68437,
+      "image": "Assembly-CSharp.dll",
+      "address": 6450350608,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint/<>c__DisplayClass8_0.<_AddCardBuff>b__0",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 1095561,
+          "token": 134286585,
+          "typeIndex": 34875,
+          "index": 68851,
+          "name": "cards",
+          "typeName": "Torappu.Battle.Deck/Card[]"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2738219,
+      "declaringType": 10870,
+      "returnType": 63128,
+      "parameterStart": 72244,
+      "genericContainerIndex": -1,
+      "token": 100735487,
+      "flags": 150,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 3,
+      "index": 72190,
+      "image": "Assembly-CSharp.dll",
+      "address": 6451933472,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Modifier.NewLifePointDelta",
+      "returnTypeName": "Torappu.Battle.Modifier",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134289978,
+          "typeIndex": 60309,
+          "index": 72244,
+          "name": "value",
+          "typeName": "int"
+        },
+        {
+          "nameIndex": 6707,
+          "token": 134289979,
+          "typeIndex": 53921,
+          "index": 72245,
+          "name": "source",
+          "typeName": "Torappu.Battle.Entity"
+        },
+        {
+          "nameIndex": 1413663,
+          "token": 134289980,
+          "typeIndex": 65990,
+          "index": 72246,
+          "name": "playerSide",
+          "typeName": "Torappu.PlayerSide"
+        }
+      ]
+    },
+    {
+      "nameIndex": 2766998,
+      "declaringType": 10944,
+      "returnType": 78546,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100736312,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 73015,
+      "image": "Assembly-CSharp.dll",
+      "address": 6452363424,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.RoguelikeBattleTopicHolder.get_rogue3HideUILifePoint",
+      "returnTypeName": "string",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2894862,
+      "declaringType": 11538,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100740936,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 77639,
+      "image": "Assembly-CSharp.dll",
+      "address": 6453777552,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Enemy.get_lifePointReduce",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2894882,
+      "declaringType": 11538,
+      "returnType": 84484,
+      "parameterStart": 76839,
+      "genericContainerIndex": -1,
+      "token": 100740937,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 77640,
+      "image": "Assembly-CSharp.dll",
+      "address": 6453788720,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Enemy.set_lifePointReduce",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134294573,
+          "typeIndex": 60309,
+          "index": 76839,
+          "name": "value",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3103268,
+      "declaringType": 12234,
+      "returnType": 84484,
+      "parameterStart": 82020,
+      "genericContainerIndex": -1,
+      "token": 100747391,
+      "flags": 454,
+      "iflags": 0,
+      "slot": 148,
+      "parameterCount": 1,
+      "index": 84094,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455681680,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/DefaultGameMode.OnModifyLifePoint",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 512949,
+          "token": 134299756,
+          "typeIndex": 31991,
+          "index": 82020,
+          "name": "modifier",
+          "typeName": "Torappu.Battle.Modifier&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3104773,
+      "declaringType": 12244,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100747496,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 84199,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455953360,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.get_currentLifePoint",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3104794,
+      "declaringType": 12244,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100747497,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 84200,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455956176,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.get_lostLifePointByEnemyOverload",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3104827,
+      "declaringType": 12244,
+      "returnType": 60309,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100747498,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 84201,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455956336,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.get_lostLifePointByOthers",
+      "returnTypeName": "int",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3103268,
+      "declaringType": 12244,
+      "returnType": 84484,
+      "parameterStart": 82162,
+      "genericContainerIndex": -1,
+      "token": 100747544,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 148,
+      "parameterCount": 1,
+      "index": 84247,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455912528,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.OnModifyLifePoint",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 512949,
+          "token": 134299898,
+          "typeIndex": 31991,
+          "index": 82162,
+          "name": "modifier",
+          "typeName": "Torappu.Battle.Modifier&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3106562,
+      "declaringType": 12244,
+      "returnType": 84484,
+      "parameterStart": 82241,
+      "genericContainerIndex": -1,
+      "token": 100747603,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 84306,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455949168,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode._UpdateLifePointTimer",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3876,
+          "token": 134299977,
+          "typeIndex": 54451,
+          "index": 82241,
+          "name": "deltaTime",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3107188,
+      "declaringType": 12244,
+      "returnType": 84484,
+      "parameterStart": 82318,
+      "genericContainerIndex": -1,
+      "token": 100747650,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 84353,
+      "image": "Assembly-CSharp.dll",
+      "address": 6455919744,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.<>xLuaBaseProxy_OnModifyLifePoint",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134300054,
+          "typeIndex": 31991,
+          "index": 82318,
+          "name": "P0",
+          "typeName": "Torappu.Battle.Modifier&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3103268,
+      "declaringType": 12312,
+      "returnType": 84484,
+      "parameterStart": 83226,
+      "genericContainerIndex": -1,
+      "token": 100748547,
+      "flags": 1478,
+      "iflags": 0,
+      "slot": 31,
+      "parameterCount": 1,
+      "index": 85250,
+      "image": "Assembly-CSharp.dll",
+      "address": 0,
+      "addressStatus": "null-method-pointer",
+      "fullname": "Torappu.Battle.GameMode.IGameMode.OnModifyLifePoint",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 512949,
+          "token": 134300973,
+          "typeIndex": 31991,
+          "index": 83226,
+          "name": "modifier",
+          "typeName": "Torappu.Battle.Modifier&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 12557,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100750369,
+      "flags": 6276,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 87072,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456588272,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointSet..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3170027,
+      "declaringType": 12557,
+      "returnType": 107237,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100750370,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 0,
+      "index": 87073,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456588368,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointSet.get_targetMask",
+      "returnTypeName": "Torappu.Battle.Runes.Rune/RuneTarget",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3170078,
+      "declaringType": 12557,
+      "returnType": 84484,
+      "parameterStart": 84577,
+      "genericContainerIndex": -1,
+      "token": 100750371,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 1,
+      "index": 87074,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456588080,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointSet.PreprocessLevelOptions",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 18830,
+          "token": 134302324,
+          "typeIndex": 100830,
+          "index": 84577,
+          "name": "options",
+          "typeName": "Torappu.LevelData/Options"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3063409,
+      "declaringType": 12557,
+      "returnType": 84484,
+      "parameterStart": 84578,
+      "genericContainerIndex": -1,
+      "token": 100750372,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 9,
+      "parameterCount": 3,
+      "index": 87075,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456587936,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointSet.PreprocessLevelData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 1037564,
+          "token": 134302325,
+          "typeIndex": 61373,
+          "index": 84578,
+          "name": "levelData",
+          "typeName": "Torappu.LevelData"
+        },
+        {
+          "nameIndex": 1227053,
+          "token": 134302326,
+          "typeIndex": 62230,
+          "index": 84579,
+          "name": "mapData",
+          "typeName": "Torappu.MapData"
+        },
+        {
+          "nameIndex": 20886,
+          "token": 134302327,
+          "typeIndex": 32685,
+          "index": 84580,
+          "name": "extraData",
+          "typeName": "Torappu.Battle.Runes.Rune/RuneLevelExtraOutput&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 12558,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100750373,
+      "flags": 6276,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 87076,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456587744,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointAdd..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3170027,
+      "declaringType": 12558,
+      "returnType": 107237,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100750374,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 0,
+      "index": 87077,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456587840,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointAdd.get_targetMask",
+      "returnTypeName": "Torappu.Battle.Runes.Rune/RuneTarget",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3170078,
+      "declaringType": 12558,
+      "returnType": 84484,
+      "parameterStart": 84581,
+      "genericContainerIndex": -1,
+      "token": 100750375,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 8,
+      "parameterCount": 1,
+      "index": 87078,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456587552,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointAdd.PreprocessLevelOptions",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 18830,
+          "token": 134302328,
+          "typeIndex": 100830,
+          "index": 84581,
+          "name": "options",
+          "typeName": "Torappu.LevelData/Options"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3063409,
+      "declaringType": 12558,
+      "returnType": 84484,
+      "parameterStart": 84582,
+      "genericContainerIndex": -1,
+      "token": 100750376,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 9,
+      "parameterCount": 3,
+      "index": 87079,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456587408,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointAdd.PreprocessLevelData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 1037564,
+          "token": 134302329,
+          "typeIndex": 61373,
+          "index": 84582,
+          "name": "levelData",
+          "typeName": "Torappu.LevelData"
+        },
+        {
+          "nameIndex": 1227053,
+          "token": 134302330,
+          "typeIndex": 62230,
+          "index": 84583,
+          "name": "mapData",
+          "typeName": "Torappu.MapData"
+        },
+        {
+          "nameIndex": 20886,
+          "token": 134302331,
+          "typeIndex": 32685,
+          "index": 84584,
+          "name": "extraData",
+          "typeName": "Torappu.Battle.Runes.Rune/RuneLevelExtraOutput&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3176836,
+      "declaringType": 12646,
+      "returnType": 54451,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100750729,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 87432,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456696768,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_lifePointModifierAddition",
+      "returnTypeName": "Torappu.FP",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3176866,
+      "declaringType": 12646,
+      "returnType": 84484,
+      "parameterStart": 84895,
+      "genericContainerIndex": -1,
+      "token": 100750730,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 87433,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456697280,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.set_lifePointModifierAddition",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134302642,
+          "typeIndex": 54451,
+          "index": 84895,
+          "name": "value",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3176896,
+      "declaringType": 12646,
+      "returnType": 54451,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100750731,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 87434,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456696896,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_lifePointModifierScale",
+      "returnTypeName": "Torappu.FP",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3176923,
+      "declaringType": 12646,
+      "returnType": 84484,
+      "parameterStart": 84896,
+      "genericContainerIndex": -1,
+      "token": 100750732,
+      "flags": 2182,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 87435,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456697424,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.set_lifePointModifierScale",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134302643,
+          "typeIndex": 54451,
+          "index": 84896,
+          "name": "value",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3177432,
+      "declaringType": 12646,
+      "returnType": 84484,
+      "parameterStart": 84920,
+      "genericContainerIndex": -1,
+      "token": 100750763,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 87466,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456689600,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._OnModifyLifePoint",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 512949,
+          "token": 134302667,
+          "typeIndex": 31991,
+          "index": 84920,
+          "name": "modifier",
+          "typeName": "Torappu.Battle.Modifier&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1769843,
+      "declaringType": 12678,
+      "returnType": 84484,
+      "parameterStart": 85055,
+      "genericContainerIndex": -1,
+      "token": 100751012,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 1,
+      "index": 87715,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456661328,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LMaxLifePointAdd.Preprocess",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3170101,
+          "token": 134302802,
+          "typeIndex": 32471,
+          "index": 85055,
+          "name": "inOut",
+          "typeName": "Torappu.Battle.Roguelike.BasicRelic/RelicInOut&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 12678,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100751013,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 87716,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456661520,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LMaxLifePointAdd..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3182203,
+      "declaringType": 12678,
+      "returnType": 84484,
+      "parameterStart": 85056,
+      "genericContainerIndex": -1,
+      "token": 100751014,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 87717,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456637280,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LMaxLifePointAdd.<>xLuaBaseProxy_Preprocess",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134302803,
+          "typeIndex": 32471,
+          "index": 85056,
+          "name": "P0",
+          "typeName": "Torappu.Battle.Roguelike.BasicRelic/RelicInOut&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1769843,
+      "declaringType": 12680,
+      "returnType": 84484,
+      "parameterStart": 85059,
+      "genericContainerIndex": -1,
+      "token": 100751018,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 1,
+      "index": 87721,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456658816,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyAddition.Preprocess",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3170101,
+          "token": 134302806,
+          "typeIndex": 32471,
+          "index": 85059,
+          "name": "inOut",
+          "typeName": "Torappu.Battle.Roguelike.BasicRelic/RelicInOut&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 12680,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100751019,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 87722,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456659440,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyAddition..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3182203,
+      "declaringType": 12680,
+      "returnType": 84484,
+      "parameterStart": 85060,
+      "genericContainerIndex": -1,
+      "token": 100751020,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 87723,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456637280,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyAddition.<>xLuaBaseProxy_Preprocess",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134302807,
+          "typeIndex": 32471,
+          "index": 85060,
+          "name": "P0",
+          "typeName": "Torappu.Battle.Roguelike.BasicRelic/RelicInOut&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1769843,
+      "declaringType": 12681,
+      "returnType": 84484,
+      "parameterStart": 85061,
+      "genericContainerIndex": -1,
+      "token": 100751021,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 7,
+      "parameterCount": 1,
+      "index": 87724,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456659536,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyScale.Preprocess",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3170101,
+          "token": 134302808,
+          "typeIndex": 32471,
+          "index": 85061,
+          "name": "inOut",
+          "typeName": "Torappu.Battle.Roguelike.BasicRelic/RelicInOut&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 12681,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100751022,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 87725,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456660160,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyScale..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3182203,
+      "declaringType": 12681,
+      "returnType": 84484,
+      "parameterStart": 85062,
+      "genericContainerIndex": -1,
+      "token": 100751023,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 87726,
+      "image": "Assembly-CSharp.dll",
+      "address": 6456637280,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyScale.<>xLuaBaseProxy_Preprocess",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134302809,
+          "typeIndex": 32471,
+          "index": 85062,
+          "name": "P0",
+          "typeName": "Torappu.Battle.Roguelike.BasicRelic/RelicInOut&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 526434,
+      "declaringType": 13520,
+      "returnType": 84484,
+      "parameterStart": 90729,
+      "genericContainerIndex": -1,
+      "token": 100758094,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 1,
+      "index": 94797,
+      "image": "Assembly-CSharp.dll",
+      "address": 6458984880,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker.LoadData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3124,
+          "token": 134308474,
+          "typeIndex": 45909,
+          "index": 90729,
+          "name": "blackboard",
+          "typeName": "Torappu.Blackboard"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3165,
+      "declaringType": 13520,
+      "returnType": 84484,
+      "parameterStart": 90730,
+      "genericContainerIndex": -1,
+      "token": 100758095,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 9,
+      "parameterCount": 1,
+      "index": 94798,
+      "image": "Assembly-CSharp.dll",
+      "address": 6458985072,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker.OnTick",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3876,
+          "token": 134308475,
+          "typeIndex": 54451,
+          "index": 90730,
+          "name": "deltaTime",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3362583,
+      "declaringType": 13520,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100758096,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 0,
+      "index": 94799,
+      "image": "Assembly-CSharp.dll",
+      "address": 6458984784,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker.CheckInitialToggled",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2597932,
+      "declaringType": 13520,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100758097,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 94800,
+      "image": "Assembly-CSharp.dll",
+      "address": 6458985200,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker._CheckCondition",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 13520,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100758098,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 94801,
+      "image": "Assembly-CSharp.dll",
+      "address": 6458985376,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2437253,
+      "declaringType": 13520,
+      "returnType": 84484,
+      "parameterStart": 90731,
+      "genericContainerIndex": -1,
+      "token": 100758099,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 94802,
+      "image": "Assembly-CSharp.dll",
+      "address": 6458943392,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker.<>xLuaBaseProxy_OnTick",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134308476,
+          "typeIndex": 54451,
+          "index": 90731,
+          "name": "P0",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 526434,
+      "declaringType": 13524,
+      "returnType": 84484,
+      "parameterStart": 90742,
+      "genericContainerIndex": -1,
+      "token": 100758127,
+      "flags": 196,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 1,
+      "index": 94830,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459002704,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker.LoadData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3124,
+          "token": 134308487,
+          "typeIndex": 45909,
+          "index": 90742,
+          "name": "blackboard",
+          "typeName": "Torappu.Blackboard"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3165,
+      "declaringType": 13524,
+      "returnType": 84484,
+      "parameterStart": 90743,
+      "genericContainerIndex": -1,
+      "token": 100758128,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 9,
+      "parameterCount": 1,
+      "index": 94831,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459003280,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker.OnTick",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3876,
+          "token": 134308488,
+          "typeIndex": 54451,
+          "index": 90743,
+          "name": "deltaTime",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3362583,
+      "declaringType": 13524,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100758129,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 5,
+      "parameterCount": 0,
+      "index": 94832,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459002576,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker.CheckInitialToggled",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2597932,
+      "declaringType": 13524,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100758130,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 94833,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459003424,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker._CheckCondition",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2721833,
+      "declaringType": 13524,
+      "returnType": 46024,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100758131,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 94834,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459004048,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker._CheckGameMode",
+      "returnTypeName": "bool",
+      "parameters": []
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 13524,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100758132,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 94835,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459004288,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 2437253,
+      "declaringType": 13524,
+      "returnType": 84484,
+      "parameterStart": 90744,
+      "genericContainerIndex": -1,
+      "token": 100758133,
+      "flags": 1,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 94836,
+      "image": "Assembly-CSharp.dll",
+      "address": 6458943392,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker.<>xLuaBaseProxy_OnTick",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 2172,
+          "token": 134308489,
+          "typeIndex": 54451,
+          "index": 90744,
+          "name": "P0",
+          "typeName": "Torappu.FP"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3407485,
+      "declaringType": 14083,
+      "returnType": 90650,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100761535,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "index": 98238,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459961360,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/AssignEnemyLifePointReduceToBB.get_allowedSource",
+      "returnTypeName": "Torappu.Battle.Action.ActionNode/SourceType",
+      "parameters": []
+    },
+    {
+      "nameIndex": 397673,
+      "declaringType": 14083,
+      "returnType": 46024,
+      "parameterStart": 93365,
+      "genericContainerIndex": -1,
+      "token": 100761536,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 3,
+      "index": 98239,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459960816,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/AssignEnemyLifePointReduceToBB.Execute",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 3124,
+          "token": 134311110,
+          "typeIndex": 45909,
+          "index": 93365,
+          "name": "blackboard",
+          "typeName": "Torappu.Blackboard"
+        },
+        {
+          "nameIndex": 440673,
+          "token": 134311111,
+          "typeIndex": 90650,
+          "index": 93366,
+          "name": "sourceType",
+          "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+        },
+        {
+          "nameIndex": 440684,
+          "token": 134311112,
+          "typeIndex": 32502,
+          "index": 93367,
+          "name": "snapshot",
+          "typeName": "Torappu.Battle.Context/Snapshot&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 14083,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100761537,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 98240,
+      "image": "Assembly-CSharp.dll",
+      "address": 6459961216,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/AssignEnemyLifePointReduceToBB..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3407485,
+      "declaringType": 14253,
+      "returnType": 90650,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100762135,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "index": 98838,
+      "image": "Assembly-CSharp.dll",
+      "address": 6460198032,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/ModifyLifePoint.get_allowedSource",
+      "returnTypeName": "Torappu.Battle.Action.ActionNode/SourceType",
+      "parameters": []
+    },
+    {
+      "nameIndex": 397673,
+      "declaringType": 14253,
+      "returnType": 46024,
+      "parameterStart": 94000,
+      "genericContainerIndex": -1,
+      "token": 100762136,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 3,
+      "index": 98839,
+      "image": "Assembly-CSharp.dll",
+      "address": 6460197312,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/ModifyLifePoint.Execute",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 3124,
+          "token": 134311745,
+          "typeIndex": 45909,
+          "index": 94000,
+          "name": "blackboard",
+          "typeName": "Torappu.Blackboard"
+        },
+        {
+          "nameIndex": 440673,
+          "token": 134311746,
+          "typeIndex": 90650,
+          "index": 94001,
+          "name": "sourceType",
+          "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+        },
+        {
+          "nameIndex": 440684,
+          "token": 134311747,
+          "typeIndex": 32502,
+          "index": 94002,
+          "name": "snapshot",
+          "typeName": "Torappu.Battle.Context/Snapshot&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 14253,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100762137,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 98840,
+      "image": "Assembly-CSharp.dll",
+      "address": 6460197888,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/ModifyLifePoint..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3407485,
+      "declaringType": 14254,
+      "returnType": 90650,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100762138,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "index": 98841,
+      "image": "Assembly-CSharp.dll",
+      "address": 6460129584,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/AddTempLifePoint.get_allowedSource",
+      "returnTypeName": "Torappu.Battle.Action.ActionNode/SourceType",
+      "parameters": []
+    },
+    {
+      "nameIndex": 397673,
+      "declaringType": 14254,
+      "returnType": 46024,
+      "parameterStart": 94003,
+      "genericContainerIndex": -1,
+      "token": 100762139,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 3,
+      "index": 98842,
+      "image": "Assembly-CSharp.dll",
+      "address": 6460129104,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/AddTempLifePoint.Execute",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 3124,
+          "token": 134311748,
+          "typeIndex": 45909,
+          "index": 94003,
+          "name": "blackboard",
+          "typeName": "Torappu.Blackboard"
+        },
+        {
+          "nameIndex": 440673,
+          "token": 134311749,
+          "typeIndex": 90650,
+          "index": 94004,
+          "name": "sourceType",
+          "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+        },
+        {
+          "nameIndex": 440684,
+          "token": 134311750,
+          "typeIndex": 32502,
+          "index": 94005,
+          "name": "snapshot",
+          "typeName": "Torappu.Battle.Context/Snapshot&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 14254,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100762140,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 98843,
+      "image": "Assembly-CSharp.dll",
+      "address": 6460129472,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/AddTempLifePoint..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3407485,
+      "declaringType": 15000,
+      "returnType": 90650,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100764659,
+      "flags": 2246,
+      "iflags": 0,
+      "slot": 4,
+      "parameterCount": 0,
+      "index": 101362,
+      "image": "Assembly-CSharp.dll",
+      "address": 6461155744,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/FilterLifePoint.get_allowedSource",
+      "returnTypeName": "Torappu.Battle.Action.ActionNode/SourceType",
+      "parameters": []
+    },
+    {
+      "nameIndex": 397673,
+      "declaringType": 15000,
+      "returnType": 46024,
+      "parameterStart": 96551,
+      "genericContainerIndex": -1,
+      "token": 100764660,
+      "flags": 198,
+      "iflags": 0,
+      "slot": 6,
+      "parameterCount": 3,
+      "index": 101363,
+      "image": "Assembly-CSharp.dll",
+      "address": 6461155344,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/FilterLifePoint.Execute",
+      "returnTypeName": "bool",
+      "parameters": [
+        {
+          "nameIndex": 3124,
+          "token": 134314296,
+          "typeIndex": 45909,
+          "index": 96551,
+          "name": "blackboard",
+          "typeName": "Torappu.Blackboard"
+        },
+        {
+          "nameIndex": 440673,
+          "token": 134314297,
+          "typeIndex": 90650,
+          "index": 96552,
+          "name": "sourceType",
+          "typeName": "Torappu.Battle.Action.ActionNode/SourceType"
+        },
+        {
+          "nameIndex": 440684,
+          "token": 134314298,
+          "typeIndex": 32502,
+          "index": 96553,
+          "name": "snapshot",
+          "typeName": "Torappu.Battle.Context/Snapshot&"
+        }
+      ]
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 15000,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100764661,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 101364,
+      "image": "Assembly-CSharp.dll",
+      "address": 6461155648,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.Action.Nodes/FilterLifePoint..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 1400055,
+      "declaringType": 15937,
+      "returnType": 84484,
+      "parameterStart": 99866,
+      "genericContainerIndex": -1,
+      "token": 100769501,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 106204,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462615008,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifePointRL3.SetData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3564459,
+          "token": 134317611,
+          "typeIndex": 60309,
+          "index": 99866,
+          "name": "lifePoint",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1789603,
+      "declaringType": 15937,
+      "returnType": 84484,
+      "parameterStart": 99867,
+      "genericContainerIndex": -1,
+      "token": 100769502,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 106205,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462615344,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifePointRL3.UpdateData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3564459,
+          "token": 134317612,
+          "typeIndex": 60309,
+          "index": 99867,
+          "name": "lifePoint",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1078,
+      "declaringType": 15937,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100769503,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 106206,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462614752,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifePointRL3.OnDestroy",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 15937,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100769504,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 106207,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462616112,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifePointRL3..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 3595825,
+      "declaringType": 16028,
+      "returnType": 84484,
+      "parameterStart": 100144,
+      "genericContainerIndex": -1,
+      "token": 100770124,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 106827,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462828752,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifeLostGroup.set_lifePointLossByEnemy",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134317889,
+          "typeIndex": 60309,
+          "index": 100144,
+          "name": "value",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 3595850,
+      "declaringType": 16028,
+      "returnType": 84484,
+      "parameterStart": 100145,
+      "genericContainerIndex": -1,
+      "token": 100770125,
+      "flags": 2177,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 106828,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462829136,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifeLostGroup.set_lifePointLossByOthers",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 113,
+          "token": 134317890,
+          "typeIndex": 60309,
+          "index": 100145,
+          "name": "value",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1400055,
+      "declaringType": 16029,
+      "returnType": 84484,
+      "parameterStart": 100152,
+      "genericContainerIndex": -1,
+      "token": 100770130,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 106833,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462829728,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifePoint.SetData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3564459,
+          "token": 134317897,
+          "typeIndex": 60309,
+          "index": 100152,
+          "name": "lifePoint",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1789603,
+      "declaringType": 16029,
+      "returnType": 84484,
+      "parameterStart": 100153,
+      "genericContainerIndex": -1,
+      "token": 100770131,
+      "flags": 134,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 1,
+      "index": 106834,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462830176,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifePoint.UpdateData",
+      "returnTypeName": "void",
+      "parameters": [
+        {
+          "nameIndex": 3564459,
+          "token": 134317898,
+          "typeIndex": 60309,
+          "index": 100153,
+          "name": "lifePoint",
+          "typeName": "int"
+        }
+      ]
+    },
+    {
+      "nameIndex": 1078,
+      "declaringType": 16029,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100770132,
+      "flags": 129,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 106835,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462829440,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifePoint.OnDestroy",
+      "returnTypeName": "void",
+      "parameters": []
+    },
+    {
+      "nameIndex": 107,
+      "declaringType": 16029,
+      "returnType": 84484,
+      "parameterStart": -1,
+      "genericContainerIndex": -1,
+      "token": 100770133,
+      "flags": 6278,
+      "iflags": 0,
+      "slot": 65535,
+      "parameterCount": 0,
+      "index": 106836,
+      "image": "Assembly-CSharp.dll",
+      "address": 6462830896,
+      "addressStatus": "file-backed",
+      "fullname": "Torappu.Battle.UI.UILifePoint..ctor",
+      "returnTypeName": "void",
+      "parameters": []
+    }
+  ]
+}

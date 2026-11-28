@@ -170,6 +170,20 @@ visitEveryCheckPoint=false 说明终点资格不只取决于指令索引；上�
 
 **2026-11-22 补核，内容可以直接请求出口结算。** 实际 OR-7（Act40Side_07）出生的思旧在默认模式用吸收光环为无谓／饮啄安装 `enemy_cjstel_absorb`。开始动作对被拾取者调用 `InstantKill`，实际配置为 `_markReachExit=true` 和 `_switchState=true`。普通 native 体 #99235 在 `0x181102858` 读取前者，进入 `0x18110287d..0x1811028b3`，把后者传给虚槽 95 的 `FinishWithReachExit`。Enemy 覆盖 #77832 切换到对应状态后，在 `0x180abbf26` 把 `REACH_EXIT=1` 传给 FinishMe。这条入口没有先查询被拾取者的几何终点。受害者的到达响应以及关卡扣血资格按各自消费者决定，常规完成／击杀／波次等待的区别仍见案例 30 和 39。此为实际配置和已存普通静态分支的交叉核对。 [绑定](31-route-operations-and-state.md#4-内容证据与可执行条件) · [模板](../evidence/route-operations-20261107/content/route-templates.json#L2589) · [InstantKill 原体](../evidence/resource-mechanisms-20261114/death-attributes/source-writers.json) · [FinishWithReachExit 原体](../evidence/route-exit-20261108/entry.json#L3241) · [PRTS 思旧](https://prts.wiki/w/思旧)
 
+### 5.2 关卡生命值补核（2026-11-28）
+
+**N：个体基础量。** Enemy.Init (#77782, 0x180abcb56) 调用 _AssignData (#77835)。后者读取 Enemy.options.unharmful（+0x538 首字节），为 true 时置 0，否则读取转换后的 LevelData/EnemyData.lifePointReduce（int，+0x50），于 0x180ac5963 写 Enemy 实例 +0x524。该字段有普通 getter/setter（#77639/#77640）；setter 的直接 E8/E9 候选为零，但已证初始化写入被内联，故不能据此否定其他内联写入或 XLua。尚未确认实际内容需要出生后动态重设 loss 或 unharmful。REACH_EXIT 且非 unharmful 才调用默认模式扣血；提前 MarkEnemyKilled 只更新完成／击杀账务并调用 DontCountAsFinished，不变更无害条件或此数值，不将统计资格作为扣血门槛。
+
+**D：数值不是固定 1。** 固定敌人数据库中 m_defined=true 的 lifePointReduce 分布包括 0、1、2、3、5、10、15、30、50、999；简饲源石虫为 0、碎骨与霜星为 2。原始配置是实例初值来源，不等同于所有动态覆盖后的值。
+
+**N：实际全局结算。** ModifyLifePoint (#65601) 构造含整数值、来源、玩家侧的生命点 Modifier，isReachExit 为真时设 shared flag 0x200。_ApplyGlobalModifier（0x180663d30）先调用玩法的 OnApplyingGlobalModifier，再进入 _DoApplyGlobalModifier (#65794)。后者在有来源时先调用来源 OnOutputModifier（0x1806653cb），再检查 isCancelled（0x1806653ea）；取消不写资源。生命点分支取 RoundToInt(finalDelta)（0x18066572c），负值先由临时生命抵消（0x1806657d2–0x180665879），余量才交 SetLifePoint。普通 SetLifePoint (#65546) 将非正值置零，没有将正值上限截为 maxLifePoint 的分支。正值且允许临时生命 flag 时改写临时资源。realDelta（0x180665909）仅为普通生命写入后减写入前，因此护盾完全抵消时 realDelta 为 0。实际负值按 0x200 标志分别累计敌人出口／其他损失（0x180665966 后分支），再在有实际来源时调用 Entity.OnAppliedModifier（0x180665df9）。这些事实不要求项目采用原生 Modifier 的具体类型或通用 Hook。
+
+**D/N：玩法与内容正例。** 萨米肉鸽 rogue_4_relic_encounter_3 配置 level_life_point_modify_scale=2，描述限定在诡谲断章生效且损失翻倍。RoguelikeGameMode.OnApplyingGlobalModifier 转给 Manager，后者 #87465 在 0x180d92228 检查 LIFE_POINT、0x180d922c6 检查 deltaType==2，再将 value 改为 RoundToInt(value × scale) + addition（0x180d92325–0x180d92384），在临时生命抵消之前修改请求，不专门依赖是否出口。普通 DefaultGameMode 的前置及后置回调普通 native 分支无实际修改。另有不经过出口的独立 ModifyLifePoint 模板（如乌萨斯平民 upeople_t 的 ON_OWNER_KILLED），以及额外出口扣血模板 extra_life_point_on_exit 和增加临时生命的模板 heyak_e_004_t_life；肉鸽 rogue_1_band_1 / q08 / q09 有关卡初始临时生命增加配置。
+
+**D：不能把所有额外扣减都解释成前置拦截。** rogue_1_relic_c16 绑定 rogue_1_encore_first_life_point_reduce 模板；该模板的 ON_APPLIED_MODIFIER 分支筛 LIFE_POINT 的 realDelta < 0、检查共享首次标记，复制实扣 delta 然后另行 ModifyLifePoint。因此单看这条结算后分支，护盾全抵不会触发该条件。另有独立 ON_OWNER_REACH_EXIT 分支，读取个体 lifePointReduce，要求非 unharmful、值大于 0、首次标记未设，随后发起额外出口扣减；它没有检查 realDelta 或护盾。不能据第一条分支宣称整个内容在护盾全抵时都不会触发；本批未进行该双入口的实机时序验证。配置模板显式 LIFE_POINT 选择的扫描没有发现 ON_OUTPUT_MODIFIER 专用于该值的模板，未穷尽通用节点、其他资源和 XLua。
+
+[定向原件、版本及复跑方法](../evidence/life-point-exit-20261128/README.md)。
+
 ## 6. 末段跟踪的偏移
 
 **N：** 原生 MoveCheckpoint.GetNextDirection（70190）在安全 next 格已经指向路点目标格时，就将本次已采样 offset 加入 next 位置后求方向；不要求当前格先进入目标格。位置计算与分支见 `0x1808a03f3..0x1808a0437`。[末段方向](../evidence/route-movement-20261018/70190.asm)

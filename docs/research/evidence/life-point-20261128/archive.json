@@ -1,0 +1,4788 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-28"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-28",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "bodies.json#/provenance/client/dll",
+          "manager-branches.json#/provenance/client/dll",
+          "manager.json#/provenance/client/dll",
+          "mode.json#/provenance/client/dll",
+          "search.json#/provenance/client/dll",
+          "settle-branch.json#/provenance/client/dll",
+          "settle.json#/provenance/client/dll",
+          "side.json#/provenance/client/dll",
+          "trace.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "bodies.json#/provenance/client/metadata",
+          "manager-branches.json#/provenance/client/metadata",
+          "manager.json#/provenance/client/metadata",
+          "mode.json#/provenance/client/metadata",
+          "search.json#/provenance/client/metadata",
+          "settle-branch.json#/provenance/client/metadata",
+          "settle.json#/provenance/client/metadata",
+          "side.json#/provenance/client/metadata",
+          "trace.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "bodies.json",
+      "manager-branches.json",
+      "manager.json",
+      "mode.json",
+      "search.json",
+      "settle-branch.json",
+      "settle.json",
+      "side.json",
+      "trace.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "bodies.json",
+        "kind": "record",
+        "bytes": 245181,
+        "sha256": "2452b38163d2238ced65cf1e1f8fa86b04c7f3dac6f2fceccc54890124ab4b33"
+      },
+      {
+        "path": "manager-branches.json",
+        "kind": "record",
+        "bytes": 76533,
+        "sha256": "cafbb0227171ff54a21c8773385c23616e9de251c26299d3e75ebfff91ce1b73"
+      },
+      {
+        "path": "manager-branches.py",
+        "kind": "historical-script",
+        "bytes": 577,
+        "sha256": "9c38bdcb470fcf9111e053993759a575a476ff2e4c14b804e1ecac25737ab83f"
+      },
+      {
+        "path": "manager.json",
+        "kind": "record",
+        "bytes": 227835,
+        "sha256": "da4c91386337d4b23f94cca4e1b45a48eca5266121be7bd5ea6ae941c038edef"
+      },
+      {
+        "path": "manager.py",
+        "kind": "historical-script",
+        "bytes": 834,
+        "sha256": "305cc0b4efa6ef8855adb781a0143ba08f9315fd6a9292e146380c54147ef0a4"
+      },
+      {
+        "path": "mode.json",
+        "kind": "record",
+        "bytes": 191497,
+        "sha256": "e1a8c22c41bd3a57538d2d9d4b518bc757113ebfd033713164d50fb7923410b1"
+      },
+      {
+        "path": "mode.py",
+        "kind": "historical-script",
+        "bytes": 614,
+        "sha256": "b74511a4b763f32bb900bfa7df66357bf24bd46df6fb27f919b0e40b4c085854"
+      },
+      {
+        "path": "search.json",
+        "kind": "record",
+        "bytes": 91587,
+        "sha256": "a78718272abed56af035491960532ef70081fd4fe443457a8aceb20b65c8714f"
+      },
+      {
+        "path": "settle-branch.json",
+        "kind": "record",
+        "bytes": 140499,
+        "sha256": "2b4efac2dd190f1ea56a702bf325fd9dc867cde70d767daaa9aaf1eef482bb50"
+      },
+      {
+        "path": "settle.json",
+        "kind": "record",
+        "bytes": 27127,
+        "sha256": "54f6abfadfa4ee8e7e9e2d5e4e38c61918acedec8ff94f55a0ec44b79847b81e"
+      },
+      {
+        "path": "side.json",
+        "kind": "record",
+        "bytes": 269985,
+        "sha256": "35bb6bf2570099ecbd207a15f4e04ffe6dee29aa314e86ae51c042dbd016e3f0"
+      },
+      {
+        "path": "side.py",
+        "kind": "historical-script",
+        "bytes": 811,
+        "sha256": "32c2e4fa8713217fe4fec0f175a091780df19a7ec1372ed643426ca47041ab18"
+      },
+      {
+        "path": "trace.json",
+        "kind": "record",
+        "bytes": 120880,
+        "sha256": "c53cc3b7e3b6e8194949a6b4b19282b4228c158da132b56567c848acdc878dcf"
+      },
+      {
+        "path": "trace.py",
+        "kind": "historical-script",
+        "bytes": 1138,
+        "sha256": "79286ea3b6ff861103dcdcbd3577583df33e2fd7949719ffa72653d8ab51aaf8"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 17815,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/0",
+            "trace.json#/result/methods/0"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_GetLifePoint",
+          "address": "0x180808c00"
+        },
+        {
+          "index": 17816,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/1",
+            "trace.json#/result/methods/1"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_SetLifePoint",
+          "address": "0x180817060"
+        },
+        {
+          "index": 17817,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/2",
+            "trace.json#/result/methods/2"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_GetTempLifePoint",
+          "address": "0x180809e00"
+        },
+        {
+          "index": 17818,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/3",
+            "trace.json#/result/methods/3"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_SetTempLifePoint",
+          "address": "0x180818090"
+        },
+        {
+          "index": 17819,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/4",
+            "trace.json#/result/methods/4"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_LifePointToShow",
+          "address": "0x18080afe0"
+        },
+        {
+          "index": 17820,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/5",
+            "trace.json#/result/methods/5"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_GetLifePointLossByEnemy",
+          "address": "0x180808740"
+        },
+        {
+          "index": 17821,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/6",
+            "trace.json#/result/methods/6"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_GetLifePointLossByOthers",
+          "address": "0x1808089a0"
+        },
+        {
+          "index": 17856,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/7",
+            "trace.json#/result/methods/7"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_ModifyLifePoint",
+          "address": "0x18080e680"
+        },
+        {
+          "index": 17857,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/8",
+            "trace.json#/result/methods/8"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._m_AddTempLifePoint",
+          "address": "0x1807f7d40"
+        },
+        {
+          "index": 18088,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/9",
+            "trace.json#/result/methods/9"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleBattleControllerWrap._g_get_maxLifePoint",
+          "address": "0x1807f3e20"
+        },
+        {
+          "index": 18342,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/10",
+            "trace.json#/result/methods/10"
+          ],
+          "fullname": "XLua.CSObjectWrap.TorappuBattleModifierWrap._m_NewLifePointDelta_xlua_st_",
+          "address": "0x180a624b0"
+        },
+        {
+          "index": 65543,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/0",
+            "bodies.json#/result/0/method",
+            "search.json#/result/11",
+            "trace.json#/result/methods/11"
+          ],
+          "fullname": "Torappu.Battle.BattleController.get_maxLifePoint",
+          "address": "0x180671de0"
+        },
+        {
+          "index": 65545,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/1",
+            "bodies.json#/result/1/method",
+            "search.json#/result/12",
+            "trace.json#/result/methods/12"
+          ],
+          "fullname": "Torappu.Battle.BattleController.GetLifePoint",
+          "address": "0x1806538d0"
+        },
+        {
+          "index": 65546,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/2",
+            "bodies.json#/result/2/method",
+            "search.json#/result/13",
+            "trace.json#/result/methods/13"
+          ],
+          "fullname": "Torappu.Battle.BattleController.SetLifePoint",
+          "address": "0x18065fa80"
+        },
+        {
+          "index": 65547,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/3",
+            "bodies.json#/result/3/method",
+            "search.json#/result/14",
+            "trace.json#/result/methods/14"
+          ],
+          "fullname": "Torappu.Battle.BattleController.GetTempLifePoint",
+          "address": "0x180654140"
+        },
+        {
+          "index": 65548,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/4",
+            "bodies.json#/result/4/method",
+            "search.json#/result/15",
+            "trace.json#/result/methods/15"
+          ],
+          "fullname": "Torappu.Battle.BattleController.SetTempLifePoint",
+          "address": "0x180660470"
+        },
+        {
+          "index": 65549,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/5",
+            "bodies.json#/result/5/method",
+            "search.json#/result/16",
+            "trace.json#/result/methods/16"
+          ],
+          "fullname": "Torappu.Battle.BattleController.LifePointToShow",
+          "address": "0x180654d70"
+        },
+        {
+          "index": 65550,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/6",
+            "bodies.json#/result/6/method",
+            "search.json#/result/17",
+            "trace.json#/result/methods/17"
+          ],
+          "fullname": "Torappu.Battle.BattleController.GetLifePointLossByEnemy",
+          "address": "0x1806536b0"
+        },
+        {
+          "index": 65551,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/7",
+            "bodies.json#/result/7/method",
+            "search.json#/result/18",
+            "trace.json#/result/methods/18"
+          ],
+          "fullname": "Torappu.Battle.BattleController.GetLifePointLossByOthers",
+          "address": "0x1806537c0"
+        },
+        {
+          "index": 65601,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/8",
+            "bodies.json#/result/8/method",
+            "search.json#/result/19",
+            "trace.json#/result/methods/19"
+          ],
+          "fullname": "Torappu.Battle.BattleController.ModifyLifePoint",
+          "address": "0x180658490"
+        },
+        {
+          "index": 65602,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/9",
+            "bodies.json#/result/9/method",
+            "search.json#/result/20",
+            "trace.json#/result/methods/20"
+          ],
+          "fullname": "Torappu.Battle.BattleController.AddTempLifePoint",
+          "address": "0x180648f30"
+        },
+        {
+          "index": 65794,
+          "mode": "disasm",
+          "records": [
+            "settle.json#/result",
+            "settle.json#/result/method",
+            "trace.json#/result/methods/21"
+          ],
+          "fullname": "Torappu.Battle.BattleController._DoApplyGlobalModifier",
+          "address": "0x180665230"
+        },
+        {
+          "index": 65795,
+          "mode": "disasm",
+          "records": [
+            "trace.json#/result/methods/22",
+            "trace.json#/result/bodies/0",
+            "trace.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.BattleController._ApplyGlobalModifier",
+          "address": "0x180663d30"
+        },
+        {
+          "index": 65818,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/21",
+            "trace.json#/result/methods/23"
+          ],
+          "fullname": "Torappu.Battle.BattleController/ReplayController.get_savedRemainingLifePoint",
+          "address": "0x180534ba0"
+        },
+        {
+          "index": 68309,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/22",
+            "trace.json#/result/methods/24"
+          ],
+          "fullname": "Torappu.Battle.CooperateCommonGlobalBuff._GetReviveLifePoint",
+          "address": "0x18075b360"
+        },
+        {
+          "index": 68426,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/23"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.OnTick",
+          "address": "0x1807833c0"
+        },
+        {
+          "index": 68427,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/24"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.OnInit",
+          "address": "0x180783300"
+        },
+        {
+          "index": 68428,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/25"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint._CheckToggled",
+          "address": "0x180783760"
+        },
+        {
+          "index": 68429,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/26"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint._OnToggleChanged",
+          "address": "0x180783900"
+        },
+        {
+          "index": 68430,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/27"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint._AddCardBuff",
+          "address": "0x1807835b0"
+        },
+        {
+          "index": 68431,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/28"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint._ClearCardBuff",
+          "address": "0x180783820"
+        },
+        {
+          "index": 68432,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/29"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint..ctor",
+          "address": "0x180783bc0"
+        },
+        {
+          "index": 68433,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/30"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.<_ClearCardBuff>b__9_0",
+          "address": "0x1807834e0"
+        },
+        {
+          "index": 68434,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/31"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.<>xLuaBaseProxy_OnTick",
+          "address": "0x18077bd90"
+        },
+        {
+          "index": 68435,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/32"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint.<>xLuaBaseProxy_OnInit",
+          "address": "0x1807573b0"
+        },
+        {
+          "index": 68436,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/33"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint/<>c__DisplayClass8_0..ctor",
+          "address": "0x180520cc0"
+        },
+        {
+          "index": 68437,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/34"
+          ],
+          "fullname": "Torappu.Battle.Rogue1GlobalCardBuffByLifePoint/<>c__DisplayClass8_0.<_AddCardBuff>b__0",
+          "address": "0x180788a10"
+        },
+        {
+          "index": 72190,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/18",
+            "bodies.json#/result/18/method",
+            "search.json#/result/35",
+            "trace.json#/result/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Modifier.NewLifePointDelta",
+          "address": "0x18090b120"
+        },
+        {
+          "index": 73015,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/36",
+            "trace.json#/result/methods/26"
+          ],
+          "fullname": "Torappu.Battle.RoguelikeBattleTopicHolder.get_rogue3HideUILifePoint",
+          "address": "0x1809740a0"
+        },
+        {
+          "index": 77639,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/37"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_lifePointReduce",
+          "address": "0x180acd490"
+        },
+        {
+          "index": 77640,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/38"
+          ],
+          "fullname": "Torappu.Battle.Enemy.set_lifePointReduce",
+          "address": "0x180ad0030"
+        },
+        {
+          "index": 80546,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/0"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.get_currentTime",
+          "address": "0x180b7f300"
+        },
+        {
+          "index": 80547,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/1"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.get_localSave",
+          "address": "0x180b7f380"
+        },
+        {
+          "index": 80548,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/2"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.GenerateLocalSave",
+          "address": "0x180b74900"
+        },
+        {
+          "index": 80549,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/3"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GetNpcPlayerIndex",
+          "address": "0x180b7c270"
+        },
+        {
+          "index": 80550,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/4"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateTrainingData",
+          "address": "0x180b7b820"
+        },
+        {
+          "index": 80551,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/5"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateSelfStaticData",
+          "address": "0x180b7b420"
+        },
+        {
+          "index": 80552,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/6"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateDefaultSkillStatus",
+          "address": "0x180b79ae0"
+        },
+        {
+          "index": 80553,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/7"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateSelfRuntimeData",
+          "address": "0x180b7b220"
+        },
+        {
+          "index": 80554,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/8"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateTrainingNpcStaticData",
+          "address": "0x180b7bb60"
+        },
+        {
+          "index": 80555,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/9"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateTrainingRoundInfo",
+          "address": "0x180b7bf00"
+        },
+        {
+          "index": 80556,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/10"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateBossRoundData",
+          "address": "0x180b79730"
+        },
+        {
+          "index": 80557,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/11"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateRoundSpPrepareData",
+          "address": "0x180b7ad00"
+        },
+        {
+          "index": 80558,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/12"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateRoundNpcPlayerData",
+          "address": "0x180b7a8e0"
+        },
+        {
+          "index": 80559,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/13"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateRoundNpcPlayerBattleData",
+          "address": "0x180b7a340"
+        },
+        {
+          "index": 80560,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/14"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GenerateRoundNpcBondStatusData",
+          "address": "0x180b79c80"
+        },
+        {
+          "index": 80561,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/15"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqLoadReady",
+          "address": "0x180b76010"
+        },
+        {
+          "index": 80562,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/16"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.Start",
+          "address": "0x180b77860"
+        },
+        {
+          "index": 80563,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/17"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.Finish",
+          "address": "0x180b74800"
+        },
+        {
+          "index": 80564,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/18"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.OnBattleFinish",
+          "address": "0x180b74cb0"
+        },
+        {
+          "index": 80565,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/19"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqBuyChess",
+          "address": "0x180b759f0"
+        },
+        {
+          "index": 80566,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/20"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqShopFrozen",
+          "address": "0x180b76ec0"
+        },
+        {
+          "index": 80567,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/21"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqShopUpgrade",
+          "address": "0x180b77170"
+        },
+        {
+          "index": 80568,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/22"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqShopRefresh",
+          "address": "0x180b77020"
+        },
+        {
+          "index": 80569,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/23"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqMoveChess",
+          "address": "0x180b76070"
+        },
+        {
+          "index": 80570,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/24"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqUseMagic",
+          "address": "0x180b77750"
+        },
+        {
+          "index": 80571,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/25"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqEquipItem",
+          "address": "0x180b75d90"
+        },
+        {
+          "index": 80572,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/26"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqPrepareReady",
+          "address": "0x180b764b0"
+        },
+        {
+          "index": 80573,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/27"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqAddBondStackCount",
+          "address": "0x180b752c0"
+        },
+        {
+          "index": 80574,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/28"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqHelpBattleEnemyEscape",
+          "address": "0x180b75f10"
+        },
+        {
+          "index": 80575,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/29"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqSelfBattleInfoUp",
+          "address": "0x180b76bb0"
+        },
+        {
+          "index": 80576,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/30"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqSelfBattleEnemyEscape",
+          "address": "0x180b768c0"
+        },
+        {
+          "index": 80577,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/31"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqSelfBattleEnemyKilled",
+          "address": "0x180b76b30"
+        },
+        {
+          "index": 80578,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/32"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqHelpBattleEnemyKilled",
+          "address": "0x180b75f90"
+        },
+        {
+          "index": 80579,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/33"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqObOtherPlayer",
+          "address": "0x180b763d0"
+        },
+        {
+          "index": 80580,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/34"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqCancelOb",
+          "address": "0x180b75cd0"
+        },
+        {
+          "index": 80581,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/35"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqDeadAutoOb",
+          "address": "0x180b75d30"
+        },
+        {
+          "index": 80582,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/36"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqQuickView",
+          "address": "0x180b76800"
+        },
+        {
+          "index": 80583,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/37"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqSpPrepareSelect",
+          "address": "0x180b77480"
+        },
+        {
+          "index": 80584,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/38"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqSellOrDestroy",
+          "address": "0x180b76c70"
+        },
+        {
+          "index": 80585,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/39"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqBattleFinish",
+          "address": "0x180b75340"
+        },
+        {
+          "index": 80586,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/40"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqSelfChoiceSelect",
+          "address": "0x180b76c10"
+        },
+        {
+          "index": 80587,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/41"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqSendEmoji",
+          "address": "0x180b76e40"
+        },
+        {
+          "index": 80588,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/42"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqGiveUp",
+          "address": "0x180b75e60"
+        },
+        {
+          "index": 80589,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/43"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqBattleSceneActionUp",
+          "address": "0x180b75970"
+        },
+        {
+          "index": 80590,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/44"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqPauseSingleMode",
+          "address": "0x180b76450"
+        },
+        {
+          "index": 80591,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/45"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqResumeSingleMode",
+          "address": "0x180b76860"
+        },
+        {
+          "index": 80592,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/46"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.ReqUsePlayerSkill",
+          "address": "0x180b777b0"
+        },
+        {
+          "index": 80593,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/47"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GiveChessViaShopLevel",
+          "address": "0x180b7c6c0"
+        },
+        {
+          "index": 80594,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/48"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._CopyChess",
+          "address": "0x180b787e0"
+        },
+        {
+          "index": 80595,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/49"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._StartBattle",
+          "address": "0x180b7e760"
+        },
+        {
+          "index": 80596,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/50"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._UpdateAllPlayerState",
+          "address": "0x180b7ead0"
+        },
+        {
+          "index": 80597,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/51"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._HandleTutorialLockDrag",
+          "address": "0x180b7ce10"
+        },
+        {
+          "index": 80598,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/52"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._HandleTutorialUnlockDrag",
+          "address": "0x180b7cee0"
+        },
+        {
+          "index": 80599,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/53"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.FinishLoading",
+          "address": "0x180b74750"
+        },
+        {
+          "index": 80600,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/54"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.GetSquadSlots",
+          "address": "0x180b74980"
+        },
+        {
+          "index": 80601,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/55"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._RefreshRoundData",
+          "address": "0x180b7d390"
+        },
+        {
+          "index": 80602,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/56"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._RefreshRoundSkill",
+          "address": "0x180b7d9c0"
+        },
+        {
+          "index": 80603,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/57"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GeneSpPrepareStateDataFromRoundInfo",
+          "address": "0x180b79460"
+        },
+        {
+          "index": 80604,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/58"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._RefreshShopData",
+          "address": "0x180b7da60"
+        },
+        {
+          "index": 80605,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/59"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._TryUpdateShopDataOnUpgrade",
+          "address": "0x180b7e940"
+        },
+        {
+          "index": 80606,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/60"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GetShopChessIds",
+          "address": "0x180b7c390"
+        },
+        {
+          "index": 80607,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/61"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._EquipItem",
+          "address": "0x180b78a20"
+        },
+        {
+          "index": 80608,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/62"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._ReplaceEquipItem",
+          "address": "0x180b7e370"
+        },
+        {
+          "index": 80609,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/63"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._AddOwnedChess",
+          "address": "0x180b77b10"
+        },
+        {
+          "index": 80610,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/64"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._BonusWhenOwnedCharChess",
+          "address": "0x180b78070"
+        },
+        {
+          "index": 80611,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/65"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._RefreshBonusShop",
+          "address": "0x180b7d040"
+        },
+        {
+          "index": 80612,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/66"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._BonusWhenOwnedEquipChess",
+          "address": "0x180b78550"
+        },
+        {
+          "index": 80613,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/67"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._RemoveOwnedChess",
+          "address": "0x180b7e090"
+        },
+        {
+          "index": 80614,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/68"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.OnMessage",
+          "address": "0x180b75000"
+        },
+        {
+          "index": 80615,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/69"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._MoveToNextRound",
+          "address": "0x180b7cf50"
+        },
+        {
+          "index": 80616,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/70"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GatherSelfBattleEnemy",
+          "address": "0x180b79110"
+        },
+        {
+          "index": 80617,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/71"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer._GatherBossBattleEnemy",
+          "address": "0x180b78dd0"
+        },
+        {
+          "index": 80618,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/72"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.OnBossBattleEnemyRegistered",
+          "address": "0x180b74e30"
+        },
+        {
+          "index": 80619,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/73"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.OnBossBattleEnemyKilled",
+          "address": "0x180b74d10"
+        },
+        {
+          "index": 80620,
+          "mode": "disasm",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/74",
+            "manager.json#/result/bodies/0",
+            "manager.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer.OnBossBattleEnemyReachExit",
+          "address": "0x180b74da0"
+        },
+        {
+          "index": 80621,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/methods/75"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer..ctor",
+          "address": "0x180b7ec50"
+        },
+        {
+          "index": 80628,
+          "mode": "disasm",
+          "records": [
+            "manager-branches.json#/result/4",
+            "manager-branches.json#/result/4/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessDataBridgeLocalPlayer/MockBossBattleManager.OnBossBattleEnemyReachExit",
+          "address": "0x180b87500"
+        },
+        {
+          "index": 81265,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/0"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_startTime",
+          "address": "0x180bdd550"
+        },
+        {
+          "index": 81266,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/1"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_startTime",
+          "address": "0x180bdda70"
+        },
+        {
+          "index": 81267,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/2"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_currentTime",
+          "address": "0x180bdd030"
+        },
+        {
+          "index": 81268,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/3"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_isTrainingMode",
+          "address": "0x180bdd3d0"
+        },
+        {
+          "index": 81269,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/4"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_isTrainingMode",
+          "address": "0x180bdd8b0"
+        },
+        {
+          "index": 81270,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/5"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_lowMemoryMode",
+          "address": "0x180bdd430"
+        },
+        {
+          "index": 81271,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/6"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_lowMemoryMode",
+          "address": "0x180bdd920"
+        },
+        {
+          "index": 81272,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/7"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_isMultiLayerMap",
+          "address": "0x180bdd310"
+        },
+        {
+          "index": 81273,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/8"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_isMultiLayerMap",
+          "address": "0x180bdd7d0"
+        },
+        {
+          "index": 81274,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/9"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_gameWinned",
+          "address": "0x180bdd120"
+        },
+        {
+          "index": 81275,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/10"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_gameWinned",
+          "address": "0x180bdd680"
+        },
+        {
+          "index": 81276,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/11"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_inStepMode",
+          "address": "0x180bdd250"
+        },
+        {
+          "index": 81277,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/12"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_inStepMode",
+          "address": "0x180bdd6f0"
+        },
+        {
+          "index": 81278,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/13"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_paused",
+          "address": "0x180bdd490"
+        },
+        {
+          "index": 81279,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/14"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_paused",
+          "address": "0x180bdd990"
+        },
+        {
+          "index": 81280,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/15"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_enableViewMultiBattle",
+          "address": "0x180bdd0c0"
+        },
+        {
+          "index": 81281,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/16"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_enableViewMultiBattle",
+          "address": "0x180bdd610"
+        },
+        {
+          "index": 81282,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/17"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_serverState",
+          "address": "0x180bdd4f0"
+        },
+        {
+          "index": 81283,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/18"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_serverState",
+          "address": "0x180bdda00"
+        },
+        {
+          "index": 81284,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/19"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_trainingSettleData",
+          "address": "0x180bdd5b0"
+        },
+        {
+          "index": 81285,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/20"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_trainingSettleData",
+          "address": "0x180bddae0"
+        },
+        {
+          "index": 81286,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/21"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_isFromUserPause",
+          "address": "0x180bdd2b0"
+        },
+        {
+          "index": 81287,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/22"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_isFromUserPause",
+          "address": "0x180bdd760"
+        },
+        {
+          "index": 81288,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/23"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_isServerLost",
+          "address": "0x180bdd370"
+        },
+        {
+          "index": 81289,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/24"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.set_isServerLost",
+          "address": "0x180bdd840"
+        },
+        {
+          "index": 81290,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/25"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.get_hookSpeedLevel",
+          "address": "0x180bdd180"
+        },
+        {
+          "index": 81291,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/26"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager..ctor",
+          "address": "0x180bdca30"
+        },
+        {
+          "index": 81292,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/27"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.Dispose",
+          "address": "0x180bd4c90"
+        },
+        {
+          "index": 81293,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/28"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnTick",
+          "address": "0x180bd6bd0"
+        },
+        {
+          "index": 81294,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/29"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ManualFrameTick",
+          "address": "0x180bd5880"
+        },
+        {
+          "index": 81295,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/30"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._PreTick",
+          "address": "0x180bdba60"
+        },
+        {
+          "index": 81296,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/31"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._TickBattleNoLogicUnit",
+          "address": "0x180bdc4b0"
+        },
+        {
+          "index": 81297,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/32"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._OnDataDirty",
+          "address": "0x180bdb5b0"
+        },
+        {
+          "index": 81298,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/33"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.Start",
+          "address": "0x180bd9910"
+        },
+        {
+          "index": 81299,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/34"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.QuitGame",
+          "address": "0x180bd75c0"
+        },
+        {
+          "index": 81300,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/35"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.QuitTrainingGame",
+          "address": "0x180bd76f0"
+        },
+        {
+          "index": 81301,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/36"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.PauseSingleModeGame",
+          "address": "0x180bd7090"
+        },
+        {
+          "index": 81302,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/37"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._ClosePluginPage",
+          "address": "0x180bda740"
+        },
+        {
+          "index": 81303,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/38"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnFinishGame",
+          "address": "0x180bd67c0"
+        },
+        {
+          "index": 81304,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/39"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnDestroyEntity",
+          "address": "0x180bd5ba0"
+        },
+        {
+          "index": 81305,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/40"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnEnemyFirstEnterLeftMap",
+          "address": "0x180bd5d50"
+        },
+        {
+          "index": 81306,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/41"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.PreprocessEnemy",
+          "address": "0x180bd7490"
+        },
+        {
+          "index": 81307,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/42"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnEntityApplyModifier",
+          "address": "0x180bd66a0"
+        },
+        {
+          "index": 81308,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/43"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnUnitRegistered",
+          "address": "0x180bd6eb0"
+        },
+        {
+          "index": 81309,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/44"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnEnemyRegistered",
+          "address": "0x180bd6390"
+        },
+        {
+          "index": 81310,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/45"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnEnemyFinished",
+          "address": "0x180bd5c90"
+        },
+        {
+          "index": 81311,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/46"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnEnemyKilled",
+          "address": "0x180bd5df0"
+        },
+        {
+          "index": 81312,
+          "mode": "disasm",
+          "records": [
+            "mode.json#/result/methods/47",
+            "mode.json#/result/bodies/0",
+            "mode.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnEnemyReachExit",
+          "address": "0x180bd60b0"
+        },
+        {
+          "index": 81313,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/48"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._OnBossBattleEnemyKilled",
+          "address": "0x180bdb330"
+        },
+        {
+          "index": 81314,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/49"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._OnBossBattleEnemyReachExit",
+          "address": "0x180bdb470"
+        },
+        {
+          "index": 81315,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/50"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqBattleSceneActionUp",
+          "address": "0x180bd7f60"
+        },
+        {
+          "index": 81316,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/51"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.UpdateGameState",
+          "address": "0x180bda450"
+        },
+        {
+          "index": 81317,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/52"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._GetNextState",
+          "address": "0x180bdaea0"
+        },
+        {
+          "index": 81318,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/53"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._OnGameStateChanged",
+          "address": "0x180bdb640"
+        },
+        {
+          "index": 81319,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/54"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._ResetPlayers",
+          "address": "0x180bdc290"
+        },
+        {
+          "index": 81320,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/55"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._GetRestartState",
+          "address": "0x180bdb160"
+        },
+        {
+          "index": 81321,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/56"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._IsRestartState",
+          "address": "0x180bdb230"
+        },
+        {
+          "index": 81322,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/57"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._IsStateNeedWaiting",
+          "address": "0x180bdb2b0"
+        },
+        {
+          "index": 81323,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/58"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnServerLost",
+          "address": "0x180bd6aa0"
+        },
+        {
+          "index": 81324,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/59"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnReqGiveUp",
+          "address": "0x180bd69a0"
+        },
+        {
+          "index": 81325,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/60"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnReqPrepareReady",
+          "address": "0x180bd6a20"
+        },
+        {
+          "index": 81326,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/61"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.SetCharacterMenuShowed",
+          "address": "0x180bd9740"
+        },
+        {
+          "index": 81327,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/62"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.SetInUserInteract",
+          "address": "0x180bd97d0"
+        },
+        {
+          "index": 81328,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/63"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.DoLoadGameInternal",
+          "address": "0x180bd4d20"
+        },
+        {
+          "index": 81329,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/64"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.PrepareForPrepareState",
+          "address": "0x180bd72f0"
+        },
+        {
+          "index": 81330,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/65"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.FinishPrepare",
+          "address": "0x180bd5430"
+        },
+        {
+          "index": 81331,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/66"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._FinishAllUnits",
+          "address": "0x180bda830"
+        },
+        {
+          "index": 81332,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/67"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._FinishUnitInRecycle",
+          "address": "0x180bdab00"
+        },
+        {
+          "index": 81333,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/68"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.PrepareForBattleWaiting",
+          "address": "0x180bd7140"
+        },
+        {
+          "index": 81334,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/69"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.PrepareForBattle",
+          "address": "0x180bd71b0"
+        },
+        {
+          "index": 81335,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/70"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.StartBattle",
+          "address": "0x180bd9860"
+        },
+        {
+          "index": 81336,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/71"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._ResetBattleInfo",
+          "address": "0x180bdbc60"
+        },
+        {
+          "index": 81337,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/72"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.FinishBattle",
+          "address": "0x180bd5380"
+        },
+        {
+          "index": 81338,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/73"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.MoveToNextDataState",
+          "address": "0x180bd59f0"
+        },
+        {
+          "index": 81339,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/74"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqOpenShop",
+          "address": "0x180bd8a70"
+        },
+        {
+          "index": 81340,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/75"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqChangeShopSelectedSlot",
+          "address": "0x180bd8410"
+        },
+        {
+          "index": 81341,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/76"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqChangeBattleMapLayer",
+          "address": "0x180bd8270"
+        },
+        {
+          "index": 81342,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/77"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._ResetBattleMaplayerViewPlayer",
+          "address": "0x180bdbf40"
+        },
+        {
+          "index": 81343,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/78"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._ReqChangeBattleMapLayer",
+          "address": "0x180bdbb60"
+        },
+        {
+          "index": 81344,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/79"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._CanChangeBattleMapLayer",
+          "address": "0x180bda680"
+        },
+        {
+          "index": 81345,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/80"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnSetSelectedBond",
+          "address": "0x180bd6b40"
+        },
+        {
+          "index": 81346,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/81"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnOpenHUDPlayerInfo",
+          "address": "0x180bd6930"
+        },
+        {
+          "index": 81347,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/82"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnToggleHUDEnemyInfo",
+          "address": "0x180bd6d90"
+        },
+        {
+          "index": 81348,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/83"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnToggleHUDBuff",
+          "address": "0x180bd6cf0"
+        },
+        {
+          "index": 81349,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/84"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnToggleSkillSubPanel",
+          "address": "0x180bd6e10"
+        },
+        {
+          "index": 81350,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/85"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnCloseSkillSubPanel",
+          "address": "0x180bd5b10"
+        },
+        {
+          "index": 81351,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/86"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.OnHUDCancelDialog",
+          "address": "0x180bd68d0"
+        },
+        {
+          "index": 81352,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/87"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqInEnemyPreview",
+          "address": "0x180bd8850"
+        },
+        {
+          "index": 81353,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/88"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqReplaceEquip",
+          "address": "0x180bd8e10"
+        },
+        {
+          "index": 81354,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/89"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._ReqHUDTipDisplay",
+          "address": "0x180bdbbe0"
+        },
+        {
+          "index": 81355,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/90"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqMoveChess",
+          "address": "0x180bd88e0"
+        },
+        {
+          "index": 81356,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/91"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqUseMagic",
+          "address": "0x180bd95e0"
+        },
+        {
+          "index": 81357,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/92"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqEquipItem",
+          "address": "0x180bd8550"
+        },
+        {
+          "index": 81358,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/93"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqSellOrDestroy",
+          "address": "0x180bd9200"
+        },
+        {
+          "index": 81359,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/94"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqShopFrozen",
+          "address": "0x180bd9370"
+        },
+        {
+          "index": 81360,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/95"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqShopUpgrade",
+          "address": "0x180bd94b0"
+        },
+        {
+          "index": 81361,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/96"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqShopRefresh",
+          "address": "0x180bd9420"
+        },
+        {
+          "index": 81362,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/97"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqBuyChess",
+          "address": "0x180bd8040"
+        },
+        {
+          "index": 81363,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/98"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqReplaceEquipFinish",
+          "address": "0x180bd8ce0"
+        },
+        {
+          "index": 81364,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/99"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqPrepareReady",
+          "address": "0x180bd8ba0"
+        },
+        {
+          "index": 81365,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/100"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqSelfBattleEnemyEscape",
+          "address": "0x180bd8f40"
+        },
+        {
+          "index": 81366,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/101"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqSelfBattleEnemyKilled",
+          "address": "0x180bd9050"
+        },
+        {
+          "index": 81367,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/102"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqHelpBattleEnemyEscape",
+          "address": "0x180bd86b0"
+        },
+        {
+          "index": 81368,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/103"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqHelpBattleEnemyKilled",
+          "address": "0x180bd8780"
+        },
+        {
+          "index": 81369,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/104"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqAddBondStackCount",
+          "address": "0x180bd7d60"
+        },
+        {
+          "index": 81370,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/105"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.IsObserveEnabled",
+          "address": "0x180bd5690"
+        },
+        {
+          "index": 81371,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/106"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.CanObserve",
+          "address": "0x180bd4a40"
+        },
+        {
+          "index": 81372,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/107"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqObOtherPlayer",
+          "address": "0x180bd89a0"
+        },
+        {
+          "index": 81373,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/108"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqCancelOb",
+          "address": "0x180bd8170"
+        },
+        {
+          "index": 81374,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/109"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager._OnPlayViewIndexChanged",
+          "address": "0x180bdb8b0"
+        },
+        {
+          "index": 81375,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/110"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqDeadAutoOb",
+          "address": "0x180bd84c0"
+        },
+        {
+          "index": 81376,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/111"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqQuickView",
+          "address": "0x180bd8c50"
+        },
+        {
+          "index": 81377,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/112"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqSpPrepareSelect",
+          "address": "0x180bd9540"
+        },
+        {
+          "index": 81378,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/113"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqSelfChoiceSelect",
+          "address": "0x180bd9160"
+        },
+        {
+          "index": 81379,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/114"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqSendEmoji",
+          "address": "0x180bd92b0"
+        },
+        {
+          "index": 81380,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/115"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqGiveUp",
+          "address": "0x180bd8620"
+        },
+        {
+          "index": 81381,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/116"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqPauseSingleMode",
+          "address": "0x180bd8b10"
+        },
+        {
+          "index": 81382,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/117"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqResumeSingleMode",
+          "address": "0x180bd8eb0"
+        },
+        {
+          "index": 81383,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/118"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.ReqUsePlayerSkill",
+          "address": "0x180bd9680"
+        },
+        {
+          "index": 81384,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/119"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.CanSellOrDestroy",
+          "address": "0x180bd4bc0"
+        },
+        {
+          "index": 81385,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/120"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.IsOperationValid",
+          "address": "0x180bd5750"
+        },
+        {
+          "index": 81386,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/121"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.IsDragBeginInstValid",
+          "address": "0x180bd55a0"
+        },
+        {
+          "index": 81387,
+          "mode": "metadata",
+          "records": [
+            "mode.json#/result/methods/122"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessGameManager.<ReqBuyChess>b__141_0",
+          "address": "0x180bda3a0"
+        },
+        {
+          "index": 81591,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/0"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.get_gameManager",
+          "address": "0x180c0e3d0"
+        },
+        {
+          "index": 81592,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/1"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.get_actionDataPool",
+          "address": "0x180c0e210"
+        },
+        {
+          "index": 81593,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/2"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.Start",
+          "address": "0x180c0b260"
+        },
+        {
+          "index": 81594,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/3"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.Reset",
+          "address": "0x180c0ae50"
+        },
+        {
+          "index": 81595,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/4"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.NextFrame",
+          "address": "0x180c0a1c0"
+        },
+        {
+          "index": 81596,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/5"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.UpdateSeq",
+          "address": "0x180c0b880"
+        },
+        {
+          "index": 81597,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/6"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._OnSeqUpdated",
+          "address": "0x180c0d2b0"
+        },
+        {
+          "index": 81598,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/7"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._RecoverBossHp",
+          "address": "0x180c0dbe0"
+        },
+        {
+          "index": 81599,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/8"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._RecoverBossHp",
+          "address": "0x180c0db00"
+        },
+        {
+          "index": 81600,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/9"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.ApplyAction",
+          "address": "0x180c0a080"
+        },
+        {
+          "index": 81601,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/10"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ParseApplyStepAction",
+          "address": "0x180c0d590"
+        },
+        {
+          "index": 81602,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/11"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ApplyEnemyAppear",
+          "address": "0x180c0c150"
+        },
+        {
+          "index": 81603,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/12"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ApplySummonedEnemyAppear",
+          "address": "0x180c0c690"
+        },
+        {
+          "index": 81604,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/13"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ApplyEnemyFinish",
+          "address": "0x180c0c370"
+        },
+        {
+          "index": 81605,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/14"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ApplyBossStateChanged",
+          "address": "0x180c0be30"
+        },
+        {
+          "index": 81606,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/15"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ApplyBattleStateChanged",
+          "address": "0x180c0bbb0"
+        },
+        {
+          "index": 81607,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/16"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ApplyPlayerStateChanged",
+          "address": "0x180c0c520"
+        },
+        {
+          "index": 81608,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/17"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ApplyBossDamageStats",
+          "address": "0x180c0bd90"
+        },
+        {
+          "index": 81609,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/18"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.OnEnemyRegistered",
+          "address": "0x180c0a750"
+        },
+        {
+          "index": 81610,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/19"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.OnEntityApplyModifier",
+          "address": "0x180c0a980"
+        },
+        {
+          "index": 81611,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/20"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._OnBossEnemyTakeDamage",
+          "address": "0x180c0c9a0"
+        },
+        {
+          "index": 81612,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/21"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.OnEnemyKilled",
+          "address": "0x180c0a320"
+        },
+        {
+          "index": 81613,
+          "mode": "disasm",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/22",
+            "manager.json#/result/bodies/1",
+            "manager.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.OnEnemyReachExit",
+          "address": "0x180c0a610"
+        },
+        {
+          "index": 81614,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/23"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._OnNewSummonedEnemyReachExit",
+          "address": "0x180c0cf90"
+        },
+        {
+          "index": 81615,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/24"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._OnManagedEnemyReachExit",
+          "address": "0x180c0cda0"
+        },
+        {
+          "index": 81616,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/25"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.GetEnemyEscapedCount",
+          "address": "0x180c0a100"
+        },
+        {
+          "index": 81617,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/26"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._OnUnitBorn",
+          "address": "0x180c0d3b0"
+        },
+        {
+          "index": 81618,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/27"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._OnUnitFinish",
+          "address": "0x180c0d4a0"
+        },
+        {
+          "index": 81619,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/28"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager._ReqCharBattleStatusChanged",
+          "address": "0x180c0ddc0"
+        },
+        {
+          "index": 81620,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/29"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager.ReqAddBondStackCount",
+          "address": "0x180c0aac0"
+        },
+        {
+          "index": 81621,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessStepModeManager/methods/30"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessStepModeManager..ctor",
+          "address": "0x180c0df90"
+        },
+        {
+          "index": 81766,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/0"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.get_selfBattleStatus",
+          "address": "0x180c08840"
+        },
+        {
+          "index": 81767,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/1"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.get_bossDamageList",
+          "address": "0x180c08310"
+        },
+        {
+          "index": 81768,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/2"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.get_battleFinished",
+          "address": "0x180c08210"
+        },
+        {
+          "index": 81769,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/3"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.get_enemyCntInTotal",
+          "address": "0x180c08530"
+        },
+        {
+          "index": 81770,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/4"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.get_enemyEscapedDisplay",
+          "address": "0x180c08620"
+        },
+        {
+          "index": 81771,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/5"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.get_curEnemyCnt",
+          "address": "0x180c083e0"
+        },
+        {
+          "index": 81772,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/6"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.get_lostHpDisplay",
+          "address": "0x180c08750"
+        },
+        {
+          "index": 81773,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/7"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.get_bossHpRatio",
+          "address": "0x180c08370"
+        },
+        {
+          "index": 81774,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/8"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.UpdateBossDamageList",
+          "address": "0x180c077e0"
+        },
+        {
+          "index": 81775,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/9"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.ClearBossDamageList",
+          "address": "0x180c060a0"
+        },
+        {
+          "index": 81776,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/10"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.MarkDirty",
+          "address": "0x180c06320"
+        },
+        {
+          "index": 81777,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/11"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.FlushUiDirty",
+          "address": "0x180c06180"
+        },
+        {
+          "index": 81778,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/12"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.ResetStatus",
+          "address": "0x180c07740"
+        },
+        {
+          "index": 81779,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/13"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnBattleFinish",
+          "address": "0x180c06380"
+        },
+        {
+          "index": 81780,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/14"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnBattlePreStart",
+          "address": "0x180c06450"
+        },
+        {
+          "index": 81781,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/15"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnPlayerViewIndexChanged",
+          "address": "0x180c07030"
+        },
+        {
+          "index": 81782,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/16"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel._GetBossRoundHpReduceTime",
+          "address": "0x180c07c70"
+        },
+        {
+          "index": 81783,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/17"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnSelfBattleEnemyKilled",
+          "address": "0x180c070e0"
+        },
+        {
+          "index": 81784,
+          "mode": "disasm",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/18",
+            "manager.json#/result/bodies/2",
+            "manager.json#/result/bodies/2/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnSelfBattleEnemyReachExit",
+          "address": "0x180c07440"
+        },
+        {
+          "index": 81785,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/19"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnHelpBattleEnemyKilled",
+          "address": "0x180c06aa0"
+        },
+        {
+          "index": 81786,
+          "mode": "disasm",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/20",
+            "manager.json#/result/bodies/3",
+            "manager.json#/result/bodies/3/method"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnHelpBattleEnemyReachExit",
+          "address": "0x180c06e50"
+        },
+        {
+          "index": 81787,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/21"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnBossStateChanged",
+          "address": "0x180c066a0"
+        },
+        {
+          "index": 81788,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/22"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.OnBossTeamStateChanged",
+          "address": "0x180c069d0"
+        },
+        {
+          "index": 81789,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/23"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.GetSelfBattleStatus",
+          "address": "0x180c061f0"
+        },
+        {
+          "index": 81790,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/24"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel._EnsureSelfBattleStatus",
+          "address": "0x180c07ad0"
+        },
+        {
+          "index": 81791,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/25"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel._ResetSelfBattleRoundStatus",
+          "address": "0x180c07e70"
+        },
+        {
+          "index": 81792,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/26"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel..ctor",
+          "address": "0x180c08090"
+        },
+        {
+          "index": 81793,
+          "mode": "metadata",
+          "records": [
+            "manager.json#/result/types/Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel/methods/27"
+          ],
+          "fullname": "Torappu.Battle.AutoChess.AutoChessBattleStatusDataModel.<>xLuaBaseProxy_MarkDirty",
+          "address": "0x180c077d0"
+        },
+        {
+          "index": 82637,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/27"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/Act6FunGameMode.OnPlayerLifeToZero",
+          "address": "0x180c4f700"
+        },
+        {
+          "index": 82664,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/28"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/Act6FunGameMode.<>xLuaBaseProxy_OnPlayerLifeToZero",
+          "address": "0x180c50010"
+        },
+        {
+          "index": 82726,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/29"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode.OnPlayerLifeToZero",
+          "address": "0x180c54fb0"
+        },
+        {
+          "index": 82760,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/30"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/ArkDexCaptureGameMode.<>xLuaBaseProxy_OnPlayerLifeToZero",
+          "address": "0x180c50010"
+        },
+        {
+          "index": 82865,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/0"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode..ctor",
+          "address": "0x180c64a20"
+        },
+        {
+          "index": 82866,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/1"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_gameModeType",
+          "address": "0x180c64da0"
+        },
+        {
+          "index": 82867,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/2"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_allowPoolManagerUnload",
+          "address": "0x180c64be0"
+        },
+        {
+          "index": 82868,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/3"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_allowPoolManagerReleasePolicy",
+          "address": "0x180c64b20"
+        },
+        {
+          "index": 82869,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/4"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isLargeMap",
+          "address": "0x180c64e80"
+        },
+        {
+          "index": 82870,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/5"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isMultiLayerMap",
+          "address": "0x180c64f60"
+        },
+        {
+          "index": 82871,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/6"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isLowMemoryGameMode",
+          "address": "0x180c64ef0"
+        },
+        {
+          "index": 82872,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/7"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_outlineConfig",
+          "address": "0x180c65090"
+        },
+        {
+          "index": 82873,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/8"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_hasExtraBuildCondition",
+          "address": "0x180c64e10"
+        },
+        {
+          "index": 82874,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/9"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_useLevelBgm",
+          "address": "0x180c65140"
+        },
+        {
+          "index": 82875,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/10"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_doDefaultSchedule",
+          "address": "0x180c64c50"
+        },
+        {
+          "index": 82876,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/11"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_isSupportSlowMotion",
+          "address": "0x180c65020"
+        },
+        {
+          "index": 82877,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/12"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_allowManualTick",
+          "address": "0x180c64ab0"
+        },
+        {
+          "index": 82878,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/13"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_enablePause",
+          "address": "0x180c64d30"
+        },
+        {
+          "index": 82879,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/14"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.get_enableParticleEffectManager",
+          "address": "0x180c64cc0"
+        },
+        {
+          "index": 82880,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/15"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.FinishGame",
+          "address": "0x180c62120"
+        },
+        {
+          "index": 82881,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/16"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GetCompleteProgress",
+          "address": "0x180c62530"
+        },
+        {
+          "index": 82882,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/17"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.Tick",
+          "address": "0x180c63590"
+        },
+        {
+          "index": 82883,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/18"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.CheckBuildable",
+          "address": "0x180c619e0"
+        },
+        {
+          "index": 82884,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/19"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode._CheckBuildableInPrepare",
+          "address": "0x180c63cb0"
+        },
+        {
+          "index": 82885,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/20"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode._CheckBuildableInBattle",
+          "address": "0x180c63a00"
+        },
+        {
+          "index": 82886,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/21"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.IsSkillClickable",
+          "address": "0x180c629d0"
+        },
+        {
+          "index": 82887,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/22",
+            "side.json#/result/bodies/0",
+            "side.json#/result/bodies/0/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.HookEnemyReachedExitAudio",
+          "address": "0x180c62700"
+        },
+        {
+          "index": 82888,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/23"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnPostInit",
+          "address": "0x180c62db0"
+        },
+        {
+          "index": 82889,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/24"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.StartGame",
+          "address": "0x180c633f0"
+        },
+        {
+          "index": 82890,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/25"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode._RegisterBattleTasks",
+          "address": "0x180c64210"
+        },
+        {
+          "index": 82891,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/26"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GameNotFinishCondition",
+          "address": "0x180c62220"
+        },
+        {
+          "index": 82892,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/27"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GetActMeta",
+          "address": "0x180c622e0"
+        },
+        {
+          "index": 82893,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/28"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GetBattleCompleteRank",
+          "address": "0x180c62460"
+        },
+        {
+          "index": 82894,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/29"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.PreprocessLevelData",
+          "address": "0x180c63330"
+        },
+        {
+          "index": 82895,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/30"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.PreprocessEnemy",
+          "address": "0x180c63250"
+        },
+        {
+          "index": 82896,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/31"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.EnableGlobalBuffExtraData",
+          "address": "0x180c61ef0"
+        },
+        {
+          "index": 82897,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/32"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.DestroyEntity",
+          "address": "0x180c61de0"
+        },
+        {
+          "index": 82898,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/33"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnEntityApplyModifier",
+          "address": "0x180c62c30"
+        },
+        {
+          "index": 82899,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/34"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnEnemyFinished",
+          "address": "0x180c62a40"
+        },
+        {
+          "index": 82900,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/35",
+            "side.json#/result/bodies/1",
+            "side.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnEnemyReachExit",
+          "address": "0x180c62b40"
+        },
+        {
+          "index": 82901,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/36"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnUnitRegistered",
+          "address": "0x180c63170"
+        },
+        {
+          "index": 82902,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/37"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.HookSpeedLevel",
+          "address": "0x180c62900"
+        },
+        {
+          "index": 82903,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/38",
+            "side.json#/result/bodies/2",
+            "side.json#/result/bodies/2/method",
+            "trace.json#/result/methods/31"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.OnPlayerLifeToZero",
+          "address": "0x180c62d30"
+        },
+        {
+          "index": 82904,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/39"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.TrySetTileHighlightType",
+          "address": "0x180c63790"
+        },
+        {
+          "index": 82905,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/40"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.TryGetCustomTileHighlightColor",
+          "address": "0x180c63670"
+        },
+        {
+          "index": 82906,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/41"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.FetchValidMapGrids",
+          "address": "0x180c62020"
+        },
+        {
+          "index": 82907,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/42",
+            "side.json#/result/bodies/3",
+            "side.json#/result/bodies/3/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.GetPlayerSideOnMap",
+          "address": "0x180c625d0"
+        },
+        {
+          "index": 82908,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/43",
+            "side.json#/result/bodies/4",
+            "side.json#/result/bodies/4/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode._GetPlayerSideOnMap",
+          "address": "0x180c64050"
+        },
+        {
+          "index": 82909,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/44"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.CheckRenderInvisible",
+          "address": "0x180c61cd0"
+        },
+        {
+          "index": 82910,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/45"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode..cctor",
+          "address": "0x180c648f0"
+        },
+        {
+          "index": 82911,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/46"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_gameModeType",
+          "address": "0x180c4dfe0"
+        },
+        {
+          "index": 82912,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/47"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_allowPoolManagerUnload",
+          "address": "0x180c63940"
+        },
+        {
+          "index": 82913,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/48"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_allowPoolManagerReleasePolicy",
+          "address": "0x180c63930"
+        },
+        {
+          "index": 82914,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/49"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_isLargeMap",
+          "address": "0x180c63980"
+        },
+        {
+          "index": 82915,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/50"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_isMultiLayerMap",
+          "address": "0x180c639a0"
+        },
+        {
+          "index": 82916,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/51"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_isLowMemoryGameMode",
+          "address": "0x180c63990"
+        },
+        {
+          "index": 82917,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/52"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_outlineConfig",
+          "address": "0x180c639c0"
+        },
+        {
+          "index": 82918,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/53"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_hasExtraBuildCondition",
+          "address": "0x180c5d020"
+        },
+        {
+          "index": 82919,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/54"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_useLevelBgm",
+          "address": "0x180c639f0"
+        },
+        {
+          "index": 82920,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/55"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_doDefaultSchedule",
+          "address": "0x180c63950"
+        },
+        {
+          "index": 82921,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/56"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_isSupportSlowMotion",
+          "address": "0x180c639b0"
+        },
+        {
+          "index": 82922,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/57"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_allowManualTick",
+          "address": "0x180c5d000"
+        },
+        {
+          "index": 82923,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/58"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_enablePause",
+          "address": "0x180c63970"
+        },
+        {
+          "index": 82924,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/59"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_get_enableParticleEffectManager",
+          "address": "0x180c63960"
+        },
+        {
+          "index": 82925,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/60"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_FinishGame",
+          "address": "0x180c5cf90"
+        },
+        {
+          "index": 82926,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/61"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GetCompleteProgress",
+          "address": "0x180c5cfa0"
+        },
+        {
+          "index": 82927,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/62"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_Tick",
+          "address": "0x180c4dfd0"
+        },
+        {
+          "index": 82928,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/63"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_CheckBuildable",
+          "address": "0x180c5cef0"
+        },
+        {
+          "index": 82929,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/64"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_IsSkillClickable",
+          "address": "0x180c638f0"
+        },
+        {
+          "index": 82930,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/65",
+            "side.json#/result/bodies/5",
+            "side.json#/result/bodies/5/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_HookEnemyReachedExitAudio",
+          "address": "0x180c4ffd0"
+        },
+        {
+          "index": 82931,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/66"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnPostInit",
+          "address": "0x180c63900"
+        },
+        {
+          "index": 82932,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/67"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_StartGame",
+          "address": "0x180c50040"
+        },
+        {
+          "index": 82933,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/68"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GameNotFinishCondition",
+          "address": "0x180c4ffc0"
+        },
+        {
+          "index": 82934,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/69"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GetActMeta",
+          "address": "0x180c53710"
+        },
+        {
+          "index": 82935,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/70"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GetBattleCompleteRank",
+          "address": "0x180c53720"
+        },
+        {
+          "index": 82936,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/71"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_PreprocessLevelData",
+          "address": "0x180c50030"
+        },
+        {
+          "index": 82937,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/72"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_PreprocessEnemy",
+          "address": "0x180c5cfe0"
+        },
+        {
+          "index": 82938,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/73"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_EnableGlobalBuffExtraData",
+          "address": "0x180c638b0"
+        },
+        {
+          "index": 82939,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/74"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_DestroyEntity",
+          "address": "0x180c638a0"
+        },
+        {
+          "index": 82940,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/75"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnEntityApplyModifier",
+          "address": "0x180c53790"
+        },
+        {
+          "index": 82941,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/76"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnEnemyFinished",
+          "address": "0x180c50000"
+        },
+        {
+          "index": 82942,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/77",
+            "side.json#/result/bodies/6",
+            "side.json#/result/bodies/6/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnEnemyReachExit",
+          "address": "0x180c53780"
+        },
+        {
+          "index": 82943,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/78"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnUnitRegistered",
+          "address": "0x180c50020"
+        },
+        {
+          "index": 82944,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/79"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_HookSpeedLevel",
+          "address": "0x180c638e0"
+        },
+        {
+          "index": 82945,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/80",
+            "side.json#/result/bodies/7",
+            "side.json#/result/bodies/7/method",
+            "trace.json#/result/methods/32"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_OnPlayerLifeToZero",
+          "address": "0x180c50010"
+        },
+        {
+          "index": 82946,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/81"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_TrySetTileHighlightType",
+          "address": "0x180c63920"
+        },
+        {
+          "index": 82947,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/82"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_TryGetCustomTileHighlightColor",
+          "address": "0x180c63910"
+        },
+        {
+          "index": 82948,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/83"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_FetchValidMapGrids",
+          "address": "0x180c638c0"
+        },
+        {
+          "index": 82949,
+          "mode": "disasm",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/84",
+            "side.json#/result/bodies/8",
+            "side.json#/result/bodies/8/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_GetPlayerSideOnMap",
+          "address": "0x180c638d0"
+        },
+        {
+          "index": 82950,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.GameMode.GameModeFactory~1AutoChessGameMode/methods/85"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/AutoChessGameMode.<>xLuaBaseProxy_CheckRenderInvisible",
+          "address": "0x180c63890"
+        },
+        {
+          "index": 83331,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/33"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/CooperateGameMode.OnPlayerLifeToZero",
+          "address": "0x180c72bb0"
+        },
+        {
+          "index": 83403,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/34"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/CooperateGameMode.<>xLuaBaseProxy_OnPlayerLifeToZero",
+          "address": "0x180c50010"
+        },
+        {
+          "index": 83493,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/35"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/CooperateGameMode/CooperateNormalModeManager.OnPlayerLifeToZero",
+          "address": "0x180c8dff0"
+        },
+        {
+          "index": 84094,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/10",
+            "bodies.json#/result/10/method",
+            "search.json#/result/39",
+            "trace.json#/result/methods/36"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/DefaultGameMode.OnModifyLifePoint",
+          "address": "0x180c9e290"
+        },
+        {
+          "index": 84163,
+          "mode": "disasm",
+          "records": [
+            "trace.json#/result/methods/37",
+            "trace.json#/result/bodies/1",
+            "trace.json#/result/bodies/1/method"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/DefaultGameMode.OnPlayerLifeToZero",
+          "address": "0x180c9e2f0"
+        },
+        {
+          "index": 84199,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/40",
+            "trace.json#/result/methods/38"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.get_currentLifePoint",
+          "address": "0x180ce07d0"
+        },
+        {
+          "index": 84200,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/41",
+            "trace.json#/result/methods/39"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.get_lostLifePointByEnemyOverload",
+          "address": "0x180ce12d0"
+        },
+        {
+          "index": 84201,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/42",
+            "trace.json#/result/methods/40"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.get_lostLifePointByOthers",
+          "address": "0x180ce1370"
+        },
+        {
+          "index": 84231,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/41"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.OnPlayerLifeToZero",
+          "address": "0x180cd68f0"
+        },
+        {
+          "index": 84247,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/43",
+            "trace.json#/result/methods/42"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.OnModifyLifePoint",
+          "address": "0x180cd6850"
+        },
+        {
+          "index": 84306,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/44",
+            "trace.json#/result/methods/43"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode._UpdateLifePointTimer",
+          "address": "0x180cdf770"
+        },
+        {
+          "index": 84337,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/44"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.<>xLuaBaseProxy_OnPlayerLifeToZero",
+          "address": "0x180c50010"
+        },
+        {
+          "index": 84353,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/45",
+            "trace.json#/result/methods/45"
+          ],
+          "fullname": "Torappu.Battle.GameMode.GameModeFactory/HalfIdleGameMode.<>xLuaBaseProxy_OnModifyLifePoint",
+          "address": "0x180cd8480"
+        },
+        {
+          "index": 85250,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/46",
+            "trace.json#/result/methods/46"
+          ],
+          "fullname": "Torappu.Battle.GameMode.IGameMode.OnModifyLifePoint"
+        },
+        {
+          "index": 85317,
+          "mode": "metadata",
+          "records": [
+            "trace.json#/result/methods/47"
+          ],
+          "fullname": "Torappu.Battle.GameMode.IGameMode.OnPlayerLifeToZero"
+        },
+        {
+          "index": 87072,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/47"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointSet..ctor",
+          "address": "0x180d7b7f0"
+        },
+        {
+          "index": 87073,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/48"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointSet.get_targetMask",
+          "address": "0x180d7b850"
+        },
+        {
+          "index": 87074,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/12",
+            "bodies.json#/result/12/method",
+            "search.json#/result/49"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointSet.PreprocessLevelOptions",
+          "address": "0x180d7b730"
+        },
+        {
+          "index": 87075,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/13",
+            "bodies.json#/result/13/method",
+            "search.json#/result/50"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointSet.PreprocessLevelData",
+          "address": "0x180d7b6a0"
+        },
+        {
+          "index": 87076,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/51"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointAdd..ctor",
+          "address": "0x180d7b5e0"
+        },
+        {
+          "index": 87077,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/52"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointAdd.get_targetMask",
+          "address": "0x180d7b640"
+        },
+        {
+          "index": 87078,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/14",
+            "bodies.json#/result/14/method",
+            "search.json#/result/53"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointAdd.PreprocessLevelOptions",
+          "address": "0x180d7b520"
+        },
+        {
+          "index": 87079,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/15",
+            "bodies.json#/result/15/method",
+            "search.json#/result/54"
+          ],
+          "fullname": "Torappu.Battle.Runes.Internal.LMaxLifePointAdd.PreprocessLevelData",
+          "address": "0x180d7b490"
+        },
+        {
+          "index": 87429,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/0"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_attributeAdditons",
+          "address": "0x180d95940"
+        },
+        {
+          "index": 87430,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/1"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_attributeMultipliers",
+          "address": "0x180d95a40"
+        },
+        {
+          "index": 87431,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/2"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_attributeFinalScalers",
+          "address": "0x180d959c0"
+        },
+        {
+          "index": 87432,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/55",
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/3"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_lifePointModifierAddition",
+          "address": "0x180d95fc0"
+        },
+        {
+          "index": 87433,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/56",
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/4"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.set_lifePointModifierAddition",
+          "address": "0x180d961c0"
+        },
+        {
+          "index": 87434,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/57",
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/5"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_lifePointModifierScale",
+          "address": "0x180d96040"
+        },
+        {
+          "index": 87435,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/58",
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/6"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.set_lifePointModifierScale",
+          "address": "0x180d96250"
+        },
+        {
+          "index": 87436,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/7"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_enabledHiddenGroups",
+          "address": "0x180d95d10"
+        },
+        {
+          "index": 87437,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/8"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_disabledHiddenGroups",
+          "address": "0x180d95c30"
+        },
+        {
+          "index": 87438,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/9"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_isBattleSnapshotEmpty",
+          "address": "0x180d95e70"
+        },
+        {
+          "index": 87439,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/10"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_battleSnapshot",
+          "address": "0x180d95b40"
+        },
+        {
+          "index": 87440,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/11"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_characterInCandleHolderCnt",
+          "address": "0x180d95bc0"
+        },
+        {
+          "index": 87441,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/12"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_gold",
+          "address": "0x180d95df0"
+        },
+        {
+          "index": 87442,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/13"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_remainPopulation",
+          "address": "0x180d96140"
+        },
+        {
+          "index": 87443,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/14"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_battlePlayerData",
+          "address": "0x180d95ac0"
+        },
+        {
+          "index": 87444,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/15"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_levelData",
+          "address": "0x180d95f40"
+        },
+        {
+          "index": 87445,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/16"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.get_relics",
+          "address": "0x180d960c0"
+        },
+        {
+          "index": 87446,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/17"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager..ctor",
+          "address": "0x180d955c0"
+        },
+        {
+          "index": 87447,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/18"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.Init",
+          "address": "0x180d91650"
+        },
+        {
+          "index": 87448,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/19"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._RegisterRelicClasses",
+          "address": "0x180d945f0"
+        },
+        {
+          "index": 87449,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/20"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._Register"
+        },
+        {
+          "index": 87450,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/21"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._CreateInternal",
+          "address": "0x180d93dc0"
+        },
+        {
+          "index": 87451,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/22"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._CreateRelic",
+          "address": "0x180d93fd0"
+        },
+        {
+          "index": 87452,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/23"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._TryRecalculateStackLayerInBattle",
+          "address": "0x180d950b0"
+        },
+        {
+          "index": 87453,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/24"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.CheckExtraCondition",
+          "address": "0x180d90ba0"
+        },
+        {
+          "index": 87454,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/25"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._CreateCharBuff",
+          "address": "0x180d93c10"
+        },
+        {
+          "index": 87455,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/26"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._ApplyFinalAttributes",
+          "address": "0x180d93450"
+        },
+        {
+          "index": 87456,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/27"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._ClearAttributeCache",
+          "address": "0x180d93780"
+        },
+        {
+          "index": 87457,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/28"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.PreProcessCharacter",
+          "address": "0x180d923b0"
+        },
+        {
+          "index": 87458,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/29"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.PreprocessDeckCard",
+          "address": "0x180d92590"
+        },
+        {
+          "index": 87459,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/30"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.PreprocessEnemy",
+          "address": "0x180d92750"
+        },
+        {
+          "index": 87460,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/31"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.PreprocessGlobalBuff",
+          "address": "0x180d92af0"
+        },
+        {
+          "index": 87461,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/32"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.PreprocessEnvSystems",
+          "address": "0x180d928a0"
+        },
+        {
+          "index": 87462,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/33"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.PreprocessLevelOptions",
+          "address": "0x180d92d40"
+        },
+        {
+          "index": 87463,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/34"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.PreprocessLevelPredefines",
+          "address": "0x180d92f90"
+        },
+        {
+          "index": 87464,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/35"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.ContainsCharacterRelic",
+          "address": "0x180d90eb0"
+        },
+        {
+          "index": 87465,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/36"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.OnApplyingGlobalModifier",
+          "address": "0x180d921a0"
+        },
+        {
+          "index": 87466,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/11",
+            "bodies.json#/result/11/method",
+            "search.json#/result/59",
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/37",
+            "trace.json#/result/methods/48"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._OnModifyLifePoint",
+          "address": "0x180d943c0"
+        },
+        {
+          "index": 87467,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/38"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._CollectCharacterInCandleHolder",
+          "address": "0x180d938c0"
+        },
+        {
+          "index": 87468,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/39"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.FilterCharacterInSpecialHolder",
+          "address": "0x180d91520"
+        },
+        {
+          "index": 87469,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/40"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager._ParseBattleSnapshot",
+          "address": "0x180d94540"
+        },
+        {
+          "index": 87470,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/41"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.FetchGameOverBattleSnapshot",
+          "address": "0x180d90ff0"
+        },
+        {
+          "index": 87471,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/42"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager.RecordFinishedEnemy",
+          "address": "0x180d932e0"
+        },
+        {
+          "index": 87472,
+          "mode": "metadata",
+          "records": [
+            "side.json#/result/types/Torappu.Battle.Roguelike.RoguelikeBattleManager/methods/43"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.RoguelikeBattleManager..cctor",
+          "address": "0x180d952b0"
+        },
+        {
+          "index": 87715,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/60"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LMaxLifePointAdd.Preprocess",
+          "address": "0x180d8d550"
+        },
+        {
+          "index": 87716,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/61"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LMaxLifePointAdd..ctor",
+          "address": "0x180d8d610"
+        },
+        {
+          "index": 87717,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/62"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LMaxLifePointAdd.<>xLuaBaseProxy_Preprocess",
+          "address": "0x180d87760"
+        },
+        {
+          "index": 87721,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/63"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyAddition.Preprocess",
+          "address": "0x180d8cb80"
+        },
+        {
+          "index": 87722,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/64"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyAddition..ctor",
+          "address": "0x180d8cdf0"
+        },
+        {
+          "index": 87723,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/65"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyAddition.<>xLuaBaseProxy_Preprocess",
+          "address": "0x180d87760"
+        },
+        {
+          "index": 87724,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/66"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyScale.Preprocess",
+          "address": "0x180d8ce50"
+        },
+        {
+          "index": 87725,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/67"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyScale..ctor",
+          "address": "0x180d8d0c0"
+        },
+        {
+          "index": 87726,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/68"
+          ],
+          "fullname": "Torappu.Battle.Roguelike.Internal.LLifePointModifyScale.<>xLuaBaseProxy_Preprocess",
+          "address": "0x180d87760"
+        },
+        {
+          "index": 94797,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/69"
+          ],
+          "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker.LoadData",
+          "address": "0x180fc49b0"
+        },
+        {
+          "index": 94798,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/70"
+          ],
+          "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker.OnTick",
+          "address": "0x180fc4a70"
+        },
+        {
+          "index": 94799,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/71"
+          ],
+          "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker.CheckInitialToggled",
+          "address": "0x180fc4950"
+        },
+        {
+          "index": 94800,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/72"
+          ],
+          "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker._CheckCondition",
+          "address": "0x180fc4af0"
+        },
+        {
+          "index": 94801,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/73"
+          ],
+          "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker..ctor",
+          "address": "0x180fc4ba0"
+        },
+        {
+          "index": 94802,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/74"
+          ],
+          "fullname": "Torappu.Battle.Abilities.LifePointToggleChecker.<>xLuaBaseProxy_OnTick",
+          "address": "0x180fba7a0"
+        },
+        {
+          "index": 94830,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/75"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker.LoadData",
+          "address": "0x180fc8f50"
+        },
+        {
+          "index": 94831,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/76"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker.OnTick",
+          "address": "0x180fc9190"
+        },
+        {
+          "index": 94832,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/77"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker.CheckInitialToggled",
+          "address": "0x180fc8ed0"
+        },
+        {
+          "index": 94833,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/78"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker._CheckCondition",
+          "address": "0x180fc9220"
+        },
+        {
+          "index": 94834,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/79"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker._CheckGameMode",
+          "address": "0x180fc9490"
+        },
+        {
+          "index": 94835,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/80"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker..ctor",
+          "address": "0x180fc9580"
+        },
+        {
+          "index": 94836,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/81"
+          ],
+          "fullname": "Torappu.Battle.Abilities.RoguelikeModeLifePointToggleChecker.<>xLuaBaseProxy_OnTick",
+          "address": "0x180fba7a0"
+        },
+        {
+          "index": 98238,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/82"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignEnemyLifePointReduceToBB.get_allowedSource",
+          "address": "0x1810b3010"
+        },
+        {
+          "index": 98239,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/83"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignEnemyLifePointReduceToBB.Execute",
+          "address": "0x1810b2df0"
+        },
+        {
+          "index": 98240,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/84"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AssignEnemyLifePointReduceToBB..ctor",
+          "address": "0x1810b2f80"
+        },
+        {
+          "index": 98838,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/85"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ModifyLifePoint.get_allowedSource",
+          "address": "0x1810ecc90"
+        },
+        {
+          "index": 98839,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/16",
+            "bodies.json#/result/16/method",
+            "search.json#/result/86"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ModifyLifePoint.Execute",
+          "address": "0x1810ec9c0"
+        },
+        {
+          "index": 98840,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/87"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/ModifyLifePoint..ctor",
+          "address": "0x1810ecc00"
+        },
+        {
+          "index": 98841,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/88"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AddTempLifePoint.get_allowedSource",
+          "address": "0x1810dc130"
+        },
+        {
+          "index": 98842,
+          "mode": "disasm",
+          "records": [
+            "bodies.json#/result/17",
+            "bodies.json#/result/17/method",
+            "search.json#/result/89"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AddTempLifePoint.Execute",
+          "address": "0x1810dbf50"
+        },
+        {
+          "index": 98843,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/90"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/AddTempLifePoint..ctor",
+          "address": "0x1810dc0c0"
+        },
+        {
+          "index": 101362,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/91"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterLifePoint.get_allowedSource",
+          "address": "0x1811d69a0"
+        },
+        {
+          "index": 101363,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/92"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterLifePoint.Execute",
+          "address": "0x1811d6810"
+        },
+        {
+          "index": 101364,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/93"
+          ],
+          "fullname": "Torappu.Battle.Action.Nodes/FilterLifePoint..ctor",
+          "address": "0x1811d6940"
+        },
+        {
+          "index": 106204,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/94"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifePointRL3.SetData",
+          "address": "0x18133ade0"
+        },
+        {
+          "index": 106205,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/95"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifePointRL3.UpdateData",
+          "address": "0x18133af30"
+        },
+        {
+          "index": 106206,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/96"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifePointRL3.OnDestroy",
+          "address": "0x18133ace0"
+        },
+        {
+          "index": 106207,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/97"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifePointRL3..ctor",
+          "address": "0x18133b230"
+        },
+        {
+          "index": 106827,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/98"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifeLostGroup.set_lifePointLossByEnemy",
+          "address": "0x18136f0d0"
+        },
+        {
+          "index": 106828,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/99"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifeLostGroup.set_lifePointLossByOthers",
+          "address": "0x18136f250"
+        },
+        {
+          "index": 106833,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/100"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifePoint.SetData",
+          "address": "0x18136f4a0"
+        },
+        {
+          "index": 106834,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/101"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifePoint.UpdateData",
+          "address": "0x18136f660"
+        },
+        {
+          "index": 106835,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/102"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifePoint.OnDestroy",
+          "address": "0x18136f380"
+        },
+        {
+          "index": 106836,
+          "mode": "metadata",
+          "records": [
+            "search.json#/result/103"
+          ],
+          "fullname": "Torappu.Battle.UI.UILifePoint..ctor",
+          "address": "0x18136f930"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}
