@@ -1,0 +1,259 @@
+{
+  "provenance": {
+    "scope": "Organization of historical evidence; not a new client extraction or gameplay observation.",
+    "collectedOn": [
+      "2026-11-28"
+    ],
+    "collectionDateSource": "batch directory",
+    "organizedOn": "2026-11-28",
+    "client": {
+      "dll": {
+        "kind": "dll",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/GameAssembly.dll",
+        "gameRelativePath": "GameAssembly.dll",
+        "sha256": "cf7956bf88a61986859ef55c026d231713e2d12cf69ffd9a19779ab491cf76ff",
+        "records": [
+          "consumers.json#/provenance/client/dll",
+          "finish-and-getters.json#/provenance/client/dll",
+          "finish-literal.json#/provenance/client/dll"
+        ],
+        "bytes": 223112680
+      },
+      "metadata": {
+        "kind": "metadata",
+        "path": "/mnt/c/Program Files/Hypergryph Launcher/games/Arknights Game/Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "gameRelativePath": "Arknights_Data/il2cpp_data/Metadata/global-metadata.dat",
+        "sha256": "e58fb854ae519bc22f7d8bc7ac83502425a51b896a907a3374f5215202f9caa5",
+        "records": [
+          "consumers.json#/provenance/client/metadata",
+          "finish-and-getters.json#/provenance/client/metadata",
+          "finish-literal.json#/provenance/client/metadata"
+        ],
+        "bytes": 46669332
+      }
+    },
+    "sourceRecords": [
+      "consumers.json",
+      "finish-and-getters.json",
+      "finish-literal.json",
+      "handbook.json"
+    ],
+    "tool": {
+      "script": {
+        "path": "/home/wfrfred/workspace/ArkBattle/.agents/skills/arkbattle-native-research/scripts/archive.py",
+        "bytes": 12895,
+        "sha256": "9c5b246859318caaec4aab5275ef0d2d49fce5d612c6b4e569973a9941ba621a"
+      },
+      "python": "3.14.8 (main, Oct  1 2026, 00:00:00) [GCC 16.2.1 20260819 (Red Hat 16.2.1-2)]",
+      "role": "archive inventory; historical tool versions remain in the source records"
+    }
+  },
+  "result": {
+    "artifacts": [
+      {
+        "path": "consumers.json",
+        "kind": "record",
+        "bytes": 400582,
+        "sha256": "07c209e65b82fca9da2d0e094406fb563e615ab7a81e3870f12b014effe7c6fa"
+      },
+      {
+        "path": "finish-and-getters.json",
+        "kind": "record",
+        "bytes": 42544,
+        "sha256": "d4de5f6859cc9ef35c8a80ac5c366ef3f24a975c5f26588f96cf0af81a1b08e7"
+      },
+      {
+        "path": "finish-literal.json",
+        "kind": "record",
+        "bytes": 17033,
+        "sha256": "6e387c85443b5b45942b413ca1c0110f6ff2599ad2e9260193876f64beff92cd"
+      },
+      {
+        "path": "handbook.json",
+        "kind": "record",
+        "bytes": 7322,
+        "sha256": "9e5ffc07c1721c078fddfca51580b4edd6c895373946c3fd5d4236468c887f6f"
+      }
+    ],
+    "replay": {
+      "methods": [
+        {
+          "index": 68005,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/0/callers/0/method",
+            "consumers.json#/result/0/callers/0/body",
+            "consumers.json#/result/0/callers/0/body/method",
+            "consumers.json#/result/2/callers/0/method",
+            "consumers.json#/result/2/callers/0/body",
+            "consumers.json#/result/2/callers/0/body/method"
+          ],
+          "fullname": "Torappu.Battle.BattleLogger.AchieveJournal",
+          "address": "0x18073fe10"
+        },
+        {
+          "index": 73246,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/0/method",
+            "consumers.json#/result/0/body",
+            "consumers.json#/result/0/body/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.get_validKilledEnemiesCnt",
+          "address": "0x180988a00"
+        },
+        {
+          "index": 73247,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/1/method",
+            "consumers.json#/result/1/body",
+            "consumers.json#/result/1/body/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.get_validFinishedEnemiesCnt",
+          "address": "0x180988960"
+        },
+        {
+          "index": 73248,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/2/method",
+            "consumers.json#/result/2/body",
+            "consumers.json#/result/2/body/method"
+          ],
+          "fullname": "Torappu.Battle.Scheduler.get_validMissedEnemiesCnt",
+          "address": "0x180988aa0"
+        },
+        {
+          "index": 77683,
+          "mode": "disasm",
+          "records": [
+            "finish-and-getters.json#/result/Torappu.Battle.Enemy.get_isInvalidKilled77683",
+            "finish-and-getters.json#/result/Torappu.Battle.Enemy.get_isInvalidKilled77683/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_isInvalidKilled",
+          "address": "0x180accf30"
+        },
+        {
+          "index": 77684,
+          "mode": "disasm",
+          "records": [
+            "finish-and-getters.json#/result/Torappu.Battle.Enemy.get_isOverrideKillCnt77684",
+            "finish-and-getters.json#/result/Torappu.Battle.Enemy.get_isOverrideKillCnt77684/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_isOverrideKillCnt",
+          "address": "0x180acd080"
+        },
+        {
+          "index": 77685,
+          "mode": "disasm",
+          "records": [
+            "finish-and-getters.json#/result/Torappu.Battle.Enemy.get_overrideKillCnt77685",
+            "finish-and-getters.json#/result/Torappu.Battle.Enemy.get_overrideKillCnt77685/method"
+          ],
+          "fullname": "Torappu.Battle.Enemy.get_overrideKillCnt",
+          "address": "0x180ace480"
+        },
+        {
+          "index": 79639,
+          "mode": "metadata",
+          "records": [
+            "consumers.json#/result/0/callers/1/method"
+          ],
+          "fullname": "Torappu.Battle.BattleUtil.ComposeBattleRoundFinishData",
+          "address": "0x180b40c30"
+        },
+        {
+          "index": 105321,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/0/callers/2/method",
+            "consumers.json#/result/0/callers/2/body",
+            "consumers.json#/result/0/callers/2/body/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIBattleSystemMenuPanel._GetEstimatedReward",
+          "address": "0x1812f0f20"
+        },
+        {
+          "index": 105463,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/0/callers/3/method",
+            "consumers.json#/result/0/callers/3/body",
+            "consumers.json#/result/0/callers/3/body/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UITopBar/BasicStatus.UpdateData",
+          "address": "0x1812fa8c0"
+        },
+        {
+          "index": 106276,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/0/callers/4/method",
+            "consumers.json#/result/0/callers/4/body",
+            "consumers.json#/result/0/callers/4/body/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIRoguelikePluginRL05/UITopbarStatusRL5.UpdateData",
+          "address": "0x181343c90"
+        },
+        {
+          "index": 106277,
+          "mode": "metadata",
+          "records": [
+            "consumers.json#/result/0/callers/5/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIRoguelikePluginRL05/UITopbarStatusRL5._UpdateEnemyInfo",
+          "address": "0x181343e00"
+        },
+        {
+          "index": 106333,
+          "mode": "disasm",
+          "records": [
+            "consumers.json#/result/0/callers/6/method",
+            "consumers.json#/result/0/callers/6/body",
+            "consumers.json#/result/0/callers/6/body/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIRoguelikePluginRL06/UITopbarStatusRL6.UpdateData",
+          "address": "0x181343fa0"
+        },
+        {
+          "index": 106334,
+          "mode": "metadata",
+          "records": [
+            "consumers.json#/result/0/callers/7/method"
+          ],
+          "fullname": "Torappu.Battle.UI.UIRoguelikePluginRL06/UITopbarStatusRL6._UpdateEnemyInfo",
+          "address": "0x181344110"
+        },
+        {
+          "index": 214457,
+          "mode": "metadata",
+          "records": [
+            "consumers.json#/result/0/callers/8/method",
+            "consumers.json#/result/0/callers/9/method"
+          ],
+          "fullname": "Torappu.Activity.Act3fun.Battle.UI.Act3funTopbarStatus.UpdateData",
+          "address": "0x1838a30d0"
+        },
+        {
+          "index": 214459,
+          "mode": "metadata",
+          "records": [
+            "consumers.json#/result/0/callers/10/method",
+            "consumers.json#/result/0/callers/11/method"
+          ],
+          "fullname": "Torappu.Activity.Act3fun.Battle.UI.Act3funTopbarStatus._UpdateKillCntInfo",
+          "address": "0x1838a34f0"
+        }
+      ],
+      "blocks": [],
+      "types": [],
+      "constants": [],
+      "bundles": []
+    },
+    "limits": [
+      "Original extracts and reports retain their original payload and evidence strength.",
+      "Replay writes fresh skill output; it does not recreate missing historical decoders, mirrors, hotfixes or emulation stubs."
+    ]
+  }
+}

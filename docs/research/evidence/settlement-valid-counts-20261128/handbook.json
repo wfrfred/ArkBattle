@@ -1,0 +1,280 @@
+{
+  "source": "assets/arknights-game-data/zh_CN/gamedata/excel/enemy_handbook_table.json",
+  "gitRef": "17759cc8cdf37388414145d16262a3a06f3ab25e",
+  "sha256": "4a849cc4f9cfd321d3253032686ffdab8ab9ae3fabe5f8223c1f9b27da9715bf",
+  "pointer": "/enemyData",
+  "result": {
+    "enemy_1105_tyokai": {
+      "name": "赞助无人机",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1105_tyokai_2": {
+      "name": "豪华赞助无人机",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1106_byokai": {
+      "name": "斗志昂扬无人机",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_3001_upeopl": {
+      "name": "乌萨斯平民",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {
+        "camp_r_03": -1
+      }
+    },
+    "enemy_3002_ftrtal": {
+      "name": "斗士塔露拉",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1137_plasm": {
+      "name": "畸变赘生物",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1138_tumor": {
+      "name": "畸变恶性瘤",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1139_hologc": {
+      "name": "全息幻影",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1139_hologc_2": {
+      "name": "全息幻影MK2",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1145_atkspd": {
+      "name": "破片",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1145_atkspd_2": {
+      "name": "破片U型",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1146_defspd": {
+      "name": "铁砧",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1146_defspd_2": {
+      "name": "铁砧B型",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1155_dsrobt": {
+      "name": "自动维护机器",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_3003_alymot": {
+      "name": "大奖赛运输艇",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1211_msfsui": {
+      "name": "磷火",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1257_lydrty": {
+      "name": "多萝西",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1265_durcar": {
+      "name": "自走车",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_3004_speople": {
+      "name": "叙拉古平民",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1323_wdbshd": {
+      "name": "解构畸变体",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1334_ristar": {
+      "name": "行星碎屑",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_3005_lpeopl": {
+      "name": "修道院居民",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_3005_lpeopl_2": {
+      "name": "修道院居民",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1367_dseed": {
+      "name": "血珀",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1369_bmbcar1": {
+      "name": "反巫术变位炸弹",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10021_vtcar": {
+      "name": "货运轨道车",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10040_cnvbln": {
+      "name": "节日气球",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10040_cnvbln_2": {
+      "name": "巡游气球",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10059_cjgfod": {
+      "name": "饮啄",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10060_cjbfod": {
+      "name": "无谓",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10061_cjglon": {
+      "name": "“人间烟火”",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10062_cjblon": {
+      "name": "“饮露餐风”",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10063_cjdoor": {
+      "name": "湮没之口",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10063_cjdoor_2": {
+      "name": "造化之口",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10072_mpprhd": {
+      "name": "侵入式调用",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_10211_murad": {
+      "name": "泄漏源",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_2040_syrott": {
+      "name": "伊莎玛拉之泪",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_2065_skzjs": {
+      "name": "恐卡兹",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_2142_shsggd": {
+      "name": "赤金条",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_2154_shdfb": {
+      "name": "“火种”",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_4002_syokai": {
+      "name": "二手廉价无人机",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_4002_syokai_2": {
+      "name": "二手改装无人机",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_4003_pbank": {
+      "name": "移动电源",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1540_wdncr": {
+      "name": "爱布拉娜",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_1576_spbell": {
+      "name": "喀兰圣女",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_2062_smcar": {
+      "name": "勘察用自走车",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_5008_cstrwd": {
+      "name": "艺术的慈悲!",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_5009_shtrwd": {
+      "name": "艺术的绝杀!",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_5010_catrdg": {
+      "name": "弱弹",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_7034_xbmsn": {
+      "name": "勤奋劳工",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_5505_arctxi": {
+      "name": "“两栖号”船车",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_5506_arcgo": {
+      "name": "“搁浅零件”",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_5507_arctolm": {
+      "name": "喷泉“汽水侠”",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    },
+    "enemy_9012_acloon": {
+      "name": "“炎佑”",
+      "isInvalidKilled": true,
+      "overrideKillCntInfos": {}
+    }
+  }
+}

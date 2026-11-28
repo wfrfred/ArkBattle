@@ -142,6 +142,16 @@ dontCountAsFinished = (B && !M) || N
 
 因此已有证据足以否定“managed 是总开关”“不阻波就不计数”“分支统一固定政策”等合并方式。尚未据此决定 Core 最终保留几个字段：需要保留的是这些独立的战斗事实，而不是原生字段数量本身。
 
+### 额外有效计数（2026-11-28 补核）
+
+客户端还有独立的 validFinished、validKilled、validMissed 三项统计，不能与前述 Finished／Killed 同名合并。Scheduler 字段布局（分别为 +0x54、+0x68、+0x7c）与 _OnUnitDestroyed 的原件直接证实：通过 dontCountAsFinished、isSummon 两项门槛后，先更新普通 Finished／Killed，再处理有效计数。没有 override 时，isInvalidKilled=true 跳过有效计数；否则 validFinished 加一，按实际 death 分别增加 validKilled 或 validMissed（并不使用 alwaysCountAsKilled）。有 override 时，值大于零才增加 validFinished 或非 death 的 validMissed；实际 death 时 validKilled 加 override 并截断至不小于零。override 的分支优先于 isInvalidKilled。MarkEnemyKilled 仅更新普通 Finished／Killed。
+
+**D：** EnemyHandBookData 的 isInvalidKilled／overrideKillCntInfos 有实际非默认来源：固定镜像中 54 个图鉴条目有 isInvalidKilled=true，唯一非空 override 是乌萨斯平民（enemy_3001_upeopl）的 camp_r_03=-1；主线也有乌萨斯平民的出怪配置。Enemy 三个对应实例 getter 已核实，图鉴及关卡键绑定到实例字段的完整写入链尚未闭合，不把图鉴配置直接等同实机观测。
+
+**N：** 有效计数不是纯内部账务。普通 BasicStatus.UpdateData 在 0x1812faa08 读取 validKilled 后转字符串并写独立文本；后续另读普通 Finished 与 Total（0x1812faaed、0x1812fab19），另行格式化文本，不能将两个显示口径混同。肉鸽 RL5／RL6 顶栏将 validKilled 与 Total 共同格式化。UIBattleSystemMenuPanel._GetEstimatedReward 以 validKilled 为参数，调用 CampaignData.GetGainDataOrDefault（0x1812f143b、0x1812f151c），证实剿灭奖励预估消费该计数；BattleUtil.ComposeBattleRoundFinishData 将它以键 validKillCnt 写入结束数据（0x180b4113e–0x180b4116c）。BattleLogger.AchieveJournal 读取 validKilled 和 validMissed；validFinished 的 getter 在本次直接调用扫描无命中。服务端实际发奖、成就判定、卫戍专有消费者及所有内联／间接读取尚未核查；不据此断言有效计数直接裁决胜负或所有模式都需要三项有效统计。
+
+[定向消费者、字符串键及配置证据](../evidence/settlement-valid-counts-20261128/README.md)。
+
 ## 6. extraMeta 的实际生产与消费
 
 卫戍的 `_GenerateSelfBattleEnemyData`、`GenerateHelpBattleEnemyData`、`GenerateBossBattleEnemyData` 会分别把 `SelfEnemyInfo`、`EscapedEnemyInfo`、`BossBattleEnemyInfo` 写入新 ActionData.extraMeta，三者继承 EnemyInfo。普通出生将它传到 Enemy.Options.actionExtraMeta；OnEnemyRegistered 对 EnemyInfo 类型进行判定，读取 isSpecial／effectInstId 等并可调用 AddBuffById。故载荷不是仅用于日志的任意对象，也不是 JSON 漏配置的一个可选静态属性。
