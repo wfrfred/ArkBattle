@@ -14,10 +14,10 @@ import * as epHealing from "../../dist/core/battle/resource/ep/healing/index.js"
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { step } from "../../dist/core/battle/index.js";
 
-import { allyCharacterBursts } from "../../dist/core/effects/elemental/index.js";
+import { allyBursts } from "../../dist/core/effects/elemental/index.js";
 import { update } from "../../dist/core/unit/operations.js";
 
-const elemental = defineElemental(allyCharacterBursts);
+const elemental = defineElemental(allyBursts);
 
 test("EVENT-01: resource operations emit actual changes and only HP cancellations emit zero", () => {
     let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: {

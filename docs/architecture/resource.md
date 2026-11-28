@@ -56,7 +56,7 @@ HP／EP Damage 顶层必填单值 `attackType`、`applyWay` 与 `nature`：
 
 HP 的三种 Nature、EP 的两种 Nature 分别使用各自同一管线。ENVIRONMENT 标签本身不跳过 Hook、固定数值或改变公式；source、HP hitRecovery 与本次 exclude 分别控制来源、HIT 许可与响应排除。EP 的限制与接收 Hook 通过 request.nature 实现环境免疫，取消权限仍遵守 Receiving 契约，排除 Hook 不删除登记。原生深水损伤来源与齐尔查克条件光环依据见[案例38](../research/cases/38-damage-classification-and-permissions.md#3-shared-flags-完整清单)。
 
-普通无敌和 Presence 的 HP 接收规则只允许 LOSS；流失仍计算防御并进入提交和死亡后继。具体护盾、闪避、减伤或受伤机制按自身资格处理，泥岩只接受 type 为 DAMAGE 且 nature!==LOSS。活性源石为 ENVIRONMENT，敌方深水与标准爆发 HP 输出为 DAMAGE。角色狂躁周期明确允许 HIT；其它标准爆发、活性源石与敌方深水不允许，见 [Elemental](elemental.md#狂躁的行动与时间累加)。
+普通无敌和 Presence 的 HP 接收规则只允许 LOSS；流失仍计算防御并进入提交和死亡后继。具体护盾、闪避、减伤或受伤机制按自身资格处理，泥岩只接受 type 为 DAMAGE 且 nature!==LOSS。活性源石为 ENVIRONMENT，敌方深水与标准爆发 HP 输出为 DAMAGE。我方预设的狂躁周期明确允许 HIT；其它标准爆发、活性源石与敌方深水不允许，见 [Elemental](elemental.md#狂躁的行动与时间累加)。
 
 普通 HIT 回复与伤判共用 hp.decrease.receiving，Skill 的监听约定 priority=10000，普通伤判通常为 0。HIT 仅接受 type 为 DAMAGE、未取消、amount>0、nature!==LOSS 且 hitRecovery=true 的工作值，回复后原样返回；前置取消或归零不授予 HIT，后续抵挡或闪避不回滚已完成回复。实际回复仍受 SP 自身资格与容量限制，详见 [Skill](skill.md)。
 

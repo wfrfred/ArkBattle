@@ -13,7 +13,7 @@ import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
-import { allyCharacterBursts } from "../../dist/core/effects/elemental/index.js";
+import { allyBursts } from "../../dist/core/effects/elemental/index.js";
 import { effectInitial } from "../helpers/effect.js";
 
 test("Skill and Burst end notifications observe their cleared state while the owner is ENDING", () => {
@@ -27,7 +27,7 @@ test("Skill and Burst end notifications observe their cleared state while the ow
     const definition = {
         id: "owner",
         vitality: defineVitality(10000),
-        elemental: defineElemental(allyCharacterBursts),
+        elemental: defineElemental(allyBursts),
         skill: { definition: program },
         hooks: Hooks.empty()
             .set(skills.activationEnded, {

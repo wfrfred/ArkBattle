@@ -1,6 +1,6 @@
 import { assertNonnegativeNumber, assertPositiveSafeInteger } from "../../core/common/assert.js";
 import type { ArknightsMapOptions } from "./map.js";
-import type { ArknightsBlackboardEntry } from "../blackboard.js";
+import type { BlackboardEntry } from "../blackboard.js";
 import type { PredefinedPrefab } from "./prefab.js";
 import type { ArknightsResolvedSkill } from "../skill/predefined.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
@@ -14,7 +14,7 @@ export interface ArknightsTerrainResolution {
     readonly mapOptions: ArknightsMapOptions;
     readonly unappliedBlackboard: readonly {
         readonly controllerIndex: number;
-        readonly entry: ArknightsBlackboardEntry;
+        readonly entry: BlackboardEntry;
     }[];
 }
 
@@ -28,7 +28,7 @@ export function resolveTerrainControllers(
     } = { mire: null, deepsea: null, tileDeploymentPrefabs: [] };
     const unappliedBlackboard: {
         controllerIndex: number;
-        entry: ArknightsBlackboardEntry;
+        entry: BlackboardEntry;
     }[] = [];
 
     for (const [controllerIndex, { profile, skill }] of controllers.entries()) {

@@ -1,7 +1,7 @@
 import { assertFiniteNumber } from "../core/common/assert.js";
 import { denseArray, record, string } from "./json.js";
 
-export interface ArknightsBlackboardEntry {
+export interface BlackboardEntry {
     readonly key: string;
     readonly value: number;
     readonly valueStr: string | null;
@@ -11,10 +11,10 @@ export function parseBlackboard(
     value: unknown,
     name: string,
     options: { readonly allowEmptyKeys: boolean; readonly allowMissingValueStr: boolean },
-): readonly ArknightsBlackboardEntry[] {
+): readonly BlackboardEntry[] {
     const sourceEntries = denseArray(value, name);
     const keys = new Set<string>();
-    const entries: ArknightsBlackboardEntry[] = [];
+    const entries: BlackboardEntry[] = [];
 
     for (const [index, item] of sourceEntries.entries()) {
         const path = `${name}[${index}]`;

@@ -25,11 +25,11 @@ import {
 } from "../../content/terrain/definition.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { Direction } from "../../core/geometry/direction.js";
-import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
+import { parseBlackboard, type BlackboardEntry } from "../blackboard.js";
 import { secondsToTicks } from "../../core/tick.js";
 import type { TileDeploymentPrefab } from "./prefab.js";
 import { parseSiteCondition } from "./site-condition.js";
-import { parseMapGrid } from "../level.js";
+import { parseMapMatrix } from "../level.js";
 
 export interface ArknightsTileContext {
     readonly tileKey: string;
@@ -42,7 +42,7 @@ export interface ArknightsMapOptions {
     readonly tileDeploymentPrefabs: readonly TileDeploymentPrefab[];
     readonly consumeTileBlackboard?: (
         context: ArknightsTileContext,
-        entry: ArknightsBlackboardEntry,
+        entry: BlackboardEntry,
     ) => boolean;
 }
 
@@ -113,7 +113,7 @@ function requireEmpty(value: unknown, name: string): void {
     }
 }
 
-function tileBlackboard(value: unknown): readonly ArknightsBlackboardEntry[] {
+function tileBlackboard(value: unknown): readonly BlackboardEntry[] {
     if (value === null || value === undefined) {
         return [];
     }
@@ -289,7 +289,7 @@ export function parseBattlefieldMap(value: unknown, options: ArknightsMapOptions
     requireEmpty(source.layerRects, "map layers");
 
     const definitions = array(source.tiles, "tile definitions");
-    const matrix = parseMapGrid(source.map, definitions.length);
+    const matrix = parseMapMatrix(source.map, definitions.length);
     const columns = matrix[0]!.length;
     let tiles = Tiles.empty();
     const markers: Marker[] = [];

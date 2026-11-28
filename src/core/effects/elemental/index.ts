@@ -9,7 +9,7 @@ import { createSpDrain, createAttackReduction } from "./necrosis.js";
 import { createActionScaledDamage, createTimeScaledDamage } from "./mania.js";
 import { secondsToTicks } from "../../tick.js";
 
-export const allyCharacterBursts: ElementalDefinition["bursts"] = {
+export const allyBursts: ElementalDefinition["bursts"] = {
     [Type.MANIA]: createActionScaledDamage({
         durationTicks: secondsToTicks(15),
         effectDurationTicks: secondsToTicks(15),
@@ -42,7 +42,7 @@ export const allyCharacterBursts: ElementalDefinition["bursts"] = {
     }),
 };
 
-export const otherBursts: ElementalDefinition["bursts"] = {
+export const enemyBursts: ElementalDefinition["bursts"] = {
     [Type.MANIA]: createTimeScaledDamage({
         durationTicks: secondsToTicks(15),
         attackSpeed: 20,

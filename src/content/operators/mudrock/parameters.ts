@@ -4,7 +4,7 @@ import type { Tables } from "../../../data/tables.js";
 import { parseGroupTags } from "../../../data/unit/tags.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
 import {
-    favorFrame,
+    resolveTrust,
     growth,
     resolveAttributes,
     selectModule,
@@ -39,9 +39,9 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
     const character = record(tables.characters[operatorId], "operator character record");
     const progression = growth(character, tables.ranges, configuration);
     const { phase } = progression;
-    const favor = favorFrame(tables.favor, configuration.trust);
-    const stage = selectModule(operatorId, tables, configuration, favor);
-    const attributes = resolveAttributes(progression, configuration, stage, favor);
+    const trustFrame = resolveTrust(tables.favor, configuration.trust);
+    const stage = selectModule(operatorId, tables, configuration, trustFrame);
+    const attributes = resolveAttributes(progression, configuration, stage, trustFrame);
     const { id, level } = selectSkill(character, tables, configuration);
     const { range, sp, trigger, cost, blackboard } = level;
     if (range === null) {

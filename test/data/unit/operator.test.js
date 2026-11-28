@@ -7,7 +7,7 @@ import { parseGroupTags } from "../../../dist/data/unit/tags.js";
 import { create as createMudrock } from "../../../dist/content/operators/mudrock/unit.js";
 import { resolve as resolveMudrock } from "../../../dist/content/operators/mudrock/parameters.js";
 import {
-    favorFrame,
+    resolveTrust,
     growth,
     resolveAttributes,
     selectModule,
@@ -26,11 +26,11 @@ const base = { module: null, elite: 2, level: 90, potential: 1, skillIndex: 1, s
 function select(id = mudrock, configuration = base, source = tables) {
     const character = record(source.characters[id], "operator character record");
     const input = growth(character, source.ranges, configuration);
-    const favor = favorFrame(source.favor, configuration.trust);
-    const stage = selectModule(id, source, configuration, favor);
+    const trustFrame = resolveTrust(source.favor, configuration.trust);
+    const stage = selectModule(id, source, configuration, trustFrame);
 
     return {
-        attributes: resolveAttributes(input, configuration, stage, favor),
+        attributes: resolveAttributes(input, configuration, stage, trustFrame),
         range: input.phase.range,
         skill: selectSkill(character, source, configuration),
         talents: selectTalents(character, configuration, stage),
@@ -124,7 +124,7 @@ test("UI potential maps to cumulative raw ranks and selects the unlocked talent 
     const six = select(mudrock, { ...base, potential: 6 });
     assert.equal(four.attributes.defense, 631);
     assert.equal(six.attributes.cost, 34);
-    assert.equal(six.attributes.respawnTime, 66);
+    assert.equal(six.attributes.redeployTime, 66);
     assert.equal(talent(one, "1").hp_ratio, 0.2);
     assert.equal(talent(six, "1").hp_ratio, 0.22);
     const eliteOne = select(mudrock, { ...base, elite: 1, level: 80, potential: 6 });
@@ -133,7 +133,7 @@ test("UI potential maps to cumulative raw ranks and selects the unlocked talent 
 });
 
 test("trust rounds its increment separately and saturates at 100 percent", () => {
-    assert.deepEqual(favorFrame(tables.favor, 49), {
+    assert.deepEqual(resolveTrust(tables.favor, 49), {
         percent: 49, battlePhase: 24, favorPoint: 2637,
     });
     const values = [0, 49, 100, 200].map(trust => select(mudrock, { ...base, trust }).attributes);
@@ -180,9 +180,9 @@ test("module stages use their total attributes, trust gates and potential-aware 
     assert.equal(talent(select(mudrock, { ...configured(3), potential: 1 }), "1").hp_ratio, 0.23);
     assert.throws(() => select(mudrock, { ...configured(1), level: 59 }), /module requires/);
     assert.throws(() => select(mudrock, { ...configured(2), trust: 49 }), /more trust/);
-    assert.equal(selectModule(mudrock, tables, { ...configured(2), trust: 50 }, favorFrame(tables.favor, 50)).level, 2);
+    assert.equal(selectModule(mudrock, tables, { ...configured(2), trust: 50 }, resolveTrust(tables.favor, 50)).level, 2);
     assert.throws(() => select(mudrock, { ...configured(3), trust: 99 }), /more trust/);
-    assert.throws(() => selectModule(melantha, tables, configured(1), favorFrame(tables.favor, 100)), /does not match/);
+    assert.throws(() => selectModule(melantha, tables, configured(1), resolveTrust(tables.favor, 100)), /does not match/);
     const y = select(mudrock, { ...base, trust: 100, module: { id: moduleY, level: 3 } });
     assert.deepEqual(blackboard(y.moduleTrait), { atk: 0.08, def: 0.08 });
     assert.equal(y.attributes.attack, 967);

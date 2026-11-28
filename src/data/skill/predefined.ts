@@ -1,11 +1,11 @@
-import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
+import { parseBlackboard, type BlackboardEntry } from "../blackboard.js";
 import type { ArknightsPredefinedInstance } from "../level/definition.js";
 
 export interface ArknightsResolvedSkill {
     readonly skillId: string;
     readonly prefabKey: string | null;
     readonly level: number;
-    readonly blackboard: readonly ArknightsBlackboardEntry[];
+    readonly blackboard: readonly BlackboardEntry[];
 }
 
 function object(value: unknown, name: string): Record<string, unknown> {
@@ -74,7 +74,7 @@ export function resolvePredefinedSkillBlackboard(
     const prefabKey =
         prefabId === null || prefabId === "" ? null : identifier(prefabId, "skill prefab id");
 
-    const blackboard = new Map<string, ArknightsBlackboardEntry>();
+    const blackboard = new Map<string, BlackboardEntry>();
 
     for (const entry of parseBlackboard(selectedLevel.blackboard, `${skillId} blackboard`, {
         allowEmptyKeys: false,

@@ -7,7 +7,7 @@ import type { Blockable } from "../../../core/unit/capability/blocking/index.js"
 import type { Presence } from "../../../core/unit/capability/presence/index.js";
 import type { Route } from "../../../core/unit/capability/route/index.js";
 import type { Shiftable } from "../../../core/unit/capability/shifting/index.js";
-import { otherBursts } from "../../../core/effects/elemental/index.js";
+import { enemyBursts } from "../../../core/effects/elemental/index.js";
 import { enemyId, type Parameters } from "./parameters.js";
 import type { Enemy } from "../enemy.js";
 import { faceRoute, restrictMovementDuringAction } from "../hook.js";
@@ -45,7 +45,7 @@ export function create(parameters: Parameters) {
             elementResistance: { default: 0, min: 0, max: 100 },
             damageResistance: { default: 0, min: 0, max: 100 },
             burstRecoverySpeed: { default: 1, min: 0, max: null },
-            bursts: otherBursts,
+            bursts: enemyBursts,
         },
         facing: { restrictions: [] },
         vitality: {

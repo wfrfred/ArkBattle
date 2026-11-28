@@ -1,4 +1,4 @@
-import { allyCharacterBursts } from "../../core/effects/elemental/index.js";
+import { allyBursts } from "../../core/effects/elemental/index.js";
 import { calculateOffset } from "../../core/battle/blocking/index.js";
 import { blocker as blocking, sides } from "../../core/unit/capability/blocking/index.js";
 import { TICKS_PER_SECOND } from "../../core/tick.js";
@@ -25,7 +25,7 @@ export function elemental(): Operator["definition"]["elemental"] {
         elementResistance: { default: 0, min: 0, max: 100 },
         damageResistance: { default: 0, min: 0, max: 100 },
         burstRecoverySpeed: { default: 1, min: 0, max: null },
-        bursts: allyCharacterBursts,
+        bursts: allyBursts,
     };
 }
 
@@ -54,7 +54,7 @@ export function blocker(capacity: number): Operator["definition"]["blocker"] {
     };
 }
 
-export function attackAttributes(
+export function actionAttributes(
     attackSpeed: number,
     baseAttackTime: number,
 ): Pick<ActionDefinition, "speed" | "interval"> {

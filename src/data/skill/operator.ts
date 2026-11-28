@@ -1,9 +1,9 @@
 import type { Recovery, SpDefinition, Trigger } from "../../core/unit/capability/skill/index.js";
 import { secondsToTicks } from "../../core/tick.js";
-import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
+import { parseBlackboard, type BlackboardEntry } from "../blackboard.js";
 
 export interface SkillLevel {
-    readonly blackboard: readonly ArknightsBlackboardEntry[];
+    readonly blackboard: readonly BlackboardEntry[];
     readonly trigger: Trigger;
     readonly sp: SpDefinition;
     readonly cost: number;

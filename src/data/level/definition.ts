@@ -2,7 +2,7 @@ import { assert, assertFiniteNumber, assertSafeInteger } from "../../core/common
 import type { Map } from "../../core/battlefield/map/map.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
 import { Direction } from "../../core/geometry/direction.js";
-import { parseBlackboard, type ArknightsBlackboardEntry } from "../blackboard.js";
+import { parseBlackboard, type BlackboardEntry } from "../blackboard.js";
 import { parseBattlefieldMap, type ArknightsMapOptions } from "./map.js";
 import { parseRouteDefinition, type Route } from "./route.js";
 
@@ -33,7 +33,7 @@ export interface ArknightsLevelOptions {
     readonly displayRestTime: boolean;
     readonly maxPlayTime: number;
     readonly functionDisableMask: string;
-    readonly configBlackBoard: readonly ArknightsBlackboardEntry[] | null;
+    readonly configBlackBoard: readonly BlackboardEntry[] | null;
 }
 
 export interface ArknightsEnemyDbRef {
@@ -104,7 +104,7 @@ export interface ArknightsPredefinedInstance {
     readonly mainSkillLvl: number;
     readonly skinId: string | null;
     readonly tmplId: string | null;
-    readonly overrideSkillBlackboard: readonly ArknightsBlackboardEntry[] | null;
+    readonly overrideSkillBlackboard: readonly BlackboardEntry[] | null;
     readonly overrideTalents: ArknightsJsonValue;
 }
 
@@ -288,7 +288,7 @@ function json(value: unknown, name: string, ancestors = new Set<object>()): Arkn
     return result;
 }
 
-function blackboard(value: unknown, name: string): readonly ArknightsBlackboardEntry[] | null {
+function blackboard(value: unknown, name: string): readonly BlackboardEntry[] | null {
     if (value === null) {
         return null;
     }

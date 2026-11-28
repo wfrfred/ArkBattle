@@ -46,7 +46,7 @@ export function create(parameters: Parameters) {
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
         blocker: capabilities.blocker(attributes.blockCapacity),
         action: {
-            ...capabilities.attackAttributes(attributes.attackSpeed, attributes.baseAttackTime),
+            ...capabilities.actionAttributes(attributes.attackSpeed, attributes.baseAttackTime),
             definitions: [normalAttack, action],
             select: (battle, self) => ({
                 state: battle,

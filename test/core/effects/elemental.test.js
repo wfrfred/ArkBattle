@@ -20,7 +20,7 @@ import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.
 import { create as modifier } from "../../../dist/core/common/modifier.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import { elementValues, setContribution } from "../../../dist/core/unit/capability/elemental/index.js";
-import { allyCharacterBursts, otherBursts } from "../../../dist/core/effects/elemental/index.js";
+import { allyBursts, enemyBursts } from "../../../dist/core/effects/elemental/index.js";
 import { stun } from "../../../dist/core/effects/control.js";
 import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";
 import * as hpDecrease from "../../../dist/core/battle/resource/hp/decrease.js";
@@ -39,15 +39,15 @@ function output(work, source, self) {
 function action(interval = 1) {
   return createAttack({ id: 'normal-attack', applyWay: 'MELEE', period: { type: "FIXED", ticks: interval }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 }, select, output });
 }
-function definition(receiver = 'CHARACTER', overrides = {}) {
-  return { hooks: Hooks.empty(), id: `element-${receiver}`,
+function definition(preset = 'ALLY', overrides = {}) {
+  return { hooks: Hooks.empty(), id: `element-${preset}`,
     vitality: defineVitality(100000, { defense: defineAttribute(500), resistance: defineAttribute(50, 0, 100) }),
     offense: { attack: defineAttribute(100) },
-    elemental: defineElemental(receiver === "CHARACTER" ? allyCharacterBursts : otherBursts), ...overrides };
+    elemental: defineElemental(preset === "ALLY" ? allyBursts : enemyBursts), ...overrides };
 }
 
-function receiverBattle(receiver = 'CHARACTER', overrides = {}) {
-  return createBattle([{ hooks: Hooks.empty(), initial: {}, position: [1, 0], definition: definition(receiver, overrides) }]);
+function receiverBattle(preset = 'ALLY', overrides = {}) {
+  return createBattle([{ hooks: Hooks.empty(), initial: {}, position: [1, 0], definition: definition(preset, overrides) }]);
 }
 function element(work, type, tick = work.tick, power = 1000) {
   const request = { target: unitRef(getUnit(work, 0)), source: null, attackType: "NORMAL", applyWay: "NONE", nature: "DAMAGE", parameters: { type, power } };
@@ -68,9 +68,9 @@ function power(work) {
 }
 function near(actual, expected) { assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} != ${expected}`); }
 
-test('elemental execution: erosion defense loss survives recovery and stacks on the next burst for both receiver classes', () => {
-  for (const [receiver, duration, reduction, secondHpLoss] of [['CHARACTER', 300, 100, 500], ['ENEMY', 240, 120, 5000]]) {
-    let firstState = receiverBattle(receiver);
+test('elemental execution: erosion defense loss survives recovery and stacks on the next burst for both presets', () => {
+  for (const [preset, duration, reduction, secondHpLoss] of [['ALLY', 300, 100, 500], ['ENEMY', 240, 120, 5000]]) {
+    let firstState = receiverBattle(preset);
     firstState = element(firstState, 'EROSION').state;
     firstState = advance(firstState, duration);
     assert.equal(defense(firstState), 500 - reduction);
@@ -82,13 +82,13 @@ test('elemental execution: erosion defense loss survives recovery and stacks on 
   }
 });
 
-test('elemental execution: character necrosis settles fifteen magical pulses, drains SP and blocks recovery and activation until recovery ends', () => {
+test('elemental execution: ally necrosis settles fifteen magical pulses, drains SP and blocks recovery and activation until recovery ends', () => {
   const skill = createSkillDefinition({
     id: 'necrosis-sp',
     sp: { initial: 20, capacity: 30, recovery: { type: 'TIME' }, recoverySpeed: defineAttribute(1), recoveryMultiplier: defineAttribute(1) },
     activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 1, cost: 1, initialize: () => ({ state: {}, duration: { type: 'TIME', durationTicks: 30 } }) },
   });
-  let work = receiverBattle('CHARACTER', { skill: { definition: skill } });
+  let work = receiverBattle('ALLY', { skill: { definition: skill } });
   work = element(work, 'NECROSIS').state;
   assert.equal(getUnit(work, 0).vitality.health.hp, 100000);
   assert.equal(activateSkill(work, skillRef(getUnit(work, 0)), null).value, null);
@@ -139,7 +139,7 @@ test('elemental execution: necrosis shares its recovery budget with periodic dam
   assert.deepEqual(getUnit(ended, 0).elemental.ep, elementValues(1000));
 });
 
-function battle(receiver, type) {
+function battle(preset, type) {
   const casterAttack = createAttack({
     id: 'normal-attack', applyWay: 'MELEE', period: { type: "FIXED", ticks: 10000 },
     timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 }, select,
@@ -157,7 +157,7 @@ function battle(receiver, type) {
   return createBattle([
     { hooks: Hooks.empty(), initial: {}, definition: actor('ALLY', casterAttack), position: [0, 0] },
     { hooks: Hooks.empty(), initial: {}, definition: { ...actor('ENEMY', action()),
-      elemental: defineElemental(receiver === "CHARACTER" ? allyCharacterBursts : otherBursts),
+      elemental: defineElemental(preset === "ALLY" ? allyBursts : enemyBursts),
     }, position: [1, 0] },
   ], { rows: 1, columns: 8 });
 }
@@ -187,7 +187,7 @@ test('elemental runtime: unused neural paralysis survives recovery and the next 
   assert.equal(cancelled.every(event => event.tick < hits[0].tick), true);
 });
 
-test('mania counts each released action once and each skill activation, caps self-damage and keeps its independent character program after recovery cancellation', () => {
+test('mania counts each released action once and each skill activation, caps self-damage and keeps its independent ally-preset program after recovery cancellation', () => {
   const attack = createAttack({
     id: 'mania-attack', applyWay: 'MELEE', period: { type: 'ATTACK_SPEED' }, timing: { type: 'FIXED', windupTicks: 0, recoveryTicks: 0 },
     select, output,
@@ -199,7 +199,7 @@ test('mania counts each released action once and each skill activation, caps sel
     sp: { initial: 0, capacity: 30, recovery: { type: 'HIT', amount: 1 }, recoverySpeed: defineAttribute(0), recoveryMultiplier: defineAttribute(1) },
   });
   let work = createBattle([
-    { hooks: Hooks.empty(), initial: {}, position: [0, 0], definition: definition('CHARACTER', {
+    { hooks: Hooks.empty(), initial: {}, position: [0, 0], definition: definition('ALLY', {
       classification: { type: "DEVICE", side: 'ALLY', filterTags: [], groupTags: [] }, action: { ...actionCapability(attack), interval: defineAttribute(30) },
       skill: { definition: skill },
     }) },
@@ -252,7 +252,7 @@ test('mania counts successful skill activations on a host without Action', () =>
     id: 'mania-skill-only', sp: null,
     activation: { trigger: 'MANUAL', ignoreRestrictions: [], requirement: 0, cost: 0, initialize: () => ({ state: {}, duration: { type: 'INFINITE' } }) },
   });
-  let work = element(receiverBattle('CHARACTER', {
+  let work = element(receiverBattle('ALLY', {
     skill: { definition: skill },
   }), 'MANIA').state;
   const first = activateSkill(work, skillRef(getUnit(work, 0)), null);

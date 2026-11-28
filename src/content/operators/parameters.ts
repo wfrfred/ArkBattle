@@ -5,7 +5,7 @@ import {
 } from "../../core/common/assert.js";
 import { roundToEven } from "../../core/common/math.js";
 import type { TilePosition } from "../../core/geometry/coordinate.js";
-import { parseBlackboard, type ArknightsBlackboardEntry } from "../../data/blackboard.js";
+import { parseBlackboard, type BlackboardEntry } from "../../data/blackboard.js";
 import { parseRange } from "../../data/range.js";
 import { parseArknightsSkillLevel } from "../../data/skill/operator.js";
 import { record } from "../../data/json.js";
@@ -23,7 +23,7 @@ export interface Attributes {
     baseAttackTime: number;
     blockCapacity: number;
     cost: number;
-    respawnTime: number;
+    redeployTime: number;
 }
 
 interface Frame {
@@ -47,7 +47,7 @@ interface Unlock {
     readonly level: number;
 }
 
-export type Blackboard = readonly ArknightsBlackboardEntry[];
+export type Blackboard = readonly BlackboardEntry[];
 
 export interface Talent {
     readonly key: string;
@@ -60,7 +60,7 @@ export interface ModuleStage {
     readonly parts: readonly unknown[];
 }
 
-export interface FavorFrame {
+export interface TrustFrame {
     readonly percent: number;
     readonly battlePhase: number;
     readonly favorPoint: number;
@@ -73,7 +73,7 @@ const integerAttributes: ReadonlySet<keyof Attributes> = new Set([
     "taunt",
     "blockCapacity",
     "cost",
-    "respawnTime",
+    "redeployTime",
 ]);
 
 const potentialAttributes: Readonly<Record<string, keyof Attributes>> = {
@@ -83,7 +83,7 @@ const potentialAttributes: Readonly<Record<string, keyof Attributes>> = {
     MAGIC_RESISTANCE: "resistance",
     ATTACK_SPEED: "attackSpeed",
     COST: "cost",
-    RESPAWN_TIME: "respawnTime",
+    RESPAWN_TIME: "redeployTime",
 };
 
 const moduleAttributes: Readonly<Record<string, keyof Attributes>> = {
@@ -94,7 +94,7 @@ const moduleAttributes: Readonly<Record<string, keyof Attributes>> = {
     attack_speed: "attackSpeed",
     block_cnt: "blockCapacity",
     cost: "cost",
-    respawn_time: "respawnTime",
+    respawn_time: "redeployTime",
 };
 
 function array(value: unknown, name: string): readonly unknown[] {
@@ -171,7 +171,7 @@ function readAttributes(value: unknown): Attributes {
         baseAttackTime: number(data.baseAttackTime, "operator base attack time"),
         blockCapacity: number(data.blockCnt, "operator block capacity"),
         cost: number(data.cost, "operator cost"),
-        respawnTime: number(data.respawnTime, "operator respawn time"),
+        redeployTime: number(data.respawnTime, "operator redeploy time"),
     };
 }
 
@@ -269,7 +269,7 @@ export function growth(character: Table, ranges: Table, configuration: Configura
     };
 }
 
-export function favorFrame(favor: Table, trust: number): FavorFrame {
+export function resolveTrust(favor: Table, trust: number): TrustFrame {
     for (const value of array(favor.favorFrames, "favor frames")) {
         const frame = record(value, "favor frame");
         const { percent, battlePhase, favorPoint } = record(frame.data, "favor frame data");
@@ -317,14 +317,14 @@ export function resolveAttributes(
     growth: Growth,
     configuration: Configuration,
     module: Pick<ModuleStage, "attributes"> | null,
-    favor: FavorFrame,
+    trustFrame: TrustFrame,
 ): Attributes {
     const attributes = interpolate(growth.phase.frames, configuration.level);
     const trust = growth.favorKeyFrames;
     if (trust !== null) {
         addAttributes(
             attributes,
-            interpolate(trust, Math.min(favor.battlePhase, trust.at(-1)!.level)),
+            interpolate(trust, Math.min(trustFrame.battlePhase, trust.at(-1)!.level)),
         );
     }
 
@@ -393,7 +393,7 @@ export function selectModule(
     operatorId: string,
     tables: Pick<Tables, "equipment" | "battleEquipment">,
     configuration: Configuration,
-    favor: FavorFrame,
+    trustFrame: TrustFrame,
 ): ModuleStage | null {
     const selection = configuration.module;
     if (selection === null) {
@@ -428,7 +428,7 @@ export function selectModule(
     const minFavor = record(raw.unlockFavors, "module trust unlocks")[selection.level];
     assertNonnegativeSafeInteger(minFavor, "module required favor point");
 
-    if (favor.favorPoint < minFavor) {
+    if (trustFrame.favorPoint < minFavor) {
         throw new RangeError("module level requires more trust");
     }
 

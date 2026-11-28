@@ -12,12 +12,12 @@ export type Placement = "MELEE" | "RANGED" | "ALL";
 export interface Parameters {
     readonly placement: Placement;
     readonly cost: number;
-    readonly respawnTime: number;
+    readonly redeployTime: number;
 }
 
 export function create({
     cost,
-    respawnTime,
+    redeployTime,
     placement,
 }: Parameters): CardDefinition<object, "UNIQUE"> {
     return {
@@ -32,7 +32,7 @@ export function create({
             consumption: 1,
             stockLimit: 1,
             activeLimit: 1,
-            cooldown: secondsToTicks(respawnTime),
+            cooldown: secondsToTicks(redeployTime),
         },
         restrictions: [
             {

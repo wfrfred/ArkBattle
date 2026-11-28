@@ -3,7 +3,7 @@ import type { Tables } from "../../../data/tables.js";
 import { parseGroupTags } from "../../../data/unit/tags.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
 import {
-    favorFrame,
+    resolveTrust,
     growth,
     resolveAttributes,
     selectSkill,
@@ -23,8 +23,8 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
     const character = record(tables.characters[operatorId], "operator character record");
     const progression = growth(character, tables.ranges, configuration);
     const { phase } = progression;
-    const favor = favorFrame(tables.favor, configuration.trust);
-    const attributes = resolveAttributes(progression, configuration, null, favor);
+    const trustFrame = resolveTrust(tables.favor, configuration.trust);
+    const attributes = resolveAttributes(progression, configuration, null, trustFrame);
     const { id, level } = selectSkill(character, tables, configuration);
     const { blackboard, cost, durationTicks, sp, trigger } = level;
     const attackBonus = blackboard.find((entry) => entry.key === "atk")?.value;

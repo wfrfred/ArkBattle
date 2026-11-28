@@ -3,7 +3,7 @@ import type { MotionMode } from "../../core/battlefield/navigation/state.js";
 import type { TilePosition, WorldPosition } from "../../core/geometry/coordinate.js";
 import type { Checkpoint, Plan } from "../../core/unit/capability/route/capability.js";
 import { secondsToTicks } from "../../core/tick.js";
-import { parseGridPosition } from "../level.js";
+import { parseTilePosition } from "../level.js";
 
 export interface Route {
     readonly plan: Plan;
@@ -51,7 +51,7 @@ function boolean(value: unknown, name: string): boolean {
 }
 
 function position(value: unknown, name: string): TilePosition {
-    return parseGridPosition(object(value, name, ["row", "col"]), name);
+    return parseTilePosition(object(value, name, ["row", "col"]), name);
 }
 
 function offset(value: unknown, name: string): WorldPosition {
