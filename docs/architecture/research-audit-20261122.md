@@ -50,12 +50,14 @@
 
 ## 已有项目方案与暂缓项
 
-| 原审计编号 | 现行结论 |
+| 研究项 | 现行结论 |
 | --- | --- |
 | G01 | 同实例复活采用 1 HP、复活等待 Effect 和 increaseHp。恰在路线终点时的探针差异已接受。G08 的路线退出资格与离场原因已接入；全局计数与关卡生命值仍是独立缺口。 [Vitality](vitality.md#特殊-hp-application-的支持边界) |
 | G03 | 郁金香 S1 空施放的狂躁计数是已知且明确暂缓的内容例外。普通双监听按已定契约运行。 [Elemental](elemental.md#支持边界) |
 | G10 | 琳琅诗怀雅的金币可以由 Content 私有状态保存，技能可通过本次发动参数决定是否收取 SP。已查案例不足以确认普通 SP 配置需要运行期提交。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L115) · [Skill](skill.md#6-覆盖边界) |
 | G11 | 若玛露西尔的魔力由 Content 私有状态承载，普通 SP 操作自然与魔力隔离。共享 SP 封闭仍取决于资源表示和真正需要它的普通 SP 消费者。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L317) |
+| Case 30 · 有效结算统计 | `validFinished`／`validKilled`／`validMissed` 属于独立的界面及外部结算统计口径。已确认的消费者包括有效击杀显示、结束数据、剿灭奖励预估和成就日志；项目暂不支持这组统计，不纳入普通关卡计数的 Core 缺口。[补核证据](../research/evidence/settlement-valid-counts-20261128/README.md) |
+
 
 ## 逐项研究记录
 
