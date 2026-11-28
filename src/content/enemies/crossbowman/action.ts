@@ -1,3 +1,4 @@
+import { selectBlocker } from "../targeting.js";
 import { normalMeleeOutput } from "../../actions/normal-melee.js";
 import {
     create as createAttack,
@@ -5,9 +6,7 @@ import {
     type Attack as BaseAttack,
 } from "../../actions/attack.js";
 import * as units from "../../../core/unit/index.js";
-import type { Timing } from "../../actions/timing.js";
 import { perSecondToPerTick } from "../../../core/tick.js";
-import { assertNonnegativeSafeInteger, assertPositiveNumber } from "../../../core/common/assert.js";
 import * as projectiles from "../../../core/projectile/index.js";
 import { resolveAttack, type Offense } from "../../../core/unit/capability/offense/index.js";
 
@@ -17,52 +16,47 @@ import type { Blockable } from "../../../core/unit/capability/blocking/index.js"
 import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import type { Classification } from "../../../core/unit/capability/classification/index.js";
 import { topK } from "../../../core/common/collection/order.js";
-import { arrowApplyWay, type Projectile } from "./projectile.js";
+import { arrowApplyWay, createArrow } from "./projectile.js";
 
 export type Host = Classification & Blockable & Offense;
 
 export type Attack = BaseAttack<object, object, Host>;
 
-export function createMelee(timing: Timing): Attack {
+export function createMelee(): Attack {
     return createAttack<Host>({
         id: "melee",
         onStart: faceTarget,
         period: { type: "ATTACK_SPEED" },
-        timing,
-        applyWay: "MELEE",
-        select(battle, source) {
-            const self = source.get(battle);
-            if (self === undefined) {
-                return { state: battle, value: [] };
-            }
-
-            const owner = self.blockable.relation?.blocker;
-            const target = owner === undefined ? undefined : owner.get(battle);
-            if (target === undefined || !hasTargetable(target)) {
-                return { state: battle, value: [] };
-            }
-
-            const eligible = targeting.damage(self, () => true)(battle);
-
-            return {
-                state: battle,
-                value: eligible(target) ? [units.ref(target)] : [],
-            };
+        timing: {
+            type: "ATTACK_SPEED",
+            beginTicks: 0,
+            durationTicks: 30,
+            releaseTicks: 15,
+            minScale: 0.1,
+            maxScale: 1,
         },
+        applyWay: "MELEE",
+        select: selectBlocker,
         output: normalMeleeOutput,
     });
 }
 
-export function createRanged(rangeRadius: number, timing: Timing, projectile: Projectile): Attack {
-    assertPositiveNumber(projectile.speedPerSecond, "enemy arrow speed");
-    assertNonnegativeSafeInteger(projectile.stopDelayTicks, "enemy arrow stop delay");
+export function createRanged(rangeRadius: number): Attack {
+    const projectile = createArrow();
 
     return createAttack<Host>({
         id: "ranged",
         applyWay: arrowApplyWay,
         onStart: faceTarget,
         period: { type: "ATTACK_SPEED" },
-        timing,
+        timing: {
+            type: "ATTACK_SPEED",
+            beginTicks: 0,
+            durationTicks: 30,
+            releaseTicks: 16,
+            minScale: 0.1,
+            maxScale: 1,
+        },
         select(battle, source) {
             const self = source.get(battle);
             if (self === undefined) {
@@ -95,7 +89,7 @@ export function createRanged(rangeRadius: number, timing: Timing, projectile: Pr
             }
 
             const initialized = projectiles.initialize(state, {
-                definition: projectile.definition,
+                definition: projectile,
                 side: source.definition.classification.side,
                 position: source.position,
                 state: {
@@ -103,8 +97,8 @@ export function createRanged(rangeRadius: number, timing: Timing, projectile: Pr
                     target: units.ref(target),
                     destination: target.position,
                     cachedAtk: resolveAttack(state, source),
-                    speedPerTick: perSecondToPerTick(projectile.speedPerSecond),
-                    stopDelayTicks: projectile.stopDelayTicks,
+                    speedPerTick: perSecondToPerTick(10),
+                    stopDelayTicks: 0,
                     stopAtTick: null,
                     hitAttempted: false,
                     launchedAtTick: state.tick,

@@ -12,18 +12,21 @@ import type { Targetable } from "../../core/unit/capability/targetable/capabilit
 import type { Vitality } from "../../core/unit/capability/vitality/index.js";
 import { blocker, type Restriction } from "../../core/unit/capability/blocking/index.js";
 import type { Device } from "./device.js";
+import type { ArknightsCharacterInstanceConfig } from "../../data/level/definition.js";
+import { resolveParameters, type Parameters } from "./parameters.js";
 import { apply, restore } from "./tile.js";
+
+export type { Parameters } from "./parameters.js";
 
 export type ShootingPlatform = Device & Vitality & Targetable & Occupancy & Deployable;
 
 export type Definition = ShootingPlatform["definition"];
 
-export interface Parameters extends Pick<
-    Definition,
-    "id" | "classification" | "vitality" | "deployable"
-> {
-    readonly taunt: number;
-    readonly tileChanges: Partial<TileState>;
+export function resolve(
+    configuration: ArknightsCharacterInstanceConfig,
+    characterValue: unknown,
+): Parameters {
+    return resolveParameters(configuration, characterValue, "trap_1106_achplat");
 }
 
 const groundBlockingRestriction: Restriction = {
@@ -39,22 +42,34 @@ function clearOccupant(battle: BattleState, position: TilePosition): BattleState
 }
 
 export function create(parameters: Parameters): Definition {
-    const { id, classification, taunt, vitality, deployable } = parameters;
+    const { maxHp, recoverySpeed, taunt, groupTags } = parameters;
     const tileChanges = {
-        ...parameters.tileChanges,
+        placement: "RANGED",
+        elevation: "HIGHLAND",
         walkCost: 1000,
-    };
+    } satisfies Partial<TileState>;
 
     return {
-        id,
-        classification,
+        id: "trap_1106_achplat",
+        classification: {
+            type: "DEVICE",
+            side: "ALLY",
+            filterTags: ["SANDBOX_FACTORY"],
+            groupTags,
+        },
         targetable: {
             category: "DEVICE",
             taunt: { default: taunt, min: -2, max: 2 },
             restrictions: [],
         },
-        vitality,
-        deployable,
+        vitality: {
+            defense: { default: 0, min: 0, max: null },
+            resistance: { default: 0, min: 0, max: 100 },
+            maxHp: { default: maxHp, min: 1, max: null },
+            recoverySpeed: { default: recoverySpeed, min: 0, max: null },
+            recoveryRatio: { default: 0, min: 0, max: 1 },
+        },
+        deployable: { retreatRestrictions: [], refund: null },
         occupancy: {
             slot: "SUPPORT",
             onOccupantAdded(battle, { support, occupant }) {

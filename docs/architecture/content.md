@@ -1,12 +1,12 @@
 # 内容接入
 
-Core 提供通用机制并保存模拟状态，Content 提供具体行为，Data 转换静态资料。结构以可观察玩法语义为依据，不照搬原生类和字段布局。
+Core 提供通用机制并保存模拟状态，Content 解释具体内容的静态配置并提供行为，Data 负责静态资料的通用读取和关卡转换。结构以可观察玩法语义为依据，不照搬原生类和字段布局。
 
 ## 数据与行为
 
-[Data](data.md)解析、选择、覆写和换算静态输入，可以建图或为已有工厂绑定参数；Content 通过 ESM 明确组合 Capability、Effect、Hook 和 Action，提供完整 Definition。Core 使用 Definition／Initial 创建和推进实例。
+[Data](data.md)提供原表、通用读取、等级层选择、覆写和换算等工具，并进行关卡转换；具体单位的 Content 解析自身需要的参数，通过 ESM 明确组合 Capability、Effect、Hook 和 Action，提供完整 Definition。Core 使用 Definition／Initial 创建和推进实例。
 
-Unit Definition 保存实际消费者读取的配置。干员的 `create(configuration)` 用解析后的参数构造 Action、Skill 和 Effect，再组装完整 Definition。行动配置集中在 `action.definitions`。
+Unit Definition 保存实际消费者读取的配置。具体单位先通过 `resolve` 读取资料与本次配置得到 `Parameters`，再用 `create(parameters)` 组装完整 Unit Definition。已经确认的固定行为和配置直接在对应 Content 中声明，不作为场景必须传入的数据。行动配置集中在 `action.definitions`。
 
 Content 不自行推进模拟，不在共享模块或闭包中保存本场事实；私有运行数据由初始化程序放入 State，不通过字符串动态装载程序。Meta 提供本次阵容与玩法配置；未支持配置在入口明确拒绝，不静默丢弃。
 
@@ -24,7 +24,8 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 | `action.ts` | 定义普攻和特殊行动的目标、时序与输出程序。技能期间带独立执行和冷却的行动也写在这里。 |
 | `skill.ts` | 定义 Skill、Activation 程序及该技能专属的 SP 规则。 |
 | `effect.ts` | 定义该单位专属的 Effect。 |
-| `parameters.ts` | 从传入的原表读取所选干员和配置，解析各工厂所需的具名参数。 |
+| `parameters.ts` | 读取原始资料和本次配置，校验所选内容，解析各工厂所需的具名参数。 |
+| `card.ts` | 使用同一干员的 Parameters 独立组装 Card Definition，明确部署格资格。 |
 | `projectile.ts` | 定义该单位专属的弹道及其命中程序。 |
 | `summons/` | 组织专属召唤物自身的 Unit、Action、Skill 等程序。 |
 
@@ -36,11 +37,11 @@ Content 共享的是可选工厂。`content/actions/attack.ts` 提供常见攻�
 
 攻击工厂负责时序、目标锁定与释放，显式提供 `select`、`output` 和 `applyWay`，不解释声明式输出列表。弹药行动工厂要求明确提供每次输出消耗的 `ammoPerAction`。具体伤害请求明确提供攻击类别、施加途径、性质、HIT 许可和死亡归属，不由范围、距离、来源或技能状态猜测。共同输出协议见 [Resource](resource.md)。
 
-猎狗和弩手各自声明所需的 `Parameters`，由 `create(parameters)` 直接组装 Unit Definition。关卡接入处读取敌人属性和 Prefab，将结果与该敌人的攻击时序等参数一起交给工厂。两者各自校验 `WALK`、使用 Prefab 提供的路点策略，并明确登记共用的攻击停步与登场面向 Hook。弩手近远程独立冷却与主行动互斥属于其内容政策，场景负责选择内容和波次。[敌人数据接入](data.md#敌人静态资料) · [共用敌人 Hook](../../src/content/enemies/hook.ts)
+猎狗和弩手各自通过 `resolve(raw, configuration)` 选择敌人等级及关卡覆写，拒绝不支持的 Prefab、非 WALK 运动方式、眩晕免疫或零被阻挡体积，再由 `create(parameters)` 组装 Unit Definition。转向、避让宽度、路点策略和出生延迟取已确认的固定配置，攻时由各自的 Action 声明，场景不需要传入这些固定数据。两者复用近战阻挡者索敌，以及攻击停步与登场面向 Hook。弩手近远程独立冷却与主行动互斥属于其内容政策，场景负责选择内容和波次。[敌人数据接入](data.md#敌人静态资料) · [共用敌人索敌](../../src/content/enemies/targeting.ts) · [共用敌人 Hook](../../src/content/enemies/hook.ts)
 
-Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速与连续基础攻击间隔归 Action Capability，每个 Action 显式选择 ATTACK_SPEED 或 FIXED 周期。普通攻击接收 Data 转换的静态时序，共享程序处理缩放、开始预算和分段等待。玫兰莎的首次／续轮起手由其持久 Action 状态组织，不由 Core 保存动画状态，详细时序见 [Action](action.md#8-普通攻击释放-hook-与移动)。
+Content 按 [Attribute](attribute.md) 契约绑定所属能力的属性；攻速与连续基础攻击间隔归 Action Capability，每个 Action 显式选择 ATTACK_SPEED 或 FIXED 周期。当前普通攻击直接使用所属 Action 声明的已确认时序，共享程序处理缩放、开始预算和分段等待。玫兰莎与泥岩复用普通近战索敌规则及已共同采用的能力配置工厂。玫兰莎的首次／续轮起手由其持久 Action 状态组织，不由 Core 保存动画状态，详细时序见 [Action](action.md#8-普通攻击释放-hook-与移动)。
 
-装置也使用普通 Unit。射击台以 SUPPORT 配对向当前乘员登记平台独占限制，只禁止 GROUND 阻挡，解除只撤销自身来源，不改地块允许阻挡字段。改格及离场恢复由具体装置程序执行；结构索引支持交换不意味着游戏允许任意搬格，见 [Occupancy](occupancy.md)与 [Terrain](terrain.md)。
+装置也使用普通 Unit。整理箱和射击台各自声明固定身份、阵营、战斗筛选标签、受选类别和改格规则；从角色资料解析生命、回血、嘲讽及组织标签。整理箱禁止本格部署，射击台将本格改为高台且允许远程部署，两者设置普通障碍移动成本 1000，保留地穴固定成本。射击台以 SUPPORT 配对向当前乘员登记平台独占限制，只禁止 GROUND 阻挡，解除只撤销自身来源，不改地块允许阻挡字段。改格及离场恢复由具体装置程序执行；结构索引支持交换不意味着游戏允许任意搬格，见 [Occupancy](occupancy.md)与 [Terrain](terrain.md)。
 
 ## 状态与登场
 
@@ -99,7 +100,7 @@ type Device = Unit & Classification<"DEVICE">;
 
 ### 具体单位的写法
 
-干员通过 `create(configuration, tables)` 构造。配置使用 `operators/configuration.ts` 中的 `Configuration`，无模组时 module 为 null，有技能的干员同时要求 `SkillSelection`。`tables` 是 Data 提供的完整原表。该干员的 `resolve(configuration, tables)` 选择自己使用的角色记录、技能等级和模组阶段，解释相应字段并返回属性、普攻、技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。常规养成、解锁和普通天赋候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
+干员先通过 `resolve(configuration, tables)` 得到 `Parameters`，再通过 `create(parameters)` 构造 Unit Definition。配置使用 `operators/configuration.ts` 中的 `Configuration`，无模组时 module 为 null，有技能的干员同时要求 `SkillSelection`。`tables` 是 Data 提供的完整原表。该干员的 `resolve(configuration, tables)` 选择自己使用的角色记录、技能等级和模组阶段，解释相应字段并返回属性、普攻、技能和效果的具名参数。Action、Skill 和 Effect 的工厂声明自己需要的参数，由 `unit.ts` 调用并组装。常规养成、解锁和普通天赋候选选择由 `operators/parameters.ts` 共享。[干员静态资料](data.md#干员静态资料)
 
 在 `content/operators/melantha/unit.ts` 中声明具体单位的能力组合，从该单位的 `definition` 推导完整配置类型，并用 `satisfies` 检查实际提供的配置。
 
@@ -126,6 +127,6 @@ Effect 也通过 Definition 声明宿主要求，安装时显式提供统一的 
 
 Unit 的调用者先确定具体构造分支，Capability Catalog 自动推导标准状态和必需 Initial；允许额外已知 Initial，不为联合 Definition 维护并行校验层。
 
-干员的 `create(configuration, tables)` 返回 Unit Definition。编队把它与独立的 Card Definition 绑定为开场手牌，普通干员的费用与再部署时间可由 `operators/card.ts` 组装。Unit 的 `Deployable` 和 `Occupancy` 由各具体内容声明。预布置和普通出生直接使用 Unit Definition，方向属于本次 Initial。[干员 Card 工厂](../../src/content/operators/card.ts) · [部署](deployment.md#静态内容与-card)
+干员的 `create(parameters)` 返回 Unit Definition。编队可将它与该干员通过 `createCard(parameters)` 创建的独立 Card Definition 绑定为开场手牌，使用同一份已解析参数中的费用和再部署时间。玫兰莎和泥岩的 Card 均声明近战部署资格，复用 `operators/card.ts` 中的普通干员卡牌工厂。Unit 的 `Deployable` 和 `Occupancy` 由各具体内容声明。预布置和普通出生直接使用 Unit Definition，方向属于本次 Initial。[玫兰莎 Card](../../src/content/operators/melantha/card.ts) · [泥岩 Card](../../src/content/operators/mudrock/card.ts) · [共用 Card 工厂](../../src/content/operators/card.ts) · [部署](deployment.md#静态内容与-card)
 
 同宿主多个领域写入组合其合法 Change 后一次提交；动态能力判断由 optional 读取实际前序结果。精确私有写回、完整生命周期与跨领域结算保持所属业务契约，不直接调用 Core 内部 replace。完整规则见[接口约定](api-conventions.md)与[领域能力](capability.md)。

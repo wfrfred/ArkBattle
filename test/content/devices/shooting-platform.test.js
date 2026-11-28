@@ -8,7 +8,6 @@ import { create as createPlatform } from "../../../dist/content/devices/shooting
 import { add, remove, update } from "../../../dist/core/unit/operations.js";
 import { get as getTile } from "../../../dist/core/battlefield/map/map.js";
 import { Tile } from "../../../dist/core/geometry/coordinate.js";
-import { createDefinition as createDeployable } from "../../helpers/deployable.js";
 import { calculateOffset } from "../../../dist/core/battle/blocking/index.js";
 import { sides, blocker } from "../../../dist/core/unit/capability/blocking/index.js";
 import { fixture as blockingFixture, holder, target, acquire, ownerId } from "../../helpers/blocking.js";
@@ -16,7 +15,6 @@ import { getUnit, initialize } from "../../helpers/unit.js";
 
 const first = [2, 1];
 const second = [5, 1];
-const deployable = createDeployable();
 function passenger(id = 10, tile = first, rule = blocker.ground) {
     return initialize({
         id, position: Tile.center(tile), initial: { occupancy: { tile, direction: null } }, definition: {
@@ -30,10 +28,7 @@ function platform() {
     return initialize({
         id: 30, position: Tile.center(first), initial: { occupancy: { tile: first, direction: null } },
         definition: createPlatform({
-            id: "platform", vitality: vitality(100),
-            classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-            taunt: -1,
-            deployable, tileChanges: { elevation: "HIGHLAND" },
+            maxHp: 100, recoverySpeed: 0, taunt: -1, groupTags: [],
         }),
     });
 }
@@ -49,6 +44,8 @@ test("a platform suppresses its ground passenger without disabling other blocker
     battle = add(battle, platform());
     assert.equal(ownerId(battle), undefined);
     assert.equal(getTile(battle.battlefield.map, first).state.allowsBlocking, true);
+    assert.equal(getTile(battle.battlefield.map, first).state.placement, "RANGED");
+    assert.equal(getTile(battle.battlefield.map, first).state.walkCost, 1000);
     battle = acquire(battle, 11);
     assert.equal(ownerId(battle), 11);
 });

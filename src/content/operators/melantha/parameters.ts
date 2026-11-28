@@ -9,18 +9,8 @@ import {
     selectSkill,
     selectTalents,
 } from "../parameters.js";
-import type { AttackParameters } from "./action.js";
 
-const operatorId = "char_208_melan";
-
-const timing: AttackParameters["timing"] = {
-    type: "ATTACK_SPEED",
-    beginTicks: 15,
-    durationTicks: 30,
-    releaseTicks: 14,
-    minScale: 0,
-    maxScale: null,
-};
+export const operatorId = "char_208_melan";
 
 export function resolve(configuration: Configuration & SkillSelection, tables: Tables) {
     if (configuration.skillIndex !== 0) {
@@ -48,11 +38,12 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
             ?.blackboard.find((entry) => entry.key === "atk")?.value ?? null;
 
     return {
-        id: operatorId,
         groupTags: parseGroupTags(character),
         attributes,
-        attack: { range: phase.range, timing },
+        attack: { range: phase.range },
         s1: { id, cost, durationTicks, sp, trigger, attackBonus },
         talentBonus,
     };
 }
+
+export type Parameters = ReturnType<typeof resolve>;

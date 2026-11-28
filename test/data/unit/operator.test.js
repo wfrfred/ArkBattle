@@ -4,6 +4,7 @@ import { test } from "node:test";
 import { fromTables } from "../../../dist/data/tables.js";
 import { record } from "../../../dist/data/json.js";
 import { parseGroupTags } from "../../../dist/data/unit/tags.js";
+import { create as createMudrock } from "../../../dist/content/operators/mudrock/unit.js";
 import { resolve as resolveMudrock } from "../../../dist/content/operators/mudrock/parameters.js";
 import {
     favorFrame,
@@ -43,7 +44,7 @@ const talent = (selected, key) => blackboard(selected.talents.find(talent => tal
 test("operator selection uses table identity, group tags and canonical ranges", () => {
     const selected = select();
     const resolved = resolveMudrock(base, tables);
-    assert.equal(resolved.id, mudrock);
+    assert.equal(createMudrock(resolved).id, mudrock);
     assert.deepEqual(resolved.groupTags, ["rhodes"]);
     assert.equal(selected.attributes.maxHp, 3928);
     assert.equal(selected.attributes.attack, 882);

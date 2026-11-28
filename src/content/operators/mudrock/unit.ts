@@ -1,29 +1,23 @@
-import { TICKS_PER_SECOND } from "../../../core/tick.js";
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
-import { allyCharacterBursts } from "../../../core/effects/elemental/index.js";
 import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef } from "../../../core/unit/index.js";
-import { calculateOffset } from "../../../core/battle/blocking/index.js";
-import { blocker, sides } from "../../../core/unit/capability/blocking/index.js";
 import type { SkillCapability } from "../../../core/unit/capability/skill/index.js";
 import { healFree } from "../../../core/effects/protection.js";
 import { hasVitality } from "../../../core/unit/capability/vitality/index.js";
 import { install } from "../../../core/effect/index.js";
 import type { Operator } from "../operator.js";
-import type { Configuration, SkillSelection } from "../configuration.js";
-import type { Tables } from "../../../data/tables.js";
+import * as capabilities from "../capabilities.js";
 import { createNormal, createSkill as createSkillAction } from "./action.js";
 import { shieldEffect } from "./effect.js";
 import { create as createSkill } from "./skill.js";
-import { resolve } from "./parameters.js";
+import { operatorId, type Parameters } from "./parameters.js";
 
 export type Mudrock = Operator & ActionCapability<Mudrock> & SkillCapability<Mudrock>;
 
 export type Definition = Mudrock["definition"];
 
-export function create(configuration: Configuration & SkillSelection, tables: Tables) {
-    const parameters = resolve(configuration, tables);
+export function create(parameters: Parameters) {
     const { attributes } = parameters;
     const shield = shieldEffect(parameters.shield);
     const normalAttack = createNormal(parameters.normalAttack);
@@ -31,31 +25,14 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
     const skill = createSkill(parameters.s2Skill, normalAttack, action);
 
     const definition = {
-        elemental: {
-            maxEp: { default: 1000, min: 1, max: null },
-            recoverySpeed: { default: 0, min: 0, max: null },
-            elementResistance: { default: 0, min: 0, max: 100 },
-            damageResistance: { default: 0, min: 0, max: 100 },
-            burstRecoverySpeed: { default: 1, min: 0, max: null },
-            bursts: allyCharacterBursts,
-        },
-        id: parameters.id,
+        elemental: capabilities.elemental(),
+        id: operatorId,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },
-        targetable: {
-            category: "DEFAULT",
-            taunt: { default: attributes.taunt, min: -2, max: 2 },
-            restrictions: [],
-        },
-        deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
-        vitality: {
-            maxHp: { default: attributes.maxHp, min: 1, max: null },
-            defense: { default: attributes.defense, min: 0, max: null },
-            resistance: { default: attributes.resistance, min: 0, max: 100 },
-            recoverySpeed: { default: attributes.recoverySpeed, min: 0, max: null },
-            recoveryRatio: { default: 0, min: 0, max: 1 },
-        },
-        offense: { attack: { default: attributes.attack, min: 0, max: null } },
+        targetable: capabilities.targetable(attributes.taunt),
+        deployable: capabilities.deployable(),
+        vitality: capabilities.vitality(attributes),
+        offense: capabilities.offense(attributes.attack),
 
         classification: {
             type: "OPERATOR",
@@ -67,19 +44,9 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
         },
         layer: { type: "GROUND" },
         hitbox: { shape: { type: "CIRCLE", offset: [0, 0], radius: 0.25 } },
-        blocker: {
-            calculateOffset,
-            capacity: attributes.blockCapacity,
-            rule: blocker.ground,
-            restrictions: [{ id: "blocking/sides", group: null, value: sides("ENEMY") }],
-        },
+        blocker: capabilities.blocker(attributes.blockCapacity),
         action: {
-            speed: { default: attributes.attackSpeed, min: 20, max: null },
-            interval: {
-                default: attributes.baseAttackTime * TICKS_PER_SECOND,
-                min: 0,
-                max: null,
-            },
+            ...capabilities.attackAttributes(attributes.attackSpeed, attributes.baseAttackTime),
             definitions: [normalAttack, action],
             select: (battle, self) => ({
                 state: battle,

@@ -1,47 +1,33 @@
+import { selectBlocker } from "../targeting.js";
 import { normalMeleeOutput } from "../../actions/normal-melee.js";
 import {
     create as createAttack,
     faceTarget,
     type Attack as BaseAttack,
 } from "../../actions/attack.js";
-import type { Timing } from "../../actions/timing.js";
-import * as units from "../../../core/unit/index.js";
 import type { Blockable } from "../../../core/unit/capability/blocking/index.js";
-import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
 import type { Classification } from "../../../core/unit/capability/classification/index.js";
 import type { Offense } from "../../../core/unit/capability/offense/index.js";
-import * as targeting from "../../../core/battle/targeting/index.js";
 
 export type Host = Classification & Blockable & Offense;
 
 export type Attack = BaseAttack<object, object, Host>;
 
-export function create(timing: Timing): Attack {
+export function create(): Attack {
     return createAttack<Host>({
         id: "normal-attack",
         onStart: faceTarget,
         period: { type: "ATTACK_SPEED" },
-        timing,
-        applyWay: "MELEE",
-        select(battle, source) {
-            const self = source.get(battle);
-            if (self === undefined) {
-                return { state: battle, value: [] };
-            }
-
-            const owner = self.blockable.relation?.blocker;
-            const target = owner === undefined ? undefined : owner.get(battle);
-            if (target === undefined || !hasTargetable(target)) {
-                return { state: battle, value: [] };
-            }
-
-            const eligible = targeting.damage(self, () => true)(battle);
-
-            return {
-                state: battle,
-                value: eligible(target) ? [units.ref(target)] : [],
-            };
+        timing: {
+            type: "ATTACK_SPEED",
+            beginTicks: 0,
+            durationTicks: 30,
+            releaseTicks: 18,
+            minScale: 0.1,
+            maxScale: 1,
         },
+        applyWay: "MELEE",
+        select: selectBlocker,
         output: normalMeleeOutput,
     });
 }

@@ -2,7 +2,6 @@ import { secondsToTicks } from "../../../core/tick.js";
 import { record } from "../../../data/json.js";
 import type { Tables } from "../../../data/tables.js";
 import { parseGroupTags } from "../../../data/unit/tags.js";
-import type { AttackSpeedTiming } from "../../actions/timing.js";
 import type { Configuration, SkillSelection } from "../configuration.js";
 import {
     favorFrame,
@@ -15,18 +14,10 @@ import {
     type Blackboard,
 } from "../parameters.js";
 
-const operatorId = "char_311_mudrok";
+export const operatorId = "char_311_mudrok";
+
 const moduleX = "uniequip_002_mudrok";
 const secondSkillIndex = 1;
-
-const timing = {
-    type: "ATTACK_SPEED",
-    beginTicks: 0,
-    durationTicks: 48,
-    releaseTicks: 19,
-    minScale: 0.1,
-    maxScale: 1,
-} satisfies AttackSpeedTiming;
 
 function value(blackboard: Blackboard, key: string): number {
     const entry = blackboard.find((entry) => entry.key === key);
@@ -67,10 +58,9 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
     const trait = selectTrait(configuration, stage);
 
     return {
-        id: operatorId,
         groupTags: parseGroupTags(character),
         attributes,
-        normalAttack: { range: phase.range, timing },
+        normalAttack: { range: phase.range },
         s2Skill: { id, range, sp, trigger, cost },
         s2Action: {
             range,
@@ -90,3 +80,5 @@ export function resolve(configuration: Configuration & SkillSelection, tables: T
         },
     };
 }
+
+export type Parameters = ReturnType<typeof resolve>;

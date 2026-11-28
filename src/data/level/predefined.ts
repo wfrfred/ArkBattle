@@ -1,10 +1,4 @@
 import { Hooks } from "../../core/hook.js";
-import {
-    assertNonnegativeNumber,
-    assertPositiveNumber,
-    assertPositiveSafeInteger,
-    assertSafeInteger,
-} from "../../core/common/assert.js";
 import type {
     Definition as EffectDefinition,
     Initial as EffectInitial,
@@ -12,18 +6,14 @@ import type {
 import type { Input as UnitInput } from "../../core/unit/index.js";
 import { createTerrainEffect, type ContactState } from "../../content/terrain/controller.js";
 import { mire, deepsea } from "../../content/terrain/definition.js";
-import {
-    create as createCrate,
-    type Parameters as CrateParameters,
-} from "../../content/devices/crate.js";
+import { create as createCrate, resolve as resolveCrate } from "../../content/devices/crate.js";
 import {
     create as createShootingPlatform,
-    type Parameters as ShootingPlatformParameters,
+    resolve as resolveShootingPlatform,
 } from "../../content/devices/shooting-platform.js";
 import { Tile } from "../../core/geometry/coordinate.js";
 import type { ArknightsPredefinedInstance } from "./definition.js";
 import type { PredefinedPrefab } from "./prefab.js";
-import { parseGroupTags } from "../unit/tags.js";
 
 function object(value: unknown, name: string): Record<string, unknown> {
     if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -63,11 +53,7 @@ export function resolvePredefinedPrefabKey(
     return phasePrefabKey(characterPhase(instance, characterValue));
 }
 
-function predefinedCharacter(
-    instance: ArknightsPredefinedInstance,
-    profile: PredefinedPrefab,
-    characterValue: unknown,
-): Record<string, unknown> {
+function validateCustomization(instance: ArknightsPredefinedInstance): void {
     if (
         instance.uniEquipIds !== null ||
         instance.masterInfos !== null ||
@@ -79,93 +65,21 @@ function predefinedCharacter(
             `unsupported predefined character customization for ${instance.inst.characterKey}`,
         );
     }
-
-    const phase = characterPhase(instance, characterValue);
-    if (phasePrefabKey(phase) !== profile.prefabKey) {
-        throw new TypeError(`predefined character prefab does not match ${profile.prefabKey}`);
-    }
-
-    return phase;
 }
 
 function unitDefinition(
     instance: ArknightsPredefinedInstance,
-    phase: Record<string, unknown>,
     profile: Extract<PredefinedPrefab, { readonly type: "UNIT" }>,
-    groupTags: readonly string[],
+    characterValue: unknown,
 ) {
-    if (instance.inst.potentialRank !== 0 || instance.inst.favorPoint !== 0) {
-        throw new TypeError("predefined unit potential and favor modifiers are not supported");
-    }
-    if (!Array.isArray(phase.attributesKeyFrames) || phase.attributesKeyFrames.length === 0) {
-        throw new TypeError("predefined unit requires attribute keyframes");
-    }
-
-    let maxHp: number | undefined;
-    let recoverySpeed: number | undefined;
-    let taunt: number | undefined;
-    let minimumLevel = Infinity;
-    let maximumLevel = -Infinity;
-
-    for (const value of phase.attributesKeyFrames) {
-        const frame = object(value, "predefined attribute keyframe");
-        const attributes = object(frame.data, "predefined keyframe attributes");
-
-        assertPositiveSafeInteger(frame.level, "predefined keyframe level");
-
-        const hp = attributes.maxHp;
-        const frameRecoverySpeed = attributes.hpRecoveryPerSec;
-        const frameTaunt = attributes.tauntLevel;
-
-        assertPositiveNumber(hp, "predefined maxHp");
-        assertNonnegativeNumber(frameRecoverySpeed, "predefined HP recovery speed");
-        assertSafeInteger(frameTaunt, "predefined taunt level");
-
-        if (
-            (maxHp !== undefined && maxHp !== hp) ||
-            (recoverySpeed !== undefined && recoverySpeed !== frameRecoverySpeed) ||
-            (taunt !== undefined && taunt !== frameTaunt)
-        ) {
-            throw new TypeError("varying predefined unit attributes are not supported");
-        }
-
-        maxHp = hp;
-        recoverySpeed = frameRecoverySpeed;
-        taunt = frameTaunt;
-        minimumLevel = Math.min(minimumLevel, frame.level);
-        maximumLevel = Math.max(maximumLevel, frame.level);
-    }
-
-    if (instance.inst.level < minimumLevel || instance.inst.level > maximumLevel) {
-        throw new RangeError("predefined unit level is outside attribute keyframes");
-    }
-
-    const parameters = {
-        id: instance.inst.characterKey,
-        classification: {
-            type: "DEVICE",
-            side: profile.side,
-            filterTags: profile.filterTags,
-            groupTags,
-        },
-        taunt: taunt!,
-        vitality: {
-            defense: { default: 0, min: 0, max: null },
-            resistance: { default: 0, min: 0, max: 100 },
-            maxHp: { default: maxHp!, min: 1, max: null },
-            recoverySpeed: { default: recoverySpeed!, min: 0, max: null },
-            recoveryRatio: { default: 0, min: 0, max: 1 },
-        },
-        deployable: { retreatRestrictions: [], refund: null },
-        tileChanges: profile.tileChanges,
-    } satisfies CrateParameters & ShootingPlatformParameters;
-
+    // Legacy prefab profiles only select supported content. Its fixed behavior
+    // belongs to the concrete device definition, not to extracted fields.
     switch (profile.prefabKey) {
         case "trap_1105_accrate":
-            return createCrate(parameters);
+            return createCrate(resolveCrate(instance.inst, characterValue));
 
         case "trap_1106_achplat":
-            return createShootingPlatform(parameters);
+            return createShootingPlatform(resolveShootingPlatform(instance.inst, characterValue));
 
         default:
             throw new TypeError(`unsupported predefined unit content ${profile.prefabKey}`);
@@ -185,9 +99,13 @@ export function parsePredefinedCreation(
     profile: PredefinedPrefab,
     characterValue: unknown,
 ): PredefinedCreation {
-    const phase = predefinedCharacter(instance, profile, characterValue);
+    validateCustomization(instance);
 
     if (profile.type === "EFFECT") {
+        if (resolvePredefinedPrefabKey(instance, characterValue) !== profile.prefabKey) {
+            throw new TypeError(`predefined character prefab does not match ${profile.prefabKey}`);
+        }
+
         return {
             type: "EFFECT",
             definition: {
@@ -205,7 +123,7 @@ export function parsePredefinedCreation(
 
     return {
         type: "UNIT",
-        definition: unitDefinition(instance, phase, profile, parseGroupTags(characterValue)),
+        definition: unitDefinition(instance, profile, characterValue),
         position: Tile.center(instance.position),
         hooks: Hooks.empty(),
         initial: { occupancy: { tile: instance.position, direction: null } },

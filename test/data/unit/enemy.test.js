@@ -2,8 +2,9 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { parseEnemyDatabase } from "../../../dist/data/enemy-database.js";
-import { readEnemyParameters, resolveEnemy } from "../../../dist/data/unit/enemy.js";
+import { parseEnemyDatabase, selectEnemyLayers } from "../../../dist/data/enemy-database.js";
+import { resolve as resolveHound } from "../../../dist/content/enemies/hound/parameters.js";
+import { resolve as resolveCrossbowman } from "../../../dist/content/enemies/crossbowman/parameters.js";
 
 const fixture = JSON.parse(readFileSync(
     new URL("../../fixtures/arknights/main-mode-units.json", import.meta.url), "utf8",
@@ -11,7 +12,7 @@ const fixture = JSON.parse(readFileSync(
 const database = parseEnemyDatabase(fixture);
 const rawEnemy = id => database.get(id);
 const parameters = (id, level = 0, overwrittenData) =>
-    readEnemyParameters(resolveEnemy(rawEnemy(id), { level, overwrittenData }));
+    (id === "enemy_1000_gopro" ? resolveHound : resolveCrossbowman)(rawEnemy(id), { level, overwrittenData });
 
 test("main-mode enemy levels inherit individual defined fields and apply stage overrides last", () => {
     const base = parameters("enemy_1000_gopro");
@@ -40,7 +41,7 @@ test("main-mode enemy levels inherit individual defined fields and apply stage o
     });
     assert.equal(bow.attackSpeed, 0);
     assert.throws(() => parameters("enemy_1000_gopro", 2));
-    const harmless = resolveEnemy(rawEnemy("enemy_1000_gopro"), {
+    const harmless = resolveHound(rawEnemy("enemy_1000_gopro"), {
         level: 1,
         overwrittenData: { lifePointReduce: { m_defined: true, m_value: 0 } },
     });
@@ -60,12 +61,12 @@ test("enemy merging retains native skill, talent and SP data for their consumers
         spData: { maxSp: 25, initSp: 5 },
     };
 
-    const enemy = resolveEnemy(raw, { level: 1, overwrittenData });
+    const enemy = selectEnemyLayers(raw, 1, overwrittenData);
     assert.deepEqual(enemy.layers[0].skills, base.enemyData.skills);
     assert.deepEqual(enemy.layers[1].talentBlackboard, advanced.enemyData.talentBlackboard);
     assert.deepEqual(enemy.layers[1].spData, advanced.enemyData.spData);
     assert.deepEqual(enemy.layers[2], overwrittenData);
-    const parameters = readEnemyParameters(enemy);
+    const parameters = resolveHound(raw, { level: 1, overwrittenData });
     assert.equal(parameters.attack, 400);
     assert.equal(parameters.maxHp, 4000);
 });

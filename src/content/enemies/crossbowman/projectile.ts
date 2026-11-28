@@ -15,12 +15,6 @@ interface ArrowState extends tracking.State {
     readonly cachedAtk: number;
 }
 
-export interface Projectile {
-    readonly definition: tracking.Definition<ArrowState>;
-    readonly speedPerSecond: number;
-    readonly stopDelayTicks: number;
-}
-
 export const arrowApplyWay = "RANGED";
 
 export function createArrow(): tracking.Definition<ArrowState> {

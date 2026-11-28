@@ -71,27 +71,33 @@ test("real hidden devices preserve placement, static classification and target c
         type: "DEVICE", side: "ALLY", filterTags: ["SANDBOX_FACTORY"], groupTags: [],
     });
     assert.equal(platform.targetable.category, "DEVICE");
+    assert.equal(platform.definition.vitality.maxHp.default, 100);
+    assert.equal(platform.definition.vitality.recoverySpeed.default, 0);
+    assert.equal(platform.definition.targetable.taunt.default, -1);
     const candidates = all(battle).filter(hasTargetable);
     assert.deepEqual(Array.from(candidates.filter(inCategories(["DEFAULT"]))), []);
     assert.deepEqual(Array.from(candidates.filter(inCategories(["DEFAULT", "DEVICE"])), unit => unit.ref.id), [platform.ref.id]);
 
-    const modifiedPrefab = fixture("prefab_trap_1106_achplat");
-    const token = modifiedPrefab.components.find(component => "_rewriteTileOptions" in component.fields).fields;
-    token._sideType = 2;
-    token._filterTag = ["changed-filter"];
-    token._category = 1;
     const modifiedCharacter = {
         ...platformData.character,
         mainPower: { nationId: "laterano", groupId: null, teamId: null },
         subPower: [{ nationId: "kazimierz", groupId: null, teamId: null }],
     };
+    for (const frame of modifiedCharacter.phases[0].attributesKeyFrames) {
+        frame.data.maxHp = 200;
+        frame.data.hpRecoveryPerSec = 5;
+        frame.data.tauntLevel = 0;
+    }
     const modifiedPlatform = parsePredefinedCreation(
-        platformData.instance, parsePredefinedPrefab(modifiedPrefab), modifiedCharacter,
+        platformData.instance, platformData.profile, modifiedCharacter,
     );
     assert.deepEqual(modifiedPlatform.definition.classification, {
-        type: "DEVICE", side: "ENEMY", filterTags: ["changed-filter"], groupTags: ["laterano", "kazimierz"],
+        type: "DEVICE", side: "ALLY", filterTags: ["SANDBOX_FACTORY"], groupTags: ["laterano", "kazimierz"],
     });
     assert.equal(modifiedPlatform.definition.targetable.category, "DEVICE");
+    assert.equal(modifiedPlatform.definition.vitality.maxHp.default, 200);
+    assert.equal(modifiedPlatform.definition.vitality.recoverySpeed.default, 5);
+    assert.equal(modifiedPlatform.definition.targetable.taunt.default, 0);
 });
 
 test("real controller and skill data supply shared terrain parameters", () => {

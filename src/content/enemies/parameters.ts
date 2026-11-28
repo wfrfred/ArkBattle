@@ -5,9 +5,9 @@ import {
     assertPositiveNumber,
 } from "../../core/common/assert.js";
 import { RANKS, type Rank } from "../../core/unit/capability/classification/index.js";
-import { parseTags } from "./tags.js";
-import { record, nonemptyString as textValue, boolean as flag } from "../json.js";
-import { mergeDefinedFields, selectEnemyLayers } from "../enemy-database.js";
+import { parseTags } from "../../data/unit/tags.js";
+import { record, nonemptyString as textValue, boolean as flag } from "../../data/json.js";
+import { mergeDefinedFields } from "../../data/enemy-database.js";
 
 type RecordData = Readonly<Record<string, unknown>>;
 
@@ -16,68 +16,36 @@ export interface Configuration {
     readonly overwrittenData?: unknown;
 }
 
-export interface ResolvedEnemy {
-    readonly id: string;
-    readonly level: number;
-    readonly prefabKey: string;
-    readonly notCountInTotal: boolean;
-    readonly lifePointLoss: number;
-    readonly attributes: RecordData;
-    readonly fields: RecordData;
-    readonly layers: readonly RecordData[];
-}
-
-export interface EnemyParameters {
-    readonly maxHp: number;
-    readonly attack: number;
-    readonly defense: number;
-    readonly resistance: number;
-    readonly recoverySpeed: number;
-    readonly attackSpeed: number;
-    readonly taunt: number;
-    readonly baseAttackTime: number;
-    readonly moveSpeedPerSecond: number;
-    readonly rangeRadius: number;
-    readonly massLevel: number;
-    readonly blockVolume: number;
-    readonly stunImmune: boolean;
-    readonly filterTags: readonly string[];
-    readonly rank: Rank;
-    readonly motion: string;
-}
-
-export function resolveEnemy(value: unknown, configuration: Configuration): ResolvedEnemy {
-    const { id, level, layers } = selectEnemyLayers(
-        value,
-        configuration.level,
-        configuration.overwrittenData,
-    );
-    const attributes = mergeDefinedFields(
+export function readAttributes(layers: readonly RecordData[]) {
+    return mergeDefinedFields(
         layers
             .filter((layer) => layer.attributes !== undefined)
             .map((layer) => record(layer.attributes, "enemy attributes")),
     );
-    const fields = mergeDefinedFields(layers);
+}
 
+export function readSpawnFacts(fields: RecordData) {
     const notCountInTotal = fields.notCountInTotal;
-    const lifePointReduce = fields.lifePointReduce;
-    const lifePointLoss = lifePointReduce === undefined ? 1 : lifePointReduce;
+    const lifePointLoss = fields.lifePointReduce === undefined ? 1 : fields.lifePointReduce;
     assertNonnegativeSafeInteger(lifePointLoss, "enemy lifePointReduce");
 
     return {
-        id,
-        level,
-        prefabKey: textValue(fields.prefabKey, "enemy prefabKey"),
         notCountInTotal:
             notCountInTotal === undefined ? false : flag(notCountInTotal, "enemy notCountInTotal"),
         lifePointLoss,
-        attributes,
-        fields,
-        layers,
     };
 }
 
-function numeric(source: RecordData, key: string, fallback?: number): number {
+export function validateWalkingPrefab(fields: RecordData, prefabKey: string): void {
+    if (textValue(fields.prefabKey, "enemy prefabKey") !== prefabKey) {
+        throw new TypeError(`unsupported enemy prefab ${String(fields.prefabKey)}`);
+    }
+    if (fields.motion !== "WALK") {
+        throw new TypeError(`unsupported enemy motion ${String(fields.motion)}`);
+    }
+}
+
+export function numeric(source: RecordData, key: string, fallback?: number): number {
     const value = source[key] ?? fallback;
     assertNonnegativeNumber(value, `enemy ${key}`);
 
@@ -94,7 +62,7 @@ function rank(value: unknown): Rank {
     throw new TypeError(`unknown enemy rank ${String(value)}`);
 }
 
-export function readEnemyParameters({ attributes, fields }: ResolvedEnemy): EnemyParameters {
+export function readCombatParameters(attributes: RecordData, fields: RecordData) {
     const maxHp = numeric(attributes, "maxHp");
     const baseAttackTime = numeric(attributes, "baseAttackTime");
     const massLevel = numeric(attributes, "massLevel", 0);
@@ -106,6 +74,13 @@ export function readEnemyParameters({ attributes, fields }: ResolvedEnemy): Enem
     assertNonnegativeSafeInteger(blockVolume, "enemy block volume");
     assertFiniteNumber(taunt, "enemy taunt level");
 
+    if (flag(attributes.stunImmune ?? false, "enemy stunImmune")) {
+        throw new TypeError("this enemy content does not implement stun immunity");
+    }
+    if (blockVolume === 0) {
+        throw new TypeError("this enemy content requires a blockable ground unit");
+    }
+
     return {
         maxHp,
         attack: numeric(attributes, "atk"),
@@ -116,12 +91,9 @@ export function readEnemyParameters({ attributes, fields }: ResolvedEnemy): Enem
         taunt,
         baseAttackTime,
         moveSpeedPerSecond: numeric(attributes, "moveSpeed"),
-        rangeRadius: numeric(fields, "rangeRadius", 0),
         massLevel,
         blockVolume,
-        stunImmune: flag(attributes.stunImmune ?? false, "enemy stunImmune"),
         filterTags: parseTags(fields.enemyTags ?? []),
         rank: rank(fields.levelType === undefined ? "NORMAL" : fields.levelType),
-        motion: textValue(fields.motion, "enemy motion"),
     };
 }

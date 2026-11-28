@@ -1,5 +1,11 @@
+import {
+    groundTarget,
+    inAttackRange,
+    inDefaultCategory,
+    selectNormalMeleeTarget,
+} from "../targeting.js";
 import { normalMeleeOutput } from "../../actions/normal-melee.js";
-import type { Timing } from "../../actions/timing.js";
+import type { AttackSpeedTiming } from "../../actions/timing.js";
 import {
     create as createAttack,
     createWithState,
@@ -8,10 +14,7 @@ import {
 } from "../../actions/attack.js";
 import { ref as executionRef } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef, all as allUnits, type Unit } from "../../../core/unit/index.js";
-import {
-    hasTargetable,
-    type Targetable,
-} from "../../../core/unit/capability/targetable/capability.js";
+import { type Targetable } from "../../../core/unit/capability/targetable/capability.js";
 import { resolveAttack, type Offense } from "../../../core/unit/capability/offense/index.js";
 import type { Classification } from "../../../core/unit/capability/classification/index.js";
 
@@ -30,12 +33,11 @@ import {
 } from "../../../core/battle/resource/hp/damage/index.js";
 
 import * as targeting from "../../../core/battle/targeting/index.js";
-import { blockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
+import type { Blocker } from "../../../core/unit/capability/blocking/index.js";
 import type { Occupancy } from "../../../core/unit/capability/occupancy/index.js";
-import { hasLayer, type Layer } from "../../../core/unit/capability/layer/index.js";
+import type { Layer } from "../../../core/unit/capability/layer/index.js";
 import type { TilePosition } from "../../../core/geometry/coordinate.js";
-import { fromTiles } from "../../../core/geometry/range.js";
-import { sort, topK } from "../../../core/common/collection/order.js";
+import { sort } from "../../../core/common/collection/order.js";
 import type { State as BattleState } from "../../../core/battle/index.js";
 
 import { createRng } from "../../../core/common/rng.js";
@@ -47,7 +49,6 @@ export type AttackHost = Classification & Occupancy & Blocker & Offense;
 
 export interface NormalAttackParameters {
     readonly range: readonly TilePosition[];
-    readonly timing: Timing;
 }
 
 interface SkillAttackState {
@@ -62,27 +63,16 @@ export interface SkillActionParameters {
     readonly stunTicks: number;
 }
 
-const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
+const timing = {
+    type: "ATTACK_SPEED",
+    beginTicks: 0,
+    durationTicks: 48,
+    releaseTicks: 19,
+    minScale: 0.1,
+    maxScale: 1,
+} satisfies AttackSpeedTiming;
 
 type Target = Unit & Targetable & Vitality & Classification & Layer;
-
-function groundTarget(battle: BattleState, self: Unit & Classification) {
-    const eligible = targeting.damage(self)(battle);
-
-    return (target: Unit): target is Target =>
-        hasTargetable(target) &&
-        eligible(target) &&
-        hasLayer(target) &&
-        target.layer.type === "GROUND";
-}
-
-function inAttackRange(self: Unit & Occupancy, range: readonly TilePosition[]) {
-    const { direction } = self.occupancy;
-
-    return direction === null
-        ? () => false
-        : targeting.inRange(self.position, fromTiles(range, direction));
-}
 
 function skillTarget(
     battle: BattleState,
@@ -106,7 +96,6 @@ export function skillTargets(
 
 export function createNormal({
     range,
-    timing,
 }: NormalAttackParameters): Attack<object, object, AttackHost> {
     return createAttack<AttackHost>({
         id: "normal-attack",
@@ -120,25 +109,9 @@ export function createNormal({
                 return { state: battle, value: [] };
             }
 
-            const withinRange = inAttackRange(self, range);
-            const candidates = allUnits(battle)
-                .filter(groundTarget(battle, self))
-                .filter(
-                    (target) =>
-                        (inDefaultCategory(target) && withinRange(target)) ||
-                        (blockable.hasBlockable(target) &&
-                            target.blockable.relation?.blocker === source),
-                );
-            const blockedFirst = targeting.blockedFirst(self);
-            const distance = targeting.distance(self.position);
-
             return {
                 state: battle,
-                value: topK(
-                    candidates,
-                    1,
-                    (left, right) => blockedFirst(left, right) || distance(left, right),
-                ).map(unitRef),
+                value: selectNormalMeleeTarget(battle, self, range),
             };
         },
         output: normalMeleeOutput,

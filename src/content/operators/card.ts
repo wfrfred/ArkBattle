@@ -7,12 +7,19 @@ import { Hooks } from "../../core/hook.js";
 import { secondsToTicks } from "../../core/tick.js";
 import { normal as normalSite } from "../terrain/condition.js";
 
+export type Placement = "MELEE" | "RANGED" | "ALL";
+
 export interface Parameters {
+    readonly placement: Placement;
     readonly cost: number;
     readonly respawnTime: number;
 }
 
-export function create({ cost, respawnTime }: Parameters): CardDefinition<object, "UNIQUE"> {
+export function create({
+    cost,
+    respawnTime,
+    placement,
+}: Parameters): CardDefinition<object, "UNIQUE"> {
     return {
         dp: {
             parameters: dp.create({ cost, step: 0.5, maxMultiplier: 2 }),
@@ -37,7 +44,10 @@ export function create({ cost, respawnTime }: Parameters): CardDefinition<object
 
                         return (
                             tile !== undefined &&
-                            (tile.state.placement === "MELEE" || tile.state.placement === "ALL") &&
+                            tile.state.placement !== "NONE" &&
+                            (placement === "ALL" ||
+                                tile.state.placement === placement ||
+                                tile.state.placement === "ALL") &&
                             (tile.state.siteCondition === null ||
                                 tile.state.siteCondition === normalSite)
                         );

@@ -1,15 +1,13 @@
-import { assertPositiveNumber } from "../../../core/common/assert.js";
 import { Hooks } from "../../../core/hook.js";
 import { perSecondToPerTick, TICKS_PER_SECOND } from "../../../core/tick.js";
 import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import type { Blockable } from "../../../core/unit/capability/blocking/index.js";
-import type { Rank } from "../../../core/unit/capability/classification/index.js";
 import type { Presence } from "../../../core/unit/capability/presence/index.js";
 import type { Route } from "../../../core/unit/capability/route/index.js";
 import type { Shiftable } from "../../../core/unit/capability/shifting/index.js";
 import * as unitHooks from "../../../core/unit/hook.js";
-import type { Timing } from "../../actions/timing.js";
 import { otherBursts } from "../../../core/effects/elemental/index.js";
+import { enemyId, type Parameters } from "./parameters.js";
 import type { Enemy } from "../enemy.js";
 import { faceRoute, restrictMovementDuringAction } from "../hook.js";
 import { create as createAttack } from "./action.js";
@@ -18,46 +16,11 @@ export type Hound = Enemy & Blockable & Shiftable & Route & Presence & ActionCap
 
 export type Definition = Hound["definition"];
 
-export interface Parameters {
-    readonly motion: string;
-    readonly maxHp: number;
-    readonly attack: number;
-    readonly defense: number;
-    readonly resistance: number;
-    readonly recoverySpeed: number;
-    readonly taunt: number;
-    readonly moveSpeedPerSecond: number;
-    readonly filterTags: readonly string[];
-    readonly rank: Rank;
-    readonly blockVolume: number;
-    readonly massLevel: number;
-    readonly stunImmune: boolean;
-    readonly hitRadius: number;
-    readonly movement: Pick<Definition["locomotion"], "steeringParameters" | "halfBodyWidth"> &
-        Pick<Definition["route"], "alwaysCheckCurrentPoint">;
-    readonly attackSpeed: number;
-    readonly baseAttackTime: number;
-    readonly timing: Timing;
-}
-
 export function create(parameters: Parameters) {
-    if (parameters.motion !== "WALK") {
-        throw new TypeError(`unsupported enemy motion ${parameters.motion}`);
-    }
-    if (parameters.stunImmune) {
-        throw new TypeError("this enemy content does not implement stun immunity");
-    }
-    if (parameters.blockVolume === 0) {
-        throw new TypeError("this enemy content requires a blockable ground unit");
-    }
-
-    const { hitRadius, movement } = parameters;
-    assertPositiveNumber(hitRadius, "enemy hit radius");
-
-    const attack = createAttack(parameters.timing);
+    const attack = createAttack();
 
     return {
-        id: "enemy_1000_gopro",
+        id: enemyId,
         hooks: Hooks.empty()
             .set(unitHooks.entered, {
                 id: "enemy/restrict-movement-during-action",
@@ -94,7 +57,7 @@ export function create(parameters: Parameters) {
         },
         layer: { type: "GROUND" },
         hitbox: {
-            shape: { type: "CIRCLE", offset: [0, 0], radius: hitRadius },
+            shape: { type: "CIRCLE", offset: [0, 0], radius: 0.2 },
         },
         blockable: { volume: parameters.blockVolume, restrictions: [] },
         locomotion: {
@@ -103,8 +66,11 @@ export function create(parameters: Parameters) {
                 min: perSecondToPerTick(0.1),
                 max: null,
             },
-            steeringParameters: movement.steeringParameters,
-            halfBodyWidth: movement.halfBodyWidth,
+            steeringParameters: {
+                steeringFactor: 8 / TICKS_PER_SECOND,
+                maxSteeringForce: 10 / TICKS_PER_SECOND ** 2,
+            },
+            halfBodyWidth: 0.20000000298023224,
         },
         shiftable: {
             massLevel: { default: parameters.massLevel, min: 0, max: null },
@@ -121,7 +87,7 @@ export function create(parameters: Parameters) {
                 frictionFactor: 1,
             },
         },
-        route: { alwaysCheckCurrentPoint: movement.alwaysCheckCurrentPoint },
+        route: { alwaysCheckCurrentPoint: false },
         presence: {},
         targetable: {
             category: "DEFAULT",

@@ -1,18 +1,14 @@
+import { normalMeleeCandidates, selectNormalMeleeTarget } from "../targeting.js";
 import { normalMeleeOutput } from "../../actions/normal-melee.js";
 import { createWithState, faceTarget, type Attack } from "../../actions/attack.js";
 import type { AttackSpeedTiming } from "../../actions/timing.js";
 import { setState } from "../../../core/unit/capability/action/index.js";
-import * as targeting from "../../../core/battle/targeting/index.js";
-import * as units from "../../../core/unit/index.js";
-import { hasTargetable } from "../../../core/unit/capability/targetable/capability.js";
-import { blockable, type Blocker } from "../../../core/unit/capability/blocking/index.js";
+import type { Unit } from "../../../core/unit/index.js";
+import type { Blocker } from "../../../core/unit/capability/blocking/index.js";
 import type { Classification } from "../../../core/unit/capability/classification/index.js";
 import type { Occupancy } from "../../../core/unit/capability/occupancy/index.js";
 import type { Offense } from "../../../core/unit/capability/offense/index.js";
-import { hasLayer } from "../../../core/unit/capability/layer/index.js";
-import { fromTiles } from "../../../core/geometry/range.js";
 import type { TilePosition } from "../../../core/geometry/coordinate.js";
-import { topK } from "../../../core/common/collection/order.js";
 import type { State as BattleState } from "../../../core/battle/state.js";
 
 export interface State {
@@ -21,45 +17,28 @@ export interface State {
 
 export interface AttackParameters {
     readonly range: readonly TilePosition[];
-    readonly timing: AttackSpeedTiming;
 }
 
 type Host = Classification & Occupancy & Blocker & Offense;
 
-const inDefaultCategory = targeting.inCategories(["DEFAULT"]);
-
-function candidates(
-    battle: BattleState,
-    self: units.Unit & Classification & Occupancy,
-    range: readonly TilePosition[],
-) {
-    const { direction } = self.occupancy;
-    const withinRange =
-        direction === null
-            ? () => false
-            : targeting.inRange(self.position, fromTiles(range, direction));
-
-    return units
-        .all(battle)
-        .filter(hasTargetable)
-        .filter(targeting.damage(self)(battle))
-        .filter((target) => hasLayer(target) && target.layer.type === "GROUND")
-        .filter(
-            (target) =>
-                (inDefaultCategory(target) && withinRange(target)) ||
-                (blockable.hasBlockable(target) && target.blockable.relation?.blocker === self.ref),
-        );
-}
+const timing: AttackSpeedTiming = {
+    type: "ATTACK_SPEED",
+    beginTicks: 15,
+    durationTicks: 30,
+    releaseTicks: 14,
+    minScale: 0,
+    maxScale: null,
+};
 
 export function hasTarget(
     battle: BattleState,
-    self: units.Unit & Classification & Occupancy,
+    self: Unit & Classification & Occupancy,
     range: readonly TilePosition[],
 ): boolean {
-    return candidates(battle, self, range).some(() => true);
+    return normalMeleeCandidates(battle, self, range).some(() => true);
 }
 
-export function create({ range, timing }: AttackParameters): Attack<State, object, Host> {
+export function create({ range }: AttackParameters): Attack<State, object, Host> {
     return createWithState<State, object, Host>({
         id: "normal-attack",
         initialize: (battle) => ({ state: battle, value: { inSession: false } }),
@@ -81,16 +60,9 @@ export function create({ range, timing }: AttackParameters): Attack<State, objec
                 return { state: battle, value: [] };
             }
 
-            const blockedFirst = targeting.blockedFirst(self);
-            const distance = targeting.distance(self.position);
-
             return {
                 state: battle,
-                value: topK(
-                    candidates(battle, self, range),
-                    1,
-                    (left, right) => blockedFirst(left, right) || distance(left, right),
-                ).map(units.ref),
+                value: selectNormalMeleeTarget(battle, self, range),
             };
         },
         output: normalMeleeOutput,

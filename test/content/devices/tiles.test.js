@@ -1,5 +1,4 @@
 import { Hooks } from "../../../dist/core/hook.js";
-import { vitality } from "../../helpers/attribute.js";
 // Contract: [terrain](../../../docs/architecture/terrain.md).
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -43,23 +42,20 @@ function place(battle, definition, tile, position = Tile.center(tile)) {
 
 test("a crate modifies its registered tile, preserves hole cost, and restores only its own fields", () => {
     const definition = createCrate({
-        id: "crate",
-        classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        taunt: -1,
-        vitality: vitality(100),
-        deployable: { retreatRestrictions: [], refund: null },
-        tileChanges: {},
+        maxHp: 100, recoverySpeed: 0, taunt: -1, groupTags: [],
     });
     const tile = [0, 0];
     let state = place(battle(), definition, tile, Tile.center([2, 0]));
     const obstructed = getTile(state.battlefield.map, tile).state;
     assert.equal(obstructed.walkCost, 1000);
+    assert.equal(obstructed.placement, "NONE");
     assert.equal(getTile(state.battlefield.map, [2, 0]).state.walkCost, 2000);
 
     state = updateTile(state, tile, { ...obstructed, allowsBlocking: false });
     state = remove(state, ref(getUnit(state, 0)), { reason: "SCRIPT" });
     const restored = getTile(state.battlefield.map, tile).state;
     assert.equal(restored.walkCost, 2000);
+    assert.equal(restored.placement, "ALL");
     assert.equal(restored.allowsBlocking, false);
 
     const coveredHole = place(battle(hole, 1000000), definition, tile);

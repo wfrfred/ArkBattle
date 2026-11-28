@@ -6,8 +6,10 @@ import { Hooks } from "../../../dist/core/hook.js";
 import { parseLevelDefinition } from "../../../dist/data/level/definition.js";
 import { parseRouteDefinition } from "../../../dist/data/level/route.js";
 import { compileSpawnSchedule } from "../../../dist/data/level/schedule.js";
-import { resolveEnemy } from "../../../dist/data/unit/enemy.js";
-import { readEnemyMovementPrefab } from "../../../dist/data/unit/prefab.js";
+import { selectEnemyLayers, mergeDefinedFields } from "../../../dist/data/enemy-database.js";
+import { readSpawnFacts } from "../../../dist/content/enemies/parameters.js";
+import { resolve as resolveHound } from "../../../dist/content/enemies/hound/parameters.js";
+import { resolve as resolveCrossbowman } from "../../../dist/content/enemies/crossbowman/parameters.js";
 import { initialize, step } from "../../../dist/core/battle/runtime.js";
 import { isCompleted, triggerBranch } from "../../../dist/core/battle/schedule/index.js";
 import { remove } from "../../../dist/core/unit/operations.js";
@@ -87,10 +89,11 @@ test("native dragon branch uses the default one point loss when the database lea
     assert.deepEqual(raw.Value[0].enemyData.lifePointReduce, { m_defined: false, m_value: 0 });
     const compiled = compileSpawnSchedule(level, { actions: [], branches: ["dragon"] }, reference => {
         assert.equal(reference.id, raw.Key);
-        const resolved = resolveEnemy(raw, reference);
+        const { id, layers } = selectEnemyLayers(raw, reference.level, reference.overwrittenData);
+        const facts = readSpawnFacts(mergeDefinedFields(layers));
         return {
-            definition: { id: resolved.id, hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } },
-            delayToBornTicks: 0, notCountInTotal: resolved.notCountInTotal, lifePointLoss: resolved.lifePointLoss,
+            definition: { id, hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } },
+            delayToBornTicks: 0, ...facts,
         };
     }, 123);
     const [spawn] = compiled.schedule.branches.dragon.phases[0].entries;
@@ -149,7 +152,6 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     const wave = { ...raw.waves[0], preDelay: 0, postDelay: 0, maxTimeWaitingForNextWave: -1 };
     const action = { ...wave.fragments[0].actions[0], key: "enemy_1000_gopro", count: 1, preDelay: 0, interval: 0 };
     const enemy = "enemy_1003_ncbow";
-    const skills = [{ prefabKey: "stage-crossbow-shot" }];
     raw.waves = [
         { ...wave, fragments: [{ preDelay: 0, actions: [
             { ...action, notCountInTotal: true },
@@ -167,14 +169,9 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         { id: enemy, useDb: true, level: 0, overwrittenData: {
             attributes: {}, notCountInTotal: { m_defined: true, m_value: true },
             lifePointReduce: { m_defined: true, m_value: 3 },
-            skills,
         } },
     ];
     const records = fixture("main-mode-units").enemies;
-    const prefabs = {
-        [action.key]: fixture(`prefab_${action.key}`),
-        [enemy]: fixture(`prefab_${enemy}`),
-    };
     const level = parseLevelDefinition(raw, { mire: null, deepsea: null, tileDeploymentPrefabs: [] });
     const definition = {
         id: "scheduled-unit", hooks: Hooks.empty(),
@@ -186,14 +183,9 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         branches: ["uncounted"],
     }, (reference) => {
         const record = records.find(({ Key }) => Key === reference.id);
-        const resolved = resolveEnemy(record, {
-            level: reference.level, overwrittenData: reference.overwrittenData,
-        });
-        if (reference.id === enemy) {
-            assert.deepEqual(resolved.layers.at(-1).skills, skills);
-        }
-        const { delayToBornTicks } = readEnemyMovementPrefab(resolved, prefabs);
-        return { definition, notCountInTotal: resolved.notCountInTotal, lifePointLoss: resolved.lifePointLoss, delayToBornTicks };
+        const { notCountInTotal, lifePointLoss, delayToBornTicks } =
+            (reference.id === enemy ? resolveCrossbowman : resolveHound)(record, reference);
+        return { definition, notCountInTotal, lifePointLoss, delayToBornTicks };
     }, 7);
     const spawns = compiled.schedule.waves[0].fragments[0].entries;
     assert.deepEqual(spawns.map(({ wait }) => wait), ["NONE", "WAVE", "NONE"]);
