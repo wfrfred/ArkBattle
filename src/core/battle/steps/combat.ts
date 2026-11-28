@@ -35,7 +35,6 @@ export function advance(battle: BattleState): BattleState {
             continue;
         }
 
-        const reference = units.ref(unit);
         const configuration = unit.definition.action as CapabilityDefinition<object>;
         const selected = configuration.select?.(battle, unit) ?? {
             state: battle,
@@ -44,7 +43,7 @@ export function advance(battle: BattleState): BattleState {
         battle = selected.state;
 
         for (const id of new Set(selected.value)) {
-            const latest = reference.get(battle);
+            const latest = source.get(battle);
             if (latest?.lifecycle !== "ACTIVE") {
                 break;
             }

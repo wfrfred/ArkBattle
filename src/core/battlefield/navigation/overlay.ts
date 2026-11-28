@@ -2,6 +2,7 @@ import type { Identified } from "../../common/ref.js";
 import type { TilePosition } from "../../geometry/coordinate.js";
 import type { Direction } from "../../geometry/direction.js";
 import { Map } from "./map.js";
+import type { MotionMode } from "./state.js";
 
 export interface Input {
     readonly cells: readonly TilePosition[];
@@ -10,7 +11,7 @@ export interface Input {
     readonly cost: number;
 }
 
-export interface Overlay extends Identified<object>, Input {}
+export interface Overlay extends Identified<{ readonly mode: MotionMode }>, Input {}
 
 export function apply(base: Map, overlays: readonly Overlay[]): Map {
     const cells = base.cells.slice();

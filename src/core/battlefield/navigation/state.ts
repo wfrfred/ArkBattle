@@ -14,7 +14,8 @@ export function create(baseline: Readonly<Record<MotionMode, Map>>): State {
     return { baseline, overlays: { WALK: [], FLY: [] } };
 }
 
-export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): State {
+export function setOverlay(state: State, overlay: Overlay): State {
+    const { mode } = overlay.ref;
     assertPositiveSafeInteger(overlay.cost, "navigation overlay cost");
 
     if (mode === "FLY" && overlay.cost !== 1) {
@@ -36,7 +37,8 @@ export function setOverlay(state: State, mode: MotionMode, overlay: Overlay): St
     };
 }
 
-export function removeOverlay(state: State, mode: MotionMode, ref: Ref<Overlay>): State {
+export function removeOverlay(state: State, ref: Ref<Overlay>): State {
+    const { mode } = ref;
     const entries = state.overlays[mode];
 
     return {

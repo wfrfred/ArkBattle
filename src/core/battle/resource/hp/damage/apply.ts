@@ -2,7 +2,7 @@ import type { Options } from "../../../../hook.js";
 import type { Restriction } from "../../../../unit/capability/vitality/restriction.js";
 import type { Ref } from "../../../../common/ref.js";
 import type { Unit } from "../../../../unit/unit.js";
-import { isAlive, canReceiveDamage } from "../../../../unit/capability/vitality/query.js";
+import { canReceiveHp, canReceiveDamage } from "../../../../unit/capability/vitality/query.js";
 import { appendEvents, type Result, type State as BattleState } from "../../../state.js";
 import type { Calculated, Outcome, Request } from "./contract.js";
 import { decrease, confirmDeath } from "../apply.js";
@@ -30,12 +30,10 @@ export function applyDamage(
 ): Result<Outcome> {
     let battle = calculated.state;
     const calculation = calculated.value;
-    const target = request.target.get(battle);
     if (
         calculation === undefined ||
         calculation.amount === 0 ||
-        target?.lifecycle !== "ACTIVE" ||
-        !isAlive(target)
+        !canReceiveHp(battle, request.target)
     ) {
         return complete(battle, request, calculation, { type: "REJECTED" }, options);
     }

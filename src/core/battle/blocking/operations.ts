@@ -204,19 +204,17 @@ export function search(battle: BattleState, reference: Ref<Unit & Blocker>): Bat
     }
 
     const radius = resolveRadius(blocker.blocker);
+    const radiusSquared = radius * radius;
     const candidates = [
         ...units
             .all(battle)
             .filter(hasBlockable)
-            .filter(
-                (target) =>
-                    canRetain(battle, blocker, target) &&
-                    Vec2.distanceSquared(blocker.position, target.position) <= radius * radius,
-            )
+            .filter((target) => canRetain(battle, blocker, target))
             .map((target) => ({
                 reference: units.ref(target),
                 distance: Vec2.distanceSquared(blocker.position, target.position),
-            })),
+            }))
+            .filter(({ distance }) => distance <= radiusSquared),
     ].sort((left, right) => left.distance - right.distance);
 
     for (const candidate of candidates) {
