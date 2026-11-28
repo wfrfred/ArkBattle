@@ -11,8 +11,6 @@ import { createRegistrationOperations } from "../../registration.js";
 import { createChange, type Change } from "../../change.js";
 import type { Restriction as BaseRestriction } from "../../../restriction.js";
 
-export const MOVE_SAMPLE_INTERVAL = 5;
-
 export interface Definition {
     readonly speed: attribute.Definition;
     readonly steeringParameters: SteeringParameters;
@@ -40,9 +38,6 @@ export interface State extends Restrictions {
     readonly target: MovementTarget | null;
     readonly speed: attribute.State<Input>;
     readonly velocity: WorldPosition;
-    readonly totalMoveDistance: number;
-    readonly lastMoveSamplePosition: WorldPosition;
-    readonly nextMoveSampleTick: number;
 }
 
 export interface Locomotion {
@@ -83,9 +78,6 @@ export function initialize<U extends Unit & Pick<Locomotion, "definition">>(
                 velocity: [0, 0],
                 speed: attribute.initialize<Input>(definition.speed),
                 restrictions: [],
-                totalMoveDistance: 0,
-                lastMoveSamplePosition: unit.position,
-                nextMoveSampleTick: battle.tick + MOVE_SAMPLE_INTERVAL,
             },
         },
     };

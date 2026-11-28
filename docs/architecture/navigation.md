@@ -176,7 +176,9 @@ Locomotion 保存历史 velocity、当前 mode（WALK／FLY）、target（`Movem
 
 失衡只在推进阶段检查自然结束。速度不高于停止阈值、保护到期、已无有效牵引和待施单步力时结束。宿主离场以 `HOST_UNAVAILABLE` 结束失衡。结束请求立即使段的依赖引用不可用，随后发布 `ENDING` 并请求依赖本段的牵引等实例结束。清理回调内可开始新段，收尾仍按旧引用处理。来源或拉点结束会撤掉牵引，剩余外力速度留给下一次失衡推进。
 
-Movement 先推进所有已有阻挡偏移，再按阶段入口的 Unit 候选逐一推进：先 Route，然后对仍有效的 Locomotion 调用一次 advance（包括无 Route 的单位），最后推进该单位已有的 active Unbalance。自主运动在失衡结束前已经完成资格检查，避免状态结束当 Tick 再做自主积分。每五个 Tick 以两次实际位置的距离更新 `totalMoveDistance`。随后由 Blocking 结算阻挡。地形控制器在下一次 Effect 扫描时读取当前位置。位置相关 Effect 可读取累计距离，持有相应牵引或失衡段的 Ref，并结算自身伤害。
+Movement 先推进所有已有阻挡偏移，再按阶段入口的 Unit 候选逐一推进：先 Route，然后对仍有效的 Locomotion 调用一次 advance（包括无 Route 的单位），最后推进该单位已有的 active Unbalance。自主运动在失衡结束前已经完成资格检查，避免状态结束当 Tick 再做自主积分。随后由 Blocking 结算阻挡。地形控制器在下一次 Effect 扫描时读取当前位置。
+
+Core 不维护全局移动距离计数或采样时钟。依赖移动距离的具体 Content Effect 自行采样 `Unit.position`、结算自身伤害，按自身机制持有相应牵引或失衡段的 Ref。相较于原生共享的每五 Tick 采样相位，项目接受 Effect 独立采样在区间首尾、折返时的弦长以及结算时点上的差异。
 
 扫掠将受力单位的共享 `Shape` 与静态地块的显式碰撞盒作确定性碰撞计算。原生接触轨迹的实测和具体内容的接入范围见 [Tactical 语义](tactical-semantics.md)。
 

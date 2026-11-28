@@ -70,7 +70,7 @@ test("movement passes intermediate tracking points and reaches the final goal wi
     assert.deepEqual(get(state, 0).locomotion.velocity, [0.2, 0]);
 });
 
-test("runtime advances a routeless unit under force and samples its committed position", () => {
+test("runtime advances a routeless unit under force", () => {
     let state = battle([{
         position: [2, 1],
         definition: {
@@ -85,16 +85,11 @@ test("runtime advances a routeless unit under force and samples its committed po
     }]);
     const host = ref(get(state, 0));
     state = unbalance.applyImpulse(state, host, [0.25, 0]).state;
-    for (let i = 0; i < 5; i++) state = step(state, []);
-
-    const beforeSample = get(state, 0);
-    assert.ok(beforeSample.position[0] > 2);
-    assert.equal(beforeSample.locomotion.totalMoveDistance, 0);
-
-    state = step(state, []);
-    const afterSample = get(state, 0);
-    assert.ok(afterSample.position[0] > beforeSample.position[0]);
-    near(afterSample.locomotion.totalMoveDistance, afterSample.position[0] - 2);
+    for (let i = 0; i < 2; i++) {
+        const before = get(state, 0).position;
+        state = step(state, []);
+        assert.ok(get(state, 0).position[0] > before[0]);
+    }
 });
 
 test("movement uses current terrain and reflects displacement while retaining controller velocity", () => {

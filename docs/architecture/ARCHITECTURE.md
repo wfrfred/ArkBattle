@@ -49,7 +49,7 @@ Core 不裁定胜负，也不因 Schedule 完成而冻结。调用者读取调�
 | 6 | Vitality 自然 HP 回复，再 Elemental 自然 EP 回复 |
 | 7 | Skill，再 Combat |
 | 8 | 开帧候选中的 Projectile |
-| 9 | Movement：阻挡偏移、Route、Locomotion、已有 active Unbalance 与移动距离采样 |
+| 9 | Movement：阻挡偏移、Route、Locomotion、已有 active Unbalance |
 | 10 | Blocking：维护旧关系，再搜索新关系 |
 | 收帧 | Tick 加一并返回 |
 

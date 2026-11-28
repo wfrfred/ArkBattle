@@ -1,16 +1,11 @@
 import { hasRoute } from "../../unit/capability/route/capability.js";
 import * as route from "../../unit/capability/route/operations.js";
-import { Vec2 } from "../../common/vector.js";
-import {
-    hasLocomotion,
-    MOVE_SAMPLE_INTERVAL,
-} from "../../unit/capability/locomotion/capability.js";
+import { hasLocomotion } from "../../unit/capability/locomotion/capability.js";
 import { hasBlockable } from "../../unit/capability/blocking/blockable/blockable.js";
 import * as blockable from "../../unit/capability/blocking/blockable/operations.js";
 import * as locomotion from "../../unit/capability/locomotion/operations.js";
 import { hasShiftable } from "../../unit/capability/shifting/shiftable.js";
 import * as unbalance from "../../unit/capability/shifting/unbalance.js";
-import { replace } from "../../unit/operations.js";
 import * as units from "../../unit/query.js";
 import type { State as BattleState } from "../state.js";
 
@@ -40,30 +35,5 @@ export function advanceMovement(battle: BattleState): BattleState {
         }
     }
 
-    const samples = units
-        .all(battle)
-        .filter(hasLocomotion)
-        .filter(
-            (unit) =>
-                unit.lifecycle === "ACTIVE" && battle.tick >= unit.locomotion.nextMoveSampleTick,
-        )
-        .map((unit) => {
-            const state = unit.locomotion;
-
-            return {
-                ...unit,
-                locomotion: {
-                    ...state,
-                    totalMoveDistance:
-                        state.totalMoveDistance +
-                        Math.sqrt(
-                            Vec2.distanceSquared(unit.position, state.lastMoveSamplePosition),
-                        ),
-                    lastMoveSamplePosition: unit.position,
-                    nextMoveSampleTick: battle.tick + MOVE_SAMPLE_INTERVAL,
-                },
-            };
-        });
-
-    return replace(battle, samples.toArray());
+    return battle;
 }
