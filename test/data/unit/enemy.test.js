@@ -38,6 +38,11 @@ test("main-mode enemy levels inherit individual defined fields and apply stage o
     });
     assert.equal(bow.attackSpeed, 0);
     assert.throws(() => parameters("enemy_1000_gopro", 2));
+    const harmless = resolveEnemy(rawEnemy("enemy_1000_gopro"), {
+        level: 1,
+        overwrittenData: { lifePointReduce: { m_defined: true, m_value: 0 } },
+    });
+    assert.equal(harmless.lifePointLoss, 0);
 });
 
 test("enemy merging retains native skill, talent and SP data for their consumers", () => {

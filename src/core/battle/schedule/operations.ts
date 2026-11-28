@@ -12,6 +12,7 @@ import { add } from "../../unit/operations.js";
 import type { Entry, Spawn, Wait, Wave } from "./definition.js";
 import type { ActivePhase } from "./state.js";
 import { register as registerStatistics } from "../statistics.js";
+import { register as registerLifePoints } from "../life-points.js";
 
 function spawn(battle: BattleState, entry: Spawn): BattleState {
     const rng = createRng(battle.execution.rngState);
@@ -38,6 +39,8 @@ function spawn(battle: BattleState, entry: Spawn): BattleState {
     if (entry.statistics !== null) {
         battle = registerStatistics(battle, reference, entry.statistics);
     }
+
+    battle = registerLifePoints(battle, reference, entry.lifePointLoss);
 
     return add(battle, created.value);
 }

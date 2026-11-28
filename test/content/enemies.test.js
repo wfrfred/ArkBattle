@@ -129,7 +129,7 @@ test('scheduled hound faces its route after the first checkpoint has changed its
   const state = advanceSchedule(createBattle([], { schedule: {
     waves: [{ preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
       fragments: [{ preDelayTicks: 0, entries: [{
-        definition, plan, mode: 'WALK', offset: [0, 0], randomRange: [0, 0], atTick: 0, wait: 'WAVE', statistics: null,
+        definition, plan, mode: 'WALK', offset: [0, 0], randomRange: [0, 0], atTick: 0, wait: 'WAVE', statistics: null, lifePointLoss: 0,
       }] }],
     }],
     branches: {},

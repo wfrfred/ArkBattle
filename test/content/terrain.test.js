@@ -65,7 +65,8 @@ function setup(terrains, placements, definitions) {
     const battle = initialize({
         map: createMap(1, terrains.length, tiles, [], []),
         initialEffects: controllers.map(definition => ({ initial: effectInitial, definition })),
-        initialUnits: placements.map(unit => ({ ...unit, statistics: null })),
+        lifePoints: { balance: 0, temporary: 0 },
+        initialUnits: placements.map(unit => ({ ...unit, statistics: null, lifePointLoss: 0 })),
         schedule: { waves: [], branches: {} }, moveMultiplier: 1, pushMultiplier: 0.5, deployment: null, initialCards: [], rngState: 7,
     });
     return {

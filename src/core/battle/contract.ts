@@ -39,6 +39,10 @@ export interface Input<
     readonly deployment: DeploymentDefinition | null;
     readonly map: Map;
     readonly schedule: ScheduleDefinition;
+    readonly lifePoints: {
+        readonly balance: number;
+        readonly temporary: number;
+    };
     readonly initialCards: {
         readonly [K in keyof CardStates]: CardInput<CardStates[K]>;
     };
@@ -48,6 +52,7 @@ export interface Input<
     readonly initialUnits: {
         readonly [K in keyof UnitDefinitions]: UnitInput<UnitDefinitions[K]> & {
             readonly statistics: Policy | null;
+            readonly lifePointLoss: number;
         };
     };
     readonly rngState: Seed;

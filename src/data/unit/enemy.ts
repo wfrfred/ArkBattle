@@ -19,6 +19,7 @@ export interface ResolvedEnemy {
     readonly level: number;
     readonly prefabKey: string;
     readonly notCountInTotal: boolean;
+    readonly lifePointLoss: number;
     readonly attributes: RecordData;
     readonly fields: RecordData;
     readonly layers: readonly RecordData[];
@@ -146,6 +147,9 @@ export function resolveEnemy(value: unknown, configuration: Configuration): Reso
     }
 
     const notCountInTotal = fields.get("notCountInTotal");
+    const lifePointReduce = fields.get("lifePointReduce");
+    const lifePointLoss = lifePointReduce === undefined ? 1 : lifePointReduce;
+    assertNonnegativeSafeInteger(lifePointLoss, "enemy lifePointReduce");
 
     return {
         id,
@@ -153,6 +157,7 @@ export function resolveEnemy(value: unknown, configuration: Configuration): Reso
         prefabKey: textValue(fields.get("prefabKey"), "enemy prefabKey"),
         notCountInTotal:
             notCountInTotal === undefined ? false : flag(notCountInTotal, "enemy notCountInTotal"),
+        lifePointLoss,
         attributes: Object.fromEntries(attributes),
         fields: Object.fromEntries(fields),
         layers,

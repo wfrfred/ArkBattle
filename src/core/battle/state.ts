@@ -22,6 +22,11 @@ import {
     type State as StatisticsState,
 } from "./statistics.js";
 import {
+    initialize as initializeLifePoints,
+    removedHook as lifePointsRemovedHook,
+    type State as LifePointsState,
+} from "./life-points.js";
+import {
     initialize as initializeDeployment,
     type State as DeploymentState,
 } from "./deployment/deployment.js";
@@ -58,6 +63,7 @@ export interface State {
     readonly unitHooks: Hooks;
     readonly schedule: ScheduleState;
     readonly statistics: StatisticsState;
+    readonly lifePoints: LifePointsState;
     readonly events: readonly Event[];
 }
 
@@ -74,6 +80,7 @@ export function createBattleState(
     schedule: ScheduleState = initializeSchedule({ waves: [], branches: {} }),
     definition: Definition = defaultDefinition,
     statistics: StatisticsState = initializeStatistics(0),
+    lifePoints: LifePointsState = initializeLifePoints(0, 0),
 ): State {
     return {
         definition,
@@ -85,9 +92,11 @@ export function createBattleState(
         lifetime: initializeLifetime(),
         unitHooks: Hooks.empty()
             .set(unitRemoved, scheduleRemovedHook)
-            .set(unitRemoved, statisticsRemovedHook),
+            .set(unitRemoved, statisticsRemovedHook)
+            .set(unitRemoved, lifePointsRemovedHook),
         schedule,
         statistics,
+        lifePoints,
         events: [],
     };
 }

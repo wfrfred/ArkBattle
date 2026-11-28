@@ -59,7 +59,7 @@ ArkBattle 面向通用明日方舟战斗，卫戍协议是实现重点，不是 
 | DEPLOY-06 多实例回收 | 每次回收保存串行恢复份数。 | 真实 Reset 路径、并行恢复、特殊退出及来源竞争。 |
 | DEPLOY-07 场下资源 | Card 持久状态、当前／未来计时、负 DP 半速。 | 复杂暂停组合和更多持久资源；Card 供给政策布尔字段组织亦待收口。 |
 | SCHEDULE-01 调度 | 主 Spawn、Branch 抽选、等待与同步离场反馈。 | 其他关卡 Action 和完整统计，不由普通出生推定。 |
-| RESULT-01 结果 | step 返回完整 Tick，调用者裁决停止与胜负。 | 普通全局统计由 [Statistics](statistics.md) 提供；关卡生命值尚未接入，见 [Core 剩余缺口](research-necessity-20261122.md#battle--关卡结算)；不能用通用超时替代模式结果。 |
+| RESULT-01 结果 | step 返回完整 Tick，调用者裁决停止与胜负。 | 普通全局统计由 [Statistics](statistics.md) 提供，关卡生命值由 [Life Points](life-points.md) 提供；不能用通用超时替代模式结果。 |
 | CONTENT-01 内容 | 玫兰莎、泥岩、猎狗、弩手及代表装置。 | 其他角色、技能、模组、敌人模式和分支模板。 |
 | DATA-01 静态输入 | Unit／Skill／Effect／Level 及已提取作者帧时序的转换。 | 敌人招式／SP、更多动作模板／选择／弹道和 Effect 参数；不以时序转换宣称全量 Prefab／Spine 解码。 |
 | MODE-01 模式机制 | 公开领域组合入口。 | 卫戍倒地、自动部署、共享额度与收益等生产调用链。 |

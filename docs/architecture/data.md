@@ -59,7 +59,9 @@ Effect 的重复施加、启用竞争、接收免疫／抵抗和生命周期关�
 
 原始路线的 motionMode 解析为 Data Route.mode，出怪编译将 mode 交给 Schedule.Spawn.mode，实际出生时用作 Locomotion Initial 的 mode，不进入 Route Plan。普通原始路线转换为 `Plan.destination` 的 EXIT 分支，保留原终点位置与是否必须完成全部路点的配置（requireFinish）。不根据通用关卡 END Marker 推导退出资格；具体 Content／Meta 按本次单位和玩法的实际路线语义选择 MOVE 或 EXIT，MOVE 保留终点而不自然退出。无固定目标以 null 表达，详见 [Route](navigation.md#类型与身份)。
 
-`compileSpawnSchedule` 独立转换 Wait 与 `Spawn.statistics`：Action／Enemy 的 notCountInTotal 任一成立则不计数，普通 Branch 默认不计数；主波其余按普通或 alwaysCountAsKilled 资格登记。非管理、只阻终局等 Wait 政策不影响统计资格。主波经过选择和数量展开后已具备完整 Spawn 资格；Battle 初始化从该计划推导 `statistics.total`，Data 不另行返回重复总数。无害对关卡生命损失的影响归独立生命值领域，不混入击杀 Policy。[Statistics](statistics.md)
+`compileSpawnSchedule` 独立转换 Wait 与 `Spawn.statistics`：Action／Enemy 的 notCountInTotal 任一成立则不计数，普通 Branch 默认不计数；主波其余按普通或 alwaysCountAsKilled 资格登记。非管理、只阻终局等 Wait 政策不影响统计资格。主波经过选择和数量展开后已具备完整 Spawn 资格；Battle 初始化从该计划推导 `statistics.total`，Data 不另行返回重复总数。 [Statistics](statistics.md)
+
+敌人解析结果的 `lifePointLoss` 取等级继承与关卡覆写后的 `lifePointReduce`；没有任何定义值时使用原生计算默认值 1。出怪编译对 `isUnharmfulAndAlwaysCountAsKilled` 的 Action 将本次扣血量设为零，其余保留敌人解析值，不由 Wait、Branch 或统计资格推断。关卡装配用 `options.maxLifePoint` 提供 `Battle.Input.lifePoints.balance`，普通关卡的 `temporary` 初值为零；玩法层可传入其本场实际初值。[Life Points](life-points.md)
 
 ## 静态配置与数值
 

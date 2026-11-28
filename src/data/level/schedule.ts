@@ -29,6 +29,7 @@ export interface ArknightsScheduleSelection {
 export type ArknightsEnemyResolver = (reference: ArknightsEnemyDbRef) => {
     readonly definition: Spawn["definition"];
     readonly notCountInTotal: boolean;
+    readonly lifePointLoss: number;
     readonly delayToBornTicks: number;
 };
 
@@ -72,6 +73,8 @@ function resolveActionSpawn(
     }
 
     const content = resolveEnemy(reference);
+    assertNonnegativeSafeInteger(content.lifePointLoss, "enemy life point loss");
+
     if (content.delayToBornTicks !== 0) {
         throw new RangeError("spawn schedules require synchronous enemy births");
     }
@@ -86,6 +89,7 @@ function resolveActionSpawn(
         randomRange: route.spawnRandomRange,
         wait: wait(action, fromBranch, notCountInTotal),
         statistics: statistics(action, fromBranch, notCountInTotal),
+        lifePointLoss: action.isUnharmfulAndAlwaysCountAsKilled ? 0 : content.lifePointLoss,
     };
 }
 

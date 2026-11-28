@@ -27,7 +27,7 @@
 | 战场、几何与空间查询 | [Battlefield](battlefield.md)、[Geometry](geometry.md)、[Spatial](spatial.md) |
 | 寻路、路线与运动 | [Navigation／Route／Locomotion](navigation.md) |
 | 阻挡、占格、部署 | [Blocking](blocking.md)、[Occupancy](occupancy.md)、[Deployment](deployment.md) |
-| 出兵与等待、个体结算计数、地形与非空间机制 | [Schedule](schedule.md)、[Statistics](statistics.md)、[Terrain](terrain.md) |
+| 出兵与等待、个体结算计数、关卡生命值、地形与非空间机制 | [Schedule](schedule.md)、[Statistics](statistics.md)、[Life Points](life-points.md)、[Terrain](terrain.md) |
 | 静态资料与具体行为接入 | [Data](data.md)、[Content](content.md) |
 | 当前支持与真实缺口 | [内容支持边界](tactical-semantics.md) |
 

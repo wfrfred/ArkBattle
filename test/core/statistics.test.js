@@ -20,7 +20,7 @@ function spawn(id, atTick, wait, statistics, hooks = Hooks.empty()) {
             route: { alwaysCheckCurrentPoint: true },
             locomotion: { speed: { default: 0, min: 0, max: null }, halfBodyWidth: 0, steeringParameters: { steeringFactor: 1, maxSteeringForce: 100 } },
         },
-        plan, mode: "WALK", offset: [0, 0], randomRange: [0, 0], atTick, wait, statistics,
+        plan, mode: "WALK", offset: [0, 0], randomRange: [0, 0], atTick, wait, statistics, lifePointLoss: 0,
     };
 }
 

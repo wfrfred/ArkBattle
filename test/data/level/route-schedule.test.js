@@ -44,6 +44,7 @@ function source() {
         resolve: ({ id }) => ({
             definition: definitions.get(id), delayToBornTicks: 0,
             notCountInTotal: false,
+            lifePointLoss: 2,
         }),
         actions,
     };
@@ -80,6 +81,24 @@ test("level push multiplier retains the configured value, including zero", () =>
     assert.equal(level.pushMultiplier, 0);
 });
 
+test("native dragon branch uses the default one point loss when the database leaves it undefined", () => {
+    const level = parseLevelDefinition(fixture("level_act1autochess_01"), { mire: null, deepsea: null, tileDeploymentPrefabs: [] });
+    const raw = fixture("enemy_9012_acloon");
+    assert.deepEqual(raw.Value[0].enemyData.lifePointReduce, { m_defined: false, m_value: 0 });
+    const compiled = compileSpawnSchedule(level, { actions: [], branches: ["dragon"] }, reference => {
+        assert.equal(reference.id, raw.Key);
+        const resolved = resolveEnemy(raw, reference);
+        return {
+            definition: { id: resolved.id, hooks: Hooks.empty(), route: { alwaysCheckCurrentPoint: true } },
+            delayToBornTicks: 0, notCountInTotal: resolved.notCountInTotal, lifePointLoss: resolved.lifePointLoss,
+        };
+    }, 123);
+    const [spawn] = compiled.schedule.branches.dragon.phases[0].entries;
+    assert.equal(spawn.definition.id, raw.Key);
+    assert.equal(spawn.statistics, null);
+    assert.equal(spawn.lifePointLoss, 1);
+});
+
 test("main random groups preserve source order and expand the selected count once", () => {
     const { level, resolve } = source();
     const seed = 123;
@@ -94,6 +113,7 @@ test("main random groups preserve source order and expand the selected count onc
     assert.deepEqual(spawns.map(({ mode }) => mode), Array(3).fill(level.routes[0].mode));
     assert.deepEqual(spawns.map(({ wait }) => wait), ["FINAL", "NONE", "NONE"]);
     assert.deepEqual(spawns.map(({ statistics }) => statistics), ["NORMAL", "ALWAYS_KILLED", "ALWAYS_KILLED"]);
+    assert.deepEqual(spawns.map(({ lifePointLoss }) => lifePointLoss), [2, 0, 0]);
     assert.notEqual(compiled.rngState, seed);
     const actions = level.waves[0].fragments[0].actions.map((action) => ({
         ...action, weight: action.randomSpawnGroupKey === null ? 0 : 1,
@@ -119,6 +139,8 @@ test("branch groups retain whole candidates for runtime choice and preserve entr
     assert.equal(entries[1].wait, "FINAL");
     assert.deepEqual(entries[0].options.flatMap(({ entries }) => entries.map(({ statistics }) => statistics)), [null, null, null]);
     assert.equal(entries[1].statistics, null);
+    assert.deepEqual(entries[0].options.flatMap(({ entries }) => entries.map(({ lifePointLoss }) => lifePointLoss)), [2, 0, 0]);
+    assert.equal(entries[1].lifePointLoss, 2);
     assert.equal(compiled.rngState, 123);
 });
 
@@ -144,6 +166,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
         { id: action.key, useDb: true, level: 0, overwrittenData: null },
         { id: enemy, useDb: true, level: 0, overwrittenData: {
             attributes: {}, notCountInTotal: { m_defined: true, m_value: true },
+            lifePointReduce: { m_defined: true, m_value: 3 },
             skills,
         } },
     ];
@@ -170,13 +193,16 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
             assert.deepEqual(resolved.layers.at(-1).skills, skills);
         }
         const { delayToBornTicks } = readEnemyMovementPrefab(resolved, prefabs);
-        return { definition, notCountInTotal: resolved.notCountInTotal, delayToBornTicks };
+        return { definition, notCountInTotal: resolved.notCountInTotal, lifePointLoss: resolved.lifePointLoss, delayToBornTicks };
     }, 7);
     const spawns = compiled.schedule.waves[0].fragments[0].entries;
     assert.deepEqual(spawns.map(({ wait }) => wait), ["NONE", "WAVE", "NONE"]);
     assert.deepEqual(spawns.map(({ statistics }) => statistics), [null, "NORMAL", null]);
+    assert.deepEqual(spawns.map(({ lifePointLoss }) => lifePointLoss), [1, 1, 3]);
+    assert.equal(compiled.schedule.branches.uncounted.phases[0].entries[0].lifePointLoss, 3);
     let state = step(initialize({
         map: level.map, schedule: compiled.schedule, initialUnits: [], initialEffects: [],
+        lifePoints: { balance: level.options.maxLifePoint, temporary: 0 },
         moveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, initialCards: [], rngState: compiled.rngState,
     }), []);
     const waiting = ref(get(state, 1));
@@ -187,4 +213,7 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     assert.equal(isCompleted(state.schedule), true);
     assert.deepEqual(all(state).map(unit => unit.ref.id).toArray(), [0, 2, 3]);
     assert.deepEqual(state.statistics, { total: 1, finished: 1, killed: 1, pending: new Map() });
+    assert.equal(state.lifePoints.balance, raw.options.maxLifePoint);
+    state = remove(state, ref(get(state, 2)), { reason: "EXIT" });
+    assert.equal(state.lifePoints.balance, Math.max(0, raw.options.maxLifePoint - 3));
 });

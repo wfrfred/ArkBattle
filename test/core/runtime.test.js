@@ -105,7 +105,7 @@ test("initial and scheduled entry see registered battle facts and preserve their
             preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
             fragments: [{ preDelayTicks: 0, entries: [{
                 atTick: 0, definition: scheduled, plan, mode: "WALK", offset: [0, 0],
-                randomRange: [0, 0], wait: "WAVE", statistics: null,
+                randomRange: [0, 0], wait: "WAVE", statistics: null, lifePointLoss: 0,
             }] }],
         }], branches: {} },
     });

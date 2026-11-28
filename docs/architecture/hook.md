@@ -4,7 +4,7 @@
 
 ## 存储与领域职责
 
-所有登记使用类型化 Key。Unit 的生命周期、资源、Action、Skill、Blocking、Elemental 等本地登记统一存于 `Unit.hooks`；全局 Unit 观察存于 Battle 的 Hooks 集合，Card 的构造前 Hook 存于各 Card 自身的 Hooks 集合。存储一致不合并业务阶段或宿主所有权。
+所有登记使用类型化 Key。Unit 的生命周期、资源、Action、Skill、Blocking、Elemental 等本地登记统一存于 `Unit.hooks`；全局 Unit 观察存于 Battle 的 Hooks 集合，Card 与 Life Points 的 Hook 各自存于所属领域的 Hooks 集合。存储一致不合并业务阶段或宿主所有权。
 
 各领域自行派发，不建立万能业务广播器。公共集合负责存取，公共 dispatch 负责共同调用协议；它们不判断 ACTIVE、资源资格或业务是否应继续。
 
@@ -50,6 +50,7 @@ accepts 只读。通知使用 void；取消、固定数值等工作值转换由�
 | Unit removing | 使用首次结束快照与输入构造 Departure，在发布 ENDING 后执行，早于 Lifetime 自动请求依赖者结束 |
 | Unit removed | 注销前捕获最新 Hook 对象及 priority 快照，注销后执行，Departure 沿用首次结束的快照与输入 |
 | Battle unit removed | `battle.unit.removed` 在 Unit 本地 `removed` 后派发 |
+| Life Points beforeModify／modified | 两个生命修改入口共享工作值处理；前置调整后按最新状态结算，提交实际变化后才通知，未变化不通知 |
 | Blocking 一条关系 | 首个回调前同时采样双方候选，各自排序，先 Blocker 后 Blockable；不跨角色按 priority 混排 |
 | Blocking ACQUIRED／RELEASED | 前者随原 Relation 失效停止；后者通知已发生的解除，不追删回调中新建的关系 |
 | 资源常规阶段 | 要求当前宿主 ACTIVE，具体阶段保留自己的停止条件 |

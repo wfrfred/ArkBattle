@@ -101,6 +101,8 @@
 | [Schedule · Route 的主流程时间上下文](schedule.md#route-的主流程时间上下文) | [动态出生取得主线 Wave 和 Fragment 时基快照，之后 Route 的绝对等待按其出生时基推进](../../test/core/schedule.test.js#L427) |
 | [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [计划与 entered 中动态出生的等待均先于各自 entered 可见，Wave 超时只清前进等待，最终等待在对应 Unit 完成离场后解除](../../test/core/schedule.test.js#L190)<br>[活 Unit 可只撤销自身 Wave 等待，操作本身不推进，也保留实例和最终等待](../../test/core/schedule.test.js#L269) |
 | [Statistics · 资格与登记、个体结算](statistics.md#资格与登记) | [总数由主波计数 Spawn 推导，不因初始、动态或不计数出生改变；entered 已可完成个体账务，死亡、出口与提前结算按独立资格一次性计数，动态登记与 Wait 独立](../../test/core/statistics.test.js#L49) |
+| [Life Points · 个体出口结算](life-points.md#个体出口结算) | [开场及调度出生先登记扣血量；自然及强制出口扣血，提前统计、死亡和取消登记不混淆，各实例完整离场消费一次登记](../../test/core/life-points.test.js#L11) |
+| [Life Points · 资源与修改](life-points.md#资源与修改) | [两类生命共享前后 Hook，损失优先消耗临时生命，普通生命最低为零且无运行时上限；仅实际变化通知，首次普通生命损失可以重入扣减](../../test/core/life-points.test.js#L69) |
 | [Navigation · 格图查询](navigation.md#格图查询) | [后继格查询遵循通行方式；路径含起终格并沿平滑后继链跳过中间格](../../test/core/battlefield.test.js#L85) |
 | [Route · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [跨格 MOVE 用原格决定后继与不可达，末段仍为实际偏移目标；路线剩余距离保留该区分，直接抵达段保持欧氏长度](../../test/core/navigation/route.test.js#L67) |
 | [Route · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [路线剩余距离按身体偏移投影修正首段、使用导航几何长度且排除瞬移路段，不用搜索代价](../../test/core/navigation/route.test.js#L42) |
@@ -186,15 +188,16 @@
 | [Data · 业务输入](data.md#业务输入) | [实际场景中的沼泽与深水控制器被绑定为无宿主 Effect，所选真实技能黑板提供各自地形参数](../../test/data/level/predefined.test.js#L96) |
 | [Data · 共享读取与换算](data.md#共享读取与换算) | [作者帧换算保留 Begin 与连续小数，负上限按无限制规范化](../../test/data/action/timing.test.js#L12)<br>[预置个体指定技能级别并覆盖黑板时，实际场景参数使用覆盖值](../../test/data/level/predefined.test.js#L115) |
 | [Data · 干员静态资料](data.md#干员静态资料) | [按角色身份连接组织标签、养成、范围与选定技能数据，转换范围并保留技能费用和黑板](../../test/data/unit/operator.test.js#L42)<br>[完整原表保留未消费原始行和模式候选，常规内容只解释本次选中数据](../../test/data/unit/operator.test.js#L66)<br>[阶段成长保留连续基础间隔，只对整数属性舍入，并拒绝越过定级上限](../../test/data/unit/operator.test.js#L111)<br>[界面潜能映射累积原表等级，同一份潜能同时影响基础修正与可用天赋候选](../../test/data/unit/operator.test.js#L119)<br>[信赖独立插值和舍入后叠加，超过 100% 与 100% 战斗属性一致](../../test/data/unit/operator.test.js#L133)<br>[实际技能按解锁与专精门槛选择，校验跨表身份，专精后读取新的费用和倍率](../../test/data/unit/operator.test.js#L147)<br>[同个精英阶段内可以跨级更换天赋候选，天赋额外攻击不写进基础攻击属性](../../test/data/unit/operator.test.js#L160)<br>[模组各阶段用各自总属性并检查信赖、等级、归属，替换候选仍受潜能和所选模组身份约束](../../test/data/unit/operator.test.js#L169)<br>[模组的纯数据槽覆盖或追加天赋时保留原生身份和字符串黑板](../../test/data/unit/operator.test.js#L191) |
-| [Data · 敌人静态资料](data.md#敌人静态资料) | [关卡覆写最终 Prefab 后读取该 Prefab 的运动配置，敌人属性进入回血、等级和元素绑定，未支持免疫明确拒绝](../../test/content/enemies.test.js#L86)<br>[等级继承与关卡覆盖逐字段依 m_defined 合并，显式零及标签、位阶、回血规范化](../../test/data/unit/enemy.test.js#L14)<br>[基础、选中等级和关卡原始层分别保留技能、天赋及共享 SP，同层普通属性仍正常读取](../../test/data/unit/enemy.test.js#L43) |
+| [Data · 敌人静态资料](data.md#敌人静态资料) | [关卡覆写最终 Prefab 后读取该 Prefab 的运动配置，敌人属性进入回血、等级和元素绑定，未支持免疫明确拒绝](../../test/content/enemies.test.js#L86)<br>[等级继承与关卡覆盖逐字段依 m_defined 合并，显式零扣血量及标签、位阶、回血规范化](../../test/data/unit/enemy.test.js#L14)<br>[基础、选中等级和关卡原始层分别保留技能、天赋及共享 SP，同层普通属性仍正常读取](../../test/data/unit/enemy.test.js#L48) |
 | [Data · 静态配置与数值](data.md#静态配置与数值) | [真实预置保留别名、隐藏和登记坐标，Prefab 阵营/筛选标签与角色组织标签独立于装置固定受选类别](../../test/data/level/predefined.test.js#L34)<br>[未选中潜能的未支持公式不影响通常装配，选中才在内容配置入口拒绝](../../test/data/unit/operator.test.js#L211)<br>[标签转换保留大小写和首次出现顺序，重复项去除，缺源和无效成员在入口拒绝](../../test/data/unit/tags.test.js#L6) |
 | [Data · 当前支持边界](data.md#当前支持边界) | [原生叠层解析分别保存总层上限、生效层、满层续期、到期清理和样本选项](../../test/data/effect.test.js#L19)<br>[修正公式、属性标识规范化，仍保留黑板和原属性延后采样标记](../../test/data/effect.test.js#L41) |
 | [Elemental · 1. 能力与定义](elemental.md#1-能力与定义) | [原生字符串 ANGER 与数值 5 都规范成统一运行类型 MANIA](../../test/data/effect.test.js#L14) |
-| [Navigation · Checkpoint 与进入](navigation.md#checkpoint-与进入) | [原始运动方式独立于 Plan 保存，原生巡逻解析成 MOVE 与 GOTO，四类 WAIT 各保留其时间基准并换算为 Tick；普通原始终点转换为 EXIT 并保留完成要求，无终点转换为 null](../../test/data/level/route-schedule.test.js#L52) |
-| [Navigation · 施力入口](navigation.md#施力入口) | [关卡可设推击倍率，显式零不会被默认值覆盖](../../test/data/level/route-schedule.test.js#L76) |
-| [Schedule · 静态计划](schedule.md#静态计划) | [主线加权组先选 Action，按原顺序展开选中组的 count/interval、传递运动方式及独立计数资格，预处理拒绝不支持的 Pack](../../test/data/level/route-schedule.test.js#L83) |
-| [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [Branch 保持完整候选组和来源顺序，把抽选和随机状态消耗留给 Runtime](../../test/data/level/route-schedule.test.js#L109) |
-| [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [关卡 Action 与敌人数据库的统计豁免转换为独立的出生资格和 Wait，普通计数与等待及实际离场相互区分](../../test/data/level/route-schedule.test.js#L125) |
+| [Navigation · Checkpoint 与进入](navigation.md#checkpoint-与进入) | [原始运动方式独立于 Plan 保存，原生巡逻解析成 MOVE 与 GOTO，四类 WAIT 各保留其时间基准并换算为 Tick；普通原始终点转换为 EXIT 并保留完成要求，无终点转换为 null](../../test/data/level/route-schedule.test.js#L53) |
+| [Navigation · 施力入口](navigation.md#施力入口) | [关卡可设推击倍率，显式零不会被默认值覆盖](../../test/data/level/route-schedule.test.js#L77) |
+| [Schedule · 静态计划](schedule.md#静态计划) | [主线加权组先选 Action，按原顺序展开选中组的 count/interval、传递运动方式、独立计数资格和无害扣血量，预处理拒绝不支持的 Pack](../../test/data/level/route-schedule.test.js#L102) |
+| [Data · 路线静态资料](data.md#路线静态资料) | [真实 dragon Branch 的敌人未定义扣血量时使用原生默认值 1，不受 Branch 计数资格影响](../../test/data/level/route-schedule.test.js#L84) |
+| [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [Branch 保持完整候选组和来源顺序，把抽选和随机状态消耗留给 Runtime](../../test/data/level/route-schedule.test.js#L129) |
+| [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [关卡 Action 与敌人数据库的统计豁免转换为独立的出生资格和 Wait，普通计数与等待及实际离场相互区分；未计数敌人仍按关卡覆写的损失量扣血](../../test/data/level/route-schedule.test.js#L147) |
 | [Action · 8. 普通攻击、释放 Hook 与移动](action.md#8-普通攻击释放-hook-与移动) | [真实弩手按事件释放、弹箭到达才造成伤害、恢复期间继续停步并在结束后恢复路线，注册攻击方式汇总 ALL](../../test/content/enemies.test.js#L205)<br>[首次攻击等待 Begin，连续攻击跳过，目标间断或中止后的下一轮恢复 Begin](../../test/content/operators/melantha.test.js#L65) |
 | [Content · Core 标准机制与 Content 共享工厂](content.md#core-标准机制与-content-共享工厂) | [登场面向读取首检查点执行完的最新位置及后继移动目标](../../test/content/enemies.test.js#L118)<br>[真实弩手近远模式切换不覆盖对方冷却，分别按自己 ready 时间再次输出](../../test/content/enemies.test.js#L248) |
 | [Targeting · 调用业务](targeting.md#调用业务) | [猎狗可攻击真正阻挡自己的隐匿目标，命中仍尊重无敌](../../test/content/enemies.test.js#L147)<br>[弩手近战绑定实际阻挡关系，未阻挡时使用远程选择且仍受远程默认限制](../../test/content/enemies.test.js#L169)<br>[玫兰莎即使建立阻挡也保持普通攻击的隐匿资格](../../test/content/operators/melantha.test.js#L56) |

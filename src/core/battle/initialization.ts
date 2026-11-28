@@ -4,7 +4,8 @@ import { add as addUnit } from "../unit/operations.js";
 import type { Input } from "./contract.js";
 import type { State as BattleState } from "./state.js";
 import { ref } from "../common/ref.js";
-import { register } from "./statistics.js";
+import { register as registerStatistics } from "./statistics.js";
+import { register as registerLifePoints } from "./life-points.js";
 
 export function initializeBattlefield<EffectStates extends readonly object[]>(
     state: BattleState,
@@ -21,10 +22,12 @@ export function initializeBattlefield<EffectStates extends readonly object[]>(
 
     for (const unit of input.initialUnits) {
         const initialized = initializeUnit(state, unit);
+        const reference = ref(initialized.value);
         state =
             unit.statistics === null
                 ? initialized.state
-                : register(initialized.state, ref(initialized.value), unit.statistics);
+                : registerStatistics(initialized.state, reference, unit.statistics);
+        state = registerLifePoints(state, reference, unit.lifePointLoss);
         state = addUnit(state, initialized.value);
     }
 

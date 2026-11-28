@@ -6,15 +6,15 @@
 
 各项的设计边界与证据按领域维护。 [Core 剩余缺口](research-necessity-20261122.md)
 
-| 事项 | 当前状态 | 领域与依据 |
-| --- | --- | --- |
-| 关卡生命值 | 待接入 | [Battle / 关卡结算](research-necessity-20261122.md#battle--关卡结算) |
+当前已无确认的 Core 缺口。
 
 已接入：普通仇恨所用的路线距离。Route 分离普通路线替代（Alternative 或 Main）与临时运动控制（Override），`remainingDistance` 只查询普通路线，选敌程序保留比较政策。 [原生仇恨与路线选择](../research/cases/33-targeting-and-targetable-pipeline.md#L230) · [Route 契约](navigation.md#运动目标与-main-出口)
 
 已接入：生命比例同步的有符号 HP 调整。普通伤疗与调整共享增减方向接收；调整保留生命提交和死亡处理，不生成普通伤疗事件及应用后通知。具体内容仍按实际语义接入。 [原生依据](../research/cases/29-hp-and-ep-healing-settlement.md#有符号调整保留特定接收与生命归零程序) · [Resource 契约](resource.md#有符号-hp-调整)
 
 已接入：普通全局个体结算计数。计划总数由 Battle 初始化读取主波 Spawn 推导，与运行期结算分离；个体出生登记独立资格，普通离场与提前击杀共享单次结算；不耦合等待、关卡生命值或胜负。 [Statistics 契约](statistics.md)
+
+已接入：关卡生命值。独立的普通与临时生命账户，负向修改优先消耗临时生命；两类账户共用修改前与实际变化通知。个体出口扣血量在出生时登记，完整离场消费登记，仅 EXIT 扣血，独立于普通统计及等待。外部玩法层处理跨场资源和胜负。 [Life Points 契约](life-points.md)
 
 ## 初次盘点的分类
 
@@ -42,7 +42,7 @@
 | G05 | 战中修改 DP 上限 | 诺伯特平民确认身份后进入保护区会增加我方费用上限。 | Core 提供动态下限。自然回复、余额修改及边界截断读取静态 Definition.maxDp。 | **已完成。** `dp.setMaxContribution` 和 `dp.removeMaxContribution` 支持战中调整有效上限。自然回费和余额修改读取该上限，Deck 独立计算卡牌费用截断。 | [原生依据](../research/cases/20-norport-civilian-allegiance-and-blocking.md#L22) · [DP 契约](deployment.md#dp) |
 | G06 | 本次部署参与初始化的 Card 效果 | 松桐 S2 的 DeckBuff 在读取本次出生 HP 前参与 MaxHP 计算。 | 部署入口以固定蓝图完成 Unit.initialize，卡牌通过 Hook 装配入场业务。 | **已结案，现有接口可表达。** Card Effect 保存下次部署的附加数据，通过 `card.beforeDeploy` 在成功资格与资源结算后、Unit.initialize 前修改本次 Unit.Input；参与初始 HP 的配置可直接在构造前确定，其他入场业务可注入本次 Unit Hook。 | [原生依据](../research/cases/24-deployment-cost-and-supply.md#普通-native-分支的阶段区别) · [本次构造干预](deployment.md#部署观察) |
 | G07 | 同一 Card 的特殊部署 | 卫戍初始布阵保留卡牌身份，免初始费用，预放召唤物免库存。初查记录了部分效果跳过开场部署的说法。 | 走 deploy 可以留 Card 的关联历史，但固定派发普通部署通知。直接 Unit 初始化即使设置 Deployable.card，也不能用公开操作登记供 cardForUnit 读取的同一卡来源历史。 | **已结案，现有接口可表达。** 开场的免费和免库存由 `Quote` 表达，实际部署写入历史。入场效果按各自生效条件核对。 | [开场入场效果](../research/cases/24-deployment-cost-and-supply.md#开场实际部署的入场效果) · [报价契约](deployment.md#请求与统一资格) |
-| G08 | 路线到达、退出资格与退出事实 | 普通终点结算用 REACH_EXIT。喀兰圣女等实际 Prefab 禁止退出但仍有路线，主线 6-15 另有不扣蓝门生命但计击杀的配置。 | 到达终点直接移除，内部结束原因通用 SCRIPT，只有表现事件区分出口。改成最后一道 MOVE 会丢失真实终点及剩余路程。 | **Core 已接入。** Plan.destination 区分 MOVE、EXIT 与 null；Main 自然出口与内容强制出口以 Unit EXIT 原因完整离场，不再单发路线表现事件。普通全局计数已接入，关卡生命值仍独立待接入。 | [原生依据](../research/cases/13-route-and-movement-timing.md#L153) · [Route 契约](navigation.md#运动目标与-main-出口) · [禁止退出配置](../research/evidence/route-operations-20261107/temporary/content.json#L2819) · [退出与击杀](../research/cases/30-scheduler-action-data-fields.md#L155) |
+| G08 | 路线到达、退出资格与退出事实 | 普通终点结算用 REACH_EXIT。喀兰圣女等实际 Prefab 禁止退出但仍有路线，主线 6-15 另有不扣蓝门生命但计击杀的配置。 | 到达终点直接移除，内部结束原因通用 SCRIPT，只有表现事件区分出口。改成最后一道 MOVE 会丢失真实终点及剩余路程。 | **Core 已接入。** Plan.destination 区分 MOVE、EXIT 与 null；Main 自然出口与内容强制出口以 Unit EXIT 原因完整离场，不再单发路线表现事件。普通全局计数和关卡生命值分别独立结算。 | [原生依据](../research/cases/13-route-and-movement-timing.md#L153) · [Route 契约](navigation.md#运动目标与-main-出口) · [禁止退出配置](../research/evidence/route-operations-20261107/temporary/content.json#L2819) · [退出与击杀](../research/cases/30-scheduler-action-data-fields.md#L155) |
 | G09 | 推进分支与执行分支分开 | 活动关卡实际出生的思旧通过 ModifyRuntimeRouteUseBranchRoute 取路线，消耗下一 Phase，取路线失败也保留已推进索引。 | 公开 triggerBranch 在推进索引后立即启动当前 Phase。Content 要保留同一游标并用于真正触发时，缺少可单独消费 Phase 的操作。 | **已结案，已核实的样本可表达。** 思旧实际使用的分支各有一条路线，Data 可绑定对应 Plan，Content 调用 `route.reassign`。若出现同时用同一游标取路线和触发出怪的样本，再审查共享游标。 | [配置扫描](../research/evidence/cjstel-route-selection-20261122/README.md) · [Route 操作](../../src/core/unit/capability/route/operations.ts#L143) |
 
 首次复核确认主动返还 DP 在请求结束前，普通撤退与死亡的卡牌回收都在原生 `OnFinish`，对象注销在 `OnRecycle`。后续取证已定位全局部署额度与同卡在场名额各自的释放时点和部署资格消费者，也复核了本次审计当时留下的中继器回收、动态召唤等待线索。 [部署额度](../research/evidence/deployment-exit-limits-20261122/README.md) · [中继器回收](../research/evidence/repeater-recovery-20261122/README.md) · [动态召唤等待](../research/evidence/managed-summons-20261122/README.md)
@@ -53,7 +53,7 @@
 
 | 研究项 | 现行结论 |
 | --- | --- |
-| G01 | 同实例复活采用 1 HP、复活等待 Effect 和 increaseHp。恰在路线终点时的探针差异已接受。G08 的路线退出资格与离场原因已接入；普通全局计数已接入，关卡生命值仍是独立缺口。 [Vitality](vitality.md#特殊-hp-application-的支持边界) |
+| G01 | 同实例复活采用 1 HP、复活等待 Effect 和 increaseHp。恰在路线终点时的探针差异已接受。G08 的路线退出资格与离场原因已接入；普通全局计数及关卡生命值已分别接入。 [Vitality](vitality.md#特殊-hp-application-的支持边界) |
 | G03 | 郁金香 S1 空施放的狂躁计数是已知且明确暂缓的内容例外。普通双监听按已定契约运行。 [Elemental](elemental.md#支持边界) |
 | G10 | 琳琅诗怀雅的金币可以由 Content 私有状态保存，技能可通过本次发动参数决定是否收取 SP。已查案例不足以确认普通 SP 配置需要运行期提交。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L115) · [Skill](skill.md#6-覆盖边界) |
 | G11 | 若玛露西尔的魔力由 Content 私有状态承载，普通 SP 操作自然与魔力隔离。共享 SP 封闭仍取决于资源表示和真正需要它的普通 SP 消费者。 [Case 09](../research/cases/09-skill-mechanisms-and-requirements.md#L317) |

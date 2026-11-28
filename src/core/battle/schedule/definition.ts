@@ -22,6 +22,7 @@ export interface Spawn {
     readonly atTick: number;
     readonly wait: Wait;
     readonly statistics: Policy | null;
+    readonly lifePointLoss: number;
 }
 
 export type Wait = "NONE" | "FINAL" | "WAVE";
