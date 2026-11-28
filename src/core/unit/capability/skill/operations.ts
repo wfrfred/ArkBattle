@@ -1,4 +1,4 @@
-import { assertNonnegativeSafeInteger } from "../../../common/assert.js";
+import { assertNonnegativeSafeInteger, assertSafeInteger } from "../../../common/assert.js";
 import { replace as replaceUnits, update } from "../../operations.js";
 import { ref, type Ref } from "../../../common/ref.js";
 import { appendEvents, type State as BattleState, type Result } from "../../../battle/state.js";
@@ -359,9 +359,7 @@ export function extendTime(
     reference: ActivationRef,
     ticks: number,
 ): BattleState {
-    if (!Number.isSafeInteger(ticks)) {
-        throw new TypeError("skill time adjustment must be a safe integer");
-    }
+    assertSafeInteger(ticks, "skill time adjustment");
 
     const unit = reference.host.get(battle);
     if (unit?.lifecycle !== "ACTIVE" || (hasVitality(unit) && !isAlive(unit))) {

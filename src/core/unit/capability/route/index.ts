@@ -6,6 +6,7 @@ export type {
     Destination,
     Initial,
     Checkpoint,
+    ActiveCheckpoint,
     Context,
     ContextInput,
     Override,

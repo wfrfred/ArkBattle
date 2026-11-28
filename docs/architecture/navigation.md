@@ -60,7 +60,7 @@ MOVE 表达抵达后留场的持续路线终点；EXIT 表达 Main 的自然出�
 
 Context 保存 Plan、offset、index、已进入的 current 和有效的不可达政策。每个 Context 各有独立 Ref，Ref 持有宿主引用，并在宿主中按 Ref 对象身份读取对应 Context。更新和移除使用对应 Context 的 Ref。
 
-Route State 保存 `main: Context`、`alternative: Context | null`、`overrides: readonly Override[]` 与出生时的 Wave／Fragment 时间快照；Override 包含 context 与有限数值 priority。index 是执行位置，current 是已经进入的指令实例；current 为空且索引耗尽表示序列完成，不等于 Context 移除或 Main 可以退出。
+Route State 保存 `main: Context`、`alternative: Context | null`、`overrides: readonly Override[]` 与出生时的 Wave／Fragment 时间快照；Override 包含 context 与有限数值 priority。index 是执行位置，`current: ActiveCheckpoint | null` 是已经进入的持续指令实例；current 为空且索引耗尽表示序列完成，不等于 Context 移除或 Main 可以退出。
 
 ### 控制选择与计时
 
@@ -78,7 +78,7 @@ Route State 保存 `main: Context`、`alternative: Context | null`、`overrides:
 | GOTO | 跳转并按进入语义重建目标指令。 |
 | DISAPPEAR／APPEAR | 同步执行消失或固定位置出现。 |
 
-Plan 与 current 复用 Checkpoint 联合，求值只改 current：随机 MOVE 每次进入按各轴半宽独立采样，current 保留样本，Plan 保留原配置；固定 MOVE／APPEAR 使用固定偏移。GOTO 重新进入会重建 WAIT 和随机样本。原生巡逻段在 Data 编译为显式 MOVE／GOTO，不复制有限路线或把每点编译成自循环。
+Plan 使用完整 Checkpoint 联合；ActiveCheckpoint 从中提取 MOVE／WAIT／TRACE，只有这三类指令可保存在 current。GOTO／DISAPPEAR／APPEAR 即时消费，不写入 current。随机 MOVE 每次进入按各轴半宽独立采样，current 保留样本，Plan 保留原配置；固定 MOVE／APPEAR 使用固定偏移。GOTO 重新进入会重建 WAIT 和随机样本。原生巡逻段在 Data 编译为显式 MOVE／GOTO，不复制有限路线或把每点编译成自循环。
 
 #### WAIT
 
@@ -156,7 +156,7 @@ Locomotion 保存历史 velocity、当前 mode（WALK／FLY）、target（`Movem
 
 ### 施力入口
 
-`push` 读取施力方基础力度、目标重量与本次力度。推表与拉表分别使用 `clamp(3 + 本次力度 + 基础力度 − 重量, 0, 表长 − 1)`。推击以方向、推表值、战斗 `pushMultiplier` 和 0.02 换算一次冲量，默认倍率为 0.5，关卡可从 `options.moveMultiplier` 提供倍率。`unbalance.applyImpulse` 也可直接接收以质量单位乘格／秒表示的冲量，换算后叠加到以格／Tick 表示的外力速度。
+`push` 读取施力方基础力度、目标重量与本次力度。推表与拉表分别使用 `clamp(3 + 本次力度 + 基础力度 − 重量, 0, 表长 − 1)`。推击以方向、推表值、战斗 `pushMultiplier` 和 0.02 换算一次冲量，默认倍率为 0.5，关卡可从 `options.moveMultiplier` 提供倍率。推表值为零时拒绝施力；推表值大于零但方向或倍率为零时，仍按零冲量完成正常的失衡接收。`unbalance.applyImpulse` 也可直接接收以质量单位乘格／秒表示的冲量（包括零冲量），换算后叠加到以格／Tick 表示的外力速度。[原生零冲量分支](../research/cases/15-locomotion-native-semantics.md#L208)
 
 一次失衡以独立 Ref 标识，重复推击与新牵引可叠加在当前段。推击和开始牵引通过存活、空间存在和受力限制后刷新三 Tick 保护。首次进入先发布失衡和本次受力，再释放阻挡关系。已有失衡暂停自主积分和接敌，Route 继续推进。新受力被免疫拒绝时返回 `null`，已有段在下一次失衡推进时结束。
 

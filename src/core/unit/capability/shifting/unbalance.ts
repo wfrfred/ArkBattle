@@ -249,22 +249,14 @@ function settlePulls(
     const effective = [...current.self.pulls.values()].filter((item) =>
         pull.available(battle, item),
     );
-    const lost = effective.filter(
-        (item) => advanced.has(pull.ref(item)) && pull.position(battle, item.point) === undefined,
-    );
     const sole = effective.length === 1 ? effective[0] : undefined;
     if (
         sole !== undefined &&
         advanced.has(pull.ref(sole)) &&
-        lost.length === 0 &&
         (!sole.braked || sole.brake === "WHILE_NEAR") &&
         pull.isNear(battle, sole)
     ) {
-        battle = pull.brake(battle, pull.ref(sole));
-    }
-
-    for (const item of lost) {
-        battle = pull.remove(battle, pull.ref(item), "SOURCE_UNAVAILABLE");
+        return pull.brake(battle, pull.ref(sole));
     }
 
     return battle;

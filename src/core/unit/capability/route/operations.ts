@@ -28,6 +28,7 @@ import { setTarget } from "../locomotion/capability.js";
 import {
     createContext,
     validatePlan,
+    type ActiveCheckpoint,
     type Checkpoint,
     type Context,
     type ContextInput,
@@ -188,7 +189,7 @@ export function setTraceTarget(
 function waitSatisfied(
     battle: BattleState,
     self: Unit & Route,
-    current: Extract<Checkpoint, { readonly type: "WAIT" }>,
+    current: Extract<ActiveCheckpoint, { readonly type: "WAIT" }>,
 ): boolean {
     switch (current.anchor) {
         case "ENTER":
@@ -260,7 +261,7 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boo
                 battle = publish(battle, self, { ...context, index: context.index + 1 });
                 battle = executeSpatial(battle, self, checkpoint);
             } else {
-                let entered: Checkpoint = checkpoint;
+                let entered: ActiveCheckpoint = checkpoint;
                 if (checkpoint.type === "MOVE" && checkpoint.randomizeOffset) {
                     const rng = createRng(battle.execution.rngState);
                     entered = {
@@ -302,7 +303,7 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boo
             if (!waitSatisfied(battle, self, current)) {
                 return battle;
             }
-        } else if (current.type === "MOVE") {
+        } else {
             const goal = target(context)!;
             if (!atTarget(self, context, goal.position)) {
                 const locator = Vec2.sub(self.position, context.offset);
@@ -322,8 +323,6 @@ function interpret(battle: BattleState, reference: Ref<Context>, enterFirst: boo
                     return battle;
                 }
             }
-        } else {
-            return battle;
         }
 
         battle = publish(battle, self, { ...context, index: context.index + 1, current: null });

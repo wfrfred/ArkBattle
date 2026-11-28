@@ -1,5 +1,5 @@
 import type { Result, State as BattleState } from "../../../battle/state.js";
-import { assert, assertNonnegativeNumber } from "../../../common/assert.js";
+import { assert, assertNonnegativeNumber, assertSafeInteger } from "../../../common/assert.js";
 import { createRef, ref, type Ref } from "../../../common/ref.js";
 import { Vec2 } from "../../../common/vector.js";
 import type { WorldPosition } from "../../../geometry/coordinate.js";
@@ -113,6 +113,8 @@ export function apply(
     if (input.point.type === "FIXED") {
         assert(Vec2.is(input.point.position), "pull point must be a finite position", TypeError);
     }
+
+    assertSafeInteger(input.forceLevel, "force level");
 
     const applier = source.get(battle);
     const unit = target.get(battle);

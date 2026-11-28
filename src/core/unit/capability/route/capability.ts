@@ -58,13 +58,15 @@ export type Checkpoint =
           readonly offset: WorldPosition;
       };
 
+export type ActiveCheckpoint = Extract<Checkpoint, { readonly type: "MOVE" | "WAIT" | "TRACE" }>;
+
 export interface Context extends Identified<{
     readonly host: Ref<Unit & Route>;
 }> {
     readonly plan: Plan;
     readonly offset: WorldPosition;
     readonly index: number;
-    readonly current: Checkpoint | null;
+    readonly current: ActiveCheckpoint | null;
     readonly alwaysCheckCurrentPoint: boolean;
 }
 
