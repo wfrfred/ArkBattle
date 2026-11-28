@@ -30,7 +30,7 @@ Content 不自行推进模拟，不在共享模块或闭包中保存本场事实
 
 ### Core 标准机制与 Content 共享工厂
 
-Core 定义战斗的标准语义。Action 的执行与冷却、Skill 的 SP 与激活、Effect 的实例与生命周期由对应 Core 领域处理。标准 Effect 实现位于 `core/effects/`，实例操作位于 `core/effect/`。实现标准眩晕等行为时，Content 调用对应的 Core 实现，并决定目标、时点、时长和专属后继。角色与敌人的元素配置调用共享的 Content 工厂，显式提供 boss 身份、元素损伤回复速率、抗性和爆发回复速度；maxEp 为 null 时，依照接收身份计算普通单位 1000、BOSS 敌人 2000 的容量。[标准 Effect](../../src/core/effects) · [Effect 实例操作](../../src/core/effect/index.ts) · [Elemental](elemental.md)
+Core 定义战斗的标准语义。Action 的执行与冷却、Skill 的 SP 与激活、Effect 的实例与生命周期由对应 Core 领域处理。标准 Effect 实现位于 `core/effects/`，实例操作位于 `core/effect/`。实现标准眩晕等行为时，Content 调用对应的 Core 实现，并决定目标、时点、时长和专属后继。具体单位从 Core 的两套标准元素爆发表中显式选择适用预设，并独立配置 maxEp、元素损伤回复速率、抗性和爆发回复速度。当前普通干员容量为 1000，猎狗和弩手依传入位阶配置普通单位 1000、BOSS 2000 的容量。[标准 Effect](../../src/core/effects) · [Effect 实例操作](../../src/core/effect/index.ts) · [Elemental](elemental.md)
 
 Content 共享的是可选工厂。`content/actions/attack.ts` 提供常见攻击的组装，特殊行动可以直接编写 Action Definition。共享工厂按产出的 Definition 归类。`content/actions/skill.ts` 复用攻击模板，产出由技能驱动的 Action。返回 Skill Definition 的共享工厂归 `content/skills/`。共用规则用普通函数组合，具体数值读取规范化数据。
 
@@ -93,7 +93,7 @@ type Device = Unit & Classification<"DEVICE">;
 
 普通原生角色默认具备阻挡能力，因此 `Blocker` 属于 `Operator` 的基础组合。零阻挡以容量 `0` 表达，高台等情况依照地块和阻挡规则资格结算。[原生阻挡证据](../research/cases/23-blocker-and-blockable-roles.md) · [阻挡资格](blocking.md#关系资格与-restriction)
 
-普通干员和敌人都具备 `Elemental` 和用于空间命中的 `Hitbox`。具体 Definition 绑定角色或敌人的元素接收规则，并配置命中体形状。元素免疫由接收限制表达。[元素接收](elemental.md#1-能力与定义) · [空间查询](spatial.md)
+普通干员和敌人都具备 `Elemental` 和用于空间命中的 `Hitbox`。具体 Definition 选择适用的元素爆发表、配置各元素属性，并配置命中体形状。元素免疫由接收限制表达。[元素接收](elemental.md#1-能力与定义) · [空间查询](spatial.md)
 
 猎狗和弩手各自在 `Enemy` 上组合被阻挡、受力移动、路线和 Presence。战术装备整理箱和战术射击台各自在 `Device` 上组合生命、受选、占格与部署。两种装置按各自的出入场流程调用共用的地块修改和恢复函数。具体单位均从自身的 `definition` 推导配置类型。[猎狗](../../src/content/enemies/hound/unit.ts) · [战术装备整理箱](../../src/content/devices/crate.ts) · [地块操作](../../src/content/devices/tile.ts)
 

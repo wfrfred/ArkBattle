@@ -12,3 +12,14 @@ export function vitality(maxHp = 100, overrides = {}) {
         ...overrides,
     };
 }
+
+export function elemental(bursts, recoverySpeed = 0) {
+    return {
+        maxEp: attribute(1000, 1),
+        recoverySpeed: attribute(recoverySpeed),
+        elementResistance: attribute(0, 0, 100),
+        damageResistance: attribute(0, 0, 100),
+        burstRecoverySpeed: attribute(1),
+        bursts,
+    };
+}

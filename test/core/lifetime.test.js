@@ -1,5 +1,5 @@
 // Contract: [lifetime](../../docs/architecture/lifetime.md).
-import { attribute as defineAttribute, vitality as defineVitality } from "../helpers/attribute.js";
+import { attribute as defineAttribute, vitality as defineVitality, elemental as defineElemental } from "../helpers/attribute.js";
 import { Hooks } from "../../dist/core/hook.js";
 import * as unitLifecycle from "../../dist/core/unit/hook.js";
 import assert from "node:assert/strict";
@@ -13,7 +13,7 @@ import * as actions from "../../dist/core/unit/capability/action/index.js";
 import * as skills from "../../dist/core/unit/capability/skill/index.js";
 import * as elemental from "../../dist/core/unit/capability/elemental/index.js";
 import * as epDamage from "../../dist/core/battle/resource/ep/damage/index.js";
-import { create as createElementalDefinition } from "../../dist/content/elemental.js";
+import { allyCharacterBursts } from "../../dist/core/effects/elemental/index.js";
 import { effectInitial } from "../helpers/effect.js";
 
 test("Skill and Burst end notifications observe their cleared state while the owner is ENDING", () => {
@@ -27,7 +27,7 @@ test("Skill and Burst end notifications observe their cleared state while the ow
     const definition = {
         id: "owner",
         vitality: defineVitality(10000),
-        elemental: createElementalDefinition({ boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1, receiver: "CHARACTER" }),
+        elemental: defineElemental(allyCharacterBursts),
         skill: { definition: program },
         hooks: Hooks.empty()
             .set(skills.activationEnded, {

@@ -1,6 +1,6 @@
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
-import { create as createElemental } from "../../elemental.js";
+import { allyCharacterBursts } from "../../../core/effects/elemental/index.js";
 import {
     ref as actionRef,
     setState as setActionState,
@@ -53,15 +53,14 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
             restrictions: [],
         },
         deployable: { retreatRestrictions: [], refund: { rate: 0.5, limit: "BASE_COST" } },
-        elemental: createElemental({
-            receiver: "CHARACTER",
-            boss: false,
-            maxEp: null,
-            recoveryPerSecond: 0,
-            elementResistance: 0,
-            damageResistance: 0,
-            burstRecoverySpeed: 1,
-        }),
+        elemental: {
+            maxEp: { default: 1000, min: 1, max: null },
+            recoverySpeed: { default: 0, min: 0, max: null },
+            elementResistance: { default: 0, min: 0, max: 100 },
+            damageResistance: { default: 0, min: 0, max: 100 },
+            burstRecoverySpeed: { default: 1, min: 0, max: null },
+            bursts: allyCharacterBursts,
+        },
         vitality: {
             maxHp: { default: attributes.maxHp, min: 1, max: null },
             defense: { default: attributes.defense, min: 0, max: null },

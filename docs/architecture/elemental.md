@@ -1,6 +1,6 @@
 # Elemental
 
-Elemental 拥有 EP、接收许可、标准 Burst 的创建与恢复。EP Damage／Healing 的公共结算见 [Resource](resource.md)，实例与结束机制见 [Effect](effect.md) 和 [Lifetime](lifetime.md)。标准爆发程序由 Core 提供，Content 绑定默认数值和具体 Effect。
+Elemental 拥有 EP、接收许可、标准 Burst 的创建与恢复。EP Damage／Healing 的公共结算见 [Resource](resource.md)，实例与结束机制见 [Effect](effect.md) 和 [Lifetime](lifetime.md)。标准爆发程序与两套标准数值预设由 Core 提供，Content 选择预设并配置具体单位的元素属性。
 
 原生五型配置、接收、恢复与时间修改依据见[案例25](../research/cases/25-elemental-burst-recovery-timing.md)，分类依据见[案例38](../research/cases/38-damage-classification-and-permissions.md)。尚未闭合的时间操作与接收机制见本页末节。
 
@@ -21,7 +21,7 @@ elementResistance 只用于 EP 损伤，damageResistance 只用于 HP 元素伤�
 
 ## 2. Burst Effect 与标准规则
 
-标准库在 `core/effects/elemental/` 提供十种实际 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃、消耗 SP／恢复攻击力的凋亡，以及按行动／时间累加伤害的狂躁。`content/elemental.ts` 根据静态接收者配置绑定参数和爆发表。Core 按元素类型读取已配置的爆发。标准爆发 HP 输出均为 nature=DAMAGE；角色狂躁周期允许 HIT 回复，其余标准输出不允许，不因 Effect 或周期身份变为 ENVIRONMENT，也不以全局阻回替代本笔许可。
+标准库在 `core/effects/elemental/` 提供十种实际 Effect：神经眩晕／麻痹、物理／元素侵蚀、法术／元素灼燃、消耗 SP／恢复攻击力的凋亡，以及按行动／时间累加伤害的狂躁。[`core/effects/elemental/index.ts`](../../src/core/effects/elemental/index.ts) 提供 `allyCharacterBursts` 与 `otherBursts` 两套五型标准爆发表，保留各具体 Effect 的参数化工厂。原生标准配置区分我方 Character 与其他接收者，不能以阵营或干员／敌人的分类直接替代（见[案例25第6节](../research/cases/25-elemental-burst-recovery-timing.md#6-五型配置接收者分流及实际来源)）。Content 显式绑定适用爆发表；Core 按元素类型读取已配置的爆发，不自行推断接收者。标准爆发 HP 输出均为 nature=DAMAGE；角色狂躁周期允许 HIT 回复，其余标准输出不允许，不因 Effect 或周期身份变为 ENVIRONMENT，也不以全局阻回替代本笔许可。
 
 Burst 是普通 Effect：state 至少保存元素类型，Definition 增加 durationTicks 恢复预算，group 固定为 null。具体爆发通过 `burst.create(input)` 装配 Definition，Input 提供 id、durationTicks、initialize 和可选的 onInstall／onEnable／onDisable／onTick，不提供分组或结束程序。工厂统一保证槽位登记、入场通知、EP 恢复和结束结算；具体回调只实现爆发特有业务。Definition／Burst 的泛型保留具体私有 State 与回调配对，实例 Definition 和异构爆发表统一使用公共 `EraseCallbacks`；安装时恢复已经配对的程序。安装时直接提供 `duration = remaining = durationTicks`、`rate = 0` 的 DURATION。Elemental 只保存根 Effect 的 Typed Ref，不分配独立 Burst ID；旧 Ref 不操作下一次爆发。
 

@@ -1,5 +1,5 @@
 // Contract: [resource](../../../docs/architecture/resource.md).
-import { attribute as defineAttribute, vitality as defineVitality } from "../../helpers/attribute.js";
+import { attribute as defineAttribute, vitality as defineVitality, elemental as defineElemental } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle, get } from "../../helpers/battle.js";
@@ -14,7 +14,7 @@ import * as epHealing from "../../../dist/core/battle/resource/ep/healing/index.
 import * as vitality from "../../../dist/core/unit/capability/vitality/index.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import * as modifier from "../../../dist/core/common/modifier.js";
-import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
+import { allyCharacterBursts } from "../../../dist/core/effects/elemental/index.js";
 
 function damageRequest(source, target, power, type = "TRUE", penetration = { fixed: 0, proportional: 0 }) {
     const attack = { power, multiplier: 1, addition: 0 };
@@ -33,7 +33,7 @@ const healingRequest = (source, target, power) => ({
 function elementalDefinition(config = {}, hooks = Hooks.empty()) {
     return {
         id: "ep-receiver", hooks, presence: {}, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        elemental: { ...createElementalDefinition({ receiver: "CHARACTER", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 }), ...config },
+        elemental: { ...defineElemental(allyCharacterBursts), ...config },
     };
 }
 
@@ -48,7 +48,7 @@ test("HP-01: formulas use the calculated type and sampled defenses without begin
             id: "target", hooks: Hooks.empty(),
             vitality: defineVitality(1000, { defense: defineAttribute(150), resistance: defineAttribute(80, 0, 100) }),
             elemental: {
-                ...createElementalDefinition({ receiver: "CHARACTER", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 }),
+                ...defineElemental(allyCharacterBursts),
                 elementResistance: defineAttribute(95, 0, 100), damageResistance: defineAttribute(40, 0, 100),
             },
         }, position: [1, 0] },

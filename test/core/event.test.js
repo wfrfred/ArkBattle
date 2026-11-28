@@ -1,4 +1,4 @@
-import { vitality as defineVitality } from "../helpers/attribute.js";
+import { vitality as defineVitality, elemental as defineElemental } from "../helpers/attribute.js";
 // Contract: [event](../../docs/architecture/event.md).
 import assert from "node:assert/strict";
 import { test } from "node:test";
@@ -14,10 +14,10 @@ import * as epHealing from "../../dist/core/battle/resource/ep/healing/index.js"
 import * as presence from "../../dist/core/unit/capability/presence/index.js";
 import { step } from "../../dist/core/battle/index.js";
 
-import { create as createElementalDefinition } from "../../dist/content/elemental.js";
+import { allyCharacterBursts } from "../../dist/core/effects/elemental/index.js";
 import { update } from "../../dist/core/unit/operations.js";
 
-const elemental = createElementalDefinition({ receiver: "CHARACTER", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 });
+const elemental = defineElemental(allyCharacterBursts);
 
 test("EVENT-01: resource operations emit actual changes and only HP cancellations emit zero", () => {
     let state = battle([{ hooks: Hooks.empty(), initial: {}, definition: {

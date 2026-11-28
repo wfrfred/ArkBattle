@@ -1,7 +1,7 @@
 import { TICKS_PER_SECOND } from "../../../core/tick.js";
 import { Hooks } from "../../../core/hook.js";
 import * as unitHooks from "../../../core/unit/hook.js";
-import { create as createElemental } from "../../elemental.js";
+import { allyCharacterBursts } from "../../../core/effects/elemental/index.js";
 import type { ActionCapability } from "../../../core/unit/capability/action/index.js";
 import { ref as unitRef } from "../../../core/unit/index.js";
 import { calculateOffset } from "../../../core/battle/blocking/index.js";
@@ -31,15 +31,14 @@ export function create(configuration: Configuration & SkillSelection, tables: Ta
     const skill = createSkill(parameters.s2Skill, normalAttack, action);
 
     const definition = {
-        elemental: createElemental({
-            receiver: "CHARACTER",
-            boss: false,
-            maxEp: null,
-            recoveryPerSecond: 0,
-            elementResistance: 0,
-            damageResistance: 0,
-            burstRecoverySpeed: 1,
-        }),
+        elemental: {
+            maxEp: { default: 1000, min: 1, max: null },
+            recoverySpeed: { default: 0, min: 0, max: null },
+            elementResistance: { default: 0, min: 0, max: 100 },
+            damageResistance: { default: 0, min: 0, max: 100 },
+            burstRecoverySpeed: { default: 1, min: 0, max: null },
+            bursts: allyCharacterBursts,
+        },
         id: parameters.id,
         occupancy: { slot: "OCCUPANT" },
         facing: { restrictions: [] },

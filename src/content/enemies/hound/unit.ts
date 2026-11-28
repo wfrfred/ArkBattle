@@ -9,7 +9,7 @@ import type { Route } from "../../../core/unit/capability/route/index.js";
 import type { Shiftable } from "../../../core/unit/capability/shifting/index.js";
 import * as unitHooks from "../../../core/unit/hook.js";
 import type { Timing } from "../../actions/timing.js";
-import { create as createElemental } from "../../elemental.js";
+import { otherBursts } from "../../../core/effects/elemental/index.js";
 import type { Enemy } from "../enemy.js";
 import { faceRoute, restrictMovementDuringAction } from "../hook.js";
 import { create as createAttack } from "./action.js";
@@ -54,15 +54,6 @@ export function create(parameters: Parameters) {
     const { hitRadius, movement } = parameters;
     assertPositiveNumber(hitRadius, "enemy hit radius");
 
-    const elemental = createElemental({
-        receiver: "ENEMY",
-        boss: parameters.rank === "BOSS",
-        maxEp: null,
-        recoveryPerSecond: 0,
-        elementResistance: 0,
-        damageResistance: 0,
-        burstRecoverySpeed: 1,
-    });
     const attack = createAttack(parameters.timing);
 
     return {
@@ -78,7 +69,14 @@ export function create(parameters: Parameters) {
                 priority: 0,
                 invoke: faceRoute,
             }),
-        elemental,
+        elemental: {
+            maxEp: { default: parameters.rank === "BOSS" ? 2000 : 1000, min: 1, max: null },
+            recoverySpeed: { default: 0, min: 0, max: null },
+            elementResistance: { default: 0, min: 0, max: 100 },
+            damageResistance: { default: 0, min: 0, max: 100 },
+            burstRecoverySpeed: { default: 1, min: 0, max: null },
+            bursts: otherBursts,
+        },
         facing: { restrictions: [] },
         vitality: {
             maxHp: { default: parameters.maxHp, min: 1, max: null },

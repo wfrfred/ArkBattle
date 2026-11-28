@@ -1,5 +1,5 @@
 // Contract: [targeting](../../../docs/architecture/targeting.md).
-import { attribute as defineAttribute, vitality as defineVitality } from "../../helpers/attribute.js";
+import { attribute as defineAttribute, vitality as defineVitality, elemental as defineElemental } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Hooks } from "../../../dist/core/hook.js";
@@ -19,7 +19,7 @@ import { hasLayer, setType } from "../../../dist/core/unit/capability/layer/inde
 import { disappear } from "../../../dist/core/unit/capability/presence/index.js";
 import { create as modifier } from "../../../dist/core/common/modifier.js";
 import { healFree } from "../../../dist/core/effects/protection.js";
-import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
+import { otherBursts } from "../../../dist/core/effects/elemental/index.js";
 import { effectInitial } from "../../helpers/effect.js";
 
 const living = {
@@ -90,7 +90,7 @@ test("a stored damage filter evaluates restrictions with the supplied battle sta
 test("mixed healing keeps HP or EP demand while only an ACTIVE healFree marker restricts HP selection", () => {
     const patient = {
         ...living, classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        elemental: createElementalDefinition({ receiver: "ENEMY", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 }),
+        elemental: defineElemental(otherBursts),
     };
     let state = battle([
         ...[0, 1, 2, 3].map(x => ({ hooks: Hooks.empty(), initial: {}, definition: patient, position: [x, 1] })),
@@ -139,7 +139,7 @@ test("EP selection checks current resource eligibility without executing recepti
     const receiver = {
         id: "ep-receiver", hooks: Hooks.empty(), targetable: { category: "DEFAULT", taunt: defineAttribute(0, -2, 2), restrictions: [] },
         classification: { type: "DEVICE", side: "ALLY", filterTags: [], groupTags: [] },
-        elemental: createElementalDefinition({ receiver: "ENEMY", boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1 }),
+        elemental: defineElemental(otherBursts),
     };
     let state = battle([
         { hooks: Hooks.empty(), initial: {}, definition: { id: "source", hooks: Hooks.empty(), classification: { type: "DEVICE", side: "ENEMY", filterTags: [], groupTags: [] } }, position: [0, 0] },

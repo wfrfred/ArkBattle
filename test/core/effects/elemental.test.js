@@ -1,5 +1,5 @@
 // Contract: [elemental](../../../docs/architecture/elemental.md#2-burst-effect-与标准规则).
-import { attribute as defineAttribute, vitality as defineVitality } from "../../helpers/attribute.js";
+import { attribute as defineAttribute, vitality as defineVitality, elemental as defineElemental } from "../../helpers/attribute.js";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { battle as createBattle, get as getUnit } from "../../helpers/battle.js";
@@ -20,7 +20,7 @@ import { resolveAttack } from "../../../dist/core/unit/capability/offense/index.
 import { create as modifier } from "../../../dist/core/common/modifier.js";
 import * as elemental from "../../../dist/core/unit/capability/elemental/index.js";
 import { elementValues, setContribution } from "../../../dist/core/unit/capability/elemental/index.js";
-import { create as createElementalDefinition } from "../../../dist/content/elemental.js";
+import { allyCharacterBursts, otherBursts } from "../../../dist/core/effects/elemental/index.js";
 import { stun } from "../../../dist/core/effects/control.js";
 import * as epDamage from "../../../dist/core/battle/resource/ep/damage/index.js";
 import * as hpDecrease from "../../../dist/core/battle/resource/hp/decrease.js";
@@ -40,7 +40,7 @@ function definition(receiver = 'CHARACTER', overrides = {}) {
   return { hooks: Hooks.empty(), id: `element-${receiver}`,
     vitality: defineVitality(100000, { defense: defineAttribute(500), resistance: defineAttribute(50, 0, 100) }),
     offense: { attack: defineAttribute(100) },
-    elemental: createElementalDefinition({ boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1, receiver }), ...overrides };
+    elemental: defineElemental(receiver === "CHARACTER" ? allyCharacterBursts : otherBursts), ...overrides };
 }
 
 function receiverBattle(receiver = 'CHARACTER', overrides = {}) {
@@ -151,7 +151,7 @@ function battle(receiver, type) {
   return createBattle([
     { hooks: Hooks.empty(), initial: {}, definition: actor('ALLY', casterAttack), position: [0, 0] },
     { hooks: Hooks.empty(), initial: {}, definition: { ...actor('ENEMY', action()),
-      elemental: createElementalDefinition({ boss: false, maxEp: null, recoveryPerSecond: 0, elementResistance: 0, damageResistance: 0, burstRecoverySpeed: 1, receiver }),
+      elemental: defineElemental(receiver === "CHARACTER" ? allyCharacterBursts : otherBursts),
     }, position: [1, 0] },
   ], { rows: 1, columns: 8 });
 }
