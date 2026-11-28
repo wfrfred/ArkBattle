@@ -62,7 +62,7 @@ Action Definition 显式提供 `applyWay`。攻击工厂从伤害与元素损伤
 
 ## 6. 完整启动、写回与终止
 
-start 先检查配置身份、宿主资格、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与启动顺序计数，并登记本轮 Execution 对宿主 Unit 的 Lifetime 依赖。普通拒绝不分配身份或开始周期，Result 保留准备程序已经提交的业务。start 只登记，首次执行由调度器调用 advance。
+start 先检查宿主资格、Action Ref 身份、执行占位、限制与冷却，再运行 prepare；返回后按最新宿主、聚合和周期复查。仍可启动时才一次发布 Execution、Cooldown 与启动顺序计数，并登记本轮 Execution 对宿主 Unit 的 Lifetime 依赖。失效 Action Ref 与其他普通拒绝一样返回 null，不分配身份或开始周期，Result 保留准备程序已经提交的业务。按配置 ID 选择时，未知 ID 仍属于配置错误。start 只登记，首次执行由调度器调用 advance。
 
 持久状态、执行状态和冷却各有字段级写回，只替换对应字段。写入私有状态使用指向对应 Action 或 Execution 的精确 Ref。结束程序可以更新仍登记的本轮私有状态，写回保留执行身份和 ENDING。缺失身份属于调用错误。最新读取和不可变发布遵守公共契约。
 

@@ -52,7 +52,7 @@ export function start<P extends object, E extends object>(
 
         const action = reference.get(battle);
         if (action === undefined) {
-            throw new TypeError("action definition is not configured for its source");
+            return null;
         }
         if (action.execution !== null) {
             return null;
