@@ -26,7 +26,6 @@ export function battle(initialUnits = [], { rows = 3, columns = 8, ...options } 
         map: createMap(rows, columns, tiles, [], []),
         initialEffects: [],
         initialUnits: initialUnits.map(unit => ({ statistics: null, ...unit })),
-        statistics: { total: 0 },
         schedule: { waves: [], branches: {} },
         moveMultiplier: 1,
         pushMultiplier: 0.5,

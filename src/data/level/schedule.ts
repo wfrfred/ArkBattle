@@ -34,7 +34,6 @@ export type ArknightsEnemyResolver = (reference: ArknightsEnemyDbRef) => {
 
 export interface ArknightsScheduleCompilation {
     readonly schedule: Definition;
-    readonly statistics: { readonly total: number };
     readonly rngState: Seed;
     readonly omittedActions: readonly string[];
     readonly inactiveBranches: readonly string[];
@@ -292,21 +291,8 @@ export function compileSpawnSchedule(
         },
     ]);
 
-    let total = 0;
-
-    for (const wave of waves) {
-        for (const fragment of wave.fragments) {
-            for (const entry of fragment.entries) {
-                if (entry.statistics !== null) {
-                    total += 1;
-                }
-            }
-        }
-    }
-
     return {
         schedule: { waves, branches: Object.fromEntries(branches) },
-        statistics: { total },
         rngState: rng.state(),
         omittedActions,
         inactiveBranches: Object.keys(level.branches).filter((id) => !selectedBranches.has(id)),

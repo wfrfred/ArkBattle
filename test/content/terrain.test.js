@@ -66,7 +66,6 @@ function setup(terrains, placements, definitions) {
         map: createMap(1, terrains.length, tiles, [], []),
         initialEffects: controllers.map(definition => ({ initial: effectInitial, definition })),
         initialUnits: placements.map(unit => ({ ...unit, statistics: null })),
-        statistics: { total: 0 },
         schedule: { waves: [], branches: {} }, moveMultiplier: 1, pushMultiplier: 0.5, deployment: null, initialCards: [], rngState: 7,
     });
     return {

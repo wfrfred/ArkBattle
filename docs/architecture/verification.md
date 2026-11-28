@@ -100,7 +100,7 @@
 | [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [已抽中的 Branch 操作可保留到过期后，使用实际出现的新目标完成该实例](../../test/core/schedule.test.js#L148)<br>[Branch 在 entered 中触发后继 Phase 能读到已发布索引，外层旧 Phase 后继保留](../../test/core/schedule.test.js#L335)<br>[循环重入时重新抽选并在 entered 前发布 RNG，各次实例保存自己已选择的后续条目](../../test/core/schedule.test.js#L376) |
 | [Schedule · Route 的主流程时间上下文](schedule.md#route-的主流程时间上下文) | [动态出生取得主线 Wave 和 Fragment 时基快照，之后 Route 的绝对等待按其出生时基推进](../../test/core/schedule.test.js#L427) |
 | [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [计划与 entered 中动态出生的等待均先于各自 entered 可见，Wave 超时只清前进等待，最终等待在对应 Unit 完成离场后解除](../../test/core/schedule.test.js#L190)<br>[活 Unit 可只撤销自身 Wave 等待，操作本身不推进，也保留实例和最终等待](../../test/core/schedule.test.js#L269) |
-| [Statistics · 资格与登记、个体结算](statistics.md#资格与登记) | [初始和计划出生的 entered 已可完成个体账务，死亡与普通出口分别计数、固定击杀资格及提前结算后离场不重计，动态登记与 Wait 独立](../../test/core/statistics.test.js#L49) |
+| [Statistics · 资格与登记、个体结算](statistics.md#资格与登记) | [总数由主波计数 Spawn 推导，不因初始、动态或不计数出生改变；entered 已可完成个体账务，死亡、出口与提前结算按独立资格一次性计数，动态登记与 Wait 独立](../../test/core/statistics.test.js#L49) |
 | [Navigation · 格图查询](navigation.md#格图查询) | [后继格查询遵循通行方式；路径含起终格并沿平滑后继链跳过中间格](../../test/core/battlefield.test.js#L85) |
 | [Route · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [跨格 MOVE 用原格决定后继与不可达，末段仍为实际偏移目标；路线剩余距离保留该区分，直接抵达段保持欧氏长度](../../test/core/navigation/route.test.js#L67) |
 | [Route · 运动目标与 Main 出口](navigation.md#运动目标与-main-出口) | [路线剩余距离按身体偏移投影修正首段、使用导航几何长度且排除瞬移路段，不用搜索代价](../../test/core/navigation/route.test.js#L42) |
@@ -146,8 +146,8 @@
 | [Projectile · 移除与消除](projectile.md#移除与消除) | [普通停止可对当前原目标结算保底，可消除弹道收到 ELIMINATED 则跳过保底](../../test/content/projectiles/arrow.test.js#L75) |
 | [Projectile · 7. 命中与内容状态](projectile.md#7-命中与内容状态) | [目标暂时消失仍使用实时位置，几何抵达尝试原目标但接收可拒绝，正常拥有延迟终止](../../test/content/projectiles/arrow.test.js#L50)<br>[伤害同步回调停止弹道时已发布的命中记录防止结算第二次](../../test/content/projectiles/arrow.test.js#L90)<br>[箭从在场来源读最新攻击力，来源注销后维持弹道并使用发射样本](../../test/content/projectiles/arrow.test.js#L109)<br>[目标注销后仍朝最后记忆位置飞行，到达不会改为命中该处新对象](../../test/content/projectiles/arrow.test.js#L130) |
 | [Occupancy · 与其他领域协作](occupancy.md#与其他领域协作) | [平台立即释放其地面乘员的阻挡，地块普通阻挡权仍可由其他单位使用](../../test/content/devices/shooting-platform.test.js#L45)<br>[平台禁止地面阻挡、允许空中阻挡，地块豁免不影响平台自身限制](../../test/content/devices/shooting-platform.test.js#L55)<br>[平台移除完整击倒自己的乘员且保留别格单位，同时恢复本格地形](../../test/content/devices/shooting-platform.test.js#L66) |
-| [Terrain · Content 行为](terrain.md#content-行为) | [箱体改的是登记格，普通阻碍成本为 1000 而地穴固定成本不变，离场只恢复自己负责的属性](../../test/content/devices/tiles.test.js#L43)<br>[源石分格入场并独立保留期限，覆盖暂停弱效果周期后延续，离格和控制器实际停用后按自身期限结束，ENVIRONMENT 正常接收而不授 HIT](../../test/content/terrain.test.js#L88)<br>[沼泽相邻格保留叠层周期，本步有效重量分辨单双层，停用撤销修正，重新启用恢复已积层数且计时不变，离开撤销效果](../../test/content/terrain.test.js#L157)<br>[深水只影响地面敌人，地穴检查强制移动落点及空地变化，移除符合资格的单位](../../test/content/terrain.test.js#L196)<br>[烟雾按我方 DEFAULT 资格接纳地面及空中，建立阻挡不破隐，离开取消](../../test/content/terrain.test.js#L236) |
-| [Terrain · 地形接触与调度](terrain.md#地形接触与调度) | [Runtime 在统一 Effect 阶段扫描当前实际位置，移动后的落点由下一次扫描接纳](../../test/content/terrain.test.js#L262) |
+| [Terrain · Content 行为](terrain.md#content-行为) | [箱体改的是登记格，普通阻碍成本为 1000 而地穴固定成本不变，离场只恢复自己负责的属性](../../test/content/devices/tiles.test.js#L43)<br>[源石分格入场并独立保留期限，覆盖暂停弱效果周期后延续，离格和控制器实际停用后按自身期限结束，ENVIRONMENT 正常接收而不授 HIT](../../test/content/terrain.test.js#L87)<br>[沼泽相邻格保留叠层周期，本步有效重量分辨单双层，停用撤销修正，重新启用恢复已积层数且计时不变，离开撤销效果](../../test/content/terrain.test.js#L156)<br>[深水只影响地面敌人，地穴检查强制移动落点及空地变化，移除符合资格的单位](../../test/content/terrain.test.js#L195)<br>[烟雾按我方 DEFAULT 资格接纳地面及空中，建立阻挡不破隐，离开取消](../../test/content/terrain.test.js#L235) |
+| [Terrain · 地形接触与调度](terrain.md#地形接触与调度) | [Runtime 在统一 Effect 阶段扫描当前实际位置，移动后的落点由下一次扫描接纳](../../test/content/terrain.test.js#L261) |
 
 ## Hook 与伤害／治疗的回归语义
 
@@ -192,9 +192,9 @@
 | [Elemental · 1. 能力与定义](elemental.md#1-能力与定义) | [原生字符串 ANGER 与数值 5 都规范成统一运行类型 MANIA](../../test/data/effect.test.js#L14) |
 | [Navigation · Checkpoint 与进入](navigation.md#checkpoint-与进入) | [原始运动方式独立于 Plan 保存，原生巡逻解析成 MOVE 与 GOTO，四类 WAIT 各保留其时间基准并换算为 Tick；普通原始终点转换为 EXIT 并保留完成要求，无终点转换为 null](../../test/data/level/route-schedule.test.js#L52) |
 | [Navigation · 施力入口](navigation.md#施力入口) | [关卡可设推击倍率，显式零不会被默认值覆盖](../../test/data/level/route-schedule.test.js#L76) |
-| [Schedule · 静态计划](schedule.md#静态计划) | [主线加权组先选 Action，按原顺序展开选中组的 count/interval、传递运动方式并汇总计划统计总数，预处理拒绝不支持的 Pack](../../test/data/level/route-schedule.test.js#L83) |
-| [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [Branch 保持完整候选组和来源顺序，把抽选和随机状态消耗留给 Runtime](../../test/data/level/route-schedule.test.js#L110) |
-| [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [关卡 Action 与敌人数据库的统计豁免转换为独立的出生资格和 Wait，普通计数与等待及实际离场相互区分](../../test/data/level/route-schedule.test.js#L127) |
+| [Schedule · 静态计划](schedule.md#静态计划) | [主线加权组先选 Action，按原顺序展开选中组的 count/interval、传递运动方式及独立计数资格，预处理拒绝不支持的 Pack](../../test/data/level/route-schedule.test.js#L83) |
+| [Schedule · Branch 抽选与同步重入](schedule.md#branch-抽选与同步重入) | [Branch 保持完整候选组和来源顺序，把抽选和随机状态消耗留给 Runtime](../../test/data/level/route-schedule.test.js#L109) |
+| [Schedule · 等待关系与生命周期](schedule.md#等待关系与生命周期) | [关卡 Action 与敌人数据库的统计豁免转换为独立的出生资格和 Wait，普通计数与等待及实际离场相互区分](../../test/data/level/route-schedule.test.js#L125) |
 | [Action · 8. 普通攻击、释放 Hook 与移动](action.md#8-普通攻击释放-hook-与移动) | [真实弩手按事件释放、弹箭到达才造成伤害、恢复期间继续停步并在结束后恢复路线，注册攻击方式汇总 ALL](../../test/content/enemies.test.js#L205)<br>[首次攻击等待 Begin，连续攻击跳过，目标间断或中止后的下一轮恢复 Begin](../../test/content/operators/melantha.test.js#L65) |
 | [Content · Core 标准机制与 Content 共享工厂](content.md#core-标准机制与-content-共享工厂) | [登场面向读取首检查点执行完的最新位置及后继移动目标](../../test/content/enemies.test.js#L118)<br>[真实弩手近远模式切换不覆盖对方冷却，分别按自己 ready 时间再次输出](../../test/content/enemies.test.js#L248) |
 | [Targeting · 调用业务](targeting.md#调用业务) | [猎狗可攻击真正阻挡自己的隐匿目标，命中仍尊重无敌](../../test/content/enemies.test.js#L147)<br>[弩手近战绑定实际阻挡关系，未阻挡时使用远程选择且仍受远程默认限制](../../test/content/enemies.test.js#L169)<br>[玫兰莎即使建立阻挡也保持普通攻击的隐匿资格](../../test/content/operators/melantha.test.js#L56) |

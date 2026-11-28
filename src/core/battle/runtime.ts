@@ -41,6 +41,18 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
         RangeError,
     );
 
+    let total = 0;
+
+    for (const wave of input.schedule.waves) {
+        for (const fragment of wave.fragments) {
+            for (const entry of fragment.entries) {
+                if (!("execute" in entry) && entry.statistics !== null) {
+                    total += 1;
+                }
+            }
+        }
+    }
+
     const battlefield = createBattlefield(input.map);
     let initial = createBattleState(
         battlefield,
@@ -57,7 +69,7 @@ export function initialize(input: Input<readonly any[], readonly any[]>): State 
             moveMultiplier: input.moveMultiplier,
             pushMultiplier,
         },
-        initializeStatistics(input.statistics.total),
+        initializeStatistics(total),
     );
 
     for (const card of input.initialCards) {

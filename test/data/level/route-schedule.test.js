@@ -94,7 +94,6 @@ test("main random groups preserve source order and expand the selected count onc
     assert.deepEqual(spawns.map(({ mode }) => mode), Array(3).fill(level.routes[0].mode));
     assert.deepEqual(spawns.map(({ wait }) => wait), ["FINAL", "NONE", "NONE"]);
     assert.deepEqual(spawns.map(({ statistics }) => statistics), ["NORMAL", "ALWAYS_KILLED", "ALWAYS_KILLED"]);
-    assert.equal(compiled.statistics.total, 3);
     assert.notEqual(compiled.rngState, seed);
     const actions = level.waves[0].fragments[0].actions.map((action) => ({
         ...action, weight: action.randomSpawnGroupKey === null ? 0 : 1,
@@ -120,7 +119,6 @@ test("branch groups retain whole candidates for runtime choice and preserve entr
     assert.equal(entries[1].wait, "FINAL");
     assert.deepEqual(entries[0].options.flatMap(({ entries }) => entries.map(({ statistics }) => statistics)), [null, null, null]);
     assert.equal(entries[1].statistics, null);
-    assert.equal(compiled.statistics.total, 0);
     assert.equal(compiled.rngState, 123);
 });
 
@@ -177,10 +175,9 @@ test("Action and Enemy notCountInTotal release scheduling from still-present uni
     const spawns = compiled.schedule.waves[0].fragments[0].entries;
     assert.deepEqual(spawns.map(({ wait }) => wait), ["NONE", "WAVE", "NONE"]);
     assert.deepEqual(spawns.map(({ statistics }) => statistics), [null, "NORMAL", null]);
-    assert.equal(compiled.statistics.total, 1);
     let state = step(initialize({
         map: level.map, schedule: compiled.schedule, initialUnits: [], initialEffects: [],
-        moveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, initialCards: [], rngState: compiled.rngState, statistics: compiled.statistics,
+        moveMultiplier: 1, pushMultiplier: level.pushMultiplier, deployment: null, initialCards: [], rngState: compiled.rngState,
     }), []);
     const waiting = ref(get(state, 1));
     assert.deepEqual(state.schedule.waiting, { wave: [waiting], final: [waiting] });

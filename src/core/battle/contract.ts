@@ -39,7 +39,6 @@ export interface Input<
     readonly deployment: DeploymentDefinition | null;
     readonly map: Map;
     readonly schedule: ScheduleDefinition;
-    readonly statistics: { readonly total: number };
     readonly initialCards: {
         readonly [K in keyof CardStates]: CardInput<CardStates[K]>;
     };

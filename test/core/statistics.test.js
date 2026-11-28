@@ -49,34 +49,39 @@ function find(state, id) {
 test("counting qualification is published before entry and settles independently of schedule waiting", () => {
     const initial = unit("initial", (state, self) => units.remove(state, units.ref(self), { reason: "SCRIPT" }));
     const death = unit("death", (state, self) => units.remove(state, units.ref(self), { reason: "DEATH", killer: null }));
+    const dynamic = unit("dynamic", (state, self) => markKilled(state, units.ref(self)));
     let state = battle([{ ...initial, statistics: "ALWAYS_KILLED" }], {
-        statistics: { total: 4 },
         schedule: {
             waves: [{ preDelayTicks: 0, postDelayTicks: 0, maxWaitingTicks: null,
                 fragments: [{ preDelayTicks: 0, entries: [
                     spawn("death", 0, "NONE", "NORMAL", death.definition.hooks),
                     spawn("exit", 1, "FINAL", "NORMAL"),
                     spawn("uncounted", 1, "WAVE", null),
+                    { atTick: 1, execute: (state) => {
+                        const created = units.initialize(state, dynamic);
+                        const reference = units.ref(created.value);
+                        state = registerWait(created.state, reference, "WAVE");
+                        return { state: units.add(register(state, reference, "NORMAL"), created.value), value: true };
+                    } },
                 ] }],
             }],
-            branches: {},
+            branches: {
+                inactive: { phases: [{ preDelayTicks: 0, entries: [spawn("branch", 0, "NONE", "NORMAL")] }] },
+            },
         },
     });
-    assert.deepEqual(counts(state), { total: 4, finished: 1, killed: 1 });
+    assert.deepEqual(counts(state), { total: 2, finished: 1, killed: 1 });
     assert.equal(find(state, "initial"), undefined);
 
     state = step(state, []);
     assert.equal(find(state, "exit"), undefined);
     assert.equal(find(state, "death"), undefined);
-    assert.deepEqual(counts(state), { total: 4, finished: 2, killed: 2 });
+    assert.deepEqual(counts(state), { total: 2, finished: 2, killed: 2 });
 
     state = step(state, []);
     state = units.remove(state, units.ref(find(state, "exit")), { reason: "EXIT" });
-    const dynamic = units.initialize(state, unit("dynamic", (state, self) => markKilled(state, units.ref(self))));
-    const reference = units.ref(dynamic.value);
-    state = registerWait(dynamic.state, reference, "WAVE");
-    state = units.add(register(state, reference, "NORMAL"), dynamic.value);
-    assert.deepEqual(counts(state), { total: 4, finished: 4, killed: 3 });
+    const reference = units.ref(find(state, "dynamic"));
+    assert.deepEqual(counts(state), { total: 2, finished: 4, killed: 3 });
     assert.equal(reference.get(state).lifecycle, "ACTIVE");
     assert.ok(state.schedule.waiting.wave.includes(reference));
     assert.ok(state.schedule.waiting.final.includes(reference));
@@ -84,6 +89,6 @@ test("counting qualification is published before entry and settles independently
     state = units.remove(state, units.ref(find(state, "dynamic")), { reason: "DEATH", killer: null });
     state = units.remove(state, units.ref(find(state, "uncounted")), { reason: "DEATH", killer: null });
     state = step(state, []);
-    assert.deepEqual(counts(state), { total: 4, finished: 4, killed: 3 });
+    assert.deepEqual(counts(state), { total: 2, finished: 4, killed: 3 });
     assert.equal(isCompleted(state.schedule), true);
 });
