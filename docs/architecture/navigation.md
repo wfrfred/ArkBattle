@@ -4,7 +4,7 @@ Navigation 提供确定的格图查询，Route 解释路线并构造连续运动
 
 ## 职责与状态归属
 
-Battlefield 将当前地块投影为 WALK／FLY 基础 Map，并持有 Navigation State。State 只保存基础图与 Overlay；有效图和 Field 是可重建派生值。Route Context 保存程序进度，Locomotion 保存当前运动方式、运动目标及历史速度，位置只归 Unit.position。
+Battlefield 将当前地块投影为 WALK／FLY 基础 Map，并持有 Navigation State。State 按运动方式组织，各 ModeState 保存对应基础图与 Overlay；有效图和 Field 是可重建派生值。Route Context 保存程序进度，Locomotion 保存当前运动方式、运动目标及历史速度，位置只归 Unit.position。
 
 Navigation 仅接收格坐标并返回格图信息；Field 按显式目标格构建，不认识世界坐标、路线偏移、连续路程或运动目标。Route 按原格导航，另行解释精确世界目标。缓存可以内部可变，但不进入 BattleState，也不能改变领域结果。
 
@@ -196,7 +196,7 @@ apply 由基础图与当前覆盖重算有效图，只向地图内的整数格�
 
 ## 内部缓存
 
-有效图和目标导向 Field 可复用；同有效图与目标格可共用 Field，不因 Route 精确目标坐标或偏移而变化。命中、淘汰与重建不能引入历史相关结果。
+有效图按 ModeState 对象身份缓存，目标导向 Field 按有效图及目标格缓存，不因 Route 精确目标坐标或偏移而变化。基础图或 Overlay 更新只替换受影响的 ModeState，其他模式共享原对象及其派生缓存。命中、淘汰与重建不能引入历史相关结果。
 
 ## 内部 Field 类型与构建 API
 

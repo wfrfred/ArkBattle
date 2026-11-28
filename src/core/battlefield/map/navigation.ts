@@ -6,7 +6,7 @@ import type { MotionMode } from "../navigation/state.js";
 import { contains, type Map as TileMap } from "./map.js";
 import type { Passability } from "./tile.js";
 
-function includesMode(mask: Passability, mode: MotionMode): boolean {
+export function includesMode(mask: Passability, mode: MotionMode): boolean {
     return mask === "ALL" || mask === (mode === "WALK" ? "WALK_ONLY" : "FLY_ONLY");
 }
 

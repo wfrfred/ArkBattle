@@ -9,7 +9,7 @@ export type { Input, Overlay } from "../battlefield/navigation/overlay.js";
 function getOverlay(this: object, battle: BattleState): Overlay | undefined {
     const reference = this as Ref<Overlay>;
 
-    return battle.battlefield.navigation.overlays[reference.mode].find(
+    return battle.battlefield.navigation[reference.mode].overlays.find(
         ({ ref }) => ref === reference,
     );
 }

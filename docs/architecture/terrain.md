@@ -6,7 +6,7 @@ Tile 拥有地形定义、初始和当前空间属性；无宿主 Effect 作为�
 
 Terrain 在构造入口建立 Definition 与逐格 params 配对，不列举全部游戏地形。原始 Definition 的 `create` 接收具体 params；实例保存同一个 Definition，但将 `create` 的输入擦为 `never`，保留 `Terrain<P>` 返回类型。Tile 保留静态 terrain／initial 和当前 State；稠密不可变 Tiles 保存并查询普通 Tile，原始 Definition 和实例持有的 Definition 均可按对象身份恢复精确参数类型，普通属性更新不修改定义。
 
-当前地图是地块属性唯一权威，不另存 tileStates。完整 Tile 更新校验新步行代价，通行或代价改变时同步重建 Navigation 基础图并保留 Overlay，再维护 Blocking；Content 调用战斗完整入口，不直接改底层图。
+当前地图是地块属性唯一权威，不另存 tileStates。完整 Tile 更新校验新步行代价，WALK 通行资格或步行代价改变时重建 WALK 基础图，FLY 通行资格改变时重建 FLY 基础图；保留各模式 Overlay 和未受影响的 ModeState，再维护 Blocking。Content 调用战斗完整入口，不直接改底层图。
 
 高度、可部署类型、通行类型与 allowsBlocking 是不同事实。显式 tile_blockable 优先决定初始阻挡许可，无配置才按原始高地回退；Blocking 消费当前许可，不用当前 elevation 再否决显式允许。相关原生依据见[地形研究](../research/03-space-units-and-mechanisms.md)。
 

@@ -16,21 +16,27 @@ export function update(field: State, position: TilePosition, state: TileState): 
     validateState(state);
     const index = position[0] * field.map.columns + position[1];
     const map = { ...field.map, tiles: field.map.tiles.replace(index, state) };
-    const navigationChanged =
-        previous.state.passability !== state.passability ||
+    const walkChanged =
+        navigation.includesMode(previous.state.passability, "WALK") !==
+            navigation.includesMode(state.passability, "WALK") ||
         previous.state.walkCost !== state.walkCost;
+    const flyChanged =
+        navigation.includesMode(previous.state.passability, "FLY") !==
+        navigation.includesMode(state.passability, "FLY");
 
     return {
         ...field,
         map,
-        navigation: navigationChanged
-            ? {
-                  ...field.navigation,
-                  baseline: {
-                      WALK: navigation.create(map, "WALK"),
-                      FLY: navigation.create(map, "FLY"),
-                  },
-              }
-            : field.navigation,
+        navigation:
+            walkChanged || flyChanged
+                ? {
+                      WALK: walkChanged
+                          ? { ...field.navigation.WALK, baseline: navigation.create(map, "WALK") }
+                          : field.navigation.WALK,
+                      FLY: flyChanged
+                          ? { ...field.navigation.FLY, baseline: navigation.create(map, "FLY") }
+                          : field.navigation.FLY,
+                  }
+                : field.navigation,
     };
 }

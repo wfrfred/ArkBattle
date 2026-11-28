@@ -256,7 +256,7 @@ export function movementTarget(
     }
 
     const mode = self.locomotion.mode;
-    const map = battle.battlefield.navigation.baseline[mode];
+    const map = battle.battlefield.navigation[mode].baseline;
     const locator = Vec2.sub(self.position, context.offset);
     if (!map.contains(World.toTile(self.position)) || !map.contains(World.toTile(locator))) {
         const recovery = recoveryPoint(map, self.position, context.offset);
