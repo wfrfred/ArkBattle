@@ -7,7 +7,6 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle, get } from "../helpers/battle.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
-import { redeploy, retreat } from "../../dist/core/unit/capability/deployable/index.js";
 import { step } from "../../dist/core/battle/runtime.js";
 import * as deck from "../../dist/core/battle/deployment/deck/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
@@ -443,7 +442,7 @@ test("retreat refunds before removal, and death delays global slot release indep
     const [card, nextCard] = [...cards.all(state)].map(cards.ref);
     const first = cards.deploy(state, { card, tilePosition, direction: null, quote: null, restrictions: [] });
     const firstUnit = first.value;
-    state = retreat(first.state, firstUnit);
+    state = deployment.retreat(first.state, firstUnit);
     assert.equal(first.value.get(state), undefined);
     assert.deepEqual(card.get(state).units, []);
     assert.deepEqual(retreats, [{ dp: 45, stage: 0, stock: 0, cooldown: 0 }]);
@@ -598,7 +597,7 @@ test("special movement replaces the Unit on the same Card using current deployme
     state = deck.replace(placed.state, cards.dp.setCostContribution(card.get(placed.state), {
         group: null, id: "new-cost", value: cards.dp.create({ baseAddition: 8 }),
     }));
-    const moved = redeploy(state, original, [1, 3], null, "SELF");
+    const moved = deployment.redeploy(state, original, [1, 3], null, "SELF");
     assert.notEqual(moved.value, null);
     assert.notEqual(moved.value, original);
     state = moved.state;
@@ -611,7 +610,7 @@ test("special movement replaces the Unit on the same Card using current deployme
     assert.equal(moved.value.get(state).deployable.slots, 1);
     assert.deepEqual([card.get(state).dp.stage, card.get(state).supply.stock, card.get(state).supply.cooldown], [0, 0, 0]);
 
-    const movedAgain = redeploy(state, moved.value, [1, 4], "RIGHT", "EXTERNAL");
+    const movedAgain = deployment.redeploy(state, moved.value, [1, 4], "RIGHT", "EXTERNAL");
     assert.notEqual(movedAgain.value, null);
     assert.notEqual(movedAgain.value, moved.value);
     state = movedAgain.state;
@@ -629,7 +628,7 @@ test("special movement replaces the Unit on the same Card using current deployme
     assertRefOrder(entered, [original, moved.value, movedAgain.value]);
     assertRefOrder(state.deployment.history.map(({ unit }) => unit), entered);
     assertRefOrder(state.deployment.history.map(({ card }) => card), [card, card, card]);
-    assert.deepEqual(redeploy(state, original, [1, 2], null, "SELF"), { state, value: null });
+    assert.deepEqual(deployment.redeploy(state, original, [1, 2], null, "SELF"), { state, value: null });
 });
 
 test("rejected movement ends the old Unit and recycles its Card exactly once without refund", () => {
@@ -641,10 +640,10 @@ test("rejected movement ends the old Unit and recycles its Card exactly once wit
             initialCards: [{ definition: operatorCard, unitDefinition: operator }],
         });
         const blocker = get(initial, 0).ref;
-        assert.deepEqual(redeploy(initial, blocker, [1, 4], null, kind), { state: initial, value: null });
+        assert.deepEqual(deployment.redeploy(initial, blocker, [1, 4], null, kind), { state: initial, value: null });
         const card = cards.ref([...cards.all(initial)][0]);
         const placed = cards.deploy(initial, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
-        const moved = redeploy(placed.state, placed.value, tilePosition, null, kind);
+        const moved = deployment.redeploy(placed.state, placed.value, tilePosition, null, kind);
         assert.equal(moved.value, null);
         const state = moved.state;
         assert.equal(placed.value.get(state), undefined);
@@ -698,7 +697,7 @@ test("default cards start cooldown even without stock consumption and only expli
         const reference = deployed.value;
         assert.equal(card.get(deployed.state).supply.cooldown, 2);
         assert.equal(card.get(deployed.state).supply.stock, 0);
-        let state = retreat(step(deployed.state, []), reference);
+        let state = deployment.retreat(step(deployed.state, []), reference);
         assert.equal(card.get(state).supply.stock, 0);
 
         if (consumption > 0) {
@@ -746,7 +745,7 @@ test("queued recovery preserves the current interval and transfers at most one a
     };
     const first = cards.deploy(state, { card, tilePosition: [1, 2], direction: null, quote: null, restrictions: [] });
     assert.notEqual(first.value, null);
-    state = retreat(first.state, first.value);
+    state = deployment.retreat(first.state, first.value);
     assertSupply({ stock: 0, pending: 1, cooldown: 2 });
     state = step(state, []);
     state = deck.replace(state, cards.supply.enqueue(card.get(state), 2));

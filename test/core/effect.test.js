@@ -9,7 +9,6 @@ import * as units from "../../dist/core/unit/index.js";
 import * as effects from "../../dist/core/effect/index.js";
 import * as offense from "../../dist/core/unit/capability/offense/index.js";
 import * as deployment from "../../dist/core/battle/deployment/index.js";
-import { retreat } from "../../dist/core/unit/capability/deployable/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { create as modifier } from "../../dist/core/common/modifier.js";
 import { update, remove } from "../../dist/core/unit/operations.js";
@@ -661,7 +660,7 @@ test("source grouping follows persistent Cards across redeployment and keeps Car
     const firstUnit = cards.deploy(state, { card: a, tilePosition: [0, 0], direction: null, quote: null, restrictions: [] });
     const firstSource = firstUnit.value;
     const installed = effects.install(firstUnit.state, owner, definition, { ...effectInitial, source: firstSource });
-    state = retreat(installed.state, firstSource);
+    state = deployment.retreat(installed.state, firstSource);
     assert.equal(firstSource.get(state), undefined);
     assert.equal(effects.install(state, owner, definition, { ...effectInitial, source: firstSource }).value, null);
     state = effects.remove(state, installed.value);

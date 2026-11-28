@@ -4,7 +4,7 @@ export { initialize } from "./deployment.js";
 
 export { cardForUnit } from "./query.js";
 
-export type { DeploymentCommand } from "./operations.js";
+export { retreat, redeploy, type DeploymentCommand } from "./operations.js";
 
 export * as dp from "./dp/index.js";
 

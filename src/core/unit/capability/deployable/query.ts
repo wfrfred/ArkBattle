@@ -12,3 +12,11 @@ export function canRetreat(battle: BattleState, reference: Ref<Unit & Deployable
         allows(battle, { self }, self.deployable.retreatRestrictions)
     );
 }
+
+export function resolveRefund(self: Unit & Deployable): number | null {
+    const { refund, cost } = self.deployable;
+
+    return refund === null
+        ? null
+        : Math.max(0, Math.floor(Math.min(cost * refund.rate, refund.limit)));
+}

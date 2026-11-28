@@ -8,6 +8,6 @@ export type {
     Restriction,
 } from "./capability.js";
 
-export { canRetreat } from "./query.js";
+export { canRetreat, resolveRefund } from "./query.js";
 
-export { setDeployment, retreat, redeploy } from "./operations.js";
+export { setDeployment } from "./operations.js";

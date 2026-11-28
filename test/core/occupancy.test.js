@@ -5,7 +5,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { battle } from "../helpers/battle.js";
 import { createCardDefinition } from "../helpers/deployable.js";
-import { retreat } from "../../dist/core/unit/capability/deployable/index.js";
+import { retreat } from "../../dist/core/battle/deployment/index.js";
 import * as cards from "../../dist/core/battle/deployment/deck/card/index.js";
 import { setDirection } from "../../dist/core/unit/capability/occupancy/index.js";
 import { update } from "../../dist/core/unit/operations.js";

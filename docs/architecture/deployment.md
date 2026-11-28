@@ -1,6 +1,6 @@
 # Deployment、Card 与 Unit 生命周期
 
-Deployment 聚合资源、部署历史及调度；Card 完成部署资格、消费、构造前装配与实例创建，并保存跨部署资源和当前关联 Unit；Deployable 保存本次场上部署事实并负责撤退及离场结算，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、特殊移动、主动撤退及被动死亡。
+Deployment 聚合资源、部署历史及调度，并负责主动撤退与特殊重部署的业务协调；Card 完成部署资格、消费、构造前装配与实例创建，并保存跨部署资源和当前关联 Unit；Deployable 保存本次场上部署事实、查询撤退资格和返费并在离场时归还部署位，Occupancy 保存登记格与摆放朝向，Unit／Lifetime 处理通用生命周期。当前支持普通按格部署、特殊移动、主动撤退及被动死亡。
 
 ## 关键语义
 
@@ -106,7 +106,7 @@ Deployable 单向依赖 Occupancy，与 Locomotion 互斥。初始来源为空�
 
 ## 离场结算
 
-`deployable.canRetreat` 查询当前 ACTIVE 与撤退限制；`deployable.retreat` 负责完整撤退业务。返费按本次 COST 与返费倍率计算，并受实例上限约束。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
+`deployable.canRetreat` 查询当前 ACTIVE 与撤退限制；`deployment.retreat` 负责完整撤退业务。`deployable.resolveRefund` 按本次 COST 与返费倍率计算返费，并受实例上限约束；禁止返费时返回 null。系统先返还 DP，再请求 Unit 以 RETREAT 结束。`removing` 可观察到已返还的 DP。
 
 Unit 注销后，Deployable 固定 `removed` 通过 Slot 归还实际占位；Card 自己装配的独立 `removed` Hook 解除本次 Unit 关联并按离场原因决定是否回收。两者各以普通 priority 0 结算，不承诺在同一回调内执行。RETREAT、DEATH 和 REDEPLOY_EXTERNAL 触发 Card 回收，并按 Supply 策略处理库存与冷却。只有 `UNIQUE` 且有效 `increase` 为 true 时自动增加涨费次数，即使牌价已触及倍率上限。REDEPLOY_SELF、SCRIPT、EXPIRED、EXIT 跳过回收。
 
@@ -114,7 +114,7 @@ DEATH 传入 `TICKS_PER_SECOND` 作为归还延迟，其他离场立即归还占
 
 ## 特殊移动
 
-`deployable.redeploy(battle, reference: Ref<Unit & Deployable>, tilePosition: TilePosition, direction: Direction | null, kind: "SELF" | "EXTERNAL")` 返回 `Result<Ref<Unit & Deployable> | null>`。Unit 不存在、已进入 ENDING 或无来源 Card 时返回原状态及 null。direction 为 null 时沿用旧实例的 occupancy.direction。
+`deployment.redeploy(battle, reference: Ref<Unit & Deployable>, tilePosition: TilePosition, direction: Direction | null, kind: "SELF" | "EXTERNAL")` 返回 `Result<Ref<Unit & Deployable> | null>`。Unit 不存在、已进入 ENDING 或无来源 Card 时返回原状态及 null。direction 为 null 时沿用旧实例的 occupancy.direction。
 
 先完整结束旧 Unit（SELF 对应 REDEPLOY_SELF，EXTERNAL 对应 REDEPLOY_EXTERNAL），两种原因均立即归还旧部署位，不返还 DP。旧 Unit 离场后，使用原 Card 执行正常 `card.deploy`，本次报价为 `{ dp: null, stock: 0, slots: card.definition.slot }`，本次覆盖冷却限制，其他普通部署资格仍然有效。落点资格在旧 Unit 离场后判定，原地部署也不额外豁免地块限制。
 
