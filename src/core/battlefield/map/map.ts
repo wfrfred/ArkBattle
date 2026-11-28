@@ -1,5 +1,5 @@
 import type { Passability, Tile } from "./tile.js";
-import type { Definition as TerrainDefinition } from "./terrain.js";
+import type { Terrain } from "./terrain.js";
 import type { Tiles } from "./tiles.js";
 import { assertPositiveSafeInteger } from "../../common/assert.js";
 import { Tile as TileCoordinates, type TilePosition } from "../../geometry/coordinate.js";
@@ -38,13 +38,13 @@ export function get(map: Map, position: TilePosition): Tile | undefined;
 export function get<P extends object>(
     map: Map,
     position: TilePosition,
-    definition: TerrainDefinition<P>,
+    definition: Terrain<P>["definition"],
 ): Tile<P> | undefined;
 export function get(
     map: Map,
     position: TilePosition,
-    definition?: TerrainDefinition<any>,
-): Tile<any> | undefined {
+    definition?: Terrain["definition"],
+): Tile | undefined {
     if (!contains(map, position)) {
         return undefined;
     }

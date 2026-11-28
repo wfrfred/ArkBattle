@@ -4,7 +4,7 @@ Tile 拥有地形定义、初始和当前空间属性；无宿主 Effect 作为�
 
 ## 地块与类型恢复
 
-Terrain 在构造入口建立 Definition 与逐格 params 配对，不列举全部游戏地形。Tile 保留静态 terrain／initial 和当前 State；稠密不可变 Tiles 查询完整对象，精确 Definition 身份恢复参数类型，普通属性更新不修改定义。
+Terrain 在构造入口建立 Definition 与逐格 params 配对，不列举全部游戏地形。原始 Definition 的 `create` 接收具体 params；实例保存同一个 Definition，但将 `create` 的输入擦为 `never`，保留 `Terrain<P>` 返回类型。Tile 保留静态 terrain／initial 和当前 State；稠密不可变 Tiles 保存并查询普通 Tile，原始 Definition 和实例持有的 Definition 均可按对象身份恢复精确参数类型，普通属性更新不修改定义。
 
 当前地图是地块属性唯一权威，不另存 tileStates。完整 Tile 更新校验新步行代价，通行或代价改变时同步重建 Navigation 基础图并保留 Overlay，再维护 Blocking；Content 调用战斗完整入口，不直接改底层图。
 

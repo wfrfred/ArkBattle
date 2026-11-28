@@ -4,6 +4,9 @@ export interface Definition<P extends object = object> {
 }
 
 export interface Terrain<P extends object = object> {
-    readonly definition: Definition<P>;
+    readonly definition: {
+        readonly id: symbol;
+        readonly create: (params: never) => Terrain<P>;
+    };
     readonly params: P;
 }

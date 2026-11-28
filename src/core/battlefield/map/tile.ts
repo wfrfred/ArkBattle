@@ -36,7 +36,7 @@ export function validateState(state: State): void {
     assertPositiveSafeInteger(state.walkCost, "tile walk cost");
 
     if (state.collision !== null) {
-        assert(["BOX"].includes(state.collision.type), "invalid tile collision box", TypeError);
+        assert((state.collision as Shape).type === "BOX", "invalid tile collision box", TypeError);
         validateShape(state.collision);
     }
 }

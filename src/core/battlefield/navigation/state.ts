@@ -40,12 +40,17 @@ export function setOverlay(state: State, overlay: Overlay): State {
 export function removeOverlay(state: State, ref: Ref<Overlay>): State {
     const { mode } = ref;
     const entries = state.overlays[mode];
+    const remaining = entries.filter((entry) => entry.ref !== ref);
+
+    if (remaining.length === entries.length) {
+        return state;
+    }
 
     return {
         baseline: state.baseline,
         overlays: {
             ...state.overlays,
-            [mode]: entries.filter((entry) => entry.ref !== ref),
+            [mode]: remaining,
         },
     };
 }

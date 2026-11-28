@@ -167,7 +167,7 @@ function parseTile(
         consumed.add(blockable.key);
     }
 
-    function finish<P extends object>(terrain: Terrain<P>, walkCost = 1) {
+    function finish(terrain: Terrain, walkCost = 1) {
         const context = { tileKey, position };
 
         for (const entry of blackboard) {

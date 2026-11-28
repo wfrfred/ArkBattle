@@ -41,10 +41,6 @@ export function update(battle: BattleState, reference: Ref<Overlay>, input: Inpu
 }
 
 export function remove(battle: BattleState, reference: Ref<Overlay>): BattleState {
-    if (reference.get(battle) === undefined) {
-        return battle;
-    }
-
     const navigation = removeOverlay(battle.battlefield.navigation, reference);
 
     return replaceIn(battle, ["battlefield", "navigation"], navigation);

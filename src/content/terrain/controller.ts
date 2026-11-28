@@ -1,7 +1,7 @@
 import type { Ref } from "../../core/common/ref.js";
 import type { Lifetime } from "../../core/lifetime/index.js";
 import type { State as BattleState, Result } from "../../core/battle/index.js";
-import type { Definition as TerrainDefinition } from "../../core/battlefield/map/terrain.js";
+import type { Terrain } from "../../core/battlefield/map/terrain.js";
 import { contains } from "../../core/battlefield/map/map.js";
 import { World } from "../../core/geometry/coordinate.js";
 import * as units from "../../core/unit/index.js";
@@ -48,7 +48,7 @@ function onGround(unit: Unit): boolean {
 }
 
 function create<P extends object>(
-    definition: TerrainDefinition<P>,
+    definition: Terrain<P>["definition"],
     indices: readonly number[] | null,
     behaviour: Behaviour<P>,
 ): EffectDefinition<ContactState, null> {
@@ -226,7 +226,7 @@ function create<P extends object>(
 }
 
 export function createTerrainEffect(
-    definition: Pick<TerrainDefinition, "id">,
+    definition: Terrain["definition"],
     indices: readonly number[] | null,
 ): EffectDefinition<ContactState, null> {
     if (definition === terrain.infection) {

@@ -1,13 +1,13 @@
 import { create, type Query } from "../../common/query.js";
-import type { Definition } from "./terrain.js";
+import type { Terrain } from "./terrain.js";
 import type { State, Tile } from "./tile.js";
 
 export class Tiles {
     static readonly #empty = new Tiles([]);
 
-    readonly #entries: readonly Tile<any>[];
+    readonly #entries: readonly Tile[];
 
-    private constructor(entries: readonly Tile<any>[]) {
+    private constructor(entries: readonly Tile[]) {
         this.#entries = entries;
     }
 
@@ -20,8 +20,8 @@ export class Tiles {
     }
 
     get(index: number): Tile | undefined;
-    get<P extends object>(index: number, definition: Definition<P>): Tile<P> | undefined;
-    get(index: number, definition?: Definition<any>): Tile<any> | undefined {
+    get<P extends object>(index: number, definition: Terrain<P>["definition"]): Tile<P> | undefined;
+    get(index: number, definition?: Terrain["definition"]): Tile | undefined {
         const tile = this.#entries[index];
 
         if (definition === undefined) {
@@ -32,10 +32,10 @@ export class Tiles {
     }
 
     values(): Query<Tile> {
-        return create(() => this.#entries[Symbol.iterator]()) as Query<Tile>;
+        return create(() => this.#entries[Symbol.iterator]());
     }
 
-    add<P extends object>(tile: Tile<P>): Tiles {
+    add(tile: Tile): Tiles {
         return new Tiles([...this.#entries, tile]);
     }
 
